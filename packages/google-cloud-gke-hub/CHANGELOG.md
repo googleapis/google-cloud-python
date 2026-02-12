@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-gke-hub/#history
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.20.0...google-cloud-gke-hub-v1.21.0) (2026-02-12)
+
+
+### Documentation
+
+* A comment for field `request_id` in message `.google.cloud.gkehub.v1.CreateFeatureRequest` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `cancel_requested` in message `.google.cloud.gkehub.v1.OperationMetadata` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for message `Feature` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `state` in message `.google.cloud.gkehub.v1.Feature` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for enum value `ACTIVE` in enum `State` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for enum value `DISABLING` in enum `State` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `labels` in message `.google.cloud.gkehub.v1.Feature` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `state` in message `.google.cloud.gkehub.v1.CommonFeatureState` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for enum value `ENABLING` in enum `State` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for message `CommonFeatureState` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `request_id` in message `.google.cloud.gkehub.v1.UpdateFeatureRequest` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `spec` in message `.google.cloud.gkehub.v1.Feature` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `membership_specs` in message `.google.cloud.gkehub.v1.Feature` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for field `membership_states` in message `.google.cloud.gkehub.v1.Feature` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+* A comment for message `FeatureResourceState` is changed ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+
+
+### Features
+
+* Add GKE Hub teams scope and RBAC GAPIC ([99a1284fe05e38e313d6504409574536674a32b5](https://github.com/googleapis/google-cloud-python/commit/99a1284fe05e38e313d6504409574536674a32b5))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.19.0...google-cloud-gke-hub-v1.20.0) (2026-01-08)
 
 

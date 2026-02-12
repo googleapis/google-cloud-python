@@ -428,7 +428,7 @@ libraries:
       - packages/google-cloud-apphub/
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
-    version: 1.19.0
+    version: 1.20.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/devtools/artifactregistry/v1
@@ -803,7 +803,7 @@ libraries:
       - packages/google-cloud-bigquery-reservation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.36.0
+    version: 2.36.1
     last_generated_commit: 6b36371f6f3099624547e9ce4c1db304161e6afe
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1053,7 +1053,7 @@ libraries:
       - packages/google-cloud-compute-v1beta/
     tag_format: '{id}-v{version}'
   - id: google-cloud-confidentialcomputing
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/confidentialcomputing/v1
@@ -1187,7 +1187,7 @@ libraries:
       - packages/google-cloud-data-qna/
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/databasecenter/v1beta
@@ -1246,7 +1246,7 @@ libraries:
       - packages/google-cloud-dataflow-client/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataform
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/dataform/v1beta1
@@ -1381,7 +1381,7 @@ libraries:
       - packages/google-cloud-devicestreaming/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
-    version: 2.45.0
+    version: 2.46.0
     last_generated_commit: 7f62014053cd26b1acb7a1d0bf167104b64e3690
     apis:
       - path: google/cloud/dialogflow/v2beta1
@@ -1413,7 +1413,7 @@ libraries:
       - packages/google-cloud-dialogflow-cx
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
-    version: 0.16.0
+    version: 0.17.0
     last_generated_commit: f248ed087ef9b822834de74c962d9ba67bb737d3
     apis:
       - path: google/cloud/discoveryengine/v1
@@ -1460,7 +1460,7 @@ libraries:
       - packages/google-cloud-dms/
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
-    version: 3.9.0
+    version: 3.10.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/documentai/v1beta3
@@ -1680,7 +1680,7 @@ libraries:
       - packages/google-cloud-gke-connect-gateway/
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-hub
-    version: 1.20.0
+    version: 1.21.0
     last_generated_commit: 7f62014053cd26b1acb7a1d0bf167104b64e3690
     apis:
       - path: google/cloud/gkehub/v1
@@ -2831,7 +2831,7 @@ libraries:
       - packages/google-cloud-speech/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
-    version: 1.9.0
+    version: 1.10.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/storage/control/v2
@@ -3142,7 +3142,7 @@ libraries:
       - packages/google-cloud-vision/
     tag_format: '{id}-v{version}'
   - id: google-cloud-visionai
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/visionai/v1alpha1
@@ -3397,7 +3397,7 @@ libraries:
       - packages/google-maps-routing
     tag_format: '{id}-v{version}'
   - id: google-maps-solar
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/maps/solar/v1
