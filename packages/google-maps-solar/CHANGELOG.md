@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-maps-solar/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.3.0...google-maps-solar-v0.4.0) (2026-02-12)
+
+
+### Documentation
+
+* Add satellite imagery to `rgb_url` description ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* Add pre-GA details for Experiments enum ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.2.0...google-maps-solar-v0.3.0) (2026-01-09)
 
 

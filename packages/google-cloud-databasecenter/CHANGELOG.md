@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-databasecenter/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.4.0...google-cloud-databasecenter-v0.5.0) (2026-02-12)
+
+
+### Documentation
+
+* A comment for field `filter` in message `.google.cloud.databasecenter.v1beta.AggregateFleetRequest` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A comment for field `maintenance_version` in message `.google.cloud.databasecenter.v1beta.MaintenanceInfo` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A comment for field `order_by` in message `.google.cloud.databasecenter.v1beta.QueryDatabaseResourceGroupsRequest` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A comment for field `filter` in message `.google.cloud.databasecenter.v1beta.QueryDatabaseResourceGroupsRequest` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A comment for field `filter` in message `.google.cloud.databasecenter.v1beta.AggregateIssueStatsRequest` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A comment for message `AggregateFleetResponse` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A comment for field `order_by` in message `.google.cloud.databasecenter.v1beta.AggregateFleetRequest` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
+
+### Features
+
+* Adding Method QueryIssues of Database Center API v1beta ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.3.0...google-cloud-databasecenter-v0.4.0) (2026-01-22)
 
 

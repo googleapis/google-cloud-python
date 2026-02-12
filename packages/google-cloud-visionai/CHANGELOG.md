@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-visionai/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.3.0...google-cloud-visionai-v0.4.0) (2026-02-12)
+
+
+### Documentation
+
+* A comment for field `relevance` in message `.google.cloud.visionai.v1.SearchResultItem` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A comment for field `page_size` in message `.google.cloud.visionai.v1.SearchIndexEndpointRequest` is changed ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
+
+### Bug Fixes
+
+* An existing default host `visionai.googleapis.com` is changed to `warehouse-visionai.googleapis.com` in service `Warehouse` ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.2.0...google-cloud-visionai-v0.3.0) (2026-01-09)
 
 

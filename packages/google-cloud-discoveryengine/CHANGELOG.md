@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.16.0...google-cloud-discoveryengine-v0.17.0) (2026-02-12)
+
+
+### Documentation
+
+* update documentation for search and data store NLQ features ([b483e9218e14736a27c6547c2da15a9ca74c0db9](https://github.com/googleapis/google-cloud-python/commit/b483e9218e14736a27c6547c2da15a9ca74c0db9))
+* other misc documentation updates Clients can specify Natural Language Query Understanding-related fields, as well as CrowdingSpec. These features are available in the V1 APIs. ([b483e9218e14736a27c6547c2da15a9ca74c0db9](https://github.com/googleapis/google-cloud-python/commit/b483e9218e14736a27c6547c2da15a9ca74c0db9))
+
+
+### Features
+
+* add output-only field SemanticState to SearchResponse. ([b483e9218e14736a27c6547c2da15a9ca74c0db9](https://github.com/googleapis/google-cloud-python/commit/b483e9218e14736a27c6547c2da15a9ca74c0db9))
+* add Natural Language Query Understanding fields and messages to DiscoveryEngine request, response, and datastore messages ([b483e9218e14736a27c6547c2da15a9ca74c0db9](https://github.com/googleapis/google-cloud-python/commit/b483e9218e14736a27c6547c2da15a9ca74c0db9))
+* add CrowdingSpec to SearchRequest to set crowding settings ([b483e9218e14736a27c6547c2da15a9ca74c0db9](https://github.com/googleapis/google-cloud-python/commit/b483e9218e14736a27c6547c2da15a9ca74c0db9))
+
 ## [0.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.15.0...google-cloud-discoveryengine-v0.16.0) (2025-12-17)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-artifact-registry/#history
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.19.0...google-cloud-artifact-registry-v1.20.0) (2026-02-12)
+
+
+### Features
+
+* add DIRSUM_SHA256 hash type ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.18.0...google-cloud-artifact-registry-v1.19.0) (2026-01-08)
 
 

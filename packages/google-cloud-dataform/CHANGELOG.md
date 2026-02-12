@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dataform/#history
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.8.0...google-cloud-dataform-v0.9.0) (2026-02-12)
+
+
+### Documentation
+
+* A comment for field `force` in message `.google.cloud.dataform.v1beta1.DeleteRepositoryRequest` is changed PiperOrigin-RevId: 868182714 ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
+
+### Features
+
+* Update GCP Client Libraries in v1beta1 to support Folders, TeamFolders, and other relevant APIs The v1beta1 API now includes support for Folders and TeamFolders, allowing users to organize repositories and files hierarchically and manage access controls. New Features: - Added TeamFolder resource and methods: CreateTeamFolder, GetTeamFolder, UpdateTeamFolder, DeleteTeamFolder QueryTeamFolderContents to list folder contents. SearchTeamFolders to search for TeamFolders. - Added Folder resource and methods: CreateFolder, GetFolder, UpdateFolder, DeleteFolder QueryFolderContents to list folder contents. Added MoveFolder to move Folders between TeamFolders, other Folders, or the user root folder. - Added MoveRepository to move Repositories between TeamFolders, Folders, or the user root folder. - Added QueryUserRootContents to list contents of a user&#39;s root folder. Repository resource now includes containing_folder and team_folder_name fields to indicate its location within the folder hierarchy. - IAM methods (GetIamPolicy, SetIamPolicy, TestIamPermissions) now support Folder and TeamFolder resources for access control management ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.7.0...google-cloud-dataform-v0.8.0) (2026-01-08)
 
 

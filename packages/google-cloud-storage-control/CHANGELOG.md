@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage-control/#history
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.9.0...google-cloud-storage-control-v1.10.0) (2026-02-12)
+
+
+### Features
+
+* add a DeleteFolderRecursive API definition ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.8.0...google-cloud-storage-control-v1.9.0) (2026-01-09)
 
 

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.36.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.36.0...google-cloud-bigquery-storage-v2.36.1) (2026-02-12)
+
+
+### Documentation
+
+* Update BigQuery Storage Arrow samples batching logic (#14961) ([45d4cee9e0e48a209b2d9292be29a15125548458](https://github.com/googleapis/google-cloud-python/commit/45d4cee9e0e48a209b2d9292be29a15125548458))
+
+
+### Bug Fixes
+
+* fix mypy (#15531) ([f2536ae337cf3e29715d548dd049bda22504cf17](https://github.com/googleapis/google-cloud-python/commit/f2536ae337cf3e29715d548dd049bda22504cf17))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.35.0...google-cloud-bigquery-storage-v2.36.0) (2025-12-17)
 
 

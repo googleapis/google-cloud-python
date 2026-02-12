@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.45.0...google-cloud-dialogflow-v2.46.0) (2026-02-12)
+
+
+### Features
+
+* added a new field StreamingAnalyzeContentRequest.output_multiple_utterances ([a6b40b3154a526d35267abafde4c64aa86bcc27c](https://github.com/googleapis/google-cloud-python/commit/a6b40b3154a526d35267abafde4c64aa86bcc27c))
+
 ## [2.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.44.0...google-cloud-dialogflow-v2.45.0) (2026-01-08)
 
 

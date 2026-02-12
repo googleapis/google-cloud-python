@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-confidentialcomputing/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.7.0...google-cloud-confidentialcomputing-v0.8.0) (2026-02-12)
+
+
+### Features
+
+* add Nvidia Attestation proto message with its relevant fields and ConfidentialGke options ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.6.0...google-cloud-confidentialcomputing-v0.7.0) (2026-01-08)
 
 

@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.9.0...google-cloud-documentai-v3.10.0) (2026-02-12)
+
+
+### Documentation
+
+* Updated comments for various fields and messages ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
+
+### Features
+
+* The method `ReviewDocument` in `.google.cloud.documentai.v1beta3.DocumentProcessorService` is deprecated ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A new field `enable_table_split` is added to message `.google.cloud.documentai.v1beta3.OcrConfig.LayoutParsingParams` ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* Added new messages `Documents` and `RawDocuments` for inline document input ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* The field `skip_human_review` in messages `.google.cloud.documentai.v1beta3.ProcessRequest` and `.google.cloud.documentai.v1beta3.BatchProcessRequest` is deprecated ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A new field `document_prompt` is added to message `.google.cloud.documentai.v1beta3.DocumentSchema` ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A new field `revisions` is added to message `.google.cloud.documentai.v1beta3.Evaluation` ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+* A new field `document_type` is added to message `.google.cloud.documentai.v1beta3.ImportDocumentsRequest` ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
+
+### Bug Fixes
+
+* Removed the `SpannerIndexingConfig` message and the `spanner_indexing_config` field from `.google.cloud.documentai.v1beta3.Dataset` BREAKING CHANGE: The `SpannerIndexingConfig` message and the `spanner_indexing_config` field within the `Dataset` message have been removed. Client code referencing these will need to stop referencing these in case of an error ([5371e8e931dfba1d504ac2ffbd48a7f4abdcc158](https://github.com/googleapis/google-cloud-python/commit/5371e8e931dfba1d504ac2ffbd48a7f4abdcc158))
+
 ## [3.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.8.0...google-cloud-documentai-v3.9.0) (2026-01-29)
 
 
