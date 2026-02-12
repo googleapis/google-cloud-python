@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.40.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.40.0...google-cloud-bigquery-v3.40.1) (2026-02-12)
+
+
+### Documentation
+
+* clarify that only jobs.query and jobs.getQueryResults are affec… (#2349) ([73228432a3c821db05d898ea4a4788adf15b033d](https://github.com/googleapis/google-cloud-python/commit/73228432a3c821db05d898ea4a4788adf15b033d))
+
+
+### Bug Fixes
+
+* updates timeout/retry code to respect hanging server (#2408) ([24d45d0d5bf89762f253ba6bd6fdbee9d5993422](https://github.com/googleapis/google-cloud-python/commit/24d45d0d5bf89762f253ba6bd6fdbee9d5993422))
+* add timeout parameter to to_dataframe and to_arrow met… (#2354) ([4f67ba20b49159e81f645ed98e401b9bb1359c1a](https://github.com/googleapis/google-cloud-python/commit/4f67ba20b49159e81f645ed98e401b9bb1359c1a))
+
 ## [3.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.39.0...google-cloud-bigquery-v3.40.0) (2026-01-08)
 
 
