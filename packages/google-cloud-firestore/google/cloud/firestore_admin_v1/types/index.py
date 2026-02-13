@@ -85,6 +85,10 @@ class Index(proto.Message):
             MONGODB_COMPATIBLE_API ApiScope.
         shard_count (int):
             Optional. The number of shards for the index.
+        unique (bool):
+            Optional. Whether it is an unique index.
+            Unique index ensures all values for the indexed
+            field(s) are unique across documents.
     """
 
     class QueryScope(proto.Enum):
@@ -179,23 +183,69 @@ class Index(proto.Message):
                 Unspecified. It will use database default
                 setting. This value is input only.
             SPARSE_ALL (1):
-                In order for an index entry to be added, the document must
-                contain all fields specified in the index.
+                An index entry will only exist if ALL fields are present in
+                the document.
 
-                This is the only allowed value for indexes having ApiScope
-                ``ANY_API`` and ``DATASTORE_MODE_API``.
+                This is both the default and only allowed value for Standard
+                Edition databases (for both Cloud Firestore ``ANY_API`` and
+                Cloud Datastore ``DATASTORE_MODE_API``).
+
+                Take for example the following document:
+
+                ::
+
+                   {
+                     "__name__": "...",
+                     "a": 1,
+                     "b": 2,
+                     "c": 3
+                   }
+
+                an index on ``(a ASC, b ASC, c ASC, __name__ ASC)`` will
+                generate an index entry for this document since ``a``, 'b',
+                ``c``, and ``__name__`` are all present but an index of
+                ``(a ASC, d ASC, __name__ ASC)`` will not generate an index
+                entry for this document since ``d`` is missing.
+
+                This means that such indexes can only be used to serve a
+                query when the query has either implicit or explicit
+                requirements that all fields from the index are present.
             SPARSE_ANY (2):
-                In order for an index entry to be added, the
-                document must contain at least one of the fields
-                specified in the index. Non-existent fields are
-                treated as having a NULL value when generating
-                index entries.
+                An index entry will exist if ANY field are present in the
+                document.
+
+                This is used as the definition of a sparse index for
+                Enterprise Edition databases.
+
+                Take for example the following document:
+
+                ::
+
+                   {
+                     "__name__": "...",
+                     "a": 1,
+                     "b": 2,
+                     "c": 3
+                   }
+
+                an index on ``(a ASC, d ASC)`` will generate an index entry
+                for this document since ``a`` is present, and will fill in
+                an ``unset`` value for ``d``. An index on ``(d ASC, e ASC)``
+                will not generate any index entry as neither ``d`` nor ``e``
+                are present.
+
+                An index that contains ``__name__`` will generate an index
+                entry for all documents since Firestore guarantees that all
+                documents have a ``__name__`` field.
             DENSE (3):
-                An index entry will be added regardless of
-                whether the document contains any of the fields
-                specified in the index. Non-existent fields are
-                treated as having a NULL value when generating
-                index entries.
+                An index entry will exist regardless of if the fields are
+                present or not.
+
+                This is the default density for an Enterprise Edition
+                database.
+
+                The index will store ``unset`` values for fields that are
+                not present in the document.
         """
         DENSITY_UNSPECIFIED = 0
         SPARSE_ALL = 1
@@ -360,6 +410,10 @@ class Index(proto.Message):
     shard_count: int = proto.Field(
         proto.INT32,
         number=8,
+    )
+    unique: bool = proto.Field(
+        proto.BOOL,
+        number=10,
     )
 
 

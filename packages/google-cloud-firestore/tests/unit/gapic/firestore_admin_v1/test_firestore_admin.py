@@ -74,6 +74,7 @@ from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
 from google.cloud.firestore_admin_v1.types import index as gfa_index
 from google.cloud.firestore_admin_v1.types import operation as gfa_operation
+from google.cloud.firestore_admin_v1.types import realtime_updates
 from google.cloud.firestore_admin_v1.types import schedule
 from google.cloud.firestore_admin_v1.types import snapshot
 from google.cloud.firestore_admin_v1.types import user_creds
@@ -2224,6 +2225,7 @@ def test_get_index(request_type, transport: str = "grpc"):
             density=index.Index.Density.SPARSE_ALL,
             multikey=True,
             shard_count=1178,
+            unique=True,
         )
         response = client.get_index(request)
 
@@ -2242,6 +2244,7 @@ def test_get_index(request_type, transport: str = "grpc"):
     assert response.density == index.Index.Density.SPARSE_ALL
     assert response.multikey is True
     assert response.shard_count == 1178
+    assert response.unique is True
 
 
 def test_get_index_non_empty_request_with_auto_populated_field():
@@ -2372,6 +2375,7 @@ async def test_get_index_async(
                 density=index.Index.Density.SPARSE_ALL,
                 multikey=True,
                 shard_count=1178,
+                unique=True,
             )
         )
         response = await client.get_index(request)
@@ -2391,6 +2395,7 @@ async def test_get_index_async(
     assert response.density == index.Index.Density.SPARSE_ALL
     assert response.multikey is True
     assert response.shard_count == 1178
+    assert response.unique is True
 
 
 @pytest.mark.asyncio
@@ -5401,6 +5406,9 @@ def test_get_database(request_type, transport: str = "grpc"):
             free_tier=True,
             etag="etag_value",
             database_edition=database.Database.DatabaseEdition.STANDARD,
+            realtime_updates_mode=realtime_updates.RealtimeUpdatesMode.REALTIME_UPDATES_MODE_ENABLED,
+            firestore_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
+            mongodb_compatible_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
         )
         response = client.get_database(request)
 
@@ -5434,6 +5442,18 @@ def test_get_database(request_type, transport: str = "grpc"):
     assert response.free_tier is True
     assert response.etag == "etag_value"
     assert response.database_edition == database.Database.DatabaseEdition.STANDARD
+    assert (
+        response.realtime_updates_mode
+        == realtime_updates.RealtimeUpdatesMode.REALTIME_UPDATES_MODE_ENABLED
+    )
+    assert (
+        response.firestore_data_access_mode
+        == database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED
+    )
+    assert (
+        response.mongodb_compatible_data_access_mode
+        == database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED
+    )
 
 
 def test_get_database_non_empty_request_with_auto_populated_field():
@@ -5572,6 +5592,9 @@ async def test_get_database_async(
                 free_tier=True,
                 etag="etag_value",
                 database_edition=database.Database.DatabaseEdition.STANDARD,
+                realtime_updates_mode=realtime_updates.RealtimeUpdatesMode.REALTIME_UPDATES_MODE_ENABLED,
+                firestore_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
+                mongodb_compatible_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
             )
         )
         response = await client.get_database(request)
@@ -5606,6 +5629,18 @@ async def test_get_database_async(
     assert response.free_tier is True
     assert response.etag == "etag_value"
     assert response.database_edition == database.Database.DatabaseEdition.STANDARD
+    assert (
+        response.realtime_updates_mode
+        == realtime_updates.RealtimeUpdatesMode.REALTIME_UPDATES_MODE_ENABLED
+    )
+    assert (
+        response.firestore_data_access_mode
+        == database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED
+    )
+    assert (
+        response.mongodb_compatible_data_access_mode
+        == database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED
+    )
 
 
 @pytest.mark.asyncio
@@ -19094,6 +19129,7 @@ async def test_get_index_empty_call_grpc_asyncio():
                 density=index.Index.Density.SPARSE_ALL,
                 multikey=True,
                 shard_count=1178,
+                unique=True,
             )
         )
         await client.get_index(request=None)
@@ -19337,6 +19373,9 @@ async def test_get_database_empty_call_grpc_asyncio():
                 free_tier=True,
                 etag="etag_value",
                 database_edition=database.Database.DatabaseEdition.STANDARD,
+                realtime_updates_mode=realtime_updates.RealtimeUpdatesMode.REALTIME_UPDATES_MODE_ENABLED,
+                firestore_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
+                mongodb_compatible_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
             )
         )
         await client.get_database(request=None)
@@ -20034,6 +20073,7 @@ def test_create_index_rest_call_success(request_type):
         "density": 1,
         "multikey": True,
         "shard_count": 1178,
+        "unique": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -20374,6 +20414,7 @@ def test_get_index_rest_call_success(request_type):
             density=index.Index.Density.SPARSE_ALL,
             multikey=True,
             shard_count=1178,
+            unique=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -20397,6 +20438,7 @@ def test_get_index_rest_call_success(request_type):
     assert response.density == index.Index.Density.SPARSE_ALL
     assert response.multikey is True
     assert response.shard_count == 1178
+    assert response.unique is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -20766,6 +20808,7 @@ def test_update_field_rest_call_success(request_type):
                     "density": 1,
                     "multikey": True,
                     "shard_count": 1178,
+                    "unique": True,
                 }
             ],
             "uses_ancestor_config": True,
@@ -21496,6 +21539,9 @@ def test_create_database_rest_call_success(request_type):
         "free_tier": True,
         "etag": "etag_value",
         "database_edition": 1,
+        "realtime_updates_mode": 1,
+        "firestore_data_access_mode": 1,
+        "mongodb_compatible_data_access_mode": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -21704,6 +21750,9 @@ def test_get_database_rest_call_success(request_type):
             free_tier=True,
             etag="etag_value",
             database_edition=database.Database.DatabaseEdition.STANDARD,
+            realtime_updates_mode=realtime_updates.RealtimeUpdatesMode.REALTIME_UPDATES_MODE_ENABLED,
+            firestore_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
+            mongodb_compatible_data_access_mode=database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -21742,6 +21791,18 @@ def test_get_database_rest_call_success(request_type):
     assert response.free_tier is True
     assert response.etag == "etag_value"
     assert response.database_edition == database.Database.DatabaseEdition.STANDARD
+    assert (
+        response.realtime_updates_mode
+        == realtime_updates.RealtimeUpdatesMode.REALTIME_UPDATES_MODE_ENABLED
+    )
+    assert (
+        response.firestore_data_access_mode
+        == database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED
+    )
+    assert (
+        response.mongodb_compatible_data_access_mode
+        == database.Database.DataAccessMode.DATA_ACCESS_MODE_ENABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -22008,6 +22069,9 @@ def test_update_database_rest_call_success(request_type):
         "free_tier": True,
         "etag": "etag_value",
         "database_edition": 1,
+        "realtime_updates_mode": 1,
+        "firestore_data_access_mode": 1,
+        "mongodb_compatible_data_access_mode": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -120,7 +120,8 @@ class CreateDatabaseRequest(proto.Message):
             letter or a number. Must not be UUID-like
             /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-            "(default)" database ID is also valid.
+            "(default)" database ID is also valid if the database is
+            Standard edition.
     """
 
     parent: str = proto.Field(
@@ -747,9 +748,9 @@ class ExportDocumentsRequest(proto.Message):
             Required. Database to export. Should be of the form:
             ``projects/{project_id}/databases/{database_id}``.
         collection_ids (MutableSequence[str]):
-            Which collection IDs to export. Unspecified
-            means all collections. Each collection ID in
-            this list must be unique.
+            IDs of the collection groups to export.
+            Unspecified means all collection groups. Each
+            collection group in this list must be unique.
         output_uri_prefix (str):
             The output URI. Currently only supports Google Cloud Storage
             URIs of the form: ``gs://BUCKET_NAME[/NAMESPACE_PATH]``,
@@ -813,9 +814,10 @@ class ImportDocumentsRequest(proto.Message):
             Required. Database to import into. Should be of the form:
             ``projects/{project_id}/databases/{database_id}``.
         collection_ids (MutableSequence[str]):
-            Which collection IDs to import. Unspecified
-            means all collections included in the import.
-            Each collection ID in this list must be unique.
+            IDs of the collection groups to import.
+            Unspecified means all collection groups that
+            were included in the export. Each collection
+            group in this list must be unique.
         input_uri_prefix (str):
             Location of the exported files. This must match the
             output_uri_prefix of an ExportDocumentsResponse from an
@@ -1032,7 +1034,8 @@ class RestoreDatabaseRequest(proto.Message):
             letter or a number. Must not be UUID-like
             /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-            "(default)" database ID is also valid.
+            "(default)" database ID is also valid if the database is
+            Standard edition.
         backup (str):
             Required. Backup to restore from. Must be from the same
             project as the parent.
@@ -1100,7 +1103,8 @@ class CloneDatabaseRequest(proto.Message):
             letter or a number. Must not be UUID-like
             /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-            "(default)" database ID is also valid.
+            "(default)" database ID is also valid if the database is
+            Standard edition.
         pitr_snapshot (google.cloud.firestore_admin_v1.types.PitrSnapshot):
             Required. Specification of the PITR data to
             clone from. The source database must exist.

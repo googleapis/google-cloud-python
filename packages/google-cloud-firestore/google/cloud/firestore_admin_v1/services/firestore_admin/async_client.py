@@ -57,6 +57,7 @@ from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
 from google.cloud.firestore_admin_v1.types import index as gfa_index
 from google.cloud.firestore_admin_v1.types import operation as gfa_operation
+from google.cloud.firestore_admin_v1.types import realtime_updates
 from google.cloud.firestore_admin_v1.types import schedule
 from google.cloud.firestore_admin_v1.types import user_creds
 from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
@@ -1721,7 +1722,8 @@ class FirestoreAdminAsyncClient:
                 last a letter or a number. Must not be UUID-like
                 /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
 
-                "(default)" database ID is also valid.
+                "(default)" database ID is also valid if the database is
+                Standard edition.
 
                 This corresponds to the ``database_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
