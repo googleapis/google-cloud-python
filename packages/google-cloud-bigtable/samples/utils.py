@@ -16,6 +16,8 @@ Provides helper logic used across samples
 
 
 from google.cloud import bigtable
+from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable_admin_v2.types import ColumnFamily as ColumnFamily_pb
 from google.api_core import exceptions
 from google.api_core.retry import Retry
 from google.api_core.retry import if_exception_type
@@ -59,10 +61,20 @@ def create_table(project, instance_id, table_id, column_families={}):
     if table.exists():
         table.delete()
 
-    kwargs = {}
-    if column_families:
-        kwargs["column_families"] = column_families
-    table.create(**kwargs)
+    # convert column families to pb if needed
+    pb_families = {
+        id: ColumnFamily(id, table, rule).to_pb() if not isinstance(rule, ColumnFamily_pb) else rule
+        for (id, rule) in column_families.items()
+    }
+
+    # create table using gapic layer
+    instance._client.table_admin_client.create_table(
+        request={
+            "parent": instance.name,
+            "table_id": table_id,
+            "table": {"column_families": pb_families},
+        }
+    )
 
     wait_for_table(table)
 
