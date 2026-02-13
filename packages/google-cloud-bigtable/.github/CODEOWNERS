@@ -9,4 +9,4 @@
 *     @googleapis/yoshi-python @googleapis/api-bigtable @googleapis/api-bigtable-partners
 
 # @googleapis/python-samples-reviewers @googleapis/api-bigtable @googleapis/api-bigtable-partners are the default owners for samples changes
-/samples/   @googleapis/python-samples-reviewers @googleapis/api-bigtable @googleapis/api-bigtable-partners
+/samples/   @googleapis/python-samples-reviewers @googleapis/api-bigtable @googleapis/api-bigtable-partners @googleapis/cloud-sdk-python-team
