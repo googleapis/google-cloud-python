@@ -51,7 +51,7 @@ from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query
 from google.cloud.datastore_v1.types import query_profile
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from .transports.base import DatastoreTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DatastoreGrpcAsyncIOTransport
 from .client import DatastoreClient
@@ -117,7 +117,10 @@ class DatastoreAsyncClient:
         Returns:
             DatastoreAsyncClient: The constructed client.
         """
-        return DatastoreClient.from_service_account_info.__func__(DatastoreAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            DatastoreClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(DatastoreAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -133,7 +136,10 @@ class DatastoreAsyncClient:
         Returns:
             DatastoreAsyncClient: The constructed client.
         """
-        return DatastoreClient.from_service_account_file.__func__(DatastoreAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            DatastoreClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(DatastoreAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

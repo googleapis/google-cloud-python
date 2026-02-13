@@ -368,7 +368,7 @@ def docs(session):
     )
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def doctests(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.

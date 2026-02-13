@@ -45,13 +45,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from .transports.base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DatastoreAdminGrpcAsyncIOTransport
 from .client import DatastoreAdminClient
@@ -170,7 +170,10 @@ class DatastoreAdminAsyncClient:
         Returns:
             DatastoreAdminAsyncClient: The constructed client.
         """
-        return DatastoreAdminClient.from_service_account_info.__func__(DatastoreAdminAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            DatastoreAdminClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(DatastoreAdminAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -186,7 +189,10 @@ class DatastoreAdminAsyncClient:
         Returns:
             DatastoreAdminAsyncClient: The constructed client.
         """
-        return DatastoreAdminClient.from_service_account_file.__func__(DatastoreAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            DatastoreAdminClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(DatastoreAdminAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

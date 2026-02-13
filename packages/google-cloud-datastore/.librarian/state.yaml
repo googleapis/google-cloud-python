@@ -1,4 +1,4 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:51d42b9060365aa10d21e64a370b82bf1e07ed7f1e46062dcb3ad10632b0acc8
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:a38add811f7f139d6a385b22d283ad09ef305b8cf50382ef62f0ce690787f021
 libraries:
   - id: google-cloud-datastore
     version: 2.23.0

@@ -23,7 +23,7 @@ from google.cloud.datastore_v1.types import aggregation_result
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query as gd_query
 from google.cloud.datastore_v1.types import query_profile
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(

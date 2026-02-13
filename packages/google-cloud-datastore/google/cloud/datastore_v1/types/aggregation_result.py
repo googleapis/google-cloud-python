@@ -21,7 +21,7 @@ import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
