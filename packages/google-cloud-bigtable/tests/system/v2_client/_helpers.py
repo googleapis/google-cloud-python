@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
+from datetime import datetime, timezone
 
 import grpc
 from google.api_core import exceptions
 from google.cloud import exceptions as core_exceptions
-from google.cloud._helpers import UTC
 from test_utils import retry
 
 
@@ -41,7 +40,5 @@ retry_grpc_unavailable = retry.RetryErrors(
 
 def label_stamp():
     return (
-        datetime.datetime.utcnow()
-        .replace(microsecond=0, tzinfo=UTC)
-        .strftime("%Y-%m-%dt%H-%M-%S")
+        datetime.now(timezone.utc).replace(microsecond=0).strftime("%Y-%m-%dt%H-%M-%S")
     )

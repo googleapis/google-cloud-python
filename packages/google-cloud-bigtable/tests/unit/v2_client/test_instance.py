@@ -277,7 +277,7 @@ def _instance_api_response_for_create():
     )
     from google.cloud.bigtable_admin_v2.types import instance
 
-    NOW = datetime.datetime.utcnow()
+    NOW = datetime.datetime.now(datetime.timezone.utc)
     NOW_PB = _datetime_to_pb_timestamp(NOW)
     metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
     type_url = "type.googleapis.com/{}".format(
@@ -503,7 +503,7 @@ def _instance_api_response_for_update():
     )
     from google.cloud.bigtable_admin_v2.types import instance
 
-    NOW = datetime.datetime.utcnow()
+    NOW = datetime.datetime.now(datetime.timezone.utc)
     NOW_PB = _datetime_to_pb_timestamp(NOW)
     metadata = messages_v2_pb2.UpdateInstanceMetadata(request_time=NOW_PB)
     type_url = "type.googleapis.com/{}".format(

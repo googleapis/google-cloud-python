@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
+from datetime import datetime, timedelta, timezone
 import operator
 
 import pytest
@@ -62,8 +62,8 @@ def rows_to_delete():
 def test_table_read_rows_filter_millis(data_table):
     from google.cloud.bigtable import row_filters
 
-    end = datetime.datetime.now()
-    start = end - datetime.timedelta(minutes=60)
+    end = datetime.now()
+    start = end - timedelta(minutes=60)
     timestamp_range = row_filters.TimestampRange(start=start, end=end)
     timefilter = row_filters.TimestampRangeFilter(timestamp_range)
     row_data = data_table.read_rows(filter_=timefilter)
@@ -233,20 +233,19 @@ def test_table_read_row_large_cell(data_table, rows_to_delete, skip_on_emulator)
 def _write_to_row(row1, row2, row3, row4):
     from google.cloud._helpers import _datetime_from_microseconds
     from google.cloud._helpers import _microseconds_from_datetime
-    from google.cloud._helpers import UTC
     from google.cloud.bigtable.row_data import Cell
 
-    timestamp1 = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    timestamp1 = datetime.now(timezone.utc)
     timestamp1_micros = _microseconds_from_datetime(timestamp1)
     # Truncate to millisecond granularity.
     timestamp1_micros -= timestamp1_micros % 1000
     timestamp1 = _datetime_from_microseconds(timestamp1_micros)
     # 1000 microseconds is a millisecond
-    timestamp2 = timestamp1 + datetime.timedelta(microseconds=1000)
+    timestamp2 = timestamp1 + timedelta(microseconds=1000)
     timestamp2_micros = _microseconds_from_datetime(timestamp2)
-    timestamp3 = timestamp1 + datetime.timedelta(microseconds=2000)
+    timestamp3 = timestamp1 + timedelta(microseconds=2000)
     timestamp3_micros = _microseconds_from_datetime(timestamp3)
-    timestamp4 = timestamp1 + datetime.timedelta(microseconds=3000)
+    timestamp4 = timestamp1 + timedelta(microseconds=3000)
     timestamp4_micros = _microseconds_from_datetime(timestamp4)
 
     if row1 is not None:

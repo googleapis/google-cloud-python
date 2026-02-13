@@ -1378,13 +1378,12 @@ def test_table_backup_factory_defaults():
 
 def test_table_backup_factory_non_defaults():
     import datetime
-    from google.cloud._helpers import UTC
     from google.cloud.bigtable.backup import Backup
     from google.cloud.bigtable.instance import Instance
 
     instance = Instance(INSTANCE_ID, None)
     table = _make_table(TABLE_ID, instance)
-    timestamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    timestamp = datetime.datetime.now(datetime.timezone.utc)
     backup = table.backup(
         BACKUP_ID,
         cluster_id=CLUSTER_ID,

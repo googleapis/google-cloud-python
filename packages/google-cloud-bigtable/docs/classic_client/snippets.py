@@ -29,7 +29,7 @@ need to be deleted during teardown.
 
 """
 
-import datetime
+from datetime import datetime, timezone
 import pytest
 
 from google.api_core.exceptions import DeadlineExceeded
@@ -39,7 +39,7 @@ from google.api_core.exceptions import ServiceUnavailable
 from test_utils.system import unique_resource_id
 from test_utils.retry import RetryErrors
 
-from google.cloud._helpers import UTC
+
 from google.cloud.bigtable import Client
 from google.cloud.bigtable import enums
 
@@ -57,8 +57,8 @@ SERVER_NODES = 3
 STORAGE_TYPE = enums.StorageType.SSD
 LABEL_KEY = "python-snippet"
 LABEL_STAMP = (
-    datetime.datetime.utcnow()
-    .replace(microsecond=0, tzinfo=UTC)
+    datetime.now(timezone.utc)
+    .replace(microsecond=0)
     .strftime("%Y-%m-%dt%H-%M-%S")
 )
 LABELS = {LABEL_KEY: str(LABEL_STAMP)}
