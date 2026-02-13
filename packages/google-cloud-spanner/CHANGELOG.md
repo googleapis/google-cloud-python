@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.63.0](https://github.com/googleapis/python-spanner/compare/v3.62.0...v3.63.0) (2026-02-13)
+
+
+### Documentation
+
+* snippet for setting read lock mode (#1473) ([7e79920cfc8be76261dea1348931b0ef539dd6e1](https://github.com/googleapis/python-spanner/commit/7e79920cfc8be76261dea1348931b0ef539dd6e1))
+
+
+### Features
+
+* add requestID info in error exceptions (#1415) ([2c5eb96c4b395f84b60aba1c584ff195dbce4617](https://github.com/googleapis/python-spanner/commit/2c5eb96c4b395f84b60aba1c584ff195dbce4617))
+
+
+### Bug Fixes
+
+* prevent thread leak by ensuring singleton initialization (#1492) ([e792136aa487f327736e01e34afe01cf2015f5a0](https://github.com/googleapis/python-spanner/commit/e792136aa487f327736e01e34afe01cf2015f5a0))
+
 ## [3.62.0](https://github.com/googleapis/python-spanner/compare/v3.61.0...v3.62.0) (2026-01-14)
 
 
