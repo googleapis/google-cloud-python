@@ -43,4 +43,4 @@ SELECT
     ) AS STRING),
     CAST(RAND() AS STRING)
   ) AS `row_key`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

@@ -11,4 +11,4 @@ SELECT
   TIMESTAMP_TRUNC(`timestamp_col`, YEAR) AS `timestamp_col_Y`,
   TIMESTAMP_TRUNC(`datetime_col`, MICROSECOND) AS `datetime_col_q`,
   TIMESTAMP_TRUNC(`datetime_col`, MICROSECOND) AS `datetime_col_us`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

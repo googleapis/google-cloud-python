@@ -11,7 +11,7 @@ WITH `bfcte_0` AS (
         `int64_col` AS `bfcol_7`,
         0 AS `bfcol_8`,
         ROW_NUMBER() OVER (ORDER BY `int64_col` ASC NULLS LAST) - 1 AS `bfcol_9`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
     )
     UNION ALL
     (
@@ -20,7 +20,7 @@ WITH `bfcte_0` AS (
         `int64_too` AS `bfcol_18`,
         1 AS `bfcol_19`,
         ROW_NUMBER() OVER () - 1 AS `bfcol_20`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
       WHERE
         `bool_col`
     )
@@ -31,7 +31,7 @@ WITH `bfcte_0` AS (
         `int64_col` AS `bfcol_28`,
         2 AS `bfcol_29`,
         ROW_NUMBER() OVER (ORDER BY `int64_col` ASC NULLS LAST) - 1 AS `bfcol_30`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
     )
     UNION ALL
     (
@@ -40,7 +40,7 @@ WITH `bfcte_0` AS (
         `int64_too` AS `bfcol_39`,
         3 AS `bfcol_40`,
         ROW_NUMBER() OVER () - 1 AS `bfcol_41`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
       WHERE
         `bool_col`
     )

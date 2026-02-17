@@ -11,4 +11,4 @@ SELECT
   (
     `float64_col` IS NULL
   ) OR `float64_col` IN (1, 2, 3) AS `float_in_ints`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

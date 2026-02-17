@@ -134,18 +134,20 @@ class SQLGlotIR:
         """
         version = (
             sge.Version(
-                this="TIMESTAMP",
-                expression=sge.Literal(this=system_time.isoformat(), is_string=True),
+                this=sge.Identifier(this="SYSTEM_TIME", quoted=False),
+                expression=sge.Literal.string(system_time.isoformat()),
                 kind="AS OF",
             )
             if system_time
             else None
         )
+        table_alias = next(uid_gen.get_uid_stream("bft_"))
         table_expr = sge.Table(
             this=sg.to_identifier(table_id, quoted=cls.quoted),
             db=sg.to_identifier(dataset_id, quoted=cls.quoted),
             catalog=sg.to_identifier(project_id, quoted=cls.quoted),
             version=version,
+            alias=sge.Identifier(this=table_alias, quoted=cls.quoted),
         )
         if sql_predicate:
             select_expr = sge.Select().select(sge.Star()).from_(table_expr)

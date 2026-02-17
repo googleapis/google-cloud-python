@@ -23,4 +23,4 @@ SELECT
       )
     ) AS INT64) + 1
   END AS `non_fixed_freq_weekly`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

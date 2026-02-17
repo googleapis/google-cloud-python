@@ -3,7 +3,7 @@ WITH `bfcte_0` AS (
     `date_col`,
     `int64_col`,
     `string_col`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 ), `bfcte_1` AS (
   SELECT
     APPROX_QUANTILES(`int64_col`, 2)[OFFSET(1)] AS `bfcol_3`,

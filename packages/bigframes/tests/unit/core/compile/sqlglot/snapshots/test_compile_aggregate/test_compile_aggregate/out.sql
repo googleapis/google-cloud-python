@@ -4,7 +4,7 @@ WITH `bfcte_0` AS (
     `int64_too`,
     `int64_too` AS `bfcol_2`,
     `bool_col` AS `bfcol_3`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 ), `bfcte_1` AS (
   SELECT
     `bfcol_3`,

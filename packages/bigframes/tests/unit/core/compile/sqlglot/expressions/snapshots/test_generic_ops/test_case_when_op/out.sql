@@ -10,4 +10,4 @@ SELECT
     WHEN `bool_col`
     THEN `float64_col`
   END AS `mixed_types_cast`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

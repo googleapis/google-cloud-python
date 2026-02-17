@@ -19,4 +19,4 @@ SELECT
       COALESCE(LOGICAL_OR(bf_arr_reduce_uid), FALSE)
     FROM UNNEST(`bool_list_col`) AS bf_arr_reduce_uid
   ) AS `any_bool`
-FROM `bigframes-dev`.`sqlglot_test`.`repeated_types`
+FROM `bigframes-dev`.`sqlglot_test`.`repeated_types` AS `bft_0`

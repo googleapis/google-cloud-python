@@ -2,12 +2,12 @@ WITH `bfcte_0` AS (
   SELECT
     `rowindex` AS `bfcol_2`,
     `int64_col` AS `bfcol_3`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 ), `bfcte_1` AS (
   SELECT
     `rowindex` AS `bfcol_6`,
     `int64_col` AS `bfcol_7`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 ), `bfcte_2` AS (
   SELECT
     *

@@ -48,4 +48,4 @@ SELECT
     END,
     NULL
   ) AS `qcut_w_list`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

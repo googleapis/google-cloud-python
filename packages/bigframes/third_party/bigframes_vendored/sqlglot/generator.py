@@ -2254,7 +2254,8 @@ class Generator(metaclass=_Generator):
         else:
             indexed = ""
 
-        return f"{only}{table}{changes}{partition}{version}{file_format}{sample_pre_alias}{alias}{indexed}{hints}{pivots}{sample_post_alias}{joins}{laterals}{ordinality}"
+        # Workaround https://github.com/tobymao/sqlglot/issues/7073
+        return f"{only}{table}{changes}{alias}{partition}{version}{file_format}{sample_pre_alias}{indexed}{hints}{pivots}{sample_post_alias}{joins}{laterals}{ordinality}"
 
     def tablefromrows_sql(self, expression: exp.TableFromRows) -> str:
         table = self.func("TABLE", expression.this)

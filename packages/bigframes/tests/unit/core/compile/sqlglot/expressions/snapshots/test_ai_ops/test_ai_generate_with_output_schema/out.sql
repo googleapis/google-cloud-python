@@ -5,4 +5,4 @@ SELECT
     request_type => 'SHARED',
     output_schema => 'x INT64, y FLOAT64'
   ) AS `result`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

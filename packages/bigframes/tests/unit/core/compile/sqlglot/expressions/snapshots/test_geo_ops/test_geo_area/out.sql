@@ -1,3 +1,3 @@
 SELECT
   ST_AREA(`geography_col`) AS `geography_col`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

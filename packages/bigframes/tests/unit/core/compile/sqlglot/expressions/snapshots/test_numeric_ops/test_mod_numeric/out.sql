@@ -190,4 +190,4 @@ SELECT
     )
     ELSE MOD(CAST(`float64_col` AS BIGNUMERIC), CAST(0 AS BIGNUMERIC))
   END AS `float_mod_0`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

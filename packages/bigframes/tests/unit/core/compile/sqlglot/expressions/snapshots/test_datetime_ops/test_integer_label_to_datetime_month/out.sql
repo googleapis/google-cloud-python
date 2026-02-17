@@ -36,4 +36,4 @@ SELECT
       0
     )
   ) - INTERVAL 1 DAY AS TIMESTAMP) AS `non_fixed_freq_monthly`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

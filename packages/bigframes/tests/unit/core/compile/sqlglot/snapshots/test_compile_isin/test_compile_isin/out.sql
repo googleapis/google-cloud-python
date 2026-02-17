@@ -2,11 +2,11 @@ WITH `bfcte_2` AS (
   SELECT
     `rowindex` AS `bfcol_2`,
     `int64_col` AS `bfcol_3`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 ), `bfcte_0` AS (
   SELECT
     `int64_too`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 ), `bfcte_1` AS (
   SELECT
     `int64_too`
@@ -23,10 +23,10 @@ WITH `bfcte_2` AS (
         SELECT
           `int64_too` AS `bfcol_4`
         FROM `bfcte_1`
-      ) AS `bft_0`
+      ) AS `bft_1`
       WHERE
-        COALESCE(`bfcte_2`.`bfcol_3`, 0) = COALESCE(`bft_0`.`bfcol_4`, 0)
-        AND COALESCE(`bfcte_2`.`bfcol_3`, 1) = COALESCE(`bft_0`.`bfcol_4`, 1)
+        COALESCE(`bfcte_2`.`bfcol_3`, 0) = COALESCE(`bft_1`.`bfcol_4`, 0)
+        AND COALESCE(`bfcte_2`.`bfcol_3`, 1) = COALESCE(`bft_1`.`bfcol_4`, 1)
     ) AS `bfcol_5`
   FROM `bfcte_2`
 )

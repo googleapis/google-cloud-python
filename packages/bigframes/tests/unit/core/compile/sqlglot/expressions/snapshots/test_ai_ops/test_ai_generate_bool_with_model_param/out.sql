@@ -4,4 +4,4 @@ SELECT
     request_type => 'SHARED',
     model_params => JSON '{}'
   ) AS `result`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

@@ -44,4 +44,4 @@ SELECT
       ) + 0 AS `right_inclusive`
     )
   END AS `int_bins`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

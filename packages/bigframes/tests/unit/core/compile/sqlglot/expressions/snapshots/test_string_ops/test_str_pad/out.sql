@@ -10,4 +10,4 @@ SELECT
     GREATEST(LENGTH(`string_col`), 10),
     '-'
   ) AS `both`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

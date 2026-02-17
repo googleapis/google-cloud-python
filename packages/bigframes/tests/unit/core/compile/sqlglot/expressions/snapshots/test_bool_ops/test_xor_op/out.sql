@@ -14,4 +14,4 @@ SELECT
   OR (
     NOT `bool_col` AND CAST(NULL AS BOOLEAN)
   ) AS `bool_and_null`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

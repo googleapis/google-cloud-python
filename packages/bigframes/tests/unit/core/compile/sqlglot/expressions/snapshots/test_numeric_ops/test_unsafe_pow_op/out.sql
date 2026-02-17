@@ -5,7 +5,7 @@ SELECT
   POWER(`float64_col`, `float64_col`) AS `float_pow_float`,
   POWER(`int64_col`, CAST(`bool_col` AS INT64)) AS `int_pow_bool`,
   POWER(CAST(`bool_col` AS INT64), `int64_col`) AS `bool_pow_int`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 WHERE
   (
     `int64_col` >= 0

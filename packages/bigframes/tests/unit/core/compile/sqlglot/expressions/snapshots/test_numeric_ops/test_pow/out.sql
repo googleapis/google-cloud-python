@@ -242,4 +242,4 @@ SELECT
       END
     )
   END AS `float_pow_1`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

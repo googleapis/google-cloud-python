@@ -11,4 +11,4 @@ SELECT
   IEEE_DIVIDE(`float64_col`, 0.0) AS `float_div_0`,
   IEEE_DIVIDE(`int64_col`, CAST(`bool_col` AS INT64)) AS `int_div_bool`,
   IEEE_DIVIDE(CAST(`bool_col` AS INT64), `int64_col`) AS `bool_div_int`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

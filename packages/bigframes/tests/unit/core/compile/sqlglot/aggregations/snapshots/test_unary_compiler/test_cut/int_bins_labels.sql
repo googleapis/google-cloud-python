@@ -13,4 +13,4 @@ SELECT
     ) IS NOT NULL
     THEN 'c'
   END AS `int_bins_labels`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

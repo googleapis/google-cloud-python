@@ -8,4 +8,4 @@ SELECT
   `date_time_list_col`,
   `numeric_list_col`,
   `string_list_col`
-FROM `bigframes-dev`.`sqlglot_test`.`repeated_types`
+FROM `bigframes-dev`.`sqlglot_test`.`repeated_types` AS `bft_0`

@@ -8,4 +8,4 @@ SELECT
   CAST(TRUNC(`float64_col`) AS INT64) AS `float64_col`,
   SAFE_CAST(TRUNC(`float64_col`) AS INT64) AS `float64_w_safe`,
   CAST('100' AS INT64) AS `str_const`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

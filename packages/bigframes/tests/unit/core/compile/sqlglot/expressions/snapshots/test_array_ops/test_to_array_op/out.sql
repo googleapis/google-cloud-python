@@ -7,4 +7,4 @@ SELECT
     CAST(COALESCE(`bool_col`, FALSE) AS INT64),
     COALESCE(`float64_col`, 0.0)
   ] AS `numeric_col`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

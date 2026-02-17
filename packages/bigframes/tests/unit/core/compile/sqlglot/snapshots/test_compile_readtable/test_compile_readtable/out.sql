@@ -15,4 +15,4 @@ SELECT
   `time_col`,
   `timestamp_col`,
   `duration_col`
-FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

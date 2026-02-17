@@ -6,7 +6,7 @@ WITH `bfcte_0` AS (
     `int64_col` AS `bfcol_6`,
     `bool_col` AS `bfcol_7`,
     `duration_col` AS `bfcol_8`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
 ), `bfcte_1` AS (
   SELECT
     AVG(`bfcol_6`) AS `bfcol_12`,

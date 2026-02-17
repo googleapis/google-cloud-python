@@ -15,7 +15,7 @@ WITH `bfcte_0` AS (
         `string_col` AS `bfcol_12`,
         0 AS `bfcol_13`,
         ROW_NUMBER() OVER () - 1 AS `bfcol_14`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
     )
     UNION ALL
     (
@@ -26,7 +26,7 @@ WITH `bfcte_0` AS (
         `string_col` AS `bfcol_27`,
         1 AS `bfcol_28`,
         ROW_NUMBER() OVER () - 1 AS `bfcol_29`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
+      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
     )
   )
 )
