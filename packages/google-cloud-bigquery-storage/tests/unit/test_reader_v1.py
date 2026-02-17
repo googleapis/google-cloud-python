@@ -622,3 +622,81 @@ def test_to_dataframe_by_page(class_under_test, mock_gapic_client):
             drop=True
         ),
     )
+
+
+def test_to_dataframe_avro_no_lost_records(class_under_test, mock_gapic_client):
+    """Verify that to_dataframe() does not lose records for Avro streams.
+    See: https://github.com/googleapis/google-cloud-python/issues/14900
+    """
+    bq_columns = [
+        {"name": "name", "type": "string"},
+        {"name": "number", "type": "int64"},
+    ]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+
+    # 2 pages of data
+    bq_blocks = [
+        [{"name": "a", "number": 1}, {"name": "b", "number": 2}],
+        [{"name": "c", "number": 3}, {"name": "d", "number": 4}],
+    ]
+
+    avro_blocks = _bq_to_avro_blocks(bq_blocks, avro_schema)
+    mock_gapic_client.read_rows.return_value = iter(avro_blocks)
+
+    reader = class_under_test(mock_gapic_client, "name", 0, {})
+    df = reader.to_dataframe()
+
+    assert len(df) == 4
+    assert df["name"].tolist() == ["a", "b", "c", "d"]
+
+
+def test_to_dataframe_empty_stream_no_session(class_under_test, mock_gapic_client):
+    """Verify that to_dataframe() handles empty streams without a session safely.
+    See: https://github.com/googleapis/google-cloud-python/issues/14900
+    """
+    mock_gapic_client.read_rows.return_value = iter([])
+
+    reader = class_under_test(mock_gapic_client, "name", 0, {})
+    df = reader.to_dataframe()
+    assert len(df) == 0
+    assert isinstance(df, pandas.DataFrame)
+
+
+def test_to_dataframe_empty_stream_with_session(class_under_test, mock_gapic_client):
+    """Verify that to_dataframe() handles empty streams with a session correctly.
+    See: https://github.com/googleapis/google-cloud-python/issues/14900
+    """
+    bq_columns = [{"name": "name", "type": "string"}]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+    read_session = _generate_avro_read_session(avro_schema)
+
+    mock_gapic_client.read_rows.return_value = iter([])
+
+    reader = class_under_test(mock_gapic_client, "name", 0, {})
+    it = reader.rows(read_session=read_session)
+    df = it.to_dataframe()
+
+    assert len(df) == 0
+    assert df.columns.tolist() == ["name"]
+
+
+def test_to_arrow_avro_consumes_first_page(class_under_test, mock_gapic_client):
+    """Verify that to_arrow() consumes the first page of an Avro stream if format is unknown.
+    See: https://github.com/googleapis/google-cloud-python/issues/14900
+    """
+    bq_columns = [{"name": "name", "type": "string"}]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+    bq_blocks = [[{"name": "a"}], [{"name": "b"}]]
+    avro_blocks = _bq_to_avro_blocks(bq_blocks, avro_schema)
+
+    mock_gapic_client.read_rows.return_value = iter(avro_blocks)
+
+    reader = class_under_test(mock_gapic_client, "name", 0, {})
+    it = reader.rows()
+
+    with pytest.raises(NotImplementedError):
+        it.to_arrow()
+
+    # Since read_session was not provided, to_arrow() had to consume the first message
+    # to find out it was Avro. So offset should be 1.
+    assert reader._offset == 1
