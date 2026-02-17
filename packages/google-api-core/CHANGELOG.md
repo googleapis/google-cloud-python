@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.29.0...google-api-core-v2.30.0) (2026-02-17)
+
 ## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.28.1...google-api-core-v2.29.0) (2026-01-08)
 
 

@@ -97,7 +97,7 @@ libraries:
       - packages/google-analytics-data/
     tag_format: '{id}-v{version}'
   - id: google-api-core
-    version: 2.29.0
+    version: 2.30.0
     last_generated_commit: ""
     apis: []
     source_roots:
