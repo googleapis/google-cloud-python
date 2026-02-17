@@ -6,6 +6,12 @@
 
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.29.0...google-api-core-v2.30.0) (2026-02-17)
 
+
+### Bug Fixes
+
+* preserve exception cause ([c7fc19303e0f1d7357109a73c13f875a5ced7606](https://github.com/googleapis/google-cloud-python/commit/c7fc19303e0f1d7357109a73c13f875a5ced7606))
+* require Python ≥ 3.9, protobuf ≥ 4.25.8 ([2d1aa4288c222b247fc49ea0da03c126c051e079](https://github.com/googleapis/google-cloud-python/commit/2d1aa4288c222b247fc49ea0da03c126c051e079))
+
 ## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.28.1...google-api-core-v2.29.0) (2026-01-08)
 
 
