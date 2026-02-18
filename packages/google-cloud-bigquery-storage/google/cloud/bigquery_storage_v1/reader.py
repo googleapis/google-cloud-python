@@ -424,7 +424,7 @@ class ReadRowsIterable(object):
         except NotImplementedError as e:
             if first_batch is not None:
                 # Unexpected state: if Arrow parsing fails mid-stream,
-                # raise exception to prevent data loss.
+                # raise exception to prevent unreported data loss.
                 raise RuntimeError("Stream format changed mid-stream") from e
             # Not an Arrow stream; use generic parser.
             first_batch = first_page.to_dataframe(dtypes=dtypes)
