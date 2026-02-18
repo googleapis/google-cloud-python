@@ -2,6 +2,7 @@ on:
   pull_request:
     branches:
       - main
+      - preview
   # Trigger workflow on GitHub merge queue events
   # See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#merge_group
   merge_group:
@@ -40,6 +41,7 @@ jobs:
       env:
         COVERAGE_FILE: .coverage-${{ matrix.python }}
         BUILD_TYPE: presubmit
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
       run: |
@@ -76,6 +78,7 @@ jobs:
     - name: Run ${{ matrix.option }} tests
       env:
         BUILD_TYPE: presubmit
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: ${{ matrix.option }}
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
@@ -107,6 +110,7 @@ jobs:
     - name: Run ${{ matrix.option }} tests
       env:
         BUILD_TYPE: presubmit
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
         TEST_TYPE: ${{ matrix.option }}
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"

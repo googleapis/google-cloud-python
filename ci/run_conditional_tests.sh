@@ -34,17 +34,18 @@
 set -eo pipefail
 
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
+TARGET_BRANCH="${TARGET_BRANCH:-main}"
 
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
 if [ ${BUILD_TYPE} == "presubmit" ]; then
     # For presubmit build, we want to know the difference from the
-    # common commit in origin/main.
-    GIT_DIFF_ARG="origin/main..."
+    # common commit in the target branch.
+    GIT_DIFF_ARG="origin/$TARGET_BRANCH..."
 
     # Then fetch enough history for finding the common commit.
-    git fetch origin main --deepen=200
+    git fetch origin $TARGET_BRANCH --deepen=200
 
 elif [ ${BUILD_TYPE} == "continuous" ]; then
     # For continuous build, we want to know the difference in the last
@@ -52,7 +53,7 @@ elif [ ${BUILD_TYPE} == "continuous" ]; then
     GIT_DIFF_ARG="HEAD~.."
 
     # Then fetch one last commit for getting the diff.
-    git fetch origin main --deepen=1
+    git fetch origin $TARGET_BRANCH --deepen=1
 
 else
     # Run everything.
