@@ -401,7 +401,7 @@ class ReadRowsIterable(object):
             dtypes = {}
 
         # Use a "peek" strategy to check the first page, without consuming
-        # from self.pages generator
+        # from self.pages generator.
         pages = self.pages
         try:
             first_page = next(pages)
@@ -423,7 +423,7 @@ class ReadRowsIterable(object):
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df
         except NotImplementedError:
-            # Not an Arrow streamm use generic parser
+            # Not an Arrow stream; use generic parser.
             frames = [
                 p.to_dataframe(dtypes=dtypes)
                 for p in itertools.chain([first_page], pages)
