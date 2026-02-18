@@ -47,7 +47,7 @@ if [ ${BUILD_TYPE} == "presubmit" ]; then
     # Then fetch enough history for finding the common commit.
     git fetch origin "$TARGET_BRANCH" --deepen=200
 
-elif [ ${BUILD_TYPE} == "continuous" ]; then
+elif [[ ${BUILD_TYPE} == "continuous" ]]; then
     # For continuous build, we want to know the difference in the last
     # commit. This assumes we use squash commit when merging PRs.
     GIT_DIFF_ARG="HEAD~.."
