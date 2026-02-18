@@ -127,6 +127,11 @@ class BigQueryOptions:
         The recommended format is  ``"application-name/major.minor.patch_version"``
         or ``"(gpn:PartnerName;)"`` for official Google partners.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.application_name = "my-app/1.0.0"  # doctest: +SKIP
+
         Returns:
             None or str:
                 Application name as a string if exists; otherwise None.
@@ -144,6 +149,13 @@ class BigQueryOptions:
     @property
     def credentials(self) -> Optional[google.auth.credentials.Credentials]:
         """The OAuth2 credentials to use for this client.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import google.auth
+            >>> credentials, project = google.auth.default()  # doctest: +SKIP
+            >>> bpd.options.bigquery.credentials = credentials  # doctest: +SKIP
 
         Returns:
             None or google.auth.credentials.Credentials:
@@ -163,6 +175,11 @@ class BigQueryOptions:
 
         For more information, see https://cloud.google.com/bigquery/docs/locations BigQuery locations.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.location = "US"  # doctest: +SKIP
+
         Returns:
             None or str:
                 Default location as a string; otherwise None.
@@ -178,6 +195,11 @@ class BigQueryOptions:
     @property
     def project(self) -> Optional[str]:
         """Google Cloud project ID to use for billing and as the default project.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.project = "my-project"  # doctest: +SKIP
 
         Returns:
             None or str:
@@ -206,6 +228,11 @@ class BigQueryOptions:
         If this option isn't provided, or project or location aren't provided,
         session will use its default project/location/connection_id as default connection.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.bq_connection = "my-project.us.my-connection"  # doctest: +SKIP
+
         Returns:
             None or str:
                 Name of the BigQuery connection as a string; otherwise None.
@@ -227,6 +254,11 @@ class BigQueryOptions:
         connection (default or user-provided) does not exist, or it does not have
         necessary permissions set up to support BigQuery DataFrames operations,
         then a runtime error will be reported.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.skip_bq_connection_check = True  # doctest: +SKIP
 
         Returns:
             bool:
@@ -300,6 +332,12 @@ class BigQueryOptions:
         does not promise any guarantee on the request remaining within the
         location during transit.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.location = "europe-west3"  # doctest: +SKIP
+            >>> bpd.options.bigquery.use_regional_endpoints = True  # doctest: +SKIP
+
         Returns:
             bool:
               A boolean value, where True indicates that regional endpoints
@@ -339,6 +377,11 @@ class BigQueryOptions:
         For more information, see https://cloud.google.com/bigquery/docs/customer-managed-encryption#assign_role
         Assign the Encrypter/Decrypter.
 
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.kms_key_name = "projects/my-project/locations/us/keyRings/my-ring/cryptoKeys/my-key"  # doctest: +SKIP
+
         Returns:
             None or str:
                 Name of the customer managed encryption key as a string; otherwise None.
@@ -355,6 +398,11 @@ class BigQueryOptions:
     @property
     def ordering_mode(self) -> Literal["strict", "partial"]:
         """Controls whether total row order is always maintained for DataFrame/Series.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.ordering_mode = "partial"  # doctest: +SKIP
 
         Returns:
             Literal:
@@ -432,7 +480,14 @@ class BigQueryOptions:
 
     @property
     def enable_polars_execution(self) -> bool:
-        """If True, will use polars to execute some simple query plans locally."""
+        """If True, will use polars to execute some simple query plans locally.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.enable_polars_execution = True  # doctest: +SKIP
+
+        """
         return self._enable_polars_execution
 
     @enable_polars_execution.setter

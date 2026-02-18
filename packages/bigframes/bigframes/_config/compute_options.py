@@ -28,30 +28,30 @@ class ComputeOptions:
         >>> import bigframes.pandas as bpd
         >>> df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
 
-        >>> bpd.options.compute.maximum_bytes_billed = 500
+        >>> bpd.options.compute.maximum_bytes_billed = 500  # doctest: +SKIP
         >>> df.to_pandas() # this should fail  # doctest: +SKIP
         google.api_core.exceptions.InternalServerError: 500 Query exceeded limit for bytes billed: 500. 10485760 or higher required.
 
-        >>> bpd.options.compute.maximum_bytes_billed = None  # reset option
+        >>> bpd.options.compute.maximum_bytes_billed = None  # reset option  # doctest: +SKIP
 
     To add multiple extra labels to a query configuration, use the `assign_extra_query_labels`
     method with keyword arguments:
 
-        >>> bpd.options.compute.assign_extra_query_labels(test1=1, test2="abc")
-        >>> bpd.options.compute.extra_query_labels
+        >>> bpd.options.compute.assign_extra_query_labels(test1=1, test2="abc")  # doctest: +SKIP
+        >>> bpd.options.compute.extra_query_labels  # doctest: +SKIP
         {'test1': 1, 'test2': 'abc'}
 
     Alternatively, you can add labels individually by directly accessing the `extra_query_labels`
     dictionary:
 
-        >>> bpd.options.compute.extra_query_labels["test3"] = False
-        >>> bpd.options.compute.extra_query_labels
+        >>> bpd.options.compute.extra_query_labels["test3"] = False  # doctest: +SKIP
+        >>> bpd.options.compute.extra_query_labels  # doctest: +SKIP
         {'test1': 1, 'test2': 'abc', 'test3': False}
 
     To remove a label from the configuration, use the `del` keyword on the desired label key:
 
-        >>> del bpd.options.compute.extra_query_labels["test1"]
-        >>> bpd.options.compute.extra_query_labels
+        >>> del bpd.options.compute.extra_query_labels["test1"]  # doctest: +SKIP
+        >>> bpd.options.compute.extra_query_labels  # doctest: +SKIP
         {'test2': 'abc', 'test3': False}
     """
 
@@ -63,6 +63,11 @@ class ComputeOptions:
     their operations to resume. The default value is 0. Set the value to None
     to turn off the guard.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.compute.ai_ops_confirmation_threshold = 100  # doctest: +SKIP
+
     Returns:
         Optional[int]: Number of rows.
     """
@@ -72,6 +77,11 @@ class ComputeOptions:
     Guards against unexpected processing of large amount of rows by semantic operators.
 
     When set to True, the operation automatically fails without asking for user inputs.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.compute.ai_ops_threshold_autofail = True  # doctest: +SKIP
 
     Returns:
         bool: True if the guard is enabled.
@@ -85,6 +95,10 @@ class ComputeOptions:
     10 GB for potentially faster execution; BigQuery will raise an error if this
     limit is exceeded. Setting to True removes this result size limit.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.compute.allow_large_results = True  # doctest: +SKIP
 
     Returns:
         bool | None: True if results > 10 GB are enabled.
@@ -97,6 +111,10 @@ class ComputeOptions:
     query engine to handle. However this comes at the cost of increase cost and
     latency.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.compute.enable_multi_query_execution = True  # doctest: +SKIP
 
     Returns:
         bool | None: True if enabled.
@@ -121,6 +139,11 @@ class ComputeOptions:
     default.  See `maximum_bytes_billed`:
     https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.compute.maximum_bytes_billed = 1000  # doctest: +SKIP
+
     Returns:
         int | None: Number of bytes, if set.
     """
@@ -135,6 +158,11 @@ class ComputeOptions:
     option restricts the number of rows that can be downloaded.  If the number
     of rows to be downloaded exceeds this limit, a
     ``bigframes.exceptions.MaximumResultRowsExceeded`` exception is raised.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.compute.maximum_result_rows = 1000  # doctest: +SKIP
 
     Returns:
         int | None: Number of rows, if set.

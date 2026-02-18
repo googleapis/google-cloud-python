@@ -31,6 +31,11 @@ class SamplingOptions:
     Download size threshold in MB. Default 500.
 
     If value set to None, the download size won't be checked.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.sampling.max_download_size = 1000  # doctest: +SKIP
     """
 
     enable_downsampling: bool = False
@@ -40,6 +45,11 @@ class SamplingOptions:
     If max_download_size is exceeded when downloading data (e.g., to_pandas()),
     the data will be downsampled if enable_downsampling is True, otherwise, an
     error will be raised.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.sampling.enable_downsampling = True  # doctest: +SKIP
     """
 
     sampling_method: Literal["head", "uniform"] = "uniform"
@@ -50,6 +60,11 @@ class SamplingOptions:
     the beginning. It is fast and requires minimal computations to perform the
     downsampling.; "uniform": This algorithm returns uniform random samples of
     the data.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.sampling.sampling_method = "head"  # doctest: +SKIP
     """
 
     random_state: Optional[int] = None
@@ -58,6 +73,11 @@ class SamplingOptions:
 
     If provided, the uniform method may take longer to execute and require more
     computation.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.sampling.random_state = 42  # doctest: +SKIP
     """
 
     def with_max_download_size(self, max_rows: Optional[int]) -> SamplingOptions:
