@@ -36,7 +36,7 @@ def test_has_default_client_cert_source_with_context_aware_metadata(mock_check):
     mock_check.side_effect = side_effect
 
     # Execute
-    result = mtls.has_default_client_cert_source()
+    result = mtls.has_default_client_cert_source(True)
 
     # Assert
     assert result is True
@@ -59,7 +59,7 @@ def test_has_default_client_cert_source_falls_back(mock_check):
     mock_check.side_effect = side_effect
 
     # Execute
-    result = mtls.has_default_client_cert_source()
+    result = mtls.has_default_client_cert_source(True)
 
     # Assert
     assert result is True
@@ -91,7 +91,7 @@ def test_has_default_client_cert_source_env_var_success(check_config_path, mock_
     check_config_path.side_effect = side_effect
 
     # 3. This should now return True
-    assert mtls.has_default_client_cert_source()
+    assert mtls.has_default_client_cert_source(True)
 
     # 4. Verify the env var path was checked
     check_config_path.assert_called_with("path/to/cert.json")
@@ -108,7 +108,7 @@ def test_has_default_client_cert_source_env_var_invalid_config_path(
     )
     check_config_path.return_value = None
 
-    assert not mtls.has_default_client_cert_source()
+    assert not mtls.has_default_client_cert_source(True)
 
 
 @mock.patch("google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True)

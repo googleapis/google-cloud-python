@@ -25,6 +25,8 @@ from google.auth import environment_vars
 from google.auth import exceptions
 
 CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
+
+# Default gcloud config path, to be used with path.expanduser for cross-platform compatibility.
 CERTIFICATE_CONFIGURATION_DEFAULT_PATH = "~/.config/gcloud/certificate_config.json"
 _CERT_PROVIDER_COMMAND = "cert_provider_command"
 _CERT_REGEX = re.compile(
@@ -103,7 +105,9 @@ def _load_json_file(path):
     return json_data
 
 
-def _get_workload_cert_and_key(certificate_config_path=None):
+def _get_workload_cert_and_key(
+    certificate_config_path=None, include_context_aware=True
+):
     """Read the workload identity cert and key files specified in the certificate config provided.
     If no config path is provided, check the environment variable: "GOOGLE_API_CERTIFICATE_CONFIG"
     first, then the well known gcloud location: "~/.config/gcloud/certificate_config.json".
@@ -111,6 +115,8 @@ def _get_workload_cert_and_key(certificate_config_path=None):
     Args:
         certificate_config_path (string): The certificate config path. If no path is provided,
         the environment variable will be checked first, then the well known gcloud location.
+        include_context_aware (bool): If context aware metadata path should be checked for the
+        SecureConnect mTLS configuration.
 
     Returns:
         Tuple[Optional[bytes], Optional[bytes]]: client certificate bytes in PEM format and key
@@ -121,7 +127,9 @@ def _get_workload_cert_and_key(certificate_config_path=None):
         the certificate or key information.
     """
 
-    cert_path, key_path = _get_workload_cert_and_key_paths(certificate_config_path)
+    cert_path, key_path = _get_workload_cert_and_key_paths(
+        certificate_config_path, include_context_aware
+    )
 
     if cert_path is None and key_path is None:
         return None, None
@@ -129,7 +137,7 @@ def _get_workload_cert_and_key(certificate_config_path=None):
     return _read_cert_and_key_files(cert_path, key_path)
 
 
-def _get_cert_config_path(certificate_config_path=None):
+def _get_cert_config_path(certificate_config_path=None, include_context_aware=True):
     """Get the certificate configuration path based on the following order:
 
     1: Explicit override, if set
@@ -141,6 +149,8 @@ def _get_cert_config_path(certificate_config_path=None):
     Args:
         certificate_config_path (string): The certificate config path. If provided, the well known
         location and environment variable will be ignored.
+        include_context_aware (bool): If context aware metadata path should be checked for the
+        SecureConnect mTLS configuration.
 
     Returns:
         The absolute path of the certificate config file, and None if the file does not exist.
@@ -155,7 +165,7 @@ def _get_cert_config_path(certificate_config_path=None):
                 environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
                 None,
             )
-            if env_path is not None and env_path != "":
+            if include_context_aware and env_path is not None and env_path != "":
                 certificate_config_path = env_path
             else:
                 certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
@@ -166,8 +176,8 @@ def _get_cert_config_path(certificate_config_path=None):
     return certificate_config_path
 
 
-def _get_workload_cert_and_key_paths(config_path):
-    absolute_path = _get_cert_config_path(config_path)
+def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
+    absolute_path = _get_cert_config_path(config_path, include_context_aware)
     if absolute_path is None:
         return None, None
 

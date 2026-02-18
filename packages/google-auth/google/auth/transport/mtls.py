@@ -20,14 +20,19 @@ from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
 
-def has_default_client_cert_source():
+def has_default_client_cert_source(include_context_aware=True):
     """Check if default client SSL credentials exists on the device.
+
+    Args:
+       include_context_aware (bool): include_context_aware indicates if context_aware
+       path location will be checked or should it be skipped.
 
     Returns:
         bool: indicating if the default client cert source exists.
     """
     if (
-        _mtls_helper._check_config_path(_mtls_helper.CONTEXT_AWARE_METADATA_PATH)
+        include_context_aware
+        and _mtls_helper._check_config_path(_mtls_helper.CONTEXT_AWARE_METADATA_PATH)
         is not None
     ):
         return True
@@ -58,7 +63,7 @@ def default_client_cert_source():
         google.auth.exceptions.DefaultClientCertSourceError: If the default
             client SSL credentials don't exist or are malformed.
     """
-    if not has_default_client_cert_source():
+    if not has_default_client_cert_source(include_context_aware=True):
         raise exceptions.MutualTLSChannelError(
             "Default client cert source doesn't exist"
         )
@@ -94,7 +99,7 @@ def default_client_encrypted_cert_source(cert_path, key_path):
         google.auth.exceptions.DefaultClientCertSourceError: If any problem
             occurs when loading or saving the client certificate and key.
     """
-    if not has_default_client_cert_source():
+    if not has_default_client_cert_source(include_context_aware=True):
         raise exceptions.MutualTLSChannelError(
             "Default client encrypted cert source doesn't exist"
         )
