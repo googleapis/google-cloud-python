@@ -423,7 +423,7 @@ class ReadRowsIterable(object):
             return df
         except NotImplementedError as e:
             if first_batch is not None:
-                # Unexpected state: if arrow parsing fails mid-stream,
+                # Unexpected state: if Arrow parsing fails mid-stream,
                 # raise exception to prevent data loss.
                 raise RuntimeError("Stream format changed mid-stream") from e
             # Not an Arrow stream; use generic parser.
