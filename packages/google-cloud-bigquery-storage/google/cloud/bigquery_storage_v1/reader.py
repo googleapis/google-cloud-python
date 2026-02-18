@@ -356,28 +356,19 @@ class ReadRowsIterable(object):
             pyarrow.Table:
                 A table of all rows in the stream.
         """
-        if self._stream_parser is not None and not isinstance(
-            self._stream_parser, _ArrowStreamParser
-        ):
-            raise NotImplementedError("to_arrow not implemented for this stream format.")
-
         record_batches = []
-        pages = self.pages
-        try:
-            first_page = next(pages)
-        except StopIteration:
-            # No data, return an empty Table.
-            if self._stream_parser is None:
-                return pyarrow.Table.from_batches([], schema=pyarrow.schema([]))
-
-            self._stream_parser._parse_arrow_schema()
-            return pyarrow.Table.from_batches([], schema=self._stream_parser._schema)
-
-        record_batches.append(first_page.to_arrow())
-        for page in pages:
+        for page in self.pages:
             record_batches.append(page.to_arrow())
 
-        return pyarrow.Table.from_batches(record_batches)
+        if record_batches:
+            return pyarrow.Table.from_batches(record_batches)
+
+        # No data, return an empty Table.
+        if self._stream_parser is None:
+            return pyarrow.Table.from_batches([], schema=pyarrow.schema([]))
+
+        self._stream_parser._parse_arrow_schema()
+        return pyarrow.Table.from_batches([], schema=self._stream_parser._schema)
 
     def to_dataframe(self, dtypes=None):
         """Create a :class:`pandas.DataFrame` of all rows in the stream.
@@ -408,37 +399,11 @@ class ReadRowsIterable(object):
         if dtypes is None:
             dtypes = {}
 
-        # If we already know the format, we can optimize.
-        if self._stream_parser is not None:
-            if not isinstance(self._stream_parser, _ArrowStreamParser):
-                # Known to be Avro (or other non-Arrow format)
-                frames = [page.to_dataframe(dtypes=dtypes) for page in self.pages]
-                if frames:
-                    return pandas.concat(frames)
-                return self._empty_dataframe_from_avro(dtypes)
-            # Known to be Arrow, we can proceed to use to_arrow optimization below.
-
         pages = self.pages
         try:
             first_page = next(pages)
         except StopIteration:
-            # No data, construct an empty dataframe with columns matching the schema.
-            if self._stream_parser is not None:
-                try:
-                    self._stream_parser._parse_arrow_schema()
-                except NotImplementedError:
-                    # It's not Arrow, so it must be Avro (or something else).
-                    return self._empty_dataframe_from_avro(dtypes)
-                else:
-                    # It's Arrow.
-                    df = pyarrow.Table.from_batches(
-                        [], schema=self._stream_parser._schema
-                    ).to_pandas()
-                    for column in dtypes:
-                        df[column] = pandas.Series(df[column], dtype=dtypes[column])
-                    return df
-            else:
-                return pandas.DataFrame()
+            return self._empty_dataframe(dtypes)
 
         # Try Arrow optimization.
         try:
@@ -460,6 +425,21 @@ class ReadRowsIterable(object):
         for column in dtypes:
             df[column] = pandas.Series(df[column], dtype=dtypes[column])
         return df
+
+    def _empty_dataframe(self, dtypes):
+        if self._stream_parser is None:
+            return pandas.DataFrame()
+
+        if isinstance(self._stream_parser, _ArrowStreamParser):
+            self._stream_parser._parse_arrow_schema()
+            df = pyarrow.Table.from_batches(
+                [], schema=self._stream_parser._schema
+            ).to_pandas()
+            for column in dtypes:
+                df[column] = pandas.Series(df[column], dtype=dtypes[column])
+            return df
+
+        return self._empty_dataframe_from_avro(dtypes)
 
     def _empty_dataframe_from_avro(self, dtypes):
         self._stream_parser._parse_avro_schema()
@@ -498,6 +478,7 @@ class ReadRowsIterable(object):
 
             if isinstance(type_info, str):
                 field_dtype = type_map.get(type_info, "object")
+
             else:
                 logical_type = type_info.get("logicalType")
                 if logical_type == "timestamp-micros":
