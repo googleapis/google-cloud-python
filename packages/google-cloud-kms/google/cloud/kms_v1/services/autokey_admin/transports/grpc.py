@@ -116,13 +116,15 @@ class AutokeyAdminGrpcTransport(AutokeyAdminTransport):
 
     Provides interfaces for managing `Cloud KMS
     Autokey <https://cloud.google.com/kms/help/autokey>`__ folder-level
-    configurations. A configuration is inherited by all descendent
-    projects. A configuration at one folder overrides any other
-    configurations in its ancestry. Setting a configuration on a folder
-    is a prerequisite for Cloud KMS Autokey, so that users working in a
-    descendant project can request provisioned
-    [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer
-    Managed Encryption Key (CMEK) use, on-demand.
+    or project-level configurations. A configuration is inherited by all
+    descendent folders and projects. A configuration at a folder or
+    project overrides any other configurations in its ancestry. Setting
+    a configuration on a folder is a prerequisite for Cloud KMS Autokey,
+    so that users working in a descendant project can request
+    provisioned [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for
+    Customer Managed Encryption Key (CMEK) use, on-demand when using the
+    dedicated key project mode. This is not required when using the
+    delegated key management mode for same-project keys.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -342,7 +344,7 @@ class AutokeyAdminGrpcTransport(AutokeyAdminTransport):
         r"""Return a callable for the update autokey config method over gRPC.
 
         Updates the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-        for a folder. The caller must have both
+        for a folder or a project. The caller must have both
         ``cloudkms.autokeyConfigs.update`` permission on the parent
         folder and ``cloudkms.cryptoKeys.setIamPolicy`` permission on
         the provided key project. A
@@ -376,7 +378,7 @@ class AutokeyAdminGrpcTransport(AutokeyAdminTransport):
         r"""Return a callable for the get autokey config method over gRPC.
 
         Returns the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-        for a folder.
+        for a folder or project.
 
         Returns:
             Callable[[~.GetAutokeyConfigRequest],

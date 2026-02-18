@@ -98,11 +98,27 @@ class StorageBatchOperationsRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_get_bucket_operation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_bucket_operation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_job(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_job(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_bucket_operations(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_bucket_operations(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -236,6 +252,58 @@ class StorageBatchOperationsRestInterceptor:
         """
         return request, metadata
 
+    def pre_get_bucket_operation(
+        self,
+        request: storage_batch_operations.GetBucketOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_batch_operations.GetBucketOperationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_bucket_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageBatchOperations server.
+        """
+        return request, metadata
+
+    def post_get_bucket_operation(
+        self, response: storage_batch_operations_types.BucketOperation
+    ) -> storage_batch_operations_types.BucketOperation:
+        """Post-rpc interceptor for get_bucket_operation
+
+        DEPRECATED. Please use the `post_get_bucket_operation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageBatchOperations server but before
+        it is returned to user code. This `post_get_bucket_operation` interceptor runs
+        before the `post_get_bucket_operation_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_bucket_operation_with_metadata(
+        self,
+        response: storage_batch_operations_types.BucketOperation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_batch_operations_types.BucketOperation,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_bucket_operation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageBatchOperations server but before it is returned to user code.
+
+        We recommend only using this `post_get_bucket_operation_with_metadata`
+        interceptor in new development instead of the `post_get_bucket_operation` interceptor.
+        When both interceptors are used, this `post_get_bucket_operation_with_metadata` interceptor runs after the
+        `post_get_bucket_operation` interceptor. The (possibly modified) response returned by
+        `post_get_bucket_operation` will be passed to
+        `post_get_bucket_operation_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_job(
         self,
         request: storage_batch_operations.GetJobRequest,
@@ -283,6 +351,58 @@ class StorageBatchOperationsRestInterceptor:
         `post_get_job` interceptor. The (possibly modified) response returned by
         `post_get_job` will be passed to
         `post_get_job_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_bucket_operations(
+        self,
+        request: storage_batch_operations.ListBucketOperationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_batch_operations.ListBucketOperationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_bucket_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageBatchOperations server.
+        """
+        return request, metadata
+
+    def post_list_bucket_operations(
+        self, response: storage_batch_operations.ListBucketOperationsResponse
+    ) -> storage_batch_operations.ListBucketOperationsResponse:
+        """Post-rpc interceptor for list_bucket_operations
+
+        DEPRECATED. Please use the `post_list_bucket_operations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageBatchOperations server but before
+        it is returned to user code. This `post_list_bucket_operations` interceptor runs
+        before the `post_list_bucket_operations_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_bucket_operations_with_metadata(
+        self,
+        response: storage_batch_operations.ListBucketOperationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storage_batch_operations.ListBucketOperationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_bucket_operations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageBatchOperations server but before it is returned to user code.
+
+        We recommend only using this `post_list_bucket_operations_with_metadata`
+        interceptor in new development instead of the `post_list_bucket_operations` interceptor.
+        When both interceptors are used, this `post_list_bucket_operations_with_metadata` interceptor runs after the
+        `post_list_bucket_operations` interceptor. The (possibly modified) response returned by
+        `post_list_bucket_operations` will be passed to
+        `post_list_bucket_operations_with_metadata`.
         """
         return response, metadata
 
@@ -1042,6 +1162,160 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _GetBucketOperation(
+        _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation,
+        StorageBatchOperationsRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageBatchOperationsRestTransport.GetBucketOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storage_batch_operations.GetBucketOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> storage_batch_operations_types.BucketOperation:
+            r"""Call the get bucket operation method over HTTP.
+
+            Args:
+                request (~.storage_batch_operations.GetBucketOperationRequest):
+                    The request object. Message for getting a
+                BucketOperation.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storage_batch_operations_types.BucketOperation:
+                    BucketOperation represents a
+                bucket-level breakdown of a Job.
+
+            """
+
+            http_options = (
+                _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_bucket_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageBatchOperationsRestTransport._BaseGetBucketOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storagebatchoperations_v1.StorageBatchOperationsClient.GetBucketOperation",
+                    extra={
+                        "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
+                        "rpcName": "GetBucketOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                StorageBatchOperationsRestTransport._GetBucketOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storage_batch_operations_types.BucketOperation()
+            pb_resp = storage_batch_operations_types.BucketOperation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_bucket_operation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_bucket_operation_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        storage_batch_operations_types.BucketOperation.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storagebatchoperations_v1.StorageBatchOperationsClient.get_bucket_operation",
+                    extra={
+                        "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
+                        "rpcName": "GetBucketOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetJob(
         _BaseStorageBatchOperationsRestTransport._BaseGetJob,
         StorageBatchOperationsRestStub,
@@ -1185,6 +1459,162 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     extra={
                         "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
                         "rpcName": "GetJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListBucketOperations(
+        _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations,
+        StorageBatchOperationsRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageBatchOperationsRestTransport.ListBucketOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storage_batch_operations.ListBucketOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> storage_batch_operations.ListBucketOperationsResponse:
+            r"""Call the list bucket operations method over HTTP.
+
+            Args:
+                request (~.storage_batch_operations.ListBucketOperationsRequest):
+                    The request object. Message for request to list
+                BucketOperations
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storage_batch_operations.ListBucketOperationsResponse:
+                    Message for response to listing
+                BucketOperations
+
+            """
+
+            http_options = (
+                _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_bucket_operations(
+                request, metadata
+            )
+            transcoded_request = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageBatchOperationsRestTransport._BaseListBucketOperations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storagebatchoperations_v1.StorageBatchOperationsClient.ListBucketOperations",
+                    extra={
+                        "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
+                        "rpcName": "ListBucketOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                StorageBatchOperationsRestTransport._ListBucketOperations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storage_batch_operations.ListBucketOperationsResponse()
+            pb_resp = storage_batch_operations.ListBucketOperationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_bucket_operations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_bucket_operations_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        storage_batch_operations.ListBucketOperationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storagebatchoperations_v1.StorageBatchOperationsClient.list_bucket_operations",
+                    extra={
+                        "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
+                        "rpcName": "ListBucketOperations",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1368,6 +1798,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
         return self._DeleteJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_bucket_operation(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.GetBucketOperationRequest],
+        storage_batch_operations_types.BucketOperation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBucketOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_job(
         self,
     ) -> Callable[
@@ -1376,6 +1817,17 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetJob(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_bucket_operations(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.ListBucketOperationsRequest],
+        storage_batch_operations.ListBucketOperationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBucketOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_jobs(

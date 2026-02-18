@@ -84,7 +84,8 @@ class DetectIntentResponseView(proto.Enum):
 
     Values:
         DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED (0):
-            Not specified. ``FULL`` will be used.
+            Not specified. ``DETECT_INTENT_RESPONSE_VIEW_DEFAULT`` will
+            be used.
         DETECT_INTENT_RESPONSE_VIEW_FULL (1):
             Full response view includes all fields.
         DETECT_INTENT_RESPONSE_VIEW_BASIC (2):
@@ -95,10 +96,16 @@ class DetectIntentResponseView(proto.Enum):
             ---------------------------------------------------------------------------------------------
 
             [QueryResult.generative_info][google.cloud.dialogflow.cx.v3beta1.QueryResult.generative_info]
+        DETECT_INTENT_RESPONSE_VIEW_DEFAULT (3):
+            Default response view omits the following fields:
+            -------------------------------------------------
+
+            [QueryResult.trace_blocks][google.cloud.dialogflow.cx.v3beta1.QueryResult.trace_blocks]
     """
     DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED = 0
     DETECT_INTENT_RESPONSE_VIEW_FULL = 1
     DETECT_INTENT_RESPONSE_VIEW_BASIC = 2
+    DETECT_INTENT_RESPONSE_VIEW_DEFAULT = 3
 
 
 class AnswerFeedback(proto.Message):

@@ -343,8 +343,8 @@ class KeyTrackingServiceRestTransport(_BaseKeyTrackingServiceRestTransport):
                     ~.key_tracking_service.ProtectedResourcesSummary:
                         Aggregate information about the
                     resources protected by a Cloud KMS key
-                    in the same Cloud organization as the
-                    key.
+                    in the same Cloud organization/project
+                    as the key.
 
             """
 

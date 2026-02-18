@@ -1309,7 +1309,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataproc
     version: 5.24.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/dataproc/v1
         service_config: dataproc_v1.yaml
@@ -1416,7 +1416,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow-cx
     version: 2.3.0
-    last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/dialogflow/cx/v3
         service_config: dialogflow_v3.yaml
@@ -1853,7 +1853,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
     version: 3.10.0
-    last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/kms/v1
         service_config: cloudkms_v1.yaml
@@ -1868,7 +1868,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms-inventory
     version: 0.4.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/kms/inventory/v1
         service_config: kmsinventory_v1.yaml
@@ -2155,7 +2155,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-connectivity
     version: 2.13.0
-    last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/networkconnectivity/v1
         service_config: networkconnectivity_v1.yaml
@@ -2622,7 +2622,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-saasplatform-saasservicemgmt
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
         service_config: saasservicemgmt_v1beta1.yaml
@@ -2767,7 +2767,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-service-management
     version: 1.15.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/api/servicemanagement/v1
         service_config: servicemanagement_v1.yaml
@@ -2887,7 +2887,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
     version: 0.3.0
-    last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/storagebatchoperations/v1
         service_config: storagebatchoperations_v1.yaml
@@ -3383,7 +3383,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.6.0
-    last_generated_commit: e8365a7f88fabe8717cb8322b8ce784b03b6daea
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/maps/places/v1
         service_config: places_v1.yaml
@@ -3690,7 +3690,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
@@ -3717,7 +3717,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: grafeas
     version: 1.19.1
-    last_generated_commit: 725496d32a359a40dd773995d3fda0342b440e15
+    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: grafeas/v1
         service_config: grafeas_v1.yaml

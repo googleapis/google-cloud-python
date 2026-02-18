@@ -6362,6 +6362,7 @@ def test_create_cluster_rest_call_success(request_type):
         "project_id": "project_id_value",
         "cluster_name": "cluster_name_value",
         "config": {
+            "cluster_type": 1,
             "cluster_tier": 1,
             "config_bucket": "config_bucket_value",
             "temp_bucket": "temp_bucket_value",
@@ -6774,6 +6775,7 @@ def test_update_cluster_rest_call_success(request_type):
         "project_id": "project_id_value",
         "cluster_name": "cluster_name_value",
         "config": {
+            "cluster_type": 1,
             "cluster_tier": 1,
             "config_bucket": "config_bucket_value",
             "temp_bucket": "temp_bucket_value",

@@ -499,6 +499,64 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
             )
         return self._stubs["cancel_job"]
 
+    @property
+    def list_bucket_operations(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.ListBucketOperationsRequest],
+        Awaitable[storage_batch_operations.ListBucketOperationsResponse],
+    ]:
+        r"""Return a callable for the list bucket operations method over gRPC.
+
+        Lists BucketOperations in a given project and job.
+
+        Returns:
+            Callable[[~.ListBucketOperationsRequest],
+                    Awaitable[~.ListBucketOperationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_bucket_operations" not in self._stubs:
+            self._stubs["list_bucket_operations"] = self._logged_channel.unary_unary(
+                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListBucketOperations",
+                request_serializer=storage_batch_operations.ListBucketOperationsRequest.serialize,
+                response_deserializer=storage_batch_operations.ListBucketOperationsResponse.deserialize,
+            )
+        return self._stubs["list_bucket_operations"]
+
+    @property
+    def get_bucket_operation(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.GetBucketOperationRequest],
+        Awaitable[storage_batch_operations_types.BucketOperation],
+    ]:
+        r"""Return a callable for the get bucket operation method over gRPC.
+
+        Gets a BucketOperation.
+
+        Returns:
+            Callable[[~.GetBucketOperationRequest],
+                    Awaitable[~.BucketOperation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_bucket_operation" not in self._stubs:
+            self._stubs["get_bucket_operation"] = self._logged_channel.unary_unary(
+                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetBucketOperation",
+                request_serializer=storage_batch_operations.GetBucketOperationRequest.serialize,
+                response_deserializer=storage_batch_operations_types.BucketOperation.deserialize,
+            )
+        return self._stubs["get_bucket_operation"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -552,6 +610,16 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_bucket_operations: self._wrap_method(
+                self.list_bucket_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_bucket_operation: self._wrap_method(
+                self.get_bucket_operation,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

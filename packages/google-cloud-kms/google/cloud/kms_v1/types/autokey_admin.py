@@ -66,7 +66,8 @@ class GetAutokeyConfigRequest(proto.Message):
         name (str):
             Required. Name of the
             [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] resource,
-            e.g. ``folders/{FOLDER_NUMBER}/autokeyConfig``.
+            e.g. ``folders/{FOLDER_NUMBER}/autokeyConfig`` or
+            ``projects/{PROJECT_NUMBER}/autokeyConfig``.
     """
 
     name: str = proto.Field(
@@ -82,7 +83,8 @@ class AutokeyConfig(proto.Message):
         name (str):
             Identifier. Name of the
             [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] resource,
-            e.g. ``folders/{FOLDER_NUMBER}/autokeyConfig``.
+            e.g. ``folders/{FOLDER_NUMBER}/autokeyConfig`` or
+            ``projects/{PROJECT_NUMBER}/autokeyConfig``.
         key_project (str):
             Optional. Name of the key project, e.g.
             ``projects/{PROJECT_ID}`` or ``projects/{PROJECT_NUMBER}``,
@@ -106,6 +108,10 @@ class AutokeyConfig(proto.Message):
             client has an up-to-date value before
             proceeding. The request will be rejected with an
             ABORTED error on a mismatched etag.
+        key_project_resolution_mode (google.cloud.kms_v1.types.AutokeyConfig.KeyProjectResolutionMode):
+            Optional. KeyProjectResolutionMode for the AutokeyConfig.
+            Valid values are ``DEDICATED_KEY_PROJECT``,
+            ``RESOURCE_PROJECT``, or ``DISABLED``.
     """
 
     class State(proto.Enum):
@@ -125,11 +131,51 @@ class AutokeyConfig(proto.Message):
                 The AutokeyConfig is not yet initialized or
                 has been reset to its default uninitialized
                 state.
+            KEY_PROJECT_PERMISSION_DENIED (4):
+                The service account lacks the necessary
+                permissions in the key project to configure
+                Autokey.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         KEY_PROJECT_DELETED = 2
         UNINITIALIZED = 3
+        KEY_PROJECT_PERMISSION_DENIED = 4
+
+    class KeyProjectResolutionMode(proto.Enum):
+        r"""Defines the resolution mode enum for the key project. The
+        [KeyProjectResolutionMode][google.cloud.kms.v1.AutokeyConfig.KeyProjectResolutionMode]
+        determines the mechanism by which
+        [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] identifies a
+        [key_project][google.cloud.kms.v1.AutokeyConfig.key_project] at its
+        specific configuration node. This parameter also determines if
+        Autokey can be used within this project or folder.
+
+        Values:
+            KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED (0):
+                Default value. KeyProjectResolutionMode when not specified
+                will act as ``DEDICATED_KEY_PROJECT``.
+            DEDICATED_KEY_PROJECT (1):
+                Keys are created in a dedicated project specified by
+                ``key_project``.
+            RESOURCE_PROJECT (2):
+                Keys are created in the same project as the resource
+                requesting the key. The ``key_project`` must not be set when
+                this mode is used.
+            DISABLED (3):
+                Disables the AutokeyConfig. When this mode is set, any
+                AutokeyConfig from higher levels in the resource hierarchy
+                are ignored for this resource and its descendants. This
+                setting can be overridden by a more specific configuration
+                at a lower level. For example, if Autokey is disabled on a
+                folder, it can be re-enabled on a sub-folder or project
+                within that folder by setting a different mode (e.g.,
+                DEDICATED_KEY_PROJECT or RESOURCE_PROJECT).
+        """
+        KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED = 0
+        DEDICATED_KEY_PROJECT = 1
+        RESOURCE_PROJECT = 2
+        DISABLED = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -147,6 +193,11 @@ class AutokeyConfig(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    key_project_resolution_mode: KeyProjectResolutionMode = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=KeyProjectResolutionMode,
     )
 
 

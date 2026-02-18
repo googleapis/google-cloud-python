@@ -9598,6 +9598,7 @@ def test_create_occurrence_rest_call_success(request_type):
                                         "name": "name_value",
                                         "repository": "repository_value",
                                         "layer_count": 1189,
+                                        "registry": "registry_value",
                                     }
                                 ],
                             },
@@ -10327,6 +10328,7 @@ def test_update_occurrence_rest_call_success(request_type):
                                         "name": "name_value",
                                         "repository": "repository_value",
                                         "layer_count": 1189,
+                                        "registry": "registry_value",
                                     }
                                 ],
                             },
@@ -11436,6 +11438,7 @@ def test_create_note_rest_call_success(request_type):
                 "integrity_impact": 1,
                 "availability_impact": 1,
             },
+            "advisory_publish_time": {},
         },
         "build": {"builder_version": "builder_version_value"},
         "image": {
@@ -11950,6 +11953,7 @@ def test_update_note_rest_call_success(request_type):
                 "integrity_impact": 1,
                 "availability_impact": 1,
             },
+            "advisory_publish_time": {},
         },
         "build": {"builder_version": "builder_version_value"},
         "image": {

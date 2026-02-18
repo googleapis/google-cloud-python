@@ -39,11 +39,11 @@ class ContextualContent(proto.Message):
 
     Attributes:
         reviews (MutableSequence[google.maps.places_v1.types.Review]):
-            List of reviews about this place, contexual
+            List of reviews about this place, contextual
             to the place query.
         photos (MutableSequence[google.maps.places_v1.types.Photo]):
             Information (including references) about
-            photos of this place, contexual to the place
+            photos of this place, contextual to the place
             query.
         justifications (MutableSequence[google.maps.places_v1.types.ContextualContent.Justification]):
             Experimental: See

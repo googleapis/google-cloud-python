@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ImportCryptoKeyVersion
+# Snippet for GetBucketOperation
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-kms
+#   python3 -m pip install google-cloud-storagebatchoperations
 
 
-# [START cloudkms_v1_generated_KeyManagementService_ImportCryptoKeyVersion_async]
+# [START storagebatchoperations_v1_generated_StorageBatchOperations_GetBucketOperation_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,26 +31,23 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import kms_v1
+from google.cloud import storagebatchoperations_v1
 
 
-async def sample_import_crypto_key_version():
+def sample_get_bucket_operation():
     # Create a client
-    client = kms_v1.KeyManagementServiceAsyncClient()
+    client = storagebatchoperations_v1.StorageBatchOperationsClient()
 
     # Initialize request argument(s)
-    request = kms_v1.ImportCryptoKeyVersionRequest(
-        rsa_aes_wrapped_key=b"rsa_aes_wrapped_key_blob",
-        parent="parent_value",
-        algorithm="PQ_SIGN_ML_DSA_87_EXTERNAL_MU",
-        import_job="import_job_value",
+    request = storagebatchoperations_v1.GetBucketOperationRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = await client.import_crypto_key_version(request=request)
+    response = client.get_bucket_operation(request=request)
 
     # Handle the response
     print(response)
 
 
-# [END cloudkms_v1_generated_KeyManagementService_ImportCryptoKeyVersion_async]
+# [END storagebatchoperations_v1_generated_StorageBatchOperations_GetBucketOperation_sync]

@@ -284,12 +284,19 @@ class UnitOperationCondition(proto.Message):
                 Condition type is succeeded.
             TYPE_CANCELLED (5):
                 Condition type is cancelled.
+            TYPE_APP_CREATED (6):
+                Indicates if AppHub app has been created.
+            TYPE_APP_COMPONENTS_REGISTERED (7):
+                Indicates if services and workloads have been
+                registered with AppHub.
         """
         TYPE_UNSPECIFIED = 0
         TYPE_SCHEDULED = 2
         TYPE_RUNNING = 3
         TYPE_SUCCEEDED = 4
         TYPE_CANCELLED = 5
+        TYPE_APP_CREATED = 6
+        TYPE_APP_COMPONENTS_REGISTERED = 7
 
     status: Status = proto.Field(
         proto.ENUM,

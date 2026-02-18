@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
         "ImportJob",
         "ExternalProtectionLevelOptions",
         "KeyAccessJustificationsPolicy",
+        "RetiredResource",
     },
 )
 
@@ -823,14 +824,42 @@ class CryptoKeyVersion(proto.Message):
                 X-Wing hybrid KEM combining ML-KEM-768 with
                 X25519 following
                 datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem/.
+            PQ_SIGN_ML_DSA_44 (68):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 1.
+                Randomized version.
             PQ_SIGN_ML_DSA_65 (56):
                 The post-quantum Module-Lattice-Based Digital
                 Signature Algorithm, at security level 3.
+                Randomized version.
+            PQ_SIGN_ML_DSA_87 (69):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 5.
                 Randomized version.
             PQ_SIGN_SLH_DSA_SHA2_128S (57):
                 The post-quantum stateless hash-based digital
                 signature algorithm, at security level 1.
                 Randomized version.
+            PQ_SIGN_HASH_SLH_DSA_SHA2_128S_SHA256 (60):
+                The post-quantum stateless hash-based digital
+                signature algorithm, at security level 1.
+                Randomized pre-hash version supporting SHA256
+                digests.
+            PQ_SIGN_ML_DSA_44_EXTERNAL_MU (70):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 1.
+                Randomized version supporting
+                externally-computed message representatives.
+            PQ_SIGN_ML_DSA_65_EXTERNAL_MU (67):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 3.
+                Randomized version supporting
+                externally-computed message representatives.
+            PQ_SIGN_ML_DSA_87_EXTERNAL_MU (71):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 5.
+                Randomized version supporting
+                externally-computed message representatives.
         """
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
@@ -871,8 +900,14 @@ class CryptoKeyVersion(proto.Message):
         ML_KEM_768 = 47
         ML_KEM_1024 = 48
         KEM_XWING = 63
+        PQ_SIGN_ML_DSA_44 = 68
         PQ_SIGN_ML_DSA_65 = 56
+        PQ_SIGN_ML_DSA_87 = 69
         PQ_SIGN_SLH_DSA_SHA2_128S = 57
+        PQ_SIGN_HASH_SLH_DSA_SHA2_128S_SHA256 = 60
+        PQ_SIGN_ML_DSA_44_EXTERNAL_MU = 70
+        PQ_SIGN_ML_DSA_65_EXTERNAL_MU = 67
+        PQ_SIGN_ML_DSA_87_EXTERNAL_MU = 71
 
     class CryptoKeyVersionState(proto.Enum):
         r"""The state of a
@@ -1544,6 +1579,50 @@ class KeyAccessJustificationsPolicy(proto.Message):
         proto.ENUM,
         number=1,
         enum="AccessReason",
+    )
+
+
+class RetiredResource(proto.Message):
+    r"""A RetiredResource resource represents the record of a deleted
+    [CryptoKey][google.cloud.kms.v1.CryptoKey]. Its purpose is to
+    provide visibility into retained user data and to prevent reuse of
+    these names for new [CryptoKeys][google.cloud.kms.v1.CryptoKey].
+
+    Attributes:
+        name (str):
+            Output only. Identifier. The resource name for this
+            [RetiredResource][google.cloud.kms.v1.RetiredResource] in
+            the format ``projects/*/locations/*/retiredResources/*``.
+        original_resource (str):
+            Output only. The full resource name of the original
+            [CryptoKey][google.cloud.kms.v1.CryptoKey] that was deleted
+            in the format
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+        resource_type (str):
+            Output only. The resource type of the
+            original deleted resource.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the original
+            resource was deleted and this RetiredResource
+            record was created.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    original_resource: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 

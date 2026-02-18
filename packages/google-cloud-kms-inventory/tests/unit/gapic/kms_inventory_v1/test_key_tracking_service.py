@@ -2332,6 +2332,8 @@ def test_get_protected_resources_summary_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_protected_resources_summary._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("fallback_scope",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2390,7 +2392,7 @@ def test_get_protected_resources_summary_rest_unset_required_fields():
     unset_fields = transport.get_protected_resources_summary._get_unset_required_fields(
         {}
     )
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("fallbackScope",)) & set(("name",)))
 
 
 def test_get_protected_resources_summary_rest_flattened():
@@ -3786,11 +3788,31 @@ def test_parse_crypto_key_version_path():
     assert expected == actual
 
 
+def test_protected_resource_scope_path():
+    organization = "scallop"
+    expected = "organizations/{organization}/protectedResourceScope".format(
+        organization=organization,
+    )
+    actual = KeyTrackingServiceClient.protected_resource_scope_path(organization)
+    assert expected == actual
+
+
+def test_parse_protected_resource_scope_path():
+    expected = {
+        "organization": "abalone",
+    }
+    path = KeyTrackingServiceClient.protected_resource_scope_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = KeyTrackingServiceClient.parse_protected_resource_scope_path(path)
+    assert expected == actual
+
+
 def test_protected_resources_summary_path():
-    project = "scallop"
-    location = "abalone"
-    key_ring = "squid"
-    crypto_key = "clam"
+    project = "squid"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/protectedResourcesSummary".format(
         project=project,
         location=location,
@@ -3805,10 +3827,10 @@ def test_protected_resources_summary_path():
 
 def test_parse_protected_resources_summary_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "key_ring": "oyster",
-        "crypto_key": "nudibranch",
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
     }
     path = KeyTrackingServiceClient.protected_resources_summary_path(**expected)
 
@@ -3818,7 +3840,7 @@ def test_parse_protected_resources_summary_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3828,7 +3850,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "nautilus",
     }
     path = KeyTrackingServiceClient.common_billing_account_path(**expected)
 
@@ -3838,7 +3860,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3848,7 +3870,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "abalone",
     }
     path = KeyTrackingServiceClient.common_folder_path(**expected)
 
@@ -3858,7 +3880,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3868,7 +3890,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "clam",
     }
     path = KeyTrackingServiceClient.common_organization_path(**expected)
 
@@ -3878,7 +3900,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3888,7 +3910,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "octopus",
     }
     path = KeyTrackingServiceClient.common_project_path(**expected)
 
@@ -3898,8 +3920,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3910,8 +3932,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = KeyTrackingServiceClient.common_location_path(**expected)
 

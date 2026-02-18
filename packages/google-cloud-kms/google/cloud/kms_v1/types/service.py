@@ -30,18 +30,23 @@ __protobuf__ = proto.module(
         "ListCryptoKeysRequest",
         "ListCryptoKeyVersionsRequest",
         "ListImportJobsRequest",
+        "ListRetiredResourcesRequest",
         "ListKeyRingsResponse",
         "ListCryptoKeysResponse",
         "ListCryptoKeyVersionsResponse",
         "ListImportJobsResponse",
+        "ListRetiredResourcesResponse",
         "GetKeyRingRequest",
         "GetCryptoKeyRequest",
         "GetCryptoKeyVersionRequest",
         "GetPublicKeyRequest",
         "GetImportJobRequest",
+        "GetRetiredResourceRequest",
         "CreateKeyRingRequest",
         "CreateCryptoKeyRequest",
         "CreateCryptoKeyVersionRequest",
+        "DeleteCryptoKeyRequest",
+        "DeleteCryptoKeyVersionRequest",
         "ImportCryptoKeyVersionRequest",
         "CreateImportJobRequest",
         "UpdateCryptoKeyRequest",
@@ -71,6 +76,8 @@ __protobuf__ = proto.module(
         "GenerateRandomBytesResponse",
         "Digest",
         "LocationMetadata",
+        "DeleteCryptoKeyMetadata",
+        "DeleteCryptoKeyVersionMetadata",
     },
 )
 
@@ -309,6 +316,43 @@ class ListImportJobsRequest(proto.Message):
     )
 
 
+class ListRetiredResourcesRequest(proto.Message):
+    r"""Request message for
+    [KeyManagementService.ListRetiredResources][google.cloud.kms.v1.KeyManagementService.ListRetiredResources].
+
+    Attributes:
+        parent (str):
+            Required. The project-specific location holding the
+            [RetiredResources][google.cloud.kms.v1.RetiredResource], in
+            the format ``projects/*/locations/*``.
+        page_size (int):
+            Optional. Optional limit on the number of
+            [RetiredResources][google.cloud.kms.v1.RetiredResource] to
+            be included in the response. Further
+            [RetiredResources][google.cloud.kms.v1.RetiredResource] can
+            subsequently be obtained by including the
+            [ListRetiredResourcesResponse.next_page_token][google.cloud.kms.v1.ListRetiredResourcesResponse.next_page_token]
+            in a subsequent request. If unspecified, the server will
+            pick an appropriate default.
+        page_token (str):
+            Optional. Optional pagination token, returned earlier via
+            [ListRetiredResourcesResponse.next_page_token][google.cloud.kms.v1.ListRetiredResourcesResponse.next_page_token].
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class ListKeyRingsResponse(proto.Message):
     r"""Response message for
     [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
@@ -471,6 +515,44 @@ class ListImportJobsResponse(proto.Message):
     )
 
 
+class ListRetiredResourcesResponse(proto.Message):
+    r"""Response message for
+    [KeyManagementService.ListRetiredResources][google.cloud.kms.v1.KeyManagementService.ListRetiredResources].
+
+    Attributes:
+        retired_resources (MutableSequence[google.cloud.kms_v1.types.RetiredResource]):
+            The list of
+            [RetiredResources][google.cloud.kms.v1.RetiredResource].
+        next_page_token (str):
+            A token to retrieve the next page of results. Pass this
+            value in
+            [ListRetiredResourcesRequest.page_token][google.cloud.kms.v1.ListRetiredResourcesRequest.page_token]
+            to retrieve the next page of results.
+        total_size (int):
+            The total number of
+            [RetiredResources][google.cloud.kms.v1.RetiredResource] that
+            matched the query.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    retired_resources: MutableSequence[resources.RetiredResource] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.RetiredResource,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
 class GetKeyRingRequest(proto.Message):
     r"""Request message for
     [KeyManagementService.GetKeyRing][google.cloud.kms.v1.KeyManagementService.GetKeyRing].
@@ -562,6 +644,24 @@ class GetImportJobRequest(proto.Message):
         name (str):
             Required. The [name][google.cloud.kms.v1.ImportJob.name] of
             the [ImportJob][google.cloud.kms.v1.ImportJob] to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetRetiredResourceRequest(proto.Message):
+    r"""Request message for
+    [KeyManagementService.GetRetiredResource][google.cloud.kms.v1.KeyManagementService.GetRetiredResource].
+
+    Attributes:
+        name (str):
+            Required. The
+            [name][google.cloud.kms.v1.RetiredResource.name] of the
+            [RetiredResource][google.cloud.kms.v1.RetiredResource] to
+            get.
     """
 
     name: str = proto.Field(
@@ -672,6 +772,40 @@ class CreateCryptoKeyVersionRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=resources.CryptoKeyVersion,
+    )
+
+
+class DeleteCryptoKeyRequest(proto.Message):
+    r"""Request message for
+    [KeyManagementService.DeleteCryptoKey][google.cloud.kms.v1.KeyManagementService.DeleteCryptoKey].
+
+    Attributes:
+        name (str):
+            Required. The [name][google.cloud.kms.v1.CryptoKey.name] of
+            the [CryptoKey][google.cloud.kms.v1.CryptoKey] to delete.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteCryptoKeyVersionRequest(proto.Message):
+    r"""Request message for
+    [KeyManagementService.DeleteCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DeleteCryptoKeyVersion].
+
+    Attributes:
+        name (str):
+            Required. The
+            [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+            [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+            delete.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -2707,6 +2841,33 @@ class LocationMetadata(proto.Message):
         proto.BOOL,
         number=3,
     )
+
+
+class DeleteCryptoKeyMetadata(proto.Message):
+    r"""Represents the metadata of the
+    [KeyManagementService.DeleteCryptoKey][google.cloud.kms.v1.KeyManagementService.DeleteCryptoKey]
+    long-running operation.
+
+    Attributes:
+        retired_resource (str):
+            Output only. The resource name of the
+            [RetiredResource][google.cloud.kms.v1.RetiredResource]
+            created as a result of this operation, in the format
+            ``projects/*/locations/*/retiredResources/*``.
+    """
+
+    retired_resource: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteCryptoKeyVersionMetadata(proto.Message):
+    r"""Represents the metadata of the
+    [KeyManagementService.DeleteCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DeleteCryptoKeyVersion]
+    long-running operation.
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

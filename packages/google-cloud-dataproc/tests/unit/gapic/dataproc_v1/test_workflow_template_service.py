@@ -5987,6 +5987,7 @@ def test_create_workflow_template_rest_call_success(request_type):
             "managed_cluster": {
                 "cluster_name": "cluster_name_value",
                 "config": {
+                    "cluster_type": 1,
                     "cluster_tier": 1,
                     "config_bucket": "config_bucket_value",
                     "temp_bucket": "temp_bucket_value",
@@ -6768,6 +6769,7 @@ def test_instantiate_inline_workflow_template_rest_call_success(request_type):
             "managed_cluster": {
                 "cluster_name": "cluster_name_value",
                 "config": {
+                    "cluster_type": 1,
                     "cluster_tier": 1,
                     "config_bucket": "config_bucket_value",
                     "temp_bucket": "temp_bucket_value",
@@ -7275,6 +7277,7 @@ def test_update_workflow_template_rest_call_success(request_type):
             "managed_cluster": {
                 "cluster_name": "cluster_name_value",
                 "config": {
+                    "cluster_type": 1,
                     "cluster_tier": 1,
                     "config_bucket": "config_bucket_value",
                     "temp_bucket": "temp_bucket_value",

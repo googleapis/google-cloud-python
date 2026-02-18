@@ -194,6 +194,16 @@ class StorageBatchOperationsTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_bucket_operations: gapic_v1.method.wrap_method(
+                self.list_bucket_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_bucket_operation: gapic_v1.method.wrap_method(
+                self.get_bucket_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -290,6 +300,30 @@ class StorageBatchOperationsTransport(abc.ABC):
         Union[
             storage_batch_operations.CancelJobResponse,
             Awaitable[storage_batch_operations.CancelJobResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_bucket_operations(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.ListBucketOperationsRequest],
+        Union[
+            storage_batch_operations.ListBucketOperationsResponse,
+            Awaitable[storage_batch_operations.ListBucketOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_bucket_operation(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.GetBucketOperationRequest],
+        Union[
+            storage_batch_operations_types.BucketOperation,
+            Awaitable[storage_batch_operations_types.BucketOperation],
         ],
     ]:
         raise NotImplementedError()

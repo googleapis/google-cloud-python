@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.storagebatchoperations.v1",
     manifest={
         "Job",
+        "BucketOperation",
         "BucketList",
         "Manifest",
         "PrefixList",
@@ -113,6 +114,11 @@ class Job(proto.Message):
             if the object configuration is a prefix list,
             the bytes found from source. No transformations
             will be performed.
+        is_multi_bucket_job (bool):
+            Output only. If true, this Job operates on
+            multiple buckets. Multibucket jobs are subject
+            to different quota limits than single-bucket
+            jobs.
     """
 
     class State(proto.Enum):
@@ -129,12 +135,15 @@ class Job(proto.Message):
                 Cancelled by the user.
             FAILED (4):
                 Terminated due to an unrecoverable failure.
+            QUEUED (5):
+                Queued but not yet started.
         """
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
         CANCELED = 3
         FAILED = 4
+        QUEUED = 5
 
     name: str = proto.Field(
         proto.STRING,
@@ -212,6 +221,176 @@ class Job(proto.Message):
     dry_run: bool = proto.Field(
         proto.BOOL,
         number=22,
+    )
+    is_multi_bucket_job: bool = proto.Field(
+        proto.BOOL,
+        number=24,
+    )
+
+
+class BucketOperation(proto.Message):
+    r"""BucketOperation represents a bucket-level breakdown of a Job.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the BucketOperation. This
+            is defined by the service. Format:
+            projects/{project}/locations/global/jobs/{job_id}/bucketOperations/{bucket_operation}.
+        bucket_name (str):
+            The bucket name of the objects to be
+            transformed in the BucketOperation.
+        prefix_list (google.cloud.storagebatchoperations_v1.types.PrefixList):
+            Specifies objects matching a prefix set.
+
+            This field is a member of `oneof`_ ``object_configuration``.
+        manifest (google.cloud.storagebatchoperations_v1.types.Manifest):
+            Specifies objects in a manifest file.
+
+            This field is a member of `oneof`_ ``object_configuration``.
+        put_object_hold (google.cloud.storagebatchoperations_v1.types.PutObjectHold):
+            Changes object hold status.
+
+            This field is a member of `oneof`_ ``transformation``.
+        delete_object (google.cloud.storagebatchoperations_v1.types.DeleteObject):
+            Delete objects.
+
+            This field is a member of `oneof`_ ``transformation``.
+        put_metadata (google.cloud.storagebatchoperations_v1.types.PutMetadata):
+            Updates object metadata. Allows updating
+            fixed-key and custom metadata and fixed-key
+            metadata i.e. Cache-Control,
+            Content-Disposition, Content-Encoding,
+            Content-Language, Content-Type, Custom-Time.
+
+            This field is a member of `oneof`_ ``transformation``.
+        rewrite_object (google.cloud.storagebatchoperations_v1.types.RewriteObject):
+            Rewrite the object and updates metadata like
+            KMS key.
+
+            This field is a member of `oneof`_ ``transformation``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time that the
+            BucketOperation was created.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time that the
+            BucketOperation was started.
+        complete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time that the
+            BucketOperation was completed.
+        counters (google.cloud.storagebatchoperations_v1.types.Counters):
+            Output only. Information about the progress
+            of the bucket operation.
+        error_summaries (MutableSequence[google.cloud.storagebatchoperations_v1.types.ErrorSummary]):
+            Output only. Summarizes errors encountered
+            with sample error log entries.
+        state (google.cloud.storagebatchoperations_v1.types.BucketOperation.State):
+            Output only. State of the BucketOperation.
+    """
+
+    class State(proto.Enum):
+        r"""Describes state of the BucketOperation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            QUEUED (1):
+                Created but not yet started.
+            RUNNING (2):
+                In progress.
+            SUCCEEDED (3):
+                Completed successfully.
+            CANCELED (4):
+                Cancelled by the user.
+            FAILED (5):
+                Terminated due to an unrecoverable failure.
+        """
+        STATE_UNSPECIFIED = 0
+        QUEUED = 1
+        RUNNING = 2
+        SUCCEEDED = 3
+        CANCELED = 4
+        FAILED = 5
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    bucket_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    prefix_list: "PrefixList" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="object_configuration",
+        message="PrefixList",
+    )
+    manifest: "Manifest" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="object_configuration",
+        message="Manifest",
+    )
+    put_object_hold: "PutObjectHold" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="transformation",
+        message="PutObjectHold",
+    )
+    delete_object: "DeleteObject" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="transformation",
+        message="DeleteObject",
+    )
+    put_metadata: "PutMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="transformation",
+        message="PutMetadata",
+    )
+    rewrite_object: "RewriteObject" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="transformation",
+        message="RewriteObject",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    complete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    counters: "Counters" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="Counters",
+    )
+    error_summaries: MutableSequence["ErrorSummary"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="ErrorSummary",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=State,
     )
 
 

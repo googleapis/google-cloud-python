@@ -112,6 +112,10 @@ class _BaseAutokeyAdminRestTransport(AutokeyAdminTransport):
                     "method": "get",
                     "uri": "/v1/{name=folders/*/autokeyConfig}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/autokeyConfig}",
+                },
             ]
             return http_options
 
@@ -207,6 +211,11 @@ class _BaseAutokeyAdminRestTransport(AutokeyAdminTransport):
                 {
                     "method": "patch",
                     "uri": "/v1/{autokey_config.name=folders/*/autokeyConfig}",
+                    "body": "autokey_config",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{autokey_config.name=projects/*/autokeyConfig}",
                     "body": "autokey_config",
                 },
             ]

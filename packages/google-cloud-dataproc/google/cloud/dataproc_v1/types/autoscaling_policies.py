@@ -82,7 +82,29 @@ class AutoscalingPolicy(proto.Message):
             63 characters, and must conform to `RFC
             1035 <https://www.ietf.org/rfc/rfc1035.txt>`__. No more than
             32 labels can be associated with an autoscaling policy.
+        cluster_type (google.cloud.dataproc_v1.types.AutoscalingPolicy.ClusterType):
+            Optional. The type of the clusters for which
+            this autoscaling policy is to be configured.
     """
+
+    class ClusterType(proto.Enum):
+        r"""The type of the clusters for which this autoscaling policy is
+        to be configured.
+
+        Values:
+            CLUSTER_TYPE_UNSPECIFIED (0):
+                Not set.
+            STANDARD (1):
+                Standard dataproc cluster with a minimum of
+                two primary workers.
+            ZERO_SCALE (2):
+                Clusters that can use only secondary workers
+                and be scaled down to zero secondary worker
+                nodes.
+        """
+        CLUSTER_TYPE_UNSPECIFIED = 0
+        STANDARD = 1
+        ZERO_SCALE = 2
 
     id: str = proto.Field(
         proto.STRING,
@@ -112,6 +134,11 @@ class AutoscalingPolicy(proto.Message):
         proto.STRING,
         proto.STRING,
         number=6,
+    )
+    cluster_type: ClusterType = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=ClusterType,
     )
 
 

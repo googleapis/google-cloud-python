@@ -106,6 +106,13 @@ class Place(proto.Message):
             https://developers.google.com/maps/documentation/places/web-service/place-types.
             The primary type may be missing if the place's
             primary type is not a supported type.
+        google_maps_type_label (google.type.localized_text_pb2.LocalizedText):
+            The type label of the place on Google Maps, localized to the
+            request language if applicable, for example, "Restaurant",
+            "Cafe", "Airport", etc. The type label may be different from
+            the primary type display name and may not be a supported
+            type in `Places API Place Types
+            table <https://developers.google.com/maps/documentation/places/web-service/place-types>`__.
         national_phone_number (str):
             A human-readable phone number for the place,
             in national format.
@@ -384,6 +391,9 @@ class Place(proto.Message):
             areas. See address descriptor regional coverage
             in
             https://developers.google.com/maps/documentation/geocoding/address-descriptors/coverage.
+        google_maps_links (google.maps.places_v1.types.Place.GoogleMapsLinks):
+            Links to trigger different Google Maps
+            actions.
         price_range (google.maps.places_v1.types.PriceRange):
             The price range associated with a Place.
         review_summary (google.maps.places_v1.types.Place.ReviewSummary):
@@ -1011,6 +1021,48 @@ class Place(proto.Message):
             number=2,
         )
 
+    class GoogleMapsLinks(proto.Message):
+        r"""Links to trigger different Google Maps actions.
+
+        Attributes:
+            directions_uri (str):
+                A link to show the directions to the place. The link only
+                populates the destination location and uses the default
+                travel mode ``DRIVE``.
+            place_uri (str):
+                A link to show this place.
+            write_a_review_uri (str):
+                A link to write a review for this place on
+                Google Maps.
+            reviews_uri (str):
+                A link to show reviews of this place on
+                Google Maps.
+            photos_uri (str):
+                A link to show photos of this place on Google
+                Maps.
+        """
+
+        directions_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        place_uri: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        write_a_review_uri: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        reviews_uri: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        photos_uri: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
     class ReviewSummary(proto.Message):
         r"""AI-generated summary of the place using user reviews.
 
@@ -1245,6 +1297,11 @@ class Place(proto.Message):
     primary_type_display_name: localized_text_pb2.LocalizedText = proto.Field(
         proto.MESSAGE,
         number=32,
+        message=localized_text_pb2.LocalizedText,
+    )
+    google_maps_type_label: localized_text_pb2.LocalizedText = proto.Field(
+        proto.MESSAGE,
+        number=96,
         message=localized_text_pb2.LocalizedText,
     )
     national_phone_number: str = proto.Field(
@@ -1546,6 +1603,11 @@ class Place(proto.Message):
         proto.MESSAGE,
         number=84,
         message=gmp_address_descriptor.AddressDescriptor,
+    )
+    google_maps_links: GoogleMapsLinks = proto.Field(
+        proto.MESSAGE,
+        number=85,
+        message=GoogleMapsLinks,
     )
     price_range: gmp_price_range.PriceRange = proto.Field(
         proto.MESSAGE,

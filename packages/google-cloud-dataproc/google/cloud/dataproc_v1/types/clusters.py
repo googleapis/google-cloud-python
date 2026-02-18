@@ -179,6 +179,8 @@ class ClusterConfig(proto.Message):
     r"""The cluster config.
 
     Attributes:
+        cluster_type (google.cloud.dataproc_v1.types.ClusterConfig.ClusterType):
+            Optional. The type of the cluster.
         cluster_tier (google.cloud.dataproc_v1.types.ClusterConfig.ClusterTier):
             Optional. The cluster tier.
         config_bucket (str):
@@ -260,6 +262,27 @@ class ClusterConfig(proto.Message):
             Optional. The node group settings.
     """
 
+    class ClusterType(proto.Enum):
+        r"""The type of the cluster.
+
+        Values:
+            CLUSTER_TYPE_UNSPECIFIED (0):
+                Not set.
+            STANDARD (1):
+                Standard dataproc cluster with a minimum of
+                two primary workers.
+            SINGLE_NODE (2):
+                https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/single-node-clusters
+            ZERO_SCALE (3):
+                Clusters that can use only secondary workers
+                and be scaled down to zero secondary worker
+                nodes.
+        """
+        CLUSTER_TYPE_UNSPECIFIED = 0
+        STANDARD = 1
+        SINGLE_NODE = 2
+        ZERO_SCALE = 3
+
     class ClusterTier(proto.Enum):
         r"""The cluster tier.
 
@@ -275,6 +298,11 @@ class ClusterConfig(proto.Message):
         CLUSTER_TIER_STANDARD = 1
         CLUSTER_TIER_PREMIUM = 2
 
+    cluster_type: ClusterType = proto.Field(
+        proto.ENUM,
+        number=27,
+        enum=ClusterType,
+    )
     cluster_tier: ClusterTier = proto.Field(
         proto.ENUM,
         number=29,

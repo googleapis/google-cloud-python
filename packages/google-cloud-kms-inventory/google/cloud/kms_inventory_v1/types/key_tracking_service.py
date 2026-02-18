@@ -23,13 +23,31 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.kms.inventory.v1",
     manifest={
+        "FallbackScope",
         "GetProtectedResourcesSummaryRequest",
         "ProtectedResourcesSummary",
         "SearchProtectedResourcesRequest",
         "SearchProtectedResourcesResponse",
         "ProtectedResource",
+        "Warning",
     },
 )
+
+
+class FallbackScope(proto.Enum):
+    r"""Specifies the scope to use if the organization service agent
+    is not configured.
+
+    Values:
+        FALLBACK_SCOPE_UNSPECIFIED (0):
+            Unspecified scope type.
+        FALLBACK_SCOPE_PROJECT (1):
+            If set to ``FALLBACK_SCOPE_PROJECT``, the API will fall back
+            to using key's project as request scope if the kms
+            organization service account is not configured.
+    """
+    FALLBACK_SCOPE_UNSPECIFIED = 0
+    FALLBACK_SCOPE_PROJECT = 1
 
 
 class GetProtectedResourcesSummaryRequest(proto.Message):
@@ -40,17 +58,25 @@ class GetProtectedResourcesSummaryRequest(proto.Message):
         name (str):
             Required. The resource name of the
             [CryptoKey][google.cloud.kms.v1.CryptoKey].
+        fallback_scope (google.cloud.kms_inventory_v1.types.FallbackScope):
+            Optional. The scope to use if the kms
+            organization service account is not configured.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
     )
+    fallback_scope: "FallbackScope" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="FallbackScope",
+    )
 
 
 class ProtectedResourcesSummary(proto.Message):
     r"""Aggregate information about the resources protected by a
-    Cloud KMS key in the same Cloud organization as the key.
+    Cloud KMS key in the same Cloud organization/project as the key.
 
     Attributes:
         name (str):
@@ -74,6 +100,12 @@ class ProtectedResourcesSummary(proto.Message):
         locations (MutableMapping[str, int]):
             The number of resources protected by the key
             grouped by region.
+        warnings (MutableSequence[google.cloud.kms_inventory_v1.types.Warning]):
+            Warning messages for the state of response
+            [ProtectedResourcesSummary][google.cloud.kms.inventory.v1.ProtectedResourcesSummary]
+            For example, if the organization service account is not
+            configured, INSUFFICIENT_PERMISSIONS_PARTIAL_DATA warning
+            will be returned.
     """
 
     name: str = proto.Field(
@@ -103,6 +135,11 @@ class ProtectedResourcesSummary(proto.Message):
         proto.INT64,
         number=4,
     )
+    warnings: MutableSequence["Warning"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="Warning",
+    )
 
 
 class SearchProtectedResourcesRequest(proto.Message):
@@ -111,8 +148,16 @@ class SearchProtectedResourcesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. Resource name of the organization.
-            Example: organizations/123
+            Required. A scope can be an organization or a project.
+            Resources protected by the crypto key in provided scope will
+            be returned.
+
+            The following values are allowed:
+
+            - organizations/{ORGANIZATION_NUMBER} (e.g.,
+              "organizations/12345678")
+            - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+            - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
         crypto_key (str):
             Required. The resource name of the
             [CryptoKey][google.cloud.kms.v1.CryptoKey].
@@ -285,6 +330,64 @@ class ProtectedResource(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class Warning(proto.Message):
+    r"""A warning message that indicates potential problems with the
+    response data.
+
+    Attributes:
+        warning_code (google.cloud.kms_inventory_v1.types.Warning.WarningCode):
+            The specific warning code for the displayed
+            message.
+        display_message (str):
+            The literal message providing context and
+            details about the warnings.
+    """
+
+    class WarningCode(proto.Enum):
+        r"""Different types of warnings that can be returned to the user. The
+        display_message contains detailed information regarding the
+        warning_code.
+
+        Values:
+            WARNING_CODE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            INSUFFICIENT_PERMISSIONS_PARTIAL_DATA (1):
+                Indicates that the caller or service agent lacks necessary
+                permissions to view some of the requested data. The response
+                may be partial. Example:
+
+                - KMS organization service agent {service_agent_name} lacks
+                  the ``cloudasset.assets.searchAllResources`` permission on
+                  the scope.
+            RESOURCE_LIMIT_EXCEEDED_PARTIAL_DATA (2):
+                Indicates that a resource limit has been
+                exceeded, resulting in partial data. Example:
+
+                - The project has more than 10,000 assets
+                  (resources,   crypto keys, key handles, IAM
+                  policies, etc).
+            ORG_LESS_PROJECT_PARTIAL_DATA (3):
+                Indicates that the project exists outside of
+                an organization resource. Thus the analysis is
+                only done for the project level data and results
+                might be partial.
+        """
+        WARNING_CODE_UNSPECIFIED = 0
+        INSUFFICIENT_PERMISSIONS_PARTIAL_DATA = 1
+        RESOURCE_LIMIT_EXCEEDED_PARTIAL_DATA = 2
+        ORG_LESS_PROJECT_PARTIAL_DATA = 3
+
+    warning_code: WarningCode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=WarningCode,
+    )
+    display_message: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
