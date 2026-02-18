@@ -440,21 +440,15 @@ class ReadRowsIterable(object):
         is initialized.
         """
         if self._stream_parser is None:
-            df = pandas.DataFrame(columns=dtypes.keys())
-            for col, dtype in dtypes.items():
-                df[col] = pandas.Series([], dtype=dtype)
-            return df
+            return pandas.DataFrame(columns=dtypes.keys()).astype(dtypes)
 
         if isinstance(self._stream_parser, _ArrowStreamParser):
             self._stream_parser._parse_arrow_schema()
-            df = pyarrow.Table.from_batches(
-                [], schema=self._stream_parser._schema
-            ).to_pandas()
+
+            df = self._stream_parser._schema.empty_table().to_pandas()
+
             for column, dtype in dtypes.items():
-                if column in df.columns:
-                    df[column] = pandas.Series(df[column], dtype=dtype)
-                else:
-                    df[column] = pandas.Series([], dtype=dtype)
+                df[column] = pandas.Series(df.get(column, []), dtype=dtype)
             return df
         else:
             self._stream_parser._parse_avro_schema()
