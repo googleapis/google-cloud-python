@@ -275,6 +275,7 @@ def test_table_mutate_rows(data_table, rows_to_delete):
     assert row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value == CELL_VAL4
 
 
+<<<<<<< HEAD
 def _add_test_error_handler(retry):
     """Overwrites the current on_error function to assert that backoff values are within expected bounds."""
     import time
@@ -308,6 +309,12 @@ def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
     import mock
     from google.api_core import retry as retries
     from google.api_core.exceptions import InvalidArgument
+=======
+def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
+    import mock
+    from google.cloud.bigtable_v2 import MutateRowsResponse
+    from google.cloud.bigtable.table import DEFAULT_RETRY
+>>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
     from google.rpc.code_pb2 import Code
     from google.rpc.status_pb2 import Status
 
@@ -364,10 +371,7 @@ def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
         rows_to_delete.append(row_2)
         row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
 
-        # Testing the default retry
-        default_retry_copy = copy.copy(DEFAULT_RETRY)
-        _add_test_error_handler(default_retry_copy)
-        statuses = data_table.mutate_rows([row, row_2], retry=default_retry_copy)
+        statuses = data_table.mutate_rows([row, row_2])
         assert statuses[0].code == Code.OK
         assert statuses[1].code == Code.OK
 
@@ -387,28 +391,35 @@ def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
         rows_to_delete.append(row_2)
         row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
 
-        # Testing the default retry
-        default_retry_copy = copy.copy(DEFAULT_RETRY)
-        _add_test_error_handler(default_retry_copy)
-        statuses = data_table.mutate_rows([row, row_2], retry=default_retry_copy)
+        statuses = data_table.mutate_rows([row, row_2])
+        assert statuses[0].code == Code.OK
+        assert statuses[1].code == Code.DEADLINE_EXCEEDED
+
+    # Retries with deadline 0 should do nothing.
+    with mock.patch.object(
+        data_table._instance._client.table_data_client, "mutate_rows"
+    ) as mutate_mock:
+        mutate_mock.side_effect = [
+            initial_error_response,
+            followup_error_response,
+            followup_error_response,
+            final_success_response,
+        ]
+
+        row = data_table.direct_row(ROW_KEY)
+        rows_to_delete.append(row)
+        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+
+        row_2 = data_table.direct_row(ROW_KEY_ALT)
+        rows_to_delete.append(row_2)
+        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+
+        do_nothing_retry = DEFAULT_RETRY.with_deadline(0.0)
+
+        statuses = data_table.mutate_rows([row, row_2], retry=do_nothing_retry)
         assert statuses[0].code == Code.OK
         assert statuses[1].code == Code.INTERNAL
-
-    # Because of the way the retriable mutate worker class works, unusual things can happen
-    # when passing in custom retry predicates.
-    row = data_table.direct_row(ROW_KEY)
-    rows_to_delete.append(row)
-
-    row_2 = data_table.direct_row(ROW_KEY_ALT)
-    rows_to_delete.append(row_2)
-
-    retry = DEFAULT_RETRY.with_predicate(
-        retries.if_exception_type(_BigtableRetryableError, InvalidArgument)
-    )
-    _add_test_error_handler(retry)
-    statuses = data_table.mutate_rows([row, row_2], retry=retry)
-    assert statuses[0] is None
-    assert statuses[1] is None
+        mutate_mock.assert_called_once()
 
 
 def _populate_table(
@@ -496,26 +507,29 @@ def test_table_mutate_rows_integers(data_table, rows_to_delete):
 
 
 def test_table_mutate_rows_input_errors(data_table, rows_to_delete):
+<<<<<<< HEAD
     from google.api_core.exceptions import InvalidArgument
 
     from google.cloud.bigtable.table import _MAX_BULK_MUTATIONS, TooManyMutationsError
+=======
+    from google.cloud.bigtable.table import _MAX_BULK_MUTATIONS
+>>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 
     row = data_table.direct_row(ROW_KEY)
     rows_to_delete.append(row)
 
-    # Mutate row with 0 mutations gives an API error from the service, not
-    # from the client library.
-    with pytest.raises(InvalidArgument):
+    # Mutate row with 0 mutations gives a ValueError from the client library.
+    with pytest.raises(ValueError):
         data_table.mutate_rows([row])
 
     row.clear()
 
-    # Mutate row with >100k mutations gives a TooManyMutationsError from the
+    # Mutate row with >100k mutations gives a ValueError from the
     # client library.
     for _ in range(0, _MAX_BULK_MUTATIONS + 1):
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
 
-    with pytest.raises(TooManyMutationsError):
+    with pytest.raises(ValueError):
         data_table.mutate_rows([row])
 
 
