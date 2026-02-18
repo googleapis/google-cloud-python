@@ -17,6 +17,7 @@
 import warnings
 from typing import Set
 
+<<<<<<< HEAD
 from google.api_core import timeout
 from google.api_core.exceptions import (
     Aborted,
@@ -26,12 +27,21 @@ from google.api_core.exceptions import (
     RetryError,
     ServiceUnavailable,
 )
+=======
+from google.api_core.exceptions import GoogleAPICallError
+from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import DeadlineExceeded
+from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import ServiceUnavailable
+from google.api_core.exceptions import InternalServerError
+>>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 from google.api_core.gapic_v1.method import DEFAULT
 from google.api_core.retry import Retry, if_exception_type
 from google.cloud._helpers import _to_bytes  # type: ignore
 
 from google.cloud.bigtable import enums
 from google.cloud.bigtable.backup import Backup
+<<<<<<< HEAD
 from google.cloud.bigtable.batcher import (
     FLUSH_COUNT,
     MAX_MUTATION_SIZE,
@@ -53,6 +63,35 @@ from google.cloud.bigtable_admin_v2.types import (
 )
 from google.cloud.bigtable_admin_v2.types import table as admin_messages_v2_pb2
 from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
+=======
+from google.cloud.bigtable.column_family import _gc_rule_from_pb
+from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
+from google.cloud.bigtable.data.exceptions import (
+    RetryExceptionGroup,
+    MutationsExceptionGroup,
+)
+from google.cloud.bigtable.data.mutations import RowMutationEntry
+from google.cloud.bigtable.batcher import MutationsBatcher
+from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_MUTATION_SIZE
+from google.cloud.bigtable.encryption_info import EncryptionInfo
+from google.cloud.bigtable.policy import Policy
+from google.cloud.bigtable.row import AppendRow
+from google.cloud.bigtable.row import ConditionalRow
+from google.cloud.bigtable.row import DirectRow
+from google.cloud.bigtable.row_data import PartialRowsData
+from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
+from google.cloud.bigtable.row_set import RowSet
+from google.cloud.bigtable.row_set import RowRange
+from google.cloud.bigtable import enums
+from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
+from google.cloud.bigtable.admin import BigtableTableAdminClient
+from google.cloud.bigtable.admin.types import table as admin_messages_v2_pb2
+from google.cloud.bigtable.admin.types import (
+    bigtable_table_admin as table_admin_messages_v2_pb2,
+)
+from google.rpc import code_pb2, status_pb2
+>>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
@@ -715,6 +754,9 @@ class Table(object):
         specify a ``retry`` strategy of "do-nothing", a deadline of ``0.0``
         can be specified.
 
+        If a deadline of ``None`` is specified, the deadline defaults to
+        a table-default of 600 seconds (10 minutes).
+
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
@@ -732,18 +774,78 @@ class Table(object):
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
+
+        :raise: ValueError: If a row entry has no mutations, or too many mutations
         """
         if timeout is DEFAULT:
             timeout = self.mutation_timeout
 
-        retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client,
-            self.name,
-            rows,
-            app_profile_id=self._app_profile_id,
-            timeout=timeout,
+        retryable_errors = RETRYABLE_MUTATION_ERRORS
+
+        # The data client cannot take in zero or null values for deadline, so we set it to
+        # the default if that is the case.
+        if retry.deadline is None:
+            operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
+
+        # To adhere to the retry strategy of do-nothing being achievable with a deadline
+        # of 0.0, we modify the retryable errors to be empty if such a deadline is passed.
+        elif retry.deadline == 0:
+            operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
+            retryable_errors = []
+        else:
+            operation_timeout = retry.deadline
+
+        attempt_timeout = timeout
+        mutation_entries = [
+            RowMutationEntry(row.row_key, row._get_mutations()) for row in rows
+        ]
+        return_statuses = [status_pb2.Status(code=code_pb2.Code.OK)] * len(
+            mutation_entries
+        )  # By default, return status OKs for everything
+
+        try:
+            self._table_impl.bulk_mutate_rows(
+                mutation_entries,
+                operation_timeout=operation_timeout,
+                attempt_timeout=attempt_timeout,
+                retryable_errors=retryable_errors,
+            )
+        except MutationsExceptionGroup as mut_exc_group:
+            # We exception handle as follows:
+            #
+            # 1. Each exception in the error group is a FailedMutationEntryError, and its
+            #    cause is either a singular exception or a RetryExceptionGroup consisting of
+            #    multiple exceptions.
+            #
+            # 2. In the case of a singular exception, if the error does not have a gRPC status
+            #    code, we return a status code of UNKNOWN.
+            #
+            # 3. In the case of a RetryExceptionGroup, we use terminal exception in the exception
+            #    group and process that.
+            for error in mut_exc_group.exceptions:
+                cause = error.__cause__
+                if isinstance(cause, RetryExceptionGroup):
+                    return_statuses[error.index] = self._get_status(
+                        cause.exceptions[-1]
+                    )
+                else:
+                    return_statuses[error.index] = self._get_status(cause)
+
+        return return_statuses
+
+    @staticmethod
+    def _get_status(error):
+        if isinstance(error, GoogleAPICallError) and error.grpc_status_code is not None:
+            return status_pb2.Status(
+                code=error.grpc_status_code.value[0],
+                message=error.message,
+                details=error.details,
+            )
+
+        return status_pb2.Status(
+            code=code_pb2.Code.UNKNOWN,
+            message=str(error),
         )
-        return retryable_mutate_rows(retry=retry)
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -1078,6 +1180,7 @@ class Table(object):
         )
 
 
+<<<<<<< HEAD
 class _RetryableMutateRowsWorker(object):
     """A callable worker that can retry to mutate rows with transient errors.
 
@@ -1205,6 +1308,8 @@ class _RetryableMutateRowsWorker(object):
         return self.responses_statuses
 
 
+=======
+>>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 class ClusterState(object):
     """Representation of a Cluster State.
 
@@ -1351,6 +1456,7 @@ def _create_row_request(
         row_set._update_message_request(message)
 
     return message
+<<<<<<< HEAD
 
 
 def _compile_mutation_entries(table_name, rows):
@@ -1419,3 +1525,5 @@ def _check_row_type(row):
         raise TypeError(
             "Bulk processing can not be applied for conditional or append mutations."
         )
+=======
+>>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
