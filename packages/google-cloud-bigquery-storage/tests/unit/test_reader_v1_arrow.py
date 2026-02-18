@@ -382,7 +382,9 @@ def test_to_dataframe_mid_stream_failure(mut, class_under_test, mock_gapic_clien
 
     # Mock the first page to be a valid Arrow page.
     arrow_page = mock.Mock(spec=mut.ReadRowsPage)
-    arrow_page.to_arrow.return_value = pyarrow.RecordBatch.from_pydict({"col": [1]})
+    arrow_page.to_arrow.return_value = pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([1])], names=["col"]
+    )
 
     # Mock the second page to raise NotImplementedError (simulating Avro/unknown).
     avro_page = mock.Mock(spec=mut.ReadRowsPage)
