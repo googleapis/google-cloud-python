@@ -11,6 +11,6 @@
     "distribution_name": "bigframes",
     "api_id": "bigquery.googleapis.com",
     "default_version": "",
-    "codeowner_team": "@googleapis/api-bigquery-dataframe",
+    "codeowner_team": "@googleapis/bigquery-dataframe-team",
     "api_shortname": "bigquery"
 }
