@@ -16,7 +16,6 @@ from __future__ import absolute_import
 
 import collections
 import io
-import itertools
 import json
 import time
 
@@ -408,26 +407,28 @@ class ReadRowsIterable(object):
         except StopIteration:
             return self._empty_dataframe(dtypes)
 
+        first_batch = None
         try:
             # Optimization: If it's an Arrow stream, calling to_arrow, then converting to a
             # pandas dataframe is about 2x faster. This is because pandas.concat is
             # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
             # usually no-copy.
-            record_batches = [
-                p.to_arrow() for p in itertools.chain([first_page], pages)
-            ]
+            first_batch = first_page.to_arrow()
+            record_batches = [first_batch] + [p.to_arrow() for p in pages]
 
             table = pyarrow.Table.from_batches(record_batches)
             df = table.to_pandas()
             for column in dtypes:
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df
-        except NotImplementedError:
+        except NotImplementedError as e:
+            if first_batch is not None:
+                # Unexpected state: if arrow parsing fails mid-stream,
+                # raise exception to prevent data loss.
+                raise RuntimeError("Stream format changed mid-stream") from e
             # Not an Arrow stream; use generic parser.
-            frames = [
-                p.to_dataframe(dtypes=dtypes)
-                for p in itertools.chain([first_page], pages)
-            ]
+            first_batch = first_page.to_dataframe(dtypes=dtypes)
+            frames = [first_batch] + [p.to_dataframe(dtypes=dtypes) for p in pages]
             return pandas.concat(frames)
 
     def _empty_dataframe(self, dtypes):
