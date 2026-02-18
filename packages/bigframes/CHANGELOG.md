@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.36.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.35.0...v2.36.0) (2026-02-17)
+
+
+### Documentation
+
+* update multimodal dataframe notebook to use public APIs (#2456) ([342fa723c4631d371364a87ae0ddd6fa03360a4b](https://github.com/googleapis/python-bigquery-dataframes/commit/342fa723c4631d371364a87ae0ddd6fa03360a4b))
+* use direct API for pdf chunk and pdf extract (#2452) ([543ce52c18269eab2a89886f226d1478dbabf9ba](https://github.com/googleapis/python-bigquery-dataframes/commit/543ce52c18269eab2a89886f226d1478dbabf9ba))
+* fix generate_text and generate_table input docs (#2455) ([078bd32ebd28af0d2cfba6bb874ba79e904183e2](https://github.com/googleapis/python-bigquery-dataframes/commit/078bd32ebd28af0d2cfba6bb874ba79e904183e2))
+* Update multimodal notebook to use public runtime helpers (#2451) ([e36dd8b492fd7ab433fa4cac732b31774c1e428b](https://github.com/googleapis/python-bigquery-dataframes/commit/e36dd8b492fd7ab433fa4cac732b31774c1e428b))
+* use direct API for audio transcription (#2447) ([59cbc5db66fd178ecce03bf4b8b4a504d7ef3e9f](https://github.com/googleapis/python-bigquery-dataframes/commit/59cbc5db66fd178ecce03bf4b8b4a504d7ef3e9f))
+* Add EXIF metadata extraction example to multimodal notebook (#2429) ([84c6f883aef8048e7013a8b3c03a1bde47e94eea](https://github.com/googleapis/python-bigquery-dataframes/commit/84c6f883aef8048e7013a8b3c03a1bde47e94eea))
+
+
+### Features
+
+* Initial support for biglake iceberg tables (#2409) ([ae35a9890a2f9903b12e431488362c091118bbdd](https://github.com/googleapis/python-bigquery-dataframes/commit/ae35a9890a2f9903b12e431488362c091118bbdd))
+* add bigquery.ai.generate_table function (#2453) ([b925aa243dad0e42ad126c9397f42be0aad7152d](https://github.com/googleapis/python-bigquery-dataframes/commit/b925aa243dad0e42ad126c9397f42be0aad7152d))
+
 ## [2.35.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.34.0...v2.35.0) (2026-02-07)
 
 
