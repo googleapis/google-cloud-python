@@ -269,6 +269,32 @@ def test_generate_table_with_options(mock_dataframe, mock_session):
     )
 
 
+def test_generate_table_with_mapping_schema(mock_dataframe, mock_session):
+    model_name = "project.dataset.model"
+
+    bbq.ai.generate_table(
+        model_name,
+        mock_dataframe,
+        output_schema={"col1": "STRING", "col2": "INT64"},
+    )
+
+    mock_session.read_gbq_query.assert_called_once()
+    query = mock_session.read_gbq_query.call_args[0][0]
+
+    # Normalize whitespace for comparison
+    query = " ".join(query.split())
+
+    expected_part_1 = "SELECT * FROM AI.GENERATE_TABLE("
+    expected_part_2 = f"MODEL `{model_name}`,"
+    expected_part_3 = "(SELECT * FROM my_table),"
+    expected_part_4 = "STRUCT('col1 STRING, col2 INT64' AS output_schema)"
+
+    assert expected_part_1 in query
+    assert expected_part_2 in query
+    assert expected_part_3 in query
+    assert expected_part_4 in query
+
+
 @mock.patch("bigframes.pandas.read_pandas")
 def test_generate_text_with_pandas_dataframe(
     read_pandas_mock, mock_dataframe, mock_session

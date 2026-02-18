@@ -111,3 +111,20 @@ def test_generate_table(text_model):
     assert "creator" in result.columns
     # The model may not always return the exact number of rows requested.
     assert len(result) > 0
+
+
+def test_generate_table_with_mapping_schema(text_model):
+    df = bpd.DataFrame(
+        {"prompt": ["Generate a table of 2 programming languages and their creators."]}
+    )
+
+    result = ai.generate_table(
+        text_model,
+        df,
+        output_schema={"language": "STRING", "creator": "STRING"},
+    )
+
+    assert "language" in result.columns
+    assert "creator" in result.columns
+    # The model may not always return the exact number of rows requested.
+    assert len(result) > 0
