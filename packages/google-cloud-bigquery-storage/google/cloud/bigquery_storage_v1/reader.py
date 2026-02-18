@@ -358,9 +358,6 @@ class ReadRowsIterable(object):
                 A table of all rows in the stream.
         """
         record_batches = []
-        # We iterate over pages first. This is important because the stream
-        # parser (and thus the schema) might only be initialized after processing
-        # the first page if a read_session wasn't provided.
         for page in self.pages:
             record_batches.append(page.to_arrow())
 
@@ -403,42 +400,35 @@ class ReadRowsIterable(object):
         if dtypes is None:
             dtypes = {}
 
-        # Use a "peek" strategy to check the first page. This allows us to
-        # determine if the stream is Arrow or Avro without consuming the
-        # first page from the iterator, which would cause data loss if we
-        # failed to use the Arrow optimization and had to fall back to the
-        # generic to_dataframe() method.
+        # Use a "peek" strategy to check the first page, without consuming
+        # from self.pages generator
         pages = self.pages
         try:
             first_page = next(pages)
         except StopIteration:
             return self._empty_dataframe(dtypes)
 
-        # Optimization: If it's an Arrow stream, calling to_arrow, then converting to a
-        # pandas dataframe is about 2x faster. This is because pandas.concat is
-        # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
-        # usually no-copy.
         try:
-            first_batch = first_page.to_arrow()
+            # Optimization: If it's an Arrow stream, calling to_arrow, then converting to a
+            # pandas dataframe is about 2x faster. This is because pandas.concat is
+            # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
+            # usually no-copy.
+            record_batches = [
+                p.to_arrow() for p in itertools.chain([first_page], pages)
+            ]
+
+            table = pyarrow.Table.from_batches(record_batches)
+            df = table.to_pandas()
+            for column in dtypes:
+                df[column] = pandas.Series(df[column], dtype=dtypes[column])
+            return df
         except NotImplementedError:
-            # Not an Arrow stream (or parser doesn't support to_arrow), so use
-            # the Avro path (or other generic path).
+            # Not an Arrow streamm use generic parser
             frames = [
-                page.to_dataframe(dtypes=dtypes)
-                for page in itertools.chain([first_page], pages)
+                p.to_dataframe(dtypes=dtypes)
+                for p in itertools.chain([first_page], pages)
             ]
             return pandas.concat(frames)
-
-        # It IS an Arrow stream.
-        record_batches = [first_batch]
-        for page in pages:
-            record_batches.append(page.to_arrow())
-
-        table = pyarrow.Table.from_batches(record_batches)
-        df = table.to_pandas()
-        for column in dtypes:
-            df[column] = pandas.Series(df[column], dtype=dtypes[column])
-        return df
 
     def _empty_dataframe(self, dtypes):
         """Create an empty DataFrame with the correct schema.
@@ -459,21 +449,18 @@ class ReadRowsIterable(object):
             for column in dtypes:
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df
+        else:
+            self._stream_parser._parse_avro_schema()
+            schema = self._stream_parser._avro_schema_json
 
-        return self._empty_dataframe_from_avro(dtypes)
+            column_dtypes = self._dtypes_from_avro(schema["fields"])
+            column_dtypes.update(dtypes)
 
-    def _empty_dataframe_from_avro(self, dtypes):
-        self._stream_parser._parse_avro_schema()
-        schema = self._stream_parser._avro_schema_json
+            df = pandas.DataFrame(columns=column_dtypes.keys())
+            for column in df:
+                df[column] = pandas.Series([], dtype=column_dtypes[column])
 
-        column_dtypes = self._dtypes_from_avro(schema["fields"])
-        column_dtypes.update(dtypes)
-
-        df = pandas.DataFrame(columns=column_dtypes.keys())
-        for column in df:
-            df[column] = pandas.Series([], dtype=column_dtypes[column])
-
-        return df
+            return df
 
     def _dtypes_from_avro(self, avro_fields):
         """Determine Pandas dtypes for columns in Avro schema.
