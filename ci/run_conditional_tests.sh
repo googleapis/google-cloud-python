@@ -45,7 +45,7 @@ if [ ${BUILD_TYPE} == "presubmit" ]; then
     GIT_DIFF_ARG="origin/$TARGET_BRANCH..."
 
     # Then fetch enough history for finding the common commit.
-    git fetch origin $TARGET_BRANCH --deepen=200
+    git fetch origin "$TARGET_BRANCH" --deepen=200
 
 elif [ ${BUILD_TYPE} == "continuous" ]; then
     # For continuous build, we want to know the difference in the last
@@ -53,7 +53,7 @@ elif [ ${BUILD_TYPE} == "continuous" ]; then
     GIT_DIFF_ARG="HEAD~.."
 
     # Then fetch one last commit for getting the diff.
-    git fetch origin $TARGET_BRANCH --deepen=1
+    git fetch origin "$TARGET_BRANCH" --deepen=1
 
 else
     # Run everything.
