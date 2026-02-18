@@ -3065,10 +3065,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
     version: 0.4.0
-    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
+    last_generated_commit: 45e46bdae3874d2b92a2ced22529fc7037a1878f
     apis:
       - path: google/cloud/vectorsearch/v1beta
         service_config: vectorsearch_v1beta.yaml
+      - path: google/cloud/vectorsearch/v1
+        service_config: vectorsearch_v1.yaml
     source_roots:
       - packages/google-cloud-vectorsearch
     preserve_regex:

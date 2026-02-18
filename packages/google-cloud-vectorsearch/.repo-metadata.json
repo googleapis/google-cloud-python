@@ -3,7 +3,7 @@
   "api_id": "vectorsearch.googleapis.com",
   "api_shortname": "vectorsearch",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-vectorsearch/latest",
-  "default_version": "v1beta",
+  "default_version": "v1",
   "distribution_name": "google-cloud-vectorsearch",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1899904",
   "language": "python",

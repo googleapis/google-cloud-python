@@ -13,37 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.vectorsearch import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from google.cloud.vectorsearch_v1.services.data_object_search_service.async_client import (
-    DataObjectSearchServiceAsyncClient,
-)
-from google.cloud.vectorsearch_v1.services.data_object_search_service.client import (
-    DataObjectSearchServiceClient,
-)
-from google.cloud.vectorsearch_v1.services.data_object_service.async_client import (
-    DataObjectServiceAsyncClient,
-)
-from google.cloud.vectorsearch_v1.services.data_object_service.client import (
-    DataObjectServiceClient,
-)
-from google.cloud.vectorsearch_v1.services.vector_search_service.async_client import (
-    VectorSearchServiceAsyncClient,
-)
-from google.cloud.vectorsearch_v1.services.vector_search_service.client import (
-    VectorSearchServiceClient,
-)
-from google.cloud.vectorsearch_v1.types.common import DistanceMetric
-from google.cloud.vectorsearch_v1.types.data_object import (
-    DataObject,
-    DenseVector,
-    SparseVector,
-    Vector,
-)
-from google.cloud.vectorsearch_v1.types.data_object_search_service import (
+from .common import DistanceMetric
+from .data_object import DataObject, DenseVector, SparseVector, Vector
+from .data_object_search_service import (
     AggregateDataObjectsRequest,
     AggregateDataObjectsResponse,
     AggregationMethod,
@@ -64,7 +36,7 @@ from google.cloud.vectorsearch_v1.types.data_object_search_service import (
     VectorSearch,
     VertexRanker,
 )
-from google.cloud.vectorsearch_v1.types.data_object_service import (
+from .data_object_service import (
     BatchCreateDataObjectsRequest,
     BatchCreateDataObjectsResponse,
     BatchDeleteDataObjectsRequest,
@@ -75,11 +47,8 @@ from google.cloud.vectorsearch_v1.types.data_object_service import (
     GetDataObjectRequest,
     UpdateDataObjectRequest,
 )
-from google.cloud.vectorsearch_v1.types.embedding_config import (
-    EmbeddingTaskType,
-    VertexEmbeddingConfig,
-)
-from google.cloud.vectorsearch_v1.types.vectorsearch_service import (
+from .embedding_config import EmbeddingTaskType, VertexEmbeddingConfig
+from .vectorsearch_service import (
     Collection,
     CreateCollectionRequest,
     CreateIndexRequest,
@@ -105,12 +74,6 @@ from google.cloud.vectorsearch_v1.types.vectorsearch_service import (
 )
 
 __all__ = (
-    "DataObjectSearchServiceClient",
-    "DataObjectSearchServiceAsyncClient",
-    "DataObjectServiceClient",
-    "DataObjectServiceAsyncClient",
-    "VectorSearchServiceClient",
-    "VectorSearchServiceAsyncClient",
     "DistanceMetric",
     "DataObject",
     "DenseVector",
