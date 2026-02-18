@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 import collections
 import io
+import itertools
 import json
 import time
 
@@ -357,6 +358,9 @@ class ReadRowsIterable(object):
                 A table of all rows in the stream.
         """
         record_batches = []
+        # We iterate over pages first. This is important because the stream
+        # parser (and thus the schema) might only be initialized after processing
+        # the first page if a read_session wasn't provided.
         for page in self.pages:
             record_batches.append(page.to_arrow())
 
@@ -399,20 +403,30 @@ class ReadRowsIterable(object):
         if dtypes is None:
             dtypes = {}
 
+        # Use a "peek" strategy to check the first page. This allows us to
+        # determine if the stream is Arrow or Avro without consuming the
+        # first page from the iterator, which would cause data loss if we
+        # failed to use the Arrow optimization and had to fall back to the
+        # generic to_dataframe() method.
         pages = self.pages
         try:
             first_page = next(pages)
         except StopIteration:
             return self._empty_dataframe(dtypes)
 
-        # Try Arrow optimization.
+        # Optimization: If it's an Arrow stream, calling to_arrow, then converting to a
+        # pandas dataframe is about 2x faster. This is because pandas.concat is
+        # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
+        # usually no-copy.
         try:
             first_batch = first_page.to_arrow()
         except NotImplementedError:
-            # Not an Arrow stream, use Avro path.
-            frames = [first_page.to_dataframe(dtypes=dtypes)]
-            for page in pages:
-                frames.append(page.to_dataframe(dtypes=dtypes))
+            # Not an Arrow stream (or parser doesn't support to_arrow), so use
+            # the Avro path (or other generic path).
+            frames = [
+                page.to_dataframe(dtypes=dtypes)
+                for page in itertools.chain([first_page], pages)
+            ]
             return pandas.concat(frames)
 
         # It IS an Arrow stream.
@@ -427,6 +441,13 @@ class ReadRowsIterable(object):
         return df
 
     def _empty_dataframe(self, dtypes):
+        """Create an empty DataFrame with the correct schema.
+
+        This handles cases where the stream is empty but we still need to
+        return a DataFrame with the correct columns and types. It handles
+        both Arrow and Avro parsers, as well as the case where no parser
+        is initialized.
+        """
         if self._stream_parser is None:
             return pandas.DataFrame()
 
