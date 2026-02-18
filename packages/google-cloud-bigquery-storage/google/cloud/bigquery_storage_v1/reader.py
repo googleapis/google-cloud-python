@@ -440,7 +440,10 @@ class ReadRowsIterable(object):
         is initialized.
         """
         if self._stream_parser is None:
-            return pandas.DataFrame(columns=dtypes.keys()).astype(dtypes)
+            df = pandas.DataFrame(columns=dtypes.keys())
+            for col, dtype in dtypes.items():
+                df[col] = pandas.Series([], dtype=dtype)
+            return df
 
         if isinstance(self._stream_parser, _ArrowStreamParser):
             self._stream_parser._parse_arrow_schema()
