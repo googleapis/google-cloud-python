@@ -96,6 +96,15 @@ libraries:
     remove_regex:
       - packages/google-analytics-data/
     tag_format: '{id}-v{version}'
+  - id: google-api-core
+    version: 2.29.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-api-core
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-apps-card
     version: 0.5.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
