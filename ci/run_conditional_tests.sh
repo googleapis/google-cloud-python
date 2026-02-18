@@ -39,7 +39,7 @@ TARGET_BRANCH="${TARGET_BRANCH:-main}"
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
-if [ ${BUILD_TYPE} == "presubmit" ]; then
+if [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # For presubmit build, we want to know the difference from the
     # common commit in the target branch.
     GIT_DIFF_ARG="origin/$TARGET_BRANCH..."
