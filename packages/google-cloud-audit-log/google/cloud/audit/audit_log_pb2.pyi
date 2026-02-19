@@ -150,6 +150,7 @@ class AuthorizationInfo(_message.Message):
         ADMIN_WRITE: _ClassVar[AuthorizationInfo.PermissionType]
         DATA_READ: _ClassVar[AuthorizationInfo.PermissionType]
         DATA_WRITE: _ClassVar[AuthorizationInfo.PermissionType]
+
     PERMISSION_TYPE_UNSPECIFIED: AuthorizationInfo.PermissionType
     ADMIN_READ: AuthorizationInfo.PermissionType
     ADMIN_WRITE: AuthorizationInfo.PermissionType
@@ -242,6 +243,7 @@ class ServiceAccountDelegationInfo(_message.Message):
             self,
             third_party_claims: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         ) -> None: ...
+
     PRINCIPAL_SUBJECT_FIELD_NUMBER: _ClassVar[int]
     FIRST_PARTY_PRINCIPAL_FIELD_NUMBER: _ClassVar[int]
     THIRD_PARTY_PRINCIPAL_FIELD_NUMBER: _ClassVar[int]
@@ -282,6 +284,7 @@ class OrgPolicyViolationInfo(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     PAYLOAD_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_TYPE_FIELD_NUMBER: _ClassVar[int]
     RESOURCE_TAGS_FIELD_NUMBER: _ClassVar[int]
@@ -307,6 +310,7 @@ class ViolationInfo(_message.Message):
         BOOLEAN_CONSTRAINT: _ClassVar[ViolationInfo.PolicyType]
         LIST_CONSTRAINT: _ClassVar[ViolationInfo.PolicyType]
         CUSTOM_CONSTRAINT: _ClassVar[ViolationInfo.PolicyType]
+
     POLICY_TYPE_UNSPECIFIED: ViolationInfo.PolicyType
     BOOLEAN_CONSTRAINT: ViolationInfo.PolicyType
     LIST_CONSTRAINT: ViolationInfo.PolicyType
