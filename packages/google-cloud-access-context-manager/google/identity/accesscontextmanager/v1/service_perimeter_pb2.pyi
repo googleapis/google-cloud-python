@@ -44,6 +44,7 @@ class ServicePerimeter(_message.Message):
         __slots__ = ()
         PERIMETER_TYPE_REGULAR: _ClassVar[ServicePerimeter.PerimeterType]
         PERIMETER_TYPE_BRIDGE: _ClassVar[ServicePerimeter.PerimeterType]
+
     PERIMETER_TYPE_REGULAR: ServicePerimeter.PerimeterType
     PERIMETER_TYPE_BRIDGE: ServicePerimeter.PerimeterType
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -93,6 +94,7 @@ class ServicePerimeterConfig(_message.Message):
         ANY_IDENTITY: _ClassVar[ServicePerimeterConfig.IdentityType]
         ANY_USER_ACCOUNT: _ClassVar[ServicePerimeterConfig.IdentityType]
         ANY_SERVICE_ACCOUNT: _ClassVar[ServicePerimeterConfig.IdentityType]
+
     IDENTITY_TYPE_UNSPECIFIED: ServicePerimeterConfig.IdentityType
     ANY_IDENTITY: ServicePerimeterConfig.IdentityType
     ANY_USER_ACCOUNT: ServicePerimeterConfig.IdentityType
@@ -247,6 +249,7 @@ class ServicePerimeterConfig(_message.Message):
                 _Union[ServicePerimeterConfig.EgressTo, _Mapping]
             ] = ...,
         ) -> None: ...
+
     RESOURCES_FIELD_NUMBER: _ClassVar[int]
     ACCESS_LEVELS_FIELD_NUMBER: _ClassVar[int]
     RESTRICTED_SERVICES_FIELD_NUMBER: _ClassVar[int]
