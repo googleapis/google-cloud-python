@@ -4,8 +4,8 @@
 # For syntax help see:
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
-# The @googleapis/api-spanner is the default owner for changes in this repo
-*               @googleapis/api-spanner
+# The @googleapis/spanner-team is the default owner for changes in this repo
+*               @googleapis/spanner-team
 
 # The python-samples-reviewers team is the default owner for samples changes
-/samples/  @googleapis/python-samples-owners @googleapis/api-spanner
+/samples/  @googleapis/python-samples-owners @googleapis/spanner-team
