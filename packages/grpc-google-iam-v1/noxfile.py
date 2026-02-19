@@ -103,7 +103,7 @@ def lint(session):
     """
     session.install("flake8", RUFF_VERSION)
 
-    # 2. Check formatting
+    # Check formatting
     session.run(
         "ruff", "format",
         "--check",
