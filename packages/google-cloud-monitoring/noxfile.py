@@ -22,7 +22,8 @@ import warnings
 
 import nox
 
-RUFF_VERSION = "ruff==0.14.14"
+BLACK_VERSION = "black[jupyter]==23.7.0"
+ISORT_VERSION = "isort==5.11.0"
 
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
@@ -149,14 +150,10 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", RUFF_VERSION)
-
-    # 2. Check formatting
+    session.install("flake8", BLACK_VERSION)
     session.run(
-        "ruff", "format",
+        "black",
         "--check",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88", 
         *LINT_PATHS,
     )
 
@@ -165,15 +162,10 @@ def lint(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log("WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future.")
-    
-    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
-    session.install(RUFF_VERSION)
+    """Run black. Format code to uniform standard."""
+    session.install(BLACK_VERSION)
     session.run(
-        "ruff", "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
+        "black",
         *LINT_PATHS,
     )
 
@@ -181,28 +173,19 @@ def blacken(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run ruff to sort imports and format code.
+    Run isort to sort imports. Then run black
+    to format code to uniform standard.
     """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
-    session.install(RUFF_VERSION)
-
-    # 2. Run Ruff to fix imports
-    # check --select I: Enables strict import sorting
-    # --fix: Applies the changes automatically
+    session.install(BLACK_VERSION, ISORT_VERSION)
+    # Use the --fss option to sort imports using strict alphabetical order.
+    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
     session.run(
-        "ruff", "check",
-        "--select", "I",
-        "--fix",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
+        "isort",
+        "--fss",
         *LINT_PATHS,
     )
-
-    # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
+        "black",
         *LINT_PATHS,
     )
 
