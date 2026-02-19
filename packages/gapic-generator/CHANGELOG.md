@@ -4,6 +4,8 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.9](https://github.com/googleapis/gapic-generator-python/compare/v1.30.8...v1.30.9) (2026-02-19)
+
 ## [1.30.8](https://github.com/googleapis/gapic-generator-python/compare/v1.30.7...v1.30.8) (2026-02-09)
 
 ## [1.30.7](https://github.com/googleapis/gapic-generator-python/compare/v1.30.6...v1.30.7) (2026-02-05)
