@@ -24,7 +24,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class LabelDescriptor(_message.Message):
     __slots__ = ("key", "value_type", "description")
-
     class ValueType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         STRING: _ClassVar[LabelDescriptor.ValueType]

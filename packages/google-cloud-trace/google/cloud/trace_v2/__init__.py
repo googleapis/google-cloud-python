@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.trace_service import TraceServiceAsyncClient, TraceServiceClient
 from .types.trace import AttributeValue, Module, Span, StackTrace, TruncatableString
 from .types.tracing import BatchWriteSpansRequest

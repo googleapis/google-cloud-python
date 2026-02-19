@@ -157,6 +157,7 @@ class ResponseMessage(proto.Message):
                 [event handler][EventHandler] in the page or flow or
                 transition route group.
         """
+
         RESPONSE_TYPE_UNSPECIFIED = 0
         ENTRY_PROMPT = 1
         PARAMETER_PROMPT = 2
@@ -383,12 +384,12 @@ class ResponseMessage(proto.Message):
                 number=3,
             )
 
-        segments: MutableSequence[
-            "ResponseMessage.MixedAudio.Segment"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ResponseMessage.MixedAudio.Segment",
+        segments: MutableSequence["ResponseMessage.MixedAudio.Segment"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ResponseMessage.MixedAudio.Segment",
+            )
         )
 
     class TelephonyTransferCall(proto.Message):

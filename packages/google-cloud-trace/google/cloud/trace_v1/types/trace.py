@@ -172,6 +172,7 @@ class TraceSpan(proto.Message):
                 client-side wrapper around an RPC or other
                 remote request.
         """
+
         SPAN_KIND_UNSPECIFIED = 0
         RPC_SERVER = 1
         RPC_CLIENT = 2
@@ -308,6 +309,7 @@ class ListTracesRequest(proto.Message):
                 or RPC ``GetTrace`` method using the ID of each listed
                 trace.
         """
+
         VIEW_TYPE_UNSPECIFIED = 0
         MINIMAL = 1
         ROOTSPAN = 2

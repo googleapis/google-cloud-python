@@ -85,6 +85,7 @@ class FilterMatchState(proto.Enum):
         MATCH_FOUND (2):
             Matching criteria is achieved for the filter.
     """
+
     FILTER_MATCH_STATE_UNSPECIFIED = 0
     NO_MATCH_FOUND = 1
     MATCH_FOUND = 2
@@ -103,6 +104,7 @@ class FilterExecutionState(proto.Enum):
             Filter execution was skipped. This can happen
             due to server-side error or permission issue.
     """
+
     FILTER_EXECUTION_STATE_UNSPECIFIED = 0
     EXECUTION_SUCCESS = 1
     EXECUTION_SKIPPED = 2
@@ -123,6 +125,7 @@ class RaiFilterType(proto.Enum):
         DANGEROUS (17):
             Danger
     """
+
     RAI_FILTER_TYPE_UNSPECIFIED = 0
     SEXUALLY_EXPLICIT = 2
     HATE_SPEECH = 3
@@ -145,6 +148,7 @@ class DetectionConfidenceLevel(proto.Enum):
         HIGH (3):
             Low chance of false positives.
     """
+
     DETECTION_CONFIDENCE_LEVEL_UNSPECIFIED = 0
     LOW_AND_ABOVE = 1
     MEDIUM_AND_ABOVE = 2
@@ -171,6 +175,7 @@ class SdpFindingLikelihood(proto.Enum):
             Confidence level is high. Lowest chance of a
             false positive.
     """
+
     SDP_FINDING_LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -193,6 +198,7 @@ class InvocationResult(proto.Enum):
         FAILURE (3):
             All filters were skipped or failed.
     """
+
     INVOCATION_RESULT_UNSPECIFIED = 0
     SUCCESS = 1
     PARTIAL = 2
@@ -269,6 +275,7 @@ class Template(proto.Message):
                     block mode. Requests that trip Model Armor
                     filters will be blocked.
             """
+
             ENFORCEMENT_TYPE_UNSPECIFIED = 0
             INSPECT_ONLY = 1
             INSPECT_AND_BLOCK = 2
@@ -397,6 +404,7 @@ class FloorSetting(proto.Message):
             AI_PLATFORM (1):
                 AI Platform.
         """
+
         INTEGRATED_SERVICE_UNSPECIFIED = 0
         AI_PLATFORM = 1
 
@@ -855,6 +863,7 @@ class PiAndJailbreakFilterSettings(proto.Message):
             DISABLED (2):
                 Enabled
         """
+
         PI_AND_JAILBREAK_FILTER_ENFORCEMENT_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -892,6 +901,7 @@ class MaliciousUriFilterSettings(proto.Message):
             DISABLED (2):
                 Disabled
         """
+
         MALICIOUS_URI_FILTER_ENFORCEMENT_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1011,6 +1021,7 @@ class SdpBasicConfig(proto.Message):
             DISABLED (2):
                 Disabled
         """
+
         SDP_BASIC_CONFIG_ENFORCEMENT_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1580,6 +1591,7 @@ class ByteDataItem(proto.Message):
             CSV (7):
                 CSV
         """
+
         BYTE_ITEM_TYPE_UNSPECIFIED = 0
         PLAINTEXT_UTF8 = 1
         PDF = 2
@@ -1818,12 +1830,12 @@ class MaliciousUriFilterResult(proto.Message):
         number=3,
         enum="FilterMatchState",
     )
-    malicious_uri_matched_items: MutableSequence[
-        MaliciousUriMatchedItem
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=MaliciousUriMatchedItem,
+    malicious_uri_matched_items: MutableSequence[MaliciousUriMatchedItem] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=MaliciousUriMatchedItem,
+        )
     )
 
 
@@ -1871,6 +1883,7 @@ class VirusScanFilterResult(proto.Message):
                 PDF
                 Scanning for only PDF is supported.
         """
+
         SCANNED_CONTENT_TYPE_UNSPECIFIED = 0
         UNKNOWN = 1
         PLAINTEXT = 2
@@ -1939,6 +1952,7 @@ class VirusDetail(proto.Message):
             POTENTIALLY_UNWANTED_CONTENT (5):
                 Potentially unwanted content. E.g. Adware.
         """
+
         THREAT_TYPE_UNSPECIFIED = 0
         UNKNOWN = 1
         VIRUS_OR_WORM = 2
@@ -2019,6 +2033,7 @@ class MessageItem(proto.Message):
             ERROR (3):
                 Error message.
         """
+
         MESSAGE_TYPE_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

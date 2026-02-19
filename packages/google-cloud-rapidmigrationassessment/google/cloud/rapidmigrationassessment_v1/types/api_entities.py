@@ -133,6 +133,7 @@ class Collector(proto.Message):
             STATE_ERROR (8):
                 Collector is in error state.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_INITIALIZING = 1
         STATE_READY_TO_USE = 2
@@ -240,6 +241,7 @@ class Annotation(proto.Message):
                 Indicates that this project is created by
                 Qwiklab.
         """
+
         TYPE_UNSPECIFIED = 0
         TYPE_LEGACY_EXPORT_CONSENT = 1
         TYPE_QWIKLAB = 2

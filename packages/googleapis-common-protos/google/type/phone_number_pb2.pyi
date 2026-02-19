@@ -24,7 +24,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class PhoneNumber(_message.Message):
     __slots__ = ("e164_number", "short_code", "extension")
-
     class ShortCode(_message.Message):
         __slots__ = ("region_code", "number")
         REGION_CODE_FIELD_NUMBER: _ClassVar[int]

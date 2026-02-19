@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
@@ -44,13 +44,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.phone_numbers import pagers
-from google.cloud.dialogflow_v2beta1.types import phone_number as gcd_phone_number
 from google.cloud.dialogflow_v2beta1.types import phone_number
+from google.cloud.dialogflow_v2beta1.types import phone_number as gcd_phone_number
 
 from .client import PhoneNumbersClient
 from .transports.base import DEFAULT_CLIENT_INFO, PhoneNumbersTransport
@@ -116,7 +116,10 @@ class PhoneNumbersAsyncClient:
         Returns:
             PhoneNumbersAsyncClient: The constructed client.
         """
-        return PhoneNumbersClient.from_service_account_info.__func__(PhoneNumbersAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            PhoneNumbersClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(PhoneNumbersAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -132,7 +135,10 @@ class PhoneNumbersAsyncClient:
         Returns:
             PhoneNumbersAsyncClient: The constructed client.
         """
-        return PhoneNumbersClient.from_service_account_file.__func__(PhoneNumbersAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            PhoneNumbersClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(PhoneNumbersAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

@@ -50,6 +50,7 @@ class GroupMembership(proto.Message):
             GROUP_TYPE_CHOKEPOINT (3):
                 Group represents a chokepoint.
         """
+
         GROUP_TYPE_UNSPECIFIED = 0
         GROUP_TYPE_TOXIC_COMBINATION = 1
         GROUP_TYPE_CHOKEPOINT = 3

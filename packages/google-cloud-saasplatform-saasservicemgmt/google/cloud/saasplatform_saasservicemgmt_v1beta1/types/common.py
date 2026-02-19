@@ -53,6 +53,7 @@ class UnitOperationErrorCategory(proto.Enum):
             Unit operation error category is standard,
             counts towards Rollout error budget
     """
+
     UNIT_OPERATION_ERROR_CATEGORY_UNSPECIFIED = 0
     NOT_APPLICABLE = 1
     FATAL = 2
@@ -125,6 +126,7 @@ class UnitVariable(proto.Message):
             BOOL (3):
                 Variable type is bool.
         """
+
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INT = 2
@@ -178,6 +180,7 @@ class UnitCondition(proto.Message):
             STATUS_FALSE (3):
                 Condition is false.
         """
+
         STATUS_UNSPECIFIED = 0
         STATUS_UNKNOWN = 1
         STATUS_TRUE = 2
@@ -200,6 +203,7 @@ class UnitCondition(proto.Message):
                 True when the last unit operation fails with a
                 non-ignorable error.
         """
+
         TYPE_UNSPECIFIED = 0
         TYPE_READY = 1
         TYPE_UPDATING = 2
@@ -265,6 +269,7 @@ class UnitOperationCondition(proto.Message):
             STATUS_FALSE (3):
                 Condition is false.
         """
+
         STATUS_UNSPECIFIED = 0
         STATUS_UNKNOWN = 1
         STATUS_TRUE = 2
@@ -290,6 +295,7 @@ class UnitOperationCondition(proto.Message):
                 Indicates if services and workloads have been
                 registered with AppHub.
         """
+
         TYPE_UNSPECIFIED = 0
         TYPE_SCHEDULED = 2
         TYPE_RUNNING = 3

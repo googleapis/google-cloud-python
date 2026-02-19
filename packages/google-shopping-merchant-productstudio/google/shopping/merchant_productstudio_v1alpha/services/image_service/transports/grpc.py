@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_productstudio_v1alpha.types import image
 
@@ -348,12 +348,12 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_product_image_background" not in self._stubs:
-            self._stubs[
-                "generate_product_image_background"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.productstudio.v1alpha.ImageService/GenerateProductImageBackground",
-                request_serializer=image.GenerateProductImageBackgroundRequest.serialize,
-                response_deserializer=image.GenerateProductImageBackgroundResponse.deserialize,
+            self._stubs["generate_product_image_background"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.productstudio.v1alpha.ImageService/GenerateProductImageBackground",
+                    request_serializer=image.GenerateProductImageBackgroundRequest.serialize,
+                    response_deserializer=image.GenerateProductImageBackgroundResponse.deserialize,
+                )
             )
         return self._stubs["generate_product_image_background"]
 
@@ -381,12 +381,12 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_product_image_background" not in self._stubs:
-            self._stubs[
-                "remove_product_image_background"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.productstudio.v1alpha.ImageService/RemoveProductImageBackground",
-                request_serializer=image.RemoveProductImageBackgroundRequest.serialize,
-                response_deserializer=image.RemoveProductImageBackgroundResponse.deserialize,
+            self._stubs["remove_product_image_background"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.productstudio.v1alpha.ImageService/RemoveProductImageBackground",
+                    request_serializer=image.RemoveProductImageBackgroundRequest.serialize,
+                    response_deserializer=image.RemoveProductImageBackgroundResponse.deserialize,
+                )
             )
         return self._stubs["remove_product_image_background"]
 

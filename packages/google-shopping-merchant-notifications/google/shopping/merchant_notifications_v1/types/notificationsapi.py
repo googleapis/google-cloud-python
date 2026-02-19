@@ -163,12 +163,12 @@ class ListNotificationSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_subscriptions: MutableSequence[
-        "NotificationSubscription"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="NotificationSubscription",
+    notification_subscriptions: MutableSequence["NotificationSubscription"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="NotificationSubscription",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -227,6 +227,7 @@ class NotificationSubscription(proto.Message):
                 Notification of product status changes, for
                 example when product becomes disapproved.
         """
+
         NOTIFICATION_EVENT_TYPE_UNSPECIFIED = 0
         PRODUCT_STATUS_CHANGE = 1
 

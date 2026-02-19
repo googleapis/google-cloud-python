@@ -106,6 +106,7 @@ class Input(proto.Message):
                 Input will take an srt (Secure Reliable
                 Transport) input stream.
         """
+
         TYPE_UNSPECIFIED = 0
         RTMP_PUSH = 1
         SRT_PUSH = 2
@@ -135,6 +136,7 @@ class Input(proto.Message):
                 Resolution <= 4096x2160. Bitrate <= 50 Mbps.
                 FPS <= 60. H265 codec.
         """
+
         TIER_UNSPECIFIED = 0
         SD = 1
         HD = 2
@@ -322,6 +324,7 @@ class Channel(proto.Message):
             STOPPING (8):
                 Channel is stopping.
         """
+
         STREAMING_STATE_UNSPECIFIED = 0
         STREAMING = 1
         AWAITING_INPUT = 2
@@ -393,12 +396,12 @@ class Channel(proto.Message):
         number=12,
         message=outputs.Manifest,
     )
-    distribution_streams: MutableSequence[
-        outputs.DistributionStream
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=28,
-        message=outputs.DistributionStream,
+    distribution_streams: MutableSequence[outputs.DistributionStream] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=28,
+            message=outputs.DistributionStream,
+        )
     )
     distributions: MutableSequence[outputs.Distribution] = proto.RepeatedField(
         proto.MESSAGE,
@@ -579,6 +582,7 @@ class InputConfig(proto.Message):
                 [AutomaticFailover][google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover]
                 field is ignored.
         """
+
         INPUT_SWITCH_MODE_UNSPECIFIED = 0
         FAILOVER_PREFER_PRIMARY = 1
         MANUAL = 3
@@ -630,6 +634,7 @@ class LogConfig(proto.Message):
                 Logs with severity higher than or equal to
                 ERROR are logged.
         """
+
         LOG_SEVERITY_UNSPECIFIED = 0
         OFF = 1
         DEBUG = 100
@@ -885,6 +890,7 @@ class AutoTranscriptionConfig(proto.Message):
                 output latency, and reduces viewing latency
                 between audio and auto-generated captions.
         """
+
         DISPLAY_TIMING_UNSPECIFIED = 0
         ASYNC = 1
         SYNC = 2
@@ -908,6 +914,7 @@ class AutoTranscriptionConfig(proto.Message):
                 Increases the quality of the auto-generated
                 captions at the cost of higher latency.
         """
+
         QUALITY_PRESET_UNSPECIFIED = 0
         LOW_LATENCY = 1
         BALANCED_QUALITY = 2
@@ -1019,6 +1026,7 @@ class Event(proto.Message):
                 Event was stopped before running for its full
                 duration.
         """
+
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2
@@ -1280,6 +1288,7 @@ class Clip(proto.Message):
                 The operation has failed. For additional information, see
                 the ``error`` field.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         CREATING = 2
@@ -1298,6 +1307,7 @@ class Clip(proto.Message):
             MP4 (2):
                 OutputType is an MP4 file.
         """
+
         OUTPUT_TYPE_UNSPECIFIED = 0
         MANIFEST = 1
         MP4 = 2
@@ -1533,6 +1543,7 @@ class DvrSession(proto.Message):
                 will move to STOPPING state, if the parent
                 channel is updated.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         UPDATING = 2
@@ -1700,6 +1711,7 @@ class Asset(proto.Message):
             ERROR (4):
                 The asset has an error.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2

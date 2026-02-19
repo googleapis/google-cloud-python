@@ -56,6 +56,7 @@ class TripType(proto.Enum):
         EXCLUSIVE (2):
             The trip is exclusive to a vehicle.
     """
+
     UNKNOWN_TRIP_TYPE = 0
     SHARED = 1
     EXCLUSIVE = 2
@@ -75,6 +76,7 @@ class WaypointType(proto.Enum):
             Waypoints for intermediate destinations in a
             multi-destination trip.
     """
+
     UNKNOWN_WAYPOINT_TYPE = 0
     PICKUP_WAYPOINT_TYPE = 1
     DROP_OFF_WAYPOINT_TYPE = 2
@@ -94,6 +96,7 @@ class PolylineFormatType(proto.Enum):
             compression algorithm. Decoding is not yet
             supported.
     """
+
     UNKNOWN_FORMAT_TYPE = 0
     LAT_LNG_LIST_TYPE = 1
     ENCODED_POLYLINE_TYPE = 2
@@ -116,6 +119,7 @@ class NavigationStatus(proto.Enum):
             The vehicle is within approximately 50m of
             the destination.
     """
+
     UNKNOWN_NAVIGATION_STATUS = 0
     NO_GUIDANCE = 1
     ENROUTE_TO_DESTINATION = 2
@@ -158,6 +162,7 @@ class LocationSensor(proto.Enum):
             The location provider on Apple operating
             systems.
     """
+
     UNKNOWN_SENSOR = 0
     GPS = 1
     NETWORK = 2

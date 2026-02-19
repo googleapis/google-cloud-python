@@ -20,9 +20,7 @@ from .base import ExternalVpnGatewaysTransport
 from .rest import ExternalVpnGatewaysRestInterceptor, ExternalVpnGatewaysRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ExternalVpnGatewaysTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ExternalVpnGatewaysTransport]]
 _transport_registry["rest"] = ExternalVpnGatewaysRestTransport
 
 __all__ = (

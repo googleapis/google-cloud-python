@@ -49,7 +49,9 @@ from .backup_vault import (
     ListBackupVaultsResponse,
     UpdateBackupVaultRequest,
 )
-from .cloud_netapp_service import OperationMetadata
+from .cloud_netapp_service import (
+    OperationMetadata,
+)
 from .common import (
     DirectoryServiceType,
     EncryptionType,

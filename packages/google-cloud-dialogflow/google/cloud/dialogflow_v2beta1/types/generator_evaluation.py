@@ -717,12 +717,12 @@ class SummarizationEvaluationMetrics(proto.Message):
             message="SummarizationEvaluationMetrics.SectionToken",
         )
 
-    summarization_evaluation_results: MutableSequence[
-        SummarizationEvaluationResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=SummarizationEvaluationResult,
+    summarization_evaluation_results: MutableSequence[SummarizationEvaluationResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=SummarizationEvaluationResult,
+        )
     )
     summarization_evaluation_merged_results_uri: str = proto.Field(
         proto.STRING,
@@ -781,6 +781,7 @@ class GeneratorEvaluationConfig(proto.Message):
                 chosen, input_data_config.start_time and
                 input_data_config.end_timestamp must be provided.
         """
+
         INPUT_DATA_SOURCE_TYPE_UNSPECIFIED = 0
         AGENT_ASSIST_CONVERSATIONS = 1
         INSIGHTS_CONVERSATIONS = 2
@@ -886,6 +887,7 @@ class GeneratorEvaluationConfig(proto.Message):
                     Do not generate new summaries. Only use
                     existing summaries found.
             """
+
             SUMMARY_GENERATION_OPTION_UNSPECIFIED = 0
             ALWAYS_GENERATE = 1
             GENERATE_IF_MISSING = 2

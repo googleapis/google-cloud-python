@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.kms_inventory_v1.types import key_tracking_service
 
@@ -355,12 +355,12 @@ class KeyTrackingServiceGrpcTransport(KeyTrackingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_protected_resources_summary" not in self._stubs:
-            self._stubs[
-                "get_protected_resources_summary"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.inventory.v1.KeyTrackingService/GetProtectedResourcesSummary",
-                request_serializer=key_tracking_service.GetProtectedResourcesSummaryRequest.serialize,
-                response_deserializer=key_tracking_service.ProtectedResourcesSummary.deserialize,
+            self._stubs["get_protected_resources_summary"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.inventory.v1.KeyTrackingService/GetProtectedResourcesSummary",
+                    request_serializer=key_tracking_service.GetProtectedResourcesSummaryRequest.serialize,
+                    response_deserializer=key_tracking_service.ProtectedResourcesSummary.deserialize,
+                )
             )
         return self._stubs["get_protected_resources_summary"]
 
@@ -388,12 +388,12 @@ class KeyTrackingServiceGrpcTransport(KeyTrackingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_protected_resources" not in self._stubs:
-            self._stubs[
-                "search_protected_resources"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.inventory.v1.KeyTrackingService/SearchProtectedResources",
-                request_serializer=key_tracking_service.SearchProtectedResourcesRequest.serialize,
-                response_deserializer=key_tracking_service.SearchProtectedResourcesResponse.deserialize,
+            self._stubs["search_protected_resources"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.inventory.v1.KeyTrackingService/SearchProtectedResources",
+                    request_serializer=key_tracking_service.SearchProtectedResourcesRequest.serialize,
+                    response_deserializer=key_tracking_service.SearchProtectedResourcesResponse.deserialize,
+                )
             )
         return self._stubs["search_protected_resources"]
 

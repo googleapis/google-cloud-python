@@ -20,10 +20,10 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 from google.api_core import gapic_v1, path_template
 from google.protobuf import json_format
 
+from google.cloud.cloudquotas_v1beta.types import quota_adjuster_settings
 from google.cloud.cloudquotas_v1beta.types import (
     quota_adjuster_settings as gac_quota_adjuster_settings,
 )
-from google.cloud.cloudquotas_v1beta.types import quota_adjuster_settings
 
 from .base import DEFAULT_CLIENT_INFO, QuotaAdjusterSettingsManagerTransport
 

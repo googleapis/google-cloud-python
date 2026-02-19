@@ -38,7 +38,6 @@ class Quota(_message.Message):
 
 class MetricRule(_message.Message):
     __slots__ = ("selector", "metric_costs")
-
     class MetricCostsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -72,7 +71,6 @@ class QuotaLimit(_message.Message):
         "values",
         "display_name",
     )
-
     class ValuesEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]

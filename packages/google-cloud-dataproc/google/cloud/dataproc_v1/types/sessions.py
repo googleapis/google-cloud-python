@@ -345,6 +345,7 @@ class Session(proto.Message):
                 The session is no longer running due to an
                 error.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -482,6 +483,7 @@ class JupyterConfig(proto.Message):
             SCALA (2):
                 Scala kernel.
         """
+
         KERNEL_UNSPECIFIED = 0
         PYTHON = 1
         SCALA = 2

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -32,13 +32,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.apigeeconnect_v1 import gapic_version as package_version
 
@@ -109,7 +109,10 @@ class TetherAsyncClient:
         Returns:
             TetherAsyncClient: The constructed client.
         """
-        return TetherClient.from_service_account_info.__func__(TetherAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            TetherClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(TetherAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -125,7 +128,10 @@ class TetherAsyncClient:
         Returns:
             TetherAsyncClient: The constructed client.
         """
-        return TetherClient.from_service_account_file.__func__(TetherAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            TetherClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(TetherAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

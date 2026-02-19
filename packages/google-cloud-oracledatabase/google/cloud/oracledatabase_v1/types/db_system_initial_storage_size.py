@@ -80,6 +80,7 @@ class DbSystemInitialStorageSizeProperties(proto.Message):
             LVM (2):
                 Logical Volume Management.
         """
+
         STORAGE_MANAGEMENT_UNSPECIFIED = 0
         ASM = 1
         LVM = 2
@@ -93,6 +94,7 @@ class DbSystemInitialStorageSizeProperties(proto.Message):
             STANDARD_X86 (1):
                 Standard X86.
         """
+
         SHAPE_TYPE_UNSPECIFIED = 0
         STANDARD_X86 = 1
 
@@ -111,12 +113,12 @@ class DbSystemInitialStorageSizeProperties(proto.Message):
         number=3,
         message="StorageSizeDetails",
     )
-    launch_from_backup_storage_size_details: MutableSequence[
-        "StorageSizeDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="StorageSizeDetails",
+    launch_from_backup_storage_size_details: MutableSequence["StorageSizeDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="StorageSizeDetails",
+        )
     )
 
 
@@ -195,12 +197,12 @@ class ListDbSystemInitialStorageSizesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    db_system_initial_storage_sizes: MutableSequence[
-        "DbSystemInitialStorageSize"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DbSystemInitialStorageSize",
+    db_system_initial_storage_sizes: MutableSequence["DbSystemInitialStorageSize"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DbSystemInitialStorageSize",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

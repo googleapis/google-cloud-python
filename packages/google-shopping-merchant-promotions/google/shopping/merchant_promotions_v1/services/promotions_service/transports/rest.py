@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -402,9 +402,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePromotionsServiceRestTransport._BaseGetPromotion._get_http_options()
-            )
+            http_options = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_promotion(request, metadata)
             transcoded_request = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_transcoded_request(
@@ -562,9 +560,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_http_options()
-            )
+            http_options = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_http_options()
 
             request, metadata = self._interceptor.pre_insert_promotion(
                 request, metadata
@@ -714,9 +710,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
                     Response message for the ``ListPromotions`` method.
             """
 
-            http_options = (
-                _BasePromotionsServiceRestTransport._BaseListPromotions._get_http_options()
-            )
+            http_options = _BasePromotionsServiceRestTransport._BaseListPromotions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_promotions(request, metadata)
             transcoded_request = _BasePromotionsServiceRestTransport._BaseListPromotions._get_transcoded_request(

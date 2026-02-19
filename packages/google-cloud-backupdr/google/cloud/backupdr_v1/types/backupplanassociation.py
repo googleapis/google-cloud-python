@@ -127,6 +127,7 @@ class BackupPlanAssociation(proto.Message):
             UPDATING (5):
                 The resource is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -223,6 +224,7 @@ class RuleConfigInfo(proto.Message):
             FAILED (4):
                 The last backup operation failed.
         """
+
         LAST_BACKUP_STATE_UNSPECIFIED = 0
         FIRST_BACKUP_PENDING = 1
         PERMISSION_DENIED = 2
@@ -373,12 +375,12 @@ class ListBackupPlanAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_associations: MutableSequence[
-        "BackupPlanAssociation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BackupPlanAssociation",
+    backup_plan_associations: MutableSequence["BackupPlanAssociation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BackupPlanAssociation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -481,12 +483,12 @@ class FetchBackupPlanAssociationsForResourceTypeResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_associations: MutableSequence[
-        "BackupPlanAssociation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BackupPlanAssociation",
+    backup_plan_associations: MutableSequence["BackupPlanAssociation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BackupPlanAssociation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

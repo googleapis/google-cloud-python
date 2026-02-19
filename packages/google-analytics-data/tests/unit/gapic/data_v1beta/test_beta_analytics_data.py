@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,11 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,16 +56,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.operation_async as operation_async  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.analytics.data_v1beta.services.beta_analytics_data import (
     BetaAnalyticsDataAsyncClient,
@@ -989,10 +989,9 @@ def test_beta_analytics_data_client_get_mtls_endpoint_and_cert_source(client_cla
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1037,10 +1036,9 @@ def test_beta_analytics_data_client_get_mtls_endpoint_and_cert_source(client_cla
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1076,10 +1074,9 @@ def test_beta_analytics_data_client_get_mtls_endpoint_and_cert_source(client_cla
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1331,9 +1328,7 @@ def test_beta_analytics_data_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1690,9 +1685,9 @@ def test_run_pivot_report_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_pivot_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_pivot_report] = (
+            mock_rpc
+        )
         request = {}
         client.run_pivot_report(request)
 
@@ -1938,9 +1933,9 @@ def test_batch_run_reports_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_run_reports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_run_reports] = (
+            mock_rpc
+        )
         request = {}
         client.batch_run_reports(request)
 
@@ -2776,9 +2771,9 @@ def test_run_realtime_report_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_realtime_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_realtime_report] = (
+            mock_rpc
+        )
         request = {}
         client.run_realtime_report(request)
 
@@ -3031,9 +3026,9 @@ def test_check_compatibility_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.check_compatibility
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.check_compatibility] = (
+            mock_rpc
+        )
         request = {}
         client.check_compatibility(request)
 
@@ -3282,9 +3277,9 @@ def test_create_audience_export_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_audience_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_audience_export] = (
+            mock_rpc
+        )
         request = {}
         client.create_audience_export(request)
 
@@ -3642,9 +3637,9 @@ def test_query_audience_export_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.query_audience_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.query_audience_export] = (
+            mock_rpc
+        )
         request = {}
         client.query_audience_export(request)
 
@@ -3998,9 +3993,9 @@ def test_get_audience_export_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_audience_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_audience_export] = (
+            mock_rpc
+        )
         request = {}
         client.get_audience_export(request)
 
@@ -4357,9 +4352,9 @@ def test_list_audience_exports_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_audience_exports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_audience_exports] = (
+            mock_rpc
+        )
         request = {}
         client.list_audience_exports(request)
 
@@ -4867,9 +4862,9 @@ def test_run_pivot_report_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_pivot_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_pivot_report] = (
+            mock_rpc
+        )
 
         request = {}
         client.run_pivot_report(request)
@@ -4905,9 +4900,9 @@ def test_batch_run_reports_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_run_reports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_run_reports] = (
+            mock_rpc
+        )
 
         request = {}
         client.batch_run_reports(request)
@@ -5162,9 +5157,9 @@ def test_run_realtime_report_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_realtime_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_realtime_report] = (
+            mock_rpc
+        )
 
         request = {}
         client.run_realtime_report(request)
@@ -5202,9 +5197,9 @@ def test_check_compatibility_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.check_compatibility
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.check_compatibility] = (
+            mock_rpc
+        )
 
         request = {}
         client.check_compatibility(request)
@@ -5243,9 +5238,9 @@ def test_create_audience_export_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_audience_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_audience_export] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_audience_export(request)
@@ -5435,9 +5430,9 @@ def test_query_audience_export_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.query_audience_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.query_audience_export] = (
+            mock_rpc
+        )
 
         request = {}
         client.query_audience_export(request)
@@ -5620,9 +5615,9 @@ def test_get_audience_export_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_audience_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_audience_export] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_audience_export(request)
@@ -5802,9 +5797,9 @@ def test_list_audience_exports_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_audience_exports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_audience_exports] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_audience_exports(request)

@@ -18,13 +18,6 @@ from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
-from google.protobuf import api_pb2 as _api_pb2
-from google.protobuf import descriptor as _descriptor
-from google.protobuf import message as _message
-from google.protobuf import type_pb2 as _type_pb2
-from google.protobuf import wrappers_pb2 as _wrappers_pb2
-from google.protobuf.internal import containers as _containers
-
 from google.api import auth_pb2 as _auth_pb2
 from google.api import backend_pb2 as _backend_pb2
 from google.api import billing_pb2 as _billing_pb2
@@ -43,6 +36,12 @@ from google.api import quota_pb2 as _quota_pb2
 from google.api import source_info_pb2 as _source_info_pb2
 from google.api import system_parameter_pb2 as _system_parameter_pb2
 from google.api import usage_pb2 as _usage_pb2
+from google.protobuf import api_pb2 as _api_pb2
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from google.protobuf import type_pb2 as _type_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
+from google.protobuf.internal import containers as _containers
 
 DESCRIPTOR: _descriptor.FileDescriptor
 

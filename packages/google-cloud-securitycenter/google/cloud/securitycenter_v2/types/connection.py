@@ -64,6 +64,7 @@ class Connection(proto.Message):
             ESP (50):
                 Encap Security Payload.
         """
+
         PROTOCOL_UNSPECIFIED = 0
         ICMP = 1
         TCP = 6

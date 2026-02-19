@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.datacatalog_lineage_v1.types import lineage
 
@@ -379,12 +379,12 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "process_open_lineage_run_event" not in self._stubs:
-            self._stubs[
-                "process_open_lineage_run_event"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.datacatalog.lineage.v1.Lineage/ProcessOpenLineageRunEvent",
-                request_serializer=lineage.ProcessOpenLineageRunEventRequest.serialize,
-                response_deserializer=lineage.ProcessOpenLineageRunEventResponse.deserialize,
+            self._stubs["process_open_lineage_run_event"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.datacatalog.lineage.v1.Lineage/ProcessOpenLineageRunEvent",
+                    request_serializer=lineage.ProcessOpenLineageRunEventRequest.serialize,
+                    response_deserializer=lineage.ProcessOpenLineageRunEventResponse.deserialize,
+                )
             )
         return self._stubs["process_open_lineage_run_event"]
 
@@ -826,12 +826,12 @@ class LineageGrpcAsyncIOTransport(LineageTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_search_link_processes" not in self._stubs:
-            self._stubs[
-                "batch_search_link_processes"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.datacatalog.lineage.v1.Lineage/BatchSearchLinkProcesses",
-                request_serializer=lineage.BatchSearchLinkProcessesRequest.serialize,
-                response_deserializer=lineage.BatchSearchLinkProcessesResponse.deserialize,
+            self._stubs["batch_search_link_processes"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.datacatalog.lineage.v1.Lineage/BatchSearchLinkProcesses",
+                    request_serializer=lineage.BatchSearchLinkProcessesRequest.serialize,
+                    response_deserializer=lineage.BatchSearchLinkProcessesResponse.deserialize,
+                )
             )
         return self._stubs["batch_search_link_processes"]
 

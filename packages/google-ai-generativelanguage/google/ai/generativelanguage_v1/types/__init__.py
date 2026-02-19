@@ -13,8 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .citation import CitationMetadata, CitationSource
-from .content import Blob, Content, Modality, ModalityTokenCount, Part, VideoMetadata
+from .citation import (
+    CitationMetadata,
+    CitationSource,
+)
+from .content import (
+    Blob,
+    Content,
+    Modality,
+    ModalityTokenCount,
+    Part,
+    VideoMetadata,
+)
 from .generative_service import (
     BatchEmbedContentsRequest,
     BatchEmbedContentsResponse,
@@ -38,9 +48,19 @@ from .generative_service import (
     UrlContextMetadata,
     UrlMetadata,
 )
-from .model import Model
-from .model_service import GetModelRequest, ListModelsRequest, ListModelsResponse
-from .safety import HarmCategory, SafetyRating, SafetySetting
+from .model import (
+    Model,
+)
+from .model_service import (
+    GetModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+)
+from .safety import (
+    HarmCategory,
+    SafetyRating,
+    SafetySetting,
+)
 
 __all__ = (
     "CitationMetadata",

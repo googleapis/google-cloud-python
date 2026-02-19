@@ -114,12 +114,12 @@ class TextExtractionEvaluationMetrics(proto.Message):
         proto.FLOAT,
         number=1,
     )
-    confidence_metrics_entries: MutableSequence[
-        ConfidenceMetricsEntry
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=ConfidenceMetricsEntry,
+    confidence_metrics_entries: MutableSequence[ConfidenceMetricsEntry] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=ConfidenceMetricsEntry,
+        )
     )
 
 

@@ -88,6 +88,7 @@ class CompleteQueryRequest(proto.Message):
                 Suggestions are based on all jobs data in the
                 system that's visible to the client
         """
+
         COMPLETION_SCOPE_UNSPECIFIED = 0
         TENANT = 1
         PUBLIC = 2
@@ -126,6 +127,7 @@ class CompleteQueryRequest(proto.Message):
                 [language_codes][google.cloud.talent.v4beta1.CompleteQueryRequest.language_codes]
                 are returned.
         """
+
         COMPLETION_TYPE_UNSPECIFIED = 0
         JOB_TITLE = 1
         COMPANY_NAME = 2

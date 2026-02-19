@@ -100,6 +100,7 @@ class ConversionSource(proto.Message):
                 Conversion source creation has started but
                 not fully finished yet.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         ARCHIVED = 2
@@ -117,6 +118,7 @@ class ConversionSource(proto.Message):
             YOUTUBE_AFFILIATES (2):
                 Controlled by the YT Affiliates program.
         """
+
         CONTROLLER_UNSPECIFIED = 0
         MERCHANT = 1
         YOUTUBE_AFFILIATES = 2
@@ -198,6 +200,7 @@ class AttributionSettings(proto.Message):
             CROSS_CHANNEL_TIME_DECAY (9):
                 Cross-channel Time Decay model.
         """
+
         ATTRIBUTION_MODEL_UNSPECIFIED = 0
         CROSS_CHANNEL_LAST_CLICK = 1
         ADS_PREFERRED_LAST_CLICK = 2

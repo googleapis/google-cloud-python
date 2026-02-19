@@ -67,6 +67,7 @@ class RegulatoryControlResponsibilityType(proto.Enum):
         SHARED (3):
             Shared responsibility.
     """
+
     REGULATORY_CONTROL_RESPONSIBILITY_TYPE_UNSPECIFIED = 0
     GOOGLE = 1
     CUSTOMER = 2
@@ -89,6 +90,7 @@ class EnforcementMode(proto.Enum):
             The cloud control is enforced to audit for
             non-compliance.
     """
+
     ENFORCEMENT_MODE_UNSPECIFIED = 0
     PREVENTIVE = 1
     DETECTIVE = 2
@@ -112,6 +114,7 @@ class FrameworkCategory(proto.Enum):
         CUSTOM_FRAMEWORK (5):
             A user-created framework.
     """
+
     FRAMEWORK_CATEGORY_UNSPECIFIED = 0
     INDUSTRY_DEFINED_STANDARD = 1
     ASSURED_WORKLOADS = 2
@@ -160,6 +163,7 @@ class CloudControlCategory(proto.Enum):
             The business continuity and disaster recovery
             (BCDR) category.
     """
+
     CLOUD_CONTROL_CATEGORY_UNSPECIFIED = 0
     CC_CATEGORY_INFRASTRUCTURE = 1
     CC_CATEGORY_ARTIFICIAL_INTELLIGENCE = 2
@@ -191,6 +195,7 @@ class CloudProvider(proto.Enum):
         GCP (3):
             Google Cloud.
     """
+
     CLOUD_PROVIDER_UNSPECIFIED = 0
     AWS = 1
     AZURE = 2
@@ -261,6 +266,7 @@ class Severity(proto.Enum):
             minimal access to an environment but can't
             access data, execute code, or create resources.
     """
+
     SEVERITY_UNSPECIFIED = 0
     CRITICAL = 1
     HIGH = 2
@@ -283,6 +289,7 @@ class RuleActionType(proto.Enum):
         RULE_ACTION_TYPE_AUDIT (3):
             The rule is intended to audit non-compliance.
     """
+
     RULE_ACTION_TYPE_UNSPECIFIED = 0
     RULE_ACTION_TYPE_PREVENTIVE = 1
     RULE_ACTION_TYPE_DETECTIVE = 2
@@ -307,6 +314,7 @@ class TargetResourceType(proto.Enum):
             The target resource is an application in App
             Hub.
     """
+
     TARGET_RESOURCE_TYPE_UNSPECIFIED = 0
     TARGET_RESOURCE_CRM_TYPE_ORG = 1
     TARGET_RESOURCE_CRM_TYPE_FOLDER = 2
@@ -367,6 +375,7 @@ class Framework(proto.Message):
                 A framework that's created and managed by
                 you.
         """
+
         FRAMEWORK_TYPE_UNSPECIFIED = 0
         BUILT_IN = 1
         CUSTOM = 2
@@ -407,19 +416,19 @@ class Framework(proto.Message):
         number=10,
         enum="CloudProvider",
     )
-    supported_target_resource_types: MutableSequence[
-        "TargetResourceType"
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=11,
-        enum="TargetResourceType",
+    supported_target_resource_types: MutableSequence["TargetResourceType"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=11,
+            enum="TargetResourceType",
+        )
     )
-    supported_enforcement_modes: MutableSequence[
-        "EnforcementMode"
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=13,
-        enum="EnforcementMode",
+    supported_enforcement_modes: MutableSequence["EnforcementMode"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=13,
+            enum="EnforcementMode",
+        )
     )
 
 
@@ -583,6 +592,7 @@ class CloudControl(proto.Message):
                 A cloud control that's provided and managed
                 by Google.
         """
+
         TYPE_UNSPECIFIED = 0
         CUSTOM = 1
         BUILT_IN = 2
@@ -603,12 +613,12 @@ class CloudControl(proto.Message):
         proto.STRING,
         number=5,
     )
-    supported_enforcement_modes: MutableSequence[
-        "EnforcementMode"
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=7,
-        enum="EnforcementMode",
+    supported_enforcement_modes: MutableSequence["EnforcementMode"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=7,
+            enum="EnforcementMode",
+        )
     )
     parameter_spec: MutableSequence["ParameterSpec"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -652,12 +662,12 @@ class CloudControl(proto.Message):
         number=17,
         message=timestamp_pb2.Timestamp,
     )
-    supported_target_resource_types: MutableSequence[
-        "TargetResourceType"
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=18,
-        enum="TargetResourceType",
+    supported_target_resource_types: MutableSequence["TargetResourceType"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=18,
+            enum="TargetResourceType",
+        )
     )
 
 
@@ -707,6 +717,7 @@ class ParameterSpec(proto.Message):
             ONEOF (7):
                 A oneOf value.
         """
+
         VALUE_TYPE_UNSPECIFIED = 0
         STRING = 3
         BOOLEAN = 4
@@ -740,12 +751,12 @@ class ParameterSpec(proto.Message):
         number=6,
         message="ParamValue",
     )
-    substitution_rules: MutableSequence[
-        "ParameterSubstitutionRule"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="ParameterSubstitutionRule",
+    substitution_rules: MutableSequence["ParameterSubstitutionRule"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="ParameterSubstitutionRule",
+        )
     )
     sub_parameters: MutableSequence["ParameterSpec"] = proto.RepeatedField(
         proto.MESSAGE,

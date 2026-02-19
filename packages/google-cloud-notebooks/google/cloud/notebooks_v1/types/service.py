@@ -93,6 +93,7 @@ class UpgradeType(proto.Enum):
         UPGRADE_ALL (4):
             Upgrade All (OS, Framework and CUDA).
     """
+
     UPGRADE_TYPE_UNSPECIFIED = 0
     UPGRADE_FRAMEWORK = 1
     UPGRADE_OS = 2
@@ -664,6 +665,7 @@ class GetInstanceHealthResponse(proto.Message):
                 The instance health monitoring agent is not
                 running. Applies to ACTIVE state.
         """
+
         HEALTH_STATE_UNSPECIFIED = 0
         HEALTHY = 1
         UNHEALTHY = 2

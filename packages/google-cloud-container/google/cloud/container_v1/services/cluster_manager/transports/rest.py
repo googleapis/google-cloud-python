@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.container_v1.types import cluster_service
@@ -2189,9 +2189,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2312,9 +2310,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_http_options()
 
             request, metadata = self._interceptor.pre_check_autopilot_compatibility(
                 request, metadata
@@ -2380,11 +2376,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             resp = self._interceptor.post_check_autopilot_compatibility(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_check_autopilot_compatibility_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_check_autopilot_compatibility_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2473,9 +2468,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_http_options()
 
             request, metadata = self._interceptor.pre_complete_ip_rotation(
                 request, metadata
@@ -2625,9 +2618,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_http_options()
 
             request, metadata = self._interceptor.pre_complete_node_pool_upgrade(
                 request, metadata
@@ -3362,9 +3353,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_cluster_upgrade_info(
                 request, metadata
@@ -3518,9 +3507,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_node_pool_upgrade_info(
                 request, metadata
@@ -4277,9 +4264,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseGetServerConfig._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_server_config(
                 request, metadata
@@ -4875,9 +4860,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_usable_subnetworks(
                 request, metadata
@@ -5034,9 +5017,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_http_options()
 
             request, metadata = self._interceptor.pre_rollback_node_pool_upgrade(
                 request, metadata
@@ -5193,9 +5174,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_set_addons_config(
                 request, metadata
@@ -5825,9 +5804,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetLoggingService._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_http_options()
 
             request, metadata = self._interceptor.pre_set_logging_service(
                 request, metadata
@@ -5983,9 +5960,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_maintenance_policy(
                 request, metadata
@@ -6296,9 +6271,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_http_options()
 
             request, metadata = self._interceptor.pre_set_monitoring_service(
                 request, metadata
@@ -6454,9 +6427,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_network_policy(
                 request, metadata
@@ -6612,9 +6583,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_http_options()
 
             request, metadata = self._interceptor.pre_set_node_pool_autoscaling(
                 request, metadata
@@ -6773,9 +6742,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_http_options()
 
             request, metadata = self._interceptor.pre_set_node_pool_management(
                 request, metadata
@@ -6930,9 +6897,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_http_options()
 
             request, metadata = self._interceptor.pre_set_node_pool_size(
                 request, metadata
@@ -7089,9 +7054,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterManagerRestTransport._BaseStartIPRotation._get_http_options()
-            )
+            http_options = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_http_options()
 
             request, metadata = self._interceptor.pre_start_ip_rotation(
                 request, metadata
@@ -7670,7 +7633,9 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CheckAutopilotCompatibility(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CheckAutopilotCompatibility(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def complete_ip_rotation(
@@ -7688,7 +7653,9 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
     ) -> Callable[[cluster_service.CompleteNodePoolUpgradeRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CompleteNodePoolUpgrade(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CompleteNodePoolUpgrade(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_cluster(
@@ -7731,7 +7698,9 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchClusterUpgradeInfo(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchClusterUpgradeInfo(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_node_pool_upgrade_info(
@@ -7742,7 +7711,9 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchNodePoolUpgradeInfo(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchNodePoolUpgradeInfo(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_cluster(
@@ -7837,7 +7808,9 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RollbackNodePoolUpgrade(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RollbackNodePoolUpgrade(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_addons_config(
@@ -7925,7 +7898,9 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetNodePoolAutoscaling(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetNodePoolAutoscaling(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_node_pool_management(

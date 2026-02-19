@@ -16,20 +16,20 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.storage_control_v2.types import storage_control
@@ -945,9 +945,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_folder_intelligence_config(
                 request, metadata
@@ -1013,11 +1011,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_get_folder_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_folder_intelligence_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_folder_intelligence_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1145,15 +1142,12 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_organization_intelligence_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_organization_intelligence_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_transcoded_request(
                 http_options, request
@@ -1214,11 +1208,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_get_organization_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_organization_intelligence_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_organization_intelligence_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1310,9 +1303,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_project_intelligence_config(
                 request, metadata
@@ -1378,11 +1369,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_get_project_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_project_intelligence_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_project_intelligence_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1657,9 +1647,7 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_folder_intelligence_config(
                 request, metadata
@@ -1728,11 +1716,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_update_folder_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_folder_intelligence_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_folder_intelligence_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1827,15 +1814,12 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_organization_intelligence_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_organization_intelligence_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_transcoded_request(
                 http_options, request
@@ -1901,11 +1885,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_update_organization_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_organization_intelligence_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_organization_intelligence_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1998,15 +1981,12 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_http_options()
-            )
+            http_options = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_project_intelligence_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_project_intelligence_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_transcoded_request(
                 http_options, request
@@ -2072,11 +2052,10 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
 
             resp = self._interceptor.post_update_project_intelligence_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_project_intelligence_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_project_intelligence_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2194,7 +2173,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetFolderIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetFolderIntelligenceConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_iam_policy(
@@ -2223,7 +2204,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetOrganizationIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOrganizationIntelligenceConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_project_intelligence_config(
@@ -2234,7 +2217,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetProjectIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetProjectIntelligenceConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_storage_layout(
@@ -2344,7 +2329,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateFolderIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateFolderIntelligenceConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_organization_intelligence_config(
@@ -2355,7 +2342,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateOrganizationIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateOrganizationIntelligenceConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_project_intelligence_config(
@@ -2366,7 +2355,9 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateProjectIntelligenceConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateProjectIntelligenceConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

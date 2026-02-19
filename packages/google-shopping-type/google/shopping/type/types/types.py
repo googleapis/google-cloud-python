@@ -64,6 +64,7 @@ class Weight(proto.Message):
             KILOGRAM (2):
                 kg unit.
         """
+
         WEIGHT_UNIT_UNSPECIFIED = 0
         POUND = 1
         KILOGRAM = 2
@@ -185,6 +186,7 @@ class Destination(proto.Message):
                 `YouTube
                 Shopping <https://support.google.com/merchants/answer/12362804>`__.
         """
+
         DESTINATION_ENUM_UNSPECIFIED = 0
         SHOPPING_ADS = 1
         DISPLAY_ADS = 2
@@ -256,6 +258,7 @@ class ReportingContext(proto.Message):
                 `Local cloud
                 retail <https://cloud.google.com/solutions/retail>`__.
         """
+
         REPORTING_CONTEXT_ENUM_UNSPECIFIED = 0
         SHOPPING_ADS = 1
         DISCOVERY_ADS = 2
@@ -292,6 +295,7 @@ class Channel(proto.Message):
             LOCAL (2):
                 Local product.
         """
+
         CHANNEL_ENUM_UNSPECIFIED = 0
         ONLINE = 1
         LOCAL = 2

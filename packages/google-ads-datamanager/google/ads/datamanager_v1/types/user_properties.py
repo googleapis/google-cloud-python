@@ -45,6 +45,7 @@ class CustomerType(proto.Enum):
             The customer has re-engaged with the
             advertiser.
     """
+
     CUSTOMER_TYPE_UNSPECIFIED = 0
     NEW = 1
     RETURNING = 2
@@ -65,6 +66,7 @@ class CustomerValueBucket(proto.Enum):
         HIGH (3):
             The customer is high value.
     """
+
     CUSTOMER_VALUE_BUCKET_UNSPECIFIED = 0
     LOW = 1
     MEDIUM = 2

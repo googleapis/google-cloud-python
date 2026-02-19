@@ -90,6 +90,7 @@ class Service(proto.Message):
                 The underlying networking resources have been
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2

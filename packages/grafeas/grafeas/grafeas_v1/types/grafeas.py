@@ -23,17 +23,15 @@ import proto  # type: ignore
 
 from grafeas.grafeas_v1.types import attestation as g_attestation
 from grafeas.grafeas_v1.types import build as g_build
-from grafeas.grafeas_v1.types import common
+from grafeas.grafeas_v1.types import common, sbom, vex
 from grafeas.grafeas_v1.types import compliance as g_compliance
 from grafeas.grafeas_v1.types import deployment as g_deployment
 from grafeas.grafeas_v1.types import discovery as g_discovery
 from grafeas.grafeas_v1.types import dsse_attestation as g_dsse_attestation
 from grafeas.grafeas_v1.types import image as g_image
 from grafeas.grafeas_v1.types import package as g_package
-from grafeas.grafeas_v1.types import sbom
 from grafeas.grafeas_v1.types import secret as g_secret
 from grafeas.grafeas_v1.types import upgrade as g_upgrade
-from grafeas.grafeas_v1.types import vex
 from grafeas.grafeas_v1.types import vulnerability as g_vulnerability
 
 __protobuf__ = proto.module(

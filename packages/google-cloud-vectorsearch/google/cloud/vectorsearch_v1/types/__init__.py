@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import DistanceMetric
-from .data_object import DataObject, DenseVector, SparseVector, Vector
+from .common import (
+    DistanceMetric,
+)
+from .data_object import (
+    DataObject,
+    DenseVector,
+    SparseVector,
+    Vector,
+)
 from .data_object_search_service import (
     AggregateDataObjectsRequest,
     AggregateDataObjectsResponse,
@@ -47,7 +54,10 @@ from .data_object_service import (
     GetDataObjectRequest,
     UpdateDataObjectRequest,
 )
-from .embedding_config import EmbeddingTaskType, VertexEmbeddingConfig
+from .embedding_config import (
+    EmbeddingTaskType,
+    VertexEmbeddingConfig,
+)
 from .vectorsearch_service import (
     Collection,
     CreateCollectionRequest,

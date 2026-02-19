@@ -81,7 +81,9 @@ from .image_versions import (
     ListImageVersionsRequest,
     ListImageVersionsResponse,
 )
-from .operations import OperationMetadata
+from .operations import (
+    OperationMetadata,
+)
 
 __all__ = (
     "AirflowMetadataRetentionPolicyConfig",

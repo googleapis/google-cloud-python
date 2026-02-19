@@ -67,6 +67,7 @@ class FileInput(proto.Message):
                 through the Merchant Center, see `Add products to Merchant
                 Center <https://support.google.com/merchants/answer/12158053>`__.
         """
+
         FILE_INPUT_TYPE_UNSPECIFIED = 0
         UPLOAD = 1
         FETCH = 2
@@ -136,6 +137,7 @@ class FileInput(proto.Message):
                 FREQUENCY_MONTHLY (3):
                     The fetch happens every month.
             """
+
             FREQUENCY_UNSPECIFIED = 0
             FREQUENCY_DAILY = 1
             FREQUENCY_WEEKLY = 2

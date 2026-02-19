@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.cloudcontrolspartner_v1.types import (
     access_approval_requests,
@@ -530,12 +530,12 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_access_approval_requests" not in self._stubs:
-            self._stubs[
-                "list_access_approval_requests"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore/ListAccessApprovalRequests",
-                request_serializer=access_approval_requests.ListAccessApprovalRequestsRequest.serialize,
-                response_deserializer=access_approval_requests.ListAccessApprovalRequestsResponse.deserialize,
+            self._stubs["list_access_approval_requests"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore/ListAccessApprovalRequests",
+                    request_serializer=access_approval_requests.ListAccessApprovalRequestsRequest.serialize,
+                    response_deserializer=access_approval_requests.ListAccessApprovalRequestsResponse.deserialize,
+                )
             )
         return self._stubs["list_access_approval_requests"]
 

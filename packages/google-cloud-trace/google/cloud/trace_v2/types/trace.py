@@ -153,6 +153,7 @@ class Span(proto.Message):
                 consumer spans (e.g. receiving a message from a
                 pubsub service subscription).
         """
+
         SPAN_KIND_UNSPECIFIED = 0
         INTERNAL = 1
         SERVER = 2
@@ -274,6 +275,7 @@ class Span(proto.Message):
                     RECEIVED (2):
                         Indicates a received message.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 SENT = 1
                 RECEIVED = 2
@@ -380,6 +382,7 @@ class Span(proto.Message):
                     The linked span is a parent of the current
                     span.
             """
+
             TYPE_UNSPECIFIED = 0
             CHILD_LINKED_SPAN = 1
             PARENT_LINKED_SPAN = 2

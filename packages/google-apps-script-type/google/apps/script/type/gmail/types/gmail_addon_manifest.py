@@ -176,16 +176,17 @@ class ComposeTrigger(proto.Message):
                 compose addon is triggered. This includes the
                 audience list (To/cc list) of a draft message.
         """
+
         UNSPECIFIED = 0
         NONE = 1
         METADATA = 2
 
-    actions: MutableSequence[
-        extension_point.MenuItemExtensionPoint
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=extension_point.MenuItemExtensionPoint,
+    actions: MutableSequence[extension_point.MenuItemExtensionPoint] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=extension_point.MenuItemExtensionPoint,
+        )
     )
     draft_access: DraftAccess = proto.Field(
         proto.ENUM,

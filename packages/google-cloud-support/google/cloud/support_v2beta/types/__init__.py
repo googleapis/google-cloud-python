@@ -13,14 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .actor import Actor
-from .attachment import Attachment
+from .actor import (
+    Actor,
+)
+from .attachment import (
+    Attachment,
+)
 from .attachment_service import (
     GetAttachmentRequest,
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
-from .case import Case, CaseClassification, Product, ProductLine
+from .case import (
+    Case,
+    CaseClassification,
+    Product,
+    ProductLine,
+)
 from .case_service import (
     CloseCaseRequest,
     CreateCaseRequest,
@@ -34,18 +43,31 @@ from .case_service import (
     SearchCasesResponse,
     UpdateCaseRequest,
 )
-from .comment import Comment
+from .comment import (
+    Comment,
+)
 from .comment_service import (
     CreateCommentRequest,
     GetCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
-from .content import TextContent
-from .email_message import EmailMessage
-from .escalation import Escalation
-from .feed_item import FeedItem
-from .feed_service import ShowFeedRequest, ShowFeedResponse
+from .content import (
+    TextContent,
+)
+from .email_message import (
+    EmailMessage,
+)
+from .escalation import (
+    Escalation,
+)
+from .feed_item import (
+    FeedItem,
+)
+from .feed_service import (
+    ShowFeedRequest,
+    ShowFeedResponse,
+)
 
 __all__ = (
     "Actor",

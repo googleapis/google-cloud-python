@@ -53,6 +53,7 @@ class CloudDlpDataProfile(proto.Message):
             PROJECT (2):
                 Project-level configurations.
         """
+
         PARENT_TYPE_UNSPECIFIED = 0
         ORGANIZATION = 1
         PROJECT = 2

@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1620,9 +1622,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_create_authz_extension(
                 request, metadata
@@ -1773,9 +1773,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateLbEdgeExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_create_lb_edge_extension(
                 request, metadata
@@ -1926,9 +1924,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateLbRouteExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_create_lb_route_extension(
                 request, metadata
@@ -2080,9 +2076,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseCreateLbTrafficExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_create_lb_traffic_extension(
                 request, metadata
@@ -2232,9 +2226,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_authz_extension(
                 request, metadata
@@ -2379,9 +2371,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteLbEdgeExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_lb_edge_extension(
                 request, metadata
@@ -2526,9 +2516,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_lb_route_extension(
                 request, metadata
@@ -2674,9 +2662,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseDeleteLbTrafficExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_lb_traffic_extension(
                 request, metadata
@@ -3119,9 +3105,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetLbRouteExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_get_lb_route_extension(
                 request, metadata
@@ -3270,9 +3254,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseGetLbTrafficExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_get_lb_traffic_extension(
                 request, metadata
@@ -3419,9 +3401,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_authz_extensions(
                 request, metadata
@@ -3568,9 +3548,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListLbEdgeExtensions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_lb_edge_extensions(
                 request, metadata
@@ -3719,9 +3697,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListLbRouteExtensions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_lb_route_extensions(
                 request, metadata
@@ -3871,9 +3847,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseListLbTrafficExtensions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_lb_traffic_extensions(
                 request, metadata
@@ -4023,9 +3997,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_update_authz_extension(
                 request, metadata
@@ -4176,9 +4148,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateLbEdgeExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_update_lb_edge_extension(
                 request, metadata
@@ -4329,9 +4299,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateLbRouteExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_update_lb_route_extension(
                 request, metadata
@@ -4483,9 +4451,7 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_http_options()
-            )
+            http_options = _BaseDepServiceRestTransport._BaseUpdateLbTrafficExtension._get_http_options()
 
             request, metadata = self._interceptor.pre_update_lb_traffic_extension(
                 request, metadata
@@ -4600,7 +4566,9 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     ) -> Callable[[dep.CreateLbRouteExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateLbRouteExtension(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateLbRouteExtension(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_lb_traffic_extension(
@@ -4608,7 +4576,9 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     ) -> Callable[[dep.CreateLbTrafficExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateLbTrafficExtension(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_authz_extension(
@@ -4632,7 +4602,9 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     ) -> Callable[[dep.DeleteLbRouteExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteLbRouteExtension(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteLbRouteExtension(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_lb_traffic_extension(
@@ -4640,7 +4612,9 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     ) -> Callable[[dep.DeleteLbTrafficExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteLbTrafficExtension(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_authz_extension(
@@ -4708,7 +4682,9 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListLbTrafficExtensions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListLbTrafficExtensions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_authz_extension(
@@ -4732,7 +4708,9 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     ) -> Callable[[dep.UpdateLbRouteExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateLbRouteExtension(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateLbRouteExtension(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_lb_traffic_extension(
@@ -4740,7 +4718,9 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
     ) -> Callable[[dep.UpdateLbTrafficExtensionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateLbTrafficExtension(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):

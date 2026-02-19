@@ -22,9 +22,7 @@ from .grpc_asyncio import SecureSourceManagerGrpcAsyncIOTransport
 from .rest import SecureSourceManagerRestInterceptor, SecureSourceManagerRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SecureSourceManagerTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SecureSourceManagerTransport]]
 _transport_registry["grpc"] = SecureSourceManagerGrpcTransport
 _transport_registry["grpc_asyncio"] = SecureSourceManagerGrpcAsyncIOTransport
 _transport_registry["rest"] = SecureSourceManagerRestTransport

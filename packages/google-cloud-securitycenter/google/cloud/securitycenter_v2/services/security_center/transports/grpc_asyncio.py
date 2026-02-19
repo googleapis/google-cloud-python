@@ -17,26 +17,38 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.securitycenter_v2.types import securitycenter_service, simulation
+from google.cloud.securitycenter_v2.types import (
+    bigquery_export,
+    finding,
+    mute_config,
+    notification_config,
+    resource_value_config,
+    securitycenter_service,
+    simulation,
+    source,
+    valued_resource,
+)
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v2.types import finding as gcs_finding
+from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v2.types import (
     notification_config as gcs_notification_config,
 )
@@ -44,16 +56,7 @@ from google.cloud.securitycenter_v2.types import (
     resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v2.types import bigquery_export
-from google.cloud.securitycenter_v2.types import finding
-from google.cloud.securitycenter_v2.types import finding as gcs_finding
-from google.cloud.securitycenter_v2.types import mute_config
-from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import notification_config
-from google.cloud.securitycenter_v2.types import resource_value_config
-from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
-from google.cloud.securitycenter_v2.types import valued_resource
 
 from .base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
 from .grpc import SecurityCenterGrpcTransport
@@ -393,12 +396,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_resource_value_configs" not in self._stubs:
-            self._stubs[
-                "batch_create_resource_value_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v2.SecurityCenter/BatchCreateResourceValueConfigs",
-                request_serializer=securitycenter_service.BatchCreateResourceValueConfigsRequest.serialize,
-                response_deserializer=securitycenter_service.BatchCreateResourceValueConfigsResponse.deserialize,
+            self._stubs["batch_create_resource_value_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v2.SecurityCenter/BatchCreateResourceValueConfigs",
+                    request_serializer=securitycenter_service.BatchCreateResourceValueConfigsRequest.serialize,
+                    response_deserializer=securitycenter_service.BatchCreateResourceValueConfigsResponse.deserialize,
+                )
             )
         return self._stubs["batch_create_resource_value_configs"]
 
@@ -544,12 +547,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_notification_config" not in self._stubs:
-            self._stubs[
-                "create_notification_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v2.SecurityCenter/CreateNotificationConfig",
-                request_serializer=securitycenter_service.CreateNotificationConfigRequest.serialize,
-                response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
+            self._stubs["create_notification_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v2.SecurityCenter/CreateNotificationConfig",
+                    request_serializer=securitycenter_service.CreateNotificationConfigRequest.serialize,
+                    response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
+                )
             )
         return self._stubs["create_notification_config"]
 
@@ -660,12 +663,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_notification_config" not in self._stubs:
-            self._stubs[
-                "delete_notification_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v2.SecurityCenter/DeleteNotificationConfig",
-                request_serializer=securitycenter_service.DeleteNotificationConfigRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_notification_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v2.SecurityCenter/DeleteNotificationConfig",
+                    request_serializer=securitycenter_service.DeleteNotificationConfigRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_notification_config"]
 
@@ -691,12 +694,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_resource_value_config" not in self._stubs:
-            self._stubs[
-                "delete_resource_value_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v2.SecurityCenter/DeleteResourceValueConfig",
-                request_serializer=securitycenter_service.DeleteResourceValueConfigRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_resource_value_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v2.SecurityCenter/DeleteResourceValueConfig",
+                    request_serializer=securitycenter_service.DeleteResourceValueConfigRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_resource_value_config"]
 
@@ -1154,12 +1157,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_resource_value_configs" not in self._stubs:
-            self._stubs[
-                "list_resource_value_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v2.SecurityCenter/ListResourceValueConfigs",
-                request_serializer=securitycenter_service.ListResourceValueConfigsRequest.serialize,
-                response_deserializer=securitycenter_service.ListResourceValueConfigsResponse.deserialize,
+            self._stubs["list_resource_value_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v2.SecurityCenter/ListResourceValueConfigs",
+                    request_serializer=securitycenter_service.ListResourceValueConfigsRequest.serialize,
+                    response_deserializer=securitycenter_service.ListResourceValueConfigsResponse.deserialize,
+                )
             )
         return self._stubs["list_resource_value_configs"]
 
@@ -1479,12 +1482,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_notification_config" not in self._stubs:
-            self._stubs[
-                "update_notification_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v2.SecurityCenter/UpdateNotificationConfig",
-                request_serializer=securitycenter_service.UpdateNotificationConfigRequest.serialize,
-                response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
+            self._stubs["update_notification_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v2.SecurityCenter/UpdateNotificationConfig",
+                    request_serializer=securitycenter_service.UpdateNotificationConfigRequest.serialize,
+                    response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
+                )
             )
         return self._stubs["update_notification_config"]
 
@@ -1511,12 +1514,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_resource_value_config" not in self._stubs:
-            self._stubs[
-                "update_resource_value_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v2.SecurityCenter/UpdateResourceValueConfig",
-                request_serializer=securitycenter_service.UpdateResourceValueConfigRequest.serialize,
-                response_deserializer=gcs_resource_value_config.ResourceValueConfig.deserialize,
+            self._stubs["update_resource_value_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v2.SecurityCenter/UpdateResourceValueConfig",
+                    request_serializer=securitycenter_service.UpdateResourceValueConfigRequest.serialize,
+                    response_deserializer=gcs_resource_value_config.ResourceValueConfig.deserialize,
+                )
             )
         return self._stubs["update_resource_value_config"]
 

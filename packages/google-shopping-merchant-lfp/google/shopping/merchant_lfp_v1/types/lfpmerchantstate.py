@@ -81,6 +81,7 @@ class LfpMerchantState(proto.Message):
                     The ``LfpStore`` is not matched with a Google Business
                     Profile store.
             """
+
             STORE_MATCHING_STATE_UNSPECIFIED = 0
             STORE_MATCHING_STATE_MATCHED = 1
             STORE_MATCHING_STATE_FAILED = 2
@@ -183,6 +184,7 @@ class LfpMerchantState(proto.Message):
                 VERIFICATION_STATE_APPROVED (3):
                     Verification state approved.
             """
+
             VERIFICATION_STATE_UNSPECIFIED = 0
             VERIFICATION_STATE_NOT_APPROVED = 1
             VERIFICATION_STATE_IN_PROGRESS = 2
@@ -203,6 +205,7 @@ class LfpMerchantState(proto.Message):
                 MERCHANT_HOSTED_STORE_SPECIFIC (3):
                     Merchant hosted store specific product page.
             """
+
             PRODUCT_PAGE_TYPE_UNSPECIFIED = 0
             GOOGLE_HOSTED = 1
             MERCHANT_HOSTED = 2

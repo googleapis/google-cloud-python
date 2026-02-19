@@ -391,6 +391,7 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                 The [Document][google.cloud.discoveryengine.v1.Document] is
                 not indexed.
         """
+
         STATE_UNSPECIFIED = 0
         INDEXED = 1
         NOT_IN_TARGET_SITE = 2

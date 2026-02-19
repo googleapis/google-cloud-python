@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.fleet_routing import FleetRoutingAsyncClient, FleetRoutingClient
 from .types.async_model import (
     AsyncModelMetadata,

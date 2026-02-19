@@ -96,6 +96,7 @@ class EntryView(proto.Enum):
         ALL (4):
             No description available.
     """
+
     ENTRY_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -122,6 +123,7 @@ class TransferStatus(proto.Enum):
             from Data Catalog service. The resource can only
             be updated from Dataplex API.
     """
+
     TRANSFER_STATUS_UNSPECIFIED = 0
     TRANSFER_STATUS_MIGRATED = 1
     TRANSFER_STATUS_TRANSFERRED = 2
@@ -184,6 +186,7 @@ class AspectType(proto.Message):
             METADATA_AND_DATA (1):
                 Metadata and data classification.
         """
+
         DATA_CLASSIFICATION_UNSPECIFIED = 0
         METADATA_AND_DATA = 1
 
@@ -391,19 +394,19 @@ class AspectType(proto.Message):
             proto.STRING,
             number=5,
         )
-        record_fields: MutableSequence[
-            "AspectType.MetadataTemplate"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="AspectType.MetadataTemplate",
+        record_fields: MutableSequence["AspectType.MetadataTemplate"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="AspectType.MetadataTemplate",
+            )
         )
-        enum_values: MutableSequence[
-            "AspectType.MetadataTemplate.EnumValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=8,
-            message="AspectType.MetadataTemplate.EnumValue",
+        enum_values: MutableSequence["AspectType.MetadataTemplate.EnumValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=8,
+                message="AspectType.MetadataTemplate.EnumValue",
+            )
         )
         map_items: "AspectType.MetadataTemplate" = proto.Field(
             proto.MESSAGE,
@@ -2350,6 +2353,7 @@ class MetadataJob(proto.Message):
             EXPORT (2):
                 Export job.
         """
+
         TYPE_UNSPECIFIED = 0
         IMPORT = 1
         EXPORT = 2
@@ -2539,6 +2543,7 @@ class MetadataJob(proto.Message):
 
                     This sync mode is supported for entries.
             """
+
             SYNC_MODE_UNSPECIFIED = 0
             FULL = 1
             INCREMENTAL = 2
@@ -2569,6 +2574,7 @@ class MetadataJob(proto.Message):
                     import items, but doesn't specify which import
                     item has an error.
             """
+
             LOG_LEVEL_UNSPECIFIED = 0
             DEBUG = 1
             INFO = 2
@@ -2850,6 +2856,7 @@ class MetadataJob(proto.Message):
                 SUCCEEDED_WITH_ERRORS (7):
                     The job completed with some errors.
             """
+
             STATE_UNSPECIFIED = 0
             QUEUED = 1
             RUNNING = 2
@@ -3000,6 +3007,7 @@ class EntryLink(proto.Message):
                     The Entry is referenced as the target of the
                     directional Entry Link.
             """
+
             UNSPECIFIED = 0
             SOURCE = 2
             TARGET = 3

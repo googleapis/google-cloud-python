@@ -115,6 +115,7 @@ class InsightsConfig(proto.Message):
             ERROR (4):
                 The InsightsConfig is in an error state.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 5
         COMPLETE = 3
@@ -214,6 +215,7 @@ class RuntimeConfig(proto.Message):
                 The runtime configuration has been unlinked
                 to the InsightsConfig.
         """
+
         STATE_UNSPECIFIED = 0
         LINKED = 1
         UNLINKED = 2

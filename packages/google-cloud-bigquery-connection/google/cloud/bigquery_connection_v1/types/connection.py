@@ -359,6 +359,7 @@ class CloudSqlProperties(proto.Message):
             MYSQL (2):
                 Cloud SQL for MySQL.
         """
+
         DATABASE_TYPE_UNSPECIFIED = 0
         POSTGRES = 1
         MYSQL = 2

@@ -22,9 +22,7 @@ from .grpc_asyncio import FileUploadsServiceGrpcAsyncIOTransport
 from .rest import FileUploadsServiceRestInterceptor, FileUploadsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[FileUploadsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[FileUploadsServiceTransport]]
 _transport_registry["grpc"] = FileUploadsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = FileUploadsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = FileUploadsServiceRestTransport

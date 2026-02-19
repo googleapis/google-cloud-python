@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -405,9 +405,7 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_http_options()
-            )
+            http_options = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_product_image_background(
                 request, metadata
@@ -478,11 +476,10 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             resp = self._interceptor.post_generate_product_image_background(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_product_image_background_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_generate_product_image_background_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -569,9 +566,7 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_http_options()
-            )
+            http_options = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_product_image_background(
                 request, metadata
@@ -642,11 +637,10 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             resp = self._interceptor.post_remove_product_image_background(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_product_image_background_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_remove_product_image_background_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -731,9 +725,7 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_http_options()
-            )
+            http_options = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_http_options()
 
             request, metadata = self._interceptor.pre_upscale_product_image(
                 request, metadata
@@ -839,7 +831,9 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateProductImageBackground(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateProductImageBackground(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def remove_product_image_background(
@@ -850,7 +844,9 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveProductImageBackground(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveProductImageBackground(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def upscale_product_image(

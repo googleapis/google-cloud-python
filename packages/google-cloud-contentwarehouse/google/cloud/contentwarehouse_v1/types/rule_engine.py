@@ -118,6 +118,7 @@ class Rule(proto.Message):
             ON_DELETE_LINK (8):
                 Trigger for delete link action.
         """
+
         UNKNOWN = 0
         ON_CREATE = 1
         ON_UPDATE = 4
@@ -271,6 +272,7 @@ class AccessControlAction(proto.Message):
                 Replaces existing policy bindings with the
                 given policy binding list
         """
+
         UNKNOWN = 0
         ADD_POLICY_BINDING = 1
         REMOVE_POLICY_BINDING = 2
@@ -561,6 +563,7 @@ class ActionOutput(proto.Message):
             ACTION_PENDING (4):
                 State indicating action is pending.
         """
+
         UNKNOWN = 0
         ACTION_SUCCEEDED = 1
         ACTION_FAILED = 2

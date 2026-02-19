@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,15 +31,15 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.documentai_v1.types import document_processor_service, evaluation
-from google.cloud.documentai_v1.types import processor
+from google.cloud.documentai_v1.types import (
+    document_processor_service,
+    evaluation,
+    processor,
+    processor_type,
+)
 from google.cloud.documentai_v1.types import processor as gcd_processor
-from google.cloud.documentai_v1.types import processor_type
 
 from .base import DEFAULT_CLIENT_INFO, DocumentProcessorServiceTransport
 from .grpc import DocumentProcessorServiceGrpcTransport
@@ -730,12 +733,12 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undeploy_processor_version" not in self._stubs:
-            self._stubs[
-                "undeploy_processor_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.documentai.v1.DocumentProcessorService/UndeployProcessorVersion",
-                request_serializer=document_processor_service.UndeployProcessorVersionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["undeploy_processor_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.documentai.v1.DocumentProcessorService/UndeployProcessorVersion",
+                    request_serializer=document_processor_service.UndeployProcessorVersionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["undeploy_processor_version"]
 
@@ -891,12 +894,12 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_default_processor_version" not in self._stubs:
-            self._stubs[
-                "set_default_processor_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.documentai.v1.DocumentProcessorService/SetDefaultProcessorVersion",
-                request_serializer=document_processor_service.SetDefaultProcessorVersionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["set_default_processor_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.documentai.v1.DocumentProcessorService/SetDefaultProcessorVersion",
+                    request_serializer=document_processor_service.SetDefaultProcessorVersionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["set_default_processor_version"]
 
@@ -953,12 +956,12 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "evaluate_processor_version" not in self._stubs:
-            self._stubs[
-                "evaluate_processor_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.documentai.v1.DocumentProcessorService/EvaluateProcessorVersion",
-                request_serializer=document_processor_service.EvaluateProcessorVersionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["evaluate_processor_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.documentai.v1.DocumentProcessorService/EvaluateProcessorVersion",
+                    request_serializer=document_processor_service.EvaluateProcessorVersionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["evaluate_processor_version"]
 

@@ -16,21 +16,20 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.support_v2.types import case
+from google.cloud.support_v2.types import case, case_service
 from google.cloud.support_v2.types import case as gcs_case
-from google.cloud.support_v2.types import case_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseCaseServiceRestTransport
@@ -1532,9 +1531,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_http_options()
 
             request, metadata = self._interceptor.pre_search_case_classifications(
                 request, metadata
@@ -2007,7 +2004,9 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SearchCaseClassifications(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SearchCaseClassifications(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def search_cases(

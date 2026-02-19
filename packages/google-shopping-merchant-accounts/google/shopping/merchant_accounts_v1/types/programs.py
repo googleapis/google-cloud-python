@@ -90,6 +90,7 @@ class Program(proto.Message):
             ENABLED (3):
                 The program is enabled for the account.
         """
+
         STATE_UNSPECIFIED = 0
         NOT_ELIGIBLE = 1
         ELIGIBLE = 2

@@ -188,6 +188,7 @@ class CloudSqlInstanceInitializationConfig(proto.Message):
             ENTERPRISE_PLUS (2):
                 Enterprise Plus edition.
         """
+
         EDITION_UNSPECIFIED = 0
         ENTERPRISE = 1
         ENTERPRISE_PLUS = 2

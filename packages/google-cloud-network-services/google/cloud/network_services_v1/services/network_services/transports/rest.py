@@ -16,47 +16,51 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.network_services_v1.types import (
+    endpoint_policy,
+    extensibility,
+    gateway,
+    grpc_route,
+    http_route,
+    mesh,
+    route_view,
+    service_binding,
+    service_lb_policy,
+    tcp_route,
+    tls_route,
+)
+from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
+from google.cloud.network_services_v1.types import gateway as gcn_gateway
+from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
+from google.cloud.network_services_v1.types import http_route as gcn_http_route
+from google.cloud.network_services_v1.types import mesh as gcn_mesh
 from google.cloud.network_services_v1.types import (
     service_binding as gcn_service_binding,
 )
 from google.cloud.network_services_v1.types import (
     service_lb_policy as gcn_service_lb_policy,
 )
-from google.cloud.network_services_v1.types import endpoint_policy
-from google.cloud.network_services_v1.types import extensibility
-from google.cloud.network_services_v1.types import gateway
-from google.cloud.network_services_v1.types import gateway as gcn_gateway
-from google.cloud.network_services_v1.types import grpc_route
-from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
-from google.cloud.network_services_v1.types import http_route
-from google.cloud.network_services_v1.types import http_route as gcn_http_route
-from google.cloud.network_services_v1.types import mesh
-from google.cloud.network_services_v1.types import mesh as gcn_mesh
-from google.cloud.network_services_v1.types import route_view
-from google.cloud.network_services_v1.types import service_binding
-from google.cloud.network_services_v1.types import service_lb_policy
-from google.cloud.network_services_v1.types import tcp_route
 from google.cloud.network_services_v1.types import tcp_route as gcn_tcp_route
-from google.cloud.network_services_v1.types import tls_route
 from google.cloud.network_services_v1.types import tls_route as gcn_tls_route
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -3787,9 +3791,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_endpoint_policy(
                 request, metadata
@@ -4093,9 +4095,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_create_grpc_route(
                 request, metadata
@@ -4246,9 +4246,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_create_http_route(
                 request, metadata
@@ -4553,9 +4551,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service_binding(
                 request, metadata
@@ -4708,9 +4704,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service_lb_policy(
                 request, metadata
@@ -4863,9 +4857,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_create_tcp_route(
                 request, metadata
@@ -5016,9 +5008,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_create_tls_route(
                 request, metadata
@@ -5169,9 +5159,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_http_options()
 
             request, metadata = self._interceptor.pre_create_wasm_plugin(
                 request, metadata
@@ -5324,9 +5312,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_wasm_plugin_version(
                 request, metadata
@@ -5480,9 +5466,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_endpoint_policy(
                 request, metadata
@@ -5774,9 +5758,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_grpc_route(
                 request, metadata
@@ -5922,9 +5904,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_http_route(
                 request, metadata
@@ -6217,9 +6197,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_service_binding(
                 request, metadata
@@ -6366,9 +6344,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteServiceLbPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteServiceLbPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_service_lb_policy(
                 request, metadata
@@ -6516,9 +6492,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_tcp_route(
                 request, metadata
@@ -6664,9 +6638,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_tls_route(
                 request, metadata
@@ -6811,9 +6783,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_wasm_plugin(
                 request, metadata
@@ -6960,9 +6930,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_wasm_plugin_version(
                 request, metadata
@@ -7114,9 +7082,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_endpoint_policy(
                 request, metadata
@@ -7417,9 +7383,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseGetGatewayRouteView._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseGetGatewayRouteView._get_http_options()
 
             request, metadata = self._interceptor.pre_get_gateway_route_view(
                 request, metadata
@@ -8016,9 +7980,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseGetMeshRouteView._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseGetMeshRouteView._get_http_options()
 
             request, metadata = self._interceptor.pre_get_mesh_route_view(
                 request, metadata
@@ -8176,9 +8138,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service_binding(
                 request, metadata
@@ -8328,9 +8288,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseGetServiceLbPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseGetServiceLbPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service_lb_policy(
                 request, metadata
@@ -8922,9 +8880,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_wasm_plugin_version(
                 request, metadata
@@ -9072,9 +9028,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_endpoint_policies(
                 request, metadata
@@ -9224,9 +9178,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListGatewayRouteViews._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListGatewayRouteViews._get_http_options()
 
             request, metadata = self._interceptor.pre_list_gateway_route_views(
                 request, metadata
@@ -9524,9 +9476,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListGrpcRoutes._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListGrpcRoutes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_grpc_routes(
                 request, metadata
@@ -9675,9 +9625,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListHttpRoutes._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListHttpRoutes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_http_routes(
                 request, metadata
@@ -9974,9 +9922,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListMeshRouteViews._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListMeshRouteViews._get_http_options()
 
             request, metadata = self._interceptor.pre_list_mesh_route_views(
                 request, metadata
@@ -10126,9 +10072,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_service_bindings(
                 request, metadata
@@ -10278,9 +10222,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListServiceLbPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListServiceLbPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_service_lb_policies(
                 request, metadata
@@ -10724,9 +10666,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     Response returned by the ``ListWasmPlugins`` method.
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_http_options()
 
             request, metadata = self._interceptor.pre_list_wasm_plugins(
                 request, metadata
@@ -10875,9 +10815,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_wasm_plugin_versions(
                 request, metadata
@@ -11031,9 +10969,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_endpoint_policy(
                 request, metadata
@@ -11337,9 +11273,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_update_grpc_route(
                 request, metadata
@@ -11491,9 +11425,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_update_http_route(
                 request, metadata
@@ -11798,9 +11730,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_update_service_binding(
                 request, metadata
@@ -11953,9 +11883,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_service_lb_policy(
                 request, metadata
@@ -12109,9 +12037,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_update_tcp_route(
                 request, metadata
@@ -12263,9 +12189,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_update_tls_route(
                 request, metadata
@@ -12416,9 +12340,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_http_options()
 
             request, metadata = self._interceptor.pre_update_wasm_plugin(
                 request, metadata
@@ -12605,7 +12527,9 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateWasmPluginVersion(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateWasmPluginVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_endpoint_policy(
@@ -12701,7 +12625,9 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteWasmPluginVersion(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteWasmPluginVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_endpoint_policy(
@@ -12936,7 +12862,9 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListWasmPluginVersions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListWasmPluginVersions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_endpoint_policy(
@@ -13649,9 +13577,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -13794,9 +13720,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -13913,9 +13837,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -14170,9 +14092,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseNetworkServicesRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseNetworkServicesRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseListOperations._get_transcoded_request(

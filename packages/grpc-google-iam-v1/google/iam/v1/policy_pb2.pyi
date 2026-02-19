@@ -73,7 +73,6 @@ class AuditConfig(_message.Message):
 
 class AuditLogConfig(_message.Message):
     __slots__ = ("log_type", "exempted_members")
-
     class LogType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         LOG_TYPE_UNSPECIFIED: _ClassVar[AuditLogConfig.LogType]
@@ -111,7 +110,6 @@ class PolicyDelta(_message.Message):
 
 class BindingDelta(_message.Message):
     __slots__ = ("action", "role", "member", "condition")
-
     class Action(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ACTION_UNSPECIFIED: _ClassVar[BindingDelta.Action]
@@ -139,7 +137,6 @@ class BindingDelta(_message.Message):
 
 class AuditConfigDelta(_message.Message):
     __slots__ = ("action", "service", "exempted_member", "log_type")
-
     class Action(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ACTION_UNSPECIFIED: _ClassVar[AuditConfigDelta.Action]

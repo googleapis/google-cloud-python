@@ -36,7 +36,6 @@ class Policy(_message.Message):
         "boolean_policy",
         "restore_default",
     )
-
     class ListPolicy(_message.Message):
         __slots__ = (
             "allowed_values",
@@ -45,12 +44,12 @@ class Policy(_message.Message):
             "suggested_value",
             "inherit_from_parent",
         )
-
         class AllValues(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             ALL_VALUES_UNSPECIFIED: _ClassVar[Policy.ListPolicy.AllValues]
             ALLOW: _ClassVar[Policy.ListPolicy.AllValues]
             DENY: _ClassVar[Policy.ListPolicy.AllValues]
+
         ALL_VALUES_UNSPECIFIED: Policy.ListPolicy.AllValues
         ALLOW: Policy.ListPolicy.AllValues
         DENY: Policy.ListPolicy.AllValues
@@ -82,6 +81,7 @@ class Policy(_message.Message):
     class RestoreDefault(_message.Message):
         __slots__ = ()
         def __init__(self) -> None: ...
+
     VERSION_FIELD_NUMBER: _ClassVar[int]
     CONSTRAINT_FIELD_NUMBER: _ClassVar[int]
     ETAG_FIELD_NUMBER: _ClassVar[int]

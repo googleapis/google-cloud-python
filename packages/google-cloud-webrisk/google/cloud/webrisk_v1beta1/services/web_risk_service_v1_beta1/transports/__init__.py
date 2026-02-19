@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[WebRiskServiceV1Beta1Transport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[WebRiskServiceV1Beta1Transport]]
 _transport_registry["grpc"] = WebRiskServiceV1Beta1GrpcTransport
 _transport_registry["grpc_asyncio"] = WebRiskServiceV1Beta1GrpcAsyncIOTransport
 _transport_registry["rest"] = WebRiskServiceV1Beta1RestTransport

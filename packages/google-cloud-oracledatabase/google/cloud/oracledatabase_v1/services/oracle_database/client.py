@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.oracledatabase_v1 import gapic_version as package_version
 
@@ -63,14 +63,15 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.oracledatabase_v1.services.oracle_database import pagers
 from google.cloud.oracledatabase_v1.types import (
+    autonomous_database,
     autonomous_database_character_set,
     autonomous_db_backup,
     autonomous_db_version,
@@ -79,15 +80,18 @@ from google.cloud.oracledatabase_v1.types import (
     database_character_set,
     db_node,
     db_server,
-)
-from google.cloud.oracledatabase_v1.types import (
+    db_system,
     db_system_initial_storage_size,
     db_system_shape,
     db_version,
     entitlement,
     exadata_infra,
-)
-from google.cloud.oracledatabase_v1.types import (
+    exadb_vm_cluster,
+    exascale_db_storage_vault,
+    gi_version,
+    minor_version,
+    odb_network,
+    odb_subnet,
     oracledatabase,
     pluggable_database,
     vm_cluster,
@@ -95,21 +99,14 @@ from google.cloud.oracledatabase_v1.types import (
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database as gco_autonomous_database,
 )
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import (
     exadb_vm_cluster as gco_exadb_vm_cluster,
 )
 from google.cloud.oracledatabase_v1.types import (
     exascale_db_storage_vault as gco_exascale_db_storage_vault,
 )
-from google.cloud.oracledatabase_v1.types import autonomous_database
-from google.cloud.oracledatabase_v1.types import db_system
-from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
-from google.cloud.oracledatabase_v1.types import exadb_vm_cluster
-from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
-from google.cloud.oracledatabase_v1.types import gi_version, minor_version
-from google.cloud.oracledatabase_v1.types import odb_network
 from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
-from google.cloud.oracledatabase_v1.types import odb_subnet
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 from .transports.base import DEFAULT_CLIENT_INFO, OracleDatabaseTransport
@@ -126,9 +123,7 @@ class OracleDatabaseClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[OracleDatabaseTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[OracleDatabaseTransport]]
     _transport_registry["grpc"] = OracleDatabaseGrpcTransport
     _transport_registry["grpc_asyncio"] = OracleDatabaseGrpcAsyncIOTransport
     _transport_registry["rest"] = OracleDatabaseRestTransport
@@ -1185,11 +1180,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = OracleDatabaseClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            OracleDatabaseClient._read_environment_variables()
+        )
         self._client_cert_source = OracleDatabaseClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -1224,8 +1217,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(OracleDatabaseTransport, transport)
             self._api_endpoint = self._transport.host

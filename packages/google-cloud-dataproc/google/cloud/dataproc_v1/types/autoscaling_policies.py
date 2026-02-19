@@ -102,6 +102,7 @@ class AutoscalingPolicy(proto.Message):
                 and be scaled down to zero secondary worker
                 nodes.
         """
+
         CLUSTER_TYPE_UNSPECIFIED = 0
         STANDARD = 1
         ZERO_SCALE = 2

@@ -103,6 +103,7 @@ class TargetSite(proto.Message):
             EXCLUDE (2):
                 Exclude the target site.
         """
+
         TYPE_UNSPECIFIED = 0
         INCLUDE = 1
         EXCLUDE = 2
@@ -135,6 +136,7 @@ class TargetSite(proto.Message):
             CANCELLED (6):
                 The target site change is cancelled.
         """
+
         INDEXING_STATUS_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
@@ -251,6 +253,7 @@ class SiteVerificationInfo(proto.Message):
                 Site exempt from verification, e.g., a public
                 website that opens to all.
         """
+
         SITE_VERIFICATION_STATE_UNSPECIFIED = 0
         VERIFIED = 1
         UNVERIFIED = 2

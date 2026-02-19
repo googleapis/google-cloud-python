@@ -197,6 +197,7 @@ class ExportToolsRequest(proto.Message):
             BLOB (1):
                 Tools will be exported as raw bytes.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
 
@@ -377,6 +378,7 @@ class Tool(proto.Message):
                 First party built-in tool created by
                 Dialogflow which cannot be modified.
         """
+
         TOOL_TYPE_UNSPECIFIED = 0
         CUSTOMIZED_TOOL = 1
         BUILTIN_TOOL = 2
@@ -583,6 +585,7 @@ class Tool(proto.Message):
                         DELETE (5):
                             Delete operation.
                     """
+
                     OPERATION_TYPE_UNSPECIFIED = 0
                     LIST = 1
                     GET = 2
@@ -684,6 +687,7 @@ class Tool(proto.Message):
                 QUERY_STRING (2):
                     Represents the key in query string.
             """
+
             REQUEST_LOCATION_UNSPECIFIED = 0
             HEADER = 1
             QUERY_STRING = 2
@@ -764,6 +768,7 @@ class Tool(proto.Message):
                         Represents the `client credential
                         flow <https://oauth.net/2/grant-types/client-credentials>`__.
                 """
+
                 OAUTH_GRANT_TYPE_UNSPECIFIED = 0
                 CLIENT_CREDENTIAL = 1
 
@@ -827,6 +832,7 @@ class Tool(proto.Message):
                         other Google Cloud APIs after you grant required roles to
                         ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
                 """
+
                 SERVICE_AGENT_AUTH_UNSPECIFIED = 0
                 ID_TOKEN = 1
                 ACCESS_TOKEN = 2

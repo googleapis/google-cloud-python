@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import uuid
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -31,15 +32,14 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.videointelligence_v1p3beta1 import gapic_version as package_version
 
@@ -131,7 +131,12 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         Returns:
             StreamingVideoIntelligenceServiceAsyncClient: The constructed client.
         """
-        return StreamingVideoIntelligenceServiceClient.from_service_account_info.__func__(StreamingVideoIntelligenceServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            StreamingVideoIntelligenceServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(
+            StreamingVideoIntelligenceServiceAsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -147,7 +152,12 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         Returns:
             StreamingVideoIntelligenceServiceAsyncClient: The constructed client.
         """
-        return StreamingVideoIntelligenceServiceClient.from_service_account_file.__func__(StreamingVideoIntelligenceServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            StreamingVideoIntelligenceServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(
+            StreamingVideoIntelligenceServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -185,7 +195,11 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return StreamingVideoIntelligenceServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return (
+            StreamingVideoIntelligenceServiceClient.get_mtls_endpoint_and_cert_source(
+                client_options
+            )
+        )  # type: ignore
 
     @property
     def transport(self) -> StreamingVideoIntelligenceServiceTransport:

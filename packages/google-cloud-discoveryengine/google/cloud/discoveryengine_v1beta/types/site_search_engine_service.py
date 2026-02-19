@@ -371,12 +371,12 @@ class ListTargetSitesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_site_search_engine.TargetSite,
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_site_search_engine.TargetSite,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -424,12 +424,12 @@ class BatchCreateTargetSitesResponse(proto.Message):
             TargetSites created.
     """
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_site_search_engine.TargetSite,
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_site_search_engine.TargetSite,
+        )
     )
 
 
@@ -838,6 +838,7 @@ class RecrawlUrisResponse(proto.Message):
                         Denotes a crawling attempt for the mobile
                         version of a page.
                 """
+
                 CORPUS_TYPE_UNSPECIFIED = 0
                 DESKTOP = 1
                 MOBILE = 2
@@ -1079,12 +1080,12 @@ class FetchDomainVerificationStatusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_site_search_engine.TargetSite,
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_site_search_engine.TargetSite,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

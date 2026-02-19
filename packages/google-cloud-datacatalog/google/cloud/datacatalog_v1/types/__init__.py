@@ -18,8 +18,15 @@ from .bigquery import (
     BigQueryRoutineSpec,
     CloudSqlBigQueryConnectionSpec,
 )
-from .common import IntegratedSystem, ManagingSystem, PersonalDetails
-from .data_source import DataSource, StorageProperties
+from .common import (
+    IntegratedSystem,
+    ManagingSystem,
+    PersonalDetails,
+)
+from .data_source import (
+    DataSource,
+    StorageProperties,
+)
 from .datacatalog import (
     BusinessContext,
     CatalogUIExperience,
@@ -97,9 +104,17 @@ from .dataplex_spec import (
     DataplexSpec,
     DataplexTableSpec,
 )
-from .dump_content import DumpItem, TaggedEntry
-from .gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
-from .physical_schema import PhysicalSchema
+from .dump_content import (
+    DumpItem,
+    TaggedEntry,
+)
+from .gcs_fileset_spec import (
+    GcsFilesetSpec,
+    GcsFileSpec,
+)
+from .physical_schema import (
+    PhysicalSchema,
+)
 from .policytagmanager import (
     CreatePolicyTagRequest,
     CreateTaxonomyRequest,
@@ -127,8 +142,14 @@ from .policytagmanagerserialization import (
     SerializedPolicyTag,
     SerializedTaxonomy,
 )
-from .schema import ColumnSchema, Schema
-from .search import SearchCatalogResult, SearchResultType
+from .schema import (
+    ColumnSchema,
+    Schema,
+)
+from .search import (
+    SearchCatalogResult,
+    SearchResultType,
+)
 from .table_spec import (
     BigQueryDateShardedSpec,
     BigQueryTableSpec,
@@ -136,9 +157,21 @@ from .table_spec import (
     TableSpec,
     ViewSpec,
 )
-from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
-from .timestamps import SystemTimestamps
-from .usage import CommonUsageStats, UsageSignal, UsageStats
+from .tags import (
+    FieldType,
+    Tag,
+    TagField,
+    TagTemplate,
+    TagTemplateField,
+)
+from .timestamps import (
+    SystemTimestamps,
+)
+from .usage import (
+    CommonUsageStats,
+    UsageSignal,
+    UsageStats,
+)
 
 __all__ = (
     "BigQueryConnectionSpec",

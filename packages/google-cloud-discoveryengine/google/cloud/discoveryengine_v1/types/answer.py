@@ -88,6 +88,7 @@ class Answer(proto.Message):
             STREAMING (4):
                 Answer generation is currently in progress.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         FAILED = 2
@@ -161,6 +162,7 @@ class Answer(proto.Message):
                 is not answerable, the answer is not relevant to
                 the query, or the answer is not well-formatted.
         """
+
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
         NON_ANSWER_SEEKING_QUERY_IGNORED = 2
@@ -544,6 +546,7 @@ class Answer(proto.Message):
                 SUCCEEDED (3):
                     Step has succeeded.
             """
+
             STATE_UNSPECIFIED = 0
             IN_PROGRESS = 1
             FAILED = 2
@@ -772,6 +775,7 @@ class Answer(proto.Message):
                     USER_DEFINED_CLASSIFICATION_QUERY (5):
                         User defined query classification type.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2

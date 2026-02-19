@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.chronicle_v1.types import data_access_control
@@ -836,9 +836,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseCreateDataAccessLabel._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseCreateDataAccessLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_access_label(
                 request, metadata
@@ -995,9 +993,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseCreateDataAccessScope._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseCreateDataAccessScope._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_access_scope(
                 request, metadata
@@ -1146,9 +1142,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseDeleteDataAccessLabel._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseDeleteDataAccessLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_access_label(
                 request, metadata
@@ -1256,9 +1250,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseDeleteDataAccessScope._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseDeleteDataAccessScope._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_access_scope(
                 request, metadata
@@ -1372,9 +1364,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseGetDataAccessLabel._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseGetDataAccessLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_access_label(
                 request, metadata
@@ -1527,9 +1517,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseGetDataAccessScope._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseGetDataAccessScope._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_access_scope(
                 request, metadata
@@ -1681,9 +1669,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseListDataAccessLabels._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseListDataAccessLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_access_labels(
                 request, metadata
@@ -1835,9 +1821,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseListDataAccessScopes._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseListDataAccessScopes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_access_scopes(
                 request, metadata
@@ -1990,9 +1974,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseUpdateDataAccessLabel._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseUpdateDataAccessLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_access_label(
                 request, metadata
@@ -2149,9 +2131,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseUpdateDataAccessScope._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseUpdateDataAccessScope._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_access_scope(
                 request, metadata
@@ -2408,9 +2388,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2530,9 +2508,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2650,9 +2626,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDataAccessControlServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2793,9 +2767,7 @@ class DataAccessControlServiceRestTransport(_BaseDataAccessControlServiceRestTra
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataAccessControlServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataAccessControlServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDataAccessControlServiceRestTransport._BaseListOperations._get_transcoded_request(

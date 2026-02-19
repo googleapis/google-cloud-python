@@ -23,10 +23,12 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.discoveryengine_v1beta.types import (
+    serving_config,
+    serving_config_service,
+)
+from google.cloud.discoveryengine_v1beta.types import (
     serving_config as gcd_serving_config,
 )
-from google.cloud.discoveryengine_v1beta.types import serving_config
-from google.cloud.discoveryengine_v1beta.types import serving_config_service
 
 from .base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
 

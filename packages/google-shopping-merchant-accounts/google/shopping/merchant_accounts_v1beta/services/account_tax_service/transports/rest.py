@@ -16,22 +16,22 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_accounts_v1beta.types import account_tax
 from google.shopping.merchant_accounts_v1beta.types import (
     account_tax as gsma_account_tax,
 )
-from google.shopping.merchant_accounts_v1beta.types import account_tax
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseAccountTaxServiceRestTransport
@@ -402,9 +402,7 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_http_options()
-            )
+            http_options = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_http_options()
 
             request, metadata = self._interceptor.pre_get_account_tax(request, metadata)
             transcoded_request = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_transcoded_request(
@@ -555,9 +553,7 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_http_options()
-            )
+            http_options = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_http_options()
 
             request, metadata = self._interceptor.pre_list_account_tax(
                 request, metadata
@@ -708,9 +704,7 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_http_options()
-            )
+            http_options = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_http_options()
 
             request, metadata = self._interceptor.pre_update_account_tax(
                 request, metadata

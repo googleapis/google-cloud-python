@@ -46,7 +46,6 @@ class BackendRule(_message.Message):
         "protocol",
         "overrides_by_request_protocol",
     )
-
     class PathTranslation(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         PATH_TRANSLATION_UNSPECIFIED: _ClassVar[BackendRule.PathTranslation]
@@ -56,7 +55,6 @@ class BackendRule(_message.Message):
     PATH_TRANSLATION_UNSPECIFIED: BackendRule.PathTranslation
     CONSTANT_ADDRESS: BackendRule.PathTranslation
     APPEND_PATH_TO_ADDRESS: BackendRule.PathTranslation
-
     class OverridesByRequestProtocolEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]

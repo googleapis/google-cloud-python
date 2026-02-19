@@ -21,14 +21,17 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
-from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
+from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
 from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
-from google.cloud.gke_backup_v1.types import backup_plan_binding
+from google.cloud.gke_backup_v1.types import (
+    backup_plan_binding,
+    restore_plan_binding,
+    volume,
+)
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
+from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
-from google.cloud.gke_backup_v1.types import restore_plan_binding, volume
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -463,12 +466,12 @@ class ListBackupChannelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_channels: MutableSequence[
-        gcg_backup_channel.BackupChannel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcg_backup_channel.BackupChannel,
+    backup_channels: MutableSequence[gcg_backup_channel.BackupChannel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcg_backup_channel.BackupChannel,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -635,12 +638,12 @@ class ListBackupPlanBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_bindings: MutableSequence[
-        backup_plan_binding.BackupPlanBinding
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=backup_plan_binding.BackupPlanBinding,
+    backup_plan_bindings: MutableSequence[backup_plan_binding.BackupPlanBinding] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=backup_plan_binding.BackupPlanBinding,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1297,12 +1300,12 @@ class ListRestoreChannelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    restore_channels: MutableSequence[
-        gcg_restore_channel.RestoreChannel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcg_restore_channel.RestoreChannel,
+    restore_channels: MutableSequence[gcg_restore_channel.RestoreChannel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcg_restore_channel.RestoreChannel,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1461,12 +1464,12 @@ class ListRestorePlanBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    restore_plan_bindings: MutableSequence[
-        restore_plan_binding.RestorePlanBinding
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=restore_plan_binding.RestorePlanBinding,
+    restore_plan_bindings: MutableSequence[restore_plan_binding.RestorePlanBinding] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=restore_plan_binding.RestorePlanBinding,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

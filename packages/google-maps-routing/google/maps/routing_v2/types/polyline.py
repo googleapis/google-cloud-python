@@ -47,6 +47,7 @@ class PolylineQuality(proto.Enum):
             overview of the route. Using this option has a lower request
             latency compared to using the ``HIGH_QUALITY`` option.
     """
+
     POLYLINE_QUALITY_UNSPECIFIED = 0
     HIGH_QUALITY = 1
     OVERVIEW = 2
@@ -66,6 +67,7 @@ class PolylineEncoding(proto.Enum):
             Specifies a polyline using the `GeoJSON LineString
             format <https://tools.ietf.org/html/rfc7946#section-3.1.4>`__
     """
+
     POLYLINE_ENCODING_UNSPECIFIED = 0
     ENCODED_POLYLINE = 1
     GEO_JSON_LINESTRING = 2

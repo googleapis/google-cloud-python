@@ -140,6 +140,7 @@ class PartnerSSEGateway(proto.Message):
                 No longer attached to a customer. This state
                 arises when the customer attachment is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CUSTOMER_ATTACHED = 1
         CUSTOMER_DETACHED = 2
@@ -613,12 +614,12 @@ class ListSSEGatewayReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sse_gateway_references: MutableSequence[
-        "SSEGatewayReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SSEGatewayReference",
+    sse_gateway_references: MutableSequence["SSEGatewayReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SSEGatewayReference",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

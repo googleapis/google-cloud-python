@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -448,9 +448,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                     Represents resource cloud locations.
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cloud_location(
                 request, metadata
@@ -598,9 +596,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_cloud_locations(
                 request, metadata
@@ -752,9 +748,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_search_cloud_locations(
                 request, metadata
@@ -938,9 +932,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1079,9 +1071,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_transcoded_request(

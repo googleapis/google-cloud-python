@@ -21,9 +21,7 @@ from .grpc import SpeechTranslationServiceGrpcTransport
 from .grpc_asyncio import SpeechTranslationServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SpeechTranslationServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SpeechTranslationServiceTransport]]
 _transport_registry["grpc"] = SpeechTranslationServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SpeechTranslationServiceGrpcAsyncIOTransport
 

@@ -63,6 +63,7 @@ class PromotionalOrderType(proto.Enum):
             Orders for modifying an existing customer's
             promotion on the same SKU.
     """
+
     PROMOTIONAL_TYPE_UNSPECIFIED = 0
     NEW_UPGRADE = 1
     TRANSFER = 2
@@ -86,6 +87,7 @@ class PaymentPlan(proto.Enum):
         OFFLINE (5):
             Price and ordering not available through API.
     """
+
     PAYMENT_PLAN_UNSPECIFIED = 0
     COMMITMENT = 1
     FLEXIBLE = 2
@@ -107,6 +109,7 @@ class PaymentType(proto.Enum):
             Postpay. Reseller is charged at the end of
             the Payment cycle.
     """
+
     PAYMENT_TYPE_UNSPECIFIED = 0
     PREPAY = 1
     POSTPAY = 2
@@ -143,6 +146,7 @@ class ResourceType(proto.Enum):
             For Google Cloud subscriptions like Anthos or
             SAP.
     """
+
     RESOURCE_TYPE_UNSPECIFIED = 0
     SEAT = 1
     MAU = 2
@@ -166,6 +170,7 @@ class PeriodType(proto.Enum):
         YEAR (3):
             Year.
     """
+
     PERIOD_TYPE_UNSPECIFIED = 0
     DAY = 1
     MONTH = 2
@@ -189,6 +194,7 @@ class DiscountType(proto.Enum):
         DEAL_CODE (5):
             Deal code discount.
     """
+
     DISCOUNT_TYPE_UNSPECIFIED = 0
     REGIONAL_DISCOUNT = 1
     PROMOTIONAL_DISCOUNT = 2
@@ -324,6 +330,7 @@ class ParameterDefinition(proto.Message):
             BOOLEAN (4):
                 Boolean type.
         """
+
         PARAMETER_TYPE_UNSPECIFIED = 0
         INT64 = 1
         STRING = 2
@@ -394,19 +401,19 @@ class CustomerConstraints(proto.Message):
         proto.STRING,
         number=1,
     )
-    allowed_customer_types: MutableSequence[
-        common.CloudIdentityInfo.CustomerType
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=2,
-        enum=common.CloudIdentityInfo.CustomerType,
+    allowed_customer_types: MutableSequence[common.CloudIdentityInfo.CustomerType] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum=common.CloudIdentityInfo.CustomerType,
+        )
     )
-    promotional_order_types: MutableSequence[
-        "PromotionalOrderType"
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=3,
-        enum="PromotionalOrderType",
+    promotional_order_types: MutableSequence["PromotionalOrderType"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=3,
+            enum="PromotionalOrderType",
+        )
     )
 
 

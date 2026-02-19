@@ -58,6 +58,7 @@ class BigQueryDestination(proto.Message):
                 If the table already exists, the data will be
                 overwritten.
         """
+
         WRITE_DISPOSITION_UNSPECIFIED = 0
         WRITE_EMPTY = 1
         WRITE_TRUNCATE = 2

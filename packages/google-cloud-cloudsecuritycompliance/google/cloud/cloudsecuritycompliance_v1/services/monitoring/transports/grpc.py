@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.cloudsecuritycompliance_v1.types import monitoring
 
@@ -347,12 +347,12 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_framework_compliance_summaries" not in self._stubs:
-            self._stubs[
-                "list_framework_compliance_summaries"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Monitoring/ListFrameworkComplianceSummaries",
-                request_serializer=monitoring.ListFrameworkComplianceSummariesRequest.serialize,
-                response_deserializer=monitoring.ListFrameworkComplianceSummariesResponse.deserialize,
+            self._stubs["list_framework_compliance_summaries"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Monitoring/ListFrameworkComplianceSummaries",
+                    request_serializer=monitoring.ListFrameworkComplianceSummariesRequest.serialize,
+                    response_deserializer=monitoring.ListFrameworkComplianceSummariesResponse.deserialize,
+                )
             )
         return self._stubs["list_framework_compliance_summaries"]
 
@@ -410,12 +410,12 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_framework_compliance_report" not in self._stubs:
-            self._stubs[
-                "fetch_framework_compliance_report"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Monitoring/FetchFrameworkComplianceReport",
-                request_serializer=monitoring.FetchFrameworkComplianceReportRequest.serialize,
-                response_deserializer=monitoring.FrameworkComplianceReport.deserialize,
+            self._stubs["fetch_framework_compliance_report"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Monitoring/FetchFrameworkComplianceReport",
+                    request_serializer=monitoring.FetchFrameworkComplianceReportRequest.serialize,
+                    response_deserializer=monitoring.FrameworkComplianceReport.deserialize,
+                )
             )
         return self._stubs["fetch_framework_compliance_report"]
 
@@ -443,12 +443,12 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_control_compliance_summaries" not in self._stubs:
-            self._stubs[
-                "list_control_compliance_summaries"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Monitoring/ListControlComplianceSummaries",
-                request_serializer=monitoring.ListControlComplianceSummariesRequest.serialize,
-                response_deserializer=monitoring.ListControlComplianceSummariesResponse.deserialize,
+            self._stubs["list_control_compliance_summaries"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Monitoring/ListControlComplianceSummaries",
+                    request_serializer=monitoring.ListControlComplianceSummariesRequest.serialize,
+                    response_deserializer=monitoring.ListControlComplianceSummariesResponse.deserialize,
+                )
             )
         return self._stubs["list_control_compliance_summaries"]
 
@@ -476,12 +476,12 @@ class MonitoringGrpcTransport(MonitoringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "aggregate_framework_compliance_report" not in self._stubs:
-            self._stubs[
-                "aggregate_framework_compliance_report"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Monitoring/AggregateFrameworkComplianceReport",
-                request_serializer=monitoring.AggregateFrameworkComplianceReportRequest.serialize,
-                response_deserializer=monitoring.AggregateFrameworkComplianceReportResponse.deserialize,
+            self._stubs["aggregate_framework_compliance_report"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Monitoring/AggregateFrameworkComplianceReport",
+                    request_serializer=monitoring.AggregateFrameworkComplianceReportRequest.serialize,
+                    response_deserializer=monitoring.AggregateFrameworkComplianceReportResponse.deserialize,
+                )
             )
         return self._stubs["aggregate_framework_compliance_report"]
 

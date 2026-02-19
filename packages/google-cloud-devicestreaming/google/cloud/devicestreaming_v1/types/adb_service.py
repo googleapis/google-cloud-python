@@ -158,6 +158,7 @@ class StatusUpdate(proto.Message):
             CONNECTING (14):
                 The ADB device is in the "connecting" status.
         """
+
         DEVICE_STATE_UNSPECIFIED = 0
         DEVICE = 1
         RECOVERY = 2

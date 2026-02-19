@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.talent_v4beta1 import gapic_version as package_version
 
@@ -47,9 +47,8 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.talent_v4beta1.services.tenant_service import pagers
-from google.cloud.talent_v4beta1.types import tenant
+from google.cloud.talent_v4beta1.types import tenant, tenant_service
 from google.cloud.talent_v4beta1.types import tenant as gct_tenant
-from google.cloud.talent_v4beta1.types import tenant_service
 
 from .client import TenantServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, TenantServiceTransport
@@ -119,7 +118,10 @@ class TenantServiceAsyncClient:
         Returns:
             TenantServiceAsyncClient: The constructed client.
         """
-        return TenantServiceClient.from_service_account_info.__func__(TenantServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            TenantServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(TenantServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,7 +137,10 @@ class TenantServiceAsyncClient:
         Returns:
             TenantServiceAsyncClient: The constructed client.
         """
-        return TenantServiceClient.from_service_account_file.__func__(TenantServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            TenantServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(TenantServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

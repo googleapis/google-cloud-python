@@ -104,6 +104,7 @@ class Instance(proto.Message):
             DYNAMIC (2):
                 No description available.
         """
+
         UNSPECIFIED = 0
         RESIDENT = 1
         DYNAMIC = 2
@@ -142,6 +143,7 @@ class Instance(proto.Message):
                     cannot be established, or the server does not
                     respond within the specified timeout.
             """
+
             LIVENESS_STATE_UNSPECIFIED = 0
             UNKNOWN = 1
             HEALTHY = 2

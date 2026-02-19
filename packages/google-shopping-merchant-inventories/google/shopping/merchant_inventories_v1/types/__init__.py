@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .inventories_common import LocalInventoryAttributes, RegionalInventoryAttributes
+from .inventories_common import (
+    LocalInventoryAttributes,
+    RegionalInventoryAttributes,
+)
 from .localinventory import (
     DeleteLocalInventoryRequest,
     InsertLocalInventoryRequest,

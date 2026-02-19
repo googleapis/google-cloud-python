@@ -47,6 +47,7 @@ class EnvoyHeaders(proto.Enum):
             x-envoy-original-path
             x-envoy-upstream-stream-duration-ms
     """
+
     ENVOY_HEADERS_UNSPECIFIED = 0
     NONE = 1
     DEBUG_HEADERS = 2
@@ -201,6 +202,7 @@ class EndpointMatcher(proto.Message):
                     The metadata presented by the xDS client
                     should contain all of the labels specified here.
             """
+
             METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED = 0
             MATCH_ANY = 1
             MATCH_ALL = 2

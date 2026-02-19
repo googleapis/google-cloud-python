@@ -71,6 +71,7 @@ class OperationMetadata(proto.Message):
                 The operation is no longer running but did
                 not succeed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -100,6 +101,7 @@ class OperationMetadata(proto.Message):
                 instance (only for highly resilient
                 environments).
         """
+
         TYPE_UNSPECIFIED = 0
         CREATE = 1
         DELETE = 2

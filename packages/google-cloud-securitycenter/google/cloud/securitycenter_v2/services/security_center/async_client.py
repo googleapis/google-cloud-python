@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.securitycenter_v2 import gapic_version as package_version
 
@@ -48,10 +48,10 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.securitycenter_v2.services.security_center import pagers
 from google.cloud.securitycenter_v2.types import (
@@ -76,8 +76,8 @@ from google.cloud.securitycenter_v2.types import (
     database,
     disk,
     exfiltration,
-)
-from google.cloud.securitycenter_v2.types import (
+    file,
+    finding,
     group_membership,
     iam_binding,
     indicator,
@@ -88,19 +88,27 @@ from google.cloud.securitycenter_v2.types import (
     load_balancer,
     log_entry,
     mitre_attack,
-)
-from google.cloud.securitycenter_v2.types import (
+    mute_config,
+    network,
+    notebook,
+    notification_config,
+    org_policy,
+    process,
+    resource,
+    resource_value_config,
+    security_marks,
     security_posture,
     securitycenter_service,
     simulation,
-)
-from google.cloud.securitycenter_v2.types import (
+    source,
     toxic_combination,
     valued_resource,
     vertex_ai,
     vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v2.types import finding as gcs_finding
+from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v2.types import (
     notification_config as gcs_notification_config,
 )
@@ -108,17 +116,6 @@ from google.cloud.securitycenter_v2.types import (
     resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v2.types import file
-from google.cloud.securitycenter_v2.types import finding
-from google.cloud.securitycenter_v2.types import finding as gcs_finding
-from google.cloud.securitycenter_v2.types import mute_config
-from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import network, notebook
-from google.cloud.securitycenter_v2.types import notification_config
-from google.cloud.securitycenter_v2.types import org_policy, process, resource
-from google.cloud.securitycenter_v2.types import resource_value_config
-from google.cloud.securitycenter_v2.types import security_marks
-from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
 
 from .client import SecurityCenterClient
@@ -233,7 +230,10 @@ class SecurityCenterAsyncClient:
         Returns:
             SecurityCenterAsyncClient: The constructed client.
         """
-        return SecurityCenterClient.from_service_account_info.__func__(SecurityCenterAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            SecurityCenterClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(SecurityCenterAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -249,7 +249,10 @@ class SecurityCenterAsyncClient:
         Returns:
             SecurityCenterAsyncClient: The constructed client.
         """
-        return SecurityCenterClient.from_service_account_file.__func__(SecurityCenterAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            SecurityCenterClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(SecurityCenterAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

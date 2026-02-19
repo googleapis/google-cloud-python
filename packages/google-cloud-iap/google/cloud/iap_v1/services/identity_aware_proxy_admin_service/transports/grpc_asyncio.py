@@ -17,22 +17,22 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.iap_v1.types import service
 
@@ -502,12 +502,12 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_iap_attribute_expression" not in self._stubs:
-            self._stubs[
-                "validate_iap_attribute_expression"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ValidateIapAttributeExpression",
-                request_serializer=service.ValidateIapAttributeExpressionRequest.serialize,
-                response_deserializer=service.ValidateIapAttributeExpressionResponse.deserialize,
+            self._stubs["validate_iap_attribute_expression"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ValidateIapAttributeExpression",
+                    request_serializer=service.ValidateIapAttributeExpressionRequest.serialize,
+                    response_deserializer=service.ValidateIapAttributeExpressionResponse.deserialize,
+                )
             )
         return self._stubs["validate_iap_attribute_expression"]
 

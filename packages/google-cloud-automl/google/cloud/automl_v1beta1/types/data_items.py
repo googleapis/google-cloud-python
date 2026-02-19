@@ -142,6 +142,7 @@ class DocumentDimensions(proto.Message):
                 Document dimension is measured in points. 72
                 points = 1 inch.
         """
+
         DOCUMENT_DIMENSION_UNIT_UNSPECIFIED = 0
         INCH = 1
         CENTIMETER = 2
@@ -250,6 +251,7 @@ class Document(proto.Message):
                     child of another TABLE_ROW TextSegment if its span is
                     subspan of another TextSegment with type TABLE_ROW.
             """
+
             TEXT_SEGMENT_TYPE_UNSPECIFIED = 0
             TOKEN = 1
             PARAGRAPH = 2

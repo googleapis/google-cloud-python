@@ -63,6 +63,7 @@ class ResourceState(proto.Enum):
         STATE_DELETING (5):
             The resource is under deletion.
     """
+
     STATE_UNKNOWN = 0
     STATE_PENDING = 1
     STATE_PROVISIONING = 2
@@ -84,6 +85,7 @@ class RemotePeeringNetworkType(proto.Enum):
             Customer's untrust network that has internet
             access.
     """
+
     REMOTE_PEERING_NETWORK_TYPE_UNSPECIFIED = 0
     REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNAL = 1
     REMOTE_PEERING_NETWORK_TYPE_CUSTOMER_INTERNET = 2
@@ -247,6 +249,7 @@ class Subnet(proto.Message):
             NON_BONDED (2):
                 Single homed.
         """
+
         BONDING_TYPE_UNSPECIFIED = 0
         BONDED = 1
         NON_BONDED = 2
@@ -346,6 +349,7 @@ class Interconnect(proto.Message):
             DEDICATED (1):
                 Dedicated Interconnect.
         """
+
         INTERCONNECT_TYPE_UNSPECIFIED = 0
         DEDICATED = 1
 
@@ -809,12 +813,12 @@ class InterconnectDiagnostics(proto.Message):
             number=2,
             message="InterconnectDiagnostics.LinkLACPStatus",
         )
-        lldp_statuses: MutableSequence[
-            "InterconnectDiagnostics.LinkLLDPStatus"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="InterconnectDiagnostics.LinkLLDPStatus",
+        lldp_statuses: MutableSequence["InterconnectDiagnostics.LinkLLDPStatus"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="InterconnectDiagnostics.LinkLLDPStatus",
+            )
         )
         packet_counts: "InterconnectDiagnostics.PacketCounts" = proto.Field(
             proto.MESSAGE,
@@ -916,6 +920,7 @@ class InterconnectDiagnostics(proto.Message):
                     this means the rest of the object should be
                     empty.
             """
+
             UNKNOWN = 0
             ACTIVE = 1
             DETACHED = 2
@@ -1067,6 +1072,7 @@ class RouterStatus(proto.Message):
                     The DOWN state indicating BGP session is not
                     established yet.
             """
+
             UNKNOWN = 0
             UP = 1
             DOWN = 2

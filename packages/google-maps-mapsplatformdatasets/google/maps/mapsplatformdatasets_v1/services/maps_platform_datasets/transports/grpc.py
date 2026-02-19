@@ -16,22 +16,21 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
-from google.maps.mapsplatformdatasets_v1.types import dataset
+from google.maps.mapsplatformdatasets_v1.types import dataset, maps_platform_datasets
 from google.maps.mapsplatformdatasets_v1.types import dataset as gmm_dataset
-from google.maps.mapsplatformdatasets_v1.types import maps_platform_datasets
 
 from .base import DEFAULT_CLIENT_INFO, MapsPlatformDatasetsTransport
 

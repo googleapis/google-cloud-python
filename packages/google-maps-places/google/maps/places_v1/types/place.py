@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
 import google.type.datetime_pb2 as datetime_pb2  # type: ignore
@@ -25,13 +24,12 @@ import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
 import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.places_v1.types import address_descriptor as gmp_address_descriptor
-from google.maps.places_v1.types import content_block, ev_charging
+from google.maps.places_v1.types import content_block, ev_charging, photo, review
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
-from google.maps.places_v1.types import photo
 from google.maps.places_v1.types import price_range as gmp_price_range
-from google.maps.places_v1.types import review
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
@@ -59,6 +57,7 @@ class PriceLevel(proto.Enum):
         PRICE_LEVEL_VERY_EXPENSIVE (5):
             Place provides very expensive services.
     """
+
     PRICE_LEVEL_UNSPECIFIED = 0
     PRICE_LEVEL_FREE = 1
     PRICE_LEVEL_INEXPENSIVE = 2
@@ -438,6 +437,7 @@ class Place(proto.Message):
             CLOSED_PERMANENTLY (3):
                 The establishment is permanently closed.
         """
+
         BUSINESS_STATUS_UNSPECIFIED = 0
         OPERATIONAL = 1
         CLOSED_TEMPORARILY = 2
@@ -612,6 +612,7 @@ class Place(proto.Message):
                 ONLINE_SERVICE_HOURS (13):
                     The online service hours.
             """
+
             SECONDARY_HOURS_TYPE_UNSPECIFIED = 0
             DRIVE_THROUGH = 1
             HAPPY_HOUR = 2
@@ -739,12 +740,12 @@ class Place(proto.Message):
             number=4,
             enum="Place.OpeningHours.SecondaryHoursType",
         )
-        special_days: MutableSequence[
-            "Place.OpeningHours.SpecialDay"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="Place.OpeningHours.SpecialDay",
+        special_days: MutableSequence["Place.OpeningHours.SpecialDay"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="Place.OpeningHours.SpecialDay",
+            )
         )
         next_open_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
@@ -1479,19 +1480,19 @@ class Place(proto.Message):
         number=46,
         message=OpeningHours,
     )
-    current_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=47,
-        message=OpeningHours,
+    current_secondary_opening_hours: MutableSequence[OpeningHours] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=47,
+            message=OpeningHours,
+        )
     )
-    regular_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=49,
-        message=OpeningHours,
+    regular_secondary_opening_hours: MutableSequence[OpeningHours] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=49,
+            message=OpeningHours,
+        )
     )
     editorial_summary: localized_text_pb2.LocalizedText = proto.Field(
         proto.MESSAGE,

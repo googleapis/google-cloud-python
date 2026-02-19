@@ -13,8 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .insight import Insight, InsightStateInfo
-from .insight_type_config import InsightTypeConfig, InsightTypeGenerationConfig
+from .insight import (
+    Insight,
+    InsightStateInfo,
+)
+from .insight_type_config import (
+    InsightTypeConfig,
+    InsightTypeGenerationConfig,
+)
 from .recommendation import (
     CostProjection,
     Impact,
@@ -28,7 +34,10 @@ from .recommendation import (
     SustainabilityProjection,
     ValueMatcher,
 )
-from .recommender_config import RecommenderConfig, RecommenderGenerationConfig
+from .recommender_config import (
+    RecommenderConfig,
+    RecommenderGenerationConfig,
+)
 from .recommender_service import (
     GetInsightRequest,
     GetInsightTypeConfigRequest,

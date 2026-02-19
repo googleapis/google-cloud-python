@@ -23,8 +23,6 @@
 #   python3 -m pip install google-cloud-datacatalog
 
 
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-
 # [START datacatalog_v1beta1_generated_PolicyTagManager_SetIamPolicy_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -33,6 +31,8 @@ import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
 from google.cloud import datacatalog_v1beta1
 
 

@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -4388,9 +4388,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_disk_migration_job(
                 request, metadata
@@ -4542,9 +4540,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_image_import_job(
                 request, metadata
@@ -5006,9 +5002,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_create_datacenter_connector(
                 request, metadata
@@ -5162,9 +5156,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_disk_migration_job(
                 request, metadata
@@ -5940,9 +5932,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_http_options()
 
             request, metadata = self._interceptor.pre_create_target_project(
                 request, metadata
@@ -6094,9 +6084,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_http_options()
 
             request, metadata = self._interceptor.pre_create_utilization_report(
                 request, metadata
@@ -6249,9 +6237,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_datacenter_connector(
                 request, metadata
@@ -6399,9 +6385,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_disk_migration_job(
                 request, metadata
@@ -7143,9 +7127,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_target_project(
                 request, metadata
@@ -7291,9 +7273,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_utilization_report(
                 request, metadata
@@ -7741,9 +7721,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_storage_inventory(
                 request, metadata
@@ -8366,9 +8344,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_get_datacenter_connector(
                 request, metadata
@@ -8516,9 +8492,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_disk_migration_job(
                 request, metadata
@@ -9265,9 +9239,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_http_options()
 
             request, metadata = self._interceptor.pre_get_replication_cycle(
                 request, metadata
@@ -9716,9 +9688,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_http_options()
 
             request, metadata = self._interceptor.pre_get_utilization_report(
                 request, metadata
@@ -10168,9 +10138,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_datacenter_connectors(
                 request, metadata
@@ -10319,9 +10287,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_disk_migration_jobs(
                 request, metadata
@@ -10621,9 +10587,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_image_import_jobs(
                 request, metadata
@@ -11074,9 +11038,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_replication_cycles(
                 request, metadata
@@ -11376,9 +11338,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListTargetProjects._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListTargetProjects._get_http_options()
 
             request, metadata = self._interceptor.pre_list_target_projects(
                 request, metadata
@@ -11527,9 +11487,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_http_options()
 
             request, metadata = self._interceptor.pre_list_utilization_reports(
                 request, metadata
@@ -11832,9 +11790,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_group_migration(
                 request, metadata
@@ -12140,9 +12096,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_http_options()
 
             request, metadata = self._interceptor.pre_run_disk_migration_job(
                 request, metadata
@@ -12446,9 +12400,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_http_options()
 
             request, metadata = self._interceptor.pre_update_disk_migration_job(
                 request, metadata
@@ -13070,9 +13022,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_http_options()
 
             request, metadata = self._interceptor.pre_update_target_project(
                 request, metadata
@@ -13351,7 +13301,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CancelDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelDiskMigrationJob(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def cancel_image_import_job(
@@ -13385,7 +13337,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDatacenterConnector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateDatacenterConnector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_disk_migration_job(
@@ -13395,7 +13349,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateDiskMigrationJob(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_group(
@@ -13445,7 +13401,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateUtilizationReport(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateUtilizationReport(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_datacenter_connector(
@@ -13455,7 +13413,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteDatacenterConnector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteDatacenterConnector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_disk_migration_job(
@@ -13465,7 +13425,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteDiskMigrationJob(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_group(
@@ -13515,7 +13477,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteUtilizationReport(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteUtilizationReport(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def extend_migration(
@@ -13578,7 +13542,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetDatacenterConnector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetDatacenterConnector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_disk_migration_job(
@@ -13685,7 +13651,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDatacenterConnectors(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDatacenterConnectors(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_disk_migration_jobs(
@@ -13775,7 +13743,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListUtilizationReports(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListUtilizationReports(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def pause_migration(
@@ -13825,7 +13795,9 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateDiskMigrationJob(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_group(

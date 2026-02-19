@@ -26,7 +26,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class Billing(_message.Message):
     __slots__ = ("consumer_destinations",)
-
     class BillingDestination(_message.Message):
         __slots__ = ("monitored_resource", "metrics")
         MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]

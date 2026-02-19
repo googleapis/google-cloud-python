@@ -76,6 +76,7 @@ class FileUpload(proto.Message):
                 The data source was processed successfully,
                 though some items might have had errors.
         """
+
         PROCESSING_STATE_UNSPECIFIED = 0
         FAILED = 1
         IN_PROGRESS = 2
@@ -119,6 +120,7 @@ class FileUpload(proto.Message):
                 ERROR (2):
                     The issue is an error.
             """
+
             SEVERITY_UNSPECIFIED = 0
             WARNING = 1
             ERROR = 2

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
@@ -46,15 +46,14 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.services.evaluation_service import pagers
+from google.cloud.discoveryengine_v1alpha.types import evaluation, evaluation_service
 from google.cloud.discoveryengine_v1alpha.types import evaluation as gcd_evaluation
-from google.cloud.discoveryengine_v1alpha.types import evaluation
-from google.cloud.discoveryengine_v1alpha.types import evaluation_service
 
 from .client import EvaluationServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, EvaluationServiceTransport
@@ -144,7 +143,10 @@ class EvaluationServiceAsyncClient:
         Returns:
             EvaluationServiceAsyncClient: The constructed client.
         """
-        return EvaluationServiceClient.from_service_account_info.__func__(EvaluationServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            EvaluationServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(EvaluationServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -160,7 +162,10 @@ class EvaluationServiceAsyncClient:
         Returns:
             EvaluationServiceAsyncClient: The constructed client.
         """
-        return EvaluationServiceClient.from_service_account_file.__func__(EvaluationServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            EvaluationServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(EvaluationServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

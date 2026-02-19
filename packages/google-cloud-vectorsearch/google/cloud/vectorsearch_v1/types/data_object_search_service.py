@@ -20,9 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.vectorsearch_v1.types import common
+from google.cloud.vectorsearch_v1.types import common, embedding_config
 from google.cloud.vectorsearch_v1.types import data_object as gcv_data_object
-from google.cloud.vectorsearch_v1.types import embedding_config
 
 __protobuf__ = proto.module(
     package="google.cloud.vectorsearch.v1",
@@ -60,6 +59,7 @@ class AggregationMethod(proto.Enum):
             Count the number of data objects that match
             the filter.
     """
+
     AGGREGATION_METHOD_UNSPECIFIED = 0
     COUNT = 1
 

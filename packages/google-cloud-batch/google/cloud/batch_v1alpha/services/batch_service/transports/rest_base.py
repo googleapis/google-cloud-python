@@ -22,14 +22,11 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
+from google.cloud.batch_v1alpha.types import batch, job, resource_allowance, task
+from google.cloud.batch_v1alpha.types import job as gcb_job
 from google.cloud.batch_v1alpha.types import (
     resource_allowance as gcb_resource_allowance,
 )
-from google.cloud.batch_v1alpha.types import batch
-from google.cloud.batch_v1alpha.types import job
-from google.cloud.batch_v1alpha.types import job as gcb_job
-from google.cloud.batch_v1alpha.types import resource_allowance
-from google.cloud.batch_v1alpha.types import task
 
 from .base import DEFAULT_CLIENT_INFO, BatchServiceTransport
 

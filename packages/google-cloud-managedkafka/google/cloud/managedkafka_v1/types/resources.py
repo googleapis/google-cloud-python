@@ -106,6 +106,7 @@ class Cluster(proto.Message):
             DELETING (3):
                 The cluster is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -213,6 +214,7 @@ class RebalanceConfig(proto.Message):
                 Automatically rebalance topic partitions
                 among brokers when the cluster is scaled up.
         """
+
         MODE_UNSPECIFIED = 0
         NO_REBALANCE = 1
         AUTO_REBALANCE_ON_SCALE_UP = 2
@@ -350,12 +352,12 @@ class TrustConfig(proto.Message):
             number=1,
         )
 
-    cas_configs: MutableSequence[
-        CertificateAuthorityServiceConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=CertificateAuthorityServiceConfig,
+    cas_configs: MutableSequence[CertificateAuthorityServiceConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=CertificateAuthorityServiceConfig,
+        )
     )
 
 
@@ -594,6 +596,7 @@ class ConnectCluster(proto.Message):
             DELETING (3):
                 The cluster is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -784,6 +787,7 @@ class Connector(proto.Message):
             STOPPED (6):
                 The connector has been stopped.
         """
+
         STATE_UNSPECIFIED = 0
         UNASSIGNED = 1
         RUNNING = 2

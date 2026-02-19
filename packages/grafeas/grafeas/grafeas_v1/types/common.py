@@ -75,6 +75,7 @@ class NoteKind(proto.Enum):
         SECRET (13):
             This represents a secret.
     """
+
     NOTE_KIND_UNSPECIFIED = 0
     VULNERABILITY = 1
     BUILD = 2

@@ -64,6 +64,7 @@ class ThreatType(proto.Enum):
             A list of extended coverage social
             engineering URIs targeting any platform.
     """
+
     THREAT_TYPE_UNSPECIFIED = 0
     MALWARE = 1
     SOCIAL_ENGINEERING = 2
@@ -82,6 +83,7 @@ class CompressionType(proto.Enum):
         RICE (2):
             Rice-Golomb encoded data.
     """
+
     COMPRESSION_TYPE_UNSPECIFIED = 0
     RAW = 1
     RICE = 2
@@ -137,12 +139,12 @@ class ComputeThreatListDiffRequest(proto.Message):
             proto.INT32,
             number=2,
         )
-        supported_compressions: MutableSequence[
-            "CompressionType"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=3,
-            enum="CompressionType",
+        supported_compressions: MutableSequence["CompressionType"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=3,
+                enum="CompressionType",
+            )
         )
 
     threat_type: "ThreatType" = proto.Field(
@@ -211,6 +213,7 @@ class ComputeThreatListDiffResponse(proto.Message):
                 no state, was seriously out-of-date, or the
                 client is believed to be corrupt.
         """
+
         RESPONSE_TYPE_UNSPECIFIED = 0
         DIFF = 1
         RESET = 2
@@ -603,6 +606,7 @@ class ThreatInfo(proto.Message):
             UNWANTED_SOFTWARE (3):
                 The URI contains unwanted software.
         """
+
         ABUSE_TYPE_UNSPECIFIED = 0
         MALWARE = 1
         SOCIAL_ENGINEERING = 2
@@ -647,6 +651,7 @@ class ThreatInfo(proto.Message):
                     Greater than 80% confidence that the URI is
                     unsafe.
             """
+
             CONFIDENCE_LEVEL_UNSPECIFIED = 0
             LOW = 1
             MEDIUM = 2
@@ -691,17 +696,18 @@ class ThreatInfo(proto.Message):
                     The submitter received the submission from an
                     automated system.
             """
+
             JUSTIFICATION_LABEL_UNSPECIFIED = 0
             MANUAL_VERIFICATION = 1
             USER_REPORT = 2
             AUTOMATED_REPORT = 3
 
-        labels: MutableSequence[
-            "ThreatInfo.ThreatJustification.JustificationLabel"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=1,
-            enum="ThreatInfo.ThreatJustification.JustificationLabel",
+        labels: MutableSequence["ThreatInfo.ThreatJustification.JustificationLabel"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=1,
+                enum="ThreatInfo.ThreatJustification.JustificationLabel",
+            )
         )
         comments: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
@@ -752,6 +758,7 @@ class ThreatDiscovery(proto.Message):
             WINDOWS (4):
                 General Windows platform.
         """
+
         PLATFORM_UNSPECIFIED = 0
         ANDROID = 1
         IOS = 2
@@ -863,6 +870,7 @@ class SubmitUriMetadata(proto.Message):
                 The operation was closed with no action
                 taken.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

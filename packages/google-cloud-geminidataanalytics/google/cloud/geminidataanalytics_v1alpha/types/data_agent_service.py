@@ -179,6 +179,7 @@ class ListAccessibleDataAgentsRequest(proto.Message):
                 Only agents not created by the user calling
                 the API will be returned.
         """
+
         CREATOR_FILTER_UNSPECIFIED = 0
         NONE = 1
         CREATOR_ONLY = 2

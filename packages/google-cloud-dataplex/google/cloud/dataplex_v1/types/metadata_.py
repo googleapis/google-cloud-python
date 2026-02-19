@@ -57,6 +57,7 @@ class StorageSystem(proto.Enum):
             The entity data is contained within a
             BigQuery dataset.
     """
+
     STORAGE_SYSTEM_UNSPECIFIED = 0
     CLOUD_STORAGE = 1
     BIGQUERY = 2
@@ -184,6 +185,7 @@ class ListEntitiesRequest(proto.Message):
             FILESETS (2):
                 Only list fileset entities.
         """
+
         ENTITY_VIEW_UNSPECIFIED = 0
         TABLES = 1
         FILESETS = 2
@@ -265,6 +267,7 @@ class GetEntityRequest(proto.Message):
                 Include everything. Currently, this is the
                 same as the SCHEMA view.
         """
+
         ENTITY_VIEW_UNSPECIFIED = 0
         BASIC = 1
         SCHEMA = 2
@@ -535,6 +538,7 @@ class Entity(proto.Message):
             FILESET (2):
                 Unstructured data.
         """
+
         TYPE_UNSPECIFIED = 0
         TABLE = 1
         FILESET = 2
@@ -786,6 +790,7 @@ class Schema(proto.Message):
             NULL (100):
                 Null field that does not have values.
         """
+
         TYPE_UNSPECIFIED = 0
         BOOLEAN = 1
         BYTE = 2
@@ -818,6 +823,7 @@ class Schema(proto.Message):
                 The field has repeated (0 or more) semantics,
                 and is a list of values.
         """
+
         MODE_UNSPECIFIED = 0
         REQUIRED = 1
         NULLABLE = 2
@@ -835,6 +841,7 @@ class Schema(proto.Message):
                 ``gs://bucket/path/to/table/dt=2019-10-31/lang=en``,
                 ``gs://bucket/path/to/table/dt=2019-10-31/lang=en/late``.
         """
+
         PARTITION_STYLE_UNSPECIFIED = 0
         HIVE_COMPATIBLE = 1
 
@@ -1015,6 +1022,7 @@ class StorageFormat(proto.Message):
             UNKNOWN (1001):
                 Data of an unknown format.
         """
+
         FORMAT_UNSPECIFIED = 0
         PARQUET = 1
         AVRO = 2
@@ -1041,6 +1049,7 @@ class StorageFormat(proto.Message):
             BZIP2 (3):
                 BZip2 compressed set of files.
         """
+
         COMPRESSION_FORMAT_UNSPECIFIED = 0
         GZIP = 2
         BZIP2 = 3
@@ -1172,6 +1181,7 @@ class StorageAccess(proto.Message):
                 Data is accessed through a managed interface
                 using BigQuery APIs.
         """
+
         ACCESS_MODE_UNSPECIFIED = 0
         DIRECT = 1
         MANAGED = 2

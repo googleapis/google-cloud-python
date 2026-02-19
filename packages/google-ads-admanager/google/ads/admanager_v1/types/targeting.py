@@ -577,12 +577,12 @@ class CustomTargeting(proto.Message):
             together.
     """
 
-    custom_targeting_clauses: MutableSequence[
-        "CustomTargetingClause"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CustomTargetingClause",
+    custom_targeting_clauses: MutableSequence["CustomTargetingClause"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CustomTargetingClause",
+        )
     )
 
 
@@ -602,26 +602,26 @@ class CustomTargetingClause(proto.Message):
             metadata.
     """
 
-    custom_targeting_literals: MutableSequence[
-        "CustomTargetingLiteral"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CustomTargetingLiteral",
+    custom_targeting_literals: MutableSequence["CustomTargetingLiteral"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CustomTargetingLiteral",
+        )
     )
-    audience_segment_targetings: MutableSequence[
-        "AudienceSegmentTargeting"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="AudienceSegmentTargeting",
+    audience_segment_targetings: MutableSequence["AudienceSegmentTargeting"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="AudienceSegmentTargeting",
+        )
     )
-    cms_metadata_targetings: MutableSequence[
-        "CmsMetadataTargeting"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="CmsMetadataTargeting",
+    cms_metadata_targetings: MutableSequence["CmsMetadataTargeting"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="CmsMetadataTargeting",
+        )
     )
 
 

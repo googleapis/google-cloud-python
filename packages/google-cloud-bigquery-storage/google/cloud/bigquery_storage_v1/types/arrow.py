@@ -95,6 +95,7 @@ class ArrowSerializationOptions(proto.Message):
             ZSTD (2):
                 Zstandard compression.
         """
+
         COMPRESSION_UNSPECIFIED = 0
         LZ4_FRAME = 1
         ZSTD = 2
@@ -123,6 +124,7 @@ class ArrowSerializationOptions(proto.Message):
                 picosecond value. The value will be encoded as a
                 string which conforms to ISO 8601 format.
         """
+
         PICOS_TIMESTAMP_PRECISION_UNSPECIFIED = 0
         TIMESTAMP_PRECISION_MICROS = 1
         TIMESTAMP_PRECISION_NANOS = 2

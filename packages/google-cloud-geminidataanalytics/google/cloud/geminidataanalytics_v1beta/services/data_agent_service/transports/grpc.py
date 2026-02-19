@@ -16,26 +16,25 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
+from google.cloud.geminidataanalytics_v1beta.types import data_agent, data_agent_service
 from google.cloud.geminidataanalytics_v1beta.types import data_agent as gcg_data_agent
-from google.cloud.geminidataanalytics_v1beta.types import data_agent
-from google.cloud.geminidataanalytics_v1beta.types import data_agent_service
 
 from .base import DEFAULT_CLIENT_INFO, DataAgentServiceTransport
 
@@ -397,12 +396,12 @@ class DataAgentServiceGrpcTransport(DataAgentServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_accessible_data_agents" not in self._stubs:
-            self._stubs[
-                "list_accessible_data_agents"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.geminidataanalytics.v1beta.DataAgentService/ListAccessibleDataAgents",
-                request_serializer=data_agent_service.ListAccessibleDataAgentsRequest.serialize,
-                response_deserializer=data_agent_service.ListAccessibleDataAgentsResponse.deserialize,
+            self._stubs["list_accessible_data_agents"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.geminidataanalytics.v1beta.DataAgentService/ListAccessibleDataAgents",
+                    request_serializer=data_agent_service.ListAccessibleDataAgentsRequest.serialize,
+                    response_deserializer=data_agent_service.ListAccessibleDataAgentsResponse.deserialize,
+                )
             )
         return self._stubs["list_accessible_data_agents"]
 

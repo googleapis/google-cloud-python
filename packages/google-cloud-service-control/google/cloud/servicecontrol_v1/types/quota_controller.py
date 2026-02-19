@@ -171,6 +171,7 @@ class QuotaOperation(proto.Message):
                 would become negative (going over the limit).
                 Not supported for Rate Quota.
         """
+
         UNSPECIFIED = 0
         NORMAL = 1
         BEST_EFFORT = 2
@@ -299,6 +300,7 @@ class QuotaError(proto.Message):
             API_KEY_EXPIRED (112):
                 Specified API Key has expired.
         """
+
         UNSPECIFIED = 0
         RESOURCE_EXHAUSTED = 8
         BILLING_NOT_ACTIVE = 107

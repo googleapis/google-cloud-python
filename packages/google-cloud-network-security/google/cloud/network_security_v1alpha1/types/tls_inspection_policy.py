@@ -134,6 +134,7 @@ class TlsInspectionPolicy(proto.Message):
             TLS_1_3 (4):
                 TLS 1.3
         """
+
         TLS_VERSION_UNSPECIFIED = 0
         TLS_1_0 = 1
         TLS_1_1 = 2
@@ -167,6 +168,7 @@ class TlsInspectionPolicy(proto.Message):
                 Custom profile. Allow only the set of allowed SSL features
                 specified in the custom_features field of SslPolicy.
         """
+
         PROFILE_UNSPECIFIED = 0
         PROFILE_COMPATIBLE = 1
         PROFILE_MODERN = 2
@@ -306,12 +308,12 @@ class ListTlsInspectionPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tls_inspection_policies: MutableSequence[
-        "TlsInspectionPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="TlsInspectionPolicy",
+    tls_inspection_policies: MutableSequence["TlsInspectionPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="TlsInspectionPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -70,6 +70,7 @@ class ValidationError(proto.Message):
             CRITICAL (4):
                 The agent may completely fail.
         """
+
         SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

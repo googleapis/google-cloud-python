@@ -107,7 +107,9 @@ from .histogram import (
     HistogramQueryPropertyNameFilter,
     HistogramQueryResult,
 )
-from .pipeline_service import RunPipelineRequest
+from .pipeline_service import (
+    RunPipelineRequest,
+)
 from .pipelines import (
     ExportToCdwPipeline,
     GcsIngestPipeline,
@@ -144,7 +146,9 @@ from .ruleset_service_request import (
     ListRuleSetsResponse,
     UpdateRuleSetRequest,
 )
-from .synonymset import SynonymSet
+from .synonymset import (
+    SynonymSet,
+)
 from .synonymset_service_request import (
     CreateSynonymSetRequest,
     DeleteSynonymSetRequest,

@@ -61,6 +61,7 @@ class RoutingPreference(proto.Enum):
             most performance optimizations. Using this value
             produces the highest latency.
     """
+
     ROUTING_PREFERENCE_UNSPECIFIED = 0
     TRAFFIC_UNAWARE = 1
     TRAFFIC_AWARE = 2

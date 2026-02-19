@@ -70,6 +70,7 @@ class NetworkArchitecture(proto.Enum):
             Instance is in Cloud SQL's new producer
             network architecture.
     """
+
     NETWORK_ARCHITECTURE_UNSPECIFIED = 0
     NETWORK_ARCHITECTURE_OLD_CSQL_PRODUCER = 1
     NETWORK_ARCHITECTURE_NEW_CSQL_PRODUCER = 2
@@ -89,6 +90,7 @@ class DatabaseEngine(proto.Enum):
         ORACLE (4):
             The source engine is Oracle.
     """
+
     DATABASE_ENGINE_UNSPECIFIED = 0
     MYSQL = 1
     POSTGRESQL = 2
@@ -110,6 +112,7 @@ class DatabaseProvider(proto.Enum):
         ALLOYDB (4):
             AlloyDB.
     """
+
     DATABASE_PROVIDER_UNSPECIFIED = 0
     CLOUDSQL = 1
     RDS = 2
@@ -154,6 +157,7 @@ class SslConfig(proto.Message):
                 Both server ('ca_certificate'), and client ('client_key',
                 'client_certificate') specified.
         """
+
         SSL_TYPE_UNSPECIFIED = 0
         SERVER_ONLY = 1
         SERVER_CLIENT = 2
@@ -741,6 +745,7 @@ class CloudSqlSettings(proto.Message):
             NEVER (2):
                 The instance should never spin up.
         """
+
         SQL_ACTIVATION_POLICY_UNSPECIFIED = 0
         ALWAYS = 1
         NEVER = 2
@@ -756,6 +761,7 @@ class CloudSqlSettings(proto.Message):
             PD_HDD (2):
                 HDD disk.
         """
+
         SQL_DATA_DISK_TYPE_UNSPECIFIED = 0
         PD_SSD = 1
         PD_HDD = 2
@@ -787,6 +793,7 @@ class CloudSqlSettings(proto.Message):
             POSTGRES_15 (18):
                 PostgreSQL 15.
         """
+
         SQL_DATABASE_VERSION_UNSPECIFIED = 0
         MYSQL_5_6 = 1
         MYSQL_5_7 = 2
@@ -810,6 +817,7 @@ class CloudSqlSettings(proto.Message):
             REGIONAL (2):
                 Regional availability instance.
         """
+
         SQL_AVAILABILITY_TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2
@@ -826,6 +834,7 @@ class CloudSqlSettings(proto.Message):
             ENTERPRISE_PLUS (3):
                 The instance is an enterprise plus edition.
         """
+
         EDITION_UNSPECIFIED = 0
         ENTERPRISE = 2
         ENTERPRISE_PLUS = 3
@@ -1419,6 +1428,7 @@ class MigrationJob(proto.Message):
             RESUMING (15):
                 The migration job is resuming.
         """
+
         STATE_UNSPECIFIED = 0
         MAINTENANCE = 1
         DRAFT = 2
@@ -1456,6 +1466,7 @@ class MigrationJob(proto.Message):
                 Only RDS flow - the sources writes stopped,
                 waiting for dump to begin
         """
+
         PHASE_UNSPECIFIED = 0
         FULL_DUMP = 1
         CDC = 2
@@ -1474,6 +1485,7 @@ class MigrationJob(proto.Message):
             CONTINUOUS (2):
                 The migration job is a continuous migration.
         """
+
         TYPE_UNSPECIFIED = 0
         ONE_TIME = 1
         CONTINUOUS = 2
@@ -1533,6 +1545,7 @@ class MigrationJob(proto.Message):
                 MAX (3):
                     Maximum parallel level.
             """
+
             DUMP_PARALLEL_LEVEL_UNSPECIFIED = 0
             MIN = 1
             OPTIMAL = 2
@@ -1775,6 +1788,7 @@ class ConnectionProfile(proto.Message):
                 The last action on the connection profile
                 failed.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         CREATING = 2
@@ -1951,6 +1965,7 @@ class MigrationJobVerificationError(proto.Message):
                 Insufficient privilege to enable the
                 parallelism configuration.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         CONNECTION_FAILURE = 1
         AUTHENTICATION_FAILURE = 2
@@ -2054,6 +2069,7 @@ class PrivateConnection(proto.Message):
             DELETED (6):
                 The private connection has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2

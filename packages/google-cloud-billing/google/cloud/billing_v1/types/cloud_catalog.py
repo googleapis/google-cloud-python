@@ -375,6 +375,7 @@ class AggregationInfo(proto.Message):
             PROJECT (2):
                 No description available.
         """
+
         AGGREGATION_LEVEL_UNSPECIFIED = 0
         ACCOUNT = 1
         PROJECT = 2
@@ -392,6 +393,7 @@ class AggregationInfo(proto.Message):
             MONTHLY (2):
                 No description available.
         """
+
         AGGREGATION_INTERVAL_UNSPECIFIED = 0
         DAILY = 1
         MONTHLY = 2
@@ -442,6 +444,7 @@ class GeoTaxonomy(proto.Message):
                 The sku is associated with multiple regions,
                 e.g. "us-west2" and "us-east1".
         """
+
         TYPE_UNSPECIFIED = 0
         GLOBAL = 1
         REGIONAL = 2

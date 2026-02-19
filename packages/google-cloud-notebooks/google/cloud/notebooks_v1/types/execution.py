@@ -188,6 +188,7 @@ class ExecutionTemplate(proto.Message):
                   the type of machine to use for your master node. This is
                   the only required setting.
         """
+
         SCALE_TIER_UNSPECIFIED = 0
         BASIC = 1
         STANDARD_1 = 2
@@ -220,6 +221,7 @@ class ExecutionTemplate(proto.Message):
             TPU_V3 (7):
                 TPU v3.
         """
+
         SCHEDULER_ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -244,6 +246,7 @@ class ExecutionTemplate(proto.Message):
                 job.
                 https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs
         """
+
         JOB_TYPE_UNSPECIFIED = 0
         VERTEX_AI = 1
         DATAPROC = 2
@@ -453,6 +456,7 @@ class Execution(proto.Message):
             INITIALIZING (10):
                 The Execution is being created.
         """
+
         STATE_UNSPECIFIED = 0
         QUEUED = 1
         PREPARING = 2

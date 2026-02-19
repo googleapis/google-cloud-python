@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -616,9 +616,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                     The response to a ``BatchEmbedContentsRequest``.
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_embed_contents(
                 request, metadata
@@ -931,9 +929,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                     The response to an ``EmbedContentRequest``.
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_http_options()
 
             request, metadata = self._interceptor.pre_embed_content(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_transcoded_request(
@@ -1101,9 +1097,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_content(
                 request, metadata
@@ -1274,9 +1268,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_http_options()
 
             request, metadata = self._interceptor.pre_stream_generate_content(
                 request, metadata
@@ -1477,9 +1469,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1597,9 +1587,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -1714,9 +1702,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1855,9 +1841,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGenerativeServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGenerativeServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseListOperations._get_transcoded_request(

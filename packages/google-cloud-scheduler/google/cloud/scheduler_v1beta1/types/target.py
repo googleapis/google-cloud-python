@@ -54,6 +54,7 @@ class HttpMethod(proto.Enum):
         OPTIONS (7):
             HTTP OPTIONS
     """
+
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
     GET = 2

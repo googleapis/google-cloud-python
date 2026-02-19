@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .viewport import Viewport
+from .viewport import (
+    Viewport,
+)
 
 __all__ = ("Viewport",)

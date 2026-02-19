@@ -66,6 +66,7 @@ class NotificationCategory(proto.Enum):
             technical incident notifications will go to
             these contacts instead of TECHNICAL.
     """
+
     NOTIFICATION_CATEGORY_UNSPECIFIED = 0
     ALL = 2
     SUSPENSION = 3
@@ -95,6 +96,7 @@ class ValidationState(proto.Enum):
             become the state if the contact's email is found
             to be unreachable.
     """
+
     VALIDATION_STATE_UNSPECIFIED = 0
     VALID = 1
     INVALID = 2

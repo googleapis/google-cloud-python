@@ -20,10 +20,10 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.monitoring_dashboard_v1.types import metrics
 from google.cloud.monitoring_dashboard_v1.types import (
     table_display_options as gmd_table_display_options,
 )
-from google.cloud.monitoring_dashboard_v1.types import metrics
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
@@ -57,6 +57,7 @@ class TimeSeriesTable(proto.Message):
             BAR (2):
                 Horizontal bar rendering
         """
+
         METRIC_VISUALIZATION_UNSPECIFIED = 0
         NUMBER = 1
         BAR = 2

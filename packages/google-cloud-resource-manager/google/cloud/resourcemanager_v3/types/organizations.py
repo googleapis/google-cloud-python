@@ -92,6 +92,7 @@ class Organization(proto.Message):
                 The organization has been marked for deletion
                 by the user.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2

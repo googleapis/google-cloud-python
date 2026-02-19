@@ -22,9 +22,7 @@ from .grpc_asyncio import FirewallActivationGrpcAsyncIOTransport
 from .rest import FirewallActivationRestInterceptor, FirewallActivationRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[FirewallActivationTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[FirewallActivationTransport]]
 _transport_registry["grpc"] = FirewallActivationGrpcTransport
 _transport_registry["grpc_asyncio"] = FirewallActivationGrpcAsyncIOTransport
 _transport_registry["rest"] = FirewallActivationRestTransport

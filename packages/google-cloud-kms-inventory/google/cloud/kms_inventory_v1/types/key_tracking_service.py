@@ -46,6 +46,7 @@ class FallbackScope(proto.Enum):
             to using key's project as request scope if the kms
             organization service account is not configured.
     """
+
     FALLBACK_SCOPE_UNSPECIFIED = 0
     FALLBACK_SCOPE_PROJECT = 1
 
@@ -375,6 +376,7 @@ class Warning(proto.Message):
                 only done for the project level data and results
                 might be partial.
         """
+
         WARNING_CODE_UNSPECIFIED = 0
         INSUFFICIENT_PERMISSIONS_PARTIAL_DATA = 1
         RESOURCE_LIMIT_EXCEEDED_PARTIAL_DATA = 2

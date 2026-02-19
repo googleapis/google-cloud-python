@@ -54,6 +54,7 @@ class CustomerEvent(proto.Message):
                 Primary domain of the customer has been
                 verified.
         """
+
         TYPE_UNSPECIFIED = 0
         PRIMARY_DOMAIN_CHANGED = 1
         PRIMARY_DOMAIN_VERIFIED = 2
@@ -122,6 +123,7 @@ class EntitlementEvent(proto.Message):
             LICENSE_CAP_CHANGED (13):
                 License cap was changed for the entitlement.
         """
+
         TYPE_UNSPECIFIED = 0
         CREATED = 1
         PRICE_PLAN_SWITCHED = 3

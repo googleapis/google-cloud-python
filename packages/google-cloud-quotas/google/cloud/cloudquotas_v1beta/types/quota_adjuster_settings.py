@@ -132,6 +132,7 @@ class QuotaAdjusterSettings(proto.Message):
             DISABLED (3):
                 The quota adjuster is disabled.
         """
+
         ENABLEMENT_UNSPECIFIED = 0
         ENABLED = 2
         DISABLED = 3

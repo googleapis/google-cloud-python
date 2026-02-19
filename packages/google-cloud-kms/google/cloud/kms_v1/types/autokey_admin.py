@@ -136,6 +136,7 @@ class AutokeyConfig(proto.Message):
                 permissions in the key project to configure
                 Autokey.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         KEY_PROJECT_DELETED = 2
@@ -172,6 +173,7 @@ class AutokeyConfig(proto.Message):
                 within that folder by setting a different mode (e.g.,
                 DEDICATED_KEY_PROJECT or RESOURCE_PROJECT).
         """
+
         KEY_PROJECT_RESOLUTION_MODE_UNSPECIFIED = 0
         DEDICATED_KEY_PROJECT = 1
         RESOURCE_PROJECT = 2

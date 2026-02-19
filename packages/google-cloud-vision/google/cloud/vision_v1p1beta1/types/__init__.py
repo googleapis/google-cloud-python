@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .geometry import BoundingPoly, Position, Vertex
+from .geometry import (
+    BoundingPoly,
+    Position,
+    Vertex,
+)
 from .image_annotator import (
     AnnotateImageRequest,
     AnnotateImageResponse,
@@ -39,8 +43,17 @@ from .image_annotator import (
     TextDetectionParams,
     WebDetectionParams,
 )
-from .text_annotation import Block, Page, Paragraph, Symbol, TextAnnotation, Word
-from .web_detection import WebDetection
+from .text_annotation import (
+    Block,
+    Page,
+    Paragraph,
+    Symbol,
+    TextAnnotation,
+    Word,
+)
+from .web_detection import (
+    WebDetection,
+)
 
 __all__ = (
     "BoundingPoly",

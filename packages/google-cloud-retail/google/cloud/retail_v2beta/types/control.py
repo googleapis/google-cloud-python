@@ -122,12 +122,12 @@ class Control(proto.Message):
         number=6,
         enum=common.SolutionType,
     )
-    search_solution_use_case: MutableSequence[
-        common.SearchSolutionUseCase
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=7,
-        enum=common.SearchSolutionUseCase,
+    search_solution_use_case: MutableSequence[common.SearchSolutionUseCase] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=7,
+            enum=common.SearchSolutionUseCase,
+        )
     )
 
 

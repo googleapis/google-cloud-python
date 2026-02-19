@@ -17,29 +17,31 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.network_security_v1alpha1.types import dns_threat_detector
 from google.cloud.network_security_v1alpha1.types import (
     dns_threat_detector as gcn_dns_threat_detector,
 )
-from google.cloud.network_security_v1alpha1.types import dns_threat_detector
 
 from .base import DEFAULT_CLIENT_INFO, DnsThreatDetectorServiceTransport
 from .grpc import DnsThreatDetectorServiceGrpcTransport
@@ -419,12 +421,12 @@ class DnsThreatDetectorServiceGrpcAsyncIOTransport(DnsThreatDetectorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_dns_threat_detector" not in self._stubs:
-            self._stubs[
-                "create_dns_threat_detector"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/CreateDnsThreatDetector",
-                request_serializer=gcn_dns_threat_detector.CreateDnsThreatDetectorRequest.serialize,
-                response_deserializer=gcn_dns_threat_detector.DnsThreatDetector.deserialize,
+            self._stubs["create_dns_threat_detector"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/CreateDnsThreatDetector",
+                    request_serializer=gcn_dns_threat_detector.CreateDnsThreatDetectorRequest.serialize,
+                    response_deserializer=gcn_dns_threat_detector.DnsThreatDetector.deserialize,
+                )
             )
         return self._stubs["create_dns_threat_detector"]
 
@@ -450,12 +452,12 @@ class DnsThreatDetectorServiceGrpcAsyncIOTransport(DnsThreatDetectorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_dns_threat_detector" not in self._stubs:
-            self._stubs[
-                "update_dns_threat_detector"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/UpdateDnsThreatDetector",
-                request_serializer=gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest.serialize,
-                response_deserializer=gcn_dns_threat_detector.DnsThreatDetector.deserialize,
+            self._stubs["update_dns_threat_detector"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/UpdateDnsThreatDetector",
+                    request_serializer=gcn_dns_threat_detector.UpdateDnsThreatDetectorRequest.serialize,
+                    response_deserializer=gcn_dns_threat_detector.DnsThreatDetector.deserialize,
+                )
             )
         return self._stubs["update_dns_threat_detector"]
 
@@ -480,12 +482,12 @@ class DnsThreatDetectorServiceGrpcAsyncIOTransport(DnsThreatDetectorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_dns_threat_detector" not in self._stubs:
-            self._stubs[
-                "delete_dns_threat_detector"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/DeleteDnsThreatDetector",
-                request_serializer=dns_threat_detector.DeleteDnsThreatDetectorRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_dns_threat_detector"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.DnsThreatDetectorService/DeleteDnsThreatDetector",
+                    request_serializer=dns_threat_detector.DeleteDnsThreatDetectorRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_dns_threat_detector"]
 

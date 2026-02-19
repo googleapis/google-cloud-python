@@ -246,6 +246,7 @@ class LlmModelSettings(proto.Message):
                 INPUT_TOKEN_LIMIT_LONG (3):
                     Input token limit up to 100k.
             """
+
             INPUT_TOKEN_LIMIT_UNSPECIFIED = 0
             INPUT_TOKEN_LIMIT_SHORT = 1
             INPUT_TOKEN_LIMIT_MEDIUM = 2
@@ -267,6 +268,7 @@ class LlmModelSettings(proto.Message):
                 OUTPUT_TOKEN_LIMIT_LONG (3):
                     Input token limit up to 2k.
             """
+
             OUTPUT_TOKEN_LIMIT_UNSPECIFIED = 0
             OUTPUT_TOKEN_LIMIT_SHORT = 1
             OUTPUT_TOKEN_LIMIT_MEDIUM = 2

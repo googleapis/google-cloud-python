@@ -261,6 +261,7 @@ class TimeFilter(proto.Message):
             DISPOSITION_TIME (3):
                 Time when document becomes mutable again.
         """
+
         TIME_FIELD_UNSPECIFIED = 0
         CREATE_TIME = 1
         UPDATE_TIME = 2
@@ -370,6 +371,7 @@ class FileTypeFilter(proto.Message):
             ROOT_FOLDER (4):
                 Returns only root folders
         """
+
         FILE_TYPE_UNSPECIFIED = 0
         ALL = 1
         FOLDER = 2
@@ -393,12 +395,12 @@ class CustomWeightsMetadata(proto.Message):
             relevance boosting.
     """
 
-    weighted_schema_properties: MutableSequence[
-        "WeightedSchemaProperty"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="WeightedSchemaProperty",
+    weighted_schema_properties: MutableSequence["WeightedSchemaProperty"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="WeightedSchemaProperty",
+        )
     )
 
 

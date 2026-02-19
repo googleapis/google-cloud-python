@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.gkehub_v1.types import feature, fleet, membership, service
 
@@ -964,12 +964,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_scope_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "get_scope_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/GetScopeRBACRoleBinding",
-                request_serializer=service.GetScopeRBACRoleBindingRequest.serialize,
-                response_deserializer=fleet.RBACRoleBinding.deserialize,
+            self._stubs["get_scope_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/GetScopeRBACRoleBinding",
+                    request_serializer=service.GetScopeRBACRoleBindingRequest.serialize,
+                    response_deserializer=fleet.RBACRoleBinding.deserialize,
+                )
             )
         return self._stubs["get_scope_rbac_role_binding"]
 
@@ -994,12 +994,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_scope_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "create_scope_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/CreateScopeRBACRoleBinding",
-                request_serializer=service.CreateScopeRBACRoleBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_scope_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/CreateScopeRBACRoleBinding",
+                    request_serializer=service.CreateScopeRBACRoleBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_scope_rbac_role_binding"]
 
@@ -1024,12 +1024,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_scope_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "update_scope_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/UpdateScopeRBACRoleBinding",
-                request_serializer=service.UpdateScopeRBACRoleBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_scope_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/UpdateScopeRBACRoleBinding",
+                    request_serializer=service.UpdateScopeRBACRoleBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_scope_rbac_role_binding"]
 
@@ -1054,12 +1054,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_scope_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "delete_scope_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/DeleteScopeRBACRoleBinding",
-                request_serializer=service.DeleteScopeRBACRoleBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_scope_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/DeleteScopeRBACRoleBinding",
+                    request_serializer=service.DeleteScopeRBACRoleBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_scope_rbac_role_binding"]
 
@@ -1085,12 +1085,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_scope_rbac_role_bindings" not in self._stubs:
-            self._stubs[
-                "list_scope_rbac_role_bindings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/ListScopeRBACRoleBindings",
-                request_serializer=service.ListScopeRBACRoleBindingsRequest.serialize,
-                response_deserializer=service.ListScopeRBACRoleBindingsResponse.deserialize,
+            self._stubs["list_scope_rbac_role_bindings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/ListScopeRBACRoleBindings",
+                    request_serializer=service.ListScopeRBACRoleBindingsRequest.serialize,
+                    response_deserializer=service.ListScopeRBACRoleBindingsResponse.deserialize,
+                )
             )
         return self._stubs["list_scope_rbac_role_bindings"]
 
@@ -1402,12 +1402,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_membership_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "get_membership_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/GetMembershipRBACRoleBinding",
-                request_serializer=service.GetMembershipRBACRoleBindingRequest.serialize,
-                response_deserializer=fleet.RBACRoleBinding.deserialize,
+            self._stubs["get_membership_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/GetMembershipRBACRoleBinding",
+                    request_serializer=service.GetMembershipRBACRoleBindingRequest.serialize,
+                    response_deserializer=fleet.RBACRoleBinding.deserialize,
+                )
             )
         return self._stubs["get_membership_rbac_role_binding"]
 
@@ -1433,12 +1433,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_membership_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "create_membership_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/CreateMembershipRBACRoleBinding",
-                request_serializer=service.CreateMembershipRBACRoleBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_membership_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/CreateMembershipRBACRoleBinding",
+                    request_serializer=service.CreateMembershipRBACRoleBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_membership_rbac_role_binding"]
 
@@ -1464,12 +1464,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_membership_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "update_membership_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/UpdateMembershipRBACRoleBinding",
-                request_serializer=service.UpdateMembershipRBACRoleBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_membership_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/UpdateMembershipRBACRoleBinding",
+                    request_serializer=service.UpdateMembershipRBACRoleBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_membership_rbac_role_binding"]
 
@@ -1495,12 +1495,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_membership_rbac_role_binding" not in self._stubs:
-            self._stubs[
-                "delete_membership_rbac_role_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/DeleteMembershipRBACRoleBinding",
-                request_serializer=service.DeleteMembershipRBACRoleBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_membership_rbac_role_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/DeleteMembershipRBACRoleBinding",
+                    request_serializer=service.DeleteMembershipRBACRoleBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_membership_rbac_role_binding"]
 
@@ -1527,12 +1527,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_membership_rbac_role_bindings" not in self._stubs:
-            self._stubs[
-                "list_membership_rbac_role_bindings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/ListMembershipRBACRoleBindings",
-                request_serializer=service.ListMembershipRBACRoleBindingsRequest.serialize,
-                response_deserializer=service.ListMembershipRBACRoleBindingsResponse.deserialize,
+            self._stubs["list_membership_rbac_role_bindings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/ListMembershipRBACRoleBindings",
+                    request_serializer=service.ListMembershipRBACRoleBindingsRequest.serialize,
+                    response_deserializer=service.ListMembershipRBACRoleBindingsResponse.deserialize,
+                )
             )
         return self._stubs["list_membership_rbac_role_bindings"]
 
@@ -1561,12 +1561,12 @@ class GkeHubGrpcTransport(GkeHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_membership_rbac_role_binding_yaml" not in self._stubs:
-            self._stubs[
-                "generate_membership_rbac_role_binding_yaml"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkehub.v1.GkeHub/GenerateMembershipRBACRoleBindingYAML",
-                request_serializer=service.GenerateMembershipRBACRoleBindingYAMLRequest.serialize,
-                response_deserializer=service.GenerateMembershipRBACRoleBindingYAMLResponse.deserialize,
+            self._stubs["generate_membership_rbac_role_binding_yaml"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkehub.v1.GkeHub/GenerateMembershipRBACRoleBindingYAML",
+                    request_serializer=service.GenerateMembershipRBACRoleBindingYAMLRequest.serialize,
+                    response_deserializer=service.GenerateMembershipRBACRoleBindingYAMLResponse.deserialize,
+                )
             )
         return self._stubs["generate_membership_rbac_role_binding_yaml"]
 

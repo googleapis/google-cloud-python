@@ -72,6 +72,7 @@ class Deployment(proto.Message):
             FAILED (3):
                 The deployment failed.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

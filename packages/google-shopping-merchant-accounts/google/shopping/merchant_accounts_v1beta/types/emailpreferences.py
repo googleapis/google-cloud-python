@@ -63,6 +63,7 @@ class EmailPreferences(proto.Message):
                 but user has not yet confirmed the opt in
                 (applies only to certain countries).
         """
+
         OPT_IN_STATE_UNSPECIFIED = 0
         OPTED_OUT = 1
         OPTED_IN = 2

@@ -16,23 +16,22 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.retail_v2alpha.types import project
+from google.cloud.retail_v2alpha.types import project, project_service
 from google.cloud.retail_v2alpha.types import project as gcr_project
-from google.cloud.retail_v2alpha.types import project_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseProjectServiceRestTransport
@@ -1245,9 +1244,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_logging_config(
                 request, metadata
@@ -1543,9 +1540,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_enrolled_solutions(
                 request, metadata
@@ -1694,9 +1689,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                     Project level alert config.
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_alert_config(
                 request, metadata
@@ -1852,9 +1845,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_logging_config(
                 request, metadata

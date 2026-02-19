@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -990,9 +990,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_add_association(request, metadata)
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
@@ -1174,9 +1172,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_traffic_classification_rule(
                 request, metadata
@@ -1245,11 +1241,10 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_add_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_add_traffic_classification_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_add_traffic_classification_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1331,9 +1326,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_transcoded_request(
@@ -1801,9 +1794,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_association(request, metadata)
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
@@ -1958,9 +1949,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_traffic_classification_rule(
                 request, metadata
@@ -2024,11 +2013,10 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_get_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_traffic_classification_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_traffic_classification_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2650,9 +2638,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_traffic_classification_rule(
                 request, metadata
@@ -2721,11 +2707,10 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_patch_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_patch_traffic_classification_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_patch_traffic_classification_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2835,9 +2820,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_association(
                 request, metadata
@@ -3017,15 +3000,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_remove_traffic_classification_rule(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_remove_traffic_classification_rule(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_transcoded_request(
                 http_options, request
@@ -3086,11 +3066,10 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_remove_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_traffic_classification_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_remove_traffic_classification_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3134,7 +3113,9 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AddTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._AddTrafficClassificationRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def aggregated_list(
@@ -3183,7 +3164,9 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetTrafficClassificationRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def insert(
@@ -3220,7 +3203,9 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PatchTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PatchTrafficClassificationRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def remove_association(
@@ -3241,7 +3226,9 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveTrafficClassificationRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

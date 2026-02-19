@@ -126,6 +126,7 @@ class PatchDeployment(proto.Message):
                 not generate Patch jobs. Requires user action to
                 move in and out from this state.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PAUSED = 2
@@ -269,6 +270,7 @@ class RecurringSchedule(proto.Message):
                 Indicates that the frequency of recurrence
                 should be expressed in terms of days.
         """
+
         FREQUENCY_UNSPECIFIED = 0
         WEEKLY = 1
         MONTHLY = 2

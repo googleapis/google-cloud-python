@@ -170,12 +170,12 @@ class ListGatewaySecurityPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateway_security_policies: MutableSequence[
-        "GatewaySecurityPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="GatewaySecurityPolicy",
+    gateway_security_policies: MutableSequence["GatewaySecurityPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="GatewaySecurityPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

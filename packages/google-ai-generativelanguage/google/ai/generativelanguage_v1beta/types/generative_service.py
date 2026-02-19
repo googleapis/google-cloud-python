@@ -21,9 +21,8 @@ import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1beta.types import citation
+from google.ai.generativelanguage_v1beta.types import citation, retriever, safety
 from google.ai.generativelanguage_v1beta.types import content as gag_content
-from google.ai.generativelanguage_v1beta.types import retriever, safety
 
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1beta",
@@ -115,6 +114,7 @@ class TaskType(proto.Enum):
             Specifies that the given text will be used
             for code retrieval.
     """
+
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
     RETRIEVAL_DOCUMENT = 2
@@ -674,6 +674,7 @@ class GenerationConfig(proto.Message):
             AUDIO (3):
                 Indicates the model should return audio.
         """
+
         MODALITY_UNSPECIFIED = 0
         TEXT = 1
         IMAGE = 2
@@ -693,6 +694,7 @@ class GenerationConfig(proto.Message):
                 Media resolution set to high (zoomed
                 reframing with 256 tokens).
         """
+
         MEDIA_RESOLUTION_UNSPECIFIED = 0
         MEDIA_RESOLUTION_LOW = 1
         MEDIA_RESOLUTION_MEDIUM = 2
@@ -925,6 +927,7 @@ class GenerateContentResponse(proto.Message):
                     Candidates blocked due to unsafe image
                     generation content.
             """
+
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
             OTHER = 2
@@ -1006,26 +1009,26 @@ class GenerateContentResponse(proto.Message):
             proto.INT32,
             number=3,
         )
-        prompt_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=gag_content.ModalityTokenCount,
+        prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message=gag_content.ModalityTokenCount,
+            )
         )
-        cache_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message=gag_content.ModalityTokenCount,
+        cache_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message=gag_content.ModalityTokenCount,
+            )
         )
-        candidates_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=7,
-            message=gag_content.ModalityTokenCount,
+        candidates_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=7,
+                message=gag_content.ModalityTokenCount,
+            )
         )
         tool_use_prompt_tokens_details: MutableSequence[
             gag_content.ModalityTokenCount
@@ -1176,6 +1179,7 @@ class Candidate(proto.Message):
                 Model called too many tools consecutively,
                 thus the system exited execution.
         """
+
         FINISH_REASON_UNSPECIFIED = 0
         STOP = 1
         MAX_TOKENS = 2
@@ -1229,12 +1233,12 @@ class Candidate(proto.Message):
         proto.INT32,
         number=7,
     )
-    grounding_attributions: MutableSequence[
-        "GroundingAttribution"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message="GroundingAttribution",
+    grounding_attributions: MutableSequence["GroundingAttribution"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message="GroundingAttribution",
+        )
     )
     grounding_metadata: "GroundingMetadata" = proto.Field(
         proto.MESSAGE,
@@ -1299,6 +1303,7 @@ class UrlMetadata(proto.Message):
                 Url retrieval is failed because the content
                 is unsafe.
         """
+
         URL_RETRIEVAL_STATUS_UNSPECIFIED = 0
         URL_RETRIEVAL_STATUS_SUCCESS = 1
         URL_RETRIEVAL_STATUS_ERROR = 2
@@ -2012,6 +2017,7 @@ class GenerateAnswerRequest(proto.Message):
                 paragraph, multiple paragraphs, or bullet
                 points, etc.
         """
+
         ANSWER_STYLE_UNSPECIFIED = 0
         ABSTRACTIVE = 1
         EXTRACTIVE = 2
@@ -2136,6 +2142,7 @@ class GenerateAnswerResponse(proto.Message):
                 OTHER (2):
                     Input was blocked due to other reasons.
             """
+
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
             OTHER = 2
@@ -2390,19 +2397,19 @@ class CountTokensResponse(proto.Message):
         proto.INT32,
         number=5,
     )
-    prompt_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=gag_content.ModalityTokenCount,
+    prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=gag_content.ModalityTokenCount,
+        )
     )
-    cache_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gag_content.ModalityTokenCount,
+    cache_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gag_content.ModalityTokenCount,
+        )
     )
 
 
@@ -2444,6 +2451,7 @@ class RealtimeInputConfig(proto.Message):
             NO_INTERRUPTION (2):
                 The model's response will not be interrupted.
         """
+
         ACTIVITY_HANDLING_UNSPECIFIED = 0
         START_OF_ACTIVITY_INTERRUPTS = 1
         NO_INTERRUPTION = 2
@@ -2465,6 +2473,7 @@ class RealtimeInputConfig(proto.Message):
                 since the last turn, including inactivity (e.g.
                 silence on the audio stream).
         """
+
         TURN_COVERAGE_UNSPECIFIED = 0
         TURN_INCLUDES_ONLY_ACTIVITY = 1
         TURN_INCLUDES_ALL_INPUT = 2
@@ -2524,6 +2533,7 @@ class RealtimeInputConfig(proto.Message):
                     Automatic detection will detect the start of
                     speech less often.
             """
+
             START_SENSITIVITY_UNSPECIFIED = 0
             START_SENSITIVITY_HIGH = 1
             START_SENSITIVITY_LOW = 2
@@ -2539,6 +2549,7 @@ class RealtimeInputConfig(proto.Message):
                 END_SENSITIVITY_LOW (2):
                     Automatic detection ends speech less often.
             """
+
             END_SENSITIVITY_UNSPECIFIED = 0
             END_SENSITIVITY_HIGH = 1
             END_SENSITIVITY_LOW = 2
@@ -2966,12 +2977,12 @@ class BidiGenerateContentToolResponse(proto.Message):
             Optional. The response to the function calls.
     """
 
-    function_responses: MutableSequence[
-        gag_content.FunctionResponse
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gag_content.FunctionResponse,
+    function_responses: MutableSequence[gag_content.FunctionResponse] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gag_content.FunctionResponse,
+        )
     )
 
 
@@ -3406,33 +3417,33 @@ class UsageMetadata(proto.Message):
         proto.INT32,
         number=3,
     )
-    prompt_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=gag_content.ModalityTokenCount,
+    prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=gag_content.ModalityTokenCount,
+        )
     )
-    cache_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=gag_content.ModalityTokenCount,
+    cache_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=gag_content.ModalityTokenCount,
+        )
     )
-    response_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gag_content.ModalityTokenCount,
+    response_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gag_content.ModalityTokenCount,
+        )
     )
-    tool_use_prompt_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=9,
-        message=gag_content.ModalityTokenCount,
+    tool_use_prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message=gag_content.ModalityTokenCount,
+        )
     )
 
 

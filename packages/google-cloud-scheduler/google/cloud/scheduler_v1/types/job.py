@@ -201,6 +201,7 @@ class Job(proto.Message):
                 [CloudScheduler.UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob]
                 until a successful response is received.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2

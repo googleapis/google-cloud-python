@@ -17,23 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.beyondcorp_clientconnectorservices_v1.types import (
     client_connector_services_service,
@@ -389,12 +391,12 @@ class ClientConnectorServicesServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_client_connector_services" not in self._stubs:
-            self._stubs[
-                "list_client_connector_services"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/ListClientConnectorServices",
-                request_serializer=client_connector_services_service.ListClientConnectorServicesRequest.serialize,
-                response_deserializer=client_connector_services_service.ListClientConnectorServicesResponse.deserialize,
+            self._stubs["list_client_connector_services"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/ListClientConnectorServices",
+                    request_serializer=client_connector_services_service.ListClientConnectorServicesRequest.serialize,
+                    response_deserializer=client_connector_services_service.ListClientConnectorServicesResponse.deserialize,
+                )
             )
         return self._stubs["list_client_connector_services"]
 
@@ -420,12 +422,12 @@ class ClientConnectorServicesServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_client_connector_service" not in self._stubs:
-            self._stubs[
-                "get_client_connector_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/GetClientConnectorService",
-                request_serializer=client_connector_services_service.GetClientConnectorServiceRequest.serialize,
-                response_deserializer=client_connector_services_service.ClientConnectorService.deserialize,
+            self._stubs["get_client_connector_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/GetClientConnectorService",
+                    request_serializer=client_connector_services_service.GetClientConnectorServiceRequest.serialize,
+                    response_deserializer=client_connector_services_service.ClientConnectorService.deserialize,
+                )
             )
         return self._stubs["get_client_connector_service"]
 
@@ -453,12 +455,12 @@ class ClientConnectorServicesServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_client_connector_service" not in self._stubs:
-            self._stubs[
-                "create_client_connector_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/CreateClientConnectorService",
-                request_serializer=client_connector_services_service.CreateClientConnectorServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_client_connector_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/CreateClientConnectorService",
+                    request_serializer=client_connector_services_service.CreateClientConnectorServiceRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_client_connector_service"]
 
@@ -486,12 +488,12 @@ class ClientConnectorServicesServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_client_connector_service" not in self._stubs:
-            self._stubs[
-                "update_client_connector_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/UpdateClientConnectorService",
-                request_serializer=client_connector_services_service.UpdateClientConnectorServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_client_connector_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/UpdateClientConnectorService",
+                    request_serializer=client_connector_services_service.UpdateClientConnectorServiceRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_client_connector_service"]
 
@@ -518,12 +520,12 @@ class ClientConnectorServicesServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_client_connector_service" not in self._stubs:
-            self._stubs[
-                "delete_client_connector_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/DeleteClientConnectorService",
-                request_serializer=client_connector_services_service.DeleteClientConnectorServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_client_connector_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/DeleteClientConnectorService",
+                    request_serializer=client_connector_services_service.DeleteClientConnectorServiceRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_client_connector_service"]
 

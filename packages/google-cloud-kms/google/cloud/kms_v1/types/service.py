@@ -458,12 +458,12 @@ class ListCryptoKeyVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    crypto_key_versions: MutableSequence[
-        resources.CryptoKeyVersion
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.CryptoKeyVersion,
+    crypto_key_versions: MutableSequence[resources.CryptoKeyVersion] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.CryptoKeyVersion,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

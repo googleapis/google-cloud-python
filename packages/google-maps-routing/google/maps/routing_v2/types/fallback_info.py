@@ -46,6 +46,7 @@ class FallbackReason(proto.Enum):
             were able to return a result calculated by an
             alternative mode.
     """
+
     FALLBACK_REASON_UNSPECIFIED = 0
     SERVER_ERROR = 1
     LATENCY_EXCEEDED = 2
@@ -66,6 +67,7 @@ class FallbackRoutingMode(proto.Enum):
             [``RoutingPreference``][google.maps.routing.v2.RoutingPreference]
             was used to compute the response.
     """
+
     FALLBACK_ROUTING_MODE_UNSPECIFIED = 0
     FALLBACK_TRAFFIC_UNAWARE = 1
     FALLBACK_TRAFFIC_AWARE = 2

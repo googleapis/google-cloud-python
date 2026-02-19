@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,19 +43,24 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2.services.conversations import (
     ConversationsAsyncClient,
@@ -63,15 +68,16 @@ from google.cloud.dialogflow_v2.services.conversations import (
     pagers,
     transports,
 )
-from google.cloud.dialogflow_v2.types import agent_coaching_instruction, audio_config
 from google.cloud.dialogflow_v2.types import (
+    agent_coaching_instruction,
+    audio_config,
+    conversation,
     conversation_profile,
     generator,
     participant,
     session,
     tool_call,
 )
-from google.cloud.dialogflow_v2.types import conversation
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
 
 CRED_INFO_JSON = {
@@ -955,10 +961,9 @@ def test_conversations_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1003,10 +1008,9 @@ def test_conversations_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1042,10 +1046,9 @@ def test_conversations_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1292,9 +1295,7 @@ def test_conversations_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1424,9 +1425,9 @@ def test_create_conversation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_conversation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_conversation] = (
+            mock_rpc
+        )
         request = {}
         client.create_conversation(request)
 
@@ -1792,9 +1793,9 @@ def test_list_conversations_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_conversations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_conversations] = (
+            mock_rpc
+        )
         request = {}
         client.list_conversations(request)
 
@@ -2340,9 +2341,9 @@ def test_get_conversation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_conversation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_conversation] = (
+            mock_rpc
+        )
         request = {}
         client.get_conversation(request)
 
@@ -2694,9 +2695,9 @@ def test_complete_conversation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.complete_conversation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.complete_conversation] = (
+            mock_rpc
+        )
         request = {}
         client.complete_conversation(request)
 
@@ -4830,9 +4831,9 @@ def test_search_knowledge_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.search_knowledge
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.search_knowledge] = (
+            mock_rpc
+        )
         request = {}
         client.search_knowledge(request)
 
@@ -5081,9 +5082,9 @@ def test_generate_suggestions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_suggestions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_suggestions] = (
+            mock_rpc
+        )
         request = {}
         client.generate_suggestions(request)
 
@@ -5355,9 +5356,9 @@ def test_create_conversation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_conversation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_conversation] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_conversation(request)
@@ -5548,9 +5549,9 @@ def test_list_conversations_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_conversations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_conversations] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_conversations(request)
@@ -5806,9 +5807,9 @@ def test_get_conversation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_conversation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_conversation] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_conversation(request)
@@ -5987,9 +5988,9 @@ def test_complete_conversation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.complete_conversation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.complete_conversation] = (
+            mock_rpc
+        )
 
         request = {}
         client.complete_conversation(request)
@@ -7086,9 +7087,9 @@ def test_search_knowledge_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.search_knowledge
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.search_knowledge] = (
+            mock_rpc
+        )
 
         request = {}
         client.search_knowledge(request)
@@ -7229,9 +7230,9 @@ def test_generate_suggestions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_suggestions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_suggestions] = (
+            mock_rpc
+        )
 
         request = {}
         client.generate_suggestions(request)

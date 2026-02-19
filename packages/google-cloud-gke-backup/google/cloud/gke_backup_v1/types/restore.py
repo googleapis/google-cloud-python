@@ -158,6 +158,7 @@ class Restore(proto.Message):
                 The Kubernetes resources created by this
                 Restore are being validated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         IN_PROGRESS = 2
@@ -399,6 +400,7 @@ class RestoreConfig(proto.Message):
                 result in either dynamically provisioning blank
                 PVs or binding to statically provisioned PVs.
         """
+
         VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED = 0
         RESTORE_VOLUME_DATA_FROM_BACKUP = 1
         REUSE_VOLUME_HANDLE_FROM_BACKUP = 2
@@ -424,6 +426,7 @@ class RestoreConfig(proto.Message):
                 deleting a CRD will cause Kubernetes to delete
                 all CRs of that type.
         """
+
         CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED = 0
         USE_EXISTING_VERSION = 1
         USE_BACKUP_VERSION = 2
@@ -496,6 +499,7 @@ class RestoreConfig(proto.Message):
                 cluster, and the original PV can be retained or
                 deleted depending on its reclaim policy.
         """
+
         NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED = 0
         DELETE_AND_RESTORE = 1
         FAIL_ON_CONFLICT = 2
@@ -580,19 +584,19 @@ class RestoreConfig(proto.Message):
                 message.
         """
 
-        selected_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="RestoreConfig.GroupKind",
+        selected_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="RestoreConfig.GroupKind",
+            )
         )
-        excluded_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="RestoreConfig.GroupKind",
+        excluded_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="RestoreConfig.GroupKind",
+            )
         )
         all_group_kinds: bool = proto.Field(
             proto.BOOL,
@@ -663,12 +667,12 @@ class RestoreConfig(proto.Message):
             proto.STRING,
             number=1,
         )
-        target_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="RestoreConfig.GroupKind",
+        target_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="RestoreConfig.GroupKind",
+            )
         )
         target_json_path: str = proto.Field(
             proto.STRING,
@@ -748,6 +752,7 @@ class RestoreConfig(proto.Message):
                     operation object MUST contain a "value" member
                     whose content specifies the replacement value.
             """
+
             OP_UNSPECIFIED = 0
             REMOVE = 1
             MOVE = 2
@@ -847,12 +852,12 @@ class RestoreConfig(proto.Message):
                 string description of the transformation rule.
         """
 
-        field_actions: MutableSequence[
-            "RestoreConfig.TransformationRuleAction"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="RestoreConfig.TransformationRuleAction",
+        field_actions: MutableSequence["RestoreConfig.TransformationRuleAction"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="RestoreConfig.TransformationRuleAction",
+            )
         )
         resource_filter: "RestoreConfig.ResourceFilter" = proto.Field(
             proto.MESSAGE,

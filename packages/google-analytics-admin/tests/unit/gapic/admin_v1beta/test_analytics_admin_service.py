@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,17 +43,22 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
 import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
 
 from google.analytics.admin_v1beta.services.analytics_admin_service import (
     AnalyticsAdminServiceAsyncClient,
@@ -1001,10 +1006,9 @@ def test_analytics_admin_service_client_get_mtls_endpoint_and_cert_source(client
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1049,10 +1053,9 @@ def test_analytics_admin_service_client_get_mtls_endpoint_and_cert_source(client
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1088,10 +1091,9 @@ def test_analytics_admin_service_client_get_mtls_endpoint_and_cert_source(client
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1351,9 +1353,7 @@ def test_analytics_admin_service_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3020,9 +3020,9 @@ def test_list_account_summaries_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_account_summaries
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_account_summaries] = (
+            mock_rpc
+        )
         request = {}
         client.list_account_summaries(request)
 
@@ -5132,9 +5132,9 @@ def test_create_firebase_link_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_firebase_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_firebase_link] = (
+            mock_rpc
+        )
         request = {}
         client.create_firebase_link(request)
 
@@ -5483,9 +5483,9 @@ def test_delete_firebase_link_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_firebase_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_firebase_link] = (
+            mock_rpc
+        )
         request = {}
         client.delete_firebase_link(request)
 
@@ -5818,9 +5818,9 @@ def test_list_firebase_links_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_firebase_links
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_firebase_links] = (
+            mock_rpc
+        )
         request = {}
         client.list_firebase_links(request)
 
@@ -6369,9 +6369,9 @@ def test_create_google_ads_link_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_google_ads_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_google_ads_link] = (
+            mock_rpc
+        )
         request = {}
         client.create_google_ads_link(request)
 
@@ -6730,9 +6730,9 @@ def test_update_google_ads_link_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_google_ads_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_google_ads_link] = (
+            mock_rpc
+        )
         request = {}
         client.update_google_ads_link(request)
 
@@ -7086,9 +7086,9 @@ def test_delete_google_ads_link_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_google_ads_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_google_ads_link] = (
+            mock_rpc
+        )
         request = {}
         client.delete_google_ads_link(request)
 
@@ -7422,9 +7422,9 @@ def test_list_google_ads_links_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_google_ads_links
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_google_ads_links] = (
+            mock_rpc
+        )
         request = {}
         client.list_google_ads_links(request)
 
@@ -11771,9 +11771,9 @@ def test_get_conversion_event_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_conversion_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_conversion_event] = (
+            mock_rpc
+        )
         request = {}
         client.get_conversion_event(request)
 
@@ -12458,9 +12458,9 @@ def test_list_conversion_events_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_conversion_events
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_conversion_events] = (
+            mock_rpc
+        )
         request = {}
         client.list_conversion_events(request)
 
@@ -13004,9 +13004,9 @@ def test_create_key_event_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_key_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_key_event] = (
+            mock_rpc
+        )
         request = {}
         client.create_key_event(request)
 
@@ -13347,9 +13347,9 @@ def test_update_key_event_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_key_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_key_event] = (
+            mock_rpc
+        )
         request = {}
         client.update_key_event(request)
 
@@ -14018,9 +14018,9 @@ def test_delete_key_event_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_key_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_key_event] = (
+            mock_rpc
+        )
         request = {}
         client.delete_key_event(request)
 
@@ -15604,9 +15604,9 @@ def test_list_custom_dimensions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_custom_dimensions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_custom_dimensions] = (
+            mock_rpc
+        )
         request = {}
         client.list_custom_dimensions(request)
 
@@ -16489,9 +16489,9 @@ def test_get_custom_dimension_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_custom_dimension
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_custom_dimension] = (
+            mock_rpc
+        )
         request = {}
         client.get_custom_dimension(request)
 
@@ -16857,9 +16857,9 @@ def test_create_custom_metric_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_custom_metric] = (
+            mock_rpc
+        )
         request = {}
         client.create_custom_metric(request)
 
@@ -17237,9 +17237,9 @@ def test_update_custom_metric_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_custom_metric] = (
+            mock_rpc
+        )
         request = {}
         client.update_custom_metric(request)
 
@@ -17607,9 +17607,9 @@ def test_list_custom_metrics_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_custom_metrics
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_custom_metrics] = (
+            mock_rpc
+        )
         request = {}
         client.list_custom_metrics(request)
 
@@ -18149,9 +18149,9 @@ def test_archive_custom_metric_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.archive_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.archive_custom_metric] = (
+            mock_rpc
+        )
         request = {}
         client.archive_custom_metric(request)
 
@@ -18496,9 +18496,9 @@ def test_get_custom_metric_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_custom_metric] = (
+            mock_rpc
+        )
         request = {}
         client.get_custom_metric(request)
 
@@ -19597,9 +19597,9 @@ def test_create_data_stream_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_data_stream
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_data_stream] = (
+            mock_rpc
+        )
         request = {}
         client.create_data_stream(request)
 
@@ -19974,9 +19974,9 @@ def test_delete_data_stream_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_data_stream
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_data_stream] = (
+            mock_rpc
+        )
         request = {}
         client.delete_data_stream(request)
 
@@ -20307,9 +20307,9 @@ def test_update_data_stream_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_data_stream
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_data_stream] = (
+            mock_rpc
+        )
         request = {}
         client.update_data_stream(request)
 
@@ -20687,9 +20687,9 @@ def test_list_data_streams_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_data_streams
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_data_streams] = (
+            mock_rpc
+        )
         request = {}
         client.list_data_streams(request)
 
@@ -21561,9 +21561,9 @@ def test_run_access_report_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_access_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_access_report] = (
+            mock_rpc
+        )
         request = {}
         client.run_access_report(request)
 
@@ -22420,9 +22420,9 @@ def test_list_account_summaries_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_account_summaries
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_account_summaries] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_account_summaries(request)
@@ -23442,9 +23442,9 @@ def test_create_firebase_link_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_firebase_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_firebase_link] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_firebase_link(request)
@@ -23634,9 +23634,9 @@ def test_delete_firebase_link_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_firebase_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_firebase_link] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_firebase_link(request)
@@ -23810,9 +23810,9 @@ def test_list_firebase_links_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_firebase_links
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_firebase_links] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_firebase_links(request)
@@ -24070,9 +24070,9 @@ def test_create_google_ads_link_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_google_ads_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_google_ads_link] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_google_ads_link(request)
@@ -24263,9 +24263,9 @@ def test_update_google_ads_link_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_google_ads_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_google_ads_link] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_google_ads_link(request)
@@ -24448,9 +24448,9 @@ def test_delete_google_ads_link_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_google_ads_link
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_google_ads_link] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_google_ads_link(request)
@@ -24625,9 +24625,9 @@ def test_list_google_ads_links_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_google_ads_links
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_google_ads_links] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_google_ads_links(request)
@@ -26834,9 +26834,9 @@ def test_get_conversion_event_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_conversion_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_conversion_event] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_conversion_event(request)
@@ -27193,9 +27193,9 @@ def test_list_conversion_events_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_conversion_events
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_conversion_events] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_conversion_events(request)
@@ -27450,9 +27450,9 @@ def test_create_key_event_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_key_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_key_event] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_key_event(request)
@@ -27640,9 +27640,9 @@ def test_update_key_event_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_key_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_key_event] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_key_event(request)
@@ -28005,9 +28005,9 @@ def test_delete_key_event_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_key_event
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_key_event] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_key_event(request)
@@ -28815,9 +28815,9 @@ def test_list_custom_dimensions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_custom_dimensions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_custom_dimensions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_custom_dimensions(request)
@@ -29253,9 +29253,9 @@ def test_get_custom_dimension_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_custom_dimension
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_custom_dimension] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_custom_dimension(request)
@@ -29434,9 +29434,9 @@ def test_create_custom_metric_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_custom_metric] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_custom_metric(request)
@@ -29626,9 +29626,9 @@ def test_update_custom_metric_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_custom_metric] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_custom_metric(request)
@@ -29810,9 +29810,9 @@ def test_list_custom_metrics_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_custom_metrics
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_custom_metrics] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_custom_metrics(request)
@@ -30070,9 +30070,9 @@ def test_archive_custom_metric_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.archive_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.archive_custom_metric] = (
+            mock_rpc
+        )
 
         request = {}
         client.archive_custom_metric(request)
@@ -30246,9 +30246,9 @@ def test_get_custom_metric_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_custom_metric
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_custom_metric] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_custom_metric(request)
@@ -30807,9 +30807,9 @@ def test_create_data_stream_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_data_stream
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_data_stream] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_data_stream(request)
@@ -31007,9 +31007,9 @@ def test_delete_data_stream_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_data_stream
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_data_stream] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_data_stream(request)
@@ -31183,9 +31183,9 @@ def test_update_data_stream_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_data_stream
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_data_stream] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_data_stream(request)
@@ -31373,9 +31373,9 @@ def test_list_data_streams_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_data_streams
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_data_streams] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_data_streams(request)
@@ -31807,9 +31807,9 @@ def test_run_access_report_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_access_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_access_report] = (
+            mock_rpc
+        )
 
         request = {}
         client.run_access_report(request)

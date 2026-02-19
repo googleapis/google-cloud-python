@@ -26,7 +26,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class Logging(_message.Message):
     __slots__ = ("producer_destinations", "consumer_destinations")
-
     class LoggingDestination(_message.Message):
         __slots__ = ("monitored_resource", "logs")
         MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]

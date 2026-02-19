@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1268,9 +1268,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_add_association(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
@@ -1449,9 +1447,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseAddRule._get_transcoded_request(
@@ -1631,9 +1627,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_http_options()
 
             request, metadata = self._interceptor.pre_clone_rules(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_transcoded_request(
@@ -1808,9 +1802,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseDelete._get_transcoded_request(
@@ -1957,9 +1949,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGet._get_transcoded_request(
@@ -2102,9 +2092,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_association(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
@@ -2253,9 +2241,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetEffectiveFirewalls._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetEffectiveFirewalls._get_http_options()
 
             request, metadata = self._interceptor.pre_get_effective_firewalls(
                 request, metadata
@@ -2482,9 +2468,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2635,9 +2619,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseGetRule._get_transcoded_request(
@@ -2813,9 +2795,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseInsert._get_transcoded_request(
@@ -2965,9 +2945,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseList._get_transcoded_request(
@@ -3139,9 +3117,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatch._get_transcoded_request(
@@ -3320,9 +3296,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_association(
                 request, metadata
@@ -3503,9 +3477,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BasePatchRule._get_transcoded_request(
@@ -3685,9 +3657,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_association(
                 request, metadata
@@ -3862,9 +3832,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(
@@ -4086,9 +4054,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -4241,9 +4207,7 @@ class RegionNetworkFirewallPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionNetworkFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegionNetworkFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

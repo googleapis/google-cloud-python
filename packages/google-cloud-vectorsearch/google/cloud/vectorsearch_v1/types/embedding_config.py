@@ -59,6 +59,7 @@ class EmbeddingTaskType(proto.Enum):
             Specifies that the embeddings will be used
             for code retrieval.
     """
+
     EMBEDDING_TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
     RETRIEVAL_DOCUMENT = 2

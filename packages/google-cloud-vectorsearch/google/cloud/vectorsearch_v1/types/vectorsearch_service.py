@@ -923,6 +923,7 @@ class DedicatedInfrastructure(proto.Message):
                 This is Performance optimized on E2 or
                 equivalent family.
         """
+
         MODE_UNSPECIFIED = 0
         STORAGE_OPTIMIZED = 1
         PERFORMANCE_OPTIMIZED = 2
@@ -982,6 +983,7 @@ class DenseScannIndex(proto.Message):
             UNIT_L2_NORM (2):
                 Unit L2 norm.
         """
+
         FEATURE_NORM_TYPE_UNSPECIFIED = 0
         NONE = 1
         UNIT_L2_NORM = 2

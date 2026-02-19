@@ -82,7 +82,10 @@ from .vpc_flow_logs import (
     ShowEffectiveFlowLogsConfigsResponse,
     UpdateVpcFlowLogsConfigRequest,
 )
-from .vpc_flow_logs_config import EffectiveVpcFlowLogsConfig, VpcFlowLogsConfig
+from .vpc_flow_logs_config import (
+    EffectiveVpcFlowLogsConfig,
+    VpcFlowLogsConfig,
+)
 
 __all__ = (
     "ConnectivityTest",

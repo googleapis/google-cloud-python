@@ -66,6 +66,7 @@ class VPCSCConfig(proto.Message):
                 Upstreams for the Remote Repositories if the resource is in
                 the perimeter.
         """
+
         VPCSC_POLICY_UNSPECIFIED = 0
         DENY = 1
         ALLOW = 2

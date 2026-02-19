@@ -73,6 +73,7 @@ class FirewallRule(proto.Message):
             DENY (2):
                 Matching requests are denied.
         """
+
         UNSPECIFIED_ACTION = 0
         ALLOW = 1
         DENY = 2

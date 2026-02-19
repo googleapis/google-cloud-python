@@ -103,6 +103,7 @@ class TableFieldSchema(proto.Message):
             JSON (15):
                 JSON, String
         """
+
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INT64 = 2
@@ -133,6 +134,7 @@ class TableFieldSchema(proto.Message):
             REPEATED (3):
                 No description available.
         """
+
         MODE_UNSPECIFIED = 0
         NULLABLE = 1
         REQUIRED = 2

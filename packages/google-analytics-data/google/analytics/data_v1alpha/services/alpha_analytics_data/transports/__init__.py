@@ -22,9 +22,7 @@ from .grpc_asyncio import AlphaAnalyticsDataGrpcAsyncIOTransport
 from .rest import AlphaAnalyticsDataRestInterceptor, AlphaAnalyticsDataRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AlphaAnalyticsDataTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AlphaAnalyticsDataTransport]]
 _transport_registry["grpc"] = AlphaAnalyticsDataGrpcTransport
 _transport_registry["grpc_asyncio"] = AlphaAnalyticsDataGrpcAsyncIOTransport
 _transport_registry["rest"] = AlphaAnalyticsDataRestTransport

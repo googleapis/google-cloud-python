@@ -226,6 +226,7 @@ class Manifest(proto.Message):
                 Create a ``DASH`` manifest. The corresponding file extension
                 is ``.mpd``.
         """
+
         MANIFEST_TYPE_UNSPECIFIED = 0
         HLS = 1
         DASH = 2
@@ -364,6 +365,7 @@ class Distribution(proto.Message):
                 Distribution is already started and is
                 generating output.
         """
+
         STATE_UNSPECIFIED = 0
         ERROR = 5
         NOT_READY = 6
@@ -1309,6 +1311,7 @@ class TimecodeConfig(proto.Message):
                 Use input embedded timecode e.g. picture
                 timing SEI message.
         """
+
         TIMECODE_SOURCE_UNSPECIFIED = 0
         MEDIA_TIMESTAMP = 1
         EMBEDDED_TIMECODE = 2

@@ -22,8 +22,8 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dialogflow_v2beta1.types import phone_number as gcd_phone_number
 from google.cloud.dialogflow_v2beta1.types import phone_number
+from google.cloud.dialogflow_v2beta1.types import phone_number as gcd_phone_number
 
 from .base import DEFAULT_CLIENT_INFO, PhoneNumbersTransport
 

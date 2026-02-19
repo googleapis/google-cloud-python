@@ -21,9 +21,7 @@ from .grpc import CloudChannelServiceGrpcTransport
 from .grpc_asyncio import CloudChannelServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CloudChannelServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CloudChannelServiceTransport]]
 _transport_registry["grpc"] = CloudChannelServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = CloudChannelServiceGrpcAsyncIOTransport
 

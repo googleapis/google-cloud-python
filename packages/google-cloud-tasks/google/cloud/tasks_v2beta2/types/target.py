@@ -60,6 +60,7 @@ class HttpMethod(proto.Enum):
         OPTIONS (7):
             HTTP OPTIONS
     """
+
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
     GET = 2
@@ -758,6 +759,7 @@ class UriOverride(proto.Message):
                 http://www.google.ca will change to
                 https://www.google.ca.
         """
+
         SCHEME_UNSPECIFIED = 0
         HTTP = 1
         HTTPS = 2
@@ -776,6 +778,7 @@ class UriOverride(proto.Message):
                 In the ALWAYS mode, queue-level configuration
                 overrides all task-level configuration
         """
+
         URI_OVERRIDE_ENFORCE_MODE_UNSPECIFIED = 0
         IF_NOT_EXISTS = 1
         ALWAYS = 2

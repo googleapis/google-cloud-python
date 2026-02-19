@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.apiregistry_v1beta import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 
 from google.cloud.apiregistry_v1beta.services.cloud_api_registry import pagers
 from google.cloud.apiregistry_v1beta.types import common, resources, service
@@ -120,7 +120,10 @@ class CloudApiRegistryAsyncClient:
         Returns:
             CloudApiRegistryAsyncClient: The constructed client.
         """
-        return CloudApiRegistryClient.from_service_account_info.__func__(CloudApiRegistryAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            CloudApiRegistryClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(CloudApiRegistryAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -136,7 +139,10 @@ class CloudApiRegistryAsyncClient:
         Returns:
             CloudApiRegistryAsyncClient: The constructed client.
         """
-        return CloudApiRegistryClient.from_service_account_file.__func__(CloudApiRegistryAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            CloudApiRegistryClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(CloudApiRegistryAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

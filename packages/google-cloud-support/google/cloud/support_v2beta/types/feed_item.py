@@ -20,9 +20,9 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.support_v2beta.types import email_message as gcs_email_message
 from google.cloud.support_v2beta.types import attachment as gcs_attachment
 from google.cloud.support_v2beta.types import comment as gcs_comment
+from google.cloud.support_v2beta.types import email_message as gcs_email_message
 
 __protobuf__ = proto.module(
     package="google.cloud.support.v2beta",

@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -39,12 +41,14 @@ from google.cloud.eventarc_v1.types import (
     enrollment,
     eventarc,
     google_api_source,
+    google_channel_config,
+    message_bus,
+    pipeline,
+    trigger,
 )
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
-from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseEventarcRestTransport
@@ -2832,9 +2836,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_create_channel_connection(
                 request, metadata
@@ -3144,9 +3146,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_http_options()
 
             request, metadata = self._interceptor.pre_create_google_api_source(
                 request, metadata
@@ -3919,9 +3919,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_channel_connection(
                 request, metadata
@@ -4217,9 +4215,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_google_api_source(
                 request, metadata
@@ -5438,9 +5434,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_google_channel_config(
                 request, metadata
@@ -6193,9 +6187,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
 
             request, metadata = self._interceptor.pre_list_channel_connections(
                 request, metadata
@@ -6796,9 +6788,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_message_bus_enrollments(
                 request, metadata
@@ -7863,9 +7853,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_http_options()
 
             request, metadata = self._interceptor.pre_update_google_api_source(
                 request, metadata
@@ -8023,9 +8011,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_google_channel_config(
                 request, metadata
@@ -8608,7 +8594,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     ) -> Callable[[eventarc.CreateChannelConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateChannelConnection(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_enrollment(
@@ -8664,7 +8652,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     ) -> Callable[[eventarc.DeleteChannelConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteChannelConnection(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_enrollment(
@@ -8749,7 +8739,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGoogleChannelConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_message_bus(
@@ -8790,7 +8782,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListChannelConnections(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListChannelConnections(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_channels(
@@ -8827,7 +8821,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMessageBusEnrollments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMessageBusEnrollments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_message_buses(
@@ -8896,7 +8892,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGoogleChannelConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_message_bus(

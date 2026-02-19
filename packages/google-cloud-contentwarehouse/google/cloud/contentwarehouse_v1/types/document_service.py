@@ -21,9 +21,8 @@ import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.contentwarehouse_v1.types import common
+from google.cloud.contentwarehouse_v1.types import common, histogram, rule_engine
 from google.cloud.contentwarehouse_v1.types import document as gcc_document
-from google.cloud.contentwarehouse_v1.types import histogram, rule_engine
 
 __protobuf__ = proto.module(
     package="google.cloud.contentwarehouse.v1",
@@ -73,12 +72,12 @@ class CreateDocumentResponse(proto.Message):
         number=3,
         message=common.ResponseMetadata,
     )
-    long_running_operations: MutableSequence[
-        operations_pb2.Operation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=operations_pb2.Operation,
+    long_running_operations: MutableSequence[operations_pb2.Operation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=operations_pb2.Operation,
+        )
     )
 
 
@@ -266,12 +265,12 @@ class SearchDocumentsResponse(proto.Message):
         number=4,
         message=common.ResponseMetadata,
     )
-    histogram_query_results: MutableSequence[
-        histogram.HistogramQueryResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=histogram.HistogramQueryResult,
+    histogram_query_results: MutableSequence[histogram.HistogramQueryResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=histogram.HistogramQueryResult,
+        )
     )
     question_answer: str = proto.Field(
         proto.STRING,

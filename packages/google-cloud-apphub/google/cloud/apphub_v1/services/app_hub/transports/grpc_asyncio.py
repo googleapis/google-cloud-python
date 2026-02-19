@@ -17,23 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.apphub_v1.types import (
     apphub_service,
@@ -381,12 +383,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "lookup_service_project_attachment" not in self._stubs:
-            self._stubs[
-                "lookup_service_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apphub.v1.AppHub/LookupServiceProjectAttachment",
-                request_serializer=apphub_service.LookupServiceProjectAttachmentRequest.serialize,
-                response_deserializer=apphub_service.LookupServiceProjectAttachmentResponse.deserialize,
+            self._stubs["lookup_service_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apphub.v1.AppHub/LookupServiceProjectAttachment",
+                    request_serializer=apphub_service.LookupServiceProjectAttachmentRequest.serialize,
+                    response_deserializer=apphub_service.LookupServiceProjectAttachmentResponse.deserialize,
+                )
             )
         return self._stubs["lookup_service_project_attachment"]
 
@@ -413,12 +415,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_service_project_attachments" not in self._stubs:
-            self._stubs[
-                "list_service_project_attachments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apphub.v1.AppHub/ListServiceProjectAttachments",
-                request_serializer=apphub_service.ListServiceProjectAttachmentsRequest.serialize,
-                response_deserializer=apphub_service.ListServiceProjectAttachmentsResponse.deserialize,
+            self._stubs["list_service_project_attachments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apphub.v1.AppHub/ListServiceProjectAttachments",
+                    request_serializer=apphub_service.ListServiceProjectAttachmentsRequest.serialize,
+                    response_deserializer=apphub_service.ListServiceProjectAttachmentsResponse.deserialize,
+                )
             )
         return self._stubs["list_service_project_attachments"]
 
@@ -445,12 +447,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_project_attachment" not in self._stubs:
-            self._stubs[
-                "create_service_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apphub.v1.AppHub/CreateServiceProjectAttachment",
-                request_serializer=apphub_service.CreateServiceProjectAttachmentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_service_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apphub.v1.AppHub/CreateServiceProjectAttachment",
+                    request_serializer=apphub_service.CreateServiceProjectAttachmentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_service_project_attachment"]
 
@@ -476,12 +478,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_service_project_attachment" not in self._stubs:
-            self._stubs[
-                "get_service_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apphub.v1.AppHub/GetServiceProjectAttachment",
-                request_serializer=apphub_service.GetServiceProjectAttachmentRequest.serialize,
-                response_deserializer=service_project_attachment.ServiceProjectAttachment.deserialize,
+            self._stubs["get_service_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apphub.v1.AppHub/GetServiceProjectAttachment",
+                    request_serializer=apphub_service.GetServiceProjectAttachmentRequest.serialize,
+                    response_deserializer=service_project_attachment.ServiceProjectAttachment.deserialize,
+                )
             )
         return self._stubs["get_service_project_attachment"]
 
@@ -508,12 +510,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_service_project_attachment" not in self._stubs:
-            self._stubs[
-                "delete_service_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apphub.v1.AppHub/DeleteServiceProjectAttachment",
-                request_serializer=apphub_service.DeleteServiceProjectAttachmentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_service_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apphub.v1.AppHub/DeleteServiceProjectAttachment",
+                    request_serializer=apphub_service.DeleteServiceProjectAttachmentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_service_project_attachment"]
 
@@ -543,12 +545,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "detach_service_project_attachment" not in self._stubs:
-            self._stubs[
-                "detach_service_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apphub.v1.AppHub/DetachServiceProjectAttachment",
-                request_serializer=apphub_service.DetachServiceProjectAttachmentRequest.serialize,
-                response_deserializer=apphub_service.DetachServiceProjectAttachmentResponse.deserialize,
+            self._stubs["detach_service_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apphub.v1.AppHub/DetachServiceProjectAttachment",
+                    request_serializer=apphub_service.DetachServiceProjectAttachmentRequest.serialize,
+                    response_deserializer=apphub_service.DetachServiceProjectAttachmentResponse.deserialize,
+                )
             )
         return self._stubs["detach_service_project_attachment"]
 
@@ -864,12 +866,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "lookup_discovered_workload" not in self._stubs:
-            self._stubs[
-                "lookup_discovered_workload"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apphub.v1.AppHub/LookupDiscoveredWorkload",
-                request_serializer=apphub_service.LookupDiscoveredWorkloadRequest.serialize,
-                response_deserializer=apphub_service.LookupDiscoveredWorkloadResponse.deserialize,
+            self._stubs["lookup_discovered_workload"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apphub.v1.AppHub/LookupDiscoveredWorkload",
+                    request_serializer=apphub_service.LookupDiscoveredWorkloadRequest.serialize,
+                    response_deserializer=apphub_service.LookupDiscoveredWorkloadResponse.deserialize,
+                )
             )
         return self._stubs["lookup_discovered_workload"]
 

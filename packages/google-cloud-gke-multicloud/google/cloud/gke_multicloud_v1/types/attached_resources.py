@@ -190,6 +190,7 @@ class AttachedCluster(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -435,12 +436,12 @@ class AttachedServerConfig(proto.Message):
         proto.STRING,
         number=1,
     )
-    valid_versions: MutableSequence[
-        "AttachedPlatformVersionInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="AttachedPlatformVersionInfo",
+    valid_versions: MutableSequence["AttachedPlatformVersionInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="AttachedPlatformVersionInfo",
+        )
     )
 
 
@@ -609,6 +610,7 @@ class Toleration(proto.Message):
             KEY_OPERATOR_EXISTS (2):
                 Operator maps to 'Exists'.
         """
+
         KEY_OPERATOR_UNSPECIFIED = 0
         KEY_OPERATOR_EQUAL = 1
         KEY_OPERATOR_EXISTS = 2
@@ -626,6 +628,7 @@ class Toleration(proto.Message):
             EFFECT_NO_EXECUTE (3):
                 Effect maps to 'NoExecute'.
         """
+
         EFFECT_UNSPECIFIED = 0
         EFFECT_NO_SCHEDULE = 1
         EFFECT_PREFER_NO_SCHEDULE = 2

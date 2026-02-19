@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
@@ -503,9 +503,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_http_options()
 
             request, metadata = self._interceptor.pre_create_workload(request, metadata)
             transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_transcoded_request(
@@ -649,9 +647,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_workload(request, metadata)
             transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_transcoded_request(
@@ -806,9 +802,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_http_options()
 
             request, metadata = self._interceptor.pre_restrict_allowed_resources(
                 request, metadata
@@ -980,7 +974,9 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RestrictAllowedResources(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RestrictAllowedResources(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_workload(
@@ -1048,9 +1044,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1189,9 +1183,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_transcoded_request(

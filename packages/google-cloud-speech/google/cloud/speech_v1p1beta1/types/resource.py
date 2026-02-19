@@ -105,6 +105,7 @@ class CustomClass(proto.Message):
             DELETED (4):
                 This CustomClass has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -262,6 +263,7 @@ class PhraseSet(proto.Message):
             DELETED (4):
                 This CustomClass has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4

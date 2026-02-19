@@ -57,6 +57,7 @@ class CompanyTypeEnum(proto.Message):
                 A company representing multiple advertisers
                 and agencies.
         """
+
         COMPANY_TYPE_UNSPECIFIED = 0
         ADVERTISER = 1
         HOUSE_ADVERTISER = 2
@@ -144,6 +145,7 @@ class CompanyCreditStatusEnum(proto.Message):
                 This credit status is only available in advance
                 settings.
         """
+
         COMPANY_CREDIT_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2

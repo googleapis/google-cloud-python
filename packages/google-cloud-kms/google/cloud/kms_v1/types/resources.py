@@ -66,6 +66,7 @@ class ProtectionLevel(proto.Enum):
             Crypto operations are performed in a
             single-tenant HSM.
     """
+
     PROTECTION_LEVEL_UNSPECIFIED = 0
     SOFTWARE = 1
     HSM = 2
@@ -154,6 +155,7 @@ class AccessReason(proto.Enum):
             - Google-initiated support access to protect system
               reliability.
     """
+
     REASON_UNSPECIFIED = 0
     CUSTOMER_INITIATED_SUPPORT = 1
     GOOGLE_INITIATED_SERVICE = 2
@@ -380,6 +382,7 @@ class CryptoKey(proto.Message):
                 and
                 [Decapsulate][google.cloud.kms.v1.KeyManagementService.Decapsulate].
         """
+
         CRYPTO_KEY_PURPOSE_UNSPECIFIED = 0
         ENCRYPT_DECRYPT = 1
         ASYMMETRIC_SIGN = 5
@@ -525,6 +528,7 @@ class KeyOperationAttestation(proto.Message):
                 gzip. This is a new format introduced in
                 Cavium's version 3.2-08.
         """
+
         ATTESTATION_FORMAT_UNSPECIFIED = 0
         CAVIUM_V1_COMPRESSED = 3
         CAVIUM_V2_COMPRESSED = 4
@@ -861,6 +865,7 @@ class CryptoKeyVersion(proto.Message):
                 Randomized version supporting
                 externally-computed message representatives.
         """
+
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
         AES_128_GCM = 41
@@ -975,6 +980,7 @@ class CryptoKeyVersion(proto.Message):
                 manager was destroyed. Additional details can be found in
                 [CryptoKeyVersion.external_destruction_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.external_destruction_failure_reason].
         """
+
         CRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 5
         ENABLED = 1
@@ -1009,6 +1015,7 @@ class CryptoKeyVersion(proto.Message):
                 including the
                 [attestation][google.cloud.kms.v1.CryptoKeyVersion.attestation].
         """
+
         CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED = 0
         FULL = 1
 
@@ -1222,6 +1229,7 @@ class PublicKey(proto.Message):
                 format defined in its standard
                 https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem.
         """
+
         PUBLIC_KEY_FORMAT_UNSPECIFIED = 0
         PEM = 1
         DER = 2
@@ -1414,6 +1422,7 @@ class ImportJob(proto.Message):
                 this method cannot be used to wrap RSA keys for
                 import.
         """
+
         IMPORT_METHOD_UNSPECIFIED = 0
         RSA_OAEP_3072_SHA1_AES_256 = 1
         RSA_OAEP_4096_SHA1_AES_256 = 2
@@ -1445,6 +1454,7 @@ class ImportJob(proto.Message):
                 This job can no longer be used and may not
                 leave this state once entered.
         """
+
         IMPORT_JOB_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 1
         ACTIVE = 2

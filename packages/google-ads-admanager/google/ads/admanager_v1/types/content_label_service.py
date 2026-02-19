@@ -136,12 +136,12 @@ class ListContentLabelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    content_labels: MutableSequence[
-        content_label_messages.ContentLabel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=content_label_messages.ContentLabel,
+    content_labels: MutableSequence[content_label_messages.ContentLabel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=content_label_messages.ContentLabel,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

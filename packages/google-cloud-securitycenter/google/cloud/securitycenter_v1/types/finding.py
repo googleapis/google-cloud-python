@@ -21,31 +21,40 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1.types import (
-    compliance,
-    connection,
-    contact_details,
-    container,
-)
-from google.cloud.securitycenter_v1.types import (
-    external_system,
-    file,
-    group_membership,
-    iam_binding,
-)
+from google.cloud.securitycenter_v1.types import access as gcs_access
+from google.cloud.securitycenter_v1.types import application as gcs_application
 from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
 from google.cloud.securitycenter_v1.types import (
     backup_disaster_recovery as gcs_backup_disaster_recovery,
 )
+from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
 from google.cloud.securitycenter_v1.types import (
     cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
 )
 from google.cloud.securitycenter_v1.types import (
     cloud_dlp_inspection as gcs_cloud_dlp_inspection,
 )
+from google.cloud.securitycenter_v1.types import (
+    compliance,
+    connection,
+    contact_details,
+    container,
+    external_system,
+    file,
+    group_membership,
+    iam_binding,
+    load_balancer,
+    log_entry,
+    org_policy,
+    process,
+)
+from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
+from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kernel_rootkit as gcs_kernel_rootkit
+from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
+from google.cloud.securitycenter_v1.types import notebook as gcs_notebook
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import (
     security_posture as gcs_security_posture,
@@ -54,15 +63,6 @@ from google.cloud.securitycenter_v1.types import (
     toxic_combination as gcs_toxic_combination,
 )
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
-from google.cloud.securitycenter_v1.types import access as gcs_access
-from google.cloud.securitycenter_v1.types import application as gcs_application
-from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
-from google.cloud.securitycenter_v1.types import database as gcs_database
-from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
-from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
-from google.cloud.securitycenter_v1.types import load_balancer, log_entry
-from google.cloud.securitycenter_v1.types import notebook as gcs_notebook
-from google.cloud.securitycenter_v1.types import org_policy, process
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
@@ -313,6 +313,7 @@ class Finding(proto.Message):
                 non-issue or otherwise addressed and is no
                 longer active.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -399,6 +400,7 @@ class Finding(proto.Message):
                 access to an environment but is not able to
                 access data, execute code, or create resources.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -418,6 +420,7 @@ class Finding(proto.Message):
             UNDEFINED (4):
                 Finding has never been muted/unmuted.
         """
+
         MUTE_UNSPECIFIED = 0
         MUTED = 1
         UNMUTED = 2
@@ -455,6 +458,7 @@ class Finding(proto.Message):
                 independently. A group of such issues is
                 referred to as a toxic combination.
         """
+
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
         VULNERABILITY = 2
@@ -533,12 +537,12 @@ class Finding(proto.Message):
             number=1,
             message="Finding.MuteInfo.StaticMute",
         )
-        dynamic_mute_records: MutableSequence[
-            "Finding.MuteInfo.DynamicMuteRecord"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="Finding.MuteInfo.DynamicMuteRecord",
+        dynamic_mute_records: MutableSequence["Finding.MuteInfo.DynamicMuteRecord"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="Finding.MuteInfo.DynamicMuteRecord",
+            )
         )
 
     name: str = proto.Field(
@@ -621,13 +625,13 @@ class Finding(proto.Message):
         number=21,
         message=timestamp_pb2.Timestamp,
     )
-    external_systems: MutableMapping[
-        str, external_system.ExternalSystem
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=22,
-        message=external_system.ExternalSystem,
+    external_systems: MutableMapping[str, external_system.ExternalSystem] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=22,
+            message=external_system.ExternalSystem,
+        )
     )
     mitre_attack: gcs_mitre_attack.MitreAttack = proto.Field(
         proto.MESSAGE,
@@ -784,12 +788,12 @@ class Finding(proto.Message):
         number=64,
         message=gcs_toxic_combination.ToxicCombination,
     )
-    group_memberships: MutableSequence[
-        group_membership.GroupMembership
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=65,
-        message=group_membership.GroupMembership,
+    group_memberships: MutableSequence[group_membership.GroupMembership] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=65,
+            message=group_membership.GroupMembership,
+        )
     )
 
 

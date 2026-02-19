@@ -18,13 +18,12 @@ from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
+from google.api import label_pb2 as _label_pb2
+from google.api import launch_stage_pb2 as _launch_stage_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf.internal import containers as _containers
-
-from google.api import label_pb2 as _label_pb2
-from google.api import launch_stage_pb2 as _launch_stage_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -63,7 +62,6 @@ class MonitoredResourceDescriptor(_message.Message):
 
 class MonitoredResource(_message.Message):
     __slots__ = ("type", "labels")
-
     class LabelsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -84,7 +82,6 @@ class MonitoredResource(_message.Message):
 
 class MonitoredResourceMetadata(_message.Message):
     __slots__ = ("system_labels", "user_labels")
-
     class UserLabelsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]

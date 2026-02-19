@@ -146,12 +146,12 @@ class ListTransitionRouteGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    transition_route_groups: MutableSequence[
-        "TransitionRouteGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="TransitionRouteGroup",
+    transition_route_groups: MutableSequence["TransitionRouteGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="TransitionRouteGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

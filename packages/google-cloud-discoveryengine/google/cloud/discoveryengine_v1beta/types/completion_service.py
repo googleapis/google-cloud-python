@@ -275,6 +275,7 @@ class AdvancedCompleteQueryRequest(proto.Message):
             GOOGLE_WORKSPACE (5):
                 Returns Google Workspace suggestions.
         """
+
         SUGGESTION_TYPE_UNSPECIFIED = 0
         QUERY = 1
         PEOPLE = 2
@@ -472,6 +473,7 @@ class AdvancedCompleteQueryResponse(proto.Message):
                 THIRD_PARTY_IDENTITY (2):
                     The suggestion is from a THIRD_PARTY_IDENTITY source.
             """
+
             PERSON_TYPE_UNSPECIFIED = 0
             CLOUD_IDENTITY = 1
             THIRD_PARTY_IDENTITY = 2
@@ -525,6 +527,7 @@ class AdvancedCompleteQueryResponse(proto.Message):
                 THIRD_PARTY (2):
                     The suggestion is from a third party source.
             """
+
             CONTENT_TYPE_UNSPECIFIED = 0
             GOOGLE_WORKSPACE = 1
             THIRD_PARTY = 2
@@ -589,12 +592,12 @@ class AdvancedCompleteQueryResponse(proto.Message):
         number=4,
         message=ContentSuggestion,
     )
-    recent_search_suggestions: MutableSequence[
-        RecentSearchSuggestion
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=RecentSearchSuggestion,
+    recent_search_suggestions: MutableSequence[RecentSearchSuggestion] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=RecentSearchSuggestion,
+        )
     )
 
 

@@ -129,6 +129,7 @@ class DiscoveryEvent(proto.Message):
             TABLE_DELETED (13):
                 An event representing a table being deleted.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         CONFIG = 1
         ENTITY_CREATED = 2
@@ -153,6 +154,7 @@ class DiscoveryEvent(proto.Message):
             FILESET (2):
                 Entities representing unstructured data.
         """
+
         ENTITY_TYPE_UNSPECIFIED = 0
         TABLE = 1
         FILESET = 2
@@ -170,6 +172,7 @@ class DiscoveryEvent(proto.Message):
             OBJECT_TABLE (3):
                 Object table type for unstructured data.
         """
+
         TABLE_TYPE_UNSPECIFIED = 0
         EXTERNAL_TABLE = 1
         BIGLAKE_TABLE = 2
@@ -391,6 +394,7 @@ class JobEvent(proto.Message):
             NOTEBOOK (2):
                 Notebook jobs.
         """
+
         TYPE_UNSPECIFIED = 0
         SPARK = 1
         NOTEBOOK = 2
@@ -411,6 +415,7 @@ class JobEvent(proto.Message):
                 Job was cancelled or aborted via the service
                 executing the job.
         """
+
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -426,6 +431,7 @@ class JobEvent(proto.Message):
             DATAPROC (1):
                 Cloud Dataproc.
         """
+
         SERVICE_UNSPECIFIED = 0
         DATAPROC = 1
 
@@ -443,6 +449,7 @@ class JobEvent(proto.Message):
                 The job was triggered by the explicit call of
                 Task API.
         """
+
         EXECUTION_TRIGGER_UNSPECIFIED = 0
         TASK_CONFIG = 1
         RUN_REQUEST = 2
@@ -545,6 +552,7 @@ class SessionEvent(proto.Message):
                 yet assigned to a user. This comes before START
                 in the sequence
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         START = 1
         STOP = 2
@@ -580,6 +588,7 @@ class SessionEvent(proto.Message):
                 BIGQUERY (2):
                     BigQuery engine is specified in Query.
             """
+
             ENGINE_UNSPECIFIED = 0
             SPARK_SQL = 1
             BIGQUERY = 2
@@ -706,6 +715,7 @@ class GovernanceEvent(proto.Message):
             GOVERNANCE_RULE_PROCESSING (18):
                 Governance rule processing Event.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         RESOURCE_IAM_POLICY_UPDATE = 1
         BIGQUERY_TABLE_CREATE = 2
@@ -748,6 +758,7 @@ class GovernanceEvent(proto.Message):
                 FILESET (2):
                     Fileset entity type.
             """
+
             ENTITY_TYPE_UNSPECIFIED = 0
             TABLE = 1
             FILESET = 2
@@ -858,6 +869,7 @@ class DataScanEvent(proto.Message):
             DATA_DISCOVERY (4):
                 Data scan for data discovery.
         """
+
         SCAN_TYPE_UNSPECIFIED = 0
         DATA_PROFILE = 1
         DATA_QUALITY = 2
@@ -880,6 +892,7 @@ class DataScanEvent(proto.Message):
             CREATED (5):
                 Data scan job was created.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         SUCCEEDED = 2
@@ -898,6 +911,7 @@ class DataScanEvent(proto.Message):
             SCHEDULE (2):
                 Data scan triggers as per schedule.
         """
+
         TRIGGER_UNSPECIFIED = 0
         ON_DEMAND = 1
         SCHEDULE = 2
@@ -913,6 +927,7 @@ class DataScanEvent(proto.Message):
             INCREMENTAL (2):
                 Data scan runs on incremental data.
         """
+
         SCOPE_UNSPECIFIED = 0
         FULL = 1
         INCREMENTAL = 2
@@ -1085,6 +1100,7 @@ class DataScanEvent(proto.Message):
                         result to export (usually caused by scan
                         failed).
                 """
+
                 STATE_UNSPECIFIED = 0
                 SUCCEEDED = 1
                 FAILED = 2
@@ -1272,6 +1288,7 @@ class DataQualityScanRuleResult(proto.Message):
                 See
                 [DataQualityRule.SqlAssertion][google.cloud.dataplex.v1.DataQualityRule.SqlAssertion].
         """
+
         RULE_TYPE_UNSPECIFIED = 0
         NON_NULL_EXPECTATION = 1
         RANGE_EXPECTATION = 2
@@ -1295,6 +1312,7 @@ class DataQualityScanRuleResult(proto.Message):
                 The rule evaluation is done for an aggregate
                 of rows.
         """
+
         EVALUATION_TYPE_UNSPECIFIED = 0
         PER_ROW = 1
         AGGREGATE = 2
@@ -1310,6 +1328,7 @@ class DataQualityScanRuleResult(proto.Message):
             FAILED (2):
                 The data quality rule failed.
         """
+
         RESULT_UNSPECIFIED = 0
         PASSED = 1
         FAILED = 2
@@ -1408,6 +1427,7 @@ class BusinessGlossaryEvent(proto.Message):
             GLOSSARY_TERM_DELETE (9):
                 Glossary term delete event.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         GLOSSARY_CREATE = 1
         GLOSSARY_UPDATE = 2
@@ -1457,6 +1477,7 @@ class EntryLinkEvent(proto.Message):
             ENTRY_LINK_DELETE (2):
                 EntryLink delete event.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         ENTRY_LINK_CREATE = 1
         ENTRY_LINK_DELETE = 2

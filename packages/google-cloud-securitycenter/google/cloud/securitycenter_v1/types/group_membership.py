@@ -48,6 +48,7 @@ class GroupMembership(proto.Message):
             GROUP_TYPE_TOXIC_COMBINATION (1):
                 Group represents a toxic combination.
         """
+
         GROUP_TYPE_UNSPECIFIED = 0
         GROUP_TYPE_TOXIC_COMBINATION = 1
 

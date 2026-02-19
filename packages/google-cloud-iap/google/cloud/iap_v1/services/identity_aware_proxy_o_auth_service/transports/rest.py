@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.iap_v1.types import service
@@ -642,9 +642,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_http_options()
 
             request, metadata = self._interceptor.pre_create_brand(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_transcoded_request(
@@ -801,15 +799,12 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_identity_aware_proxy_client(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_identity_aware_proxy_client(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_transcoded_request(
                 http_options, request
@@ -875,11 +870,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_create_identity_aware_proxy_client(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_identity_aware_proxy_client_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_identity_aware_proxy_client_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -961,15 +955,12 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_identity_aware_proxy_client(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_identity_aware_proxy_client(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_transcoded_request(
                 http_options, request
@@ -1080,9 +1071,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_http_options()
 
             request, metadata = self._interceptor.pre_get_brand(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_transcoded_request(
@@ -1233,9 +1222,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient._get_http_options()
 
             request, metadata = self._interceptor.pre_get_identity_aware_proxy_client(
                 request, metadata
@@ -1299,11 +1286,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_get_identity_aware_proxy_client(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_identity_aware_proxy_client_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_identity_aware_proxy_client_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1385,9 +1371,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     Response message for ListBrands.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_http_options()
 
             request, metadata = self._interceptor.pre_list_brands(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_transcoded_request(
@@ -1538,9 +1522,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients._get_http_options()
 
             request, metadata = self._interceptor.pre_list_identity_aware_proxy_clients(
                 request, metadata
@@ -1604,11 +1586,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_list_identity_aware_proxy_clients(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_identity_aware_proxy_clients_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_identity_aware_proxy_clients_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1697,15 +1678,12 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_reset_identity_aware_proxy_client_secret(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_reset_identity_aware_proxy_client_secret(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_transcoded_request(
                 http_options, request
@@ -1771,11 +1749,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_reset_identity_aware_proxy_client_secret(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_reset_identity_aware_proxy_client_secret_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_reset_identity_aware_proxy_client_secret_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1817,7 +1794,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateIdentityAwareProxyClient(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateIdentityAwareProxyClient(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_identity_aware_proxy_client(
@@ -1825,7 +1804,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
     ) -> Callable[[service.DeleteIdentityAwareProxyClientRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteIdentityAwareProxyClient(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteIdentityAwareProxyClient(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_brand(self) -> Callable[[service.GetBrandRequest], service.Brand]:
@@ -1841,7 +1822,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetIdentityAwareProxyClient(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetIdentityAwareProxyClient(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_brands(
@@ -1860,7 +1843,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListIdentityAwareProxyClients(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListIdentityAwareProxyClients(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def reset_identity_aware_proxy_client_secret(
@@ -1871,7 +1856,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ResetIdentityAwareProxyClientSecret(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ResetIdentityAwareProxyClientSecret(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

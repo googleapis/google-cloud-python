@@ -157,12 +157,12 @@ class BatchUpdateGenerativeQuestionConfigsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "UpdateGenerativeQuestionConfigRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="UpdateGenerativeQuestionConfigRequest",
+    requests: MutableSequence["UpdateGenerativeQuestionConfigRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="UpdateGenerativeQuestionConfigRequest",
+        )
     )
 
 

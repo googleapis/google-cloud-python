@@ -76,6 +76,7 @@ class AttributeType(proto.Enum):
         POSTAL_CODE (8):
             The postal code of the subject.
     """
+
     ATTRIBUTE_TYPE_UNSPECIFIED = 0
     COMMON_NAME = 1
     COUNTRY_CODE = 2
@@ -136,6 +137,7 @@ class RevocationReason(proto.Enum):
             [Certificate][google.cloud.security.privateca.v1.Certificate]
             may have been compromised.
     """
+
     REVOCATION_REASON_UNSPECIFIED = 0
     KEY_COMPROMISE = 1
     CERTIFICATE_AUTHORITY_COMPROMISE = 2
@@ -188,6 +190,7 @@ class SubjectRequestMode(proto.Enum):
             have the ``privateca.certificates.createForSelf``
             permission.
     """
+
     SUBJECT_REQUEST_MODE_UNSPECIFIED = 0
     DEFAULT = 1
     RDN_SEQUENCE = 3
@@ -321,6 +324,7 @@ class CertificateAuthority(proto.Message):
                 [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
                 or an unmanaged CA.
         """
+
         TYPE_UNSPECIFIED = 0
         SELF_SIGNED = 1
         SUBORDINATE = 2
@@ -368,6 +372,7 @@ class CertificateAuthority(proto.Message):
                 anchor, and will not be used to issue certificates from the
                 [CaPool][google.cloud.security.privateca.v1.CaPool].
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -406,6 +411,7 @@ class CertificateAuthority(proto.Message):
             EC_P384_SHA384 (5):
                 maps to CryptoKeyVersionAlgorithm.EC_SIGN_P384_SHA384
         """
+
         SIGN_HASH_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1
         RSA_PSS_3072_SHA256 = 2
@@ -559,12 +565,12 @@ class CertificateAuthority(proto.Message):
         proto.STRING,
         number=9,
     )
-    ca_certificate_descriptions: MutableSequence[
-        "CertificateDescription"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message="CertificateDescription",
+    ca_certificate_descriptions: MutableSequence["CertificateDescription"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message="CertificateDescription",
+        )
     )
     gcs_bucket: str = proto.Field(
         proto.STRING,
@@ -666,6 +672,7 @@ class CaPool(proto.Message):
             DEVOPS (2):
                 DevOps tier.
         """
+
         TIER_UNSPECIFIED = 0
         ENTERPRISE = 1
         DEVOPS = 2
@@ -723,6 +730,7 @@ class CaPool(proto.Message):
                     [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
                     CA certificate and CRLs will be published in DER format.
             """
+
             ENCODING_FORMAT_UNSPECIFIED = 0
             PEM = 1
             DER = 2
@@ -908,6 +916,7 @@ class CaPool(proto.Message):
                             Algorithm over curve 25519, as described in RFC
                             8410.
                     """
+
                     EC_SIGNATURE_ALGORITHM_UNSPECIFIED = 0
                     ECDSA_P256 = 1
                     ECDSA_P384 = 2
@@ -962,12 +971,12 @@ class CaPool(proto.Message):
                 number=2,
             )
 
-        allowed_key_types: MutableSequence[
-            "CaPool.IssuancePolicy.AllowedKeyType"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="CaPool.IssuancePolicy.AllowedKeyType",
+        allowed_key_types: MutableSequence["CaPool.IssuancePolicy.AllowedKeyType"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="CaPool.IssuancePolicy.AllowedKeyType",
+            )
         )
         backdate_duration: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
@@ -1088,6 +1097,7 @@ class CertificateRevocationList(proto.Message):
                 [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
                 is no longer current.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUPERSEDED = 2
@@ -1769,6 +1779,7 @@ class PublicKey(proto.Message):
                 `SubjectPublicKeyInfo <https://tools.ietf.org/html/rfc5280#section-4.1>`__
                 structure containing an algorithm identifier and a key.
         """
+
         KEY_FORMAT_UNSPECIFIED = 0
         PEM = 1
 
@@ -2560,6 +2571,7 @@ class CertificateExtensionConstraints(proto.Message):
                 5280 section
                 4.2.1.10 <https://tools.ietf.org/html/rfc5280#section-4.2.1.10>`__
         """
+
         KNOWN_CERTIFICATE_EXTENSION_UNSPECIFIED = 0
         BASE_KEY_USAGE = 1
         EXTENDED_KEY_USAGE = 2

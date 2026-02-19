@@ -53,6 +53,7 @@ class CustomFieldDataTypeEnum(proto.Message):
             DROP_DOWN (4):
                 A drop-down field.
         """
+
         CUSTOM_FIELD_DATA_TYPE_UNSPECIFIED = 0
         STRING = 1
         NUMBER = 2
@@ -84,6 +85,7 @@ class CustomFieldEntityTypeEnum(proto.Message):
                 The CustomField is applied to
                 ProposalLineItems.
         """
+
         CUSTOM_FIELD_ENTITY_TYPE_UNSPECIFIED = 0
         LINE_ITEM = 1
         ORDER = 2
@@ -109,6 +111,7 @@ class CustomFieldStatusEnum(proto.Message):
             INACTIVE (2):
                 The CustomField is inactive.
         """
+
         CUSTOM_FIELD_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -136,6 +139,7 @@ class CustomFieldVisibilityEnum(proto.Message):
                 The CustomField is visible and editable in
                 both the API and UI.
         """
+
         CUSTOM_FIELD_VISIBILITY_UNSPECIFIED = 0
         HIDDEN = 1
         READ_ONLY = 2

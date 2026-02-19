@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .accessright import AccessRight
+from .accessright import (
+    AccessRight,
+)
 from .account_tax import (
     AccountTax,
     GetAccountTaxRequest,
@@ -37,7 +39,9 @@ from .accounts import (
     ListSubAccountsResponse,
     UpdateAccountRequest,
 )
-from .accountservices import AccountAggregation
+from .accountservices import (
+    AccountAggregation,
+)
 from .autofeedsettings import (
     AutofeedSettings,
     GetAutofeedSettingsRequest,
@@ -69,7 +73,9 @@ from .checkoutsettings import (
     UpdateCheckoutSettingsRequest,
     UriSettings,
 )
-from .customerservice import CustomerService
+from .customerservice import (
+    CustomerService,
+)
 from .emailpreferences import (
     EmailPreferences,
     GetEmailPreferencesRequest,
@@ -122,7 +128,9 @@ from .online_return_policy import (
     OnlineReturnPolicy,
     UpdateOnlineReturnPolicyRequest,
 )
-from .phoneverificationstate import PhoneVerificationState
+from .phoneverificationstate import (
+    PhoneVerificationState,
+)
 from .programs import (
     DisableProgramRequest,
     EnableProgramRequest,
@@ -163,7 +171,9 @@ from .shippingsettings import (
     WarehouseBasedDeliveryTime,
     WarehouseCutoffTime,
 )
-from .tax_rule import TaxRule
+from .tax_rule import (
+    TaxRule,
+)
 from .termsofservice import (
     AcceptTermsOfServiceRequest,
     GetTermsOfServiceRequest,
@@ -177,7 +187,9 @@ from .termsofserviceagreementstate import (
     RetrieveForApplicationTermsOfServiceAgreementStateRequest,
     TermsOfServiceAgreementState,
 )
-from .termsofservicekind import TermsOfServiceKind
+from .termsofservicekind import (
+    TermsOfServiceKind,
+)
 from .user import (
     CreateUserRequest,
     DeleteUserRequest,
@@ -187,7 +199,9 @@ from .user import (
     UpdateUserRequest,
     User,
 )
-from .verificationmailsettings import VerificationMailSettings
+from .verificationmailsettings import (
+    VerificationMailSettings,
+)
 
 __all__ = (
     "AccessRight",

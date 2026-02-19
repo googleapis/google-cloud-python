@@ -18,8 +18,8 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.notifications.v1beta",
@@ -49,6 +49,7 @@ class Resource(proto.Enum):
         PRODUCT (1):
             Resource type : product
     """
+
     RESOURCE_UNSPECIFIED = 0
     PRODUCT = 1
 
@@ -63,6 +64,7 @@ class Attribute(proto.Enum):
         STATUS (1):
             Status of the changed entity
     """
+
     ATTRIBUTE_UNSPECIFIED = 0
     STATUS = 1
 
@@ -194,12 +196,12 @@ class ListNotificationSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_subscriptions: MutableSequence[
-        "NotificationSubscription"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="NotificationSubscription",
+    notification_subscriptions: MutableSequence["NotificationSubscription"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="NotificationSubscription",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -258,6 +260,7 @@ class NotificationSubscription(proto.Message):
                 Notification of product status changes, for
                 example when product becomes disapproved.
         """
+
         NOTIFICATION_EVENT_TYPE_UNSPECIFIED = 0
         PRODUCT_STATUS_CHANGE = 1
 

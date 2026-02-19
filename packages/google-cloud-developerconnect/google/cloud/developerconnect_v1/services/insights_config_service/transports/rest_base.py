@@ -22,10 +22,10 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
+from google.cloud.developerconnect_v1.types import insights_config
 from google.cloud.developerconnect_v1.types import (
     insights_config as gcd_insights_config,
 )
-from google.cloud.developerconnect_v1.types import insights_config
 
 from .base import DEFAULT_CLIENT_INFO, InsightsConfigServiceTransport
 

@@ -292,6 +292,7 @@ class Curation(proto.Message):
             FAILED (2):
                 The last curation execution failed.
         """
+
         LAST_EXECUTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -309,6 +310,7 @@ class Curation(proto.Message):
                 The curation is not authorized to trigger the
                 endpoint uri.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         INTERNAL_ERROR = 1
         UNAUTHORIZED = 2
@@ -354,12 +356,12 @@ class Curation(proto.Message):
         number=4,
         message="Endpoint",
     )
-    plugin_instance_actions: MutableSequence[
-        PluginInstanceActionID
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=PluginInstanceActionID,
+    plugin_instance_actions: MutableSequence[PluginInstanceActionID] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=PluginInstanceActionID,
+        )
     )
     last_execution_state: LastExecutionState = proto.Field(
         proto.ENUM,

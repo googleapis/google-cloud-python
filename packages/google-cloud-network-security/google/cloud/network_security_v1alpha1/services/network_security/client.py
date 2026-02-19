@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
 
@@ -63,33 +63,45 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.network_security_v1alpha1.services.network_security import pagers
+from google.cloud.network_security_v1alpha1.types import (
+    authorization_policy,
+    authz_policy,
+    backend_authentication_config,
+    client_tls_policy,
+    common,
+    gateway_security_policy,
+    gateway_security_policy_rule,
+    server_tls_policy,
+    tls,
+    tls_inspection_policy,
+    url_list,
+)
 from google.cloud.network_security_v1alpha1.types import (
     authorization_policy as gcn_authorization_policy,
 )
 from google.cloud.network_security_v1alpha1.types import (
     authz_policy as gcn_authz_policy,
 )
-from google.cloud.network_security_v1alpha1.types import backend_authentication_config
 from google.cloud.network_security_v1alpha1.types import (
     backend_authentication_config as gcn_backend_authentication_config,
 )
 from google.cloud.network_security_v1alpha1.types import (
     client_tls_policy as gcn_client_tls_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy as gcn_gateway_security_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy_rule
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy_rule as gcn_gateway_security_policy_rule,
 )
@@ -100,14 +112,6 @@ from google.cloud.network_security_v1alpha1.types import (
     tls_inspection_policy as gcn_tls_inspection_policy,
 )
 from google.cloud.network_security_v1alpha1.types import url_list as gcn_url_list
-from google.cloud.network_security_v1alpha1.types import authorization_policy
-from google.cloud.network_security_v1alpha1.types import authz_policy
-from google.cloud.network_security_v1alpha1.types import client_tls_policy
-from google.cloud.network_security_v1alpha1.types import common
-from google.cloud.network_security_v1alpha1.types import server_tls_policy
-from google.cloud.network_security_v1alpha1.types import tls
-from google.cloud.network_security_v1alpha1.types import tls_inspection_policy
-from google.cloud.network_security_v1alpha1.types import url_list
 
 from .transports.base import DEFAULT_CLIENT_INFO, NetworkSecurityTransport
 from .transports.grpc import NetworkSecurityGrpcTransport
@@ -123,9 +127,7 @@ class NetworkSecurityClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[NetworkSecurityTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[NetworkSecurityTransport]]
     _transport_registry["grpc"] = NetworkSecurityGrpcTransport
     _transport_registry["grpc_asyncio"] = NetworkSecurityGrpcAsyncIOTransport
     _transport_registry["rest"] = NetworkSecurityRestTransport
@@ -916,11 +918,9 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = NetworkSecurityClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            NetworkSecurityClient._read_environment_variables()
+        )
         self._client_cert_source = NetworkSecurityClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -955,8 +955,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(NetworkSecurityTransport, transport)
             self._api_endpoint = self._transport.host

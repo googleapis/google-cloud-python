@@ -20,8 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1beta3.types import tuned_model as gag_tuned_model
 from google.ai.generativelanguage_v1beta3.types import model
+from google.ai.generativelanguage_v1beta3.types import tuned_model as gag_tuned_model
 
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1beta3",

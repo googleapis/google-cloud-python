@@ -105,6 +105,7 @@ class BackupPolicy(proto.Message):
             UPDATING (5):
                 BackupPolicy is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

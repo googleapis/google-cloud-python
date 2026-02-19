@@ -191,6 +191,7 @@ class SecurityPostureConfig(proto.Message):
                 Applies the Security Posture off cluster
                 Enterprise level features.
         """
+
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         BASIC = 2
@@ -213,6 +214,7 @@ class SecurityPostureConfig(proto.Message):
                 Applies the Security Posture's vulnerability
                 on cluster Enterprise level features.
         """
+
         VULNERABILITY_MODE_UNSPECIFIED = 0
         VULNERABILITY_DISABLED = 1
         VULNERABILITY_BASIC = 2
@@ -255,6 +257,7 @@ class BinaryAuthorizationConfig(proto.Message):
                 Use Binary Authorization with the policies specified in
                 policy_bindings.
         """
+
         EVALUATION_MODE_UNSPECIFIED = 0
         DISABLED = 1
         POLICY_BINDINGS = 2
@@ -311,6 +314,7 @@ class CompliancePostureConfig(proto.Message):
                 Enables Compliance Posture features on the
                 cluster.
         """
+
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -364,6 +368,7 @@ class FleetLifecycleState(proto.Message):
             UPDATING (4):
                 The fleet is being updated.
         """
+
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -481,6 +486,7 @@ class NamespaceLifecycleState(proto.Message):
             UPDATING (4):
                 The namespace is being updated.
         """
+
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -574,6 +580,7 @@ class RBACRoleBinding(proto.Message):
                     ANTHOS_SUPPORT gives Google Support read-only access to a
                     number of cluster resources.
             """
+
             UNKNOWN = 0
             ADMIN = 1
             EDIT = 2
@@ -665,6 +672,7 @@ class RBACRoleBindingLifecycleState(proto.Message):
             UPDATING (4):
                 The rbacrolebinding is being updated.
         """
+
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -774,6 +782,7 @@ class ScopeLifecycleState(proto.Message):
             UPDATING (4):
                 The scope is being updated.
         """
+
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -892,6 +901,7 @@ class MembershipBindingLifecycleState(proto.Message):
             UPDATING (4):
                 The membershipbinding is being updated.
         """
+
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

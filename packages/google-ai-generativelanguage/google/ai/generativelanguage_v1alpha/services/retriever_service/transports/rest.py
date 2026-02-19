@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.ai.generativelanguage_v1alpha.types import retriever, retriever_service
@@ -1246,9 +1246,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_create_chunks(
                 request, metadata
@@ -1397,9 +1395,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_delete_chunks(
                 request, metadata
@@ -1518,9 +1514,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_update_chunks(
                 request, metadata
@@ -1980,9 +1974,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_create_document(request, metadata)
             transcoded_request = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_transcoded_request(
@@ -2337,9 +2329,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_document(request, metadata)
             transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_transcoded_request(
@@ -3193,9 +3183,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseListDocuments._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseListDocuments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_documents(request, metadata)
             transcoded_request = _BaseRetrieverServiceRestTransport._BaseListDocuments._get_transcoded_request(
@@ -3496,9 +3484,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_query_document(request, metadata)
             transcoded_request = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_transcoded_request(
@@ -3956,9 +3942,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_update_document(request, metadata)
             transcoded_request = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_transcoded_request(
@@ -4426,9 +4410,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseRetrieverServiceRestTransport._BaseListOperations._get_transcoded_request(

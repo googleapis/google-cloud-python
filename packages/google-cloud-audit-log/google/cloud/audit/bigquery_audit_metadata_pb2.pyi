@@ -56,7 +56,6 @@ class BigQueryAuditMetadata(_message.Message):
         "unlink_dataset",
         "first_party_app_metadata",
     )
-
     class CreateDisposition(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         CREATE_DISPOSITION_UNSPECIFIED: _ClassVar[
@@ -68,7 +67,6 @@ class BigQueryAuditMetadata(_message.Message):
     CREATE_DISPOSITION_UNSPECIFIED: BigQueryAuditMetadata.CreateDisposition
     CREATE_NEVER: BigQueryAuditMetadata.CreateDisposition
     CREATE_IF_NEEDED: BigQueryAuditMetadata.CreateDisposition
-
     class WriteDisposition(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         WRITE_DISPOSITION_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.WriteDisposition]
@@ -80,7 +78,6 @@ class BigQueryAuditMetadata(_message.Message):
     WRITE_EMPTY: BigQueryAuditMetadata.WriteDisposition
     WRITE_TRUNCATE: BigQueryAuditMetadata.WriteDisposition
     WRITE_APPEND: BigQueryAuditMetadata.WriteDisposition
-
     class OperationType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         OPERATION_TYPE_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.OperationType]
@@ -92,7 +89,6 @@ class BigQueryAuditMetadata(_message.Message):
     COPY: BigQueryAuditMetadata.OperationType
     SNAPSHOT: BigQueryAuditMetadata.OperationType
     RESTORE: BigQueryAuditMetadata.OperationType
-
     class JobState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         JOB_STATE_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobState]
@@ -104,7 +100,6 @@ class BigQueryAuditMetadata(_message.Message):
     PENDING: BigQueryAuditMetadata.JobState
     RUNNING: BigQueryAuditMetadata.JobState
     DONE: BigQueryAuditMetadata.JobState
-
     class QueryStatementType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         QUERY_STATEMENT_TYPE_UNSPECIFIED: _ClassVar[
@@ -184,10 +179,8 @@ class BigQueryAuditMetadata(_message.Message):
     CREATE_EXTERNAL_TABLE: BigQueryAuditMetadata.QueryStatementType
     EXPORT_DATA: BigQueryAuditMetadata.QueryStatementType
     CALL: BigQueryAuditMetadata.QueryStatementType
-
     class JobInsertion(_message.Message):
         __slots__ = ("job", "reason")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobInsertion.Reason]
@@ -226,7 +219,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class JobDeletion(_message.Message):
         __slots__ = ("job_name", "reason")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobDeletion.Reason]
@@ -248,7 +240,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class DatasetCreation(_message.Message):
         __slots__ = ("dataset", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetCreation.Reason]
@@ -275,7 +266,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class DatasetChange(_message.Message):
         __slots__ = ("dataset", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetChange.Reason]
@@ -304,7 +294,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class DatasetDeletion(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetDeletion.Reason]
@@ -328,7 +317,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class TableCreation(_message.Message):
         __slots__ = ("table", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableCreation.Reason]
@@ -357,7 +345,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelCreation(_message.Message):
         __slots__ = ("model", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelCreation.Reason]
@@ -382,7 +369,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class RoutineCreation(_message.Message):
         __slots__ = ("routine", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineCreation.Reason]
@@ -419,7 +405,6 @@ class BigQueryAuditMetadata(_message.Message):
             "job_name",
             "session_name",
         )
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDataRead.Reason]
@@ -472,7 +457,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class TableChange(_message.Message):
         __slots__ = ("table", "truncated", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableChange.Reason]
@@ -504,7 +488,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelMetadataChange(_message.Message):
         __slots__ = ("model", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[
@@ -535,7 +518,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class RoutineChange(_message.Message):
         __slots__ = ("routine", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineChange.Reason]
@@ -571,7 +553,6 @@ class BigQueryAuditMetadata(_message.Message):
             "job_name",
             "stream_name",
         )
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDataChange.Reason]
@@ -613,7 +594,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelDataChange(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDataChange.Reason]
@@ -635,7 +615,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelDataRead(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDataRead.Reason]
@@ -657,7 +636,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class TableDeletion(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDeletion.Reason]
@@ -683,7 +661,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelDeletion(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDeletion.Reason]
@@ -709,7 +686,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class RoutineDeletion(_message.Message):
         __slots__ = ("routine", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineDeletion.Reason]
@@ -789,7 +765,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class UnlinkDataset(_message.Message):
         __slots__ = ("linked_dataset", "source_dataset", "reason")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.UnlinkDataset.Reason]
@@ -845,7 +820,6 @@ class BigQueryAuditMetadata(_message.Message):
             "table_copy_config",
             "labels",
         )
-
         class Type(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             TYPE_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobConfig.Type]
@@ -859,7 +833,6 @@ class BigQueryAuditMetadata(_message.Message):
         COPY: BigQueryAuditMetadata.JobConfig.Type
         EXPORT: BigQueryAuditMetadata.JobConfig.Type
         IMPORT: BigQueryAuditMetadata.JobConfig.Type
-
         class Query(_message.Message):
             __slots__ = (
                 "query",
@@ -873,7 +846,6 @@ class BigQueryAuditMetadata(_message.Message):
                 "destination_table_encryption",
                 "statement_type",
             )
-
             class Priority(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
                 __slots__ = ()
                 PRIORITY_UNSPECIFIED: _ClassVar[
@@ -1132,7 +1104,6 @@ class BigQueryAuditMetadata(_message.Message):
             "reservation",
             "parent_job_name",
         )
-
         class Query(_message.Message):
             __slots__ = (
                 "total_processed_bytes",
@@ -1348,7 +1319,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class EntityInfo(_message.Message):
         __slots__ = ("friendly_name", "description", "labels")
-
         class LabelsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]

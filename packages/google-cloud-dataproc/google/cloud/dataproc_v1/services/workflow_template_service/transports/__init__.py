@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[WorkflowTemplateServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[WorkflowTemplateServiceTransport]]
 _transport_registry["grpc"] = WorkflowTemplateServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = WorkflowTemplateServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = WorkflowTemplateServiceRestTransport

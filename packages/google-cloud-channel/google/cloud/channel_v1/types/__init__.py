@@ -13,15 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .billing_accounts import BillingAccount
+from .billing_accounts import (
+    BillingAccount,
+)
 from .channel_partner_links import (
     ChannelPartnerLink,
     ChannelPartnerLinkState,
     ChannelPartnerLinkView,
 )
-from .common import AdminUser, CloudIdentityInfo, EduData, Value
-from .customers import ContactInfo, Customer
-from .entitlement_changes import EntitlementChange
+from .common import (
+    AdminUser,
+    CloudIdentityInfo,
+    EduData,
+    Value,
+)
+from .customers import (
+    ContactInfo,
+    Customer,
+)
+from .entitlement_changes import (
+    EntitlementChange,
+)
 from .entitlements import (
     AssociationInfo,
     CommitmentSettings,
@@ -52,8 +64,16 @@ from .offers import (
     PromotionalOrderType,
     ResourceType,
 )
-from .operations import OperationMetadata
-from .products import MarketingInfo, Media, MediaType, Product, Sku
+from .operations import (
+    OperationMetadata,
+)
+from .products import (
+    MarketingInfo,
+    Media,
+    MediaType,
+    Product,
+    Sku,
+)
 from .reports_service import (
     Column,
     DateRange,
@@ -161,7 +181,11 @@ from .service import (
     UpdateCustomerRepricingConfigRequest,
     UpdateCustomerRequest,
 )
-from .subscriber_event import CustomerEvent, EntitlementEvent, SubscriberEvent
+from .subscriber_event import (
+    CustomerEvent,
+    EntitlementEvent,
+    SubscriberEvent,
+)
 
 __all__ = (
     "BillingAccount",

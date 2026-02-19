@@ -188,6 +188,7 @@ class VulnerabilityAssessmentNote(proto.Message):
                     are or are not affected by the vulnerability.
                     However, it is still under investigation.
             """
+
             STATE_UNSPECIFIED = 0
             AFFECTED = 1
             NOT_AFFECTED = 2
@@ -238,6 +239,7 @@ class VulnerabilityAssessmentNote(proto.Message):
                         mitigations completely prevent exploitation
                         based on known attack vectors.
                 """
+
                 JUSTIFICATION_TYPE_UNSPECIFIED = 0
                 COMPONENT_NOT_PRESENT = 1
                 VULNERABLE_CODE_NOT_PRESENT = 2
@@ -287,6 +289,7 @@ class VulnerabilityAssessmentNote(proto.Message):
                     WORKAROUND (5):
                         A workaround is available.
                 """
+
                 REMEDIATION_TYPE_UNSPECIFIED = 0
                 MITIGATION = 1
                 NO_FIX_PLANNED = 2

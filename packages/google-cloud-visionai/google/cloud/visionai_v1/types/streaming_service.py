@@ -60,6 +60,7 @@ class LeaseType(proto.Enum):
         LEASE_TYPE_WRITER (2):
             Lease for stream writer.
     """
+
     LEASE_TYPE_UNSPECIFIED = 0
     LEASE_TYPE_READER = 1
     LEASE_TYPE_WRITER = 2

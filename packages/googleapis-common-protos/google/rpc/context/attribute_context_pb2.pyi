@@ -39,10 +39,8 @@ class AttributeContext(_message.Message):
         "api",
         "extensions",
     )
-
     class Peer(_message.Message):
         __slots__ = ("ip", "port", "labels", "principal", "region_code")
-
         class LabelsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -126,7 +124,6 @@ class AttributeContext(_message.Message):
             "reason",
             "auth",
         )
-
         class HeadersEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -179,7 +176,6 @@ class AttributeContext(_message.Message):
 
     class Response(_message.Message):
         __slots__ = ("code", "size", "headers", "time", "backend_latency")
-
         class HeadersEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -224,7 +220,6 @@ class AttributeContext(_message.Message):
             "etag",
             "location",
         )
-
         class LabelsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]

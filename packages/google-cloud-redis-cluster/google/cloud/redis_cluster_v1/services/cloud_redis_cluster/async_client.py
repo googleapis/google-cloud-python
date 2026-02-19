@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import uuid
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.redis_cluster_v1 import gapic_version as package_version
 
@@ -47,12 +47,12 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.redis_cluster_v1.services.cloud_redis_cluster import pagers
 from google.cloud.redis_cluster_v1.types import cloud_redis_cluster
@@ -177,7 +177,10 @@ class CloudRedisClusterAsyncClient:
         Returns:
             CloudRedisClusterAsyncClient: The constructed client.
         """
-        return CloudRedisClusterClient.from_service_account_info.__func__(CloudRedisClusterAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            CloudRedisClusterClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(CloudRedisClusterAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -193,7 +196,10 @@ class CloudRedisClusterAsyncClient:
         Returns:
             CloudRedisClusterAsyncClient: The constructed client.
         """
-        return CloudRedisClusterClient.from_service_account_file.__func__(CloudRedisClusterAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            CloudRedisClusterClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(CloudRedisClusterAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

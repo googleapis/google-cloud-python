@@ -270,6 +270,7 @@ class ServingConfig(proto.Message):
             DATA_DRIVEN_DIVERSITY (3):
                 Data driven diversity.
         """
+
         DIVERSITY_TYPE_UNSPECIFIED = 0
         RULE_BASED_DIVERSITY = 2
         DATA_DRIVEN_DIVERSITY = 3

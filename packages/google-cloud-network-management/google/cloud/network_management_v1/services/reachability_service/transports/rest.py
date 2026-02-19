@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -873,9 +875,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_http_options()
 
             request, metadata = self._interceptor.pre_create_connectivity_test(
                 request, metadata
@@ -1028,9 +1028,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_connectivity_test(
                 request, metadata
@@ -1177,9 +1175,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connectivity_test(
                 request, metadata
@@ -1328,9 +1324,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                     Response for the ``ListConnectivityTests`` method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_http_options()
 
             request, metadata = self._interceptor.pre_list_connectivity_tests(
                 request, metadata
@@ -1483,9 +1477,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_http_options()
 
             request, metadata = self._interceptor.pre_rerun_connectivity_test(
                 request, metadata
@@ -1639,9 +1631,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_http_options()
 
             request, metadata = self._interceptor.pre_update_connectivity_test(
                 request, metadata
@@ -1744,7 +1734,9 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateConnectivityTest(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_connectivity_test(
@@ -1754,7 +1746,9 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteConnectivityTest(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_connectivity_test(
@@ -1795,7 +1789,9 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateConnectivityTest(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -1855,9 +1851,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1996,9 +1990,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseReachabilityServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -2137,9 +2129,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2279,9 +2269,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -2426,9 +2414,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -2574,9 +2560,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2694,9 +2678,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2812,9 +2794,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2953,9 +2933,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseReachabilityServiceRestTransport._BaseListOperations._get_transcoded_request(

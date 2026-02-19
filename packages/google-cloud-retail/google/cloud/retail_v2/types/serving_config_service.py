@@ -177,12 +177,12 @@ class ListServingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    serving_configs: MutableSequence[
-        gcr_serving_config.ServingConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcr_serving_config.ServingConfig,
+    serving_configs: MutableSequence[gcr_serving_config.ServingConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcr_serving_config.ServingConfig,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

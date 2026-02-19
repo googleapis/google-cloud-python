@@ -131,12 +131,12 @@ class PredictResponse(proto.Message):
             API.
     """
 
-    payload: MutableSequence[
-        annotation_payload.AnnotationPayload
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=annotation_payload.AnnotationPayload,
+    payload: MutableSequence[annotation_payload.AnnotationPayload] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=annotation_payload.AnnotationPayload,
+        )
     )
     preprocessed_input: data_items.ExamplePayload = proto.Field(
         proto.MESSAGE,

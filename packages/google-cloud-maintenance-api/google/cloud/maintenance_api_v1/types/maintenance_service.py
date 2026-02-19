@@ -61,6 +61,7 @@ class MaintenanceCategory(proto.Enum):
             these maintenance events using maintenance
             windows and/or deny maintenance features.
     """
+
     MAINTENANCE_CATEGORY_UNSPECIFIED = 0
     INFRASTRUCTURE = 1
     SERVICE_UPDATE = 3
@@ -215,12 +216,12 @@ class MaintenanceSummary(proto.Message):
             proto.STRING,
             number=1,
         )
-        aggregates: MutableSequence[
-            "MaintenanceSummary.Aggregate"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="MaintenanceSummary.Aggregate",
+        aggregates: MutableSequence["MaintenanceSummary.Aggregate"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="MaintenanceSummary.Aggregate",
+            )
         )
 
     class Aggregate(proto.Message):
@@ -395,6 +396,7 @@ class ResourceMaintenance(proto.Message):
             SUCCEEDED (4):
                 Successfully completed.
         """
+
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2
@@ -583,6 +585,7 @@ class MaintenanceControl(proto.Message):
             RESCHEDULE (3):
                 Reschedule control.
         """
+
         CONTROL_UNSPECIFIED = 0
         APPLY = 1
         MANAGE_POLICY = 2

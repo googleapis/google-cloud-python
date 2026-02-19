@@ -44,6 +44,7 @@ class ProductLine(proto.Enum):
         GOOGLE_MAPS (2):
             Google Maps
     """
+
     PRODUCT_LINE_UNSPECIFIED = 0
     GOOGLE_CLOUD = 1
     GOOGLE_MAPS = 2
@@ -158,6 +159,7 @@ class Case(proto.Message):
             CLOSED (5):
                 The case has been resolved.
         """
+
         STATE_UNSPECIFIED = 0
         NEW = 1
         IN_PROGRESS_GOOGLE_SUPPORT = 2
@@ -188,6 +190,7 @@ class Case(proto.Message):
                 General questions or minor issues.
                 Production service is fully available.
         """
+
         PRIORITY_UNSPECIFIED = 0
         P0 = 1
         P1 = 2

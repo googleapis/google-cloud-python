@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import warnings
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.iam_admin_v1 import gapic_version as package_version
 
@@ -140,7 +140,10 @@ class IAMAsyncClient:
         Returns:
             IAMAsyncClient: The constructed client.
         """
-        return IAMClient.from_service_account_info.__func__(IAMAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            IAMClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(IAMAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -156,7 +159,10 @@ class IAMAsyncClient:
         Returns:
             IAMAsyncClient: The constructed client.
         """
-        return IAMClient.from_service_account_file.__func__(IAMAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            IAMClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(IAMAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

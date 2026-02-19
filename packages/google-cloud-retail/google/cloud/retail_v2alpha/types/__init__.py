@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .branch import Branch, BranchView
-from .branch_service import GetBranchRequest, ListBranchesRequest, ListBranchesResponse
+from .branch import (
+    Branch,
+    BranchView,
+)
+from .branch_service import (
+    GetBranchRequest,
+    ListBranchesRequest,
+    ListBranchesResponse,
+)
 from .catalog import (
     AttributesConfig,
     Catalog,
@@ -63,8 +70,13 @@ from .common import (
     StringList,
     UserInfo,
 )
-from .completion_service import CompleteQueryRequest, CompleteQueryResponse
-from .control import Control
+from .completion_service import (
+    CompleteQueryRequest,
+    CompleteQueryResponse,
+)
+from .control import (
+    Control,
+)
 from .control_service import (
     CreateControlRequest,
     DeleteControlRequest,
@@ -133,7 +145,9 @@ from .merchant_center_account_link_service import (
     ListMerchantCenterAccountLinksRequest,
     ListMerchantCenterAccountLinksResponse,
 )
-from .model import Model
+from .model import (
+    Model,
+)
 from .model_service import (
     CreateModelMetadata,
     CreateModelRequest,
@@ -148,8 +162,13 @@ from .model_service import (
     TuneModelResponse,
     UpdateModelRequest,
 )
-from .prediction_service import PredictRequest, PredictResponse
-from .product import Product
+from .prediction_service import (
+    PredictRequest,
+    PredictResponse,
+)
+from .product import (
+    Product,
+)
 from .product_service import (
     AddFulfillmentPlacesMetadata,
     AddFulfillmentPlacesRequest,
@@ -173,7 +192,11 @@ from .product_service import (
     SetInventoryResponse,
     UpdateProductRequest,
 )
-from .project import AlertConfig, LoggingConfig, Project
+from .project import (
+    AlertConfig,
+    LoggingConfig,
+    Project,
+)
 from .project_service import (
     AcceptTermsRequest,
     EnrollSolutionMetadata,
@@ -187,7 +210,9 @@ from .project_service import (
     UpdateAlertConfigRequest,
     UpdateLoggingConfigRequest,
 )
-from .promotion import Promotion
+from .promotion import (
+    Promotion,
+)
 from .purge_config import (
     PurgeMetadata,
     PurgeProductsMetadata,
@@ -196,7 +221,10 @@ from .purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from .safety import HarmCategory, SafetySetting
+from .safety import (
+    HarmCategory,
+    SafetySetting,
+)
 from .search_service import (
     ExperimentInfo,
     ProductAttributeInterval,
@@ -205,7 +233,9 @@ from .search_service import (
     SearchResponse,
     Tile,
 )
-from .serving_config import ServingConfig
+from .serving_config import (
+    ServingConfig,
+)
 from .serving_config_service import (
     AddControlRequest,
     CreateServingConfigRequest,
@@ -216,7 +246,12 @@ from .serving_config_service import (
     RemoveControlRequest,
     UpdateServingConfigRequest,
 )
-from .user_event import CompletionDetail, ProductDetail, PurchaseTransaction, UserEvent
+from .user_event import (
+    CompletionDetail,
+    ProductDetail,
+    PurchaseTransaction,
+    UserEvent,
+)
 from .user_event_service import (
     CollectUserEventRequest,
     RejoinUserEventsMetadata,

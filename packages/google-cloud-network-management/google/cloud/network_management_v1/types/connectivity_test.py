@@ -309,6 +309,7 @@ class Endpoint(proto.Message):
                 internet-routable external IP addresses or IP
                 addresses for global Google APIs and services.
         """
+
         NETWORK_TYPE_UNSPECIFIED = 0
         GCP_NETWORK = 1
         NON_GCP_NETWORK = 2
@@ -333,6 +334,7 @@ class Endpoint(proto.Message):
                 Forwarding Rule is a Private Service Connect
                 endpoint.
         """
+
         FORWARDING_RULE_TARGET_UNSPECIFIED = 0
         INSTANCE = 1
         LOAD_BALANCER = 2
@@ -542,6 +544,7 @@ class ReachabilityDetails(proto.Message):
                 - The analyzer received an invalid or unsupported argument
                   or was unable to identify a known endpoint.
         """
+
         RESULT_UNSPECIFIED = 0
         REACHABLE = 1
         UNREACHABLE = 2
@@ -672,6 +675,7 @@ class ProbingDetails(proto.Message):
                   request.
                 - An internal error occurred.
         """
+
         PROBING_RESULT_UNSPECIFIED = 0
         REACHABLE = 1
         UNREACHABLE = 2
@@ -691,6 +695,7 @@ class ProbingDetails(proto.Message):
                 No valid source endpoint could be derived
                 from the request.
         """
+
         PROBING_ABORT_CAUSE_UNSPECIFIED = 0
         PERMISSION_DENIED = 1
         NO_SOURCE_LOCATION = 2

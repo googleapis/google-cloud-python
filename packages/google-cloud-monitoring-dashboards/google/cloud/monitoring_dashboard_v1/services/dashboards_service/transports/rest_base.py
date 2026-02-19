@@ -17,13 +17,12 @@ import json  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
+from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
 from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 
 from .base import DEFAULT_CLIENT_INFO, DashboardsServiceTransport
 

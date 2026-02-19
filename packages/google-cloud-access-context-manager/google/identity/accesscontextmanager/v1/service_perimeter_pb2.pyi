@@ -39,7 +39,6 @@ class ServicePerimeter(_message.Message):
         "spec",
         "use_explicit_dry_run_spec",
     )
-
     class PerimeterType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         PERIMETER_TYPE_REGULAR: _ClassVar[ServicePerimeter.PerimeterType]
@@ -87,7 +86,6 @@ class ServicePerimeterConfig(_message.Message):
         "ingress_policies",
         "egress_policies",
     )
-
     class IdentityType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         IDENTITY_TYPE_UNSPECIFIED: _ClassVar[ServicePerimeterConfig.IdentityType]
@@ -99,7 +97,6 @@ class ServicePerimeterConfig(_message.Message):
     ANY_IDENTITY: ServicePerimeterConfig.IdentityType
     ANY_USER_ACCOUNT: ServicePerimeterConfig.IdentityType
     ANY_SERVICE_ACCOUNT: ServicePerimeterConfig.IdentityType
-
     class VpcAccessibleServices(_message.Message):
         __slots__ = ("enable_restriction", "allowed_services")
         ENABLE_RESTRICTION_FIELD_NUMBER: _ClassVar[int]

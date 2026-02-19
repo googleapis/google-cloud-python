@@ -57,6 +57,7 @@ class PieChart(proto.Message):
                 Similar to PIE, but the DONUT type PieChart
                 has a hole in the middle.
         """
+
         PIE_CHART_TYPE_UNSPECIFIED = 0
         PIE = 1
         DONUT = 2

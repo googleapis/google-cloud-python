@@ -45,6 +45,7 @@ class SearchResultType(proto.Enum):
             An
             [EntryGroup][google.cloud.datacatalog.v1beta1.EntryGroup].
     """
+
     SEARCH_RESULT_TYPE_UNSPECIFIED = 0
     ENTRY = 1
     TAG_TEMPLATE = 2

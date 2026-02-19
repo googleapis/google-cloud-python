@@ -18,9 +18,9 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
 import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.promotions.v1beta",
@@ -49,6 +49,7 @@ class ProductApplicability(proto.Enum):
             Applicable to only a single product or list
             of products.
     """
+
     PRODUCT_APPLICABILITY_UNSPECIFIED = 0
     ALL_PRODUCTS = 1
     SPECIFIC_PRODUCTS = 2
@@ -68,6 +69,7 @@ class StoreApplicability(proto.Enum):
             Promotion applies to only the specified
             stores.
     """
+
     STORE_APPLICABILITY_UNSPECIFIED = 0
     ALL_STORES = 1
     SPECIFIC_STORES = 2
@@ -85,6 +87,7 @@ class OfferType(proto.Enum):
             Offer type with a code. Generic redemption code for the
             promotion is required when ``offerType`` = ``GENERIC_CODE``.
     """
+
     OFFER_TYPE_UNSPECIFIED = 0
     NO_CODE = 1
     GENERIC_CODE = 2
@@ -102,6 +105,7 @@ class RedemptionChannel(proto.Enum):
         ONLINE (2):
             Indicates that the channel is online.
     """
+
     REDEMPTION_CHANNEL_UNSPECIFIED = 0
     IN_STORE = 1
     ONLINE = 2
@@ -149,6 +153,7 @@ class CouponValueType(proto.Enum):
         FREE_SHIPPING_TWO_DAY (12):
             Two day free shipping coupon value type.
     """
+
     COUPON_VALUE_TYPE_UNSPECIFIED = 0
     MONEY_OFF = 1
     PERCENT_OFF = 2
@@ -369,12 +374,12 @@ class Attributes(proto.Message):
         number=5,
         enum="CouponValueType",
     )
-    promotion_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=6,
-        enum=types.Destination.DestinationEnum,
+    promotion_destinations: MutableSequence[types.Destination.DestinationEnum] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=6,
+            enum=types.Destination.DestinationEnum,
+        )
     )
     item_id_inclusion: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -537,6 +542,7 @@ class PromotionStatus(proto.Message):
                     are approved, but the active date is in the
                     future.
             """
+
             STATE_UNSPECIFIED = 0
             IN_REVIEW = 1
             REJECTED = 2
@@ -604,6 +610,7 @@ class PromotionStatus(proto.Message):
                 DISAPPROVED (3):
                     Issue disapproves the promotion.
             """
+
             SEVERITY_UNSPECIFIED = 0
             NOT_IMPACTED = 1
             DEMOTED = 2

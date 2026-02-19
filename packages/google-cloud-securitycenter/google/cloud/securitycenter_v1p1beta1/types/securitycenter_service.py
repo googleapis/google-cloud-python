@@ -23,6 +23,9 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v1p1beta1.types import asset as gcs_asset
+from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1p1beta1.types import folder
 from google.cloud.securitycenter_v1p1beta1.types import (
     notification_config as gcs_notification_config,
 )
@@ -32,9 +35,6 @@ from google.cloud.securitycenter_v1p1beta1.types import (
 from google.cloud.securitycenter_v1p1beta1.types import (
     security_marks as gcs_security_marks,
 )
-from google.cloud.securitycenter_v1p1beta1.types import asset as gcs_asset
-from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1p1beta1.types import folder
 from google.cloud.securitycenter_v1p1beta1.types import source as gcs_source
 
 __protobuf__ = proto.module(
@@ -1075,6 +1075,7 @@ class ListAssetsResponse(proto.Message):
                 ACTIVE (3):
                     Asset was present at both point(s) in time.
             """
+
             UNUSED = 0
             ADDED = 1
             REMOVED = 2
@@ -1356,6 +1357,7 @@ class ListFindingsResponse(proto.Message):
                     The finding at timestamp does not match the filter
                     specified, but it did at timestamp - compare_duration.
             """
+
             UNUSED = 0
             CHANGED = 1
             UNCHANGED = 2

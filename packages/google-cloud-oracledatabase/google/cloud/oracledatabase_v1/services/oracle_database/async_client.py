@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.oracledatabase_v1 import gapic_version as package_version
 
@@ -46,14 +46,15 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.oracledatabase_v1.services.oracle_database import pagers
 from google.cloud.oracledatabase_v1.types import (
+    autonomous_database,
     autonomous_database_character_set,
     autonomous_db_backup,
     autonomous_db_version,
@@ -62,15 +63,18 @@ from google.cloud.oracledatabase_v1.types import (
     database_character_set,
     db_node,
     db_server,
-)
-from google.cloud.oracledatabase_v1.types import (
+    db_system,
     db_system_initial_storage_size,
     db_system_shape,
     db_version,
     entitlement,
     exadata_infra,
-)
-from google.cloud.oracledatabase_v1.types import (
+    exadb_vm_cluster,
+    exascale_db_storage_vault,
+    gi_version,
+    minor_version,
+    odb_network,
+    odb_subnet,
     oracledatabase,
     pluggable_database,
     vm_cluster,
@@ -78,21 +82,14 @@ from google.cloud.oracledatabase_v1.types import (
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database as gco_autonomous_database,
 )
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import (
     exadb_vm_cluster as gco_exadb_vm_cluster,
 )
 from google.cloud.oracledatabase_v1.types import (
     exascale_db_storage_vault as gco_exascale_db_storage_vault,
 )
-from google.cloud.oracledatabase_v1.types import autonomous_database
-from google.cloud.oracledatabase_v1.types import db_system
-from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
-from google.cloud.oracledatabase_v1.types import exadb_vm_cluster
-from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
-from google.cloud.oracledatabase_v1.types import gi_version, minor_version
-from google.cloud.oracledatabase_v1.types import odb_network
 from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
-from google.cloud.oracledatabase_v1.types import odb_subnet
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 from .client import OracleDatabaseClient
@@ -249,7 +246,10 @@ class OracleDatabaseAsyncClient:
         Returns:
             OracleDatabaseAsyncClient: The constructed client.
         """
-        return OracleDatabaseClient.from_service_account_info.__func__(OracleDatabaseAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            OracleDatabaseClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(OracleDatabaseAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -265,7 +265,10 @@ class OracleDatabaseAsyncClient:
         Returns:
             OracleDatabaseAsyncClient: The constructed client.
         """
-        return OracleDatabaseClient.from_service_account_file.__func__(OracleDatabaseAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            OracleDatabaseClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(OracleDatabaseAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

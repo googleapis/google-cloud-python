@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.chat_service import ChatServiceAsyncClient, ChatServiceClient
 from .types.action_status import ActionStatus
 from .types.annotation import (

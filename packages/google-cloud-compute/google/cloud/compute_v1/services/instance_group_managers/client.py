@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -33,8 +34,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation, gapic_v1
@@ -44,7 +45,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.compute_v1 import gapic_version as package_version
 
@@ -79,9 +79,7 @@ class InstanceGroupManagersClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[InstanceGroupManagersTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[InstanceGroupManagersTransport]]
     _transport_registry["rest"] = InstanceGroupManagersRestTransport
 
     def get_transport_class(
@@ -606,11 +604,9 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = InstanceGroupManagersClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            InstanceGroupManagersClient._read_environment_variables()
+        )
         self._client_cert_source = InstanceGroupManagersClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -645,8 +641,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(InstanceGroupManagersTransport, transport)
             self._api_endpoint = self._transport.host
@@ -2716,9 +2711,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_delete_per_instance_configs_req_resource
                 is not None
             ):
-                request.instance_group_managers_delete_per_instance_configs_req_resource = (
-                    instance_group_managers_delete_per_instance_configs_req_resource
-                )
+                request.instance_group_managers_delete_per_instance_configs_req_resource = instance_group_managers_delete_per_instance_configs_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2882,9 +2875,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_delete_per_instance_configs_req_resource
                 is not None
             ):
-                request.instance_group_managers_delete_per_instance_configs_req_resource = (
-                    instance_group_managers_delete_per_instance_configs_req_resource
-                )
+                request.instance_group_managers_delete_per_instance_configs_req_resource = instance_group_managers_delete_per_instance_configs_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4512,9 +4503,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_patch_per_instance_configs_req_resource
                 is not None
             ):
-                request.instance_group_managers_patch_per_instance_configs_req_resource = (
-                    instance_group_managers_patch_per_instance_configs_req_resource
-                )
+                request.instance_group_managers_patch_per_instance_configs_req_resource = instance_group_managers_patch_per_instance_configs_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4679,9 +4668,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_patch_per_instance_configs_req_resource
                 is not None
             ):
-                request.instance_group_managers_patch_per_instance_configs_req_resource = (
-                    instance_group_managers_patch_per_instance_configs_req_resource
-                )
+                request.instance_group_managers_patch_per_instance_configs_req_resource = instance_group_managers_patch_per_instance_configs_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -5998,9 +5985,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_set_instance_template_request_resource
                 is not None
             ):
-                request.instance_group_managers_set_instance_template_request_resource = (
-                    instance_group_managers_set_instance_template_request_resource
-                )
+                request.instance_group_managers_set_instance_template_request_resource = instance_group_managers_set_instance_template_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6161,9 +6146,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_set_instance_template_request_resource
                 is not None
             ):
-                request.instance_group_managers_set_instance_template_request_resource = (
-                    instance_group_managers_set_instance_template_request_resource
-                )
+                request.instance_group_managers_set_instance_template_request_resource = instance_group_managers_set_instance_template_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7865,9 +7848,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_update_per_instance_configs_req_resource
                 is not None
             ):
-                request.instance_group_managers_update_per_instance_configs_req_resource = (
-                    instance_group_managers_update_per_instance_configs_req_resource
-                )
+                request.instance_group_managers_update_per_instance_configs_req_resource = instance_group_managers_update_per_instance_configs_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8032,9 +8013,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 instance_group_managers_update_per_instance_configs_req_resource
                 is not None
             ):
-                request.instance_group_managers_update_per_instance_configs_req_resource = (
-                    instance_group_managers_update_per_instance_configs_req_resource
-                )
+                request.instance_group_managers_update_per_instance_configs_req_resource = instance_group_managers_update_per_instance_configs_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

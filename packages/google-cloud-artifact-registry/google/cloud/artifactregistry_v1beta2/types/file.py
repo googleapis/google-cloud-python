@@ -53,6 +53,7 @@ class Hash(proto.Message):
             MD5 (2):
                 MD5 hash.
         """
+
         HASH_TYPE_UNSPECIFIED = 0
         SHA256 = 1
         MD5 = 2

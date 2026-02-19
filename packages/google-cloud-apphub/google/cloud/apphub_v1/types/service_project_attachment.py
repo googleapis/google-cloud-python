@@ -74,6 +74,7 @@ class ServiceProjectAttachment(proto.Message):
                 The ServiceProjectAttachment is being
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2

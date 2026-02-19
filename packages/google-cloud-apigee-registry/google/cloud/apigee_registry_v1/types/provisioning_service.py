@@ -196,6 +196,7 @@ class Instance(proto.Message):
                 The Instance encountered an error during a
                 state change.
         """
+
         STATE_UNSPECIFIED = 0
         INACTIVE = 1
         CREATING = 2

@@ -82,12 +82,12 @@ class TroubleshootIamPolicyResponse(proto.Message):
         number=1,
         enum=explanations.AccessState,
     )
-    explained_policies: MutableSequence[
-        explanations.ExplainedPolicy
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=explanations.ExplainedPolicy,
+    explained_policies: MutableSequence[explanations.ExplainedPolicy] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=explanations.ExplainedPolicy,
+        )
     )
     errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,

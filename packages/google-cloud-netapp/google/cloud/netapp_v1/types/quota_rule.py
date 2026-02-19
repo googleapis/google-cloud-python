@@ -245,6 +245,7 @@ class QuotaRule(proto.Message):
             DEFAULT_GROUP_QUOTA (4):
                 Default group quota rule
         """
+
         TYPE_UNSPECIFIED = 0
         INDIVIDUAL_USER_QUOTA = 1
         INDIVIDUAL_GROUP_QUOTA = 2
@@ -268,6 +269,7 @@ class QuotaRule(proto.Message):
             ERROR (5):
                 Quota rule is in error state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2

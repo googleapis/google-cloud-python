@@ -92,6 +92,7 @@ class MitreAttack(proto.Message):
             IMPACT (14):
                 TA0040
         """
+
         TACTIC_UNSPECIFIED = 0
         RECONNAISSANCE = 1
         RESOURCE_DEVELOPMENT = 2
@@ -391,6 +392,7 @@ class MitreAttack(proto.Message):
             FINANCIAL_THEFT (131):
                 T1657
         """
+
         TECHNIQUE_UNSPECIFIED = 0
         DATA_OBFUSCATION = 70
         DATA_OBFUSCATION_STEGANOGRAPHY = 71

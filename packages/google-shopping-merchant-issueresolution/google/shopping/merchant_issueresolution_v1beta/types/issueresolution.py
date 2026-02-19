@@ -72,6 +72,7 @@ class Severity(proto.Enum):
             data quality. Resolving these issues is
             recommended, but not required.
     """
+
     SEVERITY_UNSPECIFIED = 0
     ERROR = 1
     WARNING = 2
@@ -89,6 +90,7 @@ class ContentOption(proto.Enum):
             Returns the detail of the issue as a
             pre-rendered HTML text.
     """
+
     CONTENT_OPTION_UNSPECIFIED = 0
     PRE_RENDERED_HTML = 1
 
@@ -113,6 +115,7 @@ class UserInputActionRenderingOption(proto.Enum):
             processing of the action. To start the action, your
             application needs to call the ``triggeraction`` method.
     """
+
     USER_INPUT_ACTION_RENDERING_OPTION_UNSPECIFIED = 0
     REDIRECT_TO_MERCHANT_CENTER = 1
     BUILT_IN_USER_INPUT_ACTIONS = 2
@@ -802,6 +805,7 @@ class BuiltInSimpleAction(proto.Message):
                 This action will be used for example to deliver a
                 justification from national authority.
         """
+
         BUILT_IN_SIMPLE_ACTION_TYPE_UNSPECIFIED = 0
         VERIFY_PHONE = 1
         CLAIM_WEBSITE = 2
@@ -1064,6 +1068,7 @@ class InputField(proto.Message):
                     rendered as a
                     `textarea <https://www.w3.org/TR/2012/WD-html-markup-20121025/textarea.html#textarea>`__.
             """
+
             TEXT_INPUT_TYPE_UNSPECIFIED = 0
             GENERIC_SHORT_TEXT = 1
             GENERIC_LONG_TEXT = 2
@@ -1141,12 +1146,12 @@ class InputField(proto.Message):
                 message="InputField",
             )
 
-        options: MutableSequence[
-            "InputField.ChoiceInput.ChoiceInputOption"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="InputField.ChoiceInput.ChoiceInputOption",
+        options: MutableSequence["InputField.ChoiceInput.ChoiceInputOption"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="InputField.ChoiceInput.ChoiceInputOption",
+            )
         )
 
     class CheckboxInput(proto.Message):
@@ -1236,6 +1241,7 @@ class TextWithTooltip(proto.Message):
                 Used when the tooltip shows helpful
                 information, the '?' can be used as an icon.
         """
+
         TOOLTIP_ICON_STYLE_UNSPECIFIED = 0
         INFO = 1
         QUESTION = 2
@@ -1292,6 +1298,7 @@ class Callout(proto.Message):
                 like pending status of previously requested
                 action or cooldown for re-review.
         """
+
         CALLOUT_STYLE_HINT_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2
@@ -1348,6 +1355,7 @@ class ExternalAction(proto.Message):
                 Redirect to Merchant Center where the
                 business can perform identity verification.
         """
+
         EXTERNAL_ACTION_TYPE_UNSPECIFIED = 0
         REVIEW_PRODUCT_ISSUE_IN_MERCHANT_CENTER = 1
         REVIEW_ACCOUNT_ISSUE_IN_MERCHANT_CENTER = 2

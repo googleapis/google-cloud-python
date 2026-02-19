@@ -142,7 +142,6 @@ class AuthorizationInfo(_message.Message):
         "resource_attributes",
         "permission_type",
     )
-
     class PermissionType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         PERMISSION_TYPE_UNSPECIFIED: _ClassVar[AuthorizationInfo.PermissionType]
@@ -222,7 +221,6 @@ class ResourceLocation(_message.Message):
 
 class ServiceAccountDelegationInfo(_message.Message):
     __slots__ = ("principal_subject", "first_party_principal", "third_party_principal")
-
     class FirstPartyPrincipal(_message.Message):
         __slots__ = ("principal_email", "service_metadata")
         PRINCIPAL_EMAIL_FIELD_NUMBER: _ClassVar[int]
@@ -274,7 +272,6 @@ class PolicyViolationInfo(_message.Message):
 
 class OrgPolicyViolationInfo(_message.Message):
     __slots__ = ("payload", "resource_type", "resource_tags", "violation_info")
-
     class ResourceTagsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -303,7 +300,6 @@ class OrgPolicyViolationInfo(_message.Message):
 
 class ViolationInfo(_message.Message):
     __slots__ = ("constraint", "error_message", "checked_value", "policy_type")
-
     class PolicyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         POLICY_TYPE_UNSPECIFIED: _ClassVar[ViolationInfo.PolicyType]

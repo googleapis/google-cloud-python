@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .barcode import Barcode
-from .document import Document
+from .barcode import (
+    Barcode,
+)
+from .document import (
+    Document,
+)
 from .document_io import (
     BatchDocumentsInputConfig,
     DocumentOutputConfig,
@@ -76,12 +80,29 @@ from .document_processor_service import (
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
 )
-from .document_schema import DocumentSchema
-from .evaluation import Evaluation, EvaluationReference
-from .geometry import BoundingPoly, NormalizedVertex, Vertex
-from .operation_metadata import CommonOperationMetadata
-from .processor import Processor, ProcessorVersion, ProcessorVersionAlias
-from .processor_type import ProcessorType
+from .document_schema import (
+    DocumentSchema,
+)
+from .evaluation import (
+    Evaluation,
+    EvaluationReference,
+)
+from .geometry import (
+    BoundingPoly,
+    NormalizedVertex,
+    Vertex,
+)
+from .operation_metadata import (
+    CommonOperationMetadata,
+)
+from .processor import (
+    Processor,
+    ProcessorVersion,
+    ProcessorVersionAlias,
+)
+from .processor_type import (
+    ProcessorType,
+)
 
 __all__ = (
     "Barcode",

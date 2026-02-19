@@ -18,11 +18,10 @@ from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
+from google.api import label_pb2 as _label_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
-
-from google.api import label_pb2 as _label_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 

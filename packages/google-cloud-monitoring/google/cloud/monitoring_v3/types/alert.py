@@ -23,8 +23,8 @@ import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.monitoring_v3.types import mutation_record as gm_mutation_record
 from google.cloud.monitoring_v3.types import common
+from google.cloud.monitoring_v3.types import mutation_record as gm_mutation_record
 
 __protobuf__ = proto.module(
     package="google.monitoring.v3",
@@ -178,6 +178,7 @@ class AlertPolicy(proto.Message):
                 only if all conditions are met simultaneously on at least
                 one resource.
         """
+
         COMBINE_UNSPECIFIED = 0
         AND = 1
         OR = 2
@@ -205,6 +206,7 @@ class AlertPolicy(proto.Message):
                 downtime, but could potentially lead to a
                 problem in the future.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         ERROR = 2
@@ -395,6 +397,7 @@ class AlertPolicy(proto.Message):
                     Do not evaluate the condition to any value if
                     there is no data.
             """
+
             EVALUATION_MISSING_DATA_UNSPECIFIED = 0
             EVALUATION_MISSING_DATA_INACTIVE = 1
             EVALUATION_MISSING_DATA_ACTIVE = 2
@@ -572,12 +575,12 @@ class AlertPolicy(proto.Message):
                 proto.STRING,
                 number=9,
             )
-            denominator_aggregations: MutableSequence[
-                common.Aggregation
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=10,
-                message=common.Aggregation,
+            denominator_aggregations: MutableSequence[common.Aggregation] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=10,
+                    message=common.Aggregation,
+                )
             )
             forecast_options: "AlertPolicy.Condition.MetricThreshold.ForecastOptions" = proto.Field(
                 proto.MESSAGE,
@@ -1206,6 +1209,7 @@ class AlertPolicy(proto.Message):
                 CLOSED (3):
                     Notify when an incident is closed.
             """
+
             NOTIFICATION_PROMPT_UNSPECIFIED = 0
             OPENED = 1
             CLOSED = 3

@@ -73,6 +73,7 @@ class LoggingConfig(proto.Message):
                 Log all operations, including successful
                 ones.
         """
+
         LOGGING_LEVEL_UNSPECIFIED = 0
         LOGGING_DISABLED = 1
         LOG_ERRORS_AND_ABOVE = 2
@@ -160,12 +161,12 @@ class LoggingConfig(proto.Message):
         number=2,
         message=LogGenerationRule,
     )
-    service_log_generation_rules: MutableSequence[
-        ServiceLogGenerationRule
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=ServiceLogGenerationRule,
+    service_log_generation_rules: MutableSequence[ServiceLogGenerationRule] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=ServiceLogGenerationRule,
+        )
     )
 
 
@@ -234,6 +235,7 @@ class AlertConfig(proto.Message):
                 DECLINED (2):
                     Customer declined this policy.
             """
+
             ENROLL_STATUS_UNSPECIFIED = 0
             ENROLLED = 1
             DECLINED = 2
@@ -260,12 +262,12 @@ class AlertConfig(proto.Message):
             number=2,
             enum="AlertConfig.AlertPolicy.EnrollStatus",
         )
-        recipients: MutableSequence[
-            "AlertConfig.AlertPolicy.Recipient"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="AlertConfig.AlertPolicy.Recipient",
+        recipients: MutableSequence["AlertConfig.AlertPolicy.Recipient"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="AlertConfig.AlertPolicy.Recipient",
+            )
         )
 
     name: str = proto.Field(

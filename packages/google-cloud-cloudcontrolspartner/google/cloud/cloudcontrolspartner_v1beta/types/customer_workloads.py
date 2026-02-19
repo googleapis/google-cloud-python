@@ -90,6 +90,7 @@ class Workload(proto.Message):
                 Arabia) partner offering without EKM
                 provisioning.
         """
+
         PARTNER_UNSPECIFIED = 0
         PARTNER_LOCAL_CONTROLS_BY_S3NS = 1
         PARTNER_SOVEREIGN_CONTROLS_BY_T_SYSTEMS = 2
@@ -271,6 +272,7 @@ class WorkloadOnboardingStep(proto.Message):
             SIGNED_ACCESS_APPROVAL_CONFIGURED (2):
                 Signed Access Approval step.
         """
+
         STEP_UNSPECIFIED = 0
         EKM_PROVISIONED = 1
         SIGNED_ACCESS_APPROVAL_CONFIGURED = 2

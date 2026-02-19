@@ -245,6 +245,7 @@ class Snapshot(proto.Message):
             ERROR (6):
                 Snapshot State is Error
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2

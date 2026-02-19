@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.network_security_v1alpha1.types import sse_gateway
 
@@ -422,12 +424,12 @@ class SSEGatewayServiceGrpcTransport(SSEGatewayServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_partner_sse_gateway" not in self._stubs:
-            self._stubs[
-                "create_partner_sse_gateway"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/CreatePartnerSSEGateway",
-                request_serializer=sse_gateway.CreatePartnerSSEGatewayRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_partner_sse_gateway"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/CreatePartnerSSEGateway",
+                    request_serializer=sse_gateway.CreatePartnerSSEGatewayRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_partner_sse_gateway"]
 
@@ -452,12 +454,12 @@ class SSEGatewayServiceGrpcTransport(SSEGatewayServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_partner_sse_gateway" not in self._stubs:
-            self._stubs[
-                "delete_partner_sse_gateway"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/DeletePartnerSSEGateway",
-                request_serializer=sse_gateway.DeletePartnerSSEGatewayRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_partner_sse_gateway"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/DeletePartnerSSEGateway",
+                    request_serializer=sse_gateway.DeletePartnerSSEGatewayRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_partner_sse_gateway"]
 
@@ -482,12 +484,12 @@ class SSEGatewayServiceGrpcTransport(SSEGatewayServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_partner_sse_gateway" not in self._stubs:
-            self._stubs[
-                "update_partner_sse_gateway"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/UpdatePartnerSSEGateway",
-                request_serializer=sse_gateway.UpdatePartnerSSEGatewayRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_partner_sse_gateway"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/UpdatePartnerSSEGateway",
+                    request_serializer=sse_gateway.UpdatePartnerSSEGatewayRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_partner_sse_gateway"]
 
@@ -514,12 +516,12 @@ class SSEGatewayServiceGrpcTransport(SSEGatewayServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_sse_gateway_references" not in self._stubs:
-            self._stubs[
-                "list_sse_gateway_references"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/ListSSEGatewayReferences",
-                request_serializer=sse_gateway.ListSSEGatewayReferencesRequest.serialize,
-                response_deserializer=sse_gateway.ListSSEGatewayReferencesResponse.deserialize,
+            self._stubs["list_sse_gateway_references"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.SSEGatewayService/ListSSEGatewayReferences",
+                    request_serializer=sse_gateway.ListSSEGatewayReferencesRequest.serialize,
+                    response_deserializer=sse_gateway.ListSSEGatewayReferencesResponse.deserialize,
+                )
             )
         return self._stubs["list_sse_gateway_references"]
 
