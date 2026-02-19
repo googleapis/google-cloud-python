@@ -12,7 +12,7 @@
     "api_id": "spanner.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/spanner-client-libraries-python",
+    "codeowner_team": "@googleapis/spanner-team",
     "api_shortname": "spanner",
     "api_description": "is a fully managed, mission-critical, \nrelational database service that offers transactional consistency at global scale, \nschemas, SQL (ANSI 2011 with extensions), and automatic, synchronous replication \nfor high availability.\n\nBe sure to activate the Cloud Spanner API on the Developer's Console to\nuse Cloud Spanner from your project."
 }
