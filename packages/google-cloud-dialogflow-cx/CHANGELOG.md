@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow-cx/#history
 
+## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.3.0...google-cloud-dialogflow-cx-v2.4.0) (2026-02-19)
+
+
+### Documentation
+
+* Add comment for enum value `DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED` in enum `DetectIntentResponseView` ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
+
+### Features
+
+* Add new value `DETECT_INTENT_RESPONSE_VIEW_DEFAULT` to enum `DetectIntentResponseView` ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.2.0...google-cloud-dialogflow-cx-v2.3.0) (2026-01-22)
 
 

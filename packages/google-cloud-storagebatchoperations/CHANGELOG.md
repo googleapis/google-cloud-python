@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-storagebatchoperations/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.3.0...google-cloud-storagebatchoperations-v0.4.0) (2026-02-19)
+
+
+### Features
+
+* add `is_multi_bucket_job` output field added to StorageBatchOperations Job ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* add QUEUED state to Storage Batch Operations API ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* add bucket operations ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.2.0...google-cloud-storagebatchoperations-v0.3.0) (2026-01-09)
 
 

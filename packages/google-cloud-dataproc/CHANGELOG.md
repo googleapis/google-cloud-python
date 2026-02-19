@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.24.0...google-cloud-dataproc-v5.25.0) (2026-02-19)
+
+
+### Features
+
+* Add `ClusterType` to support creating Zero-Scale clusters ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [5.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.23.0...google-cloud-dataproc-v5.24.0) (2026-01-08)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms-inventory/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.4.0...google-cloud-kms-inventory-v0.5.0) (2026-02-19)
+
+
+### Features
+
+* Add support for project level key usage tracking ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.3.0...google-cloud-kms-inventory-v0.4.0) (2026-01-08)
 
 

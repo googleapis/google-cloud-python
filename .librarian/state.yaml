@@ -812,7 +812,7 @@ libraries:
       - packages/google-cloud-bigquery-reservation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.36.1
+    version: 2.36.2
     last_generated_commit: 6b36371f6f3099624547e9ce4c1db304161e6afe
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1308,7 +1308,7 @@ libraries:
       - packages/google-cloud-dataplex/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataproc
-    version: 5.24.0
+    version: 5.25.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/dataproc/v1
@@ -1415,7 +1415,7 @@ libraries:
       - packages/google-cloud-dialogflow/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow-cx
-    version: 2.3.0
+    version: 2.4.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/dialogflow/cx/v3
@@ -1852,7 +1852,7 @@ libraries:
       - packages/google-cloud-ids/
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
-    version: 3.10.0
+    version: 3.11.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/kms/v1
@@ -1867,7 +1867,7 @@ libraries:
       - packages/google-cloud-kms/
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms-inventory
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/kms/inventory/v1
@@ -2621,7 +2621,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-saasplatform-saasservicemgmt
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/saasplatform/saasservicemgmt/v1beta1
@@ -2886,7 +2886,7 @@ libraries:
       - packages/google-cloud-storage-transfer/
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/cloud/storagebatchoperations/v1
@@ -3064,7 +3064,7 @@ libraries:
       - packages/google-cloud-translate/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 45e46bdae3874d2b92a2ced22529fc7037a1878f
     apis:
       - path: google/cloud/vectorsearch/v1beta
@@ -3384,7 +3384,7 @@ libraries:
       - packages/google-maps-mapsplatformdatasets
     tag_format: '{id}-v{version}'
   - id: google-maps-places
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: google/maps/places/v1
@@ -3718,7 +3718,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: grafeas
-    version: 1.19.1
+    version: 1.20.0
     last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
     apis:
       - path: grafeas/v1
