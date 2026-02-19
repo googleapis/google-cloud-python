@@ -80,6 +80,7 @@ class AuditLogConfig(_message.Message):
         ADMIN_READ: _ClassVar[AuditLogConfig.LogType]
         DATA_WRITE: _ClassVar[AuditLogConfig.LogType]
         DATA_READ: _ClassVar[AuditLogConfig.LogType]
+
     LOG_TYPE_UNSPECIFIED: AuditLogConfig.LogType
     ADMIN_READ: AuditLogConfig.LogType
     DATA_WRITE: AuditLogConfig.LogType
@@ -116,6 +117,7 @@ class BindingDelta(_message.Message):
         ACTION_UNSPECIFIED: _ClassVar[BindingDelta.Action]
         ADD: _ClassVar[BindingDelta.Action]
         REMOVE: _ClassVar[BindingDelta.Action]
+
     ACTION_UNSPECIFIED: BindingDelta.Action
     ADD: BindingDelta.Action
     REMOVE: BindingDelta.Action
@@ -143,6 +145,7 @@ class AuditConfigDelta(_message.Message):
         ACTION_UNSPECIFIED: _ClassVar[AuditConfigDelta.Action]
         ADD: _ClassVar[AuditConfigDelta.Action]
         REMOVE: _ClassVar[AuditConfigDelta.Action]
+
     ACTION_UNSPECIFIED: AuditConfigDelta.Action
     ADD: AuditConfigDelta.Action
     REMOVE: AuditConfigDelta.Action
