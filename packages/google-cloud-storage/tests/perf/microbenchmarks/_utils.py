@@ -11,18 +11,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from typing import Any, List
+from typing import Any, List, Optional
 import statistics
 import io
 import os
+import socket
+import psutil
 
+_C4_STANDARD_192_NIC = "ens3" # can be fetched via ip link show
 
 def publish_benchmark_extra_info(
     benchmark: Any,
     params: Any,
     benchmark_group: str = "read",
     true_times: List[float] = [],
+    download_bytes_list: Optional[List[int]] = None,
+    duration: Optional[int] = None,
 ) -> None:
+    
     """
     Helper function to publish benchmark parameters to the extra_info property.
     """
@@ -41,13 +47,23 @@ def publish_benchmark_extra_info(
     benchmark.extra_info["processes"] = params.num_processes
     benchmark.group = benchmark_group
 
-    object_size = params.file_size_bytes
-    num_files = params.num_files
-    total_uploaded_mib = object_size / (1024 * 1024) * num_files
-    min_throughput = total_uploaded_mib / benchmark.stats["max"]
-    max_throughput = total_uploaded_mib / benchmark.stats["min"]
-    mean_throughput = total_uploaded_mib / benchmark.stats["mean"]
-    median_throughput = total_uploaded_mib / benchmark.stats["median"]
+    if download_bytes_list is not None:
+        assert duration is not None, "Duration must be provided if total_bytes_transferred is provided."
+        throughputs_list = [x / duration / (1024 * 1024) for x in download_bytes_list]
+        min_throughput = min(throughputs_list)
+        max_throughput = max(throughputs_list)
+        mean_throughput = statistics.mean(throughputs_list)
+        median_throughput = statistics.median(throughputs_list)
+
+
+    else:
+        object_size = params.file_size_bytes
+        num_files = params.num_files
+        total_uploaded_mib = object_size / (1024 * 1024) * num_files
+        min_throughput = total_uploaded_mib / benchmark.stats["max"]
+        max_throughput = total_uploaded_mib / benchmark.stats["min"]
+        mean_throughput = total_uploaded_mib / benchmark.stats["mean"]
+        median_throughput = total_uploaded_mib / benchmark.stats["median"]
 
     benchmark.extra_info["throughput_MiB_s_min"] = min_throughput
     benchmark.extra_info["throughput_MiB_s_max"] = max_throughput
@@ -165,3 +181,74 @@ class RandomBytesIO(io.RawIOBase):
         # Clamp position to valid range [0, size]
         self._pos = max(0, min(new_pos, self._size))
         return self._pos
+
+
+def get_nic_pci(nic):
+    """Gets the PCI address of a network interface."""
+    return os.path.basename(os.readlink(f"/sys/class/net/{nic}/device"))
+
+
+def get_irqs_for_pci(pci):
+    """Gets the IRQs associated with a PCI address."""
+    irqs = []
+    with open("/proc/interrupts") as f:
+        for line in f:
+            if pci in line:
+                irq = line.split(":")[0].strip()
+                irqs.append(irq)
+    return irqs
+
+
+def get_affinity(irq):
+    """Gets the CPU affinity of an IRQ."""
+    path = f"/proc/irq/{irq}/smp_affinity_list"
+    try:
+        with open(path) as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return "N/A"
+
+
+def get_primary_interface_name():
+    primary_ip = None
+    
+    # 1. Determine the Local IP used for internet access
+    # We use UDP (SOCK_DGRAM) so we don't actually send a handshake/packet
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # connect() to a public IP (Google DNS) to force route resolution
+        s.connect(('8.8.8.8', 80))
+        primary_ip = s.getsockname()[0]
+    except Exception:
+        # Fallback if no internet
+        return None
+    finally:
+        s.close()
+
+    # 2. Match that IP to an interface name using psutil
+    if primary_ip:
+        interfaces = psutil.net_if_addrs()
+        for name, addresses in interfaces.items():
+            for addr in addresses:
+                # check if this interface has the IP we found
+                if addr.address == primary_ip:
+                    return name
+    return None
+
+
+def get_irq_affinity():
+    """Gets the set of CPUs for a given network interface."""
+    nic = get_primary_interface_name()
+    if not nic:
+        nic = _C4_STANDARD_192_NIC
+
+    pci = get_nic_pci(nic)
+    irqs = get_irqs_for_pci(pci)
+    cpus = set()
+    for irq in irqs:
+        affinity_str = get_affinity(irq)
+        if affinity_str != "N/A":
+            for part in affinity_str.split(','):
+                if '-' not in part:
+                    cpus.add(int(part))
+    return cpus
