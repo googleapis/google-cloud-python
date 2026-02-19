@@ -8,6 +8,6 @@
   "language": "python",
   "repo": "googleapis/sphinx-docfx-yaml",
   "distribution_name": "gcp-sphinx-docfx-yaml",
-  "codeowner_team": "@googleapis/dkp",
+  "codeowner_team": "@googleapis/dkp-team",
   "library_type": "OTHER"
 }
