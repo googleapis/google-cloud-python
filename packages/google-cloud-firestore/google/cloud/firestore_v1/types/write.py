@@ -22,7 +22,7 @@ import proto  # type: ignore
 from google.cloud.firestore_v1.types import bloom_filter
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document as gf_document
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(

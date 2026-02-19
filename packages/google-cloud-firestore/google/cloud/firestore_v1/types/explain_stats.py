@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.protobuf import any_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(

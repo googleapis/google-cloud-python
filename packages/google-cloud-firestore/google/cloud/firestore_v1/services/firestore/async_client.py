@@ -60,8 +60,8 @@ from google.cloud.firestore_v1.types import query_profile
 from google.cloud.firestore_v1.types import write as gf_write
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from .transports.base import FirestoreTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import FirestoreGrpcAsyncIOTransport
 from .client import FirestoreClient
@@ -129,7 +129,10 @@ class FirestoreAsyncClient:
         Returns:
             FirestoreAsyncClient: The constructed client.
         """
-        return FirestoreClient.from_service_account_info.__func__(FirestoreAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            FirestoreClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(FirestoreAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -145,7 +148,10 @@ class FirestoreAsyncClient:
         Returns:
             FirestoreAsyncClient: The constructed client.
         """
-        return FirestoreClient.from_service_account_file.__func__(FirestoreAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            FirestoreClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(FirestoreAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

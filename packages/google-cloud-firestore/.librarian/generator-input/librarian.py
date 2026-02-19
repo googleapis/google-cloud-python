@@ -59,8 +59,8 @@ for library in s.get_staging_dirs(default_version=firestore_admin_default_versio
 for library in s.get_staging_dirs():
     s.replace(
         library / "google/cloud/bundle/types/bundle.py",
-        "from google.firestore.v1 import document_pb2  # type: ignore\n"
-        "from google.firestore.v1 import query_pb2  # type: ignore",
+        "import google.firestore.v1.document_pb2 as document_pb2  # type: ignore\n"
+        "import google.firestore.v1.query_pb2 as query_pb2  # type: ignore",
         "from google.cloud.firestore_v1.types import document as document_pb2  # type: ignore\n"
         "from google.cloud.firestore_v1.types import query as query_pb2 # type: ignore"        
     )

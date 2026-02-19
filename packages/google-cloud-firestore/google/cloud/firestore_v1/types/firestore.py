@@ -27,9 +27,9 @@ from google.cloud.firestore_v1.types import pipeline
 from google.cloud.firestore_v1.types import query as gf_query
 from google.cloud.firestore_v1.types import query_profile
 from google.cloud.firestore_v1.types import write
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
