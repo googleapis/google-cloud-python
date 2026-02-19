@@ -331,8 +331,10 @@ def generate_managed_function_code(
         udf_code = textwrap.dedent(inspect.getsource(get_pd_series))
         udf_code = udf_code[udf_code.index("def") :]
         bigframes_handler_code = textwrap.dedent(
-            f"""def bigframes_handler(str_arg):
-                return {udf_name}({get_pd_series.__name__}(str_arg))"""
+            f"""
+            def bigframes_handler(str_arg):
+                return {udf_name}({get_pd_series.__name__}(str_arg))
+            """
         )
 
         sig = inspect.signature(def_)
@@ -352,15 +354,19 @@ def generate_managed_function_code(
         udf_call_str = ", ".join(udf_call_parts)
 
         bigframes_handler_code = textwrap.dedent(
-            f"""def bigframes_handler({handler_def_str}):
-                return {udf_name}({udf_call_str})"""
+            f"""
+            def bigframes_handler({handler_def_str}):
+                return {udf_name}({udf_call_str})
+            """
         )
 
     else:
         udf_code = ""
         bigframes_handler_code = textwrap.dedent(
-            f"""def bigframes_handler(*args):
-                return {udf_name}(*args)"""
+            f"""
+            def bigframes_handler(*args):
+                return {udf_name}(*args)
+            """
         )
 
     udf_code_block = []
