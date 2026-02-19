@@ -85,6 +85,7 @@ class Distribution(_message.Message):
             BOUNDS_FIELD_NUMBER: _ClassVar[int]
             bounds: _containers.RepeatedScalarFieldContainer[float]
             def __init__(self, bounds: _Optional[_Iterable[float]] = ...) -> None: ...
+
         LINEAR_BUCKETS_FIELD_NUMBER: _ClassVar[int]
         EXPONENTIAL_BUCKETS_FIELD_NUMBER: _ClassVar[int]
         EXPLICIT_BUCKETS_FIELD_NUMBER: _ClassVar[int]
@@ -118,6 +119,7 @@ class Distribution(_message.Message):
             timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
             attachments: _Optional[_Iterable[_Union[_any_pb2.Any, _Mapping]]] = ...,
         ) -> None: ...
+
     COUNT_FIELD_NUMBER: _ClassVar[int]
     MEAN_FIELD_NUMBER: _ClassVar[int]
     SUM_OF_SQUARED_DEVIATION_FIELD_NUMBER: _ClassVar[int]

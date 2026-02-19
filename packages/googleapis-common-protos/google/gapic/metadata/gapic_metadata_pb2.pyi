@@ -60,6 +60,7 @@ class GapicMetadata(_message.Message):
                 key: _Optional[str] = ...,
                 value: _Optional[_Union[GapicMetadata.ServiceAsClient, _Mapping]] = ...,
             ) -> None: ...
+
         CLIENTS_FIELD_NUMBER: _ClassVar[int]
         API_VERSION_FIELD_NUMBER: _ClassVar[int]
         clients: _containers.MessageMap[str, GapicMetadata.ServiceAsClient]
@@ -84,6 +85,7 @@ class GapicMetadata(_message.Message):
                 key: _Optional[str] = ...,
                 value: _Optional[_Union[GapicMetadata.MethodList, _Mapping]] = ...,
             ) -> None: ...
+
         LIBRARY_CLIENT_FIELD_NUMBER: _ClassVar[int]
         RPCS_FIELD_NUMBER: _ClassVar[int]
         library_client: str
@@ -99,6 +101,7 @@ class GapicMetadata(_message.Message):
         METHODS_FIELD_NUMBER: _ClassVar[int]
         methods: _containers.RepeatedScalarFieldContainer[str]
         def __init__(self, methods: _Optional[_Iterable[str]] = ...) -> None: ...
+
     SCHEMA_FIELD_NUMBER: _ClassVar[int]
     COMMENT_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]

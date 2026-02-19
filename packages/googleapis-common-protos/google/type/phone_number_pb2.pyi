@@ -34,6 +34,7 @@ class PhoneNumber(_message.Message):
         def __init__(
             self, region_code: _Optional[str] = ..., number: _Optional[str] = ...
         ) -> None: ...
+
     E164_NUMBER_FIELD_NUMBER: _ClassVar[int]
     SHORT_CODE_FIELD_NUMBER: _ClassVar[int]
     EXTENSION_FIELD_NUMBER: _ClassVar[int]

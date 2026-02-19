@@ -43,6 +43,7 @@ class Property(_message.Message):
         BOOL: _ClassVar[Property.PropertyType]
         STRING: _ClassVar[Property.PropertyType]
         DOUBLE: _ClassVar[Property.PropertyType]
+
     UNSPECIFIED: Property.PropertyType
     INT64: Property.PropertyType
     BOOL: Property.PropertyType

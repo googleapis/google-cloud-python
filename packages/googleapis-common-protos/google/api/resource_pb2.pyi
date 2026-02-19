@@ -47,6 +47,7 @@ class ResourceDescriptor(_message.Message):
         HISTORY_UNSPECIFIED: _ClassVar[ResourceDescriptor.History]
         ORIGINALLY_SINGLE_PATTERN: _ClassVar[ResourceDescriptor.History]
         FUTURE_MULTI_PATTERN: _ClassVar[ResourceDescriptor.History]
+
     HISTORY_UNSPECIFIED: ResourceDescriptor.History
     ORIGINALLY_SINGLE_PATTERN: ResourceDescriptor.History
     FUTURE_MULTI_PATTERN: ResourceDescriptor.History
@@ -55,6 +56,7 @@ class ResourceDescriptor(_message.Message):
         __slots__ = ()
         STYLE_UNSPECIFIED: _ClassVar[ResourceDescriptor.Style]
         DECLARATIVE_FRIENDLY: _ClassVar[ResourceDescriptor.Style]
+
     STYLE_UNSPECIFIED: ResourceDescriptor.Style
     DECLARATIVE_FRIENDLY: ResourceDescriptor.Style
     TYPE_FIELD_NUMBER: _ClassVar[int]

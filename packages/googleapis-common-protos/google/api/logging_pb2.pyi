@@ -38,6 +38,7 @@ class Logging(_message.Message):
             monitored_resource: _Optional[str] = ...,
             logs: _Optional[_Iterable[str]] = ...,
         ) -> None: ...
+
     PRODUCER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
     CONSUMER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
     producer_destinations: _containers.RepeatedCompositeFieldContainer[

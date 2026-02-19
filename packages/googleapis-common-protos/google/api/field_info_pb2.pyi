@@ -38,6 +38,7 @@ class FieldInfo(_message.Message):
         IPV4: _ClassVar[FieldInfo.Format]
         IPV6: _ClassVar[FieldInfo.Format]
         IPV4_OR_IPV6: _ClassVar[FieldInfo.Format]
+
     FORMAT_UNSPECIFIED: FieldInfo.Format
     UUID4: FieldInfo.Format
     IPV4: FieldInfo.Format

@@ -18,13 +18,14 @@ from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
-from google.api import launch_stage_pb2 as _launch_stage_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pb2 as _descriptor_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+
+from google.api import launch_stage_pb2 as _launch_stage_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -198,6 +199,7 @@ class JavaSettings(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     LIBRARY_PACKAGE_FIELD_NUMBER: _ClassVar[int]
     SERVICE_CLASS_NAMES_FIELD_NUMBER: _ClassVar[int]
     COMMON_FIELD_NUMBER: _ClassVar[int]
@@ -248,6 +250,7 @@ class PythonSettings(_message.Message):
             protobuf_pythonic_types_enabled: bool = ...,
             unversioned_package_disabled: bool = ...,
         ) -> None: ...
+
     COMMON_FIELD_NUMBER: _ClassVar[int]
     EXPERIMENTAL_FEATURES_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
@@ -297,6 +300,7 @@ class DotnetSettings(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     COMMON_FIELD_NUMBER: _ClassVar[int]
     RENAMED_SERVICES_FIELD_NUMBER: _ClassVar[int]
     RENAMED_RESOURCES_FIELD_NUMBER: _ClassVar[int]
@@ -339,6 +343,7 @@ class GoSettings(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     COMMON_FIELD_NUMBER: _ClassVar[int]
     RENAMED_SERVICES_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
@@ -378,6 +383,7 @@ class MethodSettings(_message.Message):
                 _Union[_duration_pb2.Duration, _Mapping]
             ] = ...,
         ) -> None: ...
+
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     LONG_RUNNING_FIELD_NUMBER: _ClassVar[int]
     AUTO_POPULATED_FIELDS_FIELD_NUMBER: _ClassVar[int]

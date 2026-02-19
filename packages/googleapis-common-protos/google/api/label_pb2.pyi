@@ -30,6 +30,7 @@ class LabelDescriptor(_message.Message):
         STRING: _ClassVar[LabelDescriptor.ValueType]
         BOOL: _ClassVar[LabelDescriptor.ValueType]
         INT64: _ClassVar[LabelDescriptor.ValueType]
+
     STRING: LabelDescriptor.ValueType
     BOOL: LabelDescriptor.ValueType
     INT64: LabelDescriptor.ValueType

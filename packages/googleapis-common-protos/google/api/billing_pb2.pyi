@@ -38,6 +38,7 @@ class Billing(_message.Message):
             monitored_resource: _Optional[str] = ...,
             metrics: _Optional[_Iterable[str]] = ...,
         ) -> None: ...
+
     CONSUMER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
     consumer_destinations: _containers.RepeatedCompositeFieldContainer[
         Billing.BillingDestination

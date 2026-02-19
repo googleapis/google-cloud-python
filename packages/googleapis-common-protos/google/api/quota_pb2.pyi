@@ -48,6 +48,7 @@ class MetricRule(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[int] = ...
         ) -> None: ...
+
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     METRIC_COSTS_FIELD_NUMBER: _ClassVar[int]
     selector: str
@@ -81,6 +82,7 @@ class QuotaLimit(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[int] = ...
         ) -> None: ...
+
     NAME_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LIMIT_FIELD_NUMBER: _ClassVar[int]

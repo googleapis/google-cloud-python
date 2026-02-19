@@ -18,12 +18,13 @@ from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
-from google.api import annotations_pb2 as _annotations_pb2
-from google.api import client_pb2 as _client_pb2
 from google.protobuf import any_pb2 as _any_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
+
+from google.api import annotations_pb2 as _annotations_pb2
+from google.api import client_pb2 as _client_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -75,6 +76,7 @@ class Location(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     NAME_FIELD_NUMBER: _ClassVar[int]
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]

@@ -18,13 +18,14 @@ from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
-from google.api import label_pb2 as _label_pb2
-from google.api import launch_stage_pb2 as _launch_stage_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+
+from google.api import label_pb2 as _label_pb2
+from google.api import launch_stage_pb2 as _launch_stage_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -49,6 +50,7 @@ class MetricDescriptor(_message.Message):
         GAUGE: _ClassVar[MetricDescriptor.MetricKind]
         DELTA: _ClassVar[MetricDescriptor.MetricKind]
         CUMULATIVE: _ClassVar[MetricDescriptor.MetricKind]
+
     METRIC_KIND_UNSPECIFIED: MetricDescriptor.MetricKind
     GAUGE: MetricDescriptor.MetricKind
     DELTA: MetricDescriptor.MetricKind
@@ -63,6 +65,7 @@ class MetricDescriptor(_message.Message):
         STRING: _ClassVar[MetricDescriptor.ValueType]
         DISTRIBUTION: _ClassVar[MetricDescriptor.ValueType]
         MONEY: _ClassVar[MetricDescriptor.ValueType]
+
     VALUE_TYPE_UNSPECIFIED: MetricDescriptor.ValueType
     BOOL: MetricDescriptor.ValueType
     INT64: MetricDescriptor.ValueType
@@ -95,10 +98,19 @@ class MetricDescriptor(_message.Message):
             FOLDER: _ClassVar[
                 MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
             ]
-        TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        PROJECT: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        ORGANIZATION: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        FOLDER: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+
+        TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        PROJECT: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        ORGANIZATION: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        FOLDER: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
         LAUNCH_STAGE_FIELD_NUMBER: _ClassVar[int]
         SAMPLE_PERIOD_FIELD_NUMBER: _ClassVar[int]
         INGEST_DELAY_FIELD_NUMBER: _ClassVar[int]
@@ -123,6 +135,7 @@ class MetricDescriptor(_message.Message):
                 ]
             ] = ...,
         ) -> None: ...
+
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     LABELS_FIELD_NUMBER: _ClassVar[int]
@@ -176,6 +189,7 @@ class Metric(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     TYPE_FIELD_NUMBER: _ClassVar[int]
     LABELS_FIELD_NUMBER: _ClassVar[int]
     type: str
