@@ -5,7 +5,6 @@ from typing import Callable, Iterator, Literal, Optional, TYPE_CHECKING
 
 import bigframes_vendored.constants as constants
 from bigframes_vendored.pandas.core import indexing
-import bigframes_vendored.pandas.core.common as common
 
 if TYPE_CHECKING:
     from bigframes_vendored.pandas.pandas._typing import T
@@ -395,10 +394,7 @@ class NDFrame(indexing.IndexingMixin):
             Any:
                 same type as items contained in object
         """
-        try:
-            return self[key]
-        except (KeyError, ValueError, IndexError):
-            return default
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def add_prefix(self, prefix: str, axis: int | str | None = None):
         """Prefix labels with string `prefix`.
@@ -1227,16 +1223,7 @@ class NDFrame(indexing.IndexingMixin):
             bigframes.pandas.DataFrame or bigframes.pandas.Series:
                 Object of same type as caller
         """
-        return common.pipe(self, func, *args, **kwargs)
-
-    def __nonzero__(self):
-        """Returns the truth value of the object."""
-        raise ValueError(
-            f"The truth value of a {type(self).__name__} is ambiguous. "
-            "Use a.empty, a.bool(), a.item(), a.any() or a.all()."
-        )
-
-    __bool__ = __nonzero__
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def __getattr__(self, name: str):
         """

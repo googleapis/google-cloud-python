@@ -22,6 +22,7 @@ import numpy
 import pandas
 
 from bigframes import dtypes
+from bigframes._tools import docs
 from bigframes.core import agg_expressions
 from bigframes.core import expression as ex
 from bigframes.core import ordering, utils, window_spec
@@ -36,9 +37,8 @@ if TYPE_CHECKING:
 
 
 @log_adapter.class_logger
-class Window(vendored_pandas_rolling.Window):
-    __doc__ = vendored_pandas_rolling.Window.__doc__
-
+@docs.inherit_docs(vendored_pandas_rolling.Window)
+class Window:
     def __init__(
         self,
         block: blocks.Block,

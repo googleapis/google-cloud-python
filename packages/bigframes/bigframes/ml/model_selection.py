@@ -27,6 +27,7 @@ import bigframes_vendored.sklearn.model_selection._split as vendored_model_selec
 import bigframes_vendored.sklearn.model_selection._validation as vendored_model_selection_validation
 import pandas as pd
 
+from bigframes._tools import docs
 from bigframes.core.logging import log_adapter
 from bigframes.ml import utils
 import bigframes.pandas as bpd
@@ -133,9 +134,8 @@ train_test_split.__doc__ = inspect.getdoc(
 
 
 @log_adapter.class_logger
-class KFold(vendored_model_selection_split.KFold):
-    __doc__ = inspect.getdoc(vendored_model_selection_split.KFold)
-
+@docs.inherit_docs(vendored_model_selection_split.KFold)
+class KFold:
     def __init__(self, n_splits: int = 5, *, random_state: Union[int, None] = None):
         if n_splits < 2:
             raise ValueError(f"n_splits must be at least 2. Got {n_splits}")

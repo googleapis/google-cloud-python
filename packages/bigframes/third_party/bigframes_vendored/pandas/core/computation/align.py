@@ -5,7 +5,7 @@ Core eval alignment algorithms.
 from __future__ import annotations
 
 from functools import partial, wraps
-from typing import Callable, TYPE_CHECKING
+from typing import Callable, TYPE_CHECKING, Union
 import warnings
 
 import bigframes_vendored.pandas.core.common as com
@@ -17,15 +17,18 @@ from pandas.errors import PerformanceWarning
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from bigframes_vendored.pandas.core.generic import NDFrame
     from bigframes_vendored.pandas.core.indexes.base import Index
     from pandas._typing import F
+
+    from bigframes.pandas import DataFrame, Series
+
+    FrameT = Union[Series, DataFrame]
 
 
 def _align_core_single_unary_op(
     term,
-) -> tuple[partial | type[NDFrame], dict[str, Index] | None]:
-    typ: partial | type[NDFrame]
+) -> tuple[partial | FrameT, dict[str, Index] | None]:
+    typ: partial | FrameT
     axes: dict[str, Index] | None = None
 
     if isinstance(term.value, np.ndarray):
@@ -38,9 +41,7 @@ def _align_core_single_unary_op(
     return typ, axes
 
 
-def _zip_axes_from_type(
-    typ: type[NDFrame], new_axes: Sequence[Index]
-) -> dict[str, Index]:
+def _zip_axes_from_type(typ: FrameT, new_axes: Sequence[Index]) -> dict[str, Index]:
     return {name: new_axes[i] for i, name in enumerate(typ._AXIS_ORDERS)}
 
 
@@ -207,20 +208,18 @@ def is_series(obj) -> bool:
 
 
 def is_series_or_dataframe(obj) -> bool:
-    from bigframes_vendored.pandas.core.frame import NDFrame
+    from bigframes.pandas import DataFrame, Series
 
-    return isinstance(obj, NDFrame)
+    return isinstance(obj, Series | DataFrame)
 
 
 def is_pandas_object(obj) -> bool:
-    from bigframes_vendored.pandas.core.frame import NDFrame
-    from bigframes_vendored.pandas.core.indexes.base import Index
+    from bigframes.pandas import DataFrame, Index, Series
 
-    return isinstance(obj, NDFrame) or isinstance(obj, Index)
+    return isinstance(obj, Series | DataFrame | Index)
 
 
 def is_pandas_type(type) -> bool:
-    from bigframes_vendored.pandas.core.frame import NDFrame
-    from bigframes_vendored.pandas.core.indexes.base import Index
+    from bigframes.pandas import DataFrame, Index, Series
 
-    return issubclass(type, NDFrame) or issubclass(type, Index)
+    return issubclass(type, Series | DataFrame | Index)

@@ -32,6 +32,10 @@ if TYPE_CHECKING:
 
 
 class Series(NDFrame):  # type: ignore[misc]
+    """
+    One-dimensional ndarray with axis labels (including time series).
+    """
+
     @property
     def dt(self):
         """

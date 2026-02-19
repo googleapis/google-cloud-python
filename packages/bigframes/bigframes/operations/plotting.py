@@ -17,14 +17,14 @@ import typing
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.plotting._core as vendordt
 
+from bigframes._tools import docs
 from bigframes.core.logging import log_adapter
 import bigframes.operations._matplotlib as bfplt
 
 
 @log_adapter.class_logger
-class PlotAccessor(vendordt.PlotAccessor):
-    __doc__ = vendordt.PlotAccessor.__doc__
-
+@docs.inherit_docs(vendordt.PlotAccessor)
+class PlotAccessor:
     _common_kinds = ("line", "area", "hist", "bar", "barh", "pie")
     _dataframe_kinds = ("scatter", "hexbin,")
     _all_kinds = _common_kinds + _dataframe_kinds

@@ -24,6 +24,7 @@ import numpy
 import pandas as pd
 
 from bigframes import session
+from bigframes._tools import docs
 from bigframes.core import agg_expressions
 from bigframes.core import expression as ex
 import bigframes.core.block_transforms as block_ops
@@ -44,9 +45,8 @@ import bigframes.series as series
 
 
 @log_adapter.class_logger
-class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
-    __doc__ = vendored_pandas_groupby.GroupBy.__doc__
-
+@docs.inherit_docs(vendored_pandas_groupby.DataFrameGroupBy)
+class DataFrameGroupBy:
     def __init__(
         self,
         block: blocks.Block,

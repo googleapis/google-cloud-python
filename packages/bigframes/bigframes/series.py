@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import datetime
 import functools
-import inspect
 import itertools
 import numbers
 import textwrap
@@ -35,6 +34,7 @@ from typing import (
     overload,
     Sequence,
     Tuple,
+    TypeVar,
     Union,
 )
 import warnings
@@ -48,6 +48,7 @@ from pandas.api import extensions as pd_ext
 import pyarrow as pa
 import typing_extensions
 
+from bigframes._tools import docs
 import bigframes.core
 from bigframes.core import agg_expressions, groupby
 import bigframes.core.block_transforms as block_ops
@@ -84,6 +85,7 @@ if typing.TYPE_CHECKING:
     import bigframes.operations.strings as strings
 
 
+U = TypeVar("U")
 LevelType = typing.Union[str, int]
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
@@ -97,7 +99,8 @@ _list = list  # Type alias to escape Series.list property
 
 
 @log_adapter.class_logger
-class Series(vendored_pandas_series.Series):
+@docs.inherit_docs(vendored_pandas_series.Series)
+class Series:
     # Must be above 5000 for pandas to delegate to bigframes for binops
     __pandas_priority__ = 13000
 
@@ -358,7 +361,10 @@ class Series(vendored_pandas_series.Series):
     def __len__(self):
         return self.shape[0]
 
-    __len__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__len__)
+    def __bool__(self):
+        raise ValueError(
+            "Cannot convert Series into bool. Consider using .empty(), .item(), .any(), or .all() methods."
+        )
 
     def __iter__(self) -> typing.Iterator:
         return itertools.chain.from_iterable(
@@ -918,7 +924,6 @@ class Series(vendored_pandas_series.Series):
         return self._apply_window_op(agg_ops.LastNonNullOp(), window)
 
     pad = ffill
-    pad.__doc__ = inspect.getdoc(vendored_pandas_series.Series.ffill)
 
     @validations.requires_ordering()
     def bfill(self, *, limit: typing.Optional[int] = None) -> Series:
@@ -1166,44 +1171,32 @@ class Series(vendored_pandas_series.Series):
         return self._apply_unary_op(ops.isnull_op)
 
     isnull = isna
-    isnull.__doc__ = inspect.getdoc(vendored_pandas_series.Series.isna)
 
     def notna(self) -> "Series":
         return self._apply_unary_op(ops.notnull_op)
 
     notnull = notna
-    notnull.__doc__ = inspect.getdoc(vendored_pandas_series.Series.notna)
 
     def __and__(self, other: bool | int | Series) -> Series:
         return self._apply_binary_op(other, ops.and_op)
-
-    __and__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__and__)
 
     __rand__ = __and__
 
     def __or__(self, other: bool | int | Series) -> Series:
         return self._apply_binary_op(other, ops.or_op)
 
-    __or__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__or__)
-
     __ror__ = __or__
 
     def __xor__(self, other: bool | int | Series) -> Series:
         return self._apply_binary_op(other, ops.xor_op)
-
-    __or__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__xor__)
 
     __rxor__ = __xor__
 
     def __add__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.add(other)
 
-    __add__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__add__)
-
     def __radd__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.radd(other)
-
-    __radd__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__radd__)
 
     def add(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.add_op)
@@ -1214,12 +1207,8 @@ class Series(vendored_pandas_series.Series):
     def __sub__(self, other: float | int | Series) -> Series:
         return self.sub(other)
 
-    __sub__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__sub__)
-
     def __rsub__(self, other: float | int | Series) -> Series:
         return self.rsub(other)
-
-    __rsub__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rsub__)
 
     def sub(self, other) -> Series:
         return self._apply_binary_op(other, ops.sub_op)
@@ -1228,17 +1217,12 @@ class Series(vendored_pandas_series.Series):
         return self._apply_binary_op(other, ops.sub_op, reverse=True)
 
     subtract = sub
-    subtract.__doc__ = inspect.getdoc(vendored_pandas_series.Series.sub)
 
     def __mul__(self, other: float | int | Series) -> Series:
         return self.mul(other)
 
-    __mul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__mul__)
-
     def __rmul__(self, other: float | int | Series) -> Series:
         return self.rmul(other)
-
-    __rmul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rmul__)
 
     def mul(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.mul_op)
@@ -1247,17 +1231,12 @@ class Series(vendored_pandas_series.Series):
         return self._apply_binary_op(other, ops.mul_op, reverse=True)
 
     multiply = mul
-    multiply.__doc__ = inspect.getdoc(vendored_pandas_series.Series.mul)
 
     def __truediv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.truediv(other)
 
-    __truediv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__truediv__)
-
     def __rtruediv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.rtruediv(other)
-
-    __rtruediv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rtruediv__)
 
     def truediv(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.div_op)
@@ -1265,21 +1244,15 @@ class Series(vendored_pandas_series.Series):
     def rtruediv(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.div_op, reverse=True)
 
-    truediv.__doc__ = inspect.getdoc(vendored_pandas_series.Series.truediv)
     div = divide = truediv
 
     rdiv = rtruediv
-    rdiv.__doc__ = inspect.getdoc(vendored_pandas_series.Series.rtruediv)
 
     def __floordiv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.floordiv(other)
 
-    __floordiv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__floordiv__)
-
     def __rfloordiv__(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self.rfloordiv(other)
-
-    __rfloordiv__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rfloordiv__)
 
     def floordiv(self, other: float | int | pandas.Timedelta | Series) -> Series:
         return self._apply_binary_op(other, ops.floordiv_op)
@@ -1290,12 +1263,8 @@ class Series(vendored_pandas_series.Series):
     def __pow__(self, other: float | int | Series) -> Series:
         return self.pow(other)
 
-    __pow__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__pow__)
-
     def __rpow__(self, other: float | int | Series) -> Series:
         return self.rpow(other)
-
-    __rpow__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rpow__)
 
     def pow(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.pow_op)
@@ -1330,12 +1299,8 @@ class Series(vendored_pandas_series.Series):
     def __mod__(self, other) -> Series:  # type: ignore
         return self.mod(other)
 
-    __mod__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__mod__)
-
     def __rmod__(self, other) -> Series:  # type: ignore
         return self.rmod(other)
-
-    __rmod__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rmod__)
 
     def mod(self, other) -> Series:  # type: ignore
         return self._apply_binary_op(other, ops.mod_op)
@@ -1359,12 +1324,8 @@ class Series(vendored_pandas_series.Series):
     def __matmul__(self, other):
         return self.dot(other)
 
-    __matmul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__matmul__)
-
     def __rmatmul__(self, other):
         return self.dot(other)
-
-    __rmatmul__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rmatmul__)
 
     def combine_first(self, other: Series) -> Series:
         result = self._apply_binary_op(other, ops.coalesce_op)
@@ -1379,8 +1340,6 @@ class Series(vendored_pandas_series.Series):
 
     def __abs__(self) -> Series:
         return self.abs()
-
-    __abs__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.abs)
 
     def abs(self) -> Series:
         return self._apply_unary_op(ops.abs_op)
@@ -1456,7 +1415,6 @@ class Series(vendored_pandas_series.Series):
             return self._apply_aggregation(agg_ops.lookup_agg_func(func)[0])
 
     aggregate = agg
-    aggregate.__doc__ = inspect.getdoc(vendored_pandas_series.Series.agg)
 
     def describe(self) -> Series:
         from bigframes.pandas.core.methods import describe
@@ -1496,7 +1454,6 @@ class Series(vendored_pandas_series.Series):
         return (numerator / denominator) - adjustment
 
     kurtosis = kurt
-    kurtosis.__doc__ = inspect.getdoc(vendored_pandas_series.Series.kurt)
 
     def mode(self) -> Series:
         block = self._block
@@ -1561,7 +1518,6 @@ class Series(vendored_pandas_series.Series):
         return typing.cast(float, self._apply_aggregation(agg_ops.product_op))
 
     product = prod
-    product.__doc__ = inspect.getdoc(vendored_pandas_series.Series.prod)
 
     def __eq__(self, other: object) -> Series:  # type: ignore
         return self.eq(other)
@@ -1571,8 +1527,6 @@ class Series(vendored_pandas_series.Series):
 
     def __invert__(self) -> Series:
         return self._apply_unary_op(ops.invert_op)
-
-    __invert__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__invert__)
 
     def __pos__(self) -> Series:
         return self._apply_unary_op(ops.pos_op)
@@ -1750,8 +1704,6 @@ class Series(vendored_pandas_series.Series):
             block = block.select_column(left.id.name)
             return Series(block)
         return self.loc[indexer]
-
-    __getitem__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__getitem__)
 
     def __getattr__(self, key: str):
         # Protect against recursion errors with uninitialized Series objects.
@@ -1935,6 +1887,22 @@ class Series(vendored_pandas_series.Series):
         return bigframes.core.window.Window(
             self._block, window_spec, self._block.value_columns, is_series=True
         )
+
+    def pipe(
+        self,
+        func: Union[Callable[..., U], tuple[Callable[..., U], str]],
+        *args,
+        **kwargs,
+    ) -> U:
+        import bigframes_vendored.pandas.core.common as common
+
+        return common.pipe(self, func, *args, **kwargs)
+
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except (KeyError, ValueError, IndexError):
+            return default
 
     def groupby(
         self,
@@ -2374,7 +2342,6 @@ class Series(vendored_pandas_series.Series):
         return self.to_pandas(allow_large_results=allow_large_results).to_list()
 
     to_list = tolist
-    to_list.__doc__ = inspect.getdoc(vendored_pandas_series.Series.tolist)
 
     def to_markdown(
         self,
@@ -2404,8 +2371,6 @@ class Series(vendored_pandas_series.Series):
         if copy is False:
             raise ValueError("Cannot convert to array without copy.")
         return self.to_numpy(dtype=dtype)
-
-    __array__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__array__)
 
     def to_pickle(self, path, *, allow_large_results=None, **kwargs) -> None:
         return self.to_pandas(allow_large_results=allow_large_results).to_pickle(
@@ -2575,8 +2540,6 @@ class Series(vendored_pandas_series.Series):
     ):
         return self.plot.hist(by=by, bins=bins, **kwargs)
 
-    hist.__doc__ = inspect.getdoc(plotting.PlotAccessor.hist)
-
     def line(
         self,
         x: typing.Optional[typing.Hashable] = None,
@@ -2584,8 +2547,6 @@ class Series(vendored_pandas_series.Series):
         **kwargs,
     ):
         return self.plot.line(x=x, y=y, **kwargs)
-
-    line.__doc__ = inspect.getdoc(plotting.PlotAccessor.line)
 
     def area(
         self,
@@ -2596,8 +2557,6 @@ class Series(vendored_pandas_series.Series):
     ):
         return self.plot.area(x=x, y=y, stacked=stacked, **kwargs)
 
-    area.__doc__ = inspect.getdoc(plotting.PlotAccessor.area)
-
     def bar(
         self,
         x: typing.Optional[typing.Hashable] = None,
@@ -2605,8 +2564,6 @@ class Series(vendored_pandas_series.Series):
         **kwargs,
     ):
         return self.plot.bar(x=x, y=y, **kwargs)
-
-    bar.__doc__ = inspect.getdoc(plotting.PlotAccessor.bar)
 
     def _slice(
         self,

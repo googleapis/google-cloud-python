@@ -20,6 +20,7 @@ from typing import Generic, Hashable, Literal, Optional, TypeVar, Union
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.strings.accessor as vendorstr
 
+from bigframes._tools import docs
 import bigframes.core.indexes.base as indices
 from bigframes.core.logging import log_adapter
 import bigframes.dataframe as df
@@ -39,9 +40,8 @@ T = TypeVar("T", series.Series, indices.Index)
 
 
 @log_adapter.class_logger
-class StringMethods(vendorstr.StringMethods, Generic[T]):
-    __doc__ = vendorstr.StringMethods.__doc__
-
+@docs.inherit_docs(vendorstr.StringMethods)
+class StringMethods(Generic[T]):
     def __init__(self, data: T):
         self._data: T = data
 

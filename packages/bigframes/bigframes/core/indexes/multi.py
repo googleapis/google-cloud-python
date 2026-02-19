@@ -19,6 +19,7 @@ from typing import cast, Hashable, Iterable, Optional, Sequence, TYPE_CHECKING
 import bigframes_vendored.pandas.core.indexes.multi as vendored_pandas_multindex
 import pandas
 
+from bigframes._tools import docs
 from bigframes.core import blocks
 from bigframes.core import expression as ex
 from bigframes.core.indexes.base import Index
@@ -27,9 +28,8 @@ if TYPE_CHECKING:
     import bigframes.session
 
 
-class MultiIndex(Index, vendored_pandas_multindex.MultiIndex):
-    __doc__ = vendored_pandas_multindex.MultiIndex.__doc__
-
+@docs.inherit_docs(vendored_pandas_multindex.MultiIndex)
+class MultiIndex(Index):
     @classmethod
     def from_tuples(
         cls,

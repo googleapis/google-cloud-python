@@ -12,7 +12,6 @@ from bigframes_vendored.pandas.core.computation.engines import ENGINES
 from bigframes_vendored.pandas.core.computation.expr import Expr, PARSERS
 from bigframes_vendored.pandas.core.computation.parsing import tokenize_string
 from bigframes_vendored.pandas.core.computation.scope import ensure_scope
-from bigframes_vendored.pandas.core.generic import NDFrame
 from bigframes_vendored.pandas.util._validators import validate_bool_kwarg
 from pandas.io.formats.printing import pprint_thing
 
@@ -317,6 +316,8 @@ def eval(
 
         # assign if needed
         assigner = parsed_expr.assigner
+        from bigframes.pandas import DataFrame, Series
+
         if env.target is not None and assigner is not None:
             target_modified = True
 
@@ -324,7 +325,7 @@ def eval(
             if not inplace and first_expr:
                 try:
                     target = env.target
-                    if isinstance(target, NDFrame):
+                    if isinstance(target, Series | DataFrame):
                         target = target.copy()
                 except AttributeError as err:
                     raise ValueError("Cannot return a copy of the target") from err
@@ -338,7 +339,7 @@ def eval(
             try:
                 with warnings.catch_warnings(record=True):
                     # TODO: Filter the warnings we actually care about here.
-                    if inplace and isinstance(target, NDFrame):
+                    if inplace and isinstance(target, Series | DataFrame):
                         target.loc[:, assigner] = ret
                     else:
                         target[  # pyright: ignore[reportGeneralTypeIssues]

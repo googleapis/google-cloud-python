@@ -17,6 +17,7 @@ from __future__ import annotations
 import bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 import pandas as pd
 
+from bigframes._tools import docs
 from bigframes.core import backports
 from bigframes.core.logging import log_adapter
 import bigframes.dataframe
@@ -25,9 +26,8 @@ import bigframes.series
 
 
 @log_adapter.class_logger
-class StructAccessor(vendoracessors.StructAccessor):
-    __doc__ = vendoracessors.StructAccessor.__doc__
-
+@docs.inherit_docs(vendoracessors.StructAccessor)
+class StructAccessor:
     def __init__(self, data: bigframes.series.Series):
         self._data = data
 
@@ -69,7 +69,8 @@ class StructAccessor(vendoracessors.StructAccessor):
 
 
 @log_adapter.class_logger
-class StructFrameAccessor(vendoracessors.StructFrameAccessor):
+@docs.inherit_docs(vendoracessors.StructFrameAccessor)
+class StructFrameAccessor:
     __doc__ = vendoracessors.StructAccessor.__doc__
 
     def __init__(self, data: bigframes.dataframe.DataFrame) -> None:

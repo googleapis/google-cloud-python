@@ -67,7 +67,7 @@ class DataFrame(generic.NDFrame):
             >>> df.axes[1:]
             [Index(['col1', 'col2'], dtype='object')]
         """
-        return [self.index, self.columns]
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def values(self) -> np.ndarray:

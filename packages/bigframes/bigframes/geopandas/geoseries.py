@@ -19,14 +19,14 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.geopandas.geoseries as vendored_geoseries
 import geopandas.array  # type: ignore
 
+from bigframes._tools import docs
 import bigframes.operations as ops
 import bigframes.series
 import bigframes.session
 
 
-class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
-    __doc__ = vendored_geoseries.GeoSeries.__doc__
-
+@docs.inherit_docs(vendored_geoseries.GeoSeries)
+class GeoSeries(bigframes.series.Series):
     def __init__(self, data=None, index=None, **kwargs):
         super().__init__(
             data=data, index=index, dtype=geopandas.array.GeometryDtype(), **kwargs

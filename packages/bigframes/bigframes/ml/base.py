@@ -30,13 +30,15 @@ import warnings
 
 import bigframes_vendored.sklearn.base
 
+from bigframes._tools import docs
 import bigframes.exceptions as bfe
 from bigframes.ml import core
 import bigframes.ml.utils as utils
 import bigframes.pandas as bpd
 
 
-class BaseEstimator(bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
+@docs.inherit_docs(bigframes_vendored.sklearn.base.BaseEstimator)
+class BaseEstimator(abc.ABC):
     """
     A BigQuery DataFrames machine learning component follows sklearn API
     design Ref: https://bit.ly/3NyhKjN

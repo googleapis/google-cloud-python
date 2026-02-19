@@ -19,6 +19,7 @@ from typing import Union
 
 import bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 
+from bigframes._tools import docs
 from bigframes.core.logging import log_adapter
 import bigframes.operations as ops
 from bigframes.operations._op_converters import convert_index, convert_slice
@@ -26,9 +27,8 @@ import bigframes.series as series
 
 
 @log_adapter.class_logger
-class ListAccessor(vendoracessors.ListAccessor):
-    __doc__ = vendoracessors.ListAccessor.__doc__
-
+@docs.inherit_docs(vendoracessors.ListAccessor)
+class ListAccessor:
     def __init__(self, data: series.Series):
         self._data = data
 

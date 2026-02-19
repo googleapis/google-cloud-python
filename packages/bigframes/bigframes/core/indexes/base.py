@@ -27,6 +27,7 @@ import numpy as np
 import pandas
 
 from bigframes import dtypes
+from bigframes._tools import docs
 import bigframes.core.agg_expressions as ex_types
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
@@ -47,8 +48,8 @@ if typing.TYPE_CHECKING:
     import bigframes.series
 
 
-class Index(vendored_pandas_index.Index):
-    __doc__ = vendored_pandas_index.Index.__doc__
+@docs.inherit_docs(vendored_pandas_index.Index)
+class Index:
     _query_job = None
     _block: blocks.Block
     _linked_frame: Union[
@@ -776,6 +777,11 @@ class Index(vendored_pandas_index.Index):
 
     def __len__(self):
         return self.shape[0]
+
+    def __bool__(self):
+        raise ValueError(
+            "Cannot convert Index into bool. Consider using .empty(), .item(), .any(), or .all() methods."
+        )
 
     def item(self):
         # Docstring is in third_party/bigframes_vendored/pandas/core/indexes/base.py

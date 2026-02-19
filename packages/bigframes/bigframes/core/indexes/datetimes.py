@@ -20,13 +20,14 @@ from bigframes_vendored.pandas.core.indexes import (
     datetimes as vendored_pandas_datetime_index,
 )
 
+from bigframes._tools import docs
 from bigframes.core import expression as ex
 from bigframes.core.indexes.base import Index
 from bigframes.operations import date_ops
 
 
-class DatetimeIndex(Index, vendored_pandas_datetime_index.DatetimeIndex):
-    __doc__ = vendored_pandas_datetime_index.DatetimeIndex.__doc__
+@docs.inherit_docs(vendored_pandas_datetime_index.DatetimeIndex)
+class DatetimeIndex(Index):
 
     # Must be above 5000 for pandas to delegate to bigframes for binops
     __pandas_priority__ = 12000
