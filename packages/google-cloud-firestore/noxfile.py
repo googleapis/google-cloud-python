@@ -335,7 +335,7 @@ def system_emulated(session):
         os.killpg(os.getpgid(p.pid), signal.SIGKILL)
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 def system(session):
     """Run the system test suite."""
     constraints_path = str(
