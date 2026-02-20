@@ -325,6 +325,42 @@ def test_dt_tz(scalars_dfs, col_name):
 
 
 @pytest.mark.parametrize(
+    ("col_name", "tz"),
+    [
+        ("datetime_col", None),
+        ("timestamp_col", None),
+        ("datetime_col", "UTC"),
+    ],
+)
+def test_dt_tz_localize(scalars_dfs, col_name, tz):
+    pytest.importorskip("pandas", minversion="2.0.0")
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_series = scalars_df[col_name]
+
+    bf_result = bf_series.dt.tz_localize(tz)
+    pd_result = scalars_pandas_df[col_name].dt.tz_localize(tz)
+
+    testing.assert_series_equal(
+        bf_result.to_pandas(), pd_result, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    ("col_name", "tz"),
+    [
+        ("timestamp_col", "UTC"),
+        ("datetime_col", "US/Eastern"),
+    ],
+)
+def test_dt_tz_localize_invalid_inputs(scalars_dfs, col_name, tz):
+    pytest.importorskip("pandas", minversion="2.0.0")
+    scalars_df, _ = scalars_dfs
+
+    with pytest.raises(ValueError):
+        scalars_df[col_name].dt.tz_localize(tz)
+
+
+@pytest.mark.parametrize(
     ("col_name",),
     DATETIME_COL_NAMES,
 )

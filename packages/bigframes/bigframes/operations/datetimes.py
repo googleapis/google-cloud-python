@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import datetime as dt
-from typing import Optional
+from typing import Literal, Optional
 
 import bigframes_vendored.pandas.core.arrays.datetimelike as vendored_pandas_datetimelike
 import bigframes_vendored.pandas.core.indexes.accessor as vendordt
@@ -146,6 +146,21 @@ class DatetimeMethods(
             return None
         else:
             raise ValueError(f"Unexpected timezone {tz_string}")
+
+    def tz_localize(self, tz: Literal["UTC"] | None) -> series.Series:
+        if tz == "UTC":
+            if self._data.dtype == dtypes.TIMESTAMP_DTYPE:
+                raise ValueError("Already tz-aware.")
+
+            return self._data._apply_unary_op(ops.ToTimestampOp())
+
+        if tz is None:
+            if self._data.dtype == dtypes.DATETIME_DTYPE:
+                return self._data  # no-op
+
+            return self._data._apply_unary_op(ops.ToDatetimeOp())
+
+        raise ValueError(f"Unsupported timezone {tz}")
 
     @property
     def unit(self) -> str:

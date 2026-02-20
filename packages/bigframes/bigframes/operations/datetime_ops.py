@@ -73,6 +73,7 @@ class ToDatetimeOp(base_ops.UnaryOp):
             dtypes.INT_DTYPE,
             dtypes.STRING_DTYPE,
             dtypes.DATE_DTYPE,
+            dtypes.TIMESTAMP_DTYPE,
         ):
             raise TypeError("expected string or numeric input")
         return pd.ArrowDtype(pa.timestamp("us", tz=None))
@@ -91,6 +92,7 @@ class ToTimestampOp(base_ops.UnaryOp):
             dtypes.INT_DTYPE,
             dtypes.STRING_DTYPE,
             dtypes.DATE_DTYPE,
+            dtypes.DATETIME_DTYPE,
         ):
             raise TypeError("expected string or numeric input")
         return pd.ArrowDtype(pa.timestamp("us", tz="UTC"))

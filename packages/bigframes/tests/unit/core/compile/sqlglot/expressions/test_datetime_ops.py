@@ -180,7 +180,7 @@ def test_time(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_to_datetime(scalar_types_df: bpd.DataFrame, snapshot):
-    col_names = ["int64_col", "string_col", "float64_col"]
+    col_names = ["int64_col", "string_col", "float64_col", "timestamp_col"]
     bf_df = scalar_types_df[col_names]
     ops_map = {col_name: ops.ToDatetimeOp().as_expr(col_name) for col_name in col_names}
 
@@ -189,7 +189,7 @@ def test_to_datetime(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["int64_col", "string_col", "float64_col"]]
+    bf_df = scalar_types_df[["int64_col", "string_col", "float64_col", "datetime_col"]]
     ops_map = {
         "int64_col": ops.ToTimestampOp().as_expr("int64_col"),
         "float64_col": ops.ToTimestampOp().as_expr("float64_col"),
@@ -197,6 +197,7 @@ def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):
         "int64_col_ms": ops.ToTimestampOp(unit="ms").as_expr("int64_col"),
         "int64_col_us": ops.ToTimestampOp(unit="us").as_expr("int64_col"),
         "int64_col_ns": ops.ToTimestampOp(unit="ns").as_expr("int64_col"),
+        "datetime_col": ops.ToTimestampOp().as_expr("datetime_col"),
     }
 
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))

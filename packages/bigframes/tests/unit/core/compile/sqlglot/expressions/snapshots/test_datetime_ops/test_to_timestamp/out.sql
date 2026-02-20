@@ -4,5 +4,6 @@ SELECT
   CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 1000000) AS INT64)) AS TIMESTAMP) AS `int64_col_s`,
   CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 1000) AS INT64)) AS TIMESTAMP) AS `int64_col_ms`,
   CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col`) AS INT64)) AS TIMESTAMP) AS `int64_col_us`,
-  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 0.001) AS INT64)) AS TIMESTAMP) AS `int64_col_ns`
+  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 0.001) AS INT64)) AS TIMESTAMP) AS `int64_col_ns`,
+  TIMESTAMP(`datetime_col`) AS `datetime_col`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

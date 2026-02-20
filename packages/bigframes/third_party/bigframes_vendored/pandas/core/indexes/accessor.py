@@ -1,3 +1,5 @@
+from typing import Literal
+
 from bigframes import constants
 
 
@@ -495,6 +497,34 @@ class DatetimeProperties:
 
         Returns:
             datetime.tzinfo, pytz.tzinfo.BaseTZInfo, dateutil.tz.tz.tzfile, or None
+        """
+
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def tz_localize(self, tz: Literal["UTC"] | None):
+        """Localize tz-naive Datetime Array/Index to tz-aware Datetime Array/Index.
+
+        This method takes a time zone (tz) naive Datetime Array/Index object and makes
+        this time zone aware. It does not move the time to another time zone. Only "UTC"
+        timezone is supported.
+
+        This method can also be used to do the inverse - to create a time zone unaware
+        object from an aware object. To that end, pass tz=None.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> s = bpd.Series([pd.Timestamp(year = 2026, month=1, day=1)])
+            >>> s
+            0    2026-01-01 00:00:00
+            dtype: timestamp[us][pyarrow]
+            >>> s.dt.tz_localize('UTC')
+            0    2026-01-01 00:00:00+00:00
+            dtype: timestamp[us, tz=UTC][pyarrow]
+
+        Returns:
+            A BigFrames series with the updated timezone.
         """
 
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
