@@ -14,8 +14,8 @@
 
 from __future__ import absolute_import
 
-from google.api_core import protobuf_helpers as protobuf
 import proto  # type: ignore
+from google.api_core import protobuf_helpers as protobuf
 
 
 class VisionHelpers(object):
