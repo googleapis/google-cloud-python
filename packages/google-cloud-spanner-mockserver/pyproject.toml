@@ -16,7 +16,7 @@ license-files = [
 ]
 requires-python = ">=3.10"
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries",
     "Programming Language :: Python :: 3 :: Only",
@@ -34,8 +34,19 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = [
+testing = [
     "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "mock",
+]
+lint = [
+    "black[jupyter]>=23.7.0,<25.11.0",
+    "isort>=5.11.0,<7.0.0",
+    "flake8>=6.1.0,<7.3.0",
+]
+dev = [
+    "google-cloud-spanner-mockserver[testing,lint]",
     "nox",
 ]
 
@@ -47,5 +58,5 @@ where = ["."]
 include = ["spannermockserver*"]
 
 [project.urls]
-Homepage = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner-mockserver/README.md"
+Homepage = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner-mockserver"
 Repository = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner-mockserver"
