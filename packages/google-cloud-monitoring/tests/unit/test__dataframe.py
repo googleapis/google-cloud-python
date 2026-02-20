@@ -15,9 +15,9 @@
 
 import unittest
 
+import pandas
 from google.api import metric_pb2, monitored_resource_pb2
 from google.api_core import datetime_helpers
-import pandas
 
 from google.cloud import monitoring_v3
 from google.cloud.monitoring_v3 import _dataframe
