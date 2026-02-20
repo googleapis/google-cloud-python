@@ -1,7 +1,6 @@
-:orphan:
-
 BigQuery DataFrames (BigFrames)
 ===============================
+
 
 |GA| |pypi| |versions|
 

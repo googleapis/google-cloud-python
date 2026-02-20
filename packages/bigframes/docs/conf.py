@@ -118,6 +118,7 @@ exclude_patterns = [
     "samples/AUTHORING_GUIDE.md",
     "samples/CONTRIBUTING.md",
     "samples/snippets/README.rst",
+    "README.rst",  # used for include in overview.rst only
 ]
 
 # The reST default role (used for this markup: `text`) to use for all
@@ -163,16 +164,6 @@ html_theme_options = {
     "logo": {
         "text": "BigQuery DataFrames (BigFrames)",
     },
-    "external_links": [
-        {
-            "name": "Getting started",
-            "url": "https://docs.cloud.google.com/bigquery/docs/dataframes-quickstart",
-        },
-        {
-            "name": "User guide",
-            "url": "https://docs.cloud.google.com/bigquery/docs/bigquery-dataframes-introduction",
-        },
-    ],
     "analytics": {
         "google_analytics_id": "G-XVSRMCJ37X",
     },
