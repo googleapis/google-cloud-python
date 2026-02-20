@@ -33,16 +33,11 @@ register_binary_op = expression_compiler.expression_compiler.register_binary_op
 @register_unary_op(ops.IsInOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.IsInOp) -> sge.Expression:
     values = []
-    is_numeric_expr = dtypes.is_numeric(expr.dtype, include_bool=False)
     for value in op.values:
         if _is_null(value):
             continue
         dtype = dtypes.bigframes_type(type(value))
-        if (
-            expr.dtype == dtype
-            or is_numeric_expr
-            and dtypes.is_numeric(dtype, include_bool=False)
-        ):
+        if dtypes.can_compare(expr.dtype, dtype):
             values.append(sge.convert(value))
 
     if op.match_nulls:

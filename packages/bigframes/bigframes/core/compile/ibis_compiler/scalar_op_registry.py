@@ -962,7 +962,7 @@ def isin_op_impl(x: ibis_types.Value, op: ops.IsInOp):
                 # to actually cast it, as that could be lossy (eg float -> int)
                 item_inferred_type = ibis_types.literal(item).type()
                 if (
-                    x.type() == item_inferred_type
+                    x.type().name == item_inferred_type.name
                     or x.type().is_numeric()
                     and item_inferred_type.is_numeric()
                 ):

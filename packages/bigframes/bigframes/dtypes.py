@@ -370,8 +370,11 @@ def is_comparable(type_: ExpressionType) -> bool:
 
 
 def can_compare(type1: ExpressionType, type2: ExpressionType) -> bool:
-    coerced_type = coerce_to_common(type1, type2)
-    return is_comparable(coerced_type)
+    try:
+        coerced_type = coerce_to_common(type1, type2)
+        return is_comparable(coerced_type)
+    except TypeError:
+        return False
 
 
 def get_struct_fields(type_: ExpressionType) -> dict[str, Dtype]:
