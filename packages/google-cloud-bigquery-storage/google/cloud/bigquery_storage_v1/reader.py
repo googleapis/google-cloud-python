@@ -176,7 +176,7 @@ class ReadRowsStream(object):
                 self._wrapped = self._client.read_rows(
                     read_stream=self._name,
                     offset=self._offset,
-                    **self._read_rows_kwargs
+                    **self._read_rows_kwargs,
                 )
                 break
             except Exception as exc:

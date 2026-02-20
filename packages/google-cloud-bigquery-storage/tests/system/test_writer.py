@@ -14,9 +14,9 @@
 
 import uuid
 
+import pytest
 from google.api_core import exceptions
 from google.protobuf import descriptor_pb2
-import pytest
 
 from google.cloud.bigquery_storage_v1 import types as gapic_types
 from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
