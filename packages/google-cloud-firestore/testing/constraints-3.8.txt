@@ -1,0 +1,1 @@
+google-api-core==2.14.0

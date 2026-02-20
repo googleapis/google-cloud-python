@@ -1,0 +1,269 @@
+tests:
+  - description: testMapGet
+    pipeline:
+      - Collection: books
+      - Sort:
+        - Ordering:
+          - Field: published
+          - DESCENDING
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.map_get:
+                  - Field: awards
+                  - hugo
+              - "hugoAward"
+          - Field: title
+      - Where:
+          - FunctionExpression.equal:
+              - Field: hugoAward
+              - Constant: true
+    assert_results:
+      - hugoAward: true
+        title: The Hitchhiker's Guide to the Galaxy
+      - hugoAward: true
+        title: Dune
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: descending
+                expression:
+                  fieldReferenceValue: published
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                hugoAward:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: awards
+                    - stringValue: hugo
+                    name: map_get
+                title:
+                  fieldReferenceValue: title
+          name: select
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: hugoAward
+              - booleanValue: true
+              name: equal
+          name: where
+  - description: testMapGetWithField
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - AddFields:
+        - AliasedExpression:
+            - Constant: "hugo"
+            - "award_name"
+      - Select:
+          - AliasedExpression:
+              - FunctionExpression.map_get:
+                  - Field: awards
+                  - Field: award_name
+              - "hugoAward"
+          - Field: title
+    assert_results:
+      - hugoAward: true
+        title: Dune
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "Dune"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                award_name:
+                  stringValue: "hugo"
+          name: add_fields
+        - args:
+          - mapValue:
+              fields:
+                hugoAward:
+                  functionValue:
+                    name: map_get
+                    args:
+                    - fieldReferenceValue: awards
+                    - fieldReferenceValue: award_name
+                title:
+                  fieldReferenceValue: title
+          name: select
+  - description: testMapRemove
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.map_remove:
+                - Field: awards
+                - "nebula"
+            - "awards_removed"
+    assert_results:
+      - awards_removed:
+          hugo: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "Dune"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                awards_removed:
+                  functionValue:
+                    name: map_remove
+                    args:
+                    - fieldReferenceValue: awards
+                    - stringValue: "nebula"
+          name: select
+  - description: testMapMerge
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.map_merge:
+                - Field: awards
+                - Map:
+                   elements: {"new_award": true, "hugo": false}
+                - Map: 
+                   elements: {"another_award": "yes"}
+            - "awards_merged"
+    assert_results:
+      - awards_merged:
+          hugo: false
+          nebula: true
+          new_award: true
+          another_award: "yes"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "Dune"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                awards_merged:
+                  functionValue:
+                    name: map_merge
+                    args:
+                    - fieldReferenceValue: awards
+                    - functionValue:
+                        name: map
+                        args:
+                        - stringValue: "new_award"
+                        - booleanValue: true
+                        - stringValue: "hugo"
+                        - booleanValue: false
+                    - functionValue:
+                        name: map
+                        args:
+                        - stringValue: "another_award"
+                        - stringValue: "yes"
+          name: select
+  - description: testNestedFields
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: awards.hugo
+              - Constant: true
+      - Sort:
+          - Ordering:
+            - Field: title
+            - DESCENDING
+      - Select:
+          - title
+          - Field: awards.hugo
+    assert_results:
+      - title: The Hitchhiker's Guide to the Galaxy
+        awards.hugo: true
+      - title: Dune
+        awards.hugo: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: awards.hugo
+              - booleanValue: true
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: descending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                awards.hugo:
+                  fieldReferenceValue: awards.hugo
+                title:
+                  fieldReferenceValue: title
+          name: select
+  - description: testMapMergeLiterals
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.map_merge:
+                - Map:
+                    elements: {"a": "orig", "b": "orig"}
+                - Map:
+                    elements: {"b": "new", "c": "new"}
+            - "merged"
+    assert_results:
+      - merged:
+          a: "orig"
+          b: "new"
+          c: "new"
