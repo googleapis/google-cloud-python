@@ -55,6 +55,7 @@ class MockRequest(Request):
         body=None,
         headers=None,
         timeout=_DEFAULT_TIMEOUT_SECONDS,
+        total_attempts=DEFAULT_MAX_RETRY_ATTEMPTS,
         **kwargs,
     ):
         self.call_count += 1
@@ -257,6 +258,20 @@ class TestAsyncAuthorizedSession(object):
         with patch("time.monotonic", side_effect=[0, 1, 1]):
             with pytest.raises(TimeoutError):
                 await authed_session.request("GET", self.TEST_URL, max_allowed_time=1)
+
+    @pytest.mark.parametrize("retry_status", DEFAULT_RETRYABLE_STATUS_CODES)
+    @pytest.mark.asyncio
+    async def test_request_total_attempt_1(self, retry_status):
+        mocked_response = MockResponse(status_code=retry_status)
+        auth_request = MockRequest(mocked_response)
+        with patch("asyncio.sleep", return_value=None):
+            authed_session = sessions.AsyncAuthorizedSession(
+                self.credentials, auth_request
+            )
+            await authed_session.request(
+                "GET", self.TEST_URL, max_allowed_time=float("inf"), total_attempts=1
+            )
+            assert auth_request.call_count == 1
 
     @pytest.mark.parametrize("retry_status", DEFAULT_RETRYABLE_STATUS_CODES)
     @pytest.mark.asyncio

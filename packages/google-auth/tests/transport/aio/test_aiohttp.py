@@ -22,7 +22,6 @@ import pytest_asyncio  # type: ignore
 from google.auth import exceptions
 import google.auth.aio.transport.aiohttp as auth_aiohttp
 
-
 try:
     import aiohttp  # type: ignore
 except ImportError as caught_exc:  # pragma: NO COVER
@@ -153,9 +152,11 @@ class TestRequest:
             m.get("http://example.com", exception=asyncio.TimeoutError)
 
             with pytest.raises(exceptions.TimeoutError) as exc:
-                await aiohttp_request("http://example.com")
+                await aiohttp_request(
+                    "http://example.com", timeout=aiohttp.ClientTimeout(total=120)
+                )
 
-            exc.match("Request timed out after 180 seconds.")
+            exc.match("Request timed out after 120 seconds.")
 
     async def test_request_call_raises_transport_error_for_closed_session(
         self, aiohttp_request
