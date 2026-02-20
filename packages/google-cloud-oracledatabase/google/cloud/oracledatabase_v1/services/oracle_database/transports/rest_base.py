@@ -23,31 +23,27 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.oracledatabase_v1.types import (
+    autonomous_database,
+    database,
+    database_character_set,
+    db_system,
     db_system_initial_storage_size,
     db_version,
     exadata_infra,
     exadb_vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database,
-    database,
-    database_character_set,
-)
-from google.cloud.oracledatabase_v1.types import (
+    exascale_db_storage_vault,
+    minor_version,
+    odb_network,
+    odb_subnet,
     oracledatabase,
     pluggable_database,
     vm_cluster,
 )
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import (
     exascale_db_storage_vault as gco_exascale_db_storage_vault,
 )
-from google.cloud.oracledatabase_v1.types import db_system
-from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
-from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
-from google.cloud.oracledatabase_v1.types import minor_version
-from google.cloud.oracledatabase_v1.types import odb_network
 from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
-from google.cloud.oracledatabase_v1.types import odb_subnet
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 from .base import DEFAULT_CLIENT_INFO, OracleDatabaseTransport

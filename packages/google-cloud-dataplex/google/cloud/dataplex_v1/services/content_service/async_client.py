@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dataplex_v1 import gapic_version as package_version
 
@@ -44,18 +44,19 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.content_service import pagers
-from google.cloud.dataplex_v1.types import analyze
-from google.cloud.dataplex_v1.types import content
+from google.cloud.dataplex_v1.types import analyze, content
 from google.cloud.dataplex_v1.types import content as gcd_content
 
 from .client import ContentServiceClient
@@ -128,7 +129,10 @@ class ContentServiceAsyncClient:
         Returns:
             ContentServiceAsyncClient: The constructed client.
         """
-        return ContentServiceClient.from_service_account_info.__func__(ContentServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            ContentServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(ContentServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -144,7 +148,10 @@ class ContentServiceAsyncClient:
         Returns:
             ContentServiceAsyncClient: The constructed client.
         """
-        return ContentServiceClient.from_service_account_file.__func__(ContentServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            ContentServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(ContentServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

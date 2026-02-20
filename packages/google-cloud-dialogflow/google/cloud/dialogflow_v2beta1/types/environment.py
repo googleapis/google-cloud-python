@@ -21,8 +21,8 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import fulfillment as gcd_fulfillment
 from google.cloud.dialogflow_v2beta1.types import audio_config
+from google.cloud.dialogflow_v2beta1.types import fulfillment as gcd_fulfillment
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -114,6 +114,7 @@ class Environment(proto.Message):
             RUNNING (3):
                 Running.
         """
+
         STATE_UNSPECIFIED = 0
         STOPPED = 1
         LOADING = 2

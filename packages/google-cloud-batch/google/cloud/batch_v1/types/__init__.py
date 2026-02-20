@@ -46,7 +46,11 @@ from .task import (
     TaskSpec,
     TaskStatus,
 )
-from .volume import GCS, NFS, Volume
+from .volume import (
+    GCS,
+    NFS,
+    Volume,
+)
 
 __all__ = (
     "CancelJobRequest",

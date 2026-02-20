@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.enterpriseknowledgegraph_v1.types import service
 
@@ -349,12 +349,12 @@ class EnterpriseKnowledgeGraphServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_entity_reconciliation_job" not in self._stubs:
-            self._stubs[
-                "create_entity_reconciliation_job"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/CreateEntityReconciliationJob",
-                request_serializer=service.CreateEntityReconciliationJobRequest.serialize,
-                response_deserializer=service.EntityReconciliationJob.deserialize,
+            self._stubs["create_entity_reconciliation_job"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/CreateEntityReconciliationJob",
+                    request_serializer=service.CreateEntityReconciliationJobRequest.serialize,
+                    response_deserializer=service.EntityReconciliationJob.deserialize,
+                )
             )
         return self._stubs["create_entity_reconciliation_job"]
 
@@ -379,12 +379,12 @@ class EnterpriseKnowledgeGraphServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_entity_reconciliation_job" not in self._stubs:
-            self._stubs[
-                "get_entity_reconciliation_job"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/GetEntityReconciliationJob",
-                request_serializer=service.GetEntityReconciliationJobRequest.serialize,
-                response_deserializer=service.EntityReconciliationJob.deserialize,
+            self._stubs["get_entity_reconciliation_job"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/GetEntityReconciliationJob",
+                    request_serializer=service.GetEntityReconciliationJobRequest.serialize,
+                    response_deserializer=service.EntityReconciliationJob.deserialize,
+                )
             )
         return self._stubs["get_entity_reconciliation_job"]
 
@@ -411,12 +411,12 @@ class EnterpriseKnowledgeGraphServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_entity_reconciliation_jobs" not in self._stubs:
-            self._stubs[
-                "list_entity_reconciliation_jobs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/ListEntityReconciliationJobs",
-                request_serializer=service.ListEntityReconciliationJobsRequest.serialize,
-                response_deserializer=service.ListEntityReconciliationJobsResponse.deserialize,
+            self._stubs["list_entity_reconciliation_jobs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/ListEntityReconciliationJobs",
+                    request_serializer=service.ListEntityReconciliationJobsRequest.serialize,
+                    response_deserializer=service.ListEntityReconciliationJobsResponse.deserialize,
+                )
             )
         return self._stubs["list_entity_reconciliation_jobs"]
 
@@ -441,12 +441,12 @@ class EnterpriseKnowledgeGraphServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_entity_reconciliation_job" not in self._stubs:
-            self._stubs[
-                "cancel_entity_reconciliation_job"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/CancelEntityReconciliationJob",
-                request_serializer=service.CancelEntityReconciliationJobRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["cancel_entity_reconciliation_job"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/CancelEntityReconciliationJob",
+                    request_serializer=service.CancelEntityReconciliationJobRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["cancel_entity_reconciliation_job"]
 
@@ -472,12 +472,12 @@ class EnterpriseKnowledgeGraphServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_entity_reconciliation_job" not in self._stubs:
-            self._stubs[
-                "delete_entity_reconciliation_job"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/DeleteEntityReconciliationJob",
-                request_serializer=service.DeleteEntityReconciliationJobRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_entity_reconciliation_job"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/DeleteEntityReconciliationJob",
+                    request_serializer=service.DeleteEntityReconciliationJobRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_entity_reconciliation_job"]
 

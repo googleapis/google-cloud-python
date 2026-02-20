@@ -16,20 +16,22 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.contact_center_insights_v1.types import (
@@ -4217,9 +4219,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_http_options()
 
             request, metadata = self._interceptor.pre_bulk_analyze_conversations(
                 request, metadata
@@ -4372,9 +4372,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_http_options()
 
             request, metadata = self._interceptor.pre_bulk_delete_conversations(
                 request, metadata
@@ -4528,9 +4526,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_bulk_download_feedback_labels(
                 request, metadata
@@ -4597,11 +4593,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_bulk_download_feedback_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_bulk_download_feedback_labels_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_bulk_download_feedback_labels_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4687,9 +4682,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_bulk_upload_feedback_labels(
                 request, metadata
@@ -4841,9 +4834,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_http_options()
 
             request, metadata = self._interceptor.pre_calculate_issue_model_stats(
                 request, metadata
@@ -4993,9 +4984,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_http_options()
 
             request, metadata = self._interceptor.pre_calculate_stats(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_transcoded_request(
@@ -5144,9 +5133,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_create_analysis(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_transcoded_request(
@@ -5304,9 +5291,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_http_options()
 
             request, metadata = self._interceptor.pre_create_analysis_rule(
                 request, metadata
@@ -5459,9 +5444,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The conversation resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_http_options()
 
             request, metadata = self._interceptor.pre_create_conversation(
                 request, metadata
@@ -5617,9 +5600,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_feedback_label(
                 request, metadata
@@ -5775,9 +5756,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_issue_model(
                 request, metadata
@@ -5928,9 +5907,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The phrase matcher resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_http_options()
 
             request, metadata = self._interceptor.pre_create_phrase_matcher(
                 request, metadata
@@ -6086,9 +6063,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_qa_question(
                 request, metadata
@@ -6245,9 +6220,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_http_options()
 
             request, metadata = self._interceptor.pre_create_qa_scorecard(
                 request, metadata
@@ -6412,9 +6385,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_create_qa_scorecard_revision(
                 request, metadata
@@ -6565,9 +6536,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The View resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateView._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_http_options()
 
             request, metadata = self._interceptor.pre_create_view(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_transcoded_request(
@@ -6711,9 +6680,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_analysis(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_transcoded_request(
@@ -6819,9 +6786,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_analysis_rule(
                 request, metadata
@@ -6930,9 +6895,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_conversation(
                 request, metadata
@@ -7042,9 +7005,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_feedback_label(
                 request, metadata
@@ -7153,9 +7114,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_issue(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_transcoded_request(
@@ -7267,9 +7226,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_issue_model(
                 request, metadata
@@ -7411,9 +7368,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_phrase_matcher(
                 request, metadata
@@ -7523,9 +7478,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_qa_question(
                 request, metadata
@@ -7635,9 +7588,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_qa_scorecard(
                 request, metadata
@@ -7748,9 +7699,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_qa_scorecard_revision(
                 request, metadata
@@ -7857,9 +7806,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_view(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_transcoded_request(
@@ -7972,9 +7919,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_deploy_issue_model(
                 request, metadata
@@ -8137,9 +8082,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_deploy_qa_scorecard_revision(
                 request, metadata
@@ -8293,9 +8236,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_http_options()
 
             request, metadata = self._interceptor.pre_export_insights_data(
                 request, metadata
@@ -8449,9 +8390,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_export_issue_model(
                 request, metadata
@@ -8601,9 +8540,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The analysis resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_get_analysis(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_transcoded_request(
@@ -8757,9 +8694,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_analysis_rule(
                 request, metadata
@@ -8906,9 +8841,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The conversation resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_conversation(
                 request, metadata
@@ -9059,9 +8992,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_http_options()
 
             request, metadata = self._interceptor.pre_get_encryption_spec(
                 request, metadata
@@ -9211,9 +9142,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_feedback_label(
                 request, metadata
@@ -9360,9 +9289,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_get_issue(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_transcoded_request(
@@ -9505,9 +9432,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue model resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_issue_model(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_transcoded_request(
@@ -9651,9 +9576,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The phrase matcher resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_http_options()
 
             request, metadata = self._interceptor.pre_get_phrase_matcher(
                 request, metadata
@@ -9802,9 +9725,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_qa_question(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_transcoded_request(
@@ -9951,9 +9872,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_http_options()
 
             request, metadata = self._interceptor.pre_get_qa_scorecard(
                 request, metadata
@@ -10109,9 +10028,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_get_qa_scorecard_revision(
                 request, metadata
@@ -10263,9 +10180,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_transcoded_request(
@@ -10557,9 +10472,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_import_issue_model(
                 request, metadata
@@ -10713,9 +10626,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_http_options()
 
             request, metadata = self._interceptor.pre_ingest_conversations(
                 request, metadata
@@ -10871,9 +10782,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_http_options()
 
             request, metadata = self._interceptor.pre_initialize_encryption_spec(
                 request, metadata
@@ -11024,9 +10933,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_all_feedback_labels(
                 request, metadata
@@ -11177,9 +11084,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response to list analyses.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_http_options()
 
             request, metadata = self._interceptor.pre_list_analyses(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_transcoded_request(
@@ -11324,9 +11229,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing views.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_http_options()
 
             request, metadata = self._interceptor.pre_list_analysis_rules(
                 request, metadata
@@ -11479,9 +11382,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListConversations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_conversations(
                 request, metadata
@@ -11635,9 +11536,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_feedback_labels(
                 request, metadata
@@ -11788,9 +11687,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing issue models.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_issue_models(
                 request, metadata
@@ -11941,9 +11838,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing issues.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListIssues._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_http_options()
 
             request, metadata = self._interceptor.pre_list_issues(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_transcoded_request(
@@ -12090,9 +11985,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_phrase_matchers(
                 request, metadata
@@ -12245,9 +12138,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_qa_questions(
                 request, metadata
@@ -12401,9 +12292,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_qa_scorecard_revisions(
                 request, metadata
@@ -12552,9 +12441,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_http_options()
 
             request, metadata = self._interceptor.pre_list_qa_scorecards(
                 request, metadata
@@ -12705,9 +12592,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing views.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListViews._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListViews._get_http_options()
 
             request, metadata = self._interceptor.pre_list_views(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListViews._get_transcoded_request(
@@ -12856,9 +12741,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_http_options()
 
             request, metadata = self._interceptor.pre_query_metrics(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_transcoded_request(
@@ -13010,9 +12893,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_tune_qa_scorecard_revision(
                 request, metadata
@@ -13165,9 +13046,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_undeploy_issue_model(
                 request, metadata
@@ -13332,9 +13211,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_undeploy_qa_scorecard_revision(
                 request, metadata
@@ -13403,11 +13280,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_undeploy_qa_scorecard_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_undeploy_qa_scorecard_revision_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_undeploy_qa_scorecard_revision_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -13499,9 +13375,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_http_options()
 
             request, metadata = self._interceptor.pre_update_analysis_rule(
                 request, metadata
@@ -13654,9 +13528,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The conversation resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_http_options()
 
             request, metadata = self._interceptor.pre_update_conversation(
                 request, metadata
@@ -13812,9 +13684,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_feedback_label(
                 request, metadata
@@ -13967,9 +13837,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_update_issue(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_transcoded_request(
@@ -14118,9 +13986,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue model resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_issue_model(
                 request, metadata
@@ -14274,9 +14140,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The phrase matcher resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_http_options()
 
             request, metadata = self._interceptor.pre_update_phrase_matcher(
                 request, metadata
@@ -14432,9 +14296,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_update_qa_question(
                 request, metadata
@@ -14591,9 +14453,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_http_options()
 
             request, metadata = self._interceptor.pre_update_qa_scorecard(
                 request, metadata
@@ -14753,9 +14613,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_transcoded_request(
@@ -14904,9 +14762,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The View resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_http_options()
 
             request, metadata = self._interceptor.pre_update_view(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_transcoded_request(
@@ -15058,9 +14914,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_http_options()
 
             request, metadata = self._interceptor.pre_upload_conversation(
                 request, metadata
@@ -15164,7 +15018,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BulkAnalyzeConversations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BulkAnalyzeConversations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def bulk_delete_conversations(
@@ -15175,7 +15031,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BulkDeleteConversations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BulkDeleteConversations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def bulk_download_feedback_labels(
@@ -15186,7 +15044,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BulkDownloadFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BulkDownloadFeedbackLabels(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def bulk_upload_feedback_labels(
@@ -15197,7 +15057,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BulkUploadFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BulkUploadFeedbackLabels(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def calculate_issue_model_stats(
@@ -15208,7 +15070,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CalculateIssueModelStats(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CalculateIssueModelStats(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def calculate_stats(
@@ -15310,7 +15174,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateQaScorecardRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_view(
@@ -15406,7 +15272,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteQaScorecardRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_view(
@@ -15435,7 +15303,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeployQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeployQaScorecardRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def export_insights_data(
@@ -15558,7 +15428,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetQaScorecardRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_settings(
@@ -15605,7 +15477,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._InitializeEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
+        return self._InitializeEncryptionSpec(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_all_feedback_labels(
@@ -15715,7 +15589,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListQaScorecardRevisions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListQaScorecardRevisions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_qa_scorecards(
@@ -15758,7 +15634,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._TuneQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._TuneQaScorecardRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def undeploy_issue_model(
@@ -15779,7 +15657,9 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UndeployQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UndeployQaScorecardRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_analysis_rule(
@@ -15940,9 +15820,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -16060,9 +15938,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_transcoded_request(
@@ -16201,9 +16077,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_transcoded_request(

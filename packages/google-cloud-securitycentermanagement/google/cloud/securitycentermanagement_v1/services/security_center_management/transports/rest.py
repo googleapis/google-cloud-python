@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.securitycentermanagement_v1.types import security_center_management
@@ -654,9 +654,7 @@ class SecurityCenterManagementRestInterceptor:
     def post_list_descendant_event_threat_detection_custom_modules(
         self,
         response: security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
-    ) -> (
-        security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse
-    ):
+    ) -> security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse:
         """Post-rpc interceptor for list_descendant_event_threat_detection_custom_modules
 
         DEPRECATED. Please use the `post_list_descendant_event_threat_detection_custom_modules_with_metadata`
@@ -709,9 +707,7 @@ class SecurityCenterManagementRestInterceptor:
     def post_list_descendant_security_health_analytics_custom_modules(
         self,
         response: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
-    ) -> (
-        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-    ):
+    ) -> security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
         """Post-rpc interceptor for list_descendant_security_health_analytics_custom_modules
 
         DEPRECATED. Please use the `post_list_descendant_security_health_analytics_custom_modules_with_metadata`
@@ -764,9 +760,7 @@ class SecurityCenterManagementRestInterceptor:
     def post_list_effective_event_threat_detection_custom_modules(
         self,
         response: security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
-    ) -> (
-        security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse
-    ):
+    ) -> security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse:
         """Post-rpc interceptor for list_effective_event_threat_detection_custom_modules
 
         DEPRECATED. Please use the `post_list_effective_event_threat_detection_custom_modules_with_metadata`
@@ -819,9 +813,7 @@ class SecurityCenterManagementRestInterceptor:
     def post_list_effective_security_health_analytics_custom_modules(
         self,
         response: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
-    ) -> (
-        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-    ):
+    ) -> security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
         """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
 
         DEPRECATED. Please use the `post_list_effective_security_health_analytics_custom_modules_with_metadata`
@@ -1480,15 +1472,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_event_threat_detection_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_event_threat_detection_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
@@ -1558,11 +1547,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_event_threat_detection_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1659,15 +1647,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_security_health_analytics_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_security_health_analytics_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
@@ -1739,11 +1724,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 )
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_security_health_analytics_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1825,15 +1809,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_event_threat_detection_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_event_threat_detection_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
@@ -1941,15 +1922,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_security_health_analytics_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_security_health_analytics_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
@@ -2070,15 +2048,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_effective_event_threat_detection_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_effective_event_threat_detection_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
@@ -2147,11 +2122,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_effective_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_effective_event_threat_detection_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2247,15 +2221,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_effective_security_health_analytics_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_effective_security_health_analytics_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
@@ -2309,9 +2280,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.EffectiveSecurityHealthAnalyticsCustomModule()
-            )
+            resp = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule()
             pb_resp = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.pb(
                 resp
             )
@@ -2322,11 +2291,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_effective_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_effective_security_health_analytics_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2418,15 +2386,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_event_threat_detection_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_event_threat_detection_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
@@ -2489,11 +2454,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_get_event_threat_detection_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_event_threat_detection_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2589,9 +2553,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_http_options()
 
             request, metadata = self._interceptor.pre_get_security_center_service(
                 request, metadata
@@ -2754,15 +2716,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_security_health_analytics_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_security_health_analytics_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
@@ -2827,11 +2786,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_security_health_analytics_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2896,9 +2854,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse
-        ):
+        ) -> security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse:
             r"""Call the list descendant event
             threat detection custom modules method over HTTP.
 
@@ -2921,15 +2877,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_descendant_event_threat_detection_custom_modules(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_descendant_event_threat_detection_custom_modules(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_transcoded_request(
                 http_options, request
@@ -2983,9 +2936,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse()
-            )
+            resp = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse()
             pb_resp = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.pb(
                 resp
             )
@@ -2996,11 +2947,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_descendant_event_threat_detection_custom_modules_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_descendant_event_threat_detection_custom_modules_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3065,9 +3015,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-        ):
+        ) -> security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
             r"""Call the list descendant security
             health analytics custom modules method over HTTP.
 
@@ -3090,15 +3038,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_descendant_security_health_analytics_custom_modules(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_descendant_security_health_analytics_custom_modules(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_transcoded_request(
                 http_options, request
@@ -3152,9 +3097,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-            )
+            resp = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
             pb_resp = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
                 resp
             )
@@ -3165,11 +3108,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_descendant_security_health_analytics_custom_modules_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_descendant_security_health_analytics_custom_modules_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3234,9 +3176,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse
-        ):
+        ) -> security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse:
             r"""Call the list effective event
             threat detection custom modules method over HTTP.
 
@@ -3259,15 +3199,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_effective_event_threat_detection_custom_modules(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_effective_event_threat_detection_custom_modules(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_transcoded_request(
                 http_options, request
@@ -3321,9 +3258,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse()
-            )
+            resp = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse()
             pb_resp = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.pb(
                 resp
             )
@@ -3334,11 +3269,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_effective_event_threat_detection_custom_modules_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_effective_event_threat_detection_custom_modules_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3403,9 +3337,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-        ):
+        ) -> security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
             r"""Call the list effective security
             health analytics custom modules method over HTTP.
 
@@ -3428,15 +3360,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_effective_security_health_analytics_custom_modules(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_effective_security_health_analytics_custom_modules(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_transcoded_request(
                 http_options, request
@@ -3490,9 +3419,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-            )
+            resp = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
             pb_resp = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
                 resp
             )
@@ -3503,11 +3430,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_effective_security_health_analytics_custom_modules_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_effective_security_health_analytics_custom_modules_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3595,15 +3521,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_event_threat_detection_custom_modules(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_event_threat_detection_custom_modules(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_transcoded_request(
                 http_options, request
@@ -3657,9 +3580,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListEventThreatDetectionCustomModulesResponse()
-            )
+            resp = security_center_management.ListEventThreatDetectionCustomModulesResponse()
             pb_resp = security_center_management.ListEventThreatDetectionCustomModulesResponse.pb(
                 resp
             )
@@ -3670,11 +3591,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_event_threat_detection_custom_modules_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_event_threat_detection_custom_modules_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3762,9 +3682,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_http_options()
 
             request, metadata = self._interceptor.pre_list_security_center_services(
                 request, metadata
@@ -3830,11 +3748,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_list_security_center_services(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_security_center_services_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_security_center_services_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3924,15 +3841,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_security_health_analytics_custom_modules(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_security_health_analytics_custom_modules(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_transcoded_request(
                 http_options, request
@@ -3986,9 +3900,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse()
-            )
+            resp = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse()
             pb_resp = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
                 resp
             )
@@ -3999,11 +3911,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_security_health_analytics_custom_modules_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_security_health_analytics_custom_modules_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4069,9 +3980,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse
-        ):
+        ) -> security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse:
             r"""Call the simulate security health
             analytics custom module method over HTTP.
 
@@ -4095,15 +4004,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_simulate_security_health_analytics_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_simulate_security_health_analytics_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
@@ -4162,9 +4068,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse()
-            )
+            resp = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse()
             pb_resp = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.pb(
                 resp
             )
@@ -4177,11 +4081,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 )
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_simulate_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_simulate_security_health_analytics_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4274,15 +4177,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_event_threat_detection_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_event_threat_detection_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
@@ -4352,11 +4252,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_event_threat_detection_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4453,9 +4352,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_http_options()
 
             request, metadata = self._interceptor.pre_update_security_center_service(
                 request, metadata
@@ -4524,11 +4421,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_update_security_center_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_security_center_service_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_security_center_service_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4627,15 +4523,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_security_health_analytics_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_security_health_analytics_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
@@ -4707,11 +4600,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 )
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_security_health_analytics_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4802,15 +4694,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_validate_event_threat_detection_custom_module(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_validate_event_threat_detection_custom_module(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
@@ -4869,9 +4758,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ValidateEventThreatDetectionCustomModuleResponse()
-            )
+            resp = security_center_management.ValidateEventThreatDetectionCustomModuleResponse()
             pb_resp = security_center_management.ValidateEventThreatDetectionCustomModuleResponse.pb(
                 resp
             )
@@ -4882,11 +4769,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_validate_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_validate_event_threat_detection_custom_module_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4922,7 +4808,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateEventThreatDetectionCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_security_health_analytics_custom_module(
@@ -4933,7 +4821,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSecurityHealthAnalyticsCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_event_threat_detection_custom_module(
@@ -4944,7 +4834,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteEventThreatDetectionCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_security_health_analytics_custom_module(
@@ -4955,7 +4847,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteSecurityHealthAnalyticsCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_effective_event_threat_detection_custom_module(
@@ -4968,7 +4862,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetEffectiveEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetEffectiveEventThreatDetectionCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_effective_security_health_analytics_custom_module(
@@ -4981,7 +4877,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetEffectiveSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetEffectiveSecurityHealthAnalyticsCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_event_threat_detection_custom_module(
@@ -4992,7 +4890,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetEventThreatDetectionCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_security_center_service(
@@ -5003,7 +4903,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSecurityCenterService(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSecurityCenterService(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_security_health_analytics_custom_module(
@@ -5014,7 +4916,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSecurityHealthAnalyticsCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_descendant_event_threat_detection_custom_modules(
@@ -5027,7 +4931,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDescendantEventThreatDetectionCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDescendantEventThreatDetectionCustomModules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_descendant_security_health_analytics_custom_modules(
@@ -5040,7 +4946,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDescendantSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDescendantSecurityHealthAnalyticsCustomModules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_effective_event_threat_detection_custom_modules(
@@ -5053,7 +4961,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListEffectiveEventThreatDetectionCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListEffectiveEventThreatDetectionCustomModules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_effective_security_health_analytics_custom_modules(
@@ -5066,7 +4976,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListEffectiveSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListEffectiveSecurityHealthAnalyticsCustomModules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_event_threat_detection_custom_modules(
@@ -5077,7 +4989,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListEventThreatDetectionCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListEventThreatDetectionCustomModules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_security_center_services(
@@ -5088,7 +5002,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSecurityCenterServices(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSecurityCenterServices(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_security_health_analytics_custom_modules(
@@ -5099,7 +5015,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSecurityHealthAnalyticsCustomModules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSecurityHealthAnalyticsCustomModules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def simulate_security_health_analytics_custom_module(
@@ -5110,7 +5028,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SimulateSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SimulateSecurityHealthAnalyticsCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_event_threat_detection_custom_module(
@@ -5121,7 +5041,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateEventThreatDetectionCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_security_center_service(
@@ -5132,7 +5054,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateSecurityCenterService(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateSecurityCenterService(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_security_health_analytics_custom_module(
@@ -5143,7 +5067,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateSecurityHealthAnalyticsCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def validate_event_threat_detection_custom_module(
@@ -5154,7 +5080,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ValidateEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ValidateEventThreatDetectionCustomModule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -5214,9 +5142,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_transcoded_request(
@@ -5355,9 +5281,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_transcoded_request(

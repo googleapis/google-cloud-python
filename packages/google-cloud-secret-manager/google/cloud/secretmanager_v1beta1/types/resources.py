@@ -145,6 +145,7 @@ class SecretVersion(proto.Message):
                 is destroyed and the secret data is no longer stored. A
                 version may not leave this state once entered.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -230,12 +231,12 @@ class Replication(proto.Message):
                 number=1,
             )
 
-        replicas: MutableSequence[
-            "Replication.UserManaged.Replica"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Replication.UserManaged.Replica",
+        replicas: MutableSequence["Replication.UserManaged.Replica"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Replication.UserManaged.Replica",
+            )
         )
 
     automatic: Automatic = proto.Field(

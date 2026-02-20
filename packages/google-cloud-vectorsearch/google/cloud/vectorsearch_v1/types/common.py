@@ -39,6 +39,7 @@ class DistanceMetric(proto.Enum):
         COSINE_DISTANCE (2):
             Cosine distance metric.
     """
+
     DISTANCE_METRIC_UNSPECIFIED = 0
     DOT_PRODUCT = 1
     COSINE_DISTANCE = 2

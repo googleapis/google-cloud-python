@@ -73,6 +73,7 @@ class DataRetentionDeletionEvent(proto.Message):
             EVENT_TYPE_MAX_TTL_EXCEEDED (1):
                 The maximum retention time has been exceeded.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         EVENT_TYPE_MAX_TTL_EXCEEDED = 1
 

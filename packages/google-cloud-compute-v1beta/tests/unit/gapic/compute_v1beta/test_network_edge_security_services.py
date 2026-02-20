@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,18 +43,18 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.extended_operation as extended_operation  # type: ignore
+import google.auth
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
     grpc_helpers_async,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.extended_operation as extended_operation  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
@@ -974,10 +974,9 @@ def test_network_edge_security_services_client_get_mtls_endpoint_and_cert_source
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1022,10 +1021,9 @@ def test_network_edge_security_services_client_get_mtls_endpoint_and_cert_source
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1061,10 +1059,9 @@ def test_network_edge_security_services_client_get_mtls_endpoint_and_cert_source
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1576,9 +1573,9 @@ def test_delete_rest_required_fields(
 
     # verify required fields with default values are now present
 
-    jsonified_request[
-        "networkEdgeSecurityService"
-    ] = "network_edge_security_service_value"
+    jsonified_request["networkEdgeSecurityService"] = (
+        "network_edge_security_service_value"
+    )
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
 
@@ -1790,9 +1787,9 @@ def test_delete_unary_rest_required_fields(
 
     # verify required fields with default values are now present
 
-    jsonified_request[
-        "networkEdgeSecurityService"
-    ] = "network_edge_security_service_value"
+    jsonified_request["networkEdgeSecurityService"] = (
+        "network_edge_security_service_value"
+    )
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
 
@@ -2000,9 +1997,9 @@ def test_get_rest_required_fields(
 
     # verify required fields with default values are now present
 
-    jsonified_request[
-        "networkEdgeSecurityService"
-    ] = "network_edge_security_service_value"
+    jsonified_request["networkEdgeSecurityService"] = (
+        "network_edge_security_service_value"
+    )
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
 
@@ -2644,9 +2641,9 @@ def test_patch_rest_required_fields(
 
     # verify required fields with default values are now present
 
-    jsonified_request[
-        "networkEdgeSecurityService"
-    ] = "network_edge_security_service_value"
+    jsonified_request["networkEdgeSecurityService"] = (
+        "network_edge_security_service_value"
+    )
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
 
@@ -2878,9 +2875,9 @@ def test_patch_unary_rest_required_fields(
 
     # verify required fields with default values are now present
 
-    jsonified_request[
-        "networkEdgeSecurityService"
-    ] = "network_edge_security_service_value"
+    jsonified_request["networkEdgeSecurityService"] = (
+        "network_edge_security_service_value"
+    )
     jsonified_request["project"] = "project_value"
     jsonified_request["region"] = "region_value"
 

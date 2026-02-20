@@ -13,9 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
-from .condition import Condition
-from .container_status import ContainerStatus
+from .build import (
+    StorageSource,
+    SubmitBuildRequest,
+    SubmitBuildResponse,
+)
+from .condition import (
+    Condition,
+)
+from .container_status import (
+    ContainerStatus,
+)
 from .execution import (
     CancelExecutionRequest,
     DeleteExecutionRequest,
@@ -24,7 +32,9 @@ from .execution import (
     ListExecutionsRequest,
     ListExecutionsResponse,
 )
-from .execution_template import ExecutionTemplate
+from .execution_template import (
+    ExecutionTemplate,
+)
 from .instance import (
     CreateInstanceRequest,
     DeleteInstanceRequest,
@@ -81,7 +91,9 @@ from .revision import (
     ListRevisionsResponse,
     Revision,
 )
-from .revision_template import RevisionTemplate
+from .revision_template import (
+    RevisionTemplate,
+)
 from .service import (
     CreateServiceRequest,
     DeleteServiceRequest,
@@ -91,7 +103,9 @@ from .service import (
     Service,
     UpdateServiceRequest,
 )
-from .status import RevisionScalingStatus
+from .status import (
+    RevisionScalingStatus,
+)
 from .task import (
     GetTaskRequest,
     ListTasksRequest,
@@ -99,7 +113,9 @@ from .task import (
     Task,
     TaskAttemptResult,
 )
-from .task_template import TaskTemplate
+from .task_template import (
+    TaskTemplate,
+)
 from .traffic_target import (
     TrafficTarget,
     TrafficTargetAllocationType,
@@ -127,7 +143,9 @@ from .worker_pool import (
     UpdateWorkerPoolRequest,
     WorkerPool,
 )
-from .worker_pool_revision_template import WorkerPoolRevisionTemplate
+from .worker_pool_revision_template import (
+    WorkerPoolRevisionTemplate,
+)
 
 __all__ = (
     "StorageSource",

@@ -570,6 +570,7 @@ class RecognitionConfig(proto.Message):
                 ``sample_rate_hertz`` must be one of 8000, 12000, 16000,
                 24000, or 48000.
         """
+
         ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
         FLAC = 2
@@ -789,6 +790,7 @@ class RecognitionMetadata(proto.Message):
                 document, such as a text-message, email or
                 report.
         """
+
         INTERACTION_TYPE_UNSPECIFIED = 0
         DISCUSSION = 1
         PRESENTATION = 2
@@ -818,6 +820,7 @@ class RecognitionMetadata(proto.Message):
                 The speaker is more than 3 meters away from
                 the microphone.
         """
+
         MICROPHONE_DISTANCE_UNSPECIFIED = 0
         NEARFIELD = 1
         MIDFIELD = 2
@@ -835,6 +838,7 @@ class RecognitionMetadata(proto.Message):
                 The speech data originally recorded on a
                 video.
         """
+
         ORIGINAL_MEDIA_TYPE_UNSPECIFIED = 0
         AUDIO = 1
         VIDEO = 2
@@ -859,6 +863,7 @@ class RecognitionMetadata(proto.Message):
             OTHER_INDOOR_DEVICE (6):
                 Speech was recorded indoors.
         """
+
         RECORDING_DEVICE_TYPE_UNSPECIFIED = 0
         SMARTPHONE = 1
         PC = 2
@@ -1255,6 +1260,7 @@ class StreamingRecognizeResponse(proto.Message):
                 is expected to send a half close. Further audio
                 will not be processed.
         """
+
         SPEECH_EVENT_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
         SPEECH_ACTIVITY_BEGIN = 2

@@ -314,6 +314,7 @@ class ValidateAttestationOccurrenceResponse(proto.Message):
                 The Attestation was not able to verified by
                 the Attestor.
         """
+
         RESULT_UNSPECIFIED = 0
         VERIFIED = 1
         ATTESTATION_NOT_VERIFIABLE = 2

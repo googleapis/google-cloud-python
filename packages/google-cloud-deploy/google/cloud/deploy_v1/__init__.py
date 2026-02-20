@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.cloud_deploy import CloudDeployAsyncClient, CloudDeployClient
 from .types.automation_payload import AutomationEvent
 from .types.automationrun_payload import AutomationRunEvent

@@ -53,6 +53,7 @@ class PolylineDetails(proto.Message):
             DOES_NOT_EXIST (2):
                 The road feature does not exist.
         """
+
         ROAD_FEATURE_STATE_UNSPECIFIED = 0
         EXISTS = 1
         DOES_NOT_EXIST = 2

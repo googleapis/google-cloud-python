@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1458,9 +1458,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_create_connection_profile(
                 request, metadata
@@ -1611,9 +1609,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_create_private_connection(
                 request, metadata
@@ -2075,9 +2071,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_connection_profile(
                 request, metadata
@@ -2222,9 +2216,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_private_connection(
                 request, metadata
@@ -2667,9 +2659,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_discover_connection_profile(
                 request, metadata
@@ -3129,9 +3119,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connection_profile(
                 request, metadata
@@ -3281,9 +3269,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_private_connection(
                 request, metadata
@@ -3725,9 +3711,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_connection_profiles(
                 request, metadata
@@ -3873,9 +3857,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListPrivateConnections._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListPrivateConnections._get_http_options()
 
             request, metadata = self._interceptor.pre_list_private_connections(
                 request, metadata
@@ -4319,9 +4301,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_update_connection_profile(
                 request, metadata
@@ -4579,7 +4559,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateConnectionProfile(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_private_connection(
@@ -4589,7 +4571,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreatePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreatePrivateConnection(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_route(
@@ -4615,7 +4599,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteConnectionProfile(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_private_connection(
@@ -4625,7 +4611,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeletePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeletePrivateConnection(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_route(
@@ -4652,7 +4640,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DiscoverConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DiscoverConnectionProfile(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_errors(
@@ -4717,7 +4707,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListConnectionProfiles(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListConnectionProfiles(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_private_connections(
@@ -4728,7 +4720,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPrivateConnections(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPrivateConnections(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_routes(
@@ -4754,7 +4748,9 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateConnectionProfile(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_stream(

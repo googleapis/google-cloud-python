@@ -131,6 +131,7 @@ class Operation(proto.Message):
                 significant monetary value or audit trail. This
                 feature only applies to the client libraries.
         """
+
         LOW = 0
         HIGH = 1
 
@@ -161,12 +162,12 @@ class Operation(proto.Message):
         proto.STRING,
         number=6,
     )
-    metric_value_sets: MutableSequence[
-        metric_value.MetricValueSet
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=metric_value.MetricValueSet,
+    metric_value_sets: MutableSequence[metric_value.MetricValueSet] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=metric_value.MetricValueSet,
+        )
     )
     log_entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,

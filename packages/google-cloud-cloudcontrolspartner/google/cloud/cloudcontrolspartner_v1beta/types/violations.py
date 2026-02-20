@@ -85,6 +85,7 @@ class Violation(proto.Message):
             EXCEPTION (3):
                 Violation is Exception
         """
+
         STATE_UNSPECIFIED = 0
         RESOLVED = 1
         UNRESOLVED = 2
@@ -132,6 +133,7 @@ class Violation(proto.Message):
                 REMEDIATION_RESOURCE_VIOLATION (5):
                     Remediation type for resource violation.
             """
+
             REMEDIATION_TYPE_UNSPECIFIED = 0
             REMEDIATION_BOOLEAN_ORG_POLICY_VIOLATION = 1
             REMEDIATION_LIST_ALLOWED_VALUES_ORG_POLICY_VIOLATION = 2

@@ -17,24 +17,35 @@ import json  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, path_template
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1.types import (
     bigquery_export,
     effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+    event_threat_detection_custom_module,
+    finding,
+    mute_config,
+    notification_config,
+    organization_settings,
+    resource_value_config,
+    security_health_analytics_custom_module,
+    securitycenter_service,
+    simulation,
+    source,
+    valued_resource,
 )
-from google.cloud.securitycenter_v1.types import securitycenter_service, simulation
-from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
 from google.cloud.securitycenter_v1.types import (
     event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
 )
@@ -44,21 +55,11 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     resource_value_config as gcs_resource_value_config,
 )
-from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
     security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
 )
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import finding
-from google.cloud.securitycenter_v1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1.types import mute_config
-from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v1.types import notification_config
-from google.cloud.securitycenter_v1.types import organization_settings
-from google.cloud.securitycenter_v1.types import resource_value_config
-from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
-from google.cloud.securitycenter_v1.types import valued_resource
 
 from .base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
 

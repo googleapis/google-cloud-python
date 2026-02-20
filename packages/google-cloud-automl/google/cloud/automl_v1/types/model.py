@@ -118,6 +118,7 @@ class Model(proto.Message):
             UNDEPLOYED (2):
                 Model is not deployed.
         """
+
         DEPLOYMENT_STATE_UNSPECIFIED = 0
         DEPLOYED = 1
         UNDEPLOYED = 2

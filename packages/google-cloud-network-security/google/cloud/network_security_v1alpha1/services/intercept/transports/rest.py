@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1679,9 +1681,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_intercept_deployment(
                 request, metadata
@@ -1835,9 +1835,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_intercept_deployment_group(
                 request, metadata
@@ -1906,11 +1904,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_create_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_intercept_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_intercept_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1995,9 +1992,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_intercept_endpoint_group(
                 request, metadata
@@ -2066,11 +2061,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_create_intercept_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_intercept_endpoint_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_intercept_endpoint_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2158,15 +2152,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_intercept_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_intercept_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInterceptRestTransport._BaseCreateInterceptEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -2232,11 +2223,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_intercept_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2320,9 +2310,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_intercept_deployment(
                 request, metadata
@@ -2470,9 +2458,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_intercept_deployment_group(
                 request, metadata
@@ -2536,11 +2522,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_delete_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_intercept_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_intercept_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2624,9 +2609,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_intercept_endpoint_group(
                 request, metadata
@@ -2690,11 +2673,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_delete_intercept_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_intercept_endpoint_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_intercept_endpoint_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2781,15 +2763,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_intercept_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_intercept_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInterceptRestTransport._BaseDeleteInterceptEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -2850,11 +2829,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_intercept_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2942,9 +2920,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_intercept_deployment(
                 request, metadata
@@ -3095,9 +3071,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_intercept_deployment_group(
                 request, metadata
@@ -3163,11 +3137,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_get_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_intercept_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_intercept_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3262,9 +3235,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_intercept_endpoint_group(
                 request, metadata
@@ -3425,15 +3396,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_intercept_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_intercept_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInterceptRestTransport._BaseGetInterceptEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -3494,11 +3462,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_get_intercept_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_intercept_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3584,9 +3551,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptDeploymentGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_intercept_deployment_groups(
                 request, metadata
@@ -3652,11 +3617,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_list_intercept_deployment_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_intercept_deployment_groups_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_intercept_deployment_groups_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3743,9 +3707,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptDeployments._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptDeployments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_intercept_deployments(
                 request, metadata
@@ -3896,15 +3858,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_intercept_endpoint_group_associations(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_intercept_endpoint_group_associations(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInterceptRestTransport._BaseListInterceptEndpointGroupAssociations._get_transcoded_request(
                 http_options, request
@@ -3967,11 +3926,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_intercept_endpoint_group_associations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_intercept_endpoint_group_associations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4056,9 +4014,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseListInterceptEndpointGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_intercept_endpoint_groups(
                 request, metadata
@@ -4124,11 +4080,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_list_intercept_endpoint_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_intercept_endpoint_groups_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_intercept_endpoint_groups_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4215,9 +4170,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_intercept_deployment(
                 request, metadata
@@ -4371,9 +4324,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_intercept_deployment_group(
                 request, metadata
@@ -4442,11 +4393,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_update_intercept_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_intercept_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_intercept_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4531,9 +4481,7 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_intercept_endpoint_group(
                 request, metadata
@@ -4602,11 +4550,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             resp = self._interceptor.post_update_intercept_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_intercept_endpoint_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_intercept_endpoint_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4694,15 +4641,12 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
 
             """
 
-            http_options = (
-                _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_intercept_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_intercept_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInterceptRestTransport._BaseUpdateInterceptEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -4768,11 +4712,10 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_intercept_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_intercept_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4805,7 +4748,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateInterceptDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_intercept_deployment_group(
@@ -4815,7 +4760,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateInterceptDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_intercept_endpoint_group(
@@ -4825,7 +4772,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateInterceptEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_intercept_endpoint_group_association(
@@ -4836,7 +4785,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateInterceptEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_intercept_deployment(
@@ -4846,7 +4797,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteInterceptDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_intercept_deployment_group(
@@ -4856,7 +4809,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteInterceptDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_intercept_endpoint_group(
@@ -4866,7 +4821,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteInterceptEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_intercept_endpoint_group_association(
@@ -4877,7 +4834,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteInterceptEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_intercept_deployment(
@@ -4887,7 +4846,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetInterceptDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_intercept_deployment_group(
@@ -4898,7 +4859,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetInterceptDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_intercept_endpoint_group(
@@ -4908,7 +4871,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetInterceptEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_intercept_endpoint_group_association(
@@ -4919,7 +4884,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetInterceptEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_intercept_deployment_groups(
@@ -4930,7 +4897,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInterceptDeploymentGroups(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInterceptDeploymentGroups(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_intercept_deployments(
@@ -4941,7 +4910,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInterceptDeployments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInterceptDeployments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_intercept_endpoint_group_associations(
@@ -4952,7 +4923,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInterceptEndpointGroupAssociations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInterceptEndpointGroupAssociations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_intercept_endpoint_groups(
@@ -4963,7 +4936,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInterceptEndpointGroups(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInterceptEndpointGroups(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_intercept_deployment(
@@ -4973,7 +4948,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInterceptDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateInterceptDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_intercept_deployment_group(
@@ -4983,7 +4960,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInterceptDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateInterceptDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_intercept_endpoint_group(
@@ -4993,7 +4972,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInterceptEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateInterceptEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_intercept_endpoint_group_association(
@@ -5004,7 +4985,9 @@ class InterceptRestTransport(_BaseInterceptRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInterceptEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateInterceptEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):

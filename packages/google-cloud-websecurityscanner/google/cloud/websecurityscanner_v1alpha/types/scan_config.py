@@ -84,6 +84,7 @@ class ScanConfig(proto.Message):
             SAFARI_IPHONE (3):
                 Safari on IPhone.
         """
+
         USER_AGENT_UNSPECIFIED = 0
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
@@ -101,6 +102,7 @@ class ScanConfig(proto.Message):
             COMPUTE (2):
                 Google Compute Engine service.
         """
+
         TARGET_PLATFORM_UNSPECIFIED = 0
         APP_ENGINE = 1
         COMPUTE = 2

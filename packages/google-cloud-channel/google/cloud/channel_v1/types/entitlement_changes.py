@@ -126,6 +126,7 @@ class EntitlementChange(proto.Message):
             TRIAL_STARTED (15):
                 Entitlement started trial.
         """
+
         CHANGE_TYPE_UNSPECIFIED = 0
         CREATED = 1
         PRICE_PLAN_SWITCHED = 3
@@ -157,6 +158,7 @@ class EntitlementChange(proto.Message):
             RESELLER (4):
                 Reseller user.
         """
+
         OPERATOR_TYPE_UNSPECIFIED = 0
         CUSTOMER_SERVICE_REPRESENTATIVE = 1
         SYSTEM = 2
@@ -180,6 +182,7 @@ class EntitlementChange(proto.Message):
                 while still keeping other entitlement(s) with
                 the reseller.
         """
+
         CANCELLATION_REASON_UNSPECIFIED = 0
         SERVICE_TERMINATED = 1
         RELATIONSHIP_ENDED = 2
@@ -205,6 +208,7 @@ class EntitlementChange(proto.Message):
                 cancellation, added a payment plan to a trial
                 entitlement, etc.)
         """
+
         ACTIVATION_REASON_UNSPECIFIED = 0
         RESELLER_REVOKED_SUSPENSION = 1
         CUSTOMER_ACCEPTED_PENDING_TOS = 2

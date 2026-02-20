@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.datacatalog_lineage_v1.types import lineage
@@ -1262,9 +1262,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_search_link_processes(
                 request, metadata
@@ -3188,9 +3186,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_process_open_lineage_run_event(
                 request, metadata
@@ -3259,11 +3255,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_process_open_lineage_run_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_process_open_lineage_run_event_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_process_open_lineage_run_event_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3763,7 +3758,9 @@ class LineageRestTransport(_BaseLineageRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchSearchLinkProcesses(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchSearchLinkProcesses(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_lineage_event(
@@ -3866,7 +3863,9 @@ class LineageRestTransport(_BaseLineageRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ProcessOpenLineageRunEvent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ProcessOpenLineageRunEvent(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def search_links(

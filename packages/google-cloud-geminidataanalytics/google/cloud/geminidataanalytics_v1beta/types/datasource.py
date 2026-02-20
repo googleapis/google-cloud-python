@@ -20,8 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.geminidataanalytics_v1beta.types import credentials as gcg_credentials
 from google.cloud.geminidataanalytics_v1beta.types import agent_context
+from google.cloud.geminidataanalytics_v1beta.types import credentials as gcg_credentials
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1beta",
@@ -61,6 +61,7 @@ class DataFilterType(proto.Enum):
             filter by default. Currently only used for
             Looker data sources.
     """
+
     DATA_FILTER_TYPE_UNSPECIFIED = 0
     ALWAYS_FILTER = 1
 
@@ -203,12 +204,12 @@ class StudioDatasourceReferences(proto.Message):
             The references to the studio datasources.
     """
 
-    studio_references: MutableSequence[
-        "StudioDatasourceReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="StudioDatasourceReference",
+    studio_references: MutableSequence["StudioDatasourceReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="StudioDatasourceReference",
+        )
     )
 
 
@@ -356,6 +357,7 @@ class SpannerDatabaseReference(proto.Message):
             POSTGRESQL (2):
                 PostgreSQL
         """
+
         ENGINE_UNSPECIFIED = 0
         GOOGLE_SQL = 1
         POSTGRESQL = 2
@@ -445,6 +447,7 @@ class CloudSqlDatabaseReference(proto.Message):
             MYSQL (2):
                 MySQL
         """
+
         ENGINE_UNSPECIFIED = 0
         POSTGRESQL = 1
         MYSQL = 2

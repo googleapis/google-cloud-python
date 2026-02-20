@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.storage_transfer_v1.types import transfer, transfer_types
@@ -978,9 +978,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Represents an agent pool.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_http_options()
 
             request, metadata = self._interceptor.pre_create_agent_pool(
                 request, metadata
@@ -1136,9 +1134,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_transfer_job(
                 request, metadata
@@ -1287,9 +1283,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_agent_pool(
                 request, metadata
@@ -1398,9 +1392,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_transfer_job(
                 request, metadata
@@ -1514,9 +1506,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Represents an agent pool.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_http_options()
 
             request, metadata = self._interceptor.pre_get_agent_pool(request, metadata)
             transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_transcoded_request(
@@ -1661,9 +1651,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                         Google service account
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_http_options()
 
             request, metadata = self._interceptor.pre_get_google_service_account(
                 request, metadata
@@ -1813,9 +1801,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_transfer_job(
                 request, metadata
@@ -1962,9 +1948,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Response from ListAgentPools.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_http_options()
 
             request, metadata = self._interceptor.pre_list_agent_pools(
                 request, metadata
@@ -2113,9 +2097,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Response from ListTransferJobs.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_transfer_jobs(
                 request, metadata
@@ -2262,9 +2244,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_transfer_operation(
                 request, metadata
@@ -2378,9 +2358,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_resume_transfer_operation(
                 request, metadata
@@ -2500,9 +2478,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_http_options()
 
             request, metadata = self._interceptor.pre_run_transfer_job(
                 request, metadata
@@ -2654,9 +2630,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     Represents an agent pool.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_http_options()
 
             request, metadata = self._interceptor.pre_update_agent_pool(
                 request, metadata
@@ -2812,9 +2786,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_http_options()
 
             request, metadata = self._interceptor.pre_update_transfer_job(
                 request, metadata
@@ -2959,7 +2931,9 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetGoogleServiceAccount(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGoogleServiceAccount(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_transfer_job(
@@ -2993,7 +2967,9 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
     ) -> Callable[[transfer.PauseTransferOperationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PauseTransferOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PauseTransferOperation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def resume_transfer_operation(
@@ -3001,7 +2977,9 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
     ) -> Callable[[transfer.ResumeTransferOperationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ResumeTransferOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ResumeTransferOperation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def run_transfer_job(
@@ -3083,9 +3061,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3208,9 +3184,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3349,9 +3323,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseStorageTransferServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_transcoded_request(

@@ -21,9 +21,7 @@ from .grpc import MetastorePartitionServiceGrpcTransport
 from .grpc_asyncio import MetastorePartitionServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[MetastorePartitionServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[MetastorePartitionServiceTransport]]
 _transport_registry["grpc"] = MetastorePartitionServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = MetastorePartitionServiceGrpcAsyncIOTransport
 

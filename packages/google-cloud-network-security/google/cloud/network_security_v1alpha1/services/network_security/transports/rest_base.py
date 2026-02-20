@@ -19,29 +19,39 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
+from google.cloud.network_security_v1alpha1.types import (
+    authorization_policy,
+    authz_policy,
+    backend_authentication_config,
+    client_tls_policy,
+    gateway_security_policy,
+    gateway_security_policy_rule,
+    server_tls_policy,
+    tls_inspection_policy,
+    url_list,
+)
 from google.cloud.network_security_v1alpha1.types import (
     authorization_policy as gcn_authorization_policy,
 )
 from google.cloud.network_security_v1alpha1.types import (
     authz_policy as gcn_authz_policy,
 )
-from google.cloud.network_security_v1alpha1.types import backend_authentication_config
 from google.cloud.network_security_v1alpha1.types import (
     backend_authentication_config as gcn_backend_authentication_config,
 )
 from google.cloud.network_security_v1alpha1.types import (
     client_tls_policy as gcn_client_tls_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy as gcn_gateway_security_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy_rule
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy_rule as gcn_gateway_security_policy_rule,
 )
@@ -52,12 +62,6 @@ from google.cloud.network_security_v1alpha1.types import (
     tls_inspection_policy as gcn_tls_inspection_policy,
 )
 from google.cloud.network_security_v1alpha1.types import url_list as gcn_url_list
-from google.cloud.network_security_v1alpha1.types import authorization_policy
-from google.cloud.network_security_v1alpha1.types import authz_policy
-from google.cloud.network_security_v1alpha1.types import client_tls_policy
-from google.cloud.network_security_v1alpha1.types import server_tls_policy
-from google.cloud.network_security_v1alpha1.types import tls_inspection_policy
-from google.cloud.network_security_v1alpha1.types import url_list
 
 from .base import DEFAULT_CLIENT_INFO, NetworkSecurityTransport
 

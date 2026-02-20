@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.datasources.v1beta",
@@ -129,6 +129,7 @@ class PrimaryProductDataSource(proto.Message):
                 products. Note: Products management through the
                 API is not possible for this channel.
         """
+
         CHANNEL_UNSPECIFIED = 0
         ONLINE_PRODUCTS = 1
         LOCAL_PRODUCTS = 2
@@ -162,12 +163,12 @@ class PrimaryProductDataSource(proto.Message):
                 is not set in ``1001``.
         """
 
-        take_from_data_sources: MutableSequence[
-            "DataSourceReference"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="DataSourceReference",
+        take_from_data_sources: MutableSequence["DataSourceReference"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="DataSourceReference",
+            )
         )
 
     class Destination(proto.Message):
@@ -195,6 +196,7 @@ class PrimaryProductDataSource(proto.Message):
                 DISABLED (2):
                     Indicates that the destination is disabled.
             """
+
             STATE_UNSPECIFIED = 0
             ENABLED = 1
             DISABLED = 2
@@ -305,12 +307,12 @@ class SupplementalProductDataSource(proto.Message):
         number=5,
         optional=True,
     )
-    referencing_primary_data_sources: MutableSequence[
-        "DataSourceReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="DataSourceReference",
+    referencing_primary_data_sources: MutableSequence["DataSourceReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="DataSourceReference",
+        )
     )
 
 

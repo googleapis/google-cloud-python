@@ -13,15 +13,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .audience import AudienceMember, MobileData, PairData
-from .cart_data import CartData, Item
-from .consent import Consent, ConsentStatus
-from .destination import Destination, Product, ProductAccount
-from .device_info import DeviceInfo
-from .encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
-from .error import ErrorReason
-from .event import AdIdentifiers, CustomVariable, Event, EventParameter, EventSource
-from .experimental_field import ExperimentalField
+from .audience import (
+    AudienceMember,
+    MobileData,
+    PairData,
+)
+from .cart_data import (
+    CartData,
+    Item,
+)
+from .consent import (
+    Consent,
+    ConsentStatus,
+)
+from .destination import (
+    Destination,
+    Product,
+    ProductAccount,
+)
+from .device_info import (
+    DeviceInfo,
+)
+from .encryption_info import (
+    AwsWrappedKeyInfo,
+    EncryptionInfo,
+    GcpWrappedKeyInfo,
+)
+from .error import (
+    ErrorReason,
+)
+from .event import (
+    AdIdentifiers,
+    CustomVariable,
+    Event,
+    EventParameter,
+    EventSource,
+)
+from .experimental_field import (
+    ExperimentalField,
+)
 from .ingestion_service import (
     Encoding,
     IngestAudienceMembersRequest,
@@ -33,8 +63,12 @@ from .ingestion_service import (
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
-from .item_parameter import ItemParameter
-from .match_rate import MatchRateRange
+from .item_parameter import (
+    ItemParameter,
+)
+from .match_rate import (
+    MatchRateRange,
+)
 from .processing_errors import (
     ErrorCount,
     ErrorInfo,
@@ -43,9 +77,18 @@ from .processing_errors import (
     WarningCount,
     WarningInfo,
 )
-from .request_status_per_destination import RequestStatusPerDestination
-from .terms_of_service import TermsOfService, TermsOfServiceStatus
-from .user_data import AddressInfo, UserData, UserIdentifier
+from .request_status_per_destination import (
+    RequestStatusPerDestination,
+)
+from .terms_of_service import (
+    TermsOfService,
+    TermsOfServiceStatus,
+)
+from .user_data import (
+    AddressInfo,
+    UserData,
+    UserIdentifier,
+)
 from .user_properties import (
     CustomerType,
     CustomerValueBucket,

@@ -17,23 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.backupdr_v1.types import protection_summary
 
@@ -355,12 +357,12 @@ class BackupDrProtectionSummaryGrpcAsyncIOTransport(BackupDrProtectionSummaryTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_resource_backup_configs" not in self._stubs:
-            self._stubs[
-                "list_resource_backup_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDrProtectionSummary/ListResourceBackupConfigs",
-                request_serializer=protection_summary.ListResourceBackupConfigsRequest.serialize,
-                response_deserializer=protection_summary.ListResourceBackupConfigsResponse.deserialize,
+            self._stubs["list_resource_backup_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDrProtectionSummary/ListResourceBackupConfigs",
+                    request_serializer=protection_summary.ListResourceBackupConfigsRequest.serialize,
+                    response_deserializer=protection_summary.ListResourceBackupConfigsResponse.deserialize,
+                )
             )
         return self._stubs["list_resource_backup_configs"]
 

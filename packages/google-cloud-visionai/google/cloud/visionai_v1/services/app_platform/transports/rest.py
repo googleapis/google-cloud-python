@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1901,9 +1903,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_http_options()
 
             request, metadata = self._interceptor.pre_add_application_stream_input(
                 request, metadata
@@ -2212,9 +2212,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_create_application_instances(
                 request, metadata
@@ -2827,9 +2825,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_application_instances(
                 request, metadata
@@ -4472,9 +4468,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_prebuilt_processors(
                 request, metadata
@@ -4779,9 +4773,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_application_stream_input(
                 request, metadata
@@ -4850,11 +4842,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_remove_application_stream_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_application_stream_input_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_remove_application_stream_input_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4938,9 +4929,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUndeployApplication._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_http_options()
 
             request, metadata = self._interceptor.pre_undeploy_application(
                 request, metadata
@@ -5247,9 +5236,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_update_application_instances(
                 request, metadata
@@ -5405,9 +5392,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_http_options()
-            )
+            http_options = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_http_options()
 
             request, metadata = self._interceptor.pre_update_application_stream_input(
                 request, metadata
@@ -5476,11 +5461,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
 
             resp = self._interceptor.post_update_application_stream_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_application_stream_input_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_application_stream_input_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5823,7 +5807,9 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AddApplicationStreamInput(self._session, self._host, self._interceptor)  # type: ignore
+        return self._AddApplicationStreamInput(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_application(
@@ -5841,7 +5827,9 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateApplicationInstances(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateApplicationInstances(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_draft(
@@ -5875,7 +5863,9 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteApplicationInstances(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteApplicationInstances(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_draft(
@@ -5966,7 +5956,9 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPrebuiltProcessors(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPrebuiltProcessors(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_processors(
@@ -5984,7 +5976,9 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveApplicationStreamInput(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveApplicationStreamInput(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def undeploy_application(
@@ -6010,7 +6004,9 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateApplicationInstances(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateApplicationInstances(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_application_stream_input(
@@ -6020,7 +6016,9 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateApplicationStreamInput(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateApplicationStreamInput(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_draft(

@@ -382,12 +382,12 @@ class SearchCaseClassificationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    case_classifications: MutableSequence[
-        gcs_case.CaseClassification
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcs_case.CaseClassification,
+    case_classifications: MutableSequence[gcs_case.CaseClassification] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcs_case.CaseClassification,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

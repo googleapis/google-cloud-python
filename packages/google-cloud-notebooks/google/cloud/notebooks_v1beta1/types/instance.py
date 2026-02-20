@@ -61,6 +61,7 @@ class ReservationAffinity(proto.Message):
                 Must specify key value fields for specifying the
                 reservations.
         """
+
         TYPE_UNSPECIFIED = 0
         NO_RESERVATION = 1
         ANY_RESERVATION = 2
@@ -250,6 +251,7 @@ class Instance(proto.Message):
             TPU_V3 (7):
                 (Coming soon) Accelerator type is TPU V3.
         """
+
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -293,6 +295,7 @@ class Instance(proto.Message):
             SUSPENDED (11):
                 The instance is suspended.
         """
+
         STATE_UNSPECIFIED = 0
         STARTING = 1
         PROVISIONING = 2
@@ -319,6 +322,7 @@ class Instance(proto.Message):
             PD_BALANCED (3):
                 Balanced persistent disk type.
         """
+
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
@@ -337,6 +341,7 @@ class Instance(proto.Message):
                 Use customer managed encryption keys to
                 encrypt the boot disk.
         """
+
         DISK_ENCRYPTION_UNSPECIFIED = 0
         GMEK = 1
         CMEK = 2
@@ -353,6 +358,7 @@ class Instance(proto.Message):
                 GVNIC. Alternative to VIRTIO.
                 https://github.com/GoogleCloudPlatform/compute-virtual-ethernet-linux
         """
+
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2

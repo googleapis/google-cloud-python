@@ -55,6 +55,7 @@ class SnapshotState(proto.Enum):
         DELETED (5):
             Snapshot has been deleted.
     """
+
     UNKNOWN_SNAPSHOT_STATE = 0
     PENDING = 1
     RUNNING = 2

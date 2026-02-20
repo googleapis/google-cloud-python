@@ -47,6 +47,7 @@ class ResourceValue(proto.Enum):
             No resource value, e.g. ignore these
             resources
     """
+
     RESOURCE_VALUE_UNSPECIFIED = 0
     HIGH = 1
     MEDIUM = 2

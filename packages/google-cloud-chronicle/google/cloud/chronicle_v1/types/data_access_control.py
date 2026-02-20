@@ -520,19 +520,19 @@ class DataAccessScope(proto.Message):
         proto.STRING,
         number=1,
     )
-    allowed_data_access_labels: MutableSequence[
-        "DataAccessLabelReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="DataAccessLabelReference",
+    allowed_data_access_labels: MutableSequence["DataAccessLabelReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="DataAccessLabelReference",
+        )
     )
-    denied_data_access_labels: MutableSequence[
-        "DataAccessLabelReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="DataAccessLabelReference",
+    denied_data_access_labels: MutableSequence["DataAccessLabelReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="DataAccessLabelReference",
+        )
     )
     display_name: str = proto.Field(
         proto.STRING,

@@ -16,43 +16,46 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
-from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_config
-from google.cloud.artifactregistry_v1.types import apt_artifact, artifact
-from google.cloud.artifactregistry_v1.types import attachment
+from google.cloud.artifactregistry_v1.types import (
+    apt_artifact,
+    artifact,
+    attachment,
+    export,
+    file,
+    package,
+    repository,
+    rule,
+    settings,
+    tag,
+    version,
+    vpcsc_config,
+    yum_artifact,
+)
 from google.cloud.artifactregistry_v1.types import attachment as gda_attachment
-from google.cloud.artifactregistry_v1.types import export
-from google.cloud.artifactregistry_v1.types import file
 from google.cloud.artifactregistry_v1.types import file as gda_file
-from google.cloud.artifactregistry_v1.types import package
 from google.cloud.artifactregistry_v1.types import package as gda_package
-from google.cloud.artifactregistry_v1.types import repository
 from google.cloud.artifactregistry_v1.types import repository as gda_repository
-from google.cloud.artifactregistry_v1.types import rule
 from google.cloud.artifactregistry_v1.types import rule as gda_rule
-from google.cloud.artifactregistry_v1.types import settings
-from google.cloud.artifactregistry_v1.types import tag
 from google.cloud.artifactregistry_v1.types import tag as gda_tag
-from google.cloud.artifactregistry_v1.types import version
 from google.cloud.artifactregistry_v1.types import version as gda_version
-from google.cloud.artifactregistry_v1.types import vpcsc_config
-from google.cloud.artifactregistry_v1.types import yum_artifact
+from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_config
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseArtifactRegistryRestTransport
@@ -3021,9 +3024,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseBatchDeleteVersions._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseBatchDeleteVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_delete_versions(
                 request, metadata
@@ -3176,9 +3177,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseCreateAttachment._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseCreateAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_attachment(
                 request, metadata
@@ -3331,9 +3330,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseCreateRepository._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseCreateRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
@@ -3793,9 +3790,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseDeleteAttachment._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseDeleteAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_attachment(
                 request, metadata
@@ -4085,9 +4080,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseDeletePackage._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseDeletePackage._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_package(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeletePackage._get_transcoded_request(
@@ -4231,9 +4224,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseDeleteRepository._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseDeleteRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
@@ -4590,9 +4581,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseDeleteVersion._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseDeleteVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseDeleteVersion._get_transcoded_request(
@@ -4737,9 +4726,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseExportArtifact._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseExportArtifact._get_http_options()
 
             request, metadata = self._interceptor.pre_export_artifact(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseExportArtifact._get_transcoded_request(
@@ -4890,9 +4877,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetAttachment._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_attachment(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetAttachment._get_transcoded_request(
@@ -5042,9 +5027,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetDockerImage._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetDockerImage._get_http_options()
 
             request, metadata = self._interceptor.pre_get_docker_image(
                 request, metadata
@@ -5561,9 +5544,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetMavenArtifact._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetMavenArtifact._get_http_options()
 
             request, metadata = self._interceptor.pre_get_maven_artifact(
                 request, metadata
@@ -5709,9 +5690,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetNpmPackage._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetNpmPackage._get_http_options()
 
             request, metadata = self._interceptor.pre_get_npm_package(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetNpmPackage._get_transcoded_request(
@@ -6003,9 +5982,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetProjectSettings._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetProjectSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_get_project_settings(
                 request, metadata
@@ -6152,9 +6129,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetPythonPackage._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetPythonPackage._get_http_options()
 
             request, metadata = self._interceptor.pre_get_python_package(
                 request, metadata
@@ -6300,9 +6275,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetRepository._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseGetRepository._get_transcoded_request(
@@ -6900,9 +6873,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseGetVPCSCConfig._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseGetVPCSCConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vpcsc_config(
                 request, metadata
@@ -7052,9 +7023,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseImportAptArtifacts._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseImportAptArtifacts._get_http_options()
 
             request, metadata = self._interceptor.pre_import_apt_artifacts(
                 request, metadata
@@ -7207,9 +7176,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseImportYumArtifacts._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseImportYumArtifacts._get_http_options()
 
             request, metadata = self._interceptor.pre_import_yum_artifacts(
                 request, metadata
@@ -7359,9 +7326,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseListAttachments._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseListAttachments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_attachments(
                 request, metadata
@@ -7510,9 +7475,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseListDockerImages._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseListDockerImages._get_http_options()
 
             request, metadata = self._interceptor.pre_list_docker_images(
                 request, metadata
@@ -7805,9 +7768,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseListMavenArtifacts._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseListMavenArtifacts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_maven_artifacts(
                 request, metadata
@@ -7956,9 +7917,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseListNpmPackages._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseListNpmPackages._get_http_options()
 
             request, metadata = self._interceptor.pre_list_npm_packages(
                 request, metadata
@@ -8251,9 +8210,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseListPythonPackages._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseListPythonPackages._get_http_options()
 
             request, metadata = self._interceptor.pre_list_python_packages(
                 request, metadata
@@ -8402,9 +8359,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseListRepositories._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseListRepositories._get_http_options()
 
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
@@ -9211,9 +9166,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -9518,9 +9471,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseUpdatePackage._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseUpdatePackage._get_http_options()
 
             request, metadata = self._interceptor.pre_update_package(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdatePackage._get_transcoded_request(
@@ -9671,9 +9622,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseUpdateProjectSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_project_settings(
                 request, metadata
@@ -9828,9 +9777,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseUpdateRepository._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseUpdateRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_update_repository(
                 request, metadata
@@ -10295,9 +10242,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseUpdateVersion._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseUpdateVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_update_version(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseUpdateVersion._get_transcoded_request(
@@ -10448,9 +10393,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseUpdateVPCSCConfig._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseUpdateVPCSCConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_vpcsc_config(
                 request, metadata
@@ -11127,9 +11070,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseArtifactRegistryRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseArtifactRegistryRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseArtifactRegistryRestTransport._BaseListLocations._get_transcoded_request(

@@ -63,6 +63,7 @@ class View(proto.Enum):
             Uses internally generated column id to
             identify values.
     """
+
     VIEW_UNSPECIFIED = 0
     COLUMN_ID_VIEW = 1
 

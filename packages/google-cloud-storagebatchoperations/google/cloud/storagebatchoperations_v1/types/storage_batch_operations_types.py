@@ -138,6 +138,7 @@ class Job(proto.Message):
             QUEUED (5):
                 Queued but not yet started.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -311,6 +312,7 @@ class BucketOperation(proto.Message):
             FAILED (5):
                 Terminated due to an unrecoverable failure.
         """
+
         STATE_UNSPECIFIED = 0
         QUEUED = 1
         RUNNING = 2
@@ -527,6 +529,7 @@ class PutObjectHold(proto.Message):
             UNSET (2):
                 Releases the hold.
         """
+
         HOLD_STATUS_UNSPECIFIED = 0
         SET = 1
         UNSET = 2
@@ -633,6 +636,7 @@ class ObjectRetention(proto.Message):
             UNLOCKED (2):
                 Sets the retention mode to unlocked.
         """
+
         RETENTION_MODE_UNSPECIFIED = 0
         LOCKED = 1
         UNLOCKED = 2
@@ -882,6 +886,7 @@ class LoggingConfig(proto.Message):
                 The corresponding transform action in this
                 job.
         """
+
         LOGGABLE_ACTION_UNSPECIFIED = 0
         TRANSFORM = 6
 
@@ -900,6 +905,7 @@ class LoggingConfig(proto.Message):
                 actions are logged as
                 [ERROR][google.logging.type.LogSeverity.ERROR].
         """
+
         LOGGABLE_ACTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2

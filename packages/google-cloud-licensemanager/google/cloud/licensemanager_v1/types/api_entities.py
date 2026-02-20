@@ -48,6 +48,7 @@ class LicenseType(proto.Enum):
         LICENSE_TYPE_BRING_YOUR_OWN_LICENSE (2):
             Bring your own license.
     """
+
     LICENSE_TYPE_UNSPECIFIED = 0
     LICENSE_TYPE_PER_MONTH_PER_USER = 1
     LICENSE_TYPE_BRING_YOUR_OWN_LICENSE = 2
@@ -76,6 +77,7 @@ class ActivationState(proto.Enum):
             License Key activation failed on the
             instance.
     """
+
     ACTIVATION_STATE_UNSPECIFIED = 0
     ACTIVATION_STATE_KEY_REQUESTED = 1
     ACTIVATION_STATE_ACTIVATING = 2
@@ -129,6 +131,7 @@ class Configuration(proto.Message):
             STATE_DELETED (3):
                 Configuration is in deleted state.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_ACTIVE = 1
         STATE_SUSPENDED = 2
@@ -287,6 +290,7 @@ class Product(proto.Message):
             STATE_TERMINATED (4):
                 The product has been terminated.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_PROVISIONING = 1
         STATE_RUNNING = 2
@@ -377,6 +381,7 @@ class Instance(proto.Message):
             REPAIRING (7):
                 The instance is in repair.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         STAGING = 2

@@ -147,6 +147,7 @@ class MirroringEndpointGroup(proto.Message):
                 only permitted operation is to retry deleting
                 the endpoint group.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLOSED = 2
@@ -165,6 +166,7 @@ class MirroringEndpointGroup(proto.Message):
                 An endpoint group that sends packets to a
                 single deployment group.
         """
+
         TYPE_UNSPECIFIED = 0
         DIRECT = 1
 
@@ -248,12 +250,12 @@ class MirroringEndpointGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_deployment_groups: MutableSequence[
-        ConnectedDeploymentGroup
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=ConnectedDeploymentGroup,
+    connected_deployment_groups: MutableSequence[ConnectedDeploymentGroup] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=ConnectedDeploymentGroup,
+        )
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -350,12 +352,12 @@ class ListMirroringEndpointGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mirroring_endpoint_groups: MutableSequence[
-        "MirroringEndpointGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="MirroringEndpointGroup",
+    mirroring_endpoint_groups: MutableSequence["MirroringEndpointGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="MirroringEndpointGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -564,6 +566,7 @@ class MirroringEndpointGroupAssociation(proto.Message):
                 The only permitted operation is to retry
                 deleting the association.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 3
@@ -601,6 +604,7 @@ class MirroringEndpointGroupAssociation(proto.Message):
                     (e.g. an inaccessible location) and the system
                     is expected to recover automatically.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             OUT_OF_SYNC = 2
@@ -933,6 +937,7 @@ class MirroringDeploymentGroup(proto.Message):
                 The deployment group is being wiped out
                 (project deleted).
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1001,12 +1006,12 @@ class MirroringDeploymentGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_endpoint_groups: MutableSequence[
-        ConnectedEndpointGroup
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=ConnectedEndpointGroup,
+    connected_endpoint_groups: MutableSequence[ConnectedEndpointGroup] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=ConnectedEndpointGroup,
+        )
     )
     nested_deployments: MutableSequence[Deployment] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1104,12 +1109,12 @@ class ListMirroringDeploymentGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mirroring_deployment_groups: MutableSequence[
-        "MirroringDeploymentGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="MirroringDeploymentGroup",
+    mirroring_deployment_groups: MutableSequence["MirroringDeploymentGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="MirroringDeploymentGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1309,6 +1314,7 @@ class MirroringDeployment(proto.Message):
                 permitted operation is to retry deleting the
                 deployment.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1585,6 +1591,7 @@ class MirroringLocation(proto.Message):
                 location) and the system is expected to recover
                 automatically.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         OUT_OF_SYNC = 2

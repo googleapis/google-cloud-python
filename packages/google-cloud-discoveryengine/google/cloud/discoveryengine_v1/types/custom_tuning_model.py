@@ -83,6 +83,7 @@ class CustomTuningModel(proto.Message):
                 Input data validation failed. Model training
                 didn't start.
         """
+
         MODEL_STATE_UNSPECIFIED = 0
         TRAINING_PAUSED = 1
         TRAINING = 2

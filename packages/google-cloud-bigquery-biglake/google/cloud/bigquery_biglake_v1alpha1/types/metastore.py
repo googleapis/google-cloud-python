@@ -72,6 +72,7 @@ class TableView(proto.Enum):
         FULL (2):
             Include everything.
     """
+
     TABLE_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -166,6 +167,7 @@ class Database(proto.Message):
                 Represents a database storing tables
                 compatible with Hive Metastore tables.
         """
+
         TYPE_UNSPECIFIED = 0
         HIVE = 1
 
@@ -252,6 +254,7 @@ class Table(proto.Message):
                 Represents a table compatible with Hive
                 Metastore tables.
         """
+
         TYPE_UNSPECIFIED = 0
         HIVE = 1
 
@@ -329,6 +332,7 @@ class Lock(proto.Message):
                 An exclusive lock prevents another lock from
                 being created on the same resource.
         """
+
         TYPE_UNSPECIFIED = 0
         EXCLUSIVE = 1
 
@@ -343,6 +347,7 @@ class Lock(proto.Message):
             ACQUIRED (2):
                 The lock has been acquired.
         """
+
         STATE_UNSPECIFIED = 0
         WAITING = 1
         ACQUIRED = 2

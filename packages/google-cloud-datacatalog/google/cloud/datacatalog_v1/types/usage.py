@@ -138,13 +138,13 @@ class UsageSignal(proto.Message):
         number=2,
         message="UsageStats",
     )
-    common_usage_within_time_range: MutableMapping[
-        str, "CommonUsageStats"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=3,
-        message="CommonUsageStats",
+    common_usage_within_time_range: MutableMapping[str, "CommonUsageStats"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=3,
+            message="CommonUsageStats",
+        )
     )
     favorite_count: int = proto.Field(
         proto.INT64,

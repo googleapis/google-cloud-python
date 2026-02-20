@@ -36,7 +36,6 @@ class Distribution(_message.Message):
         "bucket_counts",
         "exemplars",
     )
-
     class Range(_message.Message):
         __slots__ = ("min", "max")
         MIN_FIELD_NUMBER: _ClassVar[int]
@@ -49,7 +48,6 @@ class Distribution(_message.Message):
 
     class BucketOptions(_message.Message):
         __slots__ = ("linear_buckets", "exponential_buckets", "explicit_buckets")
-
         class Linear(_message.Message):
             __slots__ = ("num_finite_buckets", "width", "offset")
             NUM_FINITE_BUCKETS_FIELD_NUMBER: _ClassVar[int]

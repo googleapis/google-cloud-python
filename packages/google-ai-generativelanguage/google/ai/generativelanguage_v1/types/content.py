@@ -50,6 +50,7 @@ class Modality(proto.Enum):
         DOCUMENT (5):
             Document, e.g. PDF.
     """
+
     MODALITY_UNSPECIFIED = 0
     TEXT = 1
     IMAGE = 2

@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -433,9 +435,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_http_options()
 
             request, metadata = self._interceptor.pre_health_check(request, metadata)
             transcoded_request = _BaseHealthCheckServiceRestTransport._BaseHealthCheck._get_transcoded_request(
@@ -593,9 +593,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseHealthCheckServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -734,9 +732,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseHealthCheckServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -873,9 +869,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -993,9 +987,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -1111,9 +1103,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseHealthCheckServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1252,9 +1242,7 @@ class HealthCheckServiceRestTransport(_BaseHealthCheckServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseHealthCheckServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseHealthCheckServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseHealthCheckServiceRestTransport._BaseListOperations._get_transcoded_request(

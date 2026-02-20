@@ -20,9 +20,7 @@ from .base import CustomFieldServiceTransport
 from .rest import CustomFieldServiceRestInterceptor, CustomFieldServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CustomFieldServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CustomFieldServiceTransport]]
 _transport_registry["rest"] = CustomFieldServiceRestTransport
 
 __all__ = (

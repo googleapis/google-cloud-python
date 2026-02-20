@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,13 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,18 +58,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.operation_async as operation_async  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.automl_v1.services.auto_ml import (
     AutoMlAsyncClient,
@@ -72,6 +72,13 @@ from google.cloud.automl_v1.services.auto_ml import (
     transports,
 )
 from google.cloud.automl_v1.types import (
+    annotation_spec,
+    classification,
+    dataset,
+    detection,
+    image,
+    io,
+    model,
     model_evaluation,
     operations,
     service,
@@ -80,11 +87,7 @@ from google.cloud.automl_v1.types import (
     text_sentiment,
     translation,
 )
-from google.cloud.automl_v1.types import annotation_spec, classification
-from google.cloud.automl_v1.types import dataset
 from google.cloud.automl_v1.types import dataset as gca_dataset
-from google.cloud.automl_v1.types import detection, image, io
-from google.cloud.automl_v1.types import model
 from google.cloud.automl_v1.types import model as gca_model
 
 CRED_INFO_JSON = {
@@ -922,10 +925,9 @@ def test_auto_ml_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -970,10 +972,9 @@ def test_auto_ml_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1009,10 +1010,9 @@ def test_auto_ml_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1241,9 +1241,7 @@ def test_auto_ml_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3979,9 +3977,9 @@ def test_get_annotation_spec_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_annotation_spec
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_annotation_spec] = (
+            mock_rpc
+        )
         request = {}
         client.get_annotation_spec(request)
 
@@ -7252,9 +7250,9 @@ def test_get_model_evaluation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_model_evaluation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_model_evaluation] = (
+            mock_rpc
+        )
         request = {}
         client.get_model_evaluation(request)
 
@@ -7604,9 +7602,9 @@ def test_list_model_evaluations_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_model_evaluations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_model_evaluations] = (
+            mock_rpc
+        )
         request = {}
         client.list_model_evaluations(request)
 
@@ -9462,9 +9460,9 @@ def test_get_annotation_spec_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_annotation_spec
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_annotation_spec] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_annotation_spec(request)
@@ -11181,9 +11179,9 @@ def test_get_model_evaluation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_model_evaluation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_model_evaluation] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_model_evaluation(request)
@@ -11366,9 +11364,9 @@ def test_list_model_evaluations_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_model_evaluations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_model_evaluations] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_model_evaluations(request)

@@ -97,6 +97,7 @@ class DiscoveryType(proto.Enum):
             The Data exchange/listing can be discovered
             in the 'Public' results list.
     """
+
     DISCOVERY_TYPE_UNSPECIFIED = 0
     DISCOVERY_TYPE_PRIVATE = 1
     DISCOVERY_TYPE_PUBLIC = 2
@@ -114,6 +115,7 @@ class SharedResourceType(proto.Enum):
         PUBSUB_TOPIC (2):
             Pub/Sub Topic Asset.
     """
+
     SHARED_RESOURCE_TYPE_UNSPECIFIED = 0
     BIGQUERY_DATASET = 1
     PUBSUB_TOPIC = 2
@@ -290,6 +292,7 @@ class QueryTemplate(proto.Message):
             APPROVED (4):
                 The QueryTemplate is in approved state.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFTED = 1
         PENDING = 2
@@ -361,6 +364,7 @@ class Routine(proto.Message):
             TABLE_VALUED_FUNCTION (1):
                 Non-built-in persistent TVF.
         """
+
         ROUTINE_TYPE_UNSPECIFIED = 0
         TABLE_VALUED_FUNCTION = 1
 
@@ -898,6 +902,7 @@ class Listing(proto.Message):
                 dataexchange.listings.subscribe permission can
                 subscribe to this listing.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 
@@ -948,6 +953,7 @@ class Listing(proto.Message):
             CATEGORY_GOOGLE_EARTH_ENGINE (20):
                 No description available.
         """
+
         CATEGORY_UNSPECIFIED = 0
         CATEGORY_OTHERS = 1
         CATEGORY_ADVERTISING_AND_MARKETING = 2
@@ -1107,6 +1113,7 @@ class Listing(proto.Message):
                         The replica is unavailable, does not exist,
                         or has not been backfilled yet.
                 """
+
                 REPLICA_STATE_UNSPECIFIED = 0
                 READY_TO_USE = 1
                 UNAVAILABLE = 2
@@ -1121,6 +1128,7 @@ class Listing(proto.Message):
                     PRIMARY_REPLICA (1):
                         The replica is the primary replica.
                 """
+
                 PRIMARY_STATE_UNSPECIFIED = 0
                 PRIMARY_REPLICA = 1
 
@@ -1164,12 +1172,12 @@ class Listing(proto.Message):
             proto.STRING,
             number=5,
         )
-        effective_replicas: MutableSequence[
-            "Listing.BigQueryDatasetSource.Replica"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="Listing.BigQueryDatasetSource.Replica",
+        effective_replicas: MutableSequence["Listing.BigQueryDatasetSource.Replica"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="Listing.BigQueryDatasetSource.Replica",
+            )
         )
 
     class PubSubTopicSource(proto.Message):
@@ -1275,6 +1283,7 @@ class Listing(proto.Message):
                         Commercialization is complete and available
                         for use.
                 """
+
                 COMMERCIAL_STATE_UNSPECIFIED = 0
                 ONBOARDING = 1
                 ACTIVE = 2
@@ -1421,6 +1430,7 @@ class StoredProcedureConfig(proto.Message):
             SQL_PROCEDURE (1):
                 SQL stored procedure.
         """
+
         STORED_PROCEDURE_TYPE_UNSPECIFIED = 0
         SQL_PROCEDURE = 1
 
@@ -1428,12 +1438,12 @@ class StoredProcedureConfig(proto.Message):
         proto.BOOL,
         number=1,
     )
-    allowed_stored_procedure_types: MutableSequence[
-        StoredProcedureType
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=2,
-        enum=StoredProcedureType,
+    allowed_stored_procedure_types: MutableSequence[StoredProcedureType] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum=StoredProcedureType,
+        )
     )
 
 
@@ -1530,6 +1540,7 @@ class Subscription(proto.Message):
                 This subscription has been cancelled or
                 revoked and the data is no longer accessible.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_ACTIVE = 1
         STATE_STALE = 2
@@ -2323,12 +2334,12 @@ class ListSharedResourceSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    shared_resource_subscriptions: MutableSequence[
-        "Subscription"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="Subscription",
+    shared_resource_subscriptions: MutableSequence["Subscription"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Subscription",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

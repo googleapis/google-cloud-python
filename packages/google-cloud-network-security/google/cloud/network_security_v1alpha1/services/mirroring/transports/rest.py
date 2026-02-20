@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1678,9 +1680,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_mirroring_deployment(
                 request, metadata
@@ -1834,9 +1834,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_mirroring_deployment_group(
                 request, metadata
@@ -1905,11 +1903,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_create_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_mirroring_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1994,9 +1991,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_mirroring_endpoint_group(
                 request, metadata
@@ -2065,11 +2060,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_create_mirroring_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_mirroring_endpoint_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_mirroring_endpoint_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2157,15 +2151,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_mirroring_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_mirroring_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMirroringRestTransport._BaseCreateMirroringEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -2231,11 +2222,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_mirroring_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2319,9 +2309,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_mirroring_deployment(
                 request, metadata
@@ -2469,9 +2457,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_mirroring_deployment_group(
                 request, metadata
@@ -2535,11 +2521,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_delete_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_mirroring_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2623,9 +2608,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_mirroring_endpoint_group(
                 request, metadata
@@ -2689,11 +2672,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_delete_mirroring_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_mirroring_endpoint_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_mirroring_endpoint_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2780,15 +2762,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_mirroring_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_mirroring_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMirroringRestTransport._BaseDeleteMirroringEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -2849,11 +2828,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_mirroring_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2941,9 +2919,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_mirroring_deployment(
                 request, metadata
@@ -3094,9 +3070,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_mirroring_deployment_group(
                 request, metadata
@@ -3162,11 +3136,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_get_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_mirroring_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3261,9 +3234,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_mirroring_endpoint_group(
                 request, metadata
@@ -3424,15 +3395,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_mirroring_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_mirroring_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMirroringRestTransport._BaseGetMirroringEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -3493,11 +3461,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_get_mirroring_endpoint_group_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_mirroring_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3583,9 +3550,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringDeploymentGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_mirroring_deployment_groups(
                 request, metadata
@@ -3651,11 +3616,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_list_mirroring_deployment_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_mirroring_deployment_groups_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_mirroring_deployment_groups_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3742,9 +3706,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringDeployments._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringDeployments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_mirroring_deployments(
                 request, metadata
@@ -3895,15 +3857,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_mirroring_endpoint_group_associations(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_mirroring_endpoint_group_associations(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMirroringRestTransport._BaseListMirroringEndpointGroupAssociations._get_transcoded_request(
                 http_options, request
@@ -3966,11 +3925,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_mirroring_endpoint_group_associations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_mirroring_endpoint_group_associations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4055,9 +4013,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseListMirroringEndpointGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_mirroring_endpoint_groups(
                 request, metadata
@@ -4123,11 +4079,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_list_mirroring_endpoint_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_mirroring_endpoint_groups_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_mirroring_endpoint_groups_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4214,9 +4169,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_mirroring_deployment(
                 request, metadata
@@ -4370,9 +4323,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringDeploymentGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_mirroring_deployment_group(
                 request, metadata
@@ -4441,11 +4392,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_update_mirroring_deployment_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_mirroring_deployment_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_mirroring_deployment_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4530,9 +4480,7 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_mirroring_endpoint_group(
                 request, metadata
@@ -4601,11 +4549,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             resp = self._interceptor.post_update_mirroring_endpoint_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_mirroring_endpoint_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_mirroring_endpoint_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4693,15 +4640,12 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
 
             """
 
-            http_options = (
-                _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_http_options()
-            )
+            http_options = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_mirroring_endpoint_group_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_mirroring_endpoint_group_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMirroringRestTransport._BaseUpdateMirroringEndpointGroupAssociation._get_transcoded_request(
                 http_options, request
@@ -4767,11 +4711,10 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_mirroring_endpoint_group_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_mirroring_endpoint_group_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4804,7 +4747,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMirroringDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_mirroring_deployment_group(
@@ -4814,7 +4759,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMirroringDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_mirroring_endpoint_group(
@@ -4824,7 +4771,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMirroringEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_mirroring_endpoint_group_association(
@@ -4835,7 +4784,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMirroringEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_mirroring_deployment(
@@ -4845,7 +4796,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMirroringDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_mirroring_deployment_group(
@@ -4855,7 +4808,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMirroringDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_mirroring_endpoint_group(
@@ -4865,7 +4820,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMirroringEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_mirroring_endpoint_group_association(
@@ -4876,7 +4833,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMirroringEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_mirroring_deployment(
@@ -4886,7 +4845,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetMirroringDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_mirroring_deployment_group(
@@ -4897,7 +4858,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetMirroringDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_mirroring_endpoint_group(
@@ -4907,7 +4870,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetMirroringEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_mirroring_endpoint_group_association(
@@ -4918,7 +4883,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetMirroringEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_mirroring_deployment_groups(
@@ -4929,7 +4896,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMirroringDeploymentGroups(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMirroringDeploymentGroups(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_mirroring_deployments(
@@ -4940,7 +4909,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMirroringDeployments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMirroringDeployments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_mirroring_endpoint_group_associations(
@@ -4951,7 +4922,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMirroringEndpointGroupAssociations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMirroringEndpointGroupAssociations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_mirroring_endpoint_groups(
@@ -4962,7 +4935,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMirroringEndpointGroups(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMirroringEndpointGroups(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_mirroring_deployment(
@@ -4972,7 +4947,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateMirroringDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateMirroringDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_mirroring_deployment_group(
@@ -4982,7 +4959,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateMirroringDeploymentGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateMirroringDeploymentGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_mirroring_endpoint_group(
@@ -4992,7 +4971,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateMirroringEndpointGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateMirroringEndpointGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_mirroring_endpoint_group_association(
@@ -5003,7 +4984,9 @@ class MirroringRestTransport(_BaseMirroringRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateMirroringEndpointGroupAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateMirroringEndpointGroupAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):

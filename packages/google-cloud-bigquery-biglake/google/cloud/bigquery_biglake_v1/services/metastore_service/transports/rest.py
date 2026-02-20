@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1028,9 +1028,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_create_catalog(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_transcoded_request(
@@ -1179,9 +1177,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Database is the container of tables.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_create_database(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_transcoded_request(
@@ -1482,9 +1478,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_catalog(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_transcoded_request(
@@ -1627,9 +1621,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Database is the container of tables.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_database(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_transcoded_request(
@@ -2505,9 +2497,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseListDatabases._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_transcoded_request(
@@ -2949,9 +2939,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Database is the container of tables.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_update_database(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_transcoded_request(

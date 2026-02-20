@@ -20,9 +20,7 @@ from .base import ApplicationServiceTransport
 from .rest import ApplicationServiceRestInterceptor, ApplicationServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ApplicationServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ApplicationServiceTransport]]
 _transport_registry["rest"] = ApplicationServiceRestTransport
 
 __all__ = (

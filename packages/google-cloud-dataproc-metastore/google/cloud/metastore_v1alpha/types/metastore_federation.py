@@ -106,6 +106,7 @@ class Federation(proto.Message):
                 error and cannot be used. The metastore
                 federation should be deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -194,6 +195,7 @@ class BackendMetastore(proto.Message):
             DATAPROC_METASTORE (3):
                 The backend metastore is Dataproc Metastore.
         """
+
         METASTORE_TYPE_UNSPECIFIED = 0
         DATAPLEX = 1
         BIGQUERY = 2

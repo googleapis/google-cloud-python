@@ -475,6 +475,7 @@ class Destination(proto.Message):
                 INVALID (2):
                     The ``DestinationEndpoint`` resource is invalid.
             """
+
             STATE_UNSPECIFIED = 0
             VALID = 1
             INVALID = 2
@@ -825,6 +826,7 @@ class StateTimeline(proto.Message):
                 SUSPENDED (5):
                     The resource is suspended and not in use.
             """
+
             STATE_UNSPECIFIED = 0
             ADDING = 1
             ACTIVE = 2
@@ -905,6 +907,7 @@ class ServiceConfig(proto.Message):
                 Essentials configuration only for the regional
                 endpoint.
         """
+
         ELIGIBILITY_CRITERIA_UNSPECIFIED = 0
         NETWORK_SERVICE_TIER_PREMIUM_ONLY = 1
         NETWORK_SERVICE_TIER_STANDARD_ONLY = 2

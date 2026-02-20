@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -3209,9 +3209,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseCreateMembershipBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseCreateMembershipBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_create_membership_binding(
                 request, metadata
@@ -3363,15 +3361,12 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseCreateMembershipRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseCreateMembershipRBACRoleBinding._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_membership_rbac_role_binding(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_membership_rbac_role_binding(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGkeHubRestTransport._BaseCreateMembershipRBACRoleBinding._get_transcoded_request(
                 http_options, request
@@ -3437,11 +3432,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_create_membership_rbac_role_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_membership_rbac_role_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_membership_rbac_role_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3829,9 +3823,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseCreateScopeRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseCreateScopeRBACRoleBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_create_scope_rbac_role_binding(
                 request, metadata
@@ -3898,11 +3890,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_create_scope_rbac_role_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_scope_rbac_role_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_scope_rbac_role_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4427,9 +4418,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseDeleteMembershipBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseDeleteMembershipBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_membership_binding(
                 request, metadata
@@ -4576,15 +4565,12 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseDeleteMembershipRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseDeleteMembershipRBACRoleBinding._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_membership_rbac_role_binding(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_membership_rbac_role_binding(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGkeHubRestTransport._BaseDeleteMembershipRBACRoleBinding._get_transcoded_request(
                 http_options, request
@@ -4645,11 +4631,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_delete_membership_rbac_role_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_membership_rbac_role_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_membership_rbac_role_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5025,9 +5010,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseDeleteScopeRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseDeleteScopeRBACRoleBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_scope_rbac_role_binding(
                 request, metadata
@@ -5089,11 +5072,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_delete_scope_rbac_role_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_scope_rbac_role_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_scope_rbac_role_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5176,9 +5158,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseGenerateConnectManifest._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseGenerateConnectManifest._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_connect_manifest(
                 request, metadata
@@ -5332,15 +5312,12 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseGenerateMembershipRBACRoleBindingYAML._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseGenerateMembershipRBACRoleBindingYAML._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_membership_rbac_role_binding_yaml(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_generate_membership_rbac_role_binding_yaml(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGkeHubRestTransport._BaseGenerateMembershipRBACRoleBindingYAML._get_transcoded_request(
                 http_options, request
@@ -5408,11 +5385,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_membership_rbac_role_binding_yaml_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_generate_membership_rbac_role_binding_yaml_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6090,9 +6066,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseGetMembershipRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseGetMembershipRBACRoleBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_membership_rbac_role_binding(
                 request, metadata
@@ -6156,11 +6130,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_get_membership_rbac_role_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_membership_rbac_role_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_membership_rbac_role_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6539,9 +6512,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseGetScopeRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseGetScopeRBACRoleBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_scope_rbac_role_binding(
                 request, metadata
@@ -7276,15 +7247,12 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                         List of Membership RBACRoleBindings.
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseListMembershipRBACRoleBindings._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseListMembershipRBACRoleBindings._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_membership_rbac_role_bindings(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_membership_rbac_role_bindings(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGkeHubRestTransport._BaseListMembershipRBACRoleBindings._get_transcoded_request(
                 http_options, request
@@ -7347,11 +7315,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_list_membership_rbac_role_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_membership_rbac_role_bindings_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_membership_rbac_role_bindings_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -7882,9 +7849,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                         List of Scope RBACRoleBindings.
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseListScopeRBACRoleBindings._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseListScopeRBACRoleBindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_scope_rbac_role_bindings(
                 request, metadata
@@ -7948,11 +7913,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_list_scope_rbac_role_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_scope_rbac_role_bindings_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_scope_rbac_role_bindings_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8645,9 +8609,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseUpdateMembershipBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseUpdateMembershipBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_update_membership_binding(
                 request, metadata
@@ -8800,15 +8762,12 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseUpdateMembershipRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseUpdateMembershipRBACRoleBinding._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_membership_rbac_role_binding(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_membership_rbac_role_binding(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGkeHubRestTransport._BaseUpdateMembershipRBACRoleBinding._get_transcoded_request(
                 http_options, request
@@ -8874,11 +8833,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_update_membership_rbac_role_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_membership_rbac_role_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_membership_rbac_role_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9267,9 +9225,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseGkeHubRestTransport._BaseUpdateScopeRBACRoleBinding._get_http_options()
-            )
+            http_options = _BaseGkeHubRestTransport._BaseUpdateScopeRBACRoleBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_update_scope_rbac_role_binding(
                 request, metadata
@@ -9336,11 +9292,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
 
             resp = self._interceptor.post_update_scope_rbac_role_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_scope_rbac_role_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_scope_rbac_role_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9395,7 +9350,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ) -> Callable[[service.CreateMembershipBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMembershipBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMembershipBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_membership_rbac_role_binding(
@@ -9405,7 +9362,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMembershipRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMembershipRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_scope(
@@ -9431,7 +9390,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateScopeRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateScopeRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_feature(
@@ -9463,7 +9424,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ) -> Callable[[service.DeleteMembershipBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMembershipBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMembershipBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_membership_rbac_role_binding(
@@ -9473,7 +9436,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMembershipRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMembershipRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_scope(
@@ -9499,7 +9464,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteScopeRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteScopeRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def generate_connect_manifest(
@@ -9510,7 +9477,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateConnectManifest(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateConnectManifest(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def generate_membership_rbac_role_binding_yaml(
@@ -9521,7 +9490,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateMembershipRBACRoleBindingYAML(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateMembershipRBACRoleBindingYAML(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_feature(self) -> Callable[[service.GetFeatureRequest], feature.Feature]:
@@ -9557,7 +9528,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ) -> Callable[[service.GetMembershipRBACRoleBindingRequest], fleet.RBACRoleBinding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetMembershipRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetMembershipRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_scope(self) -> Callable[[service.GetScopeRequest], fleet.Scope]:
@@ -9579,7 +9552,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ) -> Callable[[service.GetScopeRBACRoleBindingRequest], fleet.RBACRoleBinding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetScopeRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetScopeRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_bound_memberships(
@@ -9615,7 +9590,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMembershipBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMembershipBindings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_membership_rbac_role_bindings(
@@ -9626,7 +9603,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMembershipRBACRoleBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMembershipRBACRoleBindings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_memberships(
@@ -9665,7 +9644,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListScopeRBACRoleBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListScopeRBACRoleBindings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_scopes(
@@ -9705,7 +9686,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ) -> Callable[[service.UpdateMembershipBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateMembershipBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateMembershipBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_membership_rbac_role_binding(
@@ -9715,7 +9698,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateMembershipRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateMembershipRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_scope(
@@ -9741,7 +9726,9 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateScopeRBACRoleBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateScopeRBACRoleBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

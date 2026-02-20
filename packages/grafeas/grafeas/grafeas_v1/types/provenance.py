@@ -407,6 +407,7 @@ class AliasContext(proto.Message):
                 example, if a Git repo has a ref named
                 "refs/foo/bar".
         """
+
         KIND_UNSPECIFIED = 0
         FIXED = 1
         MOVABLE = 2

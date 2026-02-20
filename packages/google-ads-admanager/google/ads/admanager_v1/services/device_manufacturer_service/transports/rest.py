@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -372,9 +372,7 @@ class DeviceManufacturerServiceRestTransport(
                     Represents a device manufacturer.
             """
 
-            http_options = (
-                _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_http_options()
-            )
+            http_options = _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_http_options()
 
             request, metadata = self._interceptor.pre_get_device_manufacturer(
                 request, metadata
@@ -527,9 +525,7 @@ class DeviceManufacturerServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers._get_http_options()
-            )
+            http_options = _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_device_manufacturers(
                 request, metadata
@@ -643,7 +639,9 @@ class DeviceManufacturerServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDeviceManufacturers(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDeviceManufacturers(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_operation(self):
@@ -703,9 +701,7 @@ class DeviceManufacturerServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_transcoded_request(

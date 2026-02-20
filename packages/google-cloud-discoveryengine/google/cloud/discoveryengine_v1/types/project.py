@@ -98,6 +98,7 @@ class Project(proto.Message):
                     The project has declined or revoked the
                     agreement to terms of service.
             """
+
             STATE_UNSPECIFIED = 0
             TERMS_ACCEPTED = 1
             TERMS_PENDING = 2

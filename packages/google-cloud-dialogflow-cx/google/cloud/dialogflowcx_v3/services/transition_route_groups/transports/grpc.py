@@ -16,25 +16,25 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import transition_route_group
 from google.cloud.dialogflowcx_v3.types import (
     transition_route_group as gcdc_transition_route_group,
 )
-from google.cloud.dialogflowcx_v3.types import transition_route_group
 
 from .base import DEFAULT_CLIENT_INFO, TransitionRouteGroupsTransport
 
@@ -351,12 +351,12 @@ class TransitionRouteGroupsGrpcTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_transition_route_groups" not in self._stubs:
-            self._stubs[
-                "list_transition_route_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/ListTransitionRouteGroups",
-                request_serializer=transition_route_group.ListTransitionRouteGroupsRequest.serialize,
-                response_deserializer=transition_route_group.ListTransitionRouteGroupsResponse.deserialize,
+            self._stubs["list_transition_route_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/ListTransitionRouteGroups",
+                    request_serializer=transition_route_group.ListTransitionRouteGroupsRequest.serialize,
+                    response_deserializer=transition_route_group.ListTransitionRouteGroupsResponse.deserialize,
+                )
             )
         return self._stubs["list_transition_route_groups"]
 
@@ -383,12 +383,12 @@ class TransitionRouteGroupsGrpcTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_transition_route_group" not in self._stubs:
-            self._stubs[
-                "get_transition_route_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/GetTransitionRouteGroup",
-                request_serializer=transition_route_group.GetTransitionRouteGroupRequest.serialize,
-                response_deserializer=transition_route_group.TransitionRouteGroup.deserialize,
+            self._stubs["get_transition_route_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/GetTransitionRouteGroup",
+                    request_serializer=transition_route_group.GetTransitionRouteGroupRequest.serialize,
+                    response_deserializer=transition_route_group.TransitionRouteGroup.deserialize,
+                )
             )
         return self._stubs["get_transition_route_group"]
 
@@ -420,12 +420,12 @@ class TransitionRouteGroupsGrpcTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_transition_route_group" not in self._stubs:
-            self._stubs[
-                "create_transition_route_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/CreateTransitionRouteGroup",
-                request_serializer=gcdc_transition_route_group.CreateTransitionRouteGroupRequest.serialize,
-                response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
+            self._stubs["create_transition_route_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/CreateTransitionRouteGroup",
+                    request_serializer=gcdc_transition_route_group.CreateTransitionRouteGroupRequest.serialize,
+                    response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
+                )
             )
         return self._stubs["create_transition_route_group"]
 
@@ -456,12 +456,12 @@ class TransitionRouteGroupsGrpcTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_transition_route_group" not in self._stubs:
-            self._stubs[
-                "update_transition_route_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/UpdateTransitionRouteGroup",
-                request_serializer=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.serialize,
-                response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
+            self._stubs["update_transition_route_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/UpdateTransitionRouteGroup",
+                    request_serializer=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest.serialize,
+                    response_deserializer=gcdc_transition_route_group.TransitionRouteGroup.deserialize,
+                )
             )
         return self._stubs["update_transition_route_group"]
 
@@ -491,12 +491,12 @@ class TransitionRouteGroupsGrpcTransport(TransitionRouteGroupsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_transition_route_group" not in self._stubs:
-            self._stubs[
-                "delete_transition_route_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/DeleteTransitionRouteGroup",
-                request_serializer=transition_route_group.DeleteTransitionRouteGroupRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_transition_route_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.TransitionRouteGroups/DeleteTransitionRouteGroup",
+                    request_serializer=transition_route_group.DeleteTransitionRouteGroupRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_transition_route_group"]
 

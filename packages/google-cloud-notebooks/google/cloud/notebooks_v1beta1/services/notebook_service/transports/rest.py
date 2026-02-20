@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1550,9 +1552,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_environment(
                 request, metadata
@@ -1704,9 +1704,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_transcoded_request(
@@ -1856,9 +1854,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_environment(
                 request, metadata
@@ -2004,9 +2000,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_transcoded_request(
@@ -2150,9 +2144,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_environment(request, metadata)
             transcoded_request = _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_transcoded_request(
@@ -2445,9 +2437,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_http_options()
 
             request, metadata = self._interceptor.pre_is_instance_upgradeable(
                 request, metadata
@@ -2595,9 +2585,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                     Response for listing environments.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseListEnvironments._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseListEnvironments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_environments(
                 request, metadata
@@ -2895,9 +2883,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_register_instance(
                 request, metadata
@@ -3050,9 +3036,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_http_options()
 
             request, metadata = self._interceptor.pre_report_instance_info(
                 request, metadata
@@ -3357,9 +3341,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_http_options()
 
             request, metadata = self._interceptor.pre_set_instance_accelerator(
                 request, metadata
@@ -3513,9 +3495,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_instance_labels(
                 request, metadata
@@ -3668,9 +3648,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_http_options()
 
             request, metadata = self._interceptor.pre_set_instance_machine_type(
                 request, metadata
@@ -4128,9 +4106,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_upgrade_instance(
                 request, metadata
@@ -4283,9 +4259,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_http_options()
 
             request, metadata = self._interceptor.pre_upgrade_instance_internal(
                 request, metadata
@@ -4482,7 +4456,9 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     ) -> Callable[[service.SetInstanceAcceleratorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetInstanceAccelerator(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetInstanceAccelerator(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_instance_labels(
@@ -4498,7 +4474,9 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     ) -> Callable[[service.SetInstanceMachineTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetInstanceMachineType(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetInstanceMachineType(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def start_instance(
@@ -4530,7 +4508,9 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     ) -> Callable[[service.UpgradeInstanceInternalRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpgradeInstanceInternal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpgradeInstanceInternal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -5157,9 +5137,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -5302,9 +5280,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -5421,9 +5397,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -5678,9 +5652,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseNotebookServiceRestTransport._BaseListOperations._get_transcoded_request(

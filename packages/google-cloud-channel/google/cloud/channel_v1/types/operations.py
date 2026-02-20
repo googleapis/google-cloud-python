@@ -77,6 +77,7 @@ class OperationMetadata(proto.Message):
                 Long Running Operation was triggered by
                 ProvisionCloudIdentity.
         """
+
         OPERATION_TYPE_UNSPECIFIED = 0
         CREATE_ENTITLEMENT = 1
         CHANGE_RENEWAL_SETTINGS = 3

@@ -171,12 +171,12 @@ class ListHostProjectRegistrationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    host_project_registrations: MutableSequence[
-        "HostProjectRegistration"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="HostProjectRegistration",
+    host_project_registrations: MutableSequence["HostProjectRegistration"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="HostProjectRegistration",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

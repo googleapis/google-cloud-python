@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.cloudsecuritycompliance_v1.types import audit
 
@@ -371,12 +371,12 @@ class AuditGrpcAsyncIOTransport(AuditTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_framework_audit_scope_report" not in self._stubs:
-            self._stubs[
-                "generate_framework_audit_scope_report"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Audit/GenerateFrameworkAuditScopeReport",
-                request_serializer=audit.GenerateFrameworkAuditScopeReportRequest.serialize,
-                response_deserializer=audit.GenerateFrameworkAuditScopeReportResponse.deserialize,
+            self._stubs["generate_framework_audit_scope_report"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Audit/GenerateFrameworkAuditScopeReport",
+                    request_serializer=audit.GenerateFrameworkAuditScopeReportRequest.serialize,
+                    response_deserializer=audit.GenerateFrameworkAuditScopeReportResponse.deserialize,
+                )
             )
         return self._stubs["generate_framework_audit_scope_report"]
 

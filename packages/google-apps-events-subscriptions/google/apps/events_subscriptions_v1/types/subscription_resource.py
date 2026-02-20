@@ -160,6 +160,7 @@ class Subscription(proto.Message):
             DELETED (3):
                 The subscription is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 2
@@ -199,6 +200,7 @@ class Subscription(proto.Message):
             OTHER (5):
                 An unidentified error has occurred.
         """
+
         ERROR_TYPE_UNSPECIFIED = 0
         USER_SCOPE_REVOKED = 1
         RESOURCE_DELETED = 2

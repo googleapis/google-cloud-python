@@ -18,8 +18,8 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.reviews.v1beta",
@@ -147,6 +147,7 @@ class MerchantReviewAttributes(proto.Message):
                 a solicitation after fulfillment of the user's
                 order.
         """
+
         COLLECTION_METHOD_UNSPECIFIED = 0
         MERCHANT_UNSOLICITED = 1
         POINT_OF_SALE = 2
@@ -312,6 +313,7 @@ class MerchantReviewStatus(proto.Message):
                 DISAPPROVED (2):
                     Issue disapproves the merchant review.
             """
+
             SEVERITY_UNSPECIFIED = 0
             NOT_IMPACTED = 1
             DISAPPROVED = 2
@@ -353,19 +355,19 @@ class MerchantReviewStatus(proto.Message):
             number=8,
         )
 
-    destination_statuses: MutableSequence[
-        MerchantReviewDestinationStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=MerchantReviewDestinationStatus,
+    destination_statuses: MutableSequence[MerchantReviewDestinationStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=MerchantReviewDestinationStatus,
+        )
     )
-    item_level_issues: MutableSequence[
-        MerchantReviewItemLevelIssue
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=MerchantReviewItemLevelIssue,
+    item_level_issues: MutableSequence[MerchantReviewItemLevelIssue] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=MerchantReviewItemLevelIssue,
+        )
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

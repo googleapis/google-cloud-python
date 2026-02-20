@@ -44,6 +44,7 @@ class Severity(proto.Enum):
         CRITICAL (5):
             Critical severity.
     """
+
     SEVERITY_UNSPECIFIED = 0
     MINIMAL = 1
     LOW = 2

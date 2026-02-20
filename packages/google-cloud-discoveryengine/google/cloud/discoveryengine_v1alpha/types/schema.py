@@ -306,6 +306,7 @@ class FieldConfig(proto.Message):
                   date and time. e.g. ``"2015-01-01"`` or
                   ``"2015-01-01T12:10:30Z"``
         """
+
         FIELD_TYPE_UNSPECIFIED = 0
         OBJECT = 1
         STRING = 2
@@ -326,6 +327,7 @@ class FieldConfig(proto.Message):
             INDEXABLE_DISABLED (2):
                 Indexable option disabled for a schema field.
         """
+
         INDEXABLE_OPTION_UNSPECIFIED = 0
         INDEXABLE_ENABLED = 1
         INDEXABLE_DISABLED = 2
@@ -343,6 +345,7 @@ class FieldConfig(proto.Message):
                 Dynamic facetable option disabled for a
                 schema field.
         """
+
         DYNAMIC_FACETABLE_OPTION_UNSPECIFIED = 0
         DYNAMIC_FACETABLE_ENABLED = 1
         DYNAMIC_FACETABLE_DISABLED = 2
@@ -359,6 +362,7 @@ class FieldConfig(proto.Message):
                 Searchable option disabled for a schema
                 field.
         """
+
         SEARCHABLE_OPTION_UNSPECIFIED = 0
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
@@ -376,6 +380,7 @@ class FieldConfig(proto.Message):
                 Retrievable option disabled for a schema
                 field.
         """
+
         RETRIEVABLE_OPTION_UNSPECIFIED = 0
         RETRIEVABLE_ENABLED = 1
         RETRIEVABLE_DISABLED = 2
@@ -393,6 +398,7 @@ class FieldConfig(proto.Message):
                 Completable option disabled for a schema
                 field.
         """
+
         COMPLETABLE_OPTION_UNSPECIFIED = 0
         COMPLETABLE_ENABLED = 1
         COMPLETABLE_DISABLED = 2
@@ -409,6 +415,7 @@ class FieldConfig(proto.Message):
                 Filterable option disabled for a schema
                 field.
         """
+
         FILTERABLE_OPTION_UNSPECIFIED = 0
         FILTERABLE_ENABLED = 1
         FILTERABLE_DISABLED = 2
@@ -430,6 +437,7 @@ class FieldConfig(proto.Message):
             SCHEMA_ORG (4):
                 Retrieve value from schema.org data.
         """
+
         ADVANCED_SITE_SEARCH_DATA_SOURCE_UNSPECIFIED = 0
         METATAGS = 1
         PAGEMAP = 2
@@ -479,12 +487,12 @@ class FieldConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    advanced_site_search_data_sources: MutableSequence[
-        AdvancedSiteSearchDataSource
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=10,
-        enum=AdvancedSiteSearchDataSource,
+    advanced_site_search_data_sources: MutableSequence[AdvancedSiteSearchDataSource] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=10,
+            enum=AdvancedSiteSearchDataSource,
+        )
     )
     schema_org_paths: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,

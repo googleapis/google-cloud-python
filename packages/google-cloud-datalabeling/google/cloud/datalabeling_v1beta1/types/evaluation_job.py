@@ -21,10 +21,10 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.datalabeling_v1beta1.types import dataset, evaluation
 from google.cloud.datalabeling_v1beta1.types import (
     human_annotation_config as gcd_human_annotation_config,
 )
-from google.cloud.datalabeling_v1beta1.types import dataset, evaluation
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",
@@ -167,6 +167,7 @@ class EvaluationJob(proto.Message):
                 The job has this state right before it is
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2

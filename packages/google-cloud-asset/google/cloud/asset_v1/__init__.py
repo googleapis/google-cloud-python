@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.asset_service import AssetServiceAsyncClient, AssetServiceClient
 from .types.asset_enrichment_resourceowners import ResourceOwners
 from .types.asset_service import (

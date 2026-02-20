@@ -17,19 +17,27 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1p1beta1 import gapic_version as package_version
+from google.cloud.securitycenter_v1p1beta1.types import (
+    finding,
+    notification_config,
+    organization_settings,
+    securitycenter_service,
+    source,
+)
+from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1p1beta1.types import (
     notification_config as gcs_notification_config,
 )
@@ -39,12 +47,6 @@ from google.cloud.securitycenter_v1p1beta1.types import (
 from google.cloud.securitycenter_v1p1beta1.types import (
     security_marks as gcs_security_marks,
 )
-from google.cloud.securitycenter_v1p1beta1.types import finding
-from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1p1beta1.types import notification_config
-from google.cloud.securitycenter_v1p1beta1.types import organization_settings
-from google.cloud.securitycenter_v1p1beta1.types import securitycenter_service
-from google.cloud.securitycenter_v1p1beta1.types import source
 from google.cloud.securitycenter_v1p1beta1.types import source as gcs_source
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

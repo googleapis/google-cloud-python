@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -621,15 +621,12 @@ class EntitySignalsMappingServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_batch_create_entity_signals_mappings(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_batch_create_entity_signals_mappings(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_transcoded_request(
                 http_options, request
@@ -688,9 +685,7 @@ class EntitySignalsMappingServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
-            )
+            resp = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
             pb_resp = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.pb(
                 resp
             )
@@ -699,11 +694,10 @@ class EntitySignalsMappingServiceRestTransport(
 
             resp = self._interceptor.post_batch_create_entity_signals_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_create_entity_signals_mappings_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_batch_create_entity_signals_mappings_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -792,15 +786,12 @@ class EntitySignalsMappingServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_batch_update_entity_signals_mappings(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_batch_update_entity_signals_mappings(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_transcoded_request(
                 http_options, request
@@ -859,9 +850,7 @@ class EntitySignalsMappingServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
-            )
+            resp = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
             pb_resp = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.pb(
                 resp
             )
@@ -870,11 +859,10 @@ class EntitySignalsMappingServiceRestTransport(
 
             resp = self._interceptor.post_batch_update_entity_signals_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_update_entity_signals_mappings_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_batch_update_entity_signals_mappings_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -961,9 +949,7 @@ class EntitySignalsMappingServiceRestTransport(
                         The ``EntitySignalsMapping`` resource.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_http_options()
 
             request, metadata = self._interceptor.pre_create_entity_signals_mapping(
                 request, metadata
@@ -1032,11 +1018,10 @@ class EntitySignalsMappingServiceRestTransport(
 
             resp = self._interceptor.post_create_entity_signals_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_entity_signals_mapping_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_entity_signals_mapping_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1123,9 +1108,7 @@ class EntitySignalsMappingServiceRestTransport(
                         The ``EntitySignalsMapping`` resource.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entity_signals_mapping(
                 request, metadata
@@ -1279,9 +1262,7 @@ class EntitySignalsMappingServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_entity_signals_mappings(
                 request, metadata
@@ -1437,9 +1418,7 @@ class EntitySignalsMappingServiceRestTransport(
                         The ``EntitySignalsMapping`` resource.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_http_options()
 
             request, metadata = self._interceptor.pre_update_entity_signals_mapping(
                 request, metadata
@@ -1508,11 +1487,10 @@ class EntitySignalsMappingServiceRestTransport(
 
             resp = self._interceptor.post_update_entity_signals_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_entity_signals_mapping_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_entity_signals_mapping_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1550,7 +1528,9 @@ class EntitySignalsMappingServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchCreateEntitySignalsMappings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchCreateEntitySignalsMappings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_update_entity_signals_mappings(
@@ -1561,7 +1541,9 @@ class EntitySignalsMappingServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchUpdateEntitySignalsMappings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchUpdateEntitySignalsMappings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_entity_signals_mapping(
@@ -1572,7 +1554,9 @@ class EntitySignalsMappingServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateEntitySignalsMapping(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateEntitySignalsMapping(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_entity_signals_mapping(
@@ -1583,7 +1567,9 @@ class EntitySignalsMappingServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetEntitySignalsMapping(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetEntitySignalsMapping(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_entity_signals_mappings(
@@ -1594,7 +1580,9 @@ class EntitySignalsMappingServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListEntitySignalsMappings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListEntitySignalsMappings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_entity_signals_mapping(
@@ -1605,7 +1593,9 @@ class EntitySignalsMappingServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateEntitySignalsMapping(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateEntitySignalsMapping(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_operation(self):
@@ -1665,9 +1655,7 @@ class EntitySignalsMappingServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_transcoded_request(

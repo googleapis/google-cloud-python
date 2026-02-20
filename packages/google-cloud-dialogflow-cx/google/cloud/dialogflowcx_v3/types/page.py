@@ -21,10 +21,10 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import data_store_connection, fulfillment
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
 )
+from google.cloud.dialogflowcx_v3.types import data_store_connection, fulfillment
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -304,12 +304,12 @@ class Form(proto.Message):
                 number=3,
                 message=fulfillment.Fulfillment,
             )
-            reprompt_event_handlers: MutableSequence[
-                "EventHandler"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=5,
-                message="EventHandler",
+            reprompt_event_handlers: MutableSequence["EventHandler"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=5,
+                    message="EventHandler",
+                )
             )
 
         display_name: str = proto.Field(

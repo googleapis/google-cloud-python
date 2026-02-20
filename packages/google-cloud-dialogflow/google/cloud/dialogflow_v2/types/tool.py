@@ -270,6 +270,7 @@ class Tool(proto.Message):
             NOT_REQUIRED (2):
                 Conformation is not required.
         """
+
         CONFIRMATION_REQUIREMENT_UNSPECIFIED = 0
         REQUIRED = 1
         NOT_REQUIRED = 2
@@ -291,6 +292,7 @@ class Tool(proto.Message):
             PATCH (5):
                 PATCH method.
         """
+
         METHOD_TYPE_UNSPECIFIED = 0
         GET = 1
         POST = 2
@@ -467,6 +469,7 @@ class Tool(proto.Message):
                         DELETE (5):
                             Delete operation.
                     """
+
                     OPERATION_TYPE_UNSPECIFIED = 0
                     LIST = 1
                     GET = 2
@@ -558,6 +561,7 @@ class Tool(proto.Message):
                 QUERY_STRING (2):
                     Represents the key in query string.
             """
+
             REQUEST_LOCATION_UNSPECIFIED = 0
             HEADER = 1
             QUERY_STRING = 2
@@ -638,6 +642,7 @@ class Tool(proto.Message):
                         Represents the `client credential
                         flow <https://oauth.net/2/grant-types/client-credentials>`__.
                 """
+
                 OAUTH_GRANT_TYPE_UNSPECIFIED = 0
                 CLIENT_CREDENTIAL = 1
 
@@ -701,6 +706,7 @@ class Tool(proto.Message):
                         other Google Cloud APIs after you grant required roles to
                         ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
                 """
+
                 SERVICE_AGENT_AUTH_UNSPECIFIED = 0
                 ID_TOKEN = 1
                 ACCESS_TOKEN = 2
@@ -847,13 +853,13 @@ class Tool(proto.Message):
         proto.STRING,
         number=3,
     )
-    action_confirmation_requirement: MutableMapping[
-        str, ConfirmationRequirement
-    ] = proto.MapField(
-        proto.STRING,
-        proto.ENUM,
-        number=17,
-        enum=ConfirmationRequirement,
+    action_confirmation_requirement: MutableMapping[str, ConfirmationRequirement] = (
+        proto.MapField(
+            proto.STRING,
+            proto.ENUM,
+            number=17,
+            enum=ConfirmationRequirement,
+        )
     )
     extension_spec: ExtensionTool = proto.Field(
         proto.MESSAGE,

@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1187,9 +1187,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_add_resource_policies(
                 request, metadata
@@ -2617,9 +2615,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_resource_policies(
                 request, metadata
@@ -3393,9 +3389,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_http_options()
 
             request, metadata = self._interceptor.pre_start_async_replication(
                 request, metadata
@@ -3574,9 +3568,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_async_replication(
                 request, metadata
@@ -3753,9 +3745,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_group_async_replication(
                 request, metadata
@@ -3909,9 +3899,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -4248,7 +4236,9 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
     ) -> Callable[[compute.RemoveResourcePoliciesRegionDiskRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveResourcePolicies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveResourcePolicies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def resize(self) -> Callable[[compute.ResizeRegionDiskRequest], compute.Operation]:
@@ -4296,7 +4286,9 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StopGroupAsyncReplication(self._session, self._host, self._interceptor)  # type: ignore
+        return self._StopGroupAsyncReplication(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def test_iam_permissions(

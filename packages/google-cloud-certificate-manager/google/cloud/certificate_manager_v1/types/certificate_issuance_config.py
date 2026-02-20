@@ -103,12 +103,12 @@ class ListCertificateIssuanceConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_issuance_configs: MutableSequence[
-        "CertificateIssuanceConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CertificateIssuanceConfig",
+    certificate_issuance_configs: MutableSequence["CertificateIssuanceConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CertificateIssuanceConfig",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -232,6 +232,7 @@ class CertificateIssuanceConfig(proto.Message):
             ECDSA_P256 (4):
                 Specifies ECDSA with curve P256.
         """
+
         KEY_ALGORITHM_UNSPECIFIED = 0
         RSA_2048 = 1
         ECDSA_P256 = 4

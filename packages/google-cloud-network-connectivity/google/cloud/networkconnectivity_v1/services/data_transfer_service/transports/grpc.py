@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.networkconnectivity_v1.types import data_transfer
 
@@ -366,12 +368,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_multicloud_data_transfer_configs" not in self._stubs:
-            self._stubs[
-                "list_multicloud_data_transfer_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.DataTransferService/ListMulticloudDataTransferConfigs",
-                request_serializer=data_transfer.ListMulticloudDataTransferConfigsRequest.serialize,
-                response_deserializer=data_transfer.ListMulticloudDataTransferConfigsResponse.deserialize,
+            self._stubs["list_multicloud_data_transfer_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkconnectivity.v1.DataTransferService/ListMulticloudDataTransferConfigs",
+                    request_serializer=data_transfer.ListMulticloudDataTransferConfigsRequest.serialize,
+                    response_deserializer=data_transfer.ListMulticloudDataTransferConfigsResponse.deserialize,
+                )
             )
         return self._stubs["list_multicloud_data_transfer_configs"]
 
@@ -398,12 +400,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_multicloud_data_transfer_config" not in self._stubs:
-            self._stubs[
-                "get_multicloud_data_transfer_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.DataTransferService/GetMulticloudDataTransferConfig",
-                request_serializer=data_transfer.GetMulticloudDataTransferConfigRequest.serialize,
-                response_deserializer=data_transfer.MulticloudDataTransferConfig.deserialize,
+            self._stubs["get_multicloud_data_transfer_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkconnectivity.v1.DataTransferService/GetMulticloudDataTransferConfig",
+                    request_serializer=data_transfer.GetMulticloudDataTransferConfigRequest.serialize,
+                    response_deserializer=data_transfer.MulticloudDataTransferConfig.deserialize,
+                )
             )
         return self._stubs["get_multicloud_data_transfer_config"]
 
@@ -431,12 +433,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_multicloud_data_transfer_config" not in self._stubs:
-            self._stubs[
-                "create_multicloud_data_transfer_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.DataTransferService/CreateMulticloudDataTransferConfig",
-                request_serializer=data_transfer.CreateMulticloudDataTransferConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_multicloud_data_transfer_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkconnectivity.v1.DataTransferService/CreateMulticloudDataTransferConfig",
+                    request_serializer=data_transfer.CreateMulticloudDataTransferConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_multicloud_data_transfer_config"]
 
@@ -464,12 +466,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_multicloud_data_transfer_config" not in self._stubs:
-            self._stubs[
-                "update_multicloud_data_transfer_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.DataTransferService/UpdateMulticloudDataTransferConfig",
-                request_serializer=data_transfer.UpdateMulticloudDataTransferConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_multicloud_data_transfer_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkconnectivity.v1.DataTransferService/UpdateMulticloudDataTransferConfig",
+                    request_serializer=data_transfer.UpdateMulticloudDataTransferConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_multicloud_data_transfer_config"]
 
@@ -496,12 +498,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_multicloud_data_transfer_config" not in self._stubs:
-            self._stubs[
-                "delete_multicloud_data_transfer_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.DataTransferService/DeleteMulticloudDataTransferConfig",
-                request_serializer=data_transfer.DeleteMulticloudDataTransferConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_multicloud_data_transfer_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkconnectivity.v1.DataTransferService/DeleteMulticloudDataTransferConfig",
+                    request_serializer=data_transfer.DeleteMulticloudDataTransferConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_multicloud_data_transfer_config"]
 
@@ -664,12 +666,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_multicloud_data_transfer_supported_service" not in self._stubs:
-            self._stubs[
-                "get_multicloud_data_transfer_supported_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.DataTransferService/GetMulticloudDataTransferSupportedService",
-                request_serializer=data_transfer.GetMulticloudDataTransferSupportedServiceRequest.serialize,
-                response_deserializer=data_transfer.MulticloudDataTransferSupportedService.deserialize,
+            self._stubs["get_multicloud_data_transfer_supported_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkconnectivity.v1.DataTransferService/GetMulticloudDataTransferSupportedService",
+                    request_serializer=data_transfer.GetMulticloudDataTransferSupportedServiceRequest.serialize,
+                    response_deserializer=data_transfer.MulticloudDataTransferSupportedService.deserialize,
+                )
             )
         return self._stubs["get_multicloud_data_transfer_supported_service"]
 
@@ -697,12 +699,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_multicloud_data_transfer_supported_services" not in self._stubs:
-            self._stubs[
-                "list_multicloud_data_transfer_supported_services"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkconnectivity.v1.DataTransferService/ListMulticloudDataTransferSupportedServices",
-                request_serializer=data_transfer.ListMulticloudDataTransferSupportedServicesRequest.serialize,
-                response_deserializer=data_transfer.ListMulticloudDataTransferSupportedServicesResponse.deserialize,
+            self._stubs["list_multicloud_data_transfer_supported_services"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkconnectivity.v1.DataTransferService/ListMulticloudDataTransferSupportedServices",
+                    request_serializer=data_transfer.ListMulticloudDataTransferSupportedServicesRequest.serialize,
+                    response_deserializer=data_transfer.ListMulticloudDataTransferSupportedServicesResponse.deserialize,
+                )
             )
         return self._stubs["list_multicloud_data_transfer_supported_services"]
 

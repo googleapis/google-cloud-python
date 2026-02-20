@@ -68,6 +68,7 @@ class Event(proto.Message):
                 This event indicates that the instance had
                 metadata that needs to be modified.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         IDLE = 1
         HEARTBEAT = 2

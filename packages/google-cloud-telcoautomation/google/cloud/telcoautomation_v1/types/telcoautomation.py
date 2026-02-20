@@ -112,6 +112,7 @@ class BlueprintView(proto.Enum):
             View which contains metadata and files it
             encapsulates.
     """
+
     BLUEPRINT_VIEW_UNSPECIFIED = 0
     BLUEPRINT_VIEW_BASIC = 1
     BLUEPRINT_VIEW_FULL = 2
@@ -129,6 +130,7 @@ class DeploymentView(proto.Enum):
             View which contains metadata and files it
             encapsulates.
     """
+
     DEPLOYMENT_VIEW_UNSPECIFIED = 0
     DEPLOYMENT_VIEW_BASIC = 1
     DEPLOYMENT_VIEW_FULL = 2
@@ -145,6 +147,7 @@ class ResourceType(proto.Enum):
         DEPLOYMENT_RESOURCE (2):
             CRs that are part of a blueprint.
     """
+
     RESOURCE_TYPE_UNSPECIFIED = 0
     NF_DEPLOY_RESOURCE = 1
     DEPLOYMENT_RESOURCE = 2
@@ -174,6 +177,7 @@ class Status(proto.Enum):
             NetworkAttachmentDefinition don't have a defined
             status.
     """
+
     STATUS_UNSPECIFIED = 0
     STATUS_IN_PROGRESS = 1
     STATUS_ACTIVE = 2
@@ -213,6 +217,7 @@ class DeploymentLevel(proto.Enum):
             Modified in private catalog. b) Used to create a deployment
             on workload cluster by the user, once approved.
     """
+
     DEPLOYMENT_LEVEL_UNSPECIFIED = 0
     HYDRATION = 1
     SINGLE_DEPLOYMENT = 2
@@ -264,6 +269,7 @@ class OrchestrationCluster(proto.Message):
                 is in an indeterministic state. User can still
                 initiate a delete operation on this state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -354,6 +360,7 @@ class EdgeSlm(proto.Message):
                 indeterministic state. User can still initiate a
                 delete operation on this state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -373,6 +380,7 @@ class EdgeSlm(proto.Message):
             GKE (2):
                 Workload cluster is a GKE cluster.
         """
+
         WORKLOAD_CLUSTER_TYPE_UNSPECIFIED = 0
         GDCE = 1
         GKE = 2
@@ -504,6 +512,7 @@ class Blueprint(proto.Message):
                 committed revision of a blueprint represents its
                 latest APPROVED state.
         """
+
         APPROVAL_STATE_UNSPECIFIED = 0
         DRAFT = 1
         PROPOSED = 2
@@ -717,6 +726,7 @@ class Deployment(proto.Message):
                 ``ComputeDeploymentStatus`` API. No updates are allowed to a
                 deployment in DELETING state.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         APPLIED = 2
@@ -832,6 +842,7 @@ class HydratedDeployment(proto.Message):
                 can be made once a hydrated deployment is
                 applied.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         APPLIED = 2
@@ -915,12 +926,12 @@ class ListOrchestrationClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    orchestration_clusters: MutableSequence[
-        "OrchestrationCluster"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="OrchestrationCluster",
+    orchestration_clusters: MutableSequence["OrchestrationCluster"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="OrchestrationCluster",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

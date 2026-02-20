@@ -625,12 +625,12 @@ class Service(proto.Message):
         proto.STRING,
         number=34,
     )
-    traffic_statuses: MutableSequence[
-        traffic_target.TrafficTargetStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=35,
-        message=traffic_target.TrafficTargetStatus,
+    traffic_statuses: MutableSequence[traffic_target.TrafficTargetStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=35,
+            message=traffic_target.TrafficTargetStatus,
+        )
     )
     uri: str = proto.Field(
         proto.STRING,

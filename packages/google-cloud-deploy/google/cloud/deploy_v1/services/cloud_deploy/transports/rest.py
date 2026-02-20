@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -3494,9 +3496,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``CancelAutomationRun``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCancelAutomationRun._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_automation_run(
                 request, metadata
@@ -3960,9 +3960,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateCustomTargetType._get_http_options()
 
             request, metadata = self._interceptor.pre_create_custom_target_type(
                 request, metadata
@@ -4113,9 +4111,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateDeliveryPipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_create_delivery_pipeline(
                 request, metadata
@@ -4266,9 +4262,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseCreateDeployPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_deploy_policy(
                 request, metadata
@@ -5033,9 +5027,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteCustomTargetType._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_custom_target_type(
                 request, metadata
@@ -5180,9 +5172,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteDeliveryPipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_delivery_pipeline(
                 request, metadata
@@ -5327,9 +5317,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseDeleteDeployPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_deploy_policy(
                 request, metadata
@@ -6076,9 +6064,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetCustomTargetType._get_http_options()
 
             request, metadata = self._interceptor.pre_get_custom_target_type(
                 request, metadata
@@ -6226,9 +6212,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseGetDeliveryPipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_get_delivery_pipeline(
                 request, metadata
@@ -7280,9 +7264,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListAutomationRuns``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListAutomationRuns._get_http_options()
 
             request, metadata = self._interceptor.pre_list_automation_runs(
                 request, metadata
@@ -7576,9 +7558,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListCustomTargetTypes.``
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListCustomTargetTypes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_custom_target_types(
                 request, metadata
@@ -7724,9 +7704,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListDeliveryPipelines``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListDeliveryPipelines._get_http_options()
 
             request, metadata = self._interceptor.pre_list_delivery_pipelines(
                 request, metadata
@@ -7872,9 +7850,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     The response object from ``ListDeployPolicies``.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseListDeployPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_deploy_policies(
                 request, metadata
@@ -9242,9 +9218,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateCustomTargetType._get_http_options()
 
             request, metadata = self._interceptor.pre_update_custom_target_type(
                 request, metadata
@@ -9395,9 +9369,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateDeliveryPipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_update_delivery_pipeline(
                 request, metadata
@@ -9548,9 +9520,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseUpdateDeployPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_deploy_policy(
                 request, metadata
@@ -9867,7 +9837,9 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateCustomTargetType(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_delivery_pipeline(
@@ -9877,7 +9849,9 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateDeliveryPipeline(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_deploy_policy(
@@ -9927,7 +9901,9 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteCustomTargetType(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_delivery_pipeline(
@@ -9937,7 +9913,9 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteDeliveryPipeline(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_deploy_policy(
@@ -10181,7 +10159,9 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateCustomTargetType(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateCustomTargetType(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_delivery_pipeline(
@@ -10191,7 +10171,9 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDeliveryPipeline(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateDeliveryPipeline(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_deploy_policy(
@@ -10849,9 +10831,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseCloudDeployRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

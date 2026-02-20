@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.kms_v1.types import resources, service
 
@@ -975,12 +977,12 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_crypto_key_primary_version" not in self._stubs:
-            self._stubs[
-                "update_crypto_key_primary_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyPrimaryVersion",
-                request_serializer=service.UpdateCryptoKeyPrimaryVersionRequest.serialize,
-                response_deserializer=resources.CryptoKey.deserialize,
+            self._stubs["update_crypto_key_primary_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyPrimaryVersion",
+                    request_serializer=service.UpdateCryptoKeyPrimaryVersionRequest.serialize,
+                    response_deserializer=resources.CryptoKey.deserialize,
+                )
             )
         return self._stubs["update_crypto_key_primary_version"]
 
@@ -1025,12 +1027,12 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "destroy_crypto_key_version" not in self._stubs:
-            self._stubs[
-                "destroy_crypto_key_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.v1.KeyManagementService/DestroyCryptoKeyVersion",
-                request_serializer=service.DestroyCryptoKeyVersionRequest.serialize,
-                response_deserializer=resources.CryptoKeyVersion.deserialize,
+            self._stubs["destroy_crypto_key_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.v1.KeyManagementService/DestroyCryptoKeyVersion",
+                    request_serializer=service.DestroyCryptoKeyVersionRequest.serialize,
+                    response_deserializer=resources.CryptoKeyVersion.deserialize,
+                )
             )
         return self._stubs["destroy_crypto_key_version"]
 
@@ -1064,12 +1066,12 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_crypto_key_version" not in self._stubs:
-            self._stubs[
-                "restore_crypto_key_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.v1.KeyManagementService/RestoreCryptoKeyVersion",
-                request_serializer=service.RestoreCryptoKeyVersionRequest.serialize,
-                response_deserializer=resources.CryptoKeyVersion.deserialize,
+            self._stubs["restore_crypto_key_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.v1.KeyManagementService/RestoreCryptoKeyVersion",
+                    request_serializer=service.RestoreCryptoKeyVersionRequest.serialize,
+                    response_deserializer=resources.CryptoKeyVersion.deserialize,
+                )
             )
         return self._stubs["restore_crypto_key_version"]
 

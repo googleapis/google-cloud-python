@@ -49,6 +49,7 @@ class DataFormat(proto.Enum):
             message format. See https://arrow.apache.org/
             for more details.
     """
+
     DATA_FORMAT_UNSPECIFIED = 0
     AVRO = 1
     ARROW = 2
@@ -263,6 +264,7 @@ class WriteStream(proto.Message):
                 Data is only visible up to the offset to
                 which it was flushed.
         """
+
         TYPE_UNSPECIFIED = 0
         COMMITTED = 1
         PENDING = 2

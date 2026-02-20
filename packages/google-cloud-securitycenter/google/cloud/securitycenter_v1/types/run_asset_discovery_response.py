@@ -55,6 +55,7 @@ class RunAssetDiscoveryResponse(proto.Message):
                 Asset discovery run was killed and
                 terminated.
         """
+
         STATE_UNSPECIFIED = 0
         COMPLETED = 1
         SUPERSEDED = 2

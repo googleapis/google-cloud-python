@@ -67,6 +67,7 @@ class TransferType(proto.Enum):
         EXPORT (2):
             Exports from Parallelstore.
     """
+
     TRANSFER_TYPE_UNSPECIFIED = 0
     IMPORT = 1
     EXPORT = 2
@@ -86,6 +87,7 @@ class FileStripeLevel(proto.Enum):
         FILE_STRIPE_LEVEL_MAX (3):
             Maximum file striping
     """
+
     FILE_STRIPE_LEVEL_UNSPECIFIED = 0
     FILE_STRIPE_LEVEL_MIN = 1
     FILE_STRIPE_LEVEL_BALANCED = 2
@@ -106,6 +108,7 @@ class DirectoryStripeLevel(proto.Enum):
         DIRECTORY_STRIPE_LEVEL_MAX (3):
             Maximum directory striping
     """
+
     DIRECTORY_STRIPE_LEVEL_UNSPECIFIED = 0
     DIRECTORY_STRIPE_LEVEL_MIN = 1
     DIRECTORY_STRIPE_LEVEL_BALANCED = 2
@@ -124,6 +127,7 @@ class DeploymentType(proto.Enum):
         PERSISTENT (2):
             Persistent
     """
+
     DEPLOYMENT_TYPE_UNSPECIFIED = 0
     SCRATCH = 1
     PERSISTENT = 2
@@ -230,6 +234,7 @@ class Instance(proto.Message):
                 The instance is being repaired. This should only be used by
                 instances using the ``PERSISTENT`` deployment type.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -331,6 +336,7 @@ class TransferMetadataOptions(proto.Message):
                 Preserve UID that is in number format during
                 a transfer job.
         """
+
         UID_UNSPECIFIED = 0
         UID_SKIP = 1
         UID_NUMBER_PRESERVE = 2
@@ -347,6 +353,7 @@ class TransferMetadataOptions(proto.Message):
                 Preserve GID that is in number format during
                 a transfer job.
         """
+
         GID_UNSPECIFIED = 0
         GID_SKIP = 1
         GID_NUMBER_PRESERVE = 2
@@ -362,6 +369,7 @@ class TransferMetadataOptions(proto.Message):
             MODE_PRESERVE (2):
                 Preserve mode during a transfer job.
         """
+
         MODE_UNSPECIFIED = 0
         MODE_SKIP = 1
         MODE_PRESERVE = 2

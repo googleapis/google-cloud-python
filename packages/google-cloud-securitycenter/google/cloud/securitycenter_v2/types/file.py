@@ -105,6 +105,7 @@ class File(proto.Message):
                 EXECUTE (5):
                     Represents an execute operation.
             """
+
             OPERATION_TYPE_UNSPECIFIED = 0
             OPEN = 1
             READ = 2

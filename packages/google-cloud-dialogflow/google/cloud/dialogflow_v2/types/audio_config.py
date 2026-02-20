@@ -83,6 +83,7 @@ class TelephonyDtmf(proto.Enum):
             Pound/diamond/hash/square/gate/octothorpe:
             '#'.
     """
+
     TELEPHONY_DTMF_UNSPECIFIED = 0
     DTMF_ONE = 1
     DTMF_TWO = 2
@@ -155,6 +156,7 @@ class AudioEncoding(proto.Enum):
             8-bit samples that compand 13-bit audio
             samples using G.711 PCMU/a-law.
     """
+
     AUDIO_ENCODING_UNSPECIFIED = 0
     AUDIO_ENCODING_LINEAR_16 = 1
     AUDIO_ENCODING_FLAC = 2
@@ -210,6 +212,7 @@ class SpeechModelVariant(proto.Enum):
               docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
               for how to make your project eligible.
     """
+
     SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
     USE_BEST_AVAILABLE = 1
     USE_STANDARD = 2
@@ -232,6 +235,7 @@ class SsmlVoiceGender(proto.Enum):
         SSML_VOICE_GENDER_NEUTRAL (3):
             A gender-neutral voice.
     """
+
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     SSML_VOICE_GENDER_MALE = 1
     SSML_VOICE_GENDER_FEMALE = 2
@@ -266,6 +270,7 @@ class OutputAudioEncoding(proto.Enum):
             8-bit samples that compand 13-bit audio
             samples using G.711 PCMU/a-law.
     """
+
     OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
     OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
     OUTPUT_AUDIO_ENCODING_MP3 = 2
@@ -641,6 +646,7 @@ class CustomPronunciationParams(proto.Message):
                 X-SAMPA, such as apple -> "{p@l".
                 https://en.wikipedia.org/wiki/X-SAMPA
         """
+
         PHONETIC_ENCODING_UNSPECIFIED = 0
         PHONETIC_ENCODING_IPA = 1
         PHONETIC_ENCODING_X_SAMPA = 2

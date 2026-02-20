@@ -23,8 +23,6 @@
 #   python3 -m pip install google-cloud-securitycenter
 
 
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-
 # [START securitycenter_v1p1beta1_generated_SecurityCenter_TestIamPermissions_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -33,6 +31,8 @@ import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
 from google.cloud import securitycenter_v1p1beta1
 
 

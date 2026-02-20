@@ -150,6 +150,7 @@ class DocumentSchema(proto.Message):
                         The entity type will appear once or more
                         times.
                 """
+
                 OCCURRENCE_TYPE_UNSPECIFIED = 0
                 OPTIONAL_ONCE = 1
                 OPTIONAL_MULTIPLE = 2
@@ -171,6 +172,7 @@ class DocumentSchema(proto.Message):
                         inference and is not necessarily an exact text
                         extraction from the document.
                 """
+
                 METHOD_UNSPECIFIED = 0
                 EXTRACT = 1
                 DERIVE = 2
@@ -218,12 +220,12 @@ class DocumentSchema(proto.Message):
             proto.STRING,
             number=2,
         )
-        properties: MutableSequence[
-            "DocumentSchema.EntityType.Property"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="DocumentSchema.EntityType.Property",
+        properties: MutableSequence["DocumentSchema.EntityType.Property"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="DocumentSchema.EntityType.Property",
+            )
         )
 
     class Metadata(proto.Message):

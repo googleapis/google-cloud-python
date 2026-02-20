@@ -80,6 +80,7 @@ class Type(proto.Enum):
         NULL (7):
             Null type.
     """
+
     TYPE_UNSPECIFIED = 0
     STRING = 1
     NUMBER = 2
@@ -107,6 +108,7 @@ class Modality(proto.Enum):
         DOCUMENT (5):
             Document, e.g. PDF.
     """
+
     MODALITY_UNSPECIFIED = 0
     TEXT = 1
     IMAGE = 2
@@ -448,6 +450,7 @@ class ExecutableCode(proto.Message):
                 Python >= 3.10, with numpy and simpy
                 available.
         """
+
         LANGUAGE_UNSPECIFIED = 0
         PYTHON = 1
 
@@ -494,6 +497,7 @@ class CodeExecutionResult(proto.Message):
                 cancelled. There may or may not be a partial
                 output present.
         """
+
         OUTCOME_UNSPECIFIED = 0
         OUTCOME_OK = 1
         OUTCOME_FAILED = 2
@@ -609,6 +613,7 @@ class Tool(proto.Message):
                 ENVIRONMENT_BROWSER (1):
                     Operates in a web browser.
             """
+
             ENVIRONMENT_UNSPECIFIED = 0
             ENVIRONMENT_BROWSER = 1
 
@@ -800,6 +805,7 @@ class DynamicRetrievalConfig(proto.Message):
                 Run retrieval only when system decides it is
                 necessary.
         """
+
         MODE_UNSPECIFIED = 0
         MODE_DYNAMIC = 1
 
@@ -919,6 +925,7 @@ class FunctionCallingConfig(proto.Message):
                 "allowed_function_names", else the predicted function call
                 will be any one of the provided "function_declarations".
         """
+
         MODE_UNSPECIFIED = 0
         AUTO = 1
         ANY = 2
@@ -1025,6 +1032,7 @@ class FunctionDeclaration(proto.Message):
                 available while maintaining the conversation
                 between the user and the model.
         """
+
         UNSPECIFIED = 0
         BLOCKING = 1
         NON_BLOCKING = 2
@@ -1176,6 +1184,7 @@ class FunctionResponse(proto.Message):
                 interrupt ongoing generation and prompt to
                 generate output.
         """
+
         SCHEDULING_UNSPECIFIED = 0
         SILENT = 1
         WHEN_IDLE = 2

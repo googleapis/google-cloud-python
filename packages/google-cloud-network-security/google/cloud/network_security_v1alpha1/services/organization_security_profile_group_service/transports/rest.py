@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1112,9 +1114,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_create_security_profile(
                 request, metadata
@@ -1270,9 +1270,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_security_profile_group(
                 request, metadata
@@ -1339,11 +1337,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_create_security_profile_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_security_profile_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_security_profile_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1429,9 +1426,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_security_profile(
                 request, metadata
@@ -1581,9 +1576,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_security_profile_group(
                 request, metadata
@@ -1645,11 +1638,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_delete_security_profile_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_security_profile_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_security_profile_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1735,9 +1727,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_get_security_profile(
                 request, metadata
@@ -1891,9 +1881,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_security_profile_group(
                 request, metadata
@@ -2046,9 +2034,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_security_profile_groups(
                 request, metadata
@@ -2204,9 +2190,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_security_profiles(
                 request, metadata
@@ -2362,9 +2346,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_update_security_profile(
                 request, metadata
@@ -2520,9 +2502,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_security_profile_group(
                 request, metadata
@@ -2589,11 +2569,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_update_security_profile_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_security_profile_group_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_security_profile_group_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2638,7 +2617,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSecurityProfileGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_security_profile(
@@ -2660,7 +2641,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteSecurityProfileGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_security_profile(
@@ -2682,7 +2665,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSecurityProfileGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_security_profile_groups(
@@ -2693,7 +2678,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSecurityProfileGroups(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSecurityProfileGroups(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_security_profiles(
@@ -2726,7 +2713,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateSecurityProfileGroup(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -2788,9 +2777,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -2931,9 +2918,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -3074,9 +3059,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -3218,9 +3201,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -3367,9 +3348,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -3515,9 +3494,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3637,9 +3614,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3757,9 +3732,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3900,9 +3873,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_transcoded_request(

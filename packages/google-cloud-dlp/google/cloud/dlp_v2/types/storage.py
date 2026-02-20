@@ -85,6 +85,7 @@ class Likelihood(proto.Enum):
             Confidence level is high. Lowest chance of a
             false positive.
     """
+
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -163,6 +164,7 @@ class FileType(proto.Enum):
             ``bytes_limit_per_file_percent`` has no effect on Excel
             files.
     """
+
     FILE_TYPE_UNSPECIFIED = 0
     BINARY_FILE = 1
     TEXT_FILE = 2
@@ -244,6 +246,7 @@ class SensitivityScore(proto.Message):
                 Re-identification of users might be possible.
                 Consider limiting usage and or removing SPII.
         """
+
         SENSITIVITY_SCORE_UNSPECIFIED = 0
         SENSITIVITY_LOW = 10
         SENSITIVITY_UNKNOWN = 12
@@ -360,6 +363,7 @@ class CustomInfoType(proto.Message):
                 excluded from final results, but can still
                 affect rule execution.
         """
+
         EXCLUSION_TYPE_UNSPECIFIED = 0
         EXCLUSION_TYPE_EXCLUDE = 1
 
@@ -879,6 +883,7 @@ class CloudStorageOptions(proto.Message):
                 pick the offset to start scanning. The scanned bytes are
                 contiguous.
         """
+
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
         RANDOM_START = 2
@@ -1039,6 +1044,7 @@ class BigQueryOptions(proto.Message):
             RANDOM_START (2):
                 Randomly pick groups of rows to scan.
         """
+
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
         RANDOM_START = 2

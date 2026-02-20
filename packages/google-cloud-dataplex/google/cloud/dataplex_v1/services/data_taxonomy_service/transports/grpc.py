@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.dataplex_v1.types import data_taxonomy
 from google.cloud.dataplex_v1.types import data_taxonomy as gcd_data_taxonomy
@@ -506,12 +508,12 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "create_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttributeBinding",
-                request_serializer=data_taxonomy.CreateDataAttributeBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_data_attribute_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttributeBinding",
+                    request_serializer=data_taxonomy.CreateDataAttributeBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_data_attribute_binding"]
 
@@ -536,12 +538,12 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "update_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttributeBinding",
-                request_serializer=data_taxonomy.UpdateDataAttributeBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_data_attribute_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttributeBinding",
+                    request_serializer=data_taxonomy.UpdateDataAttributeBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_data_attribute_binding"]
 
@@ -568,12 +570,12 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "delete_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttributeBinding",
-                request_serializer=data_taxonomy.DeleteDataAttributeBindingRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_data_attribute_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttributeBinding",
+                    request_serializer=data_taxonomy.DeleteDataAttributeBindingRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_data_attribute_binding"]
 
@@ -600,12 +602,12 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_data_attribute_bindings" not in self._stubs:
-            self._stubs[
-                "list_data_attribute_bindings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataTaxonomyService/ListDataAttributeBindings",
-                request_serializer=data_taxonomy.ListDataAttributeBindingsRequest.serialize,
-                response_deserializer=data_taxonomy.ListDataAttributeBindingsResponse.deserialize,
+            self._stubs["list_data_attribute_bindings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataplex.v1.DataTaxonomyService/ListDataAttributeBindings",
+                    request_serializer=data_taxonomy.ListDataAttributeBindingsRequest.serialize,
+                    response_deserializer=data_taxonomy.ListDataAttributeBindingsResponse.deserialize,
+                )
             )
         return self._stubs["list_data_attribute_bindings"]
 
@@ -631,12 +633,12 @@ class DataTaxonomyServiceGrpcTransport(DataTaxonomyServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_attribute_binding" not in self._stubs:
-            self._stubs[
-                "get_data_attribute_binding"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding",
-                request_serializer=data_taxonomy.GetDataAttributeBindingRequest.serialize,
-                response_deserializer=data_taxonomy.DataAttributeBinding.deserialize,
+            self._stubs["get_data_attribute_binding"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding",
+                    request_serializer=data_taxonomy.GetDataAttributeBindingRequest.serialize,
+                    response_deserializer=data_taxonomy.DataAttributeBinding.deserialize,
+                )
             )
         return self._stubs["get_data_attribute_binding"]
 

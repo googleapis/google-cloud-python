@@ -75,6 +75,7 @@ class CompanySize(proto.Enum):
         GIANT (7):
             The company has 10,000 or more employees.
     """
+
     COMPANY_SIZE_UNSPECIFIED = 0
     MINI = 1
     SMALL = 2
@@ -126,6 +127,7 @@ class JobBenefit(proto.Enum):
             The job includes vision services covered by a
             vision insurance plan.
     """
+
     JOB_BENEFIT_UNSPECIFIED = 0
     CHILD_CARE = 1
     DENTAL = 2
@@ -200,6 +202,7 @@ class DegreeType(proto.Enum):
             dissertation of publishable quality based on
             original research. ISCED code 8.
     """
+
     DEGREE_TYPE_UNSPECIFIED = 0
     PRIMARY_EDUCATION = 1
     LOWER_SECONDARY_EDUCATION = 2
@@ -260,6 +263,7 @@ class EmploymentType(proto.Enum):
             The job does not fit any of the other listed
             types.
     """
+
     EMPLOYMENT_TYPE_UNSPECIFIED = 0
     FULL_TIME = 1
     PART_TIME = 2
@@ -299,6 +303,7 @@ class JobLevel(proto.Enum):
             Executive-level managers and above, including
             C-level positions.
     """
+
     JOB_LEVEL_UNSPECIFIED = 0
     ENTRY_LEVEL = 1
     EXPERIENCED = 2
@@ -401,6 +406,7 @@ class JobCategory(proto.Enum):
             A transportation or logistics job, such as
             Truck Driver.
     """
+
     JOB_CATEGORY_UNSPECIFIED = 0
     ACCOUNTING_AND_FINANCE = 1
     ADMINISTRATIVE_AND_OFFICE = 2
@@ -473,6 +479,7 @@ class PostingRegion(proto.Enum):
             this value, the job is considered as having a
             location, but telecommuting is allowed.
     """
+
     POSTING_REGION_UNSPECIFIED = 0
     ADMINISTRATIVE_AREA = 1
     NATION = 2
@@ -498,6 +505,7 @@ class Visibility(proto.Enum):
             The resource is visible to the owner and may
             be visible to all other API clients.
     """
+
     _pb_options = {"deprecated": True}
     VISIBILITY_UNSPECIFIED = 0
     ACCOUNT_ONLY = 1
@@ -521,6 +529,7 @@ class HtmlSanitization(proto.Enum):
             italic, ordered list, and unordered list markup
             tags.
     """
+
     HTML_SANITIZATION_UNSPECIFIED = 0
     HTML_SANITIZATION_DISABLED = 1
     SIMPLE_FORMATTING_ONLY = 2
@@ -545,6 +554,7 @@ class CommuteMethod(proto.Enum):
             Commute time is calculated based on biking
             time.
     """
+
     COMMUTE_METHOD_UNSPECIFIED = 0
     DRIVING = 1
     TRANSIT = 2
@@ -639,6 +649,7 @@ class Location(proto.Message):
             STREET_ADDRESS (10):
                 A street address level location.
         """
+
         LOCATION_TYPE_UNSPECIFIED = 0
         COUNTRY = 1
         ADMINISTRATIVE_AREA = 2
@@ -823,6 +834,7 @@ class DeviceInfo(proto.Message):
             OTHER (6):
                 Other devices types.
         """
+
         DEVICE_TYPE_UNSPECIFIED = 0
         WEB = 1
         MOBILE_WEB = 2
@@ -1033,6 +1045,7 @@ class CompensationInfo(proto.Message):
             OTHER_COMPENSATION_TYPE (8):
                 Other compensation type.
         """
+
         COMPENSATION_TYPE_UNSPECIFIED = 0
         BASE = 1
         BONUS = 2
@@ -1064,6 +1077,7 @@ class CompensationInfo(proto.Message):
             OTHER_COMPENSATION_UNIT (7):
                 Other compensation units.
         """
+
         COMPENSATION_UNIT_UNSPECIFIED = 0
         HOURLY = 1
         DAILY = 2
@@ -1272,6 +1286,7 @@ class BatchOperationMetadata(proto.Message):
                 is called. Any items processed before cancelling are
                 returned in the response.
         """
+
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         PROCESSING = 2

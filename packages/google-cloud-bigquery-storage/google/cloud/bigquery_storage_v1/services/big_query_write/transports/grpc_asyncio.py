@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1.types import storage, stream
 
@@ -509,12 +509,12 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_commit_write_streams" not in self._stubs:
-            self._stubs[
-                "batch_commit_write_streams"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.storage.v1.BigQueryWrite/BatchCommitWriteStreams",
-                request_serializer=storage.BatchCommitWriteStreamsRequest.serialize,
-                response_deserializer=storage.BatchCommitWriteStreamsResponse.deserialize,
+            self._stubs["batch_commit_write_streams"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.storage.v1.BigQueryWrite/BatchCommitWriteStreams",
+                    request_serializer=storage.BatchCommitWriteStreamsRequest.serialize,
+                    response_deserializer=storage.BatchCommitWriteStreamsResponse.deserialize,
+                )
             )
         return self._stubs["batch_commit_write_streams"]
 

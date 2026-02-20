@@ -110,6 +110,7 @@ class DbServerProperties(proto.Message):
                 Indicates that the resource is in deleted
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         AVAILABLE = 2

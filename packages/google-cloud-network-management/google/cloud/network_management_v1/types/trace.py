@@ -96,6 +96,7 @@ class LoadBalancerType(proto.Enum):
         TCP_UDP_INTERNAL_LOAD_BALANCER (10):
             Internal TCP/UDP load balancer.
     """
+
     LOAD_BALANCER_TYPE_UNSPECIFIED = 0
     HTTPS_ADVANCED_LOAD_BALANCER = 1
     HTTPS_LOAD_BALANCER = 2
@@ -492,6 +493,7 @@ class Step(proto.Message):
                 not have permission to see the configuration in
                 this step.
         """
+
         STATE_UNSPECIFIED = 0
         START_FROM_INSTANCE = 1
         START_FROM_INTERNET = 2
@@ -795,6 +797,7 @@ class InstanceInfo(proto.Message):
                 The instance has any status other than
                 "RUNNING".
         """
+
         STATUS_UNSPECIFIED = 0
         RUNNING = 1
         NOT_RUNNING = 2
@@ -990,6 +993,7 @@ class FirewallInfo(proto.Message):
                 executing Connectivity Test in the
                 BypassFirewallChecks mode
         """
+
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
         VPC_FIREWALL_RULE = 2
@@ -1017,6 +1021,7 @@ class FirewallInfo(proto.Message):
                 Firewall rule applies to internal managed
                 load balancers.
         """
+
         TARGET_TYPE_UNSPECIFIED = 0
         INSTANCES = 1
         INTERNAL_MANAGED_LB = 2
@@ -1198,6 +1203,7 @@ class RouteInfo(proto.Message):
                 StartFromPrivateNetwork state in Connectivity
                 tests.
         """
+
         ROUTE_TYPE_UNSPECIFIED = 0
         SUBNET = 1
         STATIC = 2
@@ -1255,6 +1261,7 @@ class RouteInfo(proto.Message):
             SECURE_WEB_PROXY_GATEWAY (13):
                 Next hop is Secure Web Proxy Gateway.
         """
+
         NEXT_HOP_TYPE_UNSPECIFIED = 0
         NEXT_HOP_IP = 1
         NEXT_HOP_INSTANCE = 2
@@ -1282,6 +1289,7 @@ class RouteInfo(proto.Message):
                 Route is applicable to packets using NCC
                 Hub's routing table.
         """
+
         ROUTE_SCOPE_UNSPECIFIED = 0
         NETWORK = 1
         NCC_HUB = 2
@@ -1439,6 +1447,7 @@ class GoogleServiceInfo(proto.Message):
                 Google API via Serverless VPC Access.
                 https://cloud.google.com/vpc/docs/serverless-vpc-access
         """
+
         GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
         IAP = 1
         GFE_PROXY_OR_HEALTH_CHECK_PROBER = 2
@@ -1579,6 +1588,7 @@ class LoadBalancerInfo(proto.Message):
             SSL_PROXY (5):
                 SSL proxy load balancer.
         """
+
         LOAD_BALANCER_TYPE_UNSPECIFIED = 0
         INTERNAL_TCP_UDP = 1
         NETWORK_TCP_UDP = 2
@@ -1602,6 +1612,7 @@ class LoadBalancerInfo(proto.Message):
                 Target Instance as the load balancer's
                 backend.
         """
+
         BACKEND_TYPE_UNSPECIFIED = 0
         BACKEND_SERVICE = 1
         TARGET_POOL = 2
@@ -1673,6 +1684,7 @@ class LoadBalancerBackend(proto.Message):
                 marked unhealthy and will not receive traffic
                 sent to the load balancer.
         """
+
         HEALTH_CHECK_FIREWALL_STATE_UNSPECIFIED = 0
         CONFIGURED = 1
         MISCONFIGURED = 2
@@ -1821,6 +1833,7 @@ class VpnTunnelInfo(proto.Message):
             DYNAMIC (3):
                 Dynamic (BGP) routing.
         """
+
         ROUTING_TYPE_UNSPECIFIED = 0
         ROUTE_BASED = 1
         POLICY_BASED = 2
@@ -1908,6 +1921,7 @@ class InterconnectAttachmentInfo(proto.Message):
                 Attachment to a L2 interconnect, created by
                 the customer.
         """
+
         TYPE_UNSPECIFIED = 0
         DEDICATED = 1
         PARTNER = 2
@@ -2084,6 +2098,7 @@ class DeliverInfo(proto.Message):
             GKE_POD (19):
                 Target is a GKE Pod.
         """
+
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
         INTERNET = 2
@@ -2134,6 +2149,7 @@ class DeliverInfo(proto.Message):
                 Google API via Serverless VPC Access.
                 https://cloud.google.com/vpc/docs/serverless-vpc-access
         """
+
         GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
         IAP = 1
         GFE_PROXY_OR_HEALTH_CHECK_PROBER = 2
@@ -2213,6 +2229,7 @@ class ForwardInfo(proto.Message):
             SECURE_WEB_PROXY_GATEWAY (10):
                 Forwarded to a Secure Web Proxy Gateway.
         """
+
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
         VPN_GATEWAY = 2
@@ -2429,6 +2446,7 @@ class AbortInfo(proto.Message):
                 "Pending" Pods, which don't have assigned IP
                 addresses yet.
         """
+
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_NETWORK = 1
         UNKNOWN_PROJECT = 3
@@ -2912,6 +2930,7 @@ class DropInfo(proto.Message):
                 Packet is dropped because no matching route
                 was found in the hybrid subnet.
         """
+
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
         FOREIGN_IP_DISALLOWED = 2
@@ -3165,6 +3184,7 @@ class IpMasqueradingSkippedInfo(proto.Message):
                 Masquerading not applied because the packet
                 is a return packet.
         """
+
         REASON_UNSPECIFIED = 0
         DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE = 1
         DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE = 2
@@ -3577,6 +3597,7 @@ class NatInfo(proto.Message):
             GKE_POD_IP_MASQUERADING (5):
                 GKE Pod IP address masquerading.
         """
+
         TYPE_UNSPECIFIED = 0
         INTERNAL_TO_EXTERNAL = 1
         EXTERNAL_TO_INTERNAL = 2
@@ -3601,6 +3622,7 @@ class NatInfo(proto.Message):
             PRIVATE_NAT64 (5):
                 Private NAT64 gateway.
         """
+
         CLOUD_NAT_GATEWAY_TYPE_UNSPECIFIED = 0
         PUBLIC_NAT44 = 1
         PUBLIC_NAT64 = 2
@@ -3827,6 +3849,7 @@ class LoadBalancerBackendInfo(proto.Message):
 
                 https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview#unsupported-configs
         """
+
         HEALTH_CHECK_FIREWALLS_CONFIG_STATE_UNSPECIFIED = 0
         FIREWALLS_CONFIGURED = 1
         FIREWALLS_PARTIALLY_CONFIGURED = 2

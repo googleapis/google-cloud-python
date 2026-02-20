@@ -51,6 +51,7 @@ class ExecutionHistoryLevel(proto.Enum):
         EXECUTION_HISTORY_DETAILED (2):
             Enable execution history detailed feature.
     """
+
     EXECUTION_HISTORY_LEVEL_UNSPECIFIED = 0
     EXECUTION_HISTORY_BASIC = 1
     EXECUTION_HISTORY_DETAILED = 2
@@ -198,6 +199,7 @@ class Workflow(proto.Message):
             UNAVAILABLE (2):
                 Workflow data is unavailable. See the ``state_error`` field.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         UNAVAILABLE = 2
@@ -218,6 +220,7 @@ class Workflow(proto.Message):
             LOG_NONE (3):
                 Explicitly log nothing.
         """
+
         CALL_LOG_LEVEL_UNSPECIFIED = 0
         LOG_ALL_CALLS = 1
         LOG_ERRORS_ONLY = 2
@@ -243,6 +246,7 @@ class Workflow(proto.Message):
                 KMS_ERROR (1):
                     Caused by an issue with KMS.
             """
+
             TYPE_UNSPECIFIED = 0
             KMS_ERROR = 1
 

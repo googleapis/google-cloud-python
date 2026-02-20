@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1256,9 +1256,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_approve_grant(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseApproveGrant._get_transcoded_request(
@@ -1406,9 +1404,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     Response message for ``CheckOnboardingStatus`` method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseCheckOnboardingStatus._get_http_options()
 
             request, metadata = self._interceptor.pre_check_onboarding_status(
                 request, metadata
@@ -1561,9 +1557,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseCreateEntitlement._get_http_options()
 
             request, metadata = self._interceptor.pre_create_entitlement(
                 request, metadata
@@ -1717,9 +1711,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_create_grant(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseCreateGrant._get_transcoded_request(
@@ -1870,9 +1862,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseDeleteEntitlement._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_entitlement(
                 request, metadata
@@ -2021,9 +2011,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_deny_grant(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseDenyGrant._get_transcoded_request(
@@ -2176,9 +2164,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entitlement(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetEntitlement._get_transcoded_request(
@@ -2328,9 +2314,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_get_grant(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetGrant._get_transcoded_request(
@@ -2476,9 +2460,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListEntitlements._get_http_options()
 
             request, metadata = self._interceptor.pre_list_entitlements(
                 request, metadata
@@ -2632,9 +2614,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_http_options()
 
             request, metadata = self._interceptor.pre_list_grants(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListGrants._get_transcoded_request(
@@ -2783,9 +2763,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_http_options()
 
             request, metadata = self._interceptor.pre_revoke_grant(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseRevokeGrant._get_transcoded_request(
@@ -2931,9 +2909,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     Response message for ``SearchEntitlements`` method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseSearchEntitlements._get_http_options()
 
             request, metadata = self._interceptor.pre_search_entitlements(
                 request, metadata
@@ -3084,9 +3060,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     Response message for ``SearchGrants`` method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_http_options()
 
             request, metadata = self._interceptor.pre_search_grants(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseSearchGrants._get_transcoded_request(
@@ -3235,9 +3209,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
 
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseUpdateEntitlement._get_http_options()
 
             request, metadata = self._interceptor.pre_update_entitlement(
                 request, metadata
@@ -3536,9 +3508,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetLocation._get_transcoded_request(
@@ -3677,9 +3647,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListLocations._get_transcoded_request(
@@ -3817,9 +3785,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3937,9 +3903,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4078,9 +4042,7 @@ class PrivilegedAccessManagerRestTransport(_BasePrivilegedAccessManagerRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BasePrivilegedAccessManagerRestTransport._BaseListOperations._get_transcoded_request(

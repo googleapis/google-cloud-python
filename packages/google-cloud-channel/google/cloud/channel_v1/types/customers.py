@@ -111,6 +111,7 @@ class Customer(proto.Message):
                 information provided is correct. Contact
                 information of customer will be mandatory.
         """
+
         CUSTOMER_ATTESTATION_STATE_UNSPECIFIED = 0
         EXEMPT = 1
         NON_EXEMPT_AND_INFO_VERIFIED = 2

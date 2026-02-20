@@ -46,6 +46,7 @@ class CmsMetadataValueStatusEnum(proto.Message):
             INACTIVE (3):
                 The value is not active.
         """
+
         CMS_METADATA_VALUE_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         ARCHIVED = 2

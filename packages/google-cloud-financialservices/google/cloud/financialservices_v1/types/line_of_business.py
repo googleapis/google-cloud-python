@@ -38,6 +38,7 @@ class LineOfBusiness(proto.Enum):
         RETAIL (2):
             Retail LineOfBusiness.
     """
+
     LINE_OF_BUSINESS_UNSPECIFIED = 0
     COMMERCIAL = 1
     RETAIL = 2

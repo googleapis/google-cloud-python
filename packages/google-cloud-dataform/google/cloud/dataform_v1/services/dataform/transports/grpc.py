@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.dataform_v1.types import dataform
 
@@ -554,12 +556,12 @@ class DataformGrpcTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_repository_directory_contents" not in self._stubs:
-            self._stubs[
-                "query_repository_directory_contents"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataform.v1.Dataform/QueryRepositoryDirectoryContents",
-                request_serializer=dataform.QueryRepositoryDirectoryContentsRequest.serialize,
-                response_deserializer=dataform.QueryRepositoryDirectoryContentsResponse.deserialize,
+            self._stubs["query_repository_directory_contents"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1.Dataform/QueryRepositoryDirectoryContents",
+                    request_serializer=dataform.QueryRepositoryDirectoryContentsRequest.serialize,
+                    response_deserializer=dataform.QueryRepositoryDirectoryContentsResponse.deserialize,
+                )
             )
         return self._stubs["query_repository_directory_contents"]
 
@@ -616,12 +618,12 @@ class DataformGrpcTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "compute_repository_access_token_status" not in self._stubs:
-            self._stubs[
-                "compute_repository_access_token_status"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataform.v1.Dataform/ComputeRepositoryAccessTokenStatus",
-                request_serializer=dataform.ComputeRepositoryAccessTokenStatusRequest.serialize,
-                response_deserializer=dataform.ComputeRepositoryAccessTokenStatusResponse.deserialize,
+            self._stubs["compute_repository_access_token_status"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1.Dataform/ComputeRepositoryAccessTokenStatus",
+                    request_serializer=dataform.ComputeRepositoryAccessTokenStatusRequest.serialize,
+                    response_deserializer=dataform.ComputeRepositoryAccessTokenStatusResponse.deserialize,
+                )
             )
         return self._stubs["compute_repository_access_token_status"]
 
@@ -1468,12 +1470,12 @@ class DataformGrpcTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_compilation_result_actions" not in self._stubs:
-            self._stubs[
-                "query_compilation_result_actions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataform.v1.Dataform/QueryCompilationResultActions",
-                request_serializer=dataform.QueryCompilationResultActionsRequest.serialize,
-                response_deserializer=dataform.QueryCompilationResultActionsResponse.deserialize,
+            self._stubs["query_compilation_result_actions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1.Dataform/QueryCompilationResultActions",
+                    request_serializer=dataform.QueryCompilationResultActionsRequest.serialize,
+                    response_deserializer=dataform.QueryCompilationResultActionsResponse.deserialize,
+                )
             )
         return self._stubs["query_compilation_result_actions"]
 
@@ -1692,12 +1694,12 @@ class DataformGrpcTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_workflow_invocation" not in self._stubs:
-            self._stubs[
-                "create_workflow_invocation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataform.v1.Dataform/CreateWorkflowInvocation",
-                request_serializer=dataform.CreateWorkflowInvocationRequest.serialize,
-                response_deserializer=dataform.WorkflowInvocation.deserialize,
+            self._stubs["create_workflow_invocation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1.Dataform/CreateWorkflowInvocation",
+                    request_serializer=dataform.CreateWorkflowInvocationRequest.serialize,
+                    response_deserializer=dataform.WorkflowInvocation.deserialize,
+                )
             )
         return self._stubs["create_workflow_invocation"]
 
@@ -1720,12 +1722,12 @@ class DataformGrpcTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_workflow_invocation" not in self._stubs:
-            self._stubs[
-                "delete_workflow_invocation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataform.v1.Dataform/DeleteWorkflowInvocation",
-                request_serializer=dataform.DeleteWorkflowInvocationRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_workflow_invocation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1.Dataform/DeleteWorkflowInvocation",
+                    request_serializer=dataform.DeleteWorkflowInvocationRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_workflow_invocation"]
 
@@ -1752,12 +1754,12 @@ class DataformGrpcTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_workflow_invocation" not in self._stubs:
-            self._stubs[
-                "cancel_workflow_invocation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataform.v1.Dataform/CancelWorkflowInvocation",
-                request_serializer=dataform.CancelWorkflowInvocationRequest.serialize,
-                response_deserializer=dataform.CancelWorkflowInvocationResponse.deserialize,
+            self._stubs["cancel_workflow_invocation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1.Dataform/CancelWorkflowInvocation",
+                    request_serializer=dataform.CancelWorkflowInvocationRequest.serialize,
+                    response_deserializer=dataform.CancelWorkflowInvocationResponse.deserialize,
+                )
             )
         return self._stubs["cancel_workflow_invocation"]
 
@@ -1785,12 +1787,12 @@ class DataformGrpcTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_workflow_invocation_actions" not in self._stubs:
-            self._stubs[
-                "query_workflow_invocation_actions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataform.v1.Dataform/QueryWorkflowInvocationActions",
-                request_serializer=dataform.QueryWorkflowInvocationActionsRequest.serialize,
-                response_deserializer=dataform.QueryWorkflowInvocationActionsResponse.deserialize,
+            self._stubs["query_workflow_invocation_actions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1.Dataform/QueryWorkflowInvocationActions",
+                    request_serializer=dataform.QueryWorkflowInvocationActionsRequest.serialize,
+                    response_deserializer=dataform.QueryWorkflowInvocationActionsResponse.deserialize,
+                )
             )
         return self._stubs["query_workflow_invocation_actions"]
 

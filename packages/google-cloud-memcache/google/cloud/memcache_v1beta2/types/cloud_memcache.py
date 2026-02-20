@@ -59,6 +59,7 @@ class MemcacheVersion(proto.Enum):
         MEMCACHE_1_5 (1):
             Memcached 1.5 version.
     """
+
     MEMCACHE_VERSION_UNSPECIFIED = 0
     MEMCACHE_1_5 = 1
 
@@ -171,6 +172,7 @@ class Instance(proto.Message):
                 Memcached instance is going through
                 maintenance, e.g. data plane rollout.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -242,6 +244,7 @@ class Instance(proto.Message):
                 UPDATING (4):
                     Node is being updated.
             """
+
             STATE_UNSPECIFIED = 0
             CREATING = 1
             READY = 2
@@ -300,6 +303,7 @@ class Instance(proto.Message):
                 ZONE_DISTRIBUTION_UNBALANCED (1):
                     Memcached nodes are distributed unevenly.
             """
+
             CODE_UNSPECIFIED = 0
             ZONE_DISTRIBUTION_UNBALANCED = 1
 
@@ -437,12 +441,12 @@ class MaintenancePolicy(proto.Message):
         proto.STRING,
         number=3,
     )
-    weekly_maintenance_window: MutableSequence[
-        "WeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="WeeklyMaintenanceWindow",
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="WeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -735,6 +739,7 @@ class RescheduleMaintenanceRequest(proto.Message):
                 If the user wants to reschedule the
                 maintenance to a specific time.
         """
+
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         NEXT_AVAILABLE_WINDOW = 2

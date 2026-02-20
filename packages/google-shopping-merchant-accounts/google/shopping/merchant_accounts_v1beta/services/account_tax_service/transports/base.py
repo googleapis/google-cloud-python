@@ -17,19 +17,19 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1beta import gapic_version as package_version
+from google.shopping.merchant_accounts_v1beta.types import account_tax
 from google.shopping.merchant_accounts_v1beta.types import (
     account_tax as gsma_account_tax,
 )
-from google.shopping.merchant_accounts_v1beta.types import account_tax
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__

@@ -142,6 +142,7 @@ class DataSource(proto.Message):
                 data source can be enabled or disabled through the Accounts
                 bundle.
         """
+
         INPUT_UNSPECIFIED = 0
         API = 1
         FILE = 2

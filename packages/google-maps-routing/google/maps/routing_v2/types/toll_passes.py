@@ -272,6 +272,7 @@ class TollPass(proto.Enum):
         US_WV_NEWELL_TOLL_BRIDGE_TICKET (64):
             WV, USA.
     """
+
     TOLL_PASS_UNSPECIFIED = 0
     AU_ETOLL_TAG = 82
     AU_EWAY_TAG = 83

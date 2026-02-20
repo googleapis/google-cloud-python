@@ -472,12 +472,12 @@ class DataProfileResult(proto.Message):
                 message="DataProfileResult.Profile.Field.ProfileInfo",
             )
 
-        fields: MutableSequence[
-            "DataProfileResult.Profile.Field"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="DataProfileResult.Profile.Field",
+        fields: MutableSequence["DataProfileResult.Profile.Field"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="DataProfileResult.Profile.Field",
+            )
         )
 
     class PostScanActionsResult(proto.Message):
@@ -517,6 +517,7 @@ class DataProfileResult(proto.Message):
                         result to export (usually caused by scan
                         failed).
                 """
+
                 STATE_UNSPECIFIED = 0
                 SUCCEEDED = 1
                 FAILED = 2

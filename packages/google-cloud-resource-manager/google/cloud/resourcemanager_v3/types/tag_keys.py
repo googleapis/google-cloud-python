@@ -68,6 +68,7 @@ class Purpose(proto.Enum):
 
             - ``fail-closed-load-testing/load-testing-network``
     """
+
     PURPOSE_UNSPECIFIED = 0
     GCE_FIREWALL = 1
 

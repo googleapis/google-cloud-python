@@ -63,6 +63,7 @@ class Entitlement(proto.Message):
                 Entitlement is not approved in private
                 marketplace.
         """
+
         STATE_UNSPECIFIED = 0
         ACCOUNT_NOT_LINKED = 1
         ACCOUNT_NOT_ACTIVE = 2

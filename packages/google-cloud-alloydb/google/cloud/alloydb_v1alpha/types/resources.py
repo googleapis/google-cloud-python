@@ -76,6 +76,7 @@ class InstanceView(proto.Enum):
             instance, this includes details of each node in
             the pool.
     """
+
     INSTANCE_VIEW_UNSPECIFIED = 0
     INSTANCE_VIEW_BASIC = 1
     INSTANCE_VIEW_FULL = 2
@@ -99,6 +100,7 @@ class ClusterView(proto.Enum):
             plus the earliest restorable time if continuous backups are
             enabled. May increase latency.
     """
+
     CLUSTER_VIEW_UNSPECIFIED = 0
     CLUSTER_VIEW_BASIC = 1
     CLUSTER_VIEW_CONTINUOUS_BACKUP = 2
@@ -124,6 +126,7 @@ class DatabaseVersion(proto.Enum):
         POSTGRES_18 (6):
             The database version is Postgres 18.
     """
+
     DATABASE_VERSION_UNSPECIFIED = 0
     POSTGRES_13 = 1
     POSTGRES_14 = 2
@@ -147,6 +150,7 @@ class SubscriptionType(proto.Enum):
         TRIAL (2):
             Trial subscription.
     """
+
     SUBSCRIPTION_TYPE_UNSPECIFIED = 0
     STANDARD = 1
     TRIAL = 2
@@ -200,6 +204,7 @@ class MigrationSource(proto.Message):
                 DMS source means the cluster was created via
                 DMS migration job.
         """
+
         MIGRATION_SOURCE_TYPE_UNSPECIFIED = 0
         DMS = 1
 
@@ -265,6 +270,7 @@ class EncryptionInfo(proto.Message):
                 is managed by the customer. KMS key versions
                 will be populated.
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -319,6 +325,7 @@ class SslConfig(proto.Message):
                 SSL connections are required. CA verification
                 not enforced.
         """
+
         SSL_MODE_UNSPECIFIED = 0
         SSL_MODE_ALLOW = 1
         SSL_MODE_REQUIRE = 2
@@ -337,6 +344,7 @@ class SslConfig(proto.Message):
                 Certificate Authority (CA) managed by the
                 AlloyDB Cluster.
         """
+
         CA_SOURCE_UNSPECIFIED = 0
         CA_SOURCE_MANAGED = 1
 
@@ -747,12 +755,12 @@ class MaintenanceUpdatePolicy(proto.Message):
         number=1,
         message=MaintenanceWindow,
     )
-    deny_maintenance_periods: MutableSequence[
-        DenyMaintenancePeriod
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=DenyMaintenancePeriod,
+    deny_maintenance_periods: MutableSequence[DenyMaintenancePeriod] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=DenyMaintenancePeriod,
+        )
     )
 
 
@@ -982,6 +990,7 @@ class Cluster(proto.Message):
             PROMOTING (9):
                 The cluster is being promoted.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         STOPPED = 2
@@ -1006,6 +1015,7 @@ class Cluster(proto.Message):
                 Secondary cluster that is replicating from
                 another region. This only supports read.
         """
+
         CLUSTER_TYPE_UNSPECIFIED = 0
         PRIMARY = 1
         SECONDARY = 2
@@ -1505,6 +1515,7 @@ class Instance(proto.Message):
             PROMOTING (9):
                 The instance is being promoted.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         STOPPED = 2
@@ -1537,6 +1548,7 @@ class Instance(proto.Message):
                 only. SECONDARY instance is a cross-region read
                 replica
         """
+
         INSTANCE_TYPE_UNSPECIFIED = 0
         PRIMARY = 1
         READ_POOL = 2
@@ -1558,6 +1570,7 @@ class Instance(proto.Message):
             REGIONAL (2):
                 Regional (or Highly) available instance.
         """
+
         AVAILABILITY_TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2
@@ -1573,6 +1586,7 @@ class Instance(proto.Message):
             NEVER (2):
                 The instance is not running.
         """
+
         ACTIVATION_POLICY_UNSPECIFIED = 0
         ALWAYS = 1
         NEVER = 2
@@ -1841,6 +1855,7 @@ class Instance(proto.Message):
                     Performs a forced update when applicable.
                     This will be fast but may incur a downtime.
             """
+
             MODE_UNSPECIFIED = 0
             DEFAULT = 1
             FORCE_APPLY = 2
@@ -2001,19 +2016,19 @@ class Instance(proto.Message):
             proto.STRING,
             number=7,
         )
-        psc_interface_configs: MutableSequence[
-            "Instance.PscInterfaceConfig"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=8,
-            message="Instance.PscInterfaceConfig",
+        psc_interface_configs: MutableSequence["Instance.PscInterfaceConfig"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=8,
+                message="Instance.PscInterfaceConfig",
+            )
         )
-        psc_auto_connections: MutableSequence[
-            "Instance.PscAutoConnectionConfig"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=9,
-            message="Instance.PscAutoConnectionConfig",
+        psc_auto_connections: MutableSequence["Instance.PscAutoConnectionConfig"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=9,
+                message="Instance.PscAutoConnectionConfig",
+            )
         )
 
     class InstanceNetworkConfig(proto.Message):
@@ -2459,6 +2474,7 @@ class Backup(proto.Message):
             DELETING (4):
                 The backup is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2
@@ -2483,6 +2499,7 @@ class Backup(proto.Message):
                 backups scheduler due to a continuous backup
                 policy.
         """
+
         TYPE_UNSPECIFIED = 0
         ON_DEMAND = 1
         AUTOMATED = 2
@@ -2718,6 +2735,7 @@ class SupportedDatabaseFlag(proto.Message):
                 Denotes that the flag does not accept any
                 values.
         """
+
         VALUE_TYPE_UNSPECIFIED = 0
         STRING = 1
         INTEGER = 2
@@ -2736,6 +2754,7 @@ class SupportedDatabaseFlag(proto.Message):
             CONNECTION_POOL (2):
                 The flag is a connection pool flag.
         """
+
         SCOPE_UNSPECIFIED = 0
         DATABASE = 1
         CONNECTION_POOL = 2
@@ -2868,6 +2887,7 @@ class User(proto.Message):
                 Database user that can authenticate via
                 IAM-Based authentication.
         """
+
         USER_TYPE_UNSPECIFIED = 0
         ALLOYDB_BUILT_IN = 1
         ALLOYDB_IAM_USER = 2

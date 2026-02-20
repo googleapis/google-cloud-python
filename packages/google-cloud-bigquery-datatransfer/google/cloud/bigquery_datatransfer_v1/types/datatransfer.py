@@ -126,6 +126,7 @@ class DataSourceParameter(proto.Message):
             LIST (7):
                 List of strings parameter.
         """
+
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INTEGER = 2
@@ -285,6 +286,7 @@ class DataSource(proto.Message):
             FIRST_PARTY_OAUTH (3):
                 Use First Party OAuth.
         """
+
         AUTHORIZATION_TYPE_UNSPECIFIED = 0
         AUTHORIZATION_CODE = 1
         GOOGLE_PLUS_AUTHORIZATION_CODE = 2
@@ -308,6 +310,7 @@ class DataSource(proto.Message):
                 days. Allows custom values to be set for each
                 transfer config.
         """
+
         DATA_REFRESH_TYPE_UNSPECIFIED = 0
         SLIDING_WINDOW = 1
         CUSTOM_SLIDING_WINDOW = 2
@@ -863,6 +866,7 @@ class ListTransferRunsRequest(proto.Message):
             LATEST (1):
                 Only latest run per day should be returned.
         """
+
         RUN_ATTEMPT_UNSPECIFIED = 0
         LATEST = 1
 
@@ -956,12 +960,12 @@ class ListTransferLogsRequest(proto.Message):
         proto.INT32,
         number=5,
     )
-    message_types: MutableSequence[
-        transfer.TransferMessage.MessageSeverity
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=6,
-        enum=transfer.TransferMessage.MessageSeverity,
+    message_types: MutableSequence[transfer.TransferMessage.MessageSeverity] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=6,
+            enum=transfer.TransferMessage.MessageSeverity,
+        )
     )
 
 

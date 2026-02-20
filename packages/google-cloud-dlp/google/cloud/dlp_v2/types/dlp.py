@@ -343,6 +343,7 @@ class TransformationResultStatusType(proto.Enum):
             This will be set when the transformation and
             storing of it is successful.
     """
+
     STATE_TYPE_UNSPECIFIED = 0
     INVALID_TRANSFORM = 1
     BIGQUERY_MAX_ROW_SIZE_EXCEEDED = 2
@@ -364,6 +365,7 @@ class TransformationContainerType(proto.Enum):
         TRANSFORM_TABLE (3):
             A table.
     """
+
     TRANSFORM_UNKNOWN_CONTAINER = 0
     TRANSFORM_BODY = 1
     TRANSFORM_METADATA = 2
@@ -407,6 +409,7 @@ class TransformationType(proto.Enum):
         REDACT_IMAGE (14):
             Redact image
     """
+
     TRANSFORMATION_TYPE_UNSPECIFIED = 0
     RECORD_SUPPRESSION = 1
     REPLACE_VALUE = 2
@@ -438,6 +441,7 @@ class ProfileGeneration(proto.Enum):
             The profile is an update to a previous
             profile.
     """
+
     PROFILE_GENERATION_UNSPECIFIED = 0
     PROFILE_GENERATION_NEW = 1
     PROFILE_GENERATION_UPDATE = 2
@@ -465,6 +469,7 @@ class BigQueryTableTypeCollection(proto.Enum):
             table types will not have partial profiles
             generated.
     """
+
     BIG_QUERY_COLLECTION_UNSPECIFIED = 0
     BIG_QUERY_COLLECTION_ALL_TYPES = 1
     BIG_QUERY_COLLECTION_ONLY_SUPPORTED_TYPES = 2
@@ -485,6 +490,7 @@ class BigQueryTableType(proto.Enum):
         BIG_QUERY_TABLE_TYPE_SNAPSHOT (3):
             A snapshot of a BigQuery table.
     """
+
     BIG_QUERY_TABLE_TYPE_UNSPECIFIED = 0
     BIG_QUERY_TABLE_TYPE_TABLE = 1
     BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE = 2
@@ -508,6 +514,7 @@ class DataProfileUpdateFrequency(proto.Enum):
             The data profile can be updated up to once
             every 30 days. Default.
     """
+
     UPDATE_FREQUENCY_UNSPECIFIED = 0
     UPDATE_FREQUENCY_NEVER = 1
     UPDATE_FREQUENCY_DAILY = 2
@@ -525,6 +532,7 @@ class BigQueryTableModification(proto.Enum):
             A table will be considered modified when the
             last_modified_time from BigQuery has been updated.
     """
+
     TABLE_MODIFICATION_UNSPECIFIED = 0
     TABLE_MODIFIED_TIMESTAMP = 1
 
@@ -543,6 +551,7 @@ class BigQuerySchemaModification(proto.Enum):
             Profiles should be regenerated when columns
             are removed from the table.
     """
+
     SCHEMA_MODIFICATION_UNSPECIFIED = 0
     SCHEMA_NEW_COLUMNS = 1
     SCHEMA_REMOVED_COLUMNS = 2
@@ -571,6 +580,7 @@ class RelationalOperator(proto.Enum):
         EXISTS (7):
             Exists
     """
+
     RELATIONAL_OPERATOR_UNSPECIFIED = 0
     EQUAL_TO = 1
     NOT_EQUAL_TO = 2
@@ -615,6 +625,7 @@ class MatchingType(proto.Enum):
             - Exclude infoType: no intersection with
               affecting infoTypes findings
     """
+
     MATCHING_TYPE_UNSPECIFIED = 0
     MATCHING_TYPE_FULL_MATCH = 1
     MATCHING_TYPE_PARTIAL_MATCH = 2
@@ -634,6 +645,7 @@ class ContentOption(proto.Enum):
         CONTENT_IMAGE (2):
             Images found in the data.
     """
+
     CONTENT_UNSPECIFIED = 0
     CONTENT_TEXT = 1
     CONTENT_IMAGE = 2
@@ -649,6 +661,7 @@ class MetadataType(proto.Enum):
             General file metadata provided by Cloud
             Storage.
     """
+
     METADATATYPE_UNSPECIFIED = 0
     STORAGE_METADATA = 2
 
@@ -664,6 +677,7 @@ class InfoTypeSupportedBy(proto.Enum):
         RISK_ANALYSIS (2):
             Supported by the risk analysis operations.
     """
+
     ENUM_TYPE_UNSPECIFIED = 0
     INSPECT = 1
     RISK_ANALYSIS = 2
@@ -681,6 +695,7 @@ class DlpJobType(proto.Enum):
         RISK_ANALYSIS_JOB (2):
             The job executed a Risk Analysis computation.
     """
+
     DLP_JOB_TYPE_UNSPECIFIED = 0
     INSPECT_JOB = 1
     RISK_ANALYSIS_JOB = 2
@@ -705,6 +720,7 @@ class StoredInfoTypeState(proto.Enum):
             StoredInfoType, use the ``UpdateStoredInfoType`` method to
             create a new version.
     """
+
     STORED_INFO_TYPE_STATE_UNSPECIFIED = 0
     PENDING = 1
     READY = 2
@@ -731,6 +747,7 @@ class ResourceVisibility(proto.Enum):
         RESOURCE_VISIBILITY_RESTRICTED (20):
             Visible only to specific users.
     """
+
     RESOURCE_VISIBILITY_UNSPECIFIED = 0
     RESOURCE_VISIBILITY_PUBLIC = 10
     RESOURCE_VISIBILITY_INCONCLUSIVE = 15
@@ -749,6 +766,7 @@ class EncryptionStatus(proto.Enum):
         ENCRYPTION_CUSTOMER_MANAGED (2):
             Customer provides the key.
     """
+
     ENCRYPTION_STATUS_UNSPECIFIED = 0
     ENCRYPTION_GOOGLE_MANAGED = 1
     ENCRYPTION_CUSTOMER_MANAGED = 2
@@ -770,6 +788,7 @@ class NullPercentageLevel(proto.Enum):
         NULL_PERCENTAGE_HIGH (4):
             A lot of null entries.
     """
+
     NULL_PERCENTAGE_LEVEL_UNSPECIFIED = 0
     NULL_PERCENTAGE_VERY_LOW = 1
     NULL_PERCENTAGE_LOW = 2
@@ -797,6 +816,7 @@ class UniquenessScoreLevel(proto.Enum):
             High uniqueness, possibly a column of free
             text or unique identifiers.
     """
+
     UNIQUENESS_SCORE_LEVEL_UNSPECIFIED = 0
     UNIQUENESS_SCORE_LOW = 1
     UNIQUENESS_SCORE_MEDIUM = 2
@@ -830,6 +850,7 @@ class ConnectionState(proto.Enum):
             properties will automatically mark it as
             AVAILABLE.
     """
+
     CONNECTION_STATE_UNSPECIFIED = 0
     MISSING_CREDENTIALS = 1
     AVAILABLE = 2
@@ -1215,12 +1236,12 @@ class InspectConfig(proto.Message):
         number=2,
         enum=storage.Likelihood,
     )
-    min_likelihood_per_info_type: MutableSequence[
-        InfoTypeLikelihood
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message=InfoTypeLikelihood,
+    min_likelihood_per_info_type: MutableSequence[InfoTypeLikelihood] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message=InfoTypeLikelihood,
+        )
     )
     limits: FindingLimits = proto.Field(
         proto.MESSAGE,
@@ -1310,6 +1331,7 @@ class ByteContentItem(proto.Message):
             AI_MODEL (18):
                 AI model file types. Only used for profiling.
         """
+
         BYTES_TYPE_UNSPECIFIED = 0
         IMAGE = 6
         IMAGE_JPEG = 1
@@ -2092,12 +2114,12 @@ class RedactImageRequest(proto.Message):
         number=2,
         message="InspectConfig",
     )
-    image_redaction_configs: MutableSequence[
-        ImageRedactionConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=ImageRedactionConfig,
+    image_redaction_configs: MutableSequence[ImageRedactionConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=ImageRedactionConfig,
+        )
     )
     include_findings: bool = proto.Field(
         proto.BOOL,
@@ -2570,6 +2592,7 @@ class OutputStorageConfig(proto.Message):
             ALL_COLUMNS (5):
                 Schema containing all columns.
         """
+
         OUTPUT_SCHEMA_UNSPECIFIED = 0
         BASIC_COLUMNS = 1
         GCS_COLUMNS = 2
@@ -2918,6 +2941,7 @@ class LocationSupport(proto.Message):
             ANY_LOCATION (2):
                 Feature may be used anywhere. Default value.
         """
+
         REGIONALIZATION_SCOPE_UNSPECIFIED = 0
         REGIONAL = 1
         ANY_LOCATION = 2
@@ -3165,6 +3189,7 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in Google
                 internally.
         """
+
         LOCATION_UNSPECIFIED = 0
         GLOBAL = 1
         ARGENTINA = 2
@@ -3236,6 +3261,7 @@ class InfoTypeCategory(proto.Message):
                 The infoType is typically used in the
                 telecommunications industry.
         """
+
         INDUSTRY_UNSPECIFIED = 0
         FINANCE = 1
         HEALTH = 2
@@ -3275,6 +3301,7 @@ class InfoTypeCategory(proto.Message):
             CUSTOM (8):
                 Category for ``CustomInfoType`` types.
         """
+
         TYPE_UNSPECIFIED = 0
         PII = 1
         SPII = 2
@@ -3819,12 +3846,12 @@ class PrivacyMetric(proto.Message):
                 message=storage.FieldId,
             )
 
-        quasi_ids: MutableSequence[
-            "PrivacyMetric.KMapEstimationConfig.TaggedField"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="PrivacyMetric.KMapEstimationConfig.TaggedField",
+        quasi_ids: MutableSequence["PrivacyMetric.KMapEstimationConfig.TaggedField"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="PrivacyMetric.KMapEstimationConfig.TaggedField",
+            )
         )
         region_code: str = proto.Field(
             proto.STRING,
@@ -4172,12 +4199,12 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 proto.INT64,
                 number=3,
             )
-            top_sensitive_values: MutableSequence[
-                "ValueFrequency"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="ValueFrequency",
+            top_sensitive_values: MutableSequence["ValueFrequency"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="ValueFrequency",
+                )
             )
 
         class LDiversityHistogramBucket(proto.Message):
@@ -5071,6 +5098,7 @@ class TimePartConfig(proto.Message):
             HOUR_OF_DAY (6):
                 [0-23]
         """
+
         TIME_PART_UNSPECIFIED = 0
         YEAR = 1
         MONTH = 2
@@ -5292,6 +5320,7 @@ class CharsToIgnore(proto.Message):
             WHITESPACE (5):
                 Whitespace character, one of [ \\t\\n\\x0B\\f\\r]
         """
+
         COMMON_CHARS_TO_IGNORE_UNSPECIFIED = 0
         NUMERIC = 1
         ALPHA_UPPER_CASE = 2
@@ -5622,6 +5651,7 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
             ALPHA_NUMERIC (4):
                 ``[0-9A-Za-z]`` (radix of 62)
         """
+
         FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED = 0
         NUMERIC = 1
         HEXADECIMAL = 2
@@ -6086,6 +6116,7 @@ class RecordCondition(proto.Message):
                 AND (1):
                     Conditional AND
             """
+
             LOGICAL_OPERATOR_UNSPECIFIED = 0
             AND = 1
 
@@ -6123,12 +6154,12 @@ class TransformationOverview(proto.Message):
         proto.INT64,
         number=2,
     )
-    transformation_summaries: MutableSequence[
-        "TransformationSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="TransformationSummary",
+    transformation_summaries: MutableSequence["TransformationSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="TransformationSummary",
+        )
     )
 
 
@@ -6173,6 +6204,7 @@ class TransformationSummary(proto.Message):
             ERROR (2):
                 Transformation had an error.
         """
+
         TRANSFORMATION_RESULT_CODE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2
@@ -6665,6 +6697,7 @@ class Error(proto.Message):
                 File store cluster is not supported for
                 profile generation.
         """
+
         ERROR_INFO_UNSPECIFIED = 0
         IMAGE_SCAN_UNAVAILABLE_IN_REGION = 1
         FILE_STORE_CLUSTER_UNSUPPORTED = 2
@@ -6752,6 +6785,7 @@ class JobTrigger(proto.Message):
             CANCELLED (3):
                 Trigger is cancelled and can not be resumed.
         """
+
         STATUS_UNSPECIFIED = 0
         HEALTHY = 1
         PAUSED = 2
@@ -7120,12 +7154,12 @@ class Action(proto.Message):
             number=9,
             oneof="output",
         )
-        file_types_to_transform: MutableSequence[
-            storage.FileType
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=8,
-            enum=storage.FileType,
+        file_types_to_transform: MutableSequence[storage.FileType] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=8,
+                enum=storage.FileType,
+            )
         )
 
     class JobNotificationEmails(proto.Message):
@@ -8133,6 +8167,7 @@ class DataProfileAction(proto.Message):
             ERROR_CHANGED (4):
                 A user (non-internal) error occurred.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         NEW_PROFILE = 1
         CHANGED_PROFILE = 2
@@ -8232,6 +8267,7 @@ class DataProfileAction(proto.Message):
                 FILE_STORE_PROFILE (3):
                     The full file store data profile.
             """
+
             DETAIL_LEVEL_UNSPECIFIED = 0
             TABLE_PROFILE = 1
             RESOURCE_NAME = 2
@@ -8387,12 +8423,12 @@ class DataProfileAction(proto.Message):
             number=1,
             message="DataProfileAction.TagResources.TagCondition",
         )
-        profile_generations_to_tag: MutableSequence[
-            "ProfileGeneration"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=2,
-            enum="ProfileGeneration",
+        profile_generations_to_tag: MutableSequence["ProfileGeneration"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=2,
+                enum="ProfileGeneration",
+            )
         )
         lower_data_risk_to_low: bool = proto.Field(
             proto.BOOL,
@@ -8824,6 +8860,7 @@ class DiscoveryConfig(proto.Message):
             PAUSED (2):
                 The discovery config is paused temporarily.
         """
+
         STATUS_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2
@@ -9624,6 +9661,7 @@ class DiscoveryCloudSqlConditions(proto.Message):
             POSTGRES (3):
                 PostgreSQL database.
         """
+
         DATABASE_ENGINE_UNSPECIFIED = 0
         ALL_SUPPORTED_DATABASE_ENGINES = 1
         MYSQL = 2
@@ -9642,6 +9680,7 @@ class DiscoveryCloudSqlConditions(proto.Message):
             DATABASE_RESOURCE_TYPE_TABLE (2):
                 Tables.
         """
+
         DATABASE_RESOURCE_TYPE_UNSPECIFIED = 0
         DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES = 1
         DATABASE_RESOURCE_TYPE_TABLE = 2
@@ -9703,6 +9742,7 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
                 REMOVED_COLUMNS (2):
                     Columns have been removed from the table.
             """
+
             SQL_SCHEMA_MODIFICATION_UNSPECIFIED = 0
             NEW_COLUMNS = 1
             REMOVED_COLUMNS = 2
@@ -10080,6 +10120,7 @@ class DiscoveryCloudStorageConditions(proto.Message):
                 Scan objects with the dual-regional storage
                 class. This will incur retrieval fees.
         """
+
         CLOUD_STORAGE_OBJECT_ATTRIBUTE_UNSPECIFIED = 0
         ALL_SUPPORTED_OBJECTS = 1
         STANDARD = 2
@@ -10110,24 +10151,25 @@ class DiscoveryCloudStorageConditions(proto.Message):
                 should be set. Scanning Autoclass-enabled buckets can affect
                 object storage classes.
         """
+
         CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED = 0
         ALL_SUPPORTED_BUCKETS = 1
         AUTOCLASS_DISABLED = 2
         AUTOCLASS_ENABLED = 3
 
-    included_object_attributes: MutableSequence[
-        CloudStorageObjectAttribute
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=1,
-        enum=CloudStorageObjectAttribute,
+    included_object_attributes: MutableSequence[CloudStorageObjectAttribute] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum=CloudStorageObjectAttribute,
+        )
     )
-    included_bucket_attributes: MutableSequence[
-        CloudStorageBucketAttribute
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=2,
-        enum=CloudStorageBucketAttribute,
+    included_bucket_attributes: MutableSequence[CloudStorageBucketAttribute] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum=CloudStorageBucketAttribute,
+        )
     )
 
 
@@ -10505,6 +10547,7 @@ class AmazonS3BucketConditions(proto.Message):
             TYPE_GENERAL_PURPOSE (2):
                 A general purpose Amazon S3 bucket.
         """
+
         TYPE_UNSPECIFIED = 0
         TYPE_ALL_SUPPORTED = 1
         TYPE_GENERAL_PURPOSE = 2
@@ -10528,6 +10571,7 @@ class AmazonS3BucketConditions(proto.Message):
                 Objects in the S3 Intelligent-Tiering access
                 tiers.
         """
+
         UNSPECIFIED = 0
         ALL_SUPPORTED_CLASSES = 1
         STANDARD = 2
@@ -10987,6 +11031,7 @@ class DlpJob(proto.Message):
                 finished no more calls to hybridInspect may be
                 made. ACTIVE jobs can transition to DONE.
         """
+
         JOB_STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -12547,6 +12592,7 @@ class DataRiskLevel(proto.Message):
                 Re-identification of users may be possible.
                 Consider limiting usage and or removing SPII.
         """
+
         RISK_SCORE_UNSPECIFIED = 0
         RISK_LOW = 10
         RISK_UNKNOWN = 12
@@ -12779,6 +12825,7 @@ class TableDataProfile(proto.Message):
                 profile_status.status.code is 0, the profile succeeded,
                 otherwise, it failed.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         DONE = 2
@@ -13077,6 +13124,7 @@ class ColumnDataProfile(proto.Message):
                 profile_status.status.code is 0, the profile succeeded,
                 otherwise, it failed.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         DONE = 2
@@ -13133,6 +13181,7 @@ class ColumnDataProfile(proto.Message):
             TYPE_RANGE_TIMESTAMP (18):
                 ``Range<Timestamp>`` type.
         """
+
         COLUMN_DATA_TYPE_UNSPECIFIED = 0
         TYPE_INT64 = 1
         TYPE_BOOL = 2
@@ -13162,6 +13211,7 @@ class ColumnDataProfile(proto.Message):
             COLUMN_POLICY_TAGGED (1):
                 Column has policy tag applied.
         """
+
         COLUMN_POLICY_STATE_UNSPECIFIED = 0
         COLUMN_POLICY_TAGGED = 1
 
@@ -13375,6 +13425,7 @@ class FileStoreDataProfile(proto.Message):
                 profile_status.status.code is 0, the profile succeeded,
                 otherwise, it failed.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         DONE = 2
@@ -13477,12 +13528,12 @@ class FileStoreDataProfile(proto.Message):
         proto.STRING,
         number=18,
     )
-    file_store_info_type_summaries: MutableSequence[
-        "FileStoreInfoTypeSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=21,
-        message="FileStoreInfoTypeSummary",
+    file_store_info_type_summaries: MutableSequence["FileStoreInfoTypeSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=21,
+            message="FileStoreInfoTypeSummary",
+        )
     )
     sample_findings_table: storage.BigQueryTable = proto.Field(
         proto.MESSAGE,
@@ -13690,12 +13741,12 @@ class FileClusterSummary(proto.Message):
         number=1,
         message="FileClusterType",
     )
-    file_store_info_type_summaries: MutableSequence[
-        "FileStoreInfoTypeSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="FileStoreInfoTypeSummary",
+    file_store_info_type_summaries: MutableSequence["FileStoreInfoTypeSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="FileStoreInfoTypeSummary",
+        )
     )
     sensitivity_score: storage.SensitivityScore = proto.Field(
         proto.MESSAGE,
@@ -13889,12 +13940,12 @@ class ListFileStoreDataProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    file_store_data_profiles: MutableSequence[
-        "FileStoreDataProfile"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="FileStoreDataProfile",
+    file_store_data_profiles: MutableSequence["FileStoreDataProfile"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="FileStoreDataProfile",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -13967,6 +14018,7 @@ class DataProfilePubSubCondition(proto.Message):
             MEDIUM_OR_HIGH (2):
                 Medium or high risk/sensitivity detected.
         """
+
         PROFILE_SCORE_BUCKET_UNSPECIFIED = 0
         HIGH = 1
         MEDIUM_OR_HIGH = 2
@@ -14033,6 +14085,7 @@ class DataProfilePubSubCondition(proto.Message):
                 AND (2):
                     Conditional AND.
             """
+
             LOGICAL_OPERATOR_UNSPECIFIED = 0
             OR = 1
             AND = 2
@@ -14042,12 +14095,12 @@ class DataProfilePubSubCondition(proto.Message):
             number=1,
             enum="DataProfilePubSubCondition.PubSubExpressions.PubSubLogicalOperator",
         )
-        conditions: MutableSequence[
-            "DataProfilePubSubCondition.PubSubCondition"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="DataProfilePubSubCondition.PubSubCondition",
+        conditions: MutableSequence["DataProfilePubSubCondition.PubSubCondition"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="DataProfilePubSubCondition.PubSubCondition",
+            )
         )
 
     expressions: PubSubExpressions = proto.Field(
@@ -14462,6 +14515,7 @@ class CloudSqlProperties(proto.Message):
             DATABASE_ENGINE_POSTGRES (2):
                 Cloud SQL for PostgreSQL instance.
         """
+
         DATABASE_ENGINE_UNKNOWN = 0
         DATABASE_ENGINE_MYSQL = 1
         DATABASE_ENGINE_POSTGRES = 2
@@ -14569,6 +14623,7 @@ class FileClusterType(proto.Message):
             CLUSTER_AI_MODEL (10):
                 AI models like .tflite etc.
         """
+
         CLUSTER_UNSPECIFIED = 0
         CLUSTER_UNKNOWN = 1
         CLUSTER_TEXT = 2
@@ -14723,6 +14778,7 @@ class Domain(proto.Message):
                 Indicates that the data profile is related to
                 code.
         """
+
         CATEGORY_UNSPECIFIED = 0
         AI = 1
         CODE = 2
@@ -14753,6 +14809,7 @@ class Domain(proto.Message):
                 If the service determines the category type. For example,
                 Vertex AI assets would always have a ``Category`` of ``AI``.
         """
+
         SIGNAL_UNSPECIFIED = 0
         MODEL = 1
         TEXT_EMBEDDING = 2

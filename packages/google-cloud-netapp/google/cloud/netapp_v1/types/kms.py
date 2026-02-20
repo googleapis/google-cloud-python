@@ -324,6 +324,7 @@ class KmsConfig(proto.Message):
                 The existing volumes are migrating from SMEK to
                 CMEK.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2

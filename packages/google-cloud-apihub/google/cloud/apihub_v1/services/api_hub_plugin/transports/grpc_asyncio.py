@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.apihub_v1.types import plugin_service
 
@@ -572,12 +572,12 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "execute_plugin_instance_action" not in self._stubs:
-            self._stubs[
-                "execute_plugin_instance_action"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.ApiHubPlugin/ExecutePluginInstanceAction",
-                request_serializer=plugin_service.ExecutePluginInstanceActionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["execute_plugin_instance_action"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.ApiHubPlugin/ExecutePluginInstanceAction",
+                    request_serializer=plugin_service.ExecutePluginInstanceActionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["execute_plugin_instance_action"]
 
@@ -662,12 +662,12 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enable_plugin_instance_action" not in self._stubs:
-            self._stubs[
-                "enable_plugin_instance_action"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.ApiHubPlugin/EnablePluginInstanceAction",
-                request_serializer=plugin_service.EnablePluginInstanceActionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["enable_plugin_instance_action"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.ApiHubPlugin/EnablePluginInstanceAction",
+                    request_serializer=plugin_service.EnablePluginInstanceActionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["enable_plugin_instance_action"]
 
@@ -693,12 +693,12 @@ class ApiHubPluginGrpcAsyncIOTransport(ApiHubPluginTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "disable_plugin_instance_action" not in self._stubs:
-            self._stubs[
-                "disable_plugin_instance_action"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.ApiHubPlugin/DisablePluginInstanceAction",
-                request_serializer=plugin_service.DisablePluginInstanceActionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["disable_plugin_instance_action"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.ApiHubPlugin/DisablePluginInstanceAction",
+                    request_serializer=plugin_service.DisablePluginInstanceActionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["disable_plugin_instance_action"]
 

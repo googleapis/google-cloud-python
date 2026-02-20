@@ -20,14 +20,13 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.recommender_v1.types import insight, recommendation
 from google.cloud.recommender_v1.types import (
     insight_type_config as gcr_insight_type_config,
 )
 from google.cloud.recommender_v1.types import (
     recommender_config as gcr_recommender_config,
 )
-from google.cloud.recommender_v1.types import insight
-from google.cloud.recommender_v1.types import recommendation
 
 __protobuf__ = proto.module(
     package="google.cloud.recommender.v1",
@@ -299,12 +298,12 @@ class ListRecommendationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    recommendations: MutableSequence[
-        recommendation.Recommendation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=recommendation.Recommendation,
+    recommendations: MutableSequence[recommendation.Recommendation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=recommendation.Recommendation,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

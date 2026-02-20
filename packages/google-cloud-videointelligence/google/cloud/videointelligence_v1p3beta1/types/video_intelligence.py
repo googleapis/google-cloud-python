@@ -102,6 +102,7 @@ class LabelDetectionMode(proto.Enum):
             Detect both shot-level and frame-level
             labels.
     """
+
     LABEL_DETECTION_MODE_UNSPECIFIED = 0
     SHOT_MODE = 1
     FRAME_MODE = 2
@@ -125,6 +126,7 @@ class Likelihood(proto.Enum):
         VERY_LIKELY (5):
             Very likely.
     """
+
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -156,6 +158,7 @@ class StreamingFeature(proto.Enum):
             Object detection and tracking based on AutoML
             model.
     """
+
     STREAMING_FEATURE_UNSPECIFIED = 0
     STREAMING_LABEL_DETECTION = 1
     STREAMING_SHOT_CHANGE_DETECTION = 2
@@ -194,6 +197,7 @@ class Feature(proto.Enum):
         PERSON_DETECTION (14):
             Person detection.
     """
+
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
@@ -1113,36 +1117,36 @@ class VideoAnnotationResults(proto.Message):
         number=2,
         message="LabelAnnotation",
     )
-    segment_presence_label_annotations: MutableSequence[
-        "LabelAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=23,
-        message="LabelAnnotation",
+    segment_presence_label_annotations: MutableSequence["LabelAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=23,
+            message="LabelAnnotation",
+        )
     )
     shot_label_annotations: MutableSequence["LabelAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="LabelAnnotation",
     )
-    shot_presence_label_annotations: MutableSequence[
-        "LabelAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=24,
-        message="LabelAnnotation",
+    shot_presence_label_annotations: MutableSequence["LabelAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=24,
+            message="LabelAnnotation",
+        )
     )
     frame_label_annotations: MutableSequence["LabelAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="LabelAnnotation",
     )
-    face_detection_annotations: MutableSequence[
-        "FaceDetectionAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message="FaceDetectionAnnotation",
+    face_detection_annotations: MutableSequence["FaceDetectionAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message="FaceDetectionAnnotation",
+        )
     )
     shot_annotations: MutableSequence["VideoSegment"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1164,26 +1168,26 @@ class VideoAnnotationResults(proto.Message):
         number=12,
         message="TextAnnotation",
     )
-    object_annotations: MutableSequence[
-        "ObjectTrackingAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message="ObjectTrackingAnnotation",
+    object_annotations: MutableSequence["ObjectTrackingAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message="ObjectTrackingAnnotation",
+        )
     )
-    logo_recognition_annotations: MutableSequence[
-        "LogoRecognitionAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=19,
-        message="LogoRecognitionAnnotation",
+    logo_recognition_annotations: MutableSequence["LogoRecognitionAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=19,
+            message="LogoRecognitionAnnotation",
+        )
     )
-    person_detection_annotations: MutableSequence[
-        "PersonDetectionAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=20,
-        message="PersonDetectionAnnotation",
+    person_detection_annotations: MutableSequence["PersonDetectionAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=20,
+            message="PersonDetectionAnnotation",
+        )
     )
     celebrity_recognition_annotations: "CelebrityRecognitionAnnotation" = proto.Field(
         proto.MESSAGE,
@@ -1278,12 +1282,12 @@ class AnnotateVideoProgress(proto.Message):
             ``AnnotateVideoRequest``.
     """
 
-    annotation_progress: MutableSequence[
-        "VideoAnnotationProgress"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="VideoAnnotationProgress",
+    annotation_progress: MutableSequence["VideoAnnotationProgress"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="VideoAnnotationProgress",
+        )
     )
 
 
@@ -2016,12 +2020,12 @@ class StreamingVideoAnnotationResults(proto.Message):
         number=3,
         message="ExplicitContentAnnotation",
     )
-    object_annotations: MutableSequence[
-        "ObjectTrackingAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="ObjectTrackingAnnotation",
+    object_annotations: MutableSequence["ObjectTrackingAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="ObjectTrackingAnnotation",
+        )
     )
 
 

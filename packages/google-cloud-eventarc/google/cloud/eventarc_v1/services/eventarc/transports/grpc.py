@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.eventarc_v1.types import (
     channel,
@@ -39,12 +41,14 @@ from google.cloud.eventarc_v1.types import (
     enrollment,
     eventarc,
     google_api_source,
+    google_channel_config,
+    message_bus,
+    pipeline,
+    trigger,
 )
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
-from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
 from .base import DEFAULT_CLIENT_INFO, EventarcTransport
 
@@ -829,12 +833,12 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_google_channel_config" not in self._stubs:
-            self._stubs[
-                "update_google_channel_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
-                request_serializer=eventarc.UpdateGoogleChannelConfigRequest.serialize,
-                response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
+            self._stubs["update_google_channel_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
+                    request_serializer=eventarc.UpdateGoogleChannelConfigRequest.serialize,
+                    response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
+                )
             )
         return self._stubs["update_google_channel_config"]
 
@@ -914,12 +918,12 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_message_bus_enrollments" not in self._stubs:
-            self._stubs[
-                "list_message_bus_enrollments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
-                request_serializer=eventarc.ListMessageBusEnrollmentsRequest.serialize,
-                response_deserializer=eventarc.ListMessageBusEnrollmentsResponse.deserialize,
+            self._stubs["list_message_bus_enrollments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
+                    request_serializer=eventarc.ListMessageBusEnrollmentsRequest.serialize,
+                    response_deserializer=eventarc.ListMessageBusEnrollmentsResponse.deserialize,
+                )
             )
         return self._stubs["list_message_bus_enrollments"]
 

@@ -280,6 +280,7 @@ class ReportBillableTripRequest(proto.Message):
                 The solution is an on-demand ridesharing and
                 deliveries trip.
         """
+
         SOLUTION_TYPE_UNSPECIFIED = 0
         ON_DEMAND_RIDESHARING_AND_DELIVERIES = 1
 

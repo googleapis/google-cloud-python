@@ -16,22 +16,22 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
+from google.cloud.cloudquotas_v1beta.types import quota_adjuster_settings
 from google.cloud.cloudquotas_v1beta.types import (
     quota_adjuster_settings as gac_quota_adjuster_settings,
 )
-from google.cloud.cloudquotas_v1beta.types import quota_adjuster_settings
 
 from .base import DEFAULT_CLIENT_INFO, QuotaAdjusterSettingsManagerTransport
 
@@ -352,12 +352,12 @@ class QuotaAdjusterSettingsManagerGrpcTransport(QuotaAdjusterSettingsManagerTran
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_quota_adjuster_settings" not in self._stubs:
-            self._stubs[
-                "update_quota_adjuster_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings",
-                request_serializer=gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest.serialize,
-                response_deserializer=gac_quota_adjuster_settings.QuotaAdjusterSettings.deserialize,
+            self._stubs["update_quota_adjuster_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings",
+                    request_serializer=gac_quota_adjuster_settings.UpdateQuotaAdjusterSettingsRequest.serialize,
+                    response_deserializer=gac_quota_adjuster_settings.QuotaAdjusterSettings.deserialize,
+                )
             )
         return self._stubs["update_quota_adjuster_settings"]
 
@@ -384,12 +384,12 @@ class QuotaAdjusterSettingsManagerGrpcTransport(QuotaAdjusterSettingsManagerTran
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_quota_adjuster_settings" not in self._stubs:
-            self._stubs[
-                "get_quota_adjuster_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings",
-                request_serializer=quota_adjuster_settings.GetQuotaAdjusterSettingsRequest.serialize,
-                response_deserializer=quota_adjuster_settings.QuotaAdjusterSettings.deserialize,
+            self._stubs["get_quota_adjuster_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings",
+                    request_serializer=quota_adjuster_settings.GetQuotaAdjusterSettingsRequest.serialize,
+                    response_deserializer=quota_adjuster_settings.QuotaAdjusterSettings.deserialize,
+                )
             )
         return self._stubs["get_quota_adjuster_settings"]
 

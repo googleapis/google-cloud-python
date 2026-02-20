@@ -924,6 +924,7 @@ class ExportDataObjectsRequest(proto.Message):
                     The exported Data Objects will be in JSON
                     format.
             """
+
             FORMAT_UNSPECIFIED = 0
             JSON = 1
 

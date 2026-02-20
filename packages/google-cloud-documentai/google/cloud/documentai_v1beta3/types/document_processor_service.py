@@ -22,13 +22,15 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.documentai_v1beta3.types import document_schema as gcd_document_schema
 from google.cloud.documentai_v1beta3.types import document as gcd_document
-from google.cloud.documentai_v1beta3.types import document_io
+from google.cloud.documentai_v1beta3.types import (
+    document_io,
+    operation_metadata,
+    processor_type,
+)
+from google.cloud.documentai_v1beta3.types import document_schema as gcd_document_schema
 from google.cloud.documentai_v1beta3.types import evaluation as gcd_evaluation
-from google.cloud.documentai_v1beta3.types import operation_metadata
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
-from google.cloud.documentai_v1beta3.types import processor_type
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
@@ -442,6 +444,7 @@ class HumanReviewStatus(proto.Message):
                 [state_message][google.cloud.documentai.v1beta3.HumanReviewStatus.state_message]
                 for details.
         """
+
         STATE_UNSPECIFIED = 0
         SKIPPED = 1
         VALIDATION_PASSED = 2
@@ -671,6 +674,7 @@ class BatchProcessMetadata(proto.Message):
             FAILED (6):
                 The batch processing has failed.
         """
+
         STATE_UNSPECIFIED = 0
         WAITING = 1
         RUNNING = 2
@@ -749,12 +753,12 @@ class BatchProcessMetadata(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
-    individual_process_statuses: MutableSequence[
-        IndividualProcessStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=IndividualProcessStatus,
+    individual_process_statuses: MutableSequence[IndividualProcessStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=IndividualProcessStatus,
+        )
     )
 
 
@@ -786,12 +790,12 @@ class FetchProcessorTypesResponse(proto.Message):
             The list of processor types.
     """
 
-    processor_types: MutableSequence[
-        processor_type.ProcessorType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=processor_type.ProcessorType,
+    processor_types: MutableSequence[processor_type.ProcessorType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=processor_type.ProcessorType,
+        )
     )
 
 
@@ -845,12 +849,12 @@ class ListProcessorTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    processor_types: MutableSequence[
-        processor_type.ProcessorType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=processor_type.ProcessorType,
+    processor_types: MutableSequence[processor_type.ProcessorType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=processor_type.ProcessorType,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1018,12 +1022,12 @@ class ListProcessorVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    processor_versions: MutableSequence[
-        gcd_processor.ProcessorVersion
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_processor.ProcessorVersion,
+    processor_versions: MutableSequence[gcd_processor.ProcessorVersion] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_processor.ProcessorVersion,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1449,6 +1453,7 @@ class TrainProcessorVersionRequest(proto.Message):
                 TEMPLATE_BASED (2):
                     No description available.
             """
+
             TRAINING_METHOD_UNSPECIFIED = 0
             MODEL_BASED = 1
             TEMPLATE_BASED = 2
@@ -1647,6 +1652,7 @@ class ReviewDocumentRequest(proto.Message):
                 urgent task queue to respect this priority
                 level.
         """
+
         DEFAULT = 0
         URGENT = 1
 
@@ -1710,6 +1716,7 @@ class ReviewDocumentResponse(proto.Message):
             SUCCEEDED (2):
                 The review operation is succeeded.
         """
+
         STATE_UNSPECIFIED = 0
         REJECTED = 1
         SUCCEEDED = 2
@@ -1769,6 +1776,7 @@ class ReviewDocumentOperationMetadata(proto.Message):
             CANCELLED (5):
                 Operation is cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2

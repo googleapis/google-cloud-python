@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.kms_v1.types import autokey_admin
 
@@ -421,12 +423,12 @@ class AutokeyAdminGrpcTransport(AutokeyAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "show_effective_autokey_config" not in self._stubs:
-            self._stubs[
-                "show_effective_autokey_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.v1.AutokeyAdmin/ShowEffectiveAutokeyConfig",
-                request_serializer=autokey_admin.ShowEffectiveAutokeyConfigRequest.serialize,
-                response_deserializer=autokey_admin.ShowEffectiveAutokeyConfigResponse.deserialize,
+            self._stubs["show_effective_autokey_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.v1.AutokeyAdmin/ShowEffectiveAutokeyConfig",
+                    request_serializer=autokey_admin.ShowEffectiveAutokeyConfigRequest.serialize,
+                    response_deserializer=autokey_admin.ShowEffectiveAutokeyConfigResponse.deserialize,
+                )
             )
         return self._stubs["show_effective_autokey_config"]
 

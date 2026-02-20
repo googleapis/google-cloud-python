@@ -18,9 +18,9 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
 import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.reports.v1alpha",
@@ -754,6 +754,7 @@ class ProductView(proto.Message):
                 Product is eligible for all reporting
                 contexts.
         """
+
         AGGREGATED_REPORTING_CONTEXT_STATUS_UNSPECIFIED = 0
         NOT_ELIGIBLE_OR_DISAPPROVED = 1
         PENDING = 2
@@ -784,6 +785,7 @@ class ProductView(proto.Message):
                 clicks as the highest performing products of the
                 merchant.
         """
+
         CLICK_POTENTIAL_UNSPECIFIED = 0
         LOW = 1
         MEDIUM = 2
@@ -820,6 +822,7 @@ class ProductView(proto.Message):
                     Resolution might lead to another issue (for
                     example, if crawl fails).
             """
+
             ITEM_ISSUE_RESOLUTION_UNSPECIFIED = 0
             MERCHANT_ACTION = 1
             PENDING_PROCESSING = 2
@@ -886,6 +889,7 @@ class ProductView(proto.Message):
                     PENDING (3):
                         Issue resolution is ``PENDING_PROCESSING``.
                 """
+
                 AGGREGATED_ISSUE_SEVERITY_UNSPECIFIED = 0
                 DISAPPROVED = 1
                 DEMOTED = 2
@@ -1431,6 +1435,7 @@ class PriceInsightsProductView(proto.Message):
             HIGH (3):
                 Effectiveness is high.
         """
+
         EFFECTIVENESS_UNSPECIFIED = 0
         LOW = 1
         MEDIUM = 2
@@ -1702,6 +1707,7 @@ class BestSellersProductClusterView(proto.Message):
                 You do not have a product for this product
                 cluster or brand in inventory.
         """
+
         INVENTORY_STATUS_UNSPECIFIED = 0
         IN_STOCK = 1
         OUT_OF_STOCK = 2
@@ -2453,6 +2459,7 @@ class MarketingMethod(proto.Message):
             ADS (2):
                 Ads-based marketing.
         """
+
         MARKETING_METHOD_ENUM_UNSPECIFIED = 0
         ORGANIC = 1
         ADS = 2
@@ -2475,6 +2482,7 @@ class ReportGranularity(proto.Message):
             MONTHLY (2):
                 Report is computed over a month timeframe.
         """
+
         REPORT_GRANULARITY_ENUM_UNSPECIFIED = 0
         WEEKLY = 1
         MONTHLY = 2
@@ -2508,6 +2516,7 @@ class RelativeDemand(proto.Message):
                 Demand is 51-100% of the demand of the
                 highest ranked product cluster or brand.
         """
+
         RELATIVE_DEMAND_ENUM_UNSPECIFIED = 0
         VERY_LOW = 10
         LOW = 20
@@ -2538,6 +2547,7 @@ class RelativeDemandChangeType(proto.Message):
                 Relative demand is higher than the previous
                 time period.
         """
+
         RELATIVE_DEMAND_CHANGE_TYPE_ENUM_UNSPECIFIED = 0
         SINKER = 1
         FLAT = 2
@@ -2563,6 +2573,7 @@ class TrafficSource(proto.Message):
             ALL (3):
                 Organic and ads traffic.
         """
+
         TRAFFIC_SOURCE_ENUM_UNSPECIFIED = 0
         ORGANIC = 1
         ADS = 2

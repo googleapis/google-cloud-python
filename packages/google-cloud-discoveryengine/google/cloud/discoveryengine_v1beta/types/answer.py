@@ -73,6 +73,7 @@ class Answer(proto.Message):
             SUCCEEDED (3):
                 Answer generation has succeeded.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         FAILED = 2
@@ -131,6 +132,7 @@ class Answer(proto.Message):
                 Google skips the answer if a well grounded
                 answer was unable to be generated.
         """
+
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
         NON_ANSWER_SEEKING_QUERY_IGNORED = 2
@@ -440,6 +442,7 @@ class Answer(proto.Message):
                 SUCCEEDED (3):
                     Step has succeeded.
             """
+
             STATE_UNSPECIFIED = 0
             IN_PROGRESS = 1
             FAILED = 2
@@ -666,6 +669,7 @@ class Answer(proto.Message):
                         Non-answer-seeking query classification type,
                         for no clear intent.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2

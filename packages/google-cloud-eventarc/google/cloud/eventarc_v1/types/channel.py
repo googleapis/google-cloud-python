@@ -115,6 +115,7 @@ class Channel(proto.Message):
                 the subscriber should create a new Channel and
                 give it to the provider.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2

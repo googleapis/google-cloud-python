@@ -99,6 +99,7 @@ class Schedule(proto.Message):
             DELETING (6):
                 The schedule resource is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2

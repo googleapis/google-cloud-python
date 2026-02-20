@@ -193,6 +193,7 @@ class AddressComponent(proto.Message):
                 likely to be wrong. For example, a neighborhood
                 that does not fit the rest of the address.
         """
+
         CONFIRMATION_LEVEL_UNSPECIFIED = 0
         CONFIRMED = 1
         UNCONFIRMED_BUT_PLAUSIBLE = 2

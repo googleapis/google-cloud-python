@@ -13,9 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .barcode import Barcode
-from .dataset import BatchDatasetDocuments, Dataset, DatasetSchema, DocumentId
-from .document import Document, RevisionRef
+from .barcode import (
+    Barcode,
+)
+from .dataset import (
+    BatchDatasetDocuments,
+    Dataset,
+    DatasetSchema,
+    DocumentId,
+)
+from .document import (
+    Document,
+    RevisionRef,
+)
 from .document_io import (
     BatchDocumentsInputConfig,
     DocumentOutputConfig,
@@ -110,11 +120,26 @@ from .document_service import (
     UpdateDatasetRequest,
     UpdateDatasetSchemaRequest,
 )
-from .evaluation import Evaluation, EvaluationReference
-from .geometry import BoundingPoly, NormalizedVertex, Vertex
-from .operation_metadata import CommonOperationMetadata
-from .processor import Processor, ProcessorVersion, ProcessorVersionAlias
-from .processor_type import ProcessorType
+from .evaluation import (
+    Evaluation,
+    EvaluationReference,
+)
+from .geometry import (
+    BoundingPoly,
+    NormalizedVertex,
+    Vertex,
+)
+from .operation_metadata import (
+    CommonOperationMetadata,
+)
+from .processor import (
+    Processor,
+    ProcessorVersion,
+    ProcessorVersionAlias,
+)
+from .processor_type import (
+    ProcessorType,
+)
 
 __all__ = (
     "Barcode",

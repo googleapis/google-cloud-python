@@ -46,6 +46,7 @@ class InventoryView(proto.Enum):
         FULL (2):
             Returns all fields.
     """
+
     INVENTORY_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -187,6 +188,7 @@ class Inventory(proto.Message):
                     result of the agent reporting inventory via the
                     reporting API.
             """
+
             ORIGIN_TYPE_UNSPECIFIED = 0
             INVENTORY_REPORT = 1
 
@@ -203,6 +205,7 @@ class Inventory(proto.Message):
                     This represents an update that is available
                     for a package.
             """
+
             TYPE_UNSPECIFIED = 0
             INSTALLED_PACKAGE = 1
             AVAILABLE_PACKAGE = 2

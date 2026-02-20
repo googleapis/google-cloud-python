@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import IntegratedSystem, ManagingSystem
+from .common import (
+    IntegratedSystem,
+    ManagingSystem,
+)
 from .datacatalog import (
     CreateEntryGroupRequest,
     CreateEntryRequest,
@@ -48,7 +51,10 @@ from .datacatalog import (
     UpdateTagTemplateFieldRequest,
     UpdateTagTemplateRequest,
 )
-from .gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
+from .gcs_fileset_spec import (
+    GcsFilesetSpec,
+    GcsFileSpec,
+)
 from .policytagmanager import (
     CreatePolicyTagRequest,
     CreateTaxonomyRequest,
@@ -74,8 +80,14 @@ from .policytagmanagerserialization import (
     SerializedPolicyTag,
     SerializedTaxonomy,
 )
-from .schema import ColumnSchema, Schema
-from .search import SearchCatalogResult, SearchResultType
+from .schema import (
+    ColumnSchema,
+    Schema,
+)
+from .search import (
+    SearchCatalogResult,
+    SearchResultType,
+)
 from .table_spec import (
     BigQueryDateShardedSpec,
     BigQueryTableSpec,
@@ -83,9 +95,20 @@ from .table_spec import (
     TableSpec,
     ViewSpec,
 )
-from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
-from .timestamps import SystemTimestamps
-from .usage import UsageSignal, UsageStats
+from .tags import (
+    FieldType,
+    Tag,
+    TagField,
+    TagTemplate,
+    TagTemplateField,
+)
+from .timestamps import (
+    SystemTimestamps,
+)
+from .usage import (
+    UsageSignal,
+    UsageStats,
+)
 
 __all__ = (
     "IntegratedSystem",

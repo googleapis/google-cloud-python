@@ -18,14 +18,13 @@ from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
+from google.api import label_pb2 as _label_pb2
+from google.api import launch_stage_pb2 as _launch_stage_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
-
-from google.api import label_pb2 as _label_pb2
-from google.api import launch_stage_pb2 as _launch_stage_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -43,7 +42,6 @@ class MetricDescriptor(_message.Message):
         "launch_stage",
         "monitored_resource_types",
     )
-
     class MetricKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         METRIC_KIND_UNSPECIFIED: _ClassVar[MetricDescriptor.MetricKind]
@@ -55,7 +53,6 @@ class MetricDescriptor(_message.Message):
     GAUGE: MetricDescriptor.MetricKind
     DELTA: MetricDescriptor.MetricKind
     CUMULATIVE: MetricDescriptor.MetricKind
-
     class ValueType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         VALUE_TYPE_UNSPECIFIED: _ClassVar[MetricDescriptor.ValueType]
@@ -73,7 +70,6 @@ class MetricDescriptor(_message.Message):
     STRING: MetricDescriptor.ValueType
     DISTRIBUTION: MetricDescriptor.ValueType
     MONEY: MetricDescriptor.ValueType
-
     class MetricDescriptorMetadata(_message.Message):
         __slots__ = (
             "launch_stage",
@@ -81,7 +77,6 @@ class MetricDescriptor(_message.Message):
             "ingest_delay",
             "time_series_resource_hierarchy_level",
         )
-
         class TimeSeriesResourceHierarchyLevel(
             int, metaclass=_enum_type_wrapper.EnumTypeWrapper
         ):
@@ -179,7 +174,6 @@ class MetricDescriptor(_message.Message):
 
 class Metric(_message.Message):
     __slots__ = ("type", "labels")
-
     class LabelsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]

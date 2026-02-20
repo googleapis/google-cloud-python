@@ -102,6 +102,7 @@ class Criticality(proto.Message):
             LOW (4):
                 Low impact.
         """
+
         TYPE_UNSPECIFIED = 0
         MISSION_CRITICAL = 1
         HIGH = 2
@@ -138,6 +139,7 @@ class Environment(proto.Message):
             DEVELOPMENT (4):
                 Development environment.
         """
+
         TYPE_UNSPECIFIED = 0
         PRODUCTION = 1
         STAGING = 2

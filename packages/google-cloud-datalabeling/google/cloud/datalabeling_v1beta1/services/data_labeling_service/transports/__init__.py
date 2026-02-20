@@ -21,9 +21,7 @@ from .grpc import DataLabelingServiceGrpcTransport
 from .grpc_asyncio import DataLabelingServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DataLabelingServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DataLabelingServiceTransport]]
 _transport_registry["grpc"] = DataLabelingServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataLabelingServiceGrpcAsyncIOTransport
 

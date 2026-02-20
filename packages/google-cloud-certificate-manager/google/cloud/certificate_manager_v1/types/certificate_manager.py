@@ -70,6 +70,7 @@ class ServingState(proto.Enum):
             Update is in progress. Some frontends may
             serve this configuration.
     """
+
     SERVING_STATE_UNSPECIFIED = 0
     ACTIVE = 1
     PENDING = 2
@@ -486,12 +487,12 @@ class ListCertificateMapEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_map_entries: MutableSequence[
-        "CertificateMapEntry"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CertificateMapEntry",
+    certificate_map_entries: MutableSequence["CertificateMapEntry"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CertificateMapEntry",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -890,6 +891,7 @@ class Certificate(proto.Message):
                 Google Cloud regions. See
                 https://cloud.google.com/compute/docs/regions-zones.
         """
+
         DEFAULT = 0
         EDGE_CACHE = 1
         ALL_REGIONS = 2
@@ -972,6 +974,7 @@ class Certificate(proto.Message):
                     The certificate management is working, and a
                     certificate has been provisioned.
             """
+
             STATE_UNSPECIFIED = 0
             PROVISIONING = 1
             FAILED = 2
@@ -1008,6 +1011,7 @@ class Certificate(proto.Message):
                         internal rate limits of the system. Provisioning
                         may take longer to complete.
                 """
+
                 REASON_UNSPECIFIED = 0
                 AUTHORIZATION_ISSUE = 1
                 RATE_LIMITED = 2
@@ -1064,6 +1068,7 @@ class Certificate(proto.Message):
                         ``failure_reason`` and ``details`` fields for more
                         information.
                 """
+
                 STATE_UNSPECIFIED = 0
                 AUTHORIZING = 1
                 AUTHORIZED = 6
@@ -1088,6 +1093,7 @@ class Certificate(proto.Message):
                         domain, e.g. for certificates per top-level
                         private domain.
                 """
+
                 FAILURE_REASON_UNSPECIFIED = 0
                 CONFIG = 1
                 CAA = 2
@@ -1285,12 +1291,12 @@ class CertificateMap(proto.Message):
             number=3,
             oneof="target_proxy",
         )
-        ip_configs: MutableSequence[
-            "CertificateMap.GclbTarget.IpConfig"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="CertificateMap.GclbTarget.IpConfig",
+        ip_configs: MutableSequence["CertificateMap.GclbTarget.IpConfig"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="CertificateMap.GclbTarget.IpConfig",
+            )
         )
 
     name: str = proto.Field(
@@ -1385,6 +1391,7 @@ class CertificateMapEntry(proto.Message):
                 wasn't specified in the request or SNI couldn't
                 be found in the map.
         """
+
         MATCHER_UNSPECIFIED = 0
         PRIMARY = 1
 
@@ -1484,6 +1491,7 @@ class DnsAuthorization(proto.Message):
                 management of Google-managed certificates with DNS
                 authorization across multiple projects.
         """
+
         TYPE_UNSPECIFIED = 0
         FIXED_RECORD = 1
         PER_PROJECT_RECORD = 2

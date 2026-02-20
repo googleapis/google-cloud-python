@@ -96,6 +96,7 @@ class Component(proto.Enum):
         ZOOKEEPER (8):
             The Zookeeper service.
     """
+
     COMPONENT_UNSPECIFIED = 0
     ANACONDA = 5
     DELTA = 20
@@ -131,6 +132,7 @@ class FailureAction(proto.Enum):
         DELETE (2):
             Delete the failed cluster resource.
     """
+
     FAILURE_ACTION_UNSPECIFIED = 0
     NO_ACTION = 1
     DELETE = 2
@@ -706,6 +708,7 @@ class GkeNodePoolTarget(proto.Message):
                 Run work associated with a Spark executor of
                 a job.
         """
+
         ROLE_UNSPECIFIED = 0
         DEFAULT = 1
         CONTROLLER = 2
@@ -942,6 +945,7 @@ class AuthenticationConfig(proto.Message):
                 workload creator/user for authenticating to
                 other services.
         """
+
         AUTHENTICATION_TYPE_UNSPECIFIED = 0
         SERVICE_ACCOUNT = 1
         END_USER_CREDENTIALS = 2
@@ -982,6 +986,7 @@ class AutotuningConfig(proto.Message):
             AUTO (6):
                 Automatic selection of scenarios.
         """
+
         SCENARIO_UNSPECIFIED = 0
         SCALING = 2
         BROADCAST_HASH_JOIN = 3

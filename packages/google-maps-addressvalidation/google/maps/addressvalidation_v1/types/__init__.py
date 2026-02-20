@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .address import Address, AddressComponent, ComponentName
+from .address import (
+    Address,
+    AddressComponent,
+    ComponentName,
+)
 from .address_validation_service import (
     ProvideValidationFeedbackRequest,
     ProvideValidationFeedbackResponse,
@@ -22,9 +26,17 @@ from .address_validation_service import (
     ValidationResult,
     Verdict,
 )
-from .geocode import Geocode, PlusCode
-from .metadata_ import AddressMetadata
-from .usps_data import UspsAddress, UspsData
+from .geocode import (
+    Geocode,
+    PlusCode,
+)
+from .metadata_ import (
+    AddressMetadata,
+)
+from .usps_data import (
+    UspsAddress,
+    UspsData,
+)
 
 __all__ = (
     "Address",

@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.network_security_v1alpha1.types import firewall_activation
 
@@ -509,12 +511,12 @@ class FirewallActivationGrpcTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_firewall_endpoint_associations" not in self._stubs:
-            self._stubs[
-                "list_firewall_endpoint_associations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.FirewallActivation/ListFirewallEndpointAssociations",
-                request_serializer=firewall_activation.ListFirewallEndpointAssociationsRequest.serialize,
-                response_deserializer=firewall_activation.ListFirewallEndpointAssociationsResponse.deserialize,
+            self._stubs["list_firewall_endpoint_associations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.FirewallActivation/ListFirewallEndpointAssociations",
+                    request_serializer=firewall_activation.ListFirewallEndpointAssociationsRequest.serialize,
+                    response_deserializer=firewall_activation.ListFirewallEndpointAssociationsResponse.deserialize,
+                )
             )
         return self._stubs["list_firewall_endpoint_associations"]
 
@@ -541,12 +543,12 @@ class FirewallActivationGrpcTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "get_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.FirewallActivation/GetFirewallEndpointAssociation",
-                request_serializer=firewall_activation.GetFirewallEndpointAssociationRequest.serialize,
-                response_deserializer=firewall_activation.FirewallEndpointAssociation.deserialize,
+            self._stubs["get_firewall_endpoint_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.FirewallActivation/GetFirewallEndpointAssociation",
+                    request_serializer=firewall_activation.GetFirewallEndpointAssociationRequest.serialize,
+                    response_deserializer=firewall_activation.FirewallEndpointAssociation.deserialize,
+                )
             )
         return self._stubs["get_firewall_endpoint_association"]
 
@@ -574,12 +576,12 @@ class FirewallActivationGrpcTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "create_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.FirewallActivation/CreateFirewallEndpointAssociation",
-                request_serializer=firewall_activation.CreateFirewallEndpointAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_firewall_endpoint_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.FirewallActivation/CreateFirewallEndpointAssociation",
+                    request_serializer=firewall_activation.CreateFirewallEndpointAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_firewall_endpoint_association"]
 
@@ -606,12 +608,12 @@ class FirewallActivationGrpcTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "delete_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.FirewallActivation/DeleteFirewallEndpointAssociation",
-                request_serializer=firewall_activation.DeleteFirewallEndpointAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_firewall_endpoint_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.FirewallActivation/DeleteFirewallEndpointAssociation",
+                    request_serializer=firewall_activation.DeleteFirewallEndpointAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_firewall_endpoint_association"]
 
@@ -638,12 +640,12 @@ class FirewallActivationGrpcTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "update_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.FirewallActivation/UpdateFirewallEndpointAssociation",
-                request_serializer=firewall_activation.UpdateFirewallEndpointAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_firewall_endpoint_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.FirewallActivation/UpdateFirewallEndpointAssociation",
+                    request_serializer=firewall_activation.UpdateFirewallEndpointAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_firewall_endpoint_association"]
 

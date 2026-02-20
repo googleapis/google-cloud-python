@@ -17,17 +17,15 @@ import json  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, path_template
-from google.cloud.location import locations_pb2  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-from google.protobuf import json_format
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import gapic_v1, path_template
+from google.cloud.location import locations_pb2  # type: ignore
+from google.protobuf import json_format
 
-from google.cloud.tasks_v2beta3.types import cloudtasks
-from google.cloud.tasks_v2beta3.types import queue
+from google.cloud.tasks_v2beta3.types import cloudtasks, queue, task
 from google.cloud.tasks_v2beta3.types import queue as gct_queue
-from google.cloud.tasks_v2beta3.types import task
 from google.cloud.tasks_v2beta3.types import task as gct_task
 
 from .base import DEFAULT_CLIENT_INFO, CloudTasksTransport

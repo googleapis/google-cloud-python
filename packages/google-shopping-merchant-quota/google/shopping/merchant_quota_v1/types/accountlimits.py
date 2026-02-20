@@ -53,6 +53,7 @@ class ProductLimit(proto.Message):
             ADS_EEA (2):
                 Limit for products in EEA countries.
         """
+
         SCOPE_UNSPECIFIED = 0
         ADS_NON_EEA = 1
         ADS_EEA = 2

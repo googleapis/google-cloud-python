@@ -84,12 +84,12 @@ class ListCachedContentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cached_contents: MutableSequence[
-        gag_cached_content.CachedContent
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gag_cached_content.CachedContent,
+    cached_contents: MutableSequence[gag_cached_content.CachedContent] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gag_cached_content.CachedContent,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

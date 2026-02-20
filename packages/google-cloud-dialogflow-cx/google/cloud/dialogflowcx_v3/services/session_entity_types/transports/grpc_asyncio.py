@@ -17,9 +17,13 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -27,17 +31,13 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import session_entity_type
 from google.cloud.dialogflowcx_v3.types import (
     session_entity_type as gcdc_session_entity_type,
 )
-from google.cloud.dialogflowcx_v3.types import session_entity_type
 
 from .base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
 from .grpc import SessionEntityTypesGrpcTransport
@@ -417,12 +417,12 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_session_entity_type" not in self._stubs:
-            self._stubs[
-                "create_session_entity_type"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/CreateSessionEntityType",
-                request_serializer=gcdc_session_entity_type.CreateSessionEntityTypeRequest.serialize,
-                response_deserializer=gcdc_session_entity_type.SessionEntityType.deserialize,
+            self._stubs["create_session_entity_type"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/CreateSessionEntityType",
+                    request_serializer=gcdc_session_entity_type.CreateSessionEntityTypeRequest.serialize,
+                    response_deserializer=gcdc_session_entity_type.SessionEntityType.deserialize,
+                )
             )
         return self._stubs["create_session_entity_type"]
 
@@ -448,12 +448,12 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_session_entity_type" not in self._stubs:
-            self._stubs[
-                "update_session_entity_type"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/UpdateSessionEntityType",
-                request_serializer=gcdc_session_entity_type.UpdateSessionEntityTypeRequest.serialize,
-                response_deserializer=gcdc_session_entity_type.SessionEntityType.deserialize,
+            self._stubs["update_session_entity_type"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/UpdateSessionEntityType",
+                    request_serializer=gcdc_session_entity_type.UpdateSessionEntityTypeRequest.serialize,
+                    response_deserializer=gcdc_session_entity_type.SessionEntityType.deserialize,
+                )
             )
         return self._stubs["update_session_entity_type"]
 
@@ -478,12 +478,12 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_session_entity_type" not in self._stubs:
-            self._stubs[
-                "delete_session_entity_type"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/DeleteSessionEntityType",
-                request_serializer=session_entity_type.DeleteSessionEntityTypeRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_session_entity_type"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3.SessionEntityTypes/DeleteSessionEntityType",
+                    request_serializer=session_entity_type.DeleteSessionEntityTypeRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_session_entity_type"]
 

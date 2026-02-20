@@ -487,6 +487,7 @@ class SearchRequest(proto.Message):
             LOWEST (4):
                 Lowest relevance threshold.
         """
+
         RELEVANCE_THRESHOLD_UNSPECIFIED = 0
         HIGH = 1
         MEDIUM = 2
@@ -532,6 +533,7 @@ class SearchRequest(proto.Message):
                 [SearchResponse.SearchResult][google.cloud.retail.v2alpha.SearchResponse.SearchResult]
                 will not be returned.
         """
+
         SEARCH_MODE_UNSPECIFIED = 0
         PRODUCT_SEARCH_ONLY = 1
         FACETED_SEARCH_ONLY = 2
@@ -859,6 +861,7 @@ class SearchRequest(proto.Message):
                 ENABLED (2):
                     Automatic mode built by Google Retail Search.
             """
+
             MODE_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
@@ -989,6 +992,7 @@ class SearchRequest(proto.Message):
                     Automatic query expansion built by Google
                     Retail Search.
             """
+
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             AUTO = 3
@@ -1025,6 +1029,7 @@ class SearchRequest(proto.Message):
                 DISABLED (2):
                     Disable personalization.
             """
+
             MODE_UNSPECIFIED = 0
             AUTO = 1
             DISABLED = 2
@@ -1064,6 +1069,7 @@ class SearchRequest(proto.Message):
                     Retail Search. Search will be based on the
                     corrected query if found.
             """
+
             MODE_UNSPECIFIED = 0
             SUGGESTION_ONLY = 1
             AUTO = 2
@@ -1139,12 +1145,12 @@ class SearchRequest(proto.Message):
                         which is a attribute key-value.
                 """
 
-                product_attribute_values: MutableSequence[
-                    "ProductAttributeValue"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=1,
-                    message="ProductAttributeValue",
+                product_attribute_values: MutableSequence["ProductAttributeValue"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=1,
+                        message="ProductAttributeValue",
+                    )
                 )
                 product_attribute_value: "ProductAttributeValue" = proto.Field(
                     proto.MESSAGE,
@@ -1534,13 +1540,13 @@ class SearchResponse(proto.Message):
             proto.INT32,
             number=3,
         )
-        matching_variant_fields: MutableMapping[
-            str, field_mask_pb2.FieldMask
-        ] = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=4,
-            message=field_mask_pb2.FieldMask,
+        matching_variant_fields: MutableMapping[str, field_mask_pb2.FieldMask] = (
+            proto.MapField(
+                proto.STRING,
+                proto.MESSAGE,
+                number=4,
+                message=field_mask_pb2.FieldMask,
+            )
         )
         variant_rollup_values: MutableMapping[str, struct_pb2.Value] = proto.MapField(
             proto.STRING,
@@ -1637,12 +1643,12 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="SearchResponse.Facet.FacetValue",
+        values: MutableSequence["SearchResponse.Facet.FacetValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResponse.Facet.FacetValue",
+            )
         )
         dynamic_facet: bool = proto.Field(
             proto.BOOL,

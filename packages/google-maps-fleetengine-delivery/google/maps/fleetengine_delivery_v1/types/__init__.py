@@ -44,9 +44,16 @@ from .delivery_vehicles import (
     VehicleJourneySegment,
     VehicleStop,
 )
-from .header import DeliveryRequestHeader
-from .task_tracking_info import TaskTrackingInfo
-from .tasks import Task, TaskTrackingViewConfig
+from .header import (
+    DeliveryRequestHeader,
+)
+from .task_tracking_info import (
+    TaskTrackingInfo,
+)
+from .tasks import (
+    Task,
+    TaskTrackingViewConfig,
+)
 
 __all__ = (
     "DeliveryVehicleAttribute",

@@ -17,10 +17,20 @@ import json  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
+from google.analytics.admin_v1alpha.types import (
+    analytics_admin,
+    audience,
+    channel_group,
+    event_create_and_edit,
+    expanded_data_set,
+    resources,
+    subproperty_event_filter,
+)
+from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
@@ -28,14 +38,6 @@ from google.analytics.admin_v1alpha.types import (
 from google.analytics.admin_v1alpha.types import (
     subproperty_event_filter as gaa_subproperty_event_filter,
 )
-from google.analytics.admin_v1alpha.types import analytics_admin
-from google.analytics.admin_v1alpha.types import audience
-from google.analytics.admin_v1alpha.types import audience as gaa_audience
-from google.analytics.admin_v1alpha.types import channel_group
-from google.analytics.admin_v1alpha.types import event_create_and_edit
-from google.analytics.admin_v1alpha.types import expanded_data_set
-from google.analytics.admin_v1alpha.types import resources
-from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
 from .base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
 

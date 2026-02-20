@@ -58,6 +58,7 @@ class NotificationView(proto.Enum):
         FULL (2):
             Include everything.
     """
+
     NOTIFICATION_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -86,6 +87,7 @@ class LocalizationState(proto.Enum):
             Localization for requested language is
             completed.
     """
+
     LOCALIZATION_STATE_UNSPECIFIED = 0
     LOCALIZATION_STATE_NOT_APPLICABLE = 1
     LOCALIZATION_STATE_PENDING = 2
@@ -107,6 +109,7 @@ class NotificationType(proto.Enum):
         NOTIFICATION_TYPE_THREAT_HORIZONS (4):
             Threat horizons MSA
     """
+
     NOTIFICATION_TYPE_UNSPECIFIED = 0
     NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY = 1
     NOTIFICATION_TYPE_SENSITIVE_ACTIONS = 2

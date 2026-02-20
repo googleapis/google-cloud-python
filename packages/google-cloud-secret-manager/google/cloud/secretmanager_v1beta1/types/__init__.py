@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .resources import Replication, Secret, SecretPayload, SecretVersion
+from .resources import (
+    Replication,
+    Secret,
+    SecretPayload,
+    SecretVersion,
+)
 from .service import (
     AccessSecretVersionRequest,
     AccessSecretVersionResponse,

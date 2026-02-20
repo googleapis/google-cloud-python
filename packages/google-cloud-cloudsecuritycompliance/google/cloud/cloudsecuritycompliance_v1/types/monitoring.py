@@ -65,6 +65,7 @@ class EvaluationState(proto.Enum):
         EVALUATION_STATE_NOT_ASSESSED (3):
             The control is not assessed.
     """
+
     EVALUATION_STATE_UNSPECIFIED = 0
     EVALUATION_STATE_PASSED = 1
     EVALUATION_STATE_FAILED = 2
@@ -108,6 +109,7 @@ class FindingClass(proto.Enum):
             attack paths converge, based on attack path
             simulations (APS).
     """
+
     FINDING_CLASS_UNSPECIFIED = 0
     THREAT = 1
     VULNERABILITY = 2
@@ -174,12 +176,12 @@ class ListFrameworkComplianceSummariesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    framework_compliance_summaries: MutableSequence[
-        "FrameworkComplianceSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="FrameworkComplianceSummary",
+    framework_compliance_summaries: MutableSequence["FrameworkComplianceSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="FrameworkComplianceSummary",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -246,19 +248,19 @@ class FrameworkComplianceReport(proto.Message):
         number=5,
         enum=common.Framework.FrameworkType,
     )
-    supported_cloud_providers: MutableSequence[
-        common.CloudProvider
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=6,
-        enum=common.CloudProvider,
+    supported_cloud_providers: MutableSequence[common.CloudProvider] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=6,
+            enum=common.CloudProvider,
+        )
     )
-    framework_categories: MutableSequence[
-        common.FrameworkCategory
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=7,
-        enum=common.FrameworkCategory,
+    framework_categories: MutableSequence[common.FrameworkCategory] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=7,
+            enum=common.FrameworkCategory,
+        )
     )
     framework_display_name: str = proto.Field(
         proto.STRING,
@@ -276,12 +278,12 @@ class FrameworkComplianceReport(proto.Message):
         proto.INT64,
         number=11,
     )
-    target_resource_details: MutableSequence[
-        "TargetResourceDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message="TargetResourceDetails",
+    target_resource_details: MutableSequence["TargetResourceDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message="TargetResourceDetails",
+        )
     )
 
 
@@ -438,12 +440,12 @@ class ListControlComplianceSummariesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    control_compliance_summaries: MutableSequence[
-        "ControlComplianceSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ControlComplianceSummary",
+    control_compliance_summaries: MutableSequence["ControlComplianceSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ControlComplianceSummary",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -491,12 +493,12 @@ class AggregateFrameworkComplianceReportResponse(proto.Message):
             The list of aggregated compliance reports.
     """
 
-    aggregated_compliance_reports: MutableSequence[
-        "AggregatedComplianceReport"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AggregatedComplianceReport",
+    aggregated_compliance_reports: MutableSequence["AggregatedComplianceReport"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AggregatedComplianceReport",
+        )
     )
 
 
@@ -580,19 +582,19 @@ class FrameworkComplianceSummary(proto.Message):
         number=3,
         enum=common.Framework.FrameworkType,
     )
-    supported_cloud_providers: MutableSequence[
-        common.CloudProvider
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=4,
-        enum=common.CloudProvider,
+    supported_cloud_providers: MutableSequence[common.CloudProvider] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=4,
+            enum=common.CloudProvider,
+        )
     )
-    framework_categories: MutableSequence[
-        common.FrameworkCategory
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=5,
-        enum=common.FrameworkCategory,
+    framework_categories: MutableSequence[common.FrameworkCategory] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=5,
+            enum=common.FrameworkCategory,
+        )
     )
     framework_display_name: str = proto.Field(
         proto.STRING,
@@ -610,12 +612,12 @@ class FrameworkComplianceSummary(proto.Message):
         proto.INT64,
         number=9,
     )
-    target_resource_details: MutableSequence[
-        "TargetResourceDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message="TargetResourceDetails",
+    target_resource_details: MutableSequence["TargetResourceDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message="TargetResourceDetails",
+        )
     )
 
 

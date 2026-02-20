@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -638,9 +638,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_create_subscription(
                 request, metadata
@@ -794,9 +792,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_subscription(
                 request, metadata
@@ -946,9 +942,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_get_subscription(
                 request, metadata
@@ -1098,9 +1092,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_subscriptions(
                 request, metadata
@@ -1256,9 +1248,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_reactivate_subscription(
                 request, metadata
@@ -1413,9 +1403,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_update_subscription(
                 request, metadata
@@ -1560,7 +1548,9 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ReactivateSubscription(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ReactivateSubscription(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_subscription(
@@ -1630,9 +1620,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_transcoded_request(

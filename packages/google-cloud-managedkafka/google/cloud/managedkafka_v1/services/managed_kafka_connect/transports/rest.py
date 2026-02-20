@@ -16,19 +16,19 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.managedkafka_v1.types import managed_kafka_connect, resources
@@ -1205,9 +1205,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseCreateConnectCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_connect_cluster(
                 request, metadata
@@ -1360,9 +1358,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseCreateConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_create_connector(
                 request, metadata
@@ -1515,9 +1511,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnectCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_connect_cluster(
                 request, metadata
@@ -1658,9 +1652,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseDeleteConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_connector(
                 request, metadata
@@ -1773,9 +1765,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetConnectCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connect_cluster(
                 request, metadata
@@ -1924,9 +1914,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connector(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetConnector._get_transcoded_request(
@@ -2069,9 +2057,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for ListConnectClusters.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListConnectClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_connect_clusters(
                 request, metadata
@@ -2222,9 +2208,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for ListConnectors.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_connectors(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListConnectors._get_transcoded_request(
@@ -2370,9 +2354,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for PauseConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_connector(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BasePauseConnector._get_transcoded_request(
@@ -2523,9 +2505,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for RestartConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseRestartConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_restart_connector(
                 request, metadata
@@ -2678,9 +2658,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for ResumeConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseResumeConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_resume_connector(
                 request, metadata
@@ -2833,9 +2811,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     Response for StopConnector.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_connector(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseStopConnector._get_transcoded_request(
@@ -2989,9 +2965,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnectCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_connect_cluster(
                 request, metadata
@@ -3144,9 +3118,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseUpdateConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_update_connector(
                 request, metadata
@@ -3437,9 +3409,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetLocation._get_transcoded_request(
@@ -3578,9 +3548,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListLocations._get_transcoded_request(
@@ -3717,9 +3685,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3837,9 +3803,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3955,9 +3919,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4096,9 +4058,7 @@ class ManagedKafkaConnectRestTransport(_BaseManagedKafkaConnectRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseManagedKafkaConnectRestTransport._BaseListOperations._get_transcoded_request(

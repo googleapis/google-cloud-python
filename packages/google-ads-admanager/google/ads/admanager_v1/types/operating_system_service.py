@@ -136,12 +136,12 @@ class ListOperatingSystemsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    operating_systems: MutableSequence[
-        operating_system_messages.OperatingSystem
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=operating_system_messages.OperatingSystem,
+    operating_systems: MutableSequence[operating_system_messages.OperatingSystem] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=operating_system_messages.OperatingSystem,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -86,6 +86,7 @@ class Indicator(proto.Message):
                 SIGNATURE_TYPE_FILE (2):
                     Used for signatures concerning disks.
             """
+
             SIGNATURE_TYPE_UNSPECIFIED = 0
             SIGNATURE_TYPE_PROCESS = 1
             SIGNATURE_TYPE_FILE = 2

@@ -122,6 +122,7 @@ class WidgetMarkup(proto.Message):
             VIDEO_PLAY (29):
                 No description available.
         """
+
         ICON_UNSPECIFIED = 0
         AIRPLANE = 1
         BOOKMARK = 26
@@ -493,12 +494,12 @@ class WidgetMarkup(proto.Message):
             proto.STRING,
             number=1,
         )
-        parameters: MutableSequence[
-            "WidgetMarkup.FormAction.ActionParameter"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="WidgetMarkup.FormAction.ActionParameter",
+        parameters: MutableSequence["WidgetMarkup.FormAction.ActionParameter"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="WidgetMarkup.FormAction.ActionParameter",
+            )
         )
 
     text_paragraph: TextParagraph = proto.Field(

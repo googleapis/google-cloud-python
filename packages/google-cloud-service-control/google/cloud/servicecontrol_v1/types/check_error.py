@@ -119,6 +119,7 @@ class CheckError(proto.Message):
                 Cloud Resource Manager backend server is
                 unavailable.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         NOT_FOUND = 5
         PERMISSION_DENIED = 7

@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.maps.addressvalidation_v1.types import address_validation_service
 
@@ -377,12 +377,12 @@ class AddressValidationGrpcTransport(AddressValidationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "provide_validation_feedback" not in self._stubs:
-            self._stubs[
-                "provide_validation_feedback"
-            ] = self._logged_channel.unary_unary(
-                "/google.maps.addressvalidation.v1.AddressValidation/ProvideValidationFeedback",
-                request_serializer=address_validation_service.ProvideValidationFeedbackRequest.serialize,
-                response_deserializer=address_validation_service.ProvideValidationFeedbackResponse.deserialize,
+            self._stubs["provide_validation_feedback"] = (
+                self._logged_channel.unary_unary(
+                    "/google.maps.addressvalidation.v1.AddressValidation/ProvideValidationFeedback",
+                    request_serializer=address_validation_service.ProvideValidationFeedbackRequest.serialize,
+                    response_deserializer=address_validation_service.ProvideValidationFeedbackResponse.deserialize,
+                )
             )
         return self._stubs["provide_validation_feedback"]
 

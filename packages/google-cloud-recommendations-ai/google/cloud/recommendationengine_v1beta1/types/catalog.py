@@ -231,6 +231,7 @@ class ProductCatalogItem(proto.Message):
                 Item that is back-ordered (i.e. temporarily
                 out of stock).
         """
+
         _pb_options = {"allow_alias": True}
         STOCK_STATE_UNSPECIFIED = 0
         IN_STOCK = 0

@@ -16,46 +16,42 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.oracledatabase_v1.types import (
-    db_system_initial_storage_size,
-    db_version,
-    exadata_infra,
-    exadb_vm_cluster,
-)
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database,
     database,
     database_character_set,
-)
-from google.cloud.oracledatabase_v1.types import (
+    db_system,
+    db_system_initial_storage_size,
+    db_version,
+    exadata_infra,
+    exadb_vm_cluster,
+    exascale_db_storage_vault,
+    minor_version,
+    odb_network,
+    odb_subnet,
     oracledatabase,
     pluggable_database,
     vm_cluster,
 )
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import (
     exascale_db_storage_vault as gco_exascale_db_storage_vault,
 )
-from google.cloud.oracledatabase_v1.types import db_system
-from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
-from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
-from google.cloud.oracledatabase_v1.types import minor_version
-from google.cloud.oracledatabase_v1.types import odb_network
 from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
-from google.cloud.oracledatabase_v1.types import odb_subnet
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 from .base import DEFAULT_CLIENT_INFO, OracleDatabaseTransport
@@ -390,12 +386,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_cloud_exadata_infrastructures" not in self._stubs:
-            self._stubs[
-                "list_cloud_exadata_infrastructures"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/ListCloudExadataInfrastructures",
-                request_serializer=oracledatabase.ListCloudExadataInfrastructuresRequest.serialize,
-                response_deserializer=oracledatabase.ListCloudExadataInfrastructuresResponse.deserialize,
+            self._stubs["list_cloud_exadata_infrastructures"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ListCloudExadataInfrastructures",
+                    request_serializer=oracledatabase.ListCloudExadataInfrastructuresRequest.serialize,
+                    response_deserializer=oracledatabase.ListCloudExadataInfrastructuresResponse.deserialize,
+                )
             )
         return self._stubs["list_cloud_exadata_infrastructures"]
 
@@ -422,12 +418,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cloud_exadata_infrastructure" not in self._stubs:
-            self._stubs[
-                "get_cloud_exadata_infrastructure"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/GetCloudExadataInfrastructure",
-                request_serializer=oracledatabase.GetCloudExadataInfrastructureRequest.serialize,
-                response_deserializer=exadata_infra.CloudExadataInfrastructure.deserialize,
+            self._stubs["get_cloud_exadata_infrastructure"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetCloudExadataInfrastructure",
+                    request_serializer=oracledatabase.GetCloudExadataInfrastructureRequest.serialize,
+                    response_deserializer=exadata_infra.CloudExadataInfrastructure.deserialize,
+                )
             )
         return self._stubs["get_cloud_exadata_infrastructure"]
 
@@ -455,12 +451,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cloud_exadata_infrastructure" not in self._stubs:
-            self._stubs[
-                "create_cloud_exadata_infrastructure"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateCloudExadataInfrastructure",
-                request_serializer=oracledatabase.CreateCloudExadataInfrastructureRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_cloud_exadata_infrastructure"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/CreateCloudExadataInfrastructure",
+                    request_serializer=oracledatabase.CreateCloudExadataInfrastructureRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_cloud_exadata_infrastructure"]
 
@@ -487,12 +483,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_cloud_exadata_infrastructure" not in self._stubs:
-            self._stubs[
-                "delete_cloud_exadata_infrastructure"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteCloudExadataInfrastructure",
-                request_serializer=oracledatabase.DeleteCloudExadataInfrastructureRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_cloud_exadata_infrastructure"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteCloudExadataInfrastructure",
+                    request_serializer=oracledatabase.DeleteCloudExadataInfrastructureRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_cloud_exadata_infrastructure"]
 
@@ -865,12 +861,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_autonomous_database" not in self._stubs:
-            self._stubs[
-                "create_autonomous_database"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateAutonomousDatabase",
-                request_serializer=oracledatabase.CreateAutonomousDatabaseRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/CreateAutonomousDatabase",
+                    request_serializer=oracledatabase.CreateAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_autonomous_database"]
 
@@ -896,12 +892,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_autonomous_database" not in self._stubs:
-            self._stubs[
-                "update_autonomous_database"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/UpdateAutonomousDatabase",
-                request_serializer=oracledatabase.UpdateAutonomousDatabaseRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/UpdateAutonomousDatabase",
+                    request_serializer=oracledatabase.UpdateAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_autonomous_database"]
 
@@ -926,12 +922,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_autonomous_database" not in self._stubs:
-            self._stubs[
-                "delete_autonomous_database"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteAutonomousDatabase",
-                request_serializer=oracledatabase.DeleteAutonomousDatabaseRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteAutonomousDatabase",
+                    request_serializer=oracledatabase.DeleteAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_autonomous_database"]
 
@@ -956,12 +952,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_autonomous_database" not in self._stubs:
-            self._stubs[
-                "restore_autonomous_database"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/RestoreAutonomousDatabase",
-                request_serializer=oracledatabase.RestoreAutonomousDatabaseRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["restore_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/RestoreAutonomousDatabase",
+                    request_serializer=oracledatabase.RestoreAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["restore_autonomous_database"]
 
@@ -988,12 +984,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_autonomous_database_wallet" not in self._stubs:
-            self._stubs[
-                "generate_autonomous_database_wallet"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/GenerateAutonomousDatabaseWallet",
-                request_serializer=oracledatabase.GenerateAutonomousDatabaseWalletRequest.serialize,
-                response_deserializer=oracledatabase.GenerateAutonomousDatabaseWalletResponse.deserialize,
+            self._stubs["generate_autonomous_database_wallet"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/GenerateAutonomousDatabaseWallet",
+                    request_serializer=oracledatabase.GenerateAutonomousDatabaseWalletRequest.serialize,
+                    response_deserializer=oracledatabase.GenerateAutonomousDatabaseWalletResponse.deserialize,
+                )
             )
         return self._stubs["generate_autonomous_database_wallet"]
 
@@ -1020,12 +1016,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_autonomous_db_versions" not in self._stubs:
-            self._stubs[
-                "list_autonomous_db_versions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDbVersions",
-                request_serializer=oracledatabase.ListAutonomousDbVersionsRequest.serialize,
-                response_deserializer=oracledatabase.ListAutonomousDbVersionsResponse.deserialize,
+            self._stubs["list_autonomous_db_versions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDbVersions",
+                    request_serializer=oracledatabase.ListAutonomousDbVersionsRequest.serialize,
+                    response_deserializer=oracledatabase.ListAutonomousDbVersionsResponse.deserialize,
+                )
             )
         return self._stubs["list_autonomous_db_versions"]
 
@@ -1053,12 +1049,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_autonomous_database_character_sets" not in self._stubs:
-            self._stubs[
-                "list_autonomous_database_character_sets"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDatabaseCharacterSets",
-                request_serializer=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest.serialize,
-                response_deserializer=oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.deserialize,
+            self._stubs["list_autonomous_database_character_sets"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDatabaseCharacterSets",
+                    request_serializer=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest.serialize,
+                    response_deserializer=oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.deserialize,
+                )
             )
         return self._stubs["list_autonomous_database_character_sets"]
 
@@ -1086,12 +1082,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_autonomous_database_backups" not in self._stubs:
-            self._stubs[
-                "list_autonomous_database_backups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDatabaseBackups",
-                request_serializer=oracledatabase.ListAutonomousDatabaseBackupsRequest.serialize,
-                response_deserializer=oracledatabase.ListAutonomousDatabaseBackupsResponse.deserialize,
+            self._stubs["list_autonomous_database_backups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ListAutonomousDatabaseBackups",
+                    request_serializer=oracledatabase.ListAutonomousDatabaseBackupsRequest.serialize,
+                    response_deserializer=oracledatabase.ListAutonomousDatabaseBackupsResponse.deserialize,
+                )
             )
         return self._stubs["list_autonomous_database_backups"]
 
@@ -1172,12 +1168,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restart_autonomous_database" not in self._stubs:
-            self._stubs[
-                "restart_autonomous_database"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/RestartAutonomousDatabase",
-                request_serializer=oracledatabase.RestartAutonomousDatabaseRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["restart_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/RestartAutonomousDatabase",
+                    request_serializer=oracledatabase.RestartAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["restart_autonomous_database"]
 
@@ -1203,12 +1199,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "switchover_autonomous_database" not in self._stubs:
-            self._stubs[
-                "switchover_autonomous_database"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/SwitchoverAutonomousDatabase",
-                request_serializer=oracledatabase.SwitchoverAutonomousDatabaseRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["switchover_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/SwitchoverAutonomousDatabase",
+                    request_serializer=oracledatabase.SwitchoverAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["switchover_autonomous_database"]
 
@@ -1234,12 +1230,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "failover_autonomous_database" not in self._stubs:
-            self._stubs[
-                "failover_autonomous_database"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/FailoverAutonomousDatabase",
-                request_serializer=oracledatabase.FailoverAutonomousDatabaseRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["failover_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/FailoverAutonomousDatabase",
+                    request_serializer=oracledatabase.FailoverAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["failover_autonomous_database"]
 
@@ -1625,12 +1621,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_virtual_machine_exadb_vm_cluster" not in self._stubs:
-            self._stubs[
-                "remove_virtual_machine_exadb_vm_cluster"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/RemoveVirtualMachineExadbVmCluster",
-                request_serializer=oracledatabase.RemoveVirtualMachineExadbVmClusterRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["remove_virtual_machine_exadb_vm_cluster"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/RemoveVirtualMachineExadbVmCluster",
+                    request_serializer=oracledatabase.RemoveVirtualMachineExadbVmClusterRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["remove_virtual_machine_exadb_vm_cluster"]
 
@@ -1658,12 +1654,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_exascale_db_storage_vaults" not in self._stubs:
-            self._stubs[
-                "list_exascale_db_storage_vaults"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/ListExascaleDbStorageVaults",
-                request_serializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest.serialize,
-                response_deserializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.deserialize,
+            self._stubs["list_exascale_db_storage_vaults"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ListExascaleDbStorageVaults",
+                    request_serializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest.serialize,
+                    response_deserializer=exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.deserialize,
+                )
             )
         return self._stubs["list_exascale_db_storage_vaults"]
 
@@ -1689,12 +1685,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_exascale_db_storage_vault" not in self._stubs:
-            self._stubs[
-                "get_exascale_db_storage_vault"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/GetExascaleDbStorageVault",
-                request_serializer=exascale_db_storage_vault.GetExascaleDbStorageVaultRequest.serialize,
-                response_deserializer=exascale_db_storage_vault.ExascaleDbStorageVault.deserialize,
+            self._stubs["get_exascale_db_storage_vault"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetExascaleDbStorageVault",
+                    request_serializer=exascale_db_storage_vault.GetExascaleDbStorageVaultRequest.serialize,
+                    response_deserializer=exascale_db_storage_vault.ExascaleDbStorageVault.deserialize,
+                )
             )
         return self._stubs["get_exascale_db_storage_vault"]
 
@@ -1721,12 +1717,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_exascale_db_storage_vault" not in self._stubs:
-            self._stubs[
-                "create_exascale_db_storage_vault"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/CreateExascaleDbStorageVault",
-                request_serializer=gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_exascale_db_storage_vault"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/CreateExascaleDbStorageVault",
+                    request_serializer=gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_exascale_db_storage_vault"]
 
@@ -1753,12 +1749,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_exascale_db_storage_vault" not in self._stubs:
-            self._stubs[
-                "delete_exascale_db_storage_vault"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteExascaleDbStorageVault",
-                request_serializer=exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_exascale_db_storage_vault"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/DeleteExascaleDbStorageVault",
+                    request_serializer=exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_exascale_db_storage_vault"]
 
@@ -1786,12 +1782,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_db_system_initial_storage_sizes" not in self._stubs:
-            self._stubs[
-                "list_db_system_initial_storage_sizes"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbSystemInitialStorageSizes",
-                request_serializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest.serialize,
-                response_deserializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.deserialize,
+            self._stubs["list_db_system_initial_storage_sizes"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ListDbSystemInitialStorageSizes",
+                    request_serializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest.serialize,
+                    response_deserializer=db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.deserialize,
+                )
             )
         return self._stubs["list_db_system_initial_storage_sizes"]
 
@@ -2064,12 +2060,12 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_database_character_sets" not in self._stubs:
-            self._stubs[
-                "list_database_character_sets"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.oracledatabase.v1.OracleDatabase/ListDatabaseCharacterSets",
-                request_serializer=database_character_set.ListDatabaseCharacterSetsRequest.serialize,
-                response_deserializer=database_character_set.ListDatabaseCharacterSetsResponse.deserialize,
+            self._stubs["list_database_character_sets"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ListDatabaseCharacterSets",
+                    request_serializer=database_character_set.ListDatabaseCharacterSetsRequest.serialize,
+                    response_deserializer=database_character_set.ListDatabaseCharacterSetsResponse.deserialize,
+                )
             )
         return self._stubs["list_database_character_sets"]
 

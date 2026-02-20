@@ -20,10 +20,9 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1alpha.types import answer as gcd_answer
-from google.cloud.discoveryengine_v1alpha.types import common
-from google.cloud.discoveryengine_v1alpha.types import search_service
+from google.cloud.discoveryengine_v1alpha.types import common, search_service
+from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
 
 __protobuf__ = proto.module(
@@ -204,12 +203,12 @@ class ConverseConversationResponse(proto.Message):
         proto.STRING,
         number=6,
     )
-    search_results: MutableSequence[
-        search_service.SearchResponse.SearchResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=search_service.SearchResponse.SearchResult,
+    search_results: MutableSequence[search_service.SearchResponse.SearchResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=search_service.SearchResponse.SearchResult,
+        )
     )
 
 
@@ -935,6 +934,7 @@ class AnswerQueryRequest(proto.Message):
                     JAIL_BREAKING_QUERY (3):
                         Jail-breaking query classification type.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2

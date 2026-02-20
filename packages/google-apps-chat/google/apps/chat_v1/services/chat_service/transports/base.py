@@ -17,33 +17,36 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.apps.chat_v1 import gapic_version as package_version
 from google.apps.chat_v1.types import (
+    attachment,
+    membership,
+    message,
+    reaction,
+    space,
+    space_event,
+    space_notification_setting,
+    space_read_state,
+    space_setup,
+    thread_read_state,
+)
+from google.apps.chat_v1.types import membership as gc_membership
+from google.apps.chat_v1.types import message as gc_message
+from google.apps.chat_v1.types import reaction as gc_reaction
+from google.apps.chat_v1.types import space as gc_space
+from google.apps.chat_v1.types import (
     space_notification_setting as gc_space_notification_setting,
 )
-from google.apps.chat_v1.types import attachment
-from google.apps.chat_v1.types import membership
-from google.apps.chat_v1.types import membership as gc_membership
-from google.apps.chat_v1.types import message
-from google.apps.chat_v1.types import message as gc_message
-from google.apps.chat_v1.types import reaction
-from google.apps.chat_v1.types import reaction as gc_reaction
-from google.apps.chat_v1.types import space
-from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import space_event
-from google.apps.chat_v1.types import space_notification_setting
-from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
-from google.apps.chat_v1.types import space_setup, thread_read_state
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__

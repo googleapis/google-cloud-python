@@ -85,6 +85,7 @@ class PscConnectionStatus(proto.Enum):
         PSC_CONNECTION_STATUS_NOT_FOUND (2):
             Connection not found
     """
+
     PSC_CONNECTION_STATUS_UNSPECIFIED = 0
     PSC_CONNECTION_STATUS_ACTIVE = 1
     PSC_CONNECTION_STATUS_NOT_FOUND = 2
@@ -101,6 +102,7 @@ class AuthorizationMode(proto.Enum):
         AUTH_MODE_DISABLED (2):
             Authorization disabled mode
     """
+
     AUTH_MODE_UNSPECIFIED = 0
     AUTH_MODE_IAM_AUTH = 1
     AUTH_MODE_DISABLED = 2
@@ -121,6 +123,7 @@ class NodeType(proto.Enum):
         REDIS_STANDARD_SMALL (4):
             Redis standard small node_type.
     """
+
     NODE_TYPE_UNSPECIFIED = 0
     REDIS_SHARED_CORE_NANO = 1
     REDIS_HIGHMEM_MEDIUM = 2
@@ -140,6 +143,7 @@ class TransitEncryptionMode(proto.Enum):
             Use server managed encryption for in-transit
             encryption.
     """
+
     TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
     TRANSIT_ENCRYPTION_MODE_DISABLED = 1
     TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION = 2
@@ -161,6 +165,7 @@ class ConnectionType(proto.Enum):
             Cluster endpoint that will be used as reader
             endpoint to access replicas.
     """
+
     CONNECTION_TYPE_UNSPECIFIED = 0
     CONNECTION_TYPE_DISCOVERY = 1
     CONNECTION_TYPE_PRIMARY = 2
@@ -803,6 +808,7 @@ class Cluster(proto.Message):
             DELETING (4):
                 Redis cluster is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1016,12 +1022,12 @@ class Cluster(proto.Message):
         optional=True,
         message="ClusterMaintenanceSchedule",
     )
-    psc_service_attachments: MutableSequence[
-        "PscServiceAttachment"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=30,
-        message="PscServiceAttachment",
+    psc_service_attachments: MutableSequence["PscServiceAttachment"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=30,
+            message="PscServiceAttachment",
+        )
     )
     cluster_endpoints: MutableSequence["ClusterEndpoint"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1086,6 +1092,7 @@ class AutomatedBackupConfig(proto.Message):
             ENABLED (2):
                 Automated backup config enabled.
         """
+
         AUTOMATED_BACKUP_MODE_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -1237,6 +1244,7 @@ class Backup(proto.Message):
             AUTOMATED (2):
                 Automated backup.
         """
+
         BACKUP_TYPE_UNSPECIFIED = 0
         ON_DEMAND = 1
         AUTOMATED = 2
@@ -1258,6 +1266,7 @@ class Backup(proto.Message):
                 reasons like project deletion, billing account
                 closure, etc.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1446,6 +1455,7 @@ class CrossClusterReplicationConfig(proto.Message):
                 A cluster that allows only reads and
                 replicates data from a primary cluster.
         """
+
         CLUSTER_ROLE_UNSPECIFIED = 0
         NONE = 1
         PRIMARY = 2
@@ -1557,12 +1567,12 @@ class ClusterMaintenancePolicy(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    weekly_maintenance_window: MutableSequence[
-        "ClusterWeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="ClusterWeeklyMaintenanceWindow",
+    weekly_maintenance_window: MutableSequence["ClusterWeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="ClusterWeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -2014,6 +2024,7 @@ class ClusterPersistenceConfig(proto.Message):
             AOF (3):
                 AOF based persistence is enabled.
         """
+
         PERSISTENCE_MODE_UNSPECIFIED = 0
         DISABLED = 1
         RDB = 2
@@ -2047,6 +2058,7 @@ class ClusterPersistenceConfig(proto.Message):
                 TWENTY_FOUR_HOURS (4):
                     Twenty four hours.
             """
+
             SNAPSHOT_PERIOD_UNSPECIFIED = 0
             ONE_HOUR = 1
             SIX_HOURS = 2
@@ -2092,6 +2104,7 @@ class ClusterPersistenceConfig(proto.Message):
                     appended to the AOF. It has the best data loss
                     protection at the cost of performance
             """
+
             APPEND_FSYNC_UNSPECIFIED = 0
             NO = 1
             EVERYSEC = 2
@@ -2148,6 +2161,7 @@ class ZoneDistributionConfig(proto.Message):
                 The zone field must be specified, when this mode
                 is selected.
         """
+
         ZONE_DISTRIBUTION_MODE_UNSPECIFIED = 0
         MULTI_ZONE = 1
         SINGLE_ZONE = 2
@@ -2194,6 +2208,7 @@ class RescheduleClusterMaintenanceRequest(proto.Message):
                 If the user wants to reschedule the
                 maintenance to a specific time.
         """
+
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         SPECIFIC_TIME = 3
@@ -2249,6 +2264,7 @@ class EncryptionInfo(proto.Message):
                 is managed by the customer. KMS key versions
                 will be populated.
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -2278,6 +2294,7 @@ class EncryptionInfo(proto.Message):
             UNKNOWN_FAILURE (8):
                 All other unknown failures.
         """
+
         KMS_KEY_STATE_UNSPECIFIED = 0
         ENABLED = 1
         PERMISSION_DENIED = 2

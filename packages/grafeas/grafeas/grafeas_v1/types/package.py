@@ -46,6 +46,7 @@ class Architecture(proto.Enum):
         X64 (2):
             X64 architecture.
     """
+
     ARCHITECTURE_UNSPECIFIED = 0
     X86 = 1
     X64 = 2
@@ -343,6 +344,7 @@ class Version(proto.Message):
                 A special version representing positive
                 infinity.
         """
+
         VERSION_KIND_UNSPECIFIED = 0
         NORMAL = 1
         MINIMUM = 2

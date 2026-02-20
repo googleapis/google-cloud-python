@@ -30,7 +30,6 @@ field_info: _descriptor.FieldDescriptor
 
 class FieldInfo(_message.Message):
     __slots__ = ("format", "referenced_types")
-
     class Format(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         FORMAT_UNSPECIFIED: _ClassVar[FieldInfo.Format]

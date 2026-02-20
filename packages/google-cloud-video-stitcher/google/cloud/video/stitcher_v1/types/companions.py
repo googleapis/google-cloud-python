@@ -60,6 +60,7 @@ class CompanionAds(proto.Message):
             NONE (3):
                 All companions are optional for display.
         """
+
         DISPLAY_REQUIREMENT_UNSPECIFIED = 0
         ALL = 1
         ANY = 2

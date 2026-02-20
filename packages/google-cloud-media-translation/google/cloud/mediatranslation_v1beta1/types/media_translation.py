@@ -299,6 +299,7 @@ class StreamingTranslateSpeechResponse(proto.Message):
                 ``single_utterance`` was set to ``true``, and is not used
                 otherwise.
         """
+
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
 

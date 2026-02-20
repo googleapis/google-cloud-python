@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.discoveryengine_v1beta import gapic_version as package_version
 
@@ -44,15 +44,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.services.control_service import pagers
-from google.cloud.discoveryengine_v1beta.types import common
-from google.cloud.discoveryengine_v1beta.types import control
+from google.cloud.discoveryengine_v1beta.types import common, control, control_service
 from google.cloud.discoveryengine_v1beta.types import control as gcd_control
-from google.cloud.discoveryengine_v1beta.types import control_service
 
 from .client import ControlServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, ControlServiceTransport
@@ -126,7 +124,10 @@ class ControlServiceAsyncClient:
         Returns:
             ControlServiceAsyncClient: The constructed client.
         """
-        return ControlServiceClient.from_service_account_info.__func__(ControlServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            ControlServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(ControlServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -142,7 +143,10 @@ class ControlServiceAsyncClient:
         Returns:
             ControlServiceAsyncClient: The constructed client.
         """
-        return ControlServiceClient.from_service_account_file.__func__(ControlServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            ControlServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(ControlServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

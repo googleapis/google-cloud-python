@@ -180,6 +180,7 @@ class Participant(proto.Message):
                 Participant is an end user that has called or
                 chatted with Dialogflow services.
         """
+
         ROLE_UNSPECIFIED = 0
         HUMAN_AGENT = 1
         AUTOMATED_AGENT = 2
@@ -205,6 +206,7 @@ class Participant(proto.Message):
                 either not currently released or setting this
                 field to the applicable desktop.
         """
+
         AGENT_DESKTOP_SOURCE_UNSPECIFIED = 0
         LIVE_PERSON = 1
         GENESYS_CLOUD = 2
@@ -572,6 +574,7 @@ class AutomatedAgentReply(proto.Message):
             FINAL (2):
                 Final reply.
         """
+
         AUTOMATED_AGENT_REPLY_TYPE_UNSPECIFIED = 0
         PARTIAL = 1
         FINAL = 2
@@ -679,6 +682,7 @@ class SuggestionInput(proto.Message):
                 This action is intended for tool calls that may
                 write data.
         """
+
         ACTION_UNSPECIFIED = 0
         CANCEL = 1
         REVISE = 2
@@ -779,6 +783,7 @@ class SuggestionFeature(proto.Message):
                 Run knowledge assist with automatic query
                 generation.
         """
+
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2
@@ -1087,19 +1092,19 @@ class AnalyzeContentResponse(proto.Message):
         number=5,
         message="Message",
     )
-    human_agent_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message="SuggestionResult",
+    human_agent_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="SuggestionResult",
+        )
     )
-    end_user_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="SuggestionResult",
+    end_user_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="SuggestionResult",
+        )
     )
     dtmf_parameters: "DtmfParameters" = proto.Field(
         proto.MESSAGE,
@@ -1487,19 +1492,19 @@ class StreamingAnalyzeContentResponse(proto.Message):
         number=6,
         message="Message",
     )
-    human_agent_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="SuggestionResult",
+    human_agent_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="SuggestionResult",
+        )
     )
-    end_user_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message="SuggestionResult",
+    end_user_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message="SuggestionResult",
+        )
     )
     dtmf_parameters: "DtmfParameters" = proto.Field(
         proto.MESSAGE,
@@ -2204,12 +2209,12 @@ class GenerateSuggestionsResponse(proto.Message):
             number=3,
         )
 
-    generator_suggestion_answers: MutableSequence[
-        GeneratorSuggestionAnswer
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=GeneratorSuggestionAnswer,
+    generator_suggestion_answers: MutableSequence[GeneratorSuggestionAnswer] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=GeneratorSuggestionAnswer,
+        )
     )
     latest_message: str = proto.Field(
         proto.STRING,
@@ -2241,12 +2246,12 @@ class SuggestDialogflowAssistsResponse(proto.Message):
             the conversation.
     """
 
-    dialogflow_assist_answers: MutableSequence[
-        "DialogflowAssistAnswer"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DialogflowAssistAnswer",
+    dialogflow_assist_answers: MutableSequence["DialogflowAssistAnswer"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DialogflowAssistAnswer",
+        )
     )
     latest_message: str = proto.Field(
         proto.STRING,
@@ -2701,12 +2706,12 @@ class ResponseMessage(proto.Message):
                 number=3,
             )
 
-        segments: MutableSequence[
-            "ResponseMessage.MixedAudio.Segment"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ResponseMessage.MixedAudio.Segment",
+        segments: MutableSequence["ResponseMessage.MixedAudio.Segment"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ResponseMessage.MixedAudio.Segment",
+            )
         )
 
     class TelephonyTransferCall(proto.Message):

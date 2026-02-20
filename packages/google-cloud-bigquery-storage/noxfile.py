@@ -17,13 +17,12 @@ import os
 import pathlib
 import re
 import shutil
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
-BLACK_VERSION = "black[jupyter]==23.7.0"
-ISORT_VERSION = "isort==5.11.0"
+RUFF_VERSION = "ruff==0.14.14"
 
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
@@ -161,10 +160,15 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -173,10 +177,18 @@ def lint(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -184,19 +196,31 @@ def blacken(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
     session.run(
-        "isort",
-        "--fss",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
+
+    # 3. Run Ruff to format code
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
@@ -637,10 +661,10 @@ def core_deps_from_source(session, protobuf_implementation):
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
         "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/python-api-core.git",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
         "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
         "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
     ]
 
     for dep in core_dependencies_from_source:

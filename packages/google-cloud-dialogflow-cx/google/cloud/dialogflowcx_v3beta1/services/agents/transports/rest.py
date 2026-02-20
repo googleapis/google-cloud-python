@@ -16,27 +16,26 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
+from google.cloud.dialogflowcx_v3beta1.types import agent, generative_settings
+from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
 )
-from google.cloud.dialogflowcx_v3beta1.types import agent
-from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseAgentsRestTransport
@@ -1559,9 +1558,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseGetAgentValidationResult._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseGetAgentValidationResult._get_http_options()
 
             request, metadata = self._interceptor.pre_get_agent_validation_result(
                 request, metadata
@@ -2326,9 +2323,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                         Settings for Generative AI.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseUpdateGenerativeSettings._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseUpdateGenerativeSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_generative_settings(
                 request, metadata
@@ -2614,7 +2609,9 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     ) -> Callable[[agent.GetAgentValidationResultRequest], agent.AgentValidationResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAgentValidationResult(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAgentValidationResult(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_generative_settings(
@@ -2659,7 +2656,9 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGenerativeSettings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGenerativeSettings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def validate_agent(

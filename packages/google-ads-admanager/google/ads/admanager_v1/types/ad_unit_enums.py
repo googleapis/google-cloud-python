@@ -51,6 +51,7 @@ class AdUnitStatusEnum(proto.Message):
                 The ad unit will be hidden in the UI and
                 ignored by serving.
         """
+
         AD_UNIT_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -78,6 +79,7 @@ class SmartSizeModeEnum(proto.Message):
             DYNAMIC_SIZE (3):
                 Height and width are ranges.
         """
+
         SMART_SIZE_MODE_UNSPECIFIED = 0
         NONE = 1
         SMART_BANNER = 2
@@ -104,6 +106,7 @@ class TargetWindowEnum(proto.Message):
                 Specifies that the link should open in a new
                 window.
         """
+
         TARGET_WINDOW_UNSPECIFIED = 0
         TOP = 1
         BLANK = 2

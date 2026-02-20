@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -778,9 +778,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_framework_deployment(
                 request, metadata
@@ -931,9 +929,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_framework_deployment(
                 request, metadata
@@ -1081,9 +1077,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cloud_control_deployment(
                 request, metadata
@@ -1233,9 +1227,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_framework_deployment(
                 request, metadata
@@ -1383,9 +1375,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_cloud_control_deployments(
                 request, metadata
@@ -1451,11 +1441,10 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             resp = self._interceptor.post_list_cloud_control_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_cloud_control_deployments_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_cloud_control_deployments_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1537,9 +1526,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                         The response message for [ListFrameworkDeployments][].
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_framework_deployments(
                 request, metadata
@@ -1639,7 +1626,9 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateFrameworkDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateFrameworkDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_framework_deployment(
@@ -1649,7 +1638,9 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteFrameworkDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteFrameworkDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_cloud_control_deployment(
@@ -1659,7 +1650,9 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetCloudControlDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetCloudControlDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_framework_deployment(
@@ -1669,7 +1662,9 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetFrameworkDeployment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetFrameworkDeployment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_cloud_control_deployments(
@@ -1680,7 +1675,9 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListCloudControlDeployments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListCloudControlDeployments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_framework_deployments(
@@ -1691,7 +1688,9 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListFrameworkDeployments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListFrameworkDeployments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):

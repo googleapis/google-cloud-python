@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1481,9 +1481,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_http_options()
 
             request, metadata = self._interceptor.pre_set_backend_service(
                 request, metadata
@@ -1664,9 +1662,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_http_options()
 
             request, metadata = self._interceptor.pre_set_certificate_map(
                 request, metadata
@@ -1846,9 +1842,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_http_options()
 
             request, metadata = self._interceptor.pre_set_proxy_header(
                 request, metadata
@@ -2029,9 +2023,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_http_options()
 
             request, metadata = self._interceptor.pre_set_ssl_certificates(
                 request, metadata
@@ -2364,9 +2356,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

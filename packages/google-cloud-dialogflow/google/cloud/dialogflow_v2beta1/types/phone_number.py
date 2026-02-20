@@ -80,6 +80,7 @@ class PhoneNumber(proto.Message):
                 Number is pending deletion, and cannot
                 receive calls.
         """
+
         LIFECYCLE_STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2

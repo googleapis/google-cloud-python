@@ -81,6 +81,7 @@ class ScanRunErrorTrace(proto.Message):
                 field indicates the most common HTTP error code encountered
                 during the scan.
         """
+
         CODE_UNSPECIFIED = 0
         INTERNAL_ERROR = 1
         SCAN_CONFIG_ISSUE = 2

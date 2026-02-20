@@ -119,6 +119,7 @@ class SystemProvider(proto.Enum):
         DYNATRACE (8):
             Dynatrace provider.
     """
+
     SYSTEM_PROVIDER_UNSPECIFIED = 0
     GITHUB = 1
     GITLAB = 2
@@ -460,6 +461,7 @@ class InstallationState(proto.Message):
             COMPLETE (10):
                 Installation process has been completed.
         """
+
         STAGE_UNSPECIFIED = 0
         PENDING_CREATE_APP = 1
         PENDING_USER_OAUTH = 2
@@ -516,6 +518,7 @@ class GitHubConfig(proto.Message):
             FIREBASE (2):
                 The Firebase GitHub Application.
         """
+
         GIT_HUB_APP_UNSPECIFIED = 0
         DEVELOPER_CONNECT = 1
         FIREBASE = 2
@@ -2138,12 +2141,12 @@ class FetchLinkableGitRepositoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    linkable_git_repositories: MutableSequence[
-        "LinkableGitRepository"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="LinkableGitRepository",
+    linkable_git_repositories: MutableSequence["LinkableGitRepository"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="LinkableGitRepository",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2252,6 +2255,7 @@ class FetchGitRefsRequest(proto.Message):
             BRANCH (2):
                 To fetch branches.
         """
+
         REF_TYPE_UNSPECIFIED = 0
         TAG = 1
         BRANCH = 2

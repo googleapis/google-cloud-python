@@ -45,6 +45,7 @@ class CustomTargetingValueStatusEnum(proto.Message):
             INACTIVE (2):
                 Custom targeting value is inactive.
         """
+
         CUSTOM_TARGETING_VALUE_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -111,6 +112,7 @@ class CustomTargetingValueMatchTypeEnum(proto.Message):
                 but not with car=misspelled hond a. This match
                 type can not be used within line item targeting.
         """
+
         CUSTOM_TARGETING_VALUE_MATCH_TYPE_UNSPECIFIED = 0
         EXACT = 1
         BROAD = 2

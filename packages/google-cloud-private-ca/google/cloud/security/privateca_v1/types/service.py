@@ -725,12 +725,12 @@ class ListCertificateAuthoritiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_authorities: MutableSequence[
-        resources.CertificateAuthority
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.CertificateAuthority,
+    certificate_authorities: MutableSequence[resources.CertificateAuthority] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.CertificateAuthority,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1597,12 +1597,12 @@ class ListCertificateTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_templates: MutableSequence[
-        resources.CertificateTemplate
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.CertificateTemplate,
+    certificate_templates: MutableSequence[resources.CertificateTemplate] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.CertificateTemplate,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

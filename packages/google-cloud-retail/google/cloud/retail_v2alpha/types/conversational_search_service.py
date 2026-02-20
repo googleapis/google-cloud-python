@@ -266,6 +266,7 @@ class ConversationalSearchRequest(proto.Message):
                     Enables Conversational Filtering without
                     Conversational Search.
             """
+
             MODE_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
@@ -396,6 +397,7 @@ class ConversationalSearchResponse(proto.Message):
             SUCCEEDED (2):
                 Response generation has succeeded.
         """
+
         STATE_UNSPECIFIED = 0
         STREAMING = 1
         SUCCEEDED = 2

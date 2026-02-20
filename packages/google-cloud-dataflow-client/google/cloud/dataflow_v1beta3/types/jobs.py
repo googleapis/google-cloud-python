@@ -89,6 +89,7 @@ class KindType(proto.Enum):
             Opening or closing a shuffle session, often
             as part of a GroupByKey.
     """
+
     UNKNOWN_KIND = 0
     PAR_DO_KIND = 1
     GROUP_BY_KEY_KIND = 2
@@ -177,6 +178,7 @@ class JobState(proto.Enum):
             feature, please reach out to Cloud support team if you are
             interested.
     """
+
     JOB_STATE_UNKNOWN = 0
     JOB_STATE_STOPPED = 1
     JOB_STATE_RUNNING = 2
@@ -219,6 +221,7 @@ class JobView(proto.Enum):
             description data for steps, labels and
             environment.
     """
+
     JOB_VIEW_UNKNOWN = 0
     JOB_VIEW_SUMMARY = 1
     JOB_VIEW_ALL = 2
@@ -777,6 +780,7 @@ class SdkVersion(proto.Message):
                 Support for this SDK version has ended and it
                 should no longer be used.
         """
+
         UNKNOWN = 0
         SUPPORTED = 1
         STALE = 2
@@ -834,6 +838,7 @@ class SdkBug(proto.Message):
                 Using this version of the SDK may cause data
                 loss.
         """
+
         TYPE_UNSPECIFIED = 0
         GENERAL = 1
         PERFORMANCE = 2
@@ -860,6 +865,7 @@ class SdkBug(proto.Message):
                 severely degraded, and data loss may be very
                 likely.
         """
+
         SEVERITY_UNSPECIFIED = 0
         NOTICE = 1
         WARNING = 2
@@ -1004,19 +1010,19 @@ class PipelineDescription(proto.Message):
             portable graph step names if exists.
     """
 
-    original_pipeline_transform: MutableSequence[
-        "TransformSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="TransformSummary",
+    original_pipeline_transform: MutableSequence["TransformSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="TransformSummary",
+        )
     )
-    execution_pipeline_stage: MutableSequence[
-        "ExecutionStageSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="ExecutionStageSummary",
+    execution_pipeline_stage: MutableSequence["ExecutionStageSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ExecutionStageSummary",
+        )
     )
     display_data: MutableSequence["DisplayData"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1656,6 +1662,7 @@ class ListJobsRequest(proto.Message):
                 Filters the jobs that are running ordered on
                 the creation timestamp.
         """
+
         UNKNOWN = 0
         ALL = 1
         TERMINATED = 2

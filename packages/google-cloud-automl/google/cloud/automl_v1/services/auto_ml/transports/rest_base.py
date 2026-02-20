@@ -21,12 +21,15 @@ from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.automl_v1.types import annotation_spec
-from google.cloud.automl_v1.types import dataset
+from google.cloud.automl_v1.types import (
+    annotation_spec,
+    dataset,
+    model,
+    model_evaluation,
+    service,
+)
 from google.cloud.automl_v1.types import dataset as gca_dataset
-from google.cloud.automl_v1.types import model
 from google.cloud.automl_v1.types import model as gca_model
-from google.cloud.automl_v1.types import model_evaluation, service
 
 from .base import DEFAULT_CLIENT_INFO, AutoMlTransport
 

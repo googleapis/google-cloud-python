@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.dataplex_v1.types import datascans
 
@@ -581,12 +583,12 @@ class DataScanServiceGrpcTransport(DataScanServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_data_quality_rules" not in self._stubs:
-            self._stubs[
-                "generate_data_quality_rules"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.DataScanService/GenerateDataQualityRules",
-                request_serializer=datascans.GenerateDataQualityRulesRequest.serialize,
-                response_deserializer=datascans.GenerateDataQualityRulesResponse.deserialize,
+            self._stubs["generate_data_quality_rules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataplex.v1.DataScanService/GenerateDataQualityRules",
+                    request_serializer=datascans.GenerateDataQualityRulesRequest.serialize,
+                    response_deserializer=datascans.GenerateDataQualityRulesResponse.deserialize,
+                )
             )
         return self._stubs["generate_data_quality_rules"]
 

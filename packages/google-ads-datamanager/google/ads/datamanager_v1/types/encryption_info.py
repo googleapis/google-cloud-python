@@ -99,6 +99,7 @@ class GcpWrappedKeyInfo(proto.Message):
             XCHACHA20_POLY1305 (1):
                 Algorithm XChaCha20-Poly1305
         """
+
         KEY_TYPE_UNSPECIFIED = 0
         XCHACHA20_POLY1305 = 1
 
@@ -152,6 +153,7 @@ class AwsWrappedKeyInfo(proto.Message):
             XCHACHA20_POLY1305 (1):
                 Algorithm XChaCha20-Poly1305
         """
+
         KEY_TYPE_UNSPECIFIED = 0
         XCHACHA20_POLY1305 = 1
 

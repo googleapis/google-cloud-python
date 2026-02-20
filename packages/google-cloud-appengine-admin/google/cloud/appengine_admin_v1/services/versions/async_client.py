@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.appengine_admin_v1 import gapic_version as package_version
 
@@ -51,9 +51,8 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.appengine_admin_v1.services.versions import pagers
-from google.cloud.appengine_admin_v1.types import app_yaml, appengine, deploy
+from google.cloud.appengine_admin_v1.types import app_yaml, appengine, deploy, version
 from google.cloud.appengine_admin_v1.types import operation as ga_operation
-from google.cloud.appengine_admin_v1.types import version
 
 from .client import VersionsClient
 from .transports.base import DEFAULT_CLIENT_INFO, VersionsTransport
@@ -111,7 +110,10 @@ class VersionsAsyncClient:
         Returns:
             VersionsAsyncClient: The constructed client.
         """
-        return VersionsClient.from_service_account_info.__func__(VersionsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            VersionsClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(VersionsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -127,7 +129,10 @@ class VersionsAsyncClient:
         Returns:
             VersionsAsyncClient: The constructed client.
         """
-        return VersionsClient.from_service_account_file.__func__(VersionsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            VersionsClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(VersionsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

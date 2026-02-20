@@ -71,6 +71,7 @@ class ValuedResource(proto.Message):
             RESOURCE_VALUE_HIGH (3):
                 This is a high-value resource.
         """
+
         RESOURCE_VALUE_UNSPECIFIED = 0
         RESOURCE_VALUE_LOW = 1
         RESOURCE_VALUE_MEDIUM = 2
@@ -101,12 +102,12 @@ class ValuedResource(proto.Message):
         proto.DOUBLE,
         number=6,
     )
-    resource_value_configs_used: MutableSequence[
-        "ResourceValueConfigMetadata"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="ResourceValueConfigMetadata",
+    resource_value_configs_used: MutableSequence["ResourceValueConfigMetadata"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="ResourceValueConfigMetadata",
+        )
     )
 
 

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.bare_metal_solution_v2 import gapic_version as package_version
 
@@ -46,32 +46,38 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import pagers
+from google.cloud.bare_metal_solution_v2.types import (
+    baremetalsolution,
+    common,
+    instance,
+    lun,
+    network,
+    nfs_share,
+    osimage,
+    provisioning,
+    ssh_key,
+    volume,
+    volume_snapshot,
+)
+from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
+from google.cloud.bare_metal_solution_v2.types import network as gcb_network
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
+from google.cloud.bare_metal_solution_v2.types import ssh_key as gcb_ssh_key
+from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.cloud.bare_metal_solution_v2.types import (
     volume_snapshot as gcb_volume_snapshot,
 )
-from google.cloud.bare_metal_solution_v2.types import baremetalsolution, common
-from google.cloud.bare_metal_solution_v2.types import instance
-from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
-from google.cloud.bare_metal_solution_v2.types import lun
-from google.cloud.bare_metal_solution_v2.types import network
-from google.cloud.bare_metal_solution_v2.types import network as gcb_network
-from google.cloud.bare_metal_solution_v2.types import nfs_share
-from google.cloud.bare_metal_solution_v2.types import osimage, provisioning
-from google.cloud.bare_metal_solution_v2.types import ssh_key
-from google.cloud.bare_metal_solution_v2.types import ssh_key as gcb_ssh_key
-from google.cloud.bare_metal_solution_v2.types import volume
-from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
-from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
 from .client import BareMetalSolutionClient
 from .transports.base import DEFAULT_CLIENT_INFO, BareMetalSolutionTransport
@@ -204,7 +210,10 @@ class BareMetalSolutionAsyncClient:
         Returns:
             BareMetalSolutionAsyncClient: The constructed client.
         """
-        return BareMetalSolutionClient.from_service_account_info.__func__(BareMetalSolutionAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            BareMetalSolutionClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(BareMetalSolutionAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -220,7 +229,10 @@ class BareMetalSolutionAsyncClient:
         Returns:
             BareMetalSolutionAsyncClient: The constructed client.
         """
-        return BareMetalSolutionClient.from_service_account_file.__func__(BareMetalSolutionAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            BareMetalSolutionClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(BareMetalSolutionAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

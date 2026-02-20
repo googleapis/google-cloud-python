@@ -85,6 +85,7 @@ class Endpoint(proto.Message):
             CRITICAL (5):
                 Critical severity alerts.
         """
+
         SEVERITY_UNSPECIFIED = 0
         INFORMATIONAL = 1
         LOW = 2
@@ -105,6 +106,7 @@ class Endpoint(proto.Message):
             DELETING (3):
                 Being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

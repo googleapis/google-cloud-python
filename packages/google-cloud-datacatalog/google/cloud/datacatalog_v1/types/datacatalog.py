@@ -22,14 +22,19 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
-from google.cloud.datacatalog_v1.types import bigquery, common
+from google.cloud.datacatalog_v1.types import (
+    bigquery,
+    common,
+    dataplex_spec,
+    search,
+    table_spec,
+    timestamps,
+    usage,
+)
 from google.cloud.datacatalog_v1.types import data_source as gcd_data_source
-from google.cloud.datacatalog_v1.types import dataplex_spec
+from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
 from google.cloud.datacatalog_v1.types import schema as gcd_schema
-from google.cloud.datacatalog_v1.types import search, table_spec
 from google.cloud.datacatalog_v1.types import tags as gcd_tags
-from google.cloud.datacatalog_v1.types import timestamps, usage
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
@@ -180,6 +185,7 @@ class EntryType(proto.Enum):
             Feature Group resource in Vertex AI Feature
             Store.
     """
+
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
     MODEL = 5
@@ -216,6 +222,7 @@ class TagTemplateMigration(proto.Enum):
             Migration of Tag Templates from Data Catalog
             to Dataplex is disabled.
     """
+
     TAG_TEMPLATE_MIGRATION_UNSPECIFIED = 0
     TAG_TEMPLATE_MIGRATION_ENABLED = 1
     TAG_TEMPLATE_MIGRATION_DISABLED = 2
@@ -233,6 +240,7 @@ class CatalogUIExperience(proto.Enum):
         CATALOG_UI_EXPERIENCE_DISABLED (2):
             The UI is Data Catalog.
     """
+
     CATALOG_UI_EXPERIENCE_UNSPECIFIED = 0
     CATALOG_UI_EXPERIENCE_ENABLED = 1
     CATALOG_UI_EXPERIENCE_DISABLED = 2
@@ -1254,6 +1262,7 @@ class DatabaseTableSpec(proto.Message):
             EXTERNAL (2):
                 External table.
         """
+
         TABLE_TYPE_UNSPECIFIED = 0
         NATIVE = 1
         EXTERNAL = 2
@@ -1293,6 +1302,7 @@ class DatabaseTableSpec(proto.Message):
                 MATERIALIZED_VIEW (2):
                     Materialized view.
             """
+
             VIEW_TYPE_UNSPECIFIED = 0
             STANDARD_VIEW = 1
             MATERIALIZED_VIEW = 2
@@ -1406,6 +1416,7 @@ class RoutineSpec(proto.Message):
             PROCEDURE (2):
                 Stored procedure.
         """
+
         ROUTINE_TYPE_UNSPECIFIED = 0
         SCALAR_FUNCTION = 1
         PROCEDURE = 2
@@ -1438,6 +1449,7 @@ class RoutineSpec(proto.Message):
                 INOUT (3):
                     The argument is both an input and an output.
             """
+
             MODE_UNSPECIFIED = 0
             IN = 1
             OUT = 2
@@ -1651,12 +1663,12 @@ class CloudBigtableInstanceSpec(proto.Message):
             number=4,
         )
 
-    cloud_bigtable_cluster_specs: MutableSequence[
-        CloudBigtableClusterSpec
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=CloudBigtableClusterSpec,
+    cloud_bigtable_cluster_specs: MutableSequence[CloudBigtableClusterSpec] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=CloudBigtableClusterSpec,
+        )
     )
 
 
@@ -1722,6 +1734,7 @@ class VertexModelSourceInfo(proto.Message):
             MARKETPLACE (7):
                 The Model is saved or tuned from Marketplace.
         """
+
         MODEL_SOURCE_TYPE_UNSPECIFIED = 0
         AUTOML = 1
         CUSTOM = 2
@@ -1838,6 +1851,7 @@ class VertexDatasetSpec(proto.Message):
                 Text prompt dataset which supports Large
                 Language Models.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         TABLE = 1
         IMAGE = 2
@@ -1907,6 +1921,7 @@ class FeatureOnlineStoreSpec(proto.Message):
                 Underlying is optimized online server
                 (Lightning).
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         BIGTABLE = 1
         OPTIMIZED = 2
@@ -2549,6 +2564,7 @@ class ReconcileTagsMetadata(proto.Message):
             RECONCILIATION_DONE (3):
                 The reconciliation has been finished.
         """
+
         RECONCILIATION_STATE_UNSPECIFIED = 0
         RECONCILIATION_QUEUED = 1
         RECONCILIATION_IN_PROGRESS = 2
@@ -2789,6 +2805,7 @@ class ImportEntriesMetadata(proto.Message):
                 The import of entries has been abandoned in
                 favor of a newer request.
         """
+
         IMPORT_STATE_UNSPECIFIED = 0
         IMPORT_QUEUED = 1
         IMPORT_IN_PROGRESS = 2

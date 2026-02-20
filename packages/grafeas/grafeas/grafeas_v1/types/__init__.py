@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .attestation import AttestationNote, AttestationOccurrence, Jwt
-from .build import BuildNote, BuildOccurrence
+from .attestation import (
+    AttestationNote,
+    AttestationOccurrence,
+    Jwt,
+)
+from .build import (
+    BuildNote,
+    BuildOccurrence,
+)
 from .common import (
     BaseImage,
     Digest,
@@ -33,10 +40,23 @@ from .compliance import (
     ComplianceVersion,
     NonCompliantFile,
 )
-from .cvss import CVSS, CVSSv3, CVSSVersion
-from .deployment import DeploymentNote, DeploymentOccurrence
-from .discovery import DiscoveryNote, DiscoveryOccurrence
-from .dsse_attestation import DSSEAttestationNote, DSSEAttestationOccurrence
+from .cvss import (
+    CVSS,
+    CVSSv3,
+    CVSSVersion,
+)
+from .deployment import (
+    DeploymentNote,
+    DeploymentOccurrence,
+)
+from .discovery import (
+    DiscoveryNote,
+    DiscoveryOccurrence,
+)
+from .dsse_attestation import (
+    DSSEAttestationNote,
+    DSSEAttestationOccurrence,
+)
 from .grafeas import (
     BatchCreateNotesRequest,
     BatchCreateNotesResponse,
@@ -60,7 +80,12 @@ from .grafeas import (
     UpdateNoteRequest,
     UpdateOccurrenceRequest,
 )
-from .image import Fingerprint, ImageNote, ImageOccurrence, Layer
+from .image import (
+    Fingerprint,
+    ImageNote,
+    ImageOccurrence,
+    Layer,
+)
 from .intoto_provenance import (
     BuilderConfig,
     Completeness,
@@ -68,7 +93,11 @@ from .intoto_provenance import (
     Metadata,
     Recipe,
 )
-from .intoto_statement import InTotoSlsaProvenanceV1, InTotoStatement, Subject
+from .intoto_statement import (
+    InTotoSlsaProvenanceV1,
+    InTotoStatement,
+    Subject,
+)
 from .package import (
     Architecture,
     Distribution,
@@ -110,12 +139,28 @@ from .secret import (
     SecretOccurrence,
     SecretStatus,
 )
-from .severity import Severity
-from .slsa_provenance import SlsaProvenance
-from .slsa_provenance_zero_two import SlsaProvenanceZeroTwo
-from .upgrade import UpgradeDistribution, UpgradeNote, UpgradeOccurrence, WindowsUpdate
-from .vex import VulnerabilityAssessmentNote
-from .vulnerability import VulnerabilityNote, VulnerabilityOccurrence
+from .severity import (
+    Severity,
+)
+from .slsa_provenance import (
+    SlsaProvenance,
+)
+from .slsa_provenance_zero_two import (
+    SlsaProvenanceZeroTwo,
+)
+from .upgrade import (
+    UpgradeDistribution,
+    UpgradeNote,
+    UpgradeOccurrence,
+    WindowsUpdate,
+)
+from .vex import (
+    VulnerabilityAssessmentNote,
+)
+from .vulnerability import (
+    VulnerabilityNote,
+    VulnerabilityOccurrence,
+)
 
 __all__ = (
     "AttestationNote",

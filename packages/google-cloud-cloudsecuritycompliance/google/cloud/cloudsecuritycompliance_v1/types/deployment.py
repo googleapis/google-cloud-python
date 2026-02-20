@@ -77,6 +77,7 @@ class DeploymentState(proto.Enum):
             successfully. Retrying the operation resumes
             from the first failed step.
     """
+
     DEPLOYMENT_STATE_UNSPECIFIED = 0
     DEPLOYMENT_STATE_VALIDATING = 1
     DEPLOYMENT_STATE_CREATING = 2
@@ -185,12 +186,12 @@ class FrameworkDeployment(proto.Message):
         proto.STRING,
         number=5,
     )
-    cloud_control_metadata: MutableSequence[
-        "CloudControlMetadata"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message="CloudControlMetadata",
+    cloud_control_metadata: MutableSequence["CloudControlMetadata"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="CloudControlMetadata",
+        )
     )
     deployment_state: "DeploymentState" = proto.Field(
         proto.ENUM,
@@ -328,12 +329,12 @@ class CloudControlDeployment(proto.Message):
         number=10,
         message=common.CloudControl,
     )
-    framework_deployment_references: MutableSequence[
-        "FrameworkDeploymentReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message="FrameworkDeploymentReference",
+    framework_deployment_references: MutableSequence["FrameworkDeploymentReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message="FrameworkDeploymentReference",
+        )
     )
     target_resource_display_name: str = proto.Field(
         proto.STRING,
@@ -746,12 +747,12 @@ class ListCloudControlDeploymentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cloud_control_deployments: MutableSequence[
-        "CloudControlDeployment"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CloudControlDeployment",
+    cloud_control_deployments: MutableSequence["CloudControlDeployment"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CloudControlDeployment",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

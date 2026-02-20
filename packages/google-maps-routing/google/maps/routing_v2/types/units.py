@@ -40,6 +40,7 @@ class Units(proto.Enum):
         IMPERIAL (2):
             Imperial (English) units of measure.
     """
+
     UNITS_UNSPECIFIED = 0
     METRIC = 1
     IMPERIAL = 2

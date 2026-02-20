@@ -356,12 +356,12 @@ class ListRecurringAudienceListsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    recurring_audience_lists: MutableSequence[
-        "RecurringAudienceList"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="RecurringAudienceList",
+    recurring_audience_lists: MutableSequence["RecurringAudienceList"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RecurringAudienceList",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -652,6 +652,7 @@ class AudienceList(proto.Message):
                 possible that re-requesting this audience list
                 will succeed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1086,6 +1087,7 @@ class RunFunnelReportRequest(proto.Message):
                 visualization sub report in the response will
                 contain the date dimension.
         """
+
         FUNNEL_VISUALIZATION_TYPE_UNSPECIFIED = 0
         STANDARD_FUNNEL = 1
         TRENDED_FUNNEL = 2
@@ -1340,12 +1342,12 @@ class ReportTask(proto.Message):
             proto.INT64,
             number=8,
         )
-        metric_aggregations: MutableSequence[
-            data.MetricAggregation
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=9,
-            enum=data.MetricAggregation,
+        metric_aggregations: MutableSequence[data.MetricAggregation] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=9,
+                enum=data.MetricAggregation,
+            )
         )
         order_bys: MutableSequence[data.OrderBy] = proto.RepeatedField(
             proto.MESSAGE,
@@ -1445,6 +1447,7 @@ class ReportTask(proto.Message):
                 FAILED (3):
                     The report failed to be created.
             """
+
             STATE_UNSPECIFIED = 0
             CREATING = 1
             ACTIVE = 2

@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -655,9 +655,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseCenterRestTransport._BaseAggregateIssueStats._get_http_options()
-            )
+            http_options = _BaseDatabaseCenterRestTransport._BaseAggregateIssueStats._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregate_issue_stats(
                 request, metadata
@@ -816,9 +814,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseCenterRestTransport._BaseQueryDatabaseResourceGroups._get_http_options()
-            )
+            http_options = _BaseDatabaseCenterRestTransport._BaseQueryDatabaseResourceGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_query_database_resource_groups(
                 request, metadata
@@ -889,11 +885,10 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
 
             resp = self._interceptor.post_query_database_resource_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_database_resource_groups_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_query_database_resource_groups_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1247,7 +1242,9 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._QueryDatabaseResourceGroups(self._session, self._host, self._interceptor)  # type: ignore
+        return self._QueryDatabaseResourceGroups(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def query_issues(

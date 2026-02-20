@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from grafeas.grafeas_v1 import gapic_version as package_version
 
@@ -137,7 +137,10 @@ class GrafeasAsyncClient:
         Returns:
             GrafeasAsyncClient: The constructed client.
         """
-        return GrafeasClient.from_service_account_info.__func__(GrafeasAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            GrafeasClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(GrafeasAsyncClient, info, *args, **kwargs)
 
     @property
     def transport(self) -> GrafeasTransport:

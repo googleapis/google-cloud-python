@@ -53,6 +53,7 @@ class TranslateQueryRequest(proto.Message):
             TERADATA (1):
                 Teradata SQL.
         """
+
         SQL_TRANSLATION_SOURCE_DIALECT_UNSPECIFIED = 0
         TERADATA = 1
 
@@ -165,6 +166,7 @@ class SqlTranslationError(proto.Message):
                 Found unsupported functions in the input SQL
                 query that are not able to translate.
         """
+
         SQL_TRANSLATION_ERROR_TYPE_UNSPECIFIED = 0
         SQL_PARSE_ERROR = 1
         UNSUPPORTED_SQL_FUNCTION = 2

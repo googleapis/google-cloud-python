@@ -61,6 +61,7 @@ class PartnerPermissions(proto.Message):
                 Permission for support case details for
                 Access Transparency log entries
         """
+
         PERMISSION_UNSPECIFIED = 0
         ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS = 1
         ASSURED_WORKLOADS_MONITORING = 2

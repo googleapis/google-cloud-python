@@ -82,6 +82,7 @@ class RequestStatusPerDestination(proto.Message):
             PARTIAL_SUCCESS (4):
                 The request partially succeeded.
         """
+
         REQUEST_STATUS_UNKNOWN = 0
         SUCCESS = 1
         PROCESSING = 2

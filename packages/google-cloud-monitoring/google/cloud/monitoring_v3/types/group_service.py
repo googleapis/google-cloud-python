@@ -351,12 +351,12 @@ class ListGroupMembersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    members: MutableSequence[
-        monitored_resource_pb2.MonitoredResource
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=monitored_resource_pb2.MonitoredResource,
+    members: MutableSequence[monitored_resource_pb2.MonitoredResource] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=monitored_resource_pb2.MonitoredResource,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

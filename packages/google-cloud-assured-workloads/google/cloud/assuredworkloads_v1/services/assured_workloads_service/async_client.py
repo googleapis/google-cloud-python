@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.assuredworkloads_v1 import gapic_version as package_version
 
@@ -46,9 +46,9 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.assuredworkloads_v1.services.assured_workloads_service import pagers
 from google.cloud.assuredworkloads_v1.types import assuredworkloads
@@ -131,7 +131,10 @@ class AssuredWorkloadsServiceAsyncClient:
         Returns:
             AssuredWorkloadsServiceAsyncClient: The constructed client.
         """
-        return AssuredWorkloadsServiceClient.from_service_account_info.__func__(AssuredWorkloadsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            AssuredWorkloadsServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(AssuredWorkloadsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -147,7 +150,12 @@ class AssuredWorkloadsServiceAsyncClient:
         Returns:
             AssuredWorkloadsServiceAsyncClient: The constructed client.
         """
-        return AssuredWorkloadsServiceClient.from_service_account_file.__func__(AssuredWorkloadsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            AssuredWorkloadsServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(
+            AssuredWorkloadsServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -185,7 +193,9 @@ class AssuredWorkloadsServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AssuredWorkloadsServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return AssuredWorkloadsServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> AssuredWorkloadsServiceTransport:

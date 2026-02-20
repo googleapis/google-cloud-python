@@ -17,14 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
+from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
+from google.cloud.gkehub_v1 import rbacrolebindingactuation_v1  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.gkehub_v1 import (
-    configmanagement_v1,  # type: ignore
-    multiclusteringress_v1,  # type: ignore
-    rbacrolebindingactuation_v1,  # type: ignore
-)
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
@@ -242,6 +239,7 @@ class FeatureResourceState(proto.Message):
                 The Feature resource is being updated by the
                 Hub Service.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLING = 1
         ACTIVE = 2
@@ -295,6 +293,7 @@ class FeatureState(proto.Message):
                 the description and any associated
                 Feature-specific details for more information.
         """
+
         CODE_UNSPECIFIED = 0
         OK = 1
         WARNING = 2

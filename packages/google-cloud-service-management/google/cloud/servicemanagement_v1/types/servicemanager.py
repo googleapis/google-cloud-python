@@ -232,6 +232,7 @@ class GetServiceConfigRequest(proto.Message):
                 are only available for configs created using the
                 SubmitConfigSource method.
         """
+
         BASIC = 0
         FULL = 1
 

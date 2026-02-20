@@ -47,6 +47,7 @@ class SuspensionReason(proto.Enum):
             Replicated cluster encryption key
             inaccessible.
     """
+
     SUSPENSION_REASON_UNSPECIFIED = 0
     WIPEOUT_HIDE_EVENT = 1
     WIPEOUT_PURGE_EVENT = 2

@@ -40,7 +40,10 @@ from .annotation import (
     VideoEventAnnotation,
     VideoObjectTrackingAnnotation,
 )
-from .annotation_spec_set import AnnotationSpec, AnnotationSpecSet
+from .annotation_spec_set import (
+    AnnotationSpec,
+    AnnotationSpecSet,
+)
 from .data_labeling_service import (
     CreateAnnotationSpecSetRequest,
     CreateDatasetRequest,
@@ -86,7 +89,12 @@ from .data_labeling_service import (
     SearchExampleComparisonsResponse,
     UpdateEvaluationJobRequest,
 )
-from .data_payloads import ImagePayload, TextPayload, VideoPayload, VideoThumbnail
+from .data_payloads import (
+    ImagePayload,
+    TextPayload,
+    VideoPayload,
+    VideoThumbnail,
+)
 from .dataset import (
     AnnotatedDataset,
     AnnotatedDatasetMetadata,
@@ -135,7 +143,11 @@ from .human_annotation_config import (
     TextEntityExtractionConfig,
     VideoClassificationConfig,
 )
-from .instruction import CsvInstruction, Instruction, PdfInstruction
+from .instruction import (
+    CsvInstruction,
+    Instruction,
+    PdfInstruction,
+)
 from .operations import (
     CreateInstructionMetadata,
     ExportDataOperationMetadata,

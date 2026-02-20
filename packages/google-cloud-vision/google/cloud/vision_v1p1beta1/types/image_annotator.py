@@ -22,8 +22,8 @@ import google.type.color_pb2 as color_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.vision_v1p1beta1.types import web_detection as gcv_web_detection
 from google.cloud.vision_v1p1beta1.types import geometry, text_annotation
+from google.cloud.vision_v1p1beta1.types import web_detection as gcv_web_detection
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p1beta1",
@@ -78,6 +78,7 @@ class Likelihood(proto.Enum):
             It is very likely that the image belongs to
             the specified vertical.
     """
+
     UNKNOWN = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -136,6 +137,7 @@ class Feature(proto.Message):
             WEB_DETECTION (10):
                 Run web detection.
         """
+
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
         LANDMARK_DETECTION = 2
@@ -370,6 +372,7 @@ class FaceAnnotation(proto.Message):
                 CHIN_RIGHT_GONION (34):
                     Chin right gonion.
             """
+
             UNKNOWN_LANDMARK = 0
             LEFT_EYE = 1
             RIGHT_EYE = 2

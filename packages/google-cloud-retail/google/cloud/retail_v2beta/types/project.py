@@ -69,6 +69,7 @@ class AlertConfig(proto.Message):
                 DECLINED (2):
                     Customer declined this policy.
             """
+
             ENROLL_STATUS_UNSPECIFIED = 0
             ENROLLED = 1
             DECLINED = 2
@@ -95,12 +96,12 @@ class AlertConfig(proto.Message):
             number=2,
             enum="AlertConfig.AlertPolicy.EnrollStatus",
         )
-        recipients: MutableSequence[
-            "AlertConfig.AlertPolicy.Recipient"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="AlertConfig.AlertPolicy.Recipient",
+        recipients: MutableSequence["AlertConfig.AlertPolicy.Recipient"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="AlertConfig.AlertPolicy.Recipient",
+            )
         )
 
     name: str = proto.Field(

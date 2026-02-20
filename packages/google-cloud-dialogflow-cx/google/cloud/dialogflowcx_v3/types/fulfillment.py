@@ -201,12 +201,12 @@ class Fulfillment(proto.Message):
                 message="Fulfillment.ConditionalCases.Case.CaseContent",
             )
 
-        cases: MutableSequence[
-            "Fulfillment.ConditionalCases.Case"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Fulfillment.ConditionalCases.Case",
+        cases: MutableSequence["Fulfillment.ConditionalCases.Case"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Fulfillment.ConditionalCases.Case",
+            )
         )
 
     class GeneratorSettings(proto.Message):

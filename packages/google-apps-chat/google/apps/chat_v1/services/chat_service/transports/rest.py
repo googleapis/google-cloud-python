@@ -16,36 +16,39 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.apps.chat_v1.types import (
+    attachment,
+    membership,
+    message,
+    reaction,
+    space,
+    space_event,
+    space_notification_setting,
+    space_read_state,
+    space_setup,
+    thread_read_state,
+)
+from google.apps.chat_v1.types import membership as gc_membership
+from google.apps.chat_v1.types import message as gc_message
+from google.apps.chat_v1.types import reaction as gc_reaction
+from google.apps.chat_v1.types import space as gc_space
+from google.apps.chat_v1.types import (
     space_notification_setting as gc_space_notification_setting,
 )
-from google.apps.chat_v1.types import attachment
-from google.apps.chat_v1.types import membership
-from google.apps.chat_v1.types import membership as gc_membership
-from google.apps.chat_v1.types import message
-from google.apps.chat_v1.types import message as gc_message
-from google.apps.chat_v1.types import reaction
-from google.apps.chat_v1.types import reaction as gc_reaction
-from google.apps.chat_v1.types import space
-from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import space_event
-from google.apps.chat_v1.types import space_notification_setting
-from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
-from google.apps.chat_v1.types import space_setup, thread_read_state
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseChatServiceRestTransport
@@ -2027,9 +2030,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_http_options()
-            )
+            http_options = _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_http_options()
 
             request, metadata = self._interceptor.pre_complete_import_space(
                 request, metadata
@@ -4592,9 +4593,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_http_options()
-            )
+            http_options = _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_http_options()
 
             request, metadata = self._interceptor.pre_get_space_notification_setting(
                 request, metadata
@@ -4660,11 +4659,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             resp = self._interceptor.post_get_space_notification_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_space_notification_setting_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_space_notification_setting_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4901,9 +4899,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseChatServiceRestTransport._BaseGetThreadReadState._get_http_options()
-            )
+            http_options = _BaseChatServiceRestTransport._BaseGetThreadReadState._get_http_options()
 
             request, metadata = self._interceptor.pre_get_thread_read_state(
                 request, metadata
@@ -6738,9 +6734,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_http_options()
-            )
+            http_options = _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_http_options()
 
             request, metadata = self._interceptor.pre_update_space_notification_setting(
                 request, metadata
@@ -6811,11 +6805,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             resp = self._interceptor.post_update_space_notification_setting(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_space_notification_setting_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_space_notification_setting_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6903,9 +6896,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_http_options()
-            )
+            http_options = _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_http_options()
 
             request, metadata = self._interceptor.pre_update_space_read_state(
                 request, metadata
@@ -7303,7 +7294,9 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSpaceNotificationSetting(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSpaceNotificationSetting(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_space_read_state(
@@ -7424,7 +7417,9 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateSpaceNotificationSetting(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateSpaceNotificationSetting(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_space_read_state(

@@ -230,6 +230,7 @@ class Queue(proto.Message):
                 To permanently delete this queue and all of its tasks, call
                 [DeleteQueue][google.cloud.tasks.v2beta3.CloudTasks.DeleteQueue].
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2
@@ -246,6 +247,7 @@ class Queue(proto.Message):
             PUSH (2):
                 A push queue.
         """
+
         TYPE_UNSPECIFIED = 0
         PULL = 1
         PUSH = 2

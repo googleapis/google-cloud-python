@@ -57,6 +57,7 @@ class State(proto.Enum):
             The service has been explicitly enabled for
             use by this consumer.
     """
+
     STATE_UNSPECIFIED = 0
     DISABLED = 1
     ENABLED = 2

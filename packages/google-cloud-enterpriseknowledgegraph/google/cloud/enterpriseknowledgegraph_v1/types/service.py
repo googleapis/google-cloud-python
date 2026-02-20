@@ -91,6 +91,7 @@ class InputConfig(proto.Message):
             PERSON (7):
                 Person entity.
         """
+
         ENTITY_TYPE_UNSPECIFIED = 0
         PEOPLE = 1
         ESTABLISHMENT = 2
@@ -100,12 +101,12 @@ class InputConfig(proto.Message):
         LOCAL_BUSINESS = 6
         PERSON = 7
 
-    bigquery_input_configs: MutableSequence[
-        "BigQueryInputConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BigQueryInputConfig",
+    bigquery_input_configs: MutableSequence["BigQueryInputConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BigQueryInputConfig",
+        )
     )
     entity_type: EntityType = proto.Field(
         proto.ENUM,
@@ -386,12 +387,12 @@ class ListEntityReconciliationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entity_reconciliation_jobs: MutableSequence[
-        "EntityReconciliationJob"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="EntityReconciliationJob",
+    entity_reconciliation_jobs: MutableSequence["EntityReconciliationJob"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="EntityReconciliationJob",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

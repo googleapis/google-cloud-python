@@ -241,6 +241,7 @@ class TransactionEvent(proto.Message):
                 refunds, we recommend that you include an amount in the
                 ``value`` field.
         """
+
         TRANSACTION_EVENT_TYPE_UNSPECIFIED = 0
         MERCHANT_APPROVE = 1
         MERCHANT_DENY = 2
@@ -367,6 +368,7 @@ class AnnotateAssessmentRequest(proto.Message):
                 Deprecated, prefer indicating INCORRECT_PASSWORD through the
                 reasons field instead.
         """
+
         ANNOTATION_UNSPECIFIED = 0
         LEGITIMATE = 1
         FRAUDULENT = 2
@@ -442,6 +444,7 @@ class AnnotateAssessmentRequest(proto.Message):
                 such as spam, scams, phishing, or social
                 engineering.
         """
+
         REASON_UNSPECIFIED = 0
         CHARGEBACK = 1
         CHARGEBACK_FRAUD = 8
@@ -611,6 +614,7 @@ class AccountVerificationInfo(proto.Message):
                 The request parameters do not match with the
                 token provided and cannot be processed.
         """
+
         RESULT_UNSPECIFIED = 0
         SUCCESS_USER_VERIFIED = 1
         ERROR_USER_NOT_VERIFIED = 2
@@ -892,6 +896,7 @@ class Event(proto.Message):
                 Disable Fraud Prevention for this assessment,
                 regardless of the Google Cloud console settings.
         """
+
         FRAUD_PREVENTION_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1403,6 +1408,7 @@ class RiskAnalysis(proto.Message):
                 The request matches behavioral
                 characteristics of chargebacks for fraud.
         """
+
         CLASSIFICATION_REASON_UNSPECIFIED = 0
         AUTOMATION = 1
         UNEXPECTED_ENVIRONMENT = 2
@@ -1427,6 +1433,7 @@ class RiskAnalysis(proto.Message):
                 A solution was submitted that was incorrect
                 or otherwise deemed suspicious.
         """
+
         CHALLENGE_UNSPECIFIED = 0
         NOCAPTCHA = 1
         PASSED = 2
@@ -1489,6 +1496,7 @@ class Bot(proto.Message):
                 for the purpose of efficient retrieval, likely
                 as part of a search engine.
         """
+
         BOT_TYPE_UNSPECIFIED = 0
         AI_AGENT = 1
         CONTENT_SCRAPER = 2
@@ -1571,6 +1579,7 @@ class TokenProperties(proto.Message):
                 - you set an action score threshold higher than 0.0
                 - you provided a non-empty ``expected_action``
         """
+
         INVALID_REASON_UNSPECIFIED = 0
         UNKNOWN_INVALID_REASON = 1
         MALFORMED = 2
@@ -1673,6 +1682,7 @@ class FraudPreventionAssessment(proto.Message):
                     This transaction is linked to a cluster of
                     known fraudulent activity.
             """
+
             REASON_UNSPECIFIED = 0
             HIGH_TRANSACTION_VELOCITY = 1
             EXCESSIVE_ENUMERATION_PATTERN = 2
@@ -1828,17 +1838,18 @@ class FraudSignals(proto.Message):
                     This card has been detected as being used in
                     an unexpected geographic location.
             """
+
             CARD_LABEL_UNSPECIFIED = 0
             PREPAID = 1
             VIRTUAL = 2
             UNEXPECTED_LOCATION = 3
 
-        card_labels: MutableSequence[
-            "FraudSignals.CardSignals.CardLabel"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=1,
-            enum="FraudSignals.CardSignals.CardLabel",
+        card_labels: MutableSequence["FraudSignals.CardSignals.CardLabel"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=1,
+                enum="FraudSignals.CardSignals.CardLabel",
+            )
         )
 
     user_signals: UserSignals = proto.Field(
@@ -1877,6 +1888,7 @@ class SmsTollFraudVerdict(proto.Message):
             INVALID_PHONE_NUMBER (1):
                 The provided phone number was invalid
         """
+
         SMS_TOLL_FRAUD_REASON_UNSPECIFIED = 0
         INVALID_PHONE_NUMBER = 1
 
@@ -1941,6 +1953,7 @@ class AccountDefenderAssessment(proto.Message):
                 imply that the account is bad but can require
                 further investigation.
         """
+
         ACCOUNT_DEFENDER_LABEL_UNSPECIFIED = 0
         PROFILE_MATCH = 1
         SUSPICIOUS_LOGIN_ACTIVITY = 2
@@ -2507,6 +2520,7 @@ class TestingOptions(proto.Message):
                 Challenge requests for this key always return
                 an unsolvable challenge.
         """
+
         TESTING_CHALLENGE_UNSPECIFIED = 0
         NOCAPTCHA = 1
         UNSOLVABLE_CHALLENGE = 2
@@ -2583,6 +2597,7 @@ class WebKeySettings(proto.Message):
                 Displays a visual challenge or not depending
                 on the user risk analysis score.
         """
+
         INTEGRATION_TYPE_UNSPECIFIED = 0
         SCORE = 1
         CHECKBOX = 2
@@ -2608,6 +2623,7 @@ class WebKeySettings(proto.Message):
             SECURITY (3):
                 Key tends to show more and harder challenges.
         """
+
         CHALLENGE_SECURITY_PREFERENCE_UNSPECIFIED = 0
         USABILITY = 1
         BALANCE = 2
@@ -2651,13 +2667,13 @@ class WebKeySettings(proto.Message):
             number=1,
             message="WebKeySettings.ActionSettings",
         )
-        action_settings: MutableMapping[
-            str, "WebKeySettings.ActionSettings"
-        ] = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=2,
-            message="WebKeySettings.ActionSettings",
+        action_settings: MutableMapping[str, "WebKeySettings.ActionSettings"] = (
+            proto.MapField(
+                proto.STRING,
+                proto.MESSAGE,
+                number=2,
+                message="WebKeySettings.ActionSettings",
+            )
         )
 
     allow_all_domains: bool = proto.Field(
@@ -3252,12 +3268,12 @@ class ListRelatedAccountGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    related_account_groups: MutableSequence[
-        "RelatedAccountGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="RelatedAccountGroup",
+    related_account_groups: MutableSequence["RelatedAccountGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RelatedAccountGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -3548,6 +3564,7 @@ class WafSettings(proto.Message):
             EXPRESS (5):
                 Deprecated: Use ``express_settings`` instead.
         """
+
         WAF_FEATURE_UNSPECIFIED = 0
         CHALLENGE_PAGE = 1
         SESSION_TOKEN = 2
@@ -3571,6 +3588,7 @@ class WafSettings(proto.Message):
             AKAMAI (5):
                 Akamai
         """
+
         WAF_SERVICE_UNSPECIFIED = 0
         CA = 1
         FASTLY = 3
@@ -3650,6 +3668,7 @@ class IpOverrideData(proto.Message):
                 Allowlist the IP address; i.e. give a
                 ``risk_analysis.score`` of 0.9 for all valid assessments.
         """
+
         OVERRIDE_TYPE_UNSPECIFIED = 0
         ALLOW = 1
 

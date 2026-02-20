@@ -238,6 +238,7 @@ class HostGroup(proto.Message):
             ISCSI_INITIATOR (1):
                 iSCSI initiator host group.
         """
+
         TYPE_UNSPECIFIED = 0
         ISCSI_INITIATOR = 1
 
@@ -258,6 +259,7 @@ class HostGroup(proto.Message):
             DISABLED (5):
                 Host group is disabled.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

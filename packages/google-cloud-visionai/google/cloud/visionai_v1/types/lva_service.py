@@ -68,6 +68,7 @@ class Registry(proto.Enum):
             Private Registry containing the local
             registered operators.
     """
+
     REGISTRY_UNSPECIFIED = 0
     PUBLIC = 1
     PRIVATE = 2

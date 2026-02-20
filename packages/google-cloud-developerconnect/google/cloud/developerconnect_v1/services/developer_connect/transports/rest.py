@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1820,9 +1820,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_create_account_connector(
                 request, metadata
@@ -1976,9 +1974,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
@@ -2132,9 +2128,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_http_options()
 
             request, metadata = self._interceptor.pre_create_git_repository_link(
                 request, metadata
@@ -2288,9 +2282,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_account_connector(
                 request, metadata
@@ -2438,9 +2430,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_connection(
                 request, metadata
@@ -2588,9 +2578,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_git_repository_link(
                 request, metadata
@@ -3030,9 +3018,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_access_token(
                 request, metadata
@@ -3188,9 +3174,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_git_hub_installations(
                 request, metadata
@@ -3491,9 +3475,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_linkable_git_repositories(
                 request, metadata
@@ -3557,11 +3539,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             resp = self._interceptor.post_fetch_linkable_git_repositories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_linkable_git_repositories_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_fetch_linkable_git_repositories_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3647,9 +3628,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_read_token(
                 request, metadata
@@ -3805,9 +3784,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_read_write_token(
                 request, metadata
@@ -4115,9 +4092,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_get_account_connector(
                 request, metadata
@@ -4263,9 +4238,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     Message describing Connection object
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_transcoded_request(
@@ -4411,9 +4384,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_http_options()
 
             request, metadata = self._interceptor.pre_get_git_repository_link(
                 request, metadata
@@ -4565,9 +4536,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_account_connectors(
                 request, metadata
@@ -4721,9 +4690,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListConnections._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListConnections._get_http_options()
 
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
@@ -4873,9 +4840,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_git_repository_links(
                 request, metadata
@@ -5178,9 +5143,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_http_options()
 
             request, metadata = self._interceptor.pre_update_account_connector(
                 request, metadata
@@ -5334,9 +5297,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
@@ -5437,7 +5398,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateAccountConnector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_connection(
@@ -5457,7 +5420,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateGitRepositoryLink(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_account_connector(
@@ -5467,7 +5432,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteAccountConnector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_connection(
@@ -5487,7 +5454,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteGitRepositoryLink(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_self(
@@ -5525,7 +5494,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchGitHubInstallations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchGitHubInstallations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_git_refs(
@@ -5546,7 +5517,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchLinkableGitRepositories(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchLinkableGitRepositories(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_read_token(
@@ -5641,7 +5614,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListGitRepositoryLinks(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGitRepositoryLinks(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_users(
@@ -5661,7 +5636,9 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateAccountConnector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_connection(
@@ -5870,9 +5847,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseListLocations._get_transcoded_request(
@@ -6009,9 +5984,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -6129,9 +6102,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -6386,9 +6357,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDeveloperConnectRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDeveloperConnectRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseListOperations._get_transcoded_request(

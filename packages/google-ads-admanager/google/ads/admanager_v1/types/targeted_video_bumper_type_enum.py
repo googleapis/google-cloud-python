@@ -49,6 +49,7 @@ class TargetedVideoBumperTypeEnum(proto.Message):
                 Represents the bumper position before the ad
                 pod.
         """
+
         TARGETED_VIDEO_BUMPER_TYPE_UNSPECIFIED = 0
         AFTER = 1
         BEFORE = 2

@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.binaryauthorization_v1.types import resources, service
@@ -566,9 +566,7 @@ class BinauthzManagementServiceV1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_create_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor._get_transcoded_request(
@@ -715,9 +713,7 @@ class BinauthzManagementServiceV1RestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1RestTransport._BaseDeleteAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1RestTransport._BaseDeleteAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseDeleteAttestor._get_transcoded_request(
@@ -833,9 +829,7 @@ class BinauthzManagementServiceV1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1RestTransport._BaseGetAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1RestTransport._BaseGetAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_get_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseGetAttestor._get_transcoded_request(
@@ -983,9 +977,7 @@ class BinauthzManagementServiceV1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1RestTransport._BaseGetPolicy._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1RestTransport._BaseGetPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseGetPolicy._get_transcoded_request(
@@ -1133,9 +1125,7 @@ class BinauthzManagementServiceV1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1RestTransport._BaseListAttestors._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1RestTransport._BaseListAttestors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_attestors(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseListAttestors._get_transcoded_request(
@@ -1286,9 +1276,7 @@ class BinauthzManagementServiceV1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor._get_http_options()
 
             request, metadata = self._interceptor.pre_update_attestor(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor._get_transcoded_request(
@@ -1442,9 +1430,7 @@ class BinauthzManagementServiceV1RestTransport(
 
             """
 
-            http_options = (
-                _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy._get_http_options()
-            )
+            http_options = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_policy(request, metadata)
             transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy._get_transcoded_request(

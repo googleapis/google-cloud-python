@@ -110,6 +110,7 @@ class VolumeBackup(proto.Message):
                 Compute Engine Persistent Disk snapshot based
                 volume backup.
         """
+
         VOLUME_BACKUP_FORMAT_UNSPECIFIED = 0
         GCE_PERSISTENT_DISK = 1
 
@@ -147,6 +148,7 @@ class VolumeBackup(proto.Message):
                 The underlying artifacts of a volume backup
                 (eg: persistent disk snapshots) are deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         SNAPSHOTTING = 2
@@ -285,6 +287,7 @@ class VolumeRestore(proto.Message):
             GCE_PERSISTENT_DISK (1):
                 Compute Engine Persistent Disk volume
         """
+
         VOLUME_TYPE_UNSPECIFIED = 0
         GCE_PERSISTENT_DISK = 1
 
@@ -308,6 +311,7 @@ class VolumeRestore(proto.Message):
                 This VolumeRestore resource is in the process
                 of being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RESTORING = 2

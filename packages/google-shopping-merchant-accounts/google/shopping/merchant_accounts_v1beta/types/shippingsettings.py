@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1beta",
@@ -191,6 +191,7 @@ class Service(proto.Message):
                 chosen by the customer. The order is shipped
                 from a collection point.
         """
+
         SHIPMENT_TYPE_UNSPECIFIED = 0
         DELIVERY = 1
         LOCAL_DELIVERY = 2
@@ -241,6 +242,7 @@ class Service(proto.Message):
                     Indicates that only the stores listed in ``store_codes`` are
                     eligible for local delivery.
             """
+
             STORE_SERVICE_TYPE_UNSPECIFIED = 0
             ALL_STORES = 1
             SELECTED_STORES = 2
@@ -494,6 +496,7 @@ class Distance(proto.Message):
             KILOMETERS (2):
                 Unit in kilometers
         """
+
         UNIT_UNSPECIFIED = 0
         MILES = 1
         KILOMETERS = 2
@@ -795,12 +798,12 @@ class DeliveryTime(proto.Message):
         optional=True,
         message="BusinessDayConfig",
     )
-    warehouse_based_delivery_times: MutableSequence[
-        "WarehouseBasedDeliveryTime"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=9,
-        message="WarehouseBasedDeliveryTime",
+    warehouse_based_delivery_times: MutableSequence["WarehouseBasedDeliveryTime"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message="WarehouseBasedDeliveryTime",
+        )
     )
 
 
@@ -877,6 +880,7 @@ class BusinessDayConfig(proto.Message):
             SUNDAY (7):
                 No description available.
         """
+
         WEEKDAY_UNSPECIFIED = 0
         MONDAY = 1
         TUESDAY = 2
@@ -1131,12 +1135,12 @@ class TransitTable(proto.Message):
                 optional=True,
             )
 
-        values: MutableSequence[
-            "TransitTable.TransitTimeRow.TransitTimeValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="TransitTable.TransitTimeRow.TransitTimeValue",
+        values: MutableSequence["TransitTable.TransitTimeRow.TransitTimeValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="TransitTable.TransitTimeRow.TransitTimeValue",
+            )
         )
 
     postal_code_group_names: MutableSequence[str] = proto.RepeatedField(
@@ -1200,12 +1204,12 @@ class MinimumOrderValueTable(proto.Message):
             message=types.Price,
         )
 
-    store_code_set_with_movs: MutableSequence[
-        StoreCodeSetWithMov
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=StoreCodeSetWithMov,
+    store_code_set_with_movs: MutableSequence[StoreCodeSetWithMov] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=StoreCodeSetWithMov,
+        )
     )
 
 

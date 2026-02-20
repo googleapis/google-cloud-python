@@ -27,7 +27,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class ErrorInfo(_message.Message):
     __slots__ = ("reason", "domain", "metadata")
-
     class MetadataEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -73,7 +72,6 @@ class DebugInfo(_message.Message):
 
 class QuotaFailure(_message.Message):
     __slots__ = ("violations",)
-
     class Violation(_message.Message):
         __slots__ = (
             "subject",
@@ -85,7 +83,6 @@ class QuotaFailure(_message.Message):
             "quota_value",
             "future_quota_value",
         )
-
         class QuotaDimensionsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -135,7 +132,6 @@ class QuotaFailure(_message.Message):
 
 class PreconditionFailure(_message.Message):
     __slots__ = ("violations",)
-
     class Violation(_message.Message):
         __slots__ = ("type", "subject", "description")
         TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -164,7 +160,6 @@ class PreconditionFailure(_message.Message):
 
 class BadRequest(_message.Message):
     __slots__ = ("field_violations",)
-
     class FieldViolation(_message.Message):
         __slots__ = ("field", "description", "reason", "localized_message")
         FIELD_FIELD_NUMBER: _ClassVar[int]
@@ -224,7 +219,6 @@ class ResourceInfo(_message.Message):
 
 class Help(_message.Message):
     __slots__ = ("links",)
-
     class Link(_message.Message):
         __slots__ = ("description", "url")
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]

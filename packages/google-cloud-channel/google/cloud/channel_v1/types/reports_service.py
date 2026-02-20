@@ -392,6 +392,7 @@ class Column(proto.Message):
             DATE_TIME (6):
                 ReportValues for this column will use date_time_value.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         STRING = 1
         INT = 2
@@ -599,6 +600,7 @@ class ReportStatus(proto.Message):
             FAILED (4):
                 Report failed.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         WRITING = 2

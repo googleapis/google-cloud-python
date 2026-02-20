@@ -376,6 +376,7 @@ class AccessSettings(proto.Message):
                 Use external identities set up on Google
                 Cloud Workforce Identity Federation.
         """
+
         IDENTITY_SOURCE_UNSPECIFIED = 0
         WORKFORCE_IDENTITY_FEDERATION = 3
 
@@ -584,6 +585,7 @@ class ReauthSettings(proto.Message):
             ENROLLED_SECOND_FACTORS (4):
                 User can use any enabled 2nd factor.
         """
+
         METHOD_UNSPECIFIED = 0
         LOGIN = 1
         PASSWORD = 2
@@ -604,6 +606,7 @@ class ReauthSettings(proto.Message):
                 This policy acts as a default if no other
                 reauth policy is set.
         """
+
         POLICY_TYPE_UNSPECIFIED = 0
         MINIMUM = 1
         DEFAULT = 2
@@ -835,6 +838,7 @@ class AttributePropagationSettings(proto.Message):
                 Propagate attributes in the RCToken of the form:
                 ``"additional_claims": { "my_attribute": ["value1", "value2"] }``
         """
+
         OUTPUT_CREDENTIALS_UNSPECIFIED = 0
         HEADER = 1
         JWT = 2
@@ -1005,12 +1009,12 @@ class ListIdentityAwareProxyClientsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_aware_proxy_clients: MutableSequence[
-        "IdentityAwareProxyClient"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="IdentityAwareProxyClient",
+    identity_aware_proxy_clients: MutableSequence["IdentityAwareProxyClient"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="IdentityAwareProxyClient",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

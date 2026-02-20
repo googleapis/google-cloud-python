@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import warnings
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.analytics.admin_v1beta import gapic_version as package_version
 
@@ -188,7 +188,10 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             AnalyticsAdminServiceAsyncClient: The constructed client.
         """
-        return AnalyticsAdminServiceClient.from_service_account_info.__func__(AnalyticsAdminServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            AnalyticsAdminServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(AnalyticsAdminServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -204,7 +207,10 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             AnalyticsAdminServiceAsyncClient: The constructed client.
         """
-        return AnalyticsAdminServiceClient.from_service_account_file.__func__(AnalyticsAdminServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            AnalyticsAdminServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(AnalyticsAdminServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -242,7 +248,9 @@ class AnalyticsAdminServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AnalyticsAdminServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return AnalyticsAdminServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> AnalyticsAdminServiceTransport:

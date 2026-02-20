@@ -52,6 +52,7 @@ class NetworkSettings(proto.Message):
                 Allow HTTP traffic from private VPC sources
                 and through load balancers.
         """
+
         INGRESS_TRAFFIC_ALLOWED_UNSPECIFIED = 0
         INGRESS_TRAFFIC_ALLOWED_ALL = 1
         INGRESS_TRAFFIC_ALLOWED_INTERNAL_ONLY = 2

@@ -53,6 +53,7 @@ class OperationState(proto.Enum):
             The operation request was successfully
             canceled.
     """
+
     OPERATION_STATE_UNSPECIFIED = 0
     OPERATION_STATE_RUNNING = 1
     OPERATION_STATE_SUCCEEDED = 2

@@ -569,12 +569,12 @@ class Instance(proto.Message):
         number=43,
         message=condition.Condition,
     )
-    container_statuses: MutableSequence[
-        container_status.ContainerStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=44,
-        message=container_status.ContainerStatus,
+    container_statuses: MutableSequence[container_status.ContainerStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=44,
+            message=container_status.ContainerStatus,
+        )
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,

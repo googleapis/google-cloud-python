@@ -61,6 +61,7 @@ class GenerateType(proto.Enum):
             Used to generate wallet for a single
             database.
     """
+
     GENERATE_TYPE_UNSPECIFIED = 0
     ALL = 1
     SINGLE = 2
@@ -136,6 +137,7 @@ class State(proto.Enum):
             Indicates that the Autonomous Database is in
             standby state.
     """
+
     STATE_UNSPECIFIED = 0
     PROVISIONING = 1
     AVAILABLE = 2
@@ -182,6 +184,7 @@ class OperationsInsightsState(proto.Enum):
             Failed disabling status for operation
             insights.
     """
+
     OPERATIONS_INSIGHTS_STATE_UNSPECIFIED = 0
     ENABLING = 1
     ENABLED = 2
@@ -208,6 +211,7 @@ class DBWorkload(proto.Enum):
             Autonomous Database with the Oracle APEX
             Application Development workload type.
     """
+
     DB_WORKLOAD_UNSPECIFIED = 0
     OLTP = 1
     DW = 2
@@ -612,6 +616,7 @@ class AutonomousDatabaseProperties(proto.Message):
             ENTERPRISE_EDITION (2):
                 Enterprise Database Edition
         """
+
         DATABASE_EDITION_UNSPECIFIED = 0
         STANDARD_EDITION = 1
         ENTERPRISE_EDITION = 2
@@ -627,6 +632,7 @@ class AutonomousDatabaseProperties(proto.Message):
             BRING_YOUR_OWN_LICENSE (2):
                 Bring your own license
         """
+
         LICENSE_TYPE_UNSPECIFIED = 0
         LICENSE_INCLUDED = 1
         BRING_YOUR_OWN_LICENSE = 2
@@ -646,6 +652,7 @@ class AutonomousDatabaseProperties(proto.Message):
                 A REGULAR maintenance schedule follows the
                 normal maintenance cycle.
         """
+
         MAINTENANCE_SCHEDULE_TYPE_UNSPECIFIED = 0
         EARLY = 1
         REGULAR = 2
@@ -662,6 +669,7 @@ class AutonomousDatabaseProperties(proto.Message):
             BACKUP_BASED (2):
                 Backup based recovery.
         """
+
         LOCAL_DISASTER_RECOVERY_TYPE_UNSPECIFIED = 0
         ADG = 1
         BACKUP_BASED = 2
@@ -684,6 +692,7 @@ class AutonomousDatabaseProperties(proto.Message):
             FAILED (5):
                 Failed data safe state.
         """
+
         DATA_SAFE_STATE_UNSPECIFIED = 0
         REGISTERING = 1
         REGISTERED = 2
@@ -711,6 +720,7 @@ class AutonomousDatabaseProperties(proto.Message):
             FAILED_DISABLING (6):
                 Failed disabling Database Management state
         """
+
         DATABASE_MANAGEMENT_STATE_UNSPECIFIED = 0
         ENABLING = 1
         ENABLED = 2
@@ -730,6 +740,7 @@ class AutonomousDatabaseProperties(proto.Message):
             READ_WRITE (2):
                 Read Write Mode
         """
+
         OPEN_MODE_UNSPECIFIED = 0
         READ_ONLY = 1
         READ_WRITE = 2
@@ -746,6 +757,7 @@ class AutonomousDatabaseProperties(proto.Message):
             UNRESTRICTED (2):
                 Normal access.
         """
+
         PERMISSION_LEVEL_UNSPECIFIED = 0
         RESTRICTED = 1
         UNRESTRICTED = 2
@@ -765,6 +777,7 @@ class AutonomousDatabaseProperties(proto.Message):
                 manually refreshed with data from the source
                 Autonomous Database.
         """
+
         REFRESHABLE_MODE_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2
@@ -780,6 +793,7 @@ class AutonomousDatabaseProperties(proto.Message):
             NOT_REFRESHING (2):
                 Not refreshed
         """
+
         REFRESHABLE_STATE_UNSPECIFIED = 0
         REFRESHING = 1
         NOT_REFRESHING = 2
@@ -801,6 +815,7 @@ class AutonomousDatabaseProperties(proto.Message):
             SNAPSHOT_STANDBY (5):
                 Snapshot standby role
         """
+
         ROLE_UNSPECIFIED = 0
         PRIMARY = 1
         STANDBY = 2
@@ -1021,12 +1036,12 @@ class AutonomousDatabaseProperties(proto.Message):
         number=48,
         enum=Role,
     )
-    scheduled_operation_details: MutableSequence[
-        "ScheduledOperationDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=64,
-        message="ScheduledOperationDetails",
+    scheduled_operation_details: MutableSequence["ScheduledOperationDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=64,
+            message="ScheduledOperationDetails",
+        )
     )
     sql_web_developer_url: str = proto.Field(
         proto.STRING,
@@ -1082,12 +1097,12 @@ class AutonomousDatabaseProperties(proto.Message):
         number=68,
         message="EncryptionKey",
     )
-    encryption_key_history_entries: MutableSequence[
-        "EncryptionKeyHistoryEntry"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=69,
-        message="EncryptionKeyHistoryEntry",
+    encryption_key_history_entries: MutableSequence["EncryptionKeyHistoryEntry"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=69,
+            message="EncryptionKeyHistoryEntry",
+        )
     )
     service_agent_email: str = proto.Field(
         proto.STRING,
@@ -1147,6 +1162,7 @@ class EncryptionKey(proto.Message):
             ORACLE_MANAGED (2):
                 Oracle Managed.
         """
+
         PROVIDER_UNSPECIFIED = 0
         GOOGLE_MANAGED = 1
         ORACLE_MANAGED = 2
@@ -1298,6 +1314,7 @@ class DatabaseConnectionStringProfile(proto.Message):
             TPURGENT (5):
                 TPURGENT consumer group.
         """
+
         CONSUMER_GROUP_UNSPECIFIED = 0
         HIGH = 1
         MEDIUM = 2
@@ -1316,6 +1333,7 @@ class DatabaseConnectionStringProfile(proto.Message):
             IP (2):
                 IP
         """
+
         HOST_FORMAT_UNSPECIFIED = 0
         FQDN = 1
         IP = 2
@@ -1331,6 +1349,7 @@ class DatabaseConnectionStringProfile(proto.Message):
             TCPS (2):
                 Tcps
         """
+
         PROTOCOL_UNSPECIFIED = 0
         TCP = 1
         TCPS = 2
@@ -1346,6 +1365,7 @@ class DatabaseConnectionStringProfile(proto.Message):
             INDIRECT (2):
                 Indirect
         """
+
         SESSION_MODE_UNSPECIFIED = 0
         DIRECT = 1
         INDIRECT = 2
@@ -1363,6 +1383,7 @@ class DatabaseConnectionStringProfile(proto.Message):
             EZCONNECTPLUS (3):
                 Ezconnectplus
         """
+
         SYNTAX_FORMAT_UNSPECIFIED = 0
         LONG = 1
         EZCONNECT = 2
@@ -1380,6 +1401,7 @@ class DatabaseConnectionStringProfile(proto.Message):
             MUTUAL (2):
                 Mutual
         """
+
         TLS_AUTHENTICATION_UNSPECIFIED = 0
         SERVER = 1
         MUTUAL = 2

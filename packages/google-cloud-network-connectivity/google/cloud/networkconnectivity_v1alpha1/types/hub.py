@@ -60,6 +60,7 @@ class State(proto.Enum):
             The resource's Delete operation is in
             progress
     """
+
     STATE_UNSPECIFIED = 0
     CREATING = 1
     ACTIVE = 2
@@ -206,12 +207,12 @@ class Spoke(proto.Message):
         proto.STRING,
         number=13,
     )
-    linked_router_appliance_instances: MutableSequence[
-        "RouterApplianceInstance"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message="RouterApplianceInstance",
+    linked_router_appliance_instances: MutableSequence["RouterApplianceInstance"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message="RouterApplianceInstance",
+        )
     )
     unique_id: str = proto.Field(
         proto.STRING,

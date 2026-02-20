@@ -35,7 +35,6 @@ class ProjectProperties(_message.Message):
 
 class Property(_message.Message):
     __slots__ = ("name", "type", "description")
-
     class PropertyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         UNSPECIFIED: _ClassVar[Property.PropertyType]

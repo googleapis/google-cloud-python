@@ -65,6 +65,7 @@ class SizeTypeEnum(proto.Message):
                 Audio size. Used with audio ads. This must be
                 used with 1x1 size.
         """
+
         SIZE_TYPE_UNSPECIFIED = 0
         PIXEL = 1
         ASPECT_RATIO = 2

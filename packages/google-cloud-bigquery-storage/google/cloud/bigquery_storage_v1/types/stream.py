@@ -50,6 +50,7 @@ class DataFormat(proto.Enum):
             message format. See https://arrow.apache.org/
             for more details.
     """
+
     DATA_FORMAT_UNSPECIFIED = 0
     AVRO = 1
     ARROW = 2
@@ -73,6 +74,7 @@ class WriteStreamView(proto.Enum):
             CreateWriteStream returns the full projection of
             write stream metadata.
     """
+
     WRITE_STREAM_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -271,6 +273,7 @@ class ReadSession(proto.Message):
                 RESPONSE_COMPRESSION_CODEC_LZ4 (2):
                     Use raw LZ4 compression.
             """
+
             RESPONSE_COMPRESSION_CODEC_UNSPECIFIED = 0
             RESPONSE_COMPRESSION_CODEC_LZ4 = 2
 
@@ -435,6 +438,7 @@ class WriteStream(proto.Message):
                 Data is only visible up to the offset to
                 which it was flushed.
         """
+
         TYPE_UNSPECIFIED = 0
         COMMITTED = 1
         PENDING = 2
@@ -451,6 +455,7 @@ class WriteStream(proto.Message):
                 It is the default value if customers do not
                 specify it.
         """
+
         WRITE_MODE_UNSPECIFIED = 0
         INSERT = 1
 

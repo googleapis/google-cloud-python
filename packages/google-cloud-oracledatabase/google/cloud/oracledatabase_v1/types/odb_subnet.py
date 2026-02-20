@@ -66,6 +66,7 @@ class OdbSubnet(proto.Message):
             BACKUP_SUBNET (2):
                 Subnet to be used for backup.
         """
+
         PURPOSE_UNSPECIFIED = 0
         CLIENT_SUBNET = 1
         BACKUP_SUBNET = 2
@@ -89,6 +90,7 @@ class OdbSubnet(proto.Message):
                 Indicates that the resource is in failed
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2

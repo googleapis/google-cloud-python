@@ -41,6 +41,7 @@ class VolumePerformanceTier(proto.Enum):
         VOLUME_PERFORMANCE_TIER_HT (3):
             High throughput aggregates.
     """
+
     VOLUME_PERFORMANCE_TIER_UNSPECIFIED = 0
     VOLUME_PERFORMANCE_TIER_SHARED = 1
     VOLUME_PERFORMANCE_TIER_ASSIGNED = 2
@@ -58,6 +59,7 @@ class WorkloadProfile(proto.Enum):
         WORKLOAD_PROFILE_HANA (2):
             The workload profile is hana.
     """
+
     WORKLOAD_PROFILE_UNSPECIFIED = 0
     WORKLOAD_PROFILE_GENERIC = 1
     WORKLOAD_PROFILE_HANA = 2

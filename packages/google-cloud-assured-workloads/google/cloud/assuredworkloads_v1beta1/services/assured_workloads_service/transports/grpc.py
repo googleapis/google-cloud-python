@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.assuredworkloads_v1beta1.types import assuredworkloads
 
@@ -424,12 +424,12 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restrict_allowed_resources" not in self._stubs:
-            self._stubs[
-                "restrict_allowed_resources"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedResources",
-                request_serializer=assuredworkloads.RestrictAllowedResourcesRequest.serialize,
-                response_deserializer=assuredworkloads.RestrictAllowedResourcesResponse.deserialize,
+            self._stubs["restrict_allowed_resources"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedResources",
+                    request_serializer=assuredworkloads.RestrictAllowedResourcesRequest.serialize,
+                    response_deserializer=assuredworkloads.RestrictAllowedResourcesResponse.deserialize,
+                )
             )
         return self._stubs["restrict_allowed_resources"]
 

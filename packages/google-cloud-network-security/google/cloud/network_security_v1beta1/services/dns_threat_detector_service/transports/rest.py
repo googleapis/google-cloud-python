@@ -16,27 +16,29 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
+from google.cloud.network_security_v1beta1.types import dns_threat_detector
 from google.cloud.network_security_v1beta1.types import (
     dns_threat_detector as gcn_dns_threat_detector,
 )
-from google.cloud.network_security_v1beta1.types import dns_threat_detector
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDnsThreatDetectorServiceRestTransport
@@ -713,9 +715,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseCreateDnsThreatDetector._get_http_options()
 
             request, metadata = self._interceptor.pre_create_dns_threat_detector(
                 request, metadata
@@ -865,9 +865,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteDnsThreatDetector._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_dns_threat_detector(
                 request, metadata
@@ -984,9 +982,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetDnsThreatDetector._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dns_threat_detector(
                 request, metadata
@@ -1136,9 +1132,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseListDnsThreatDetectors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_dns_threat_detectors(
                 request, metadata
@@ -1295,9 +1289,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
 
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseUpdateDnsThreatDetector._get_http_options()
 
             request, metadata = self._interceptor.pre_update_dns_threat_detector(
                 request, metadata
@@ -1403,7 +1395,9 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDnsThreatDetector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateDnsThreatDetector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_dns_threat_detector(
@@ -1413,7 +1407,9 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteDnsThreatDetector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteDnsThreatDetector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_dns_threat_detector(
@@ -1435,7 +1431,9 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDnsThreatDetectors(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDnsThreatDetectors(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_dns_threat_detector(
@@ -1446,7 +1444,9 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDnsThreatDetector(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateDnsThreatDetector(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -1506,9 +1506,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1647,9 +1645,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -1790,9 +1786,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -1934,9 +1928,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -2083,9 +2075,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -2231,9 +2221,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2353,9 +2341,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2473,9 +2459,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2616,9 +2600,7 @@ class DnsThreatDetectorServiceRestTransport(_BaseDnsThreatDetectorServiceRestTra
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDnsThreatDetectorServiceRestTransport._BaseListOperations._get_transcoded_request(

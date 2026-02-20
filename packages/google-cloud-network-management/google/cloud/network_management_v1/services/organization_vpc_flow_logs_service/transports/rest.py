@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -818,9 +820,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseCreateVpcFlowLogsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_vpc_flow_logs_config(
                 request, metadata
@@ -974,9 +974,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseDeleteVpcFlowLogsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_vpc_flow_logs_config(
                 request, metadata
@@ -1123,9 +1121,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetVpcFlowLogsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vpc_flow_logs_config(
                 request, metadata
@@ -1275,9 +1271,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                         Response for the ``ListVpcFlowLogsConfigs`` method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListVpcFlowLogsConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_vpc_flow_logs_configs(
                 request, metadata
@@ -1431,9 +1425,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseUpdateVpcFlowLogsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_vpc_flow_logs_config(
                 request, metadata
@@ -1534,7 +1526,9 @@ class OrganizationVpcFlowLogsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateVpcFlowLogsConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateVpcFlowLogsConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_vpc_flow_logs_config(
@@ -1544,7 +1538,9 @@ class OrganizationVpcFlowLogsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteVpcFlowLogsConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteVpcFlowLogsConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_vpc_flow_logs_config(
@@ -1566,7 +1562,9 @@ class OrganizationVpcFlowLogsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListVpcFlowLogsConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListVpcFlowLogsConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_vpc_flow_logs_config(
@@ -1576,7 +1574,9 @@ class OrganizationVpcFlowLogsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateVpcFlowLogsConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateVpcFlowLogsConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -1636,9 +1636,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1779,9 +1777,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -1920,9 +1916,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2064,9 +2058,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -2215,9 +2207,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -2361,9 +2351,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2481,9 +2469,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2599,9 +2585,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2742,9 +2726,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseOrganizationVpcFlowLogsServiceRestTransport._BaseListOperations._get_transcoded_request(
