@@ -22,8 +22,8 @@ from typing import List
 
 import nox
 
-DEFAULT_PYTHON_VERSION = "3.13"
-INTEGRATION_TEST_PYTHON_VERSIONS: List[str] = [
+DEFAULT_PYTHON_VERSION = "3.11"
+TEST_PYTHON_VERSIONS: List[str] = [
     "3.10",
     "3.11",
     "3.12",
@@ -31,7 +31,7 @@ INTEGRATION_TEST_PYTHON_VERSIONS: List[str] = [
     "3.14",
 ]
 
-VERBOSE = True
+VERBOSE = False
 MODE = "--verbose" if VERBOSE else "--quiet"
 
 DIST_DIR = "dist"
@@ -46,11 +46,18 @@ SKIP_PATHS = ["spannermockserver/generated"]
 
 STANDARD_DEPENDENCIES = []
 
+UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "mock",
+]
+
 INTEGRATION_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
 ]
 
-nox.options.sessions = ["format", "lint", "integration"]
+nox.options.sessions = ["format", "lint", "unit", "integration"]
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -96,9 +103,36 @@ def lint(session):
     )
 
 
-@nox.session(python=INTEGRATION_TEST_PYTHON_VERSIONS)
+@nox.session(python=TEST_PYTHON_VERSIONS)
+def unit(session):
+    """Run unit tests."""
+    session.install(*STANDARD_DEPENDENCIES, *UNIT_TEST_STANDARD_DEPENDENCIES)
+    session.install(".")
+
+    test_paths = (
+        session.posargs if session.posargs else [os.path.join("tests", "unit")]
+    )
+
+    if not os.path.exists(test_paths[0]):
+        session.skip(f"No unit tests found in {test_paths[0]}")
+
+    session.run(
+        "py.test",
+        MODE,
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=spannermockserver",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        *test_paths,
+        env={},
+    )
+
+
+@nox.session(python=TEST_PYTHON_VERSIONS)
 def integration(session):
-    """Run integration tests."""
+    """Run system tests."""
     session.install(
         *STANDARD_DEPENDENCIES, *INTEGRATION_TEST_STANDARD_DEPENDENCIES
     )
@@ -109,6 +143,10 @@ def integration(session):
         if session.posargs
         else [os.path.join("tests", "integration")]
     )
+
+    if not os.path.exists(test_paths[0]):
+        session.skip(f"No integration tests found in {test_paths[0]}")
+
     session.run(
         "py.test",
         MODE,
