@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
 
 class OperatingSystemType(proto.Enum):
     r"""The operating system options for account entries."""
+
     OPERATING_SYSTEM_TYPE_UNSPECIFIED = 0
     LINUX = 1
     WINDOWS = 2
