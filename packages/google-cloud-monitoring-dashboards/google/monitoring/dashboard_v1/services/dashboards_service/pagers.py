@@ -44,7 +44,7 @@ class ListDashboardsPager:
         request: dashboards_service.ListDashboardsRequest,
         response: dashboards_service.ListDashboardsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 
@@ -106,7 +106,7 @@ class ListDashboardsAsyncPager:
         request: dashboards_service.ListDashboardsRequest,
         response: dashboards_service.ListDashboardsResponse,
         *,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, str]] = (),
     ):
         """Instantiate the pager.
 

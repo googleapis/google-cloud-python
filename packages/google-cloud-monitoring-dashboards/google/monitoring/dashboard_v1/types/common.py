@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-from google.protobuf import duration_pb2 as duration  # type: ignore
 import proto  # type: ignore
+from google.protobuf import duration_pb2 as duration  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.dashboard.v1",
@@ -142,6 +142,7 @@ class Aggregation(proto.Message):
         the data ``value_type`` in the original time series is ``BOOLEAN``,
         but the ``value_type`` in the aligned result is ``INT64``.
         """
+
         ALIGN_NONE = 0
         ALIGN_DELTA = 1
         ALIGN_RATE = 2
@@ -168,6 +169,7 @@ class Aggregation(proto.Message):
         value of each data point in the resulting series is a function
         of all the already aligned values in the input time series.
         """
+
         REDUCE_NONE = 0
         REDUCE_MEAN = 1
         REDUCE_MIN = 2
@@ -232,6 +234,7 @@ class PickTimeSeriesFilter(proto.Message):
         r"""The value reducers that can be applied to a
         ``PickTimeSeriesFilter``.
         """
+
         METHOD_UNSPECIFIED = 0
         METHOD_MEAN = 1
         METHOD_MAX = 2
@@ -241,6 +244,7 @@ class PickTimeSeriesFilter(proto.Message):
 
     class Direction(proto.Enum):
         r"""Describes the ranking directions."""
+
         DIRECTION_UNSPECIFIED = 0
         TOP = 1
         BOTTOM = 2
@@ -280,6 +284,7 @@ class StatisticalTimeSeriesFilter(proto.Message):
 
     class Method(proto.Enum):
         r"""The filter methods that can be applied to a stream."""
+
         METHOD_UNSPECIFIED = 0
         METHOD_CLUSTER_OUTLIER = 1
 

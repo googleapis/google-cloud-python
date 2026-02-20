@@ -15,13 +15,15 @@
 # limitations under the License.
 #
 
-from collections import OrderedDict
 import functools
 import re
+from collections import OrderedDict
 from typing import Dict, Optional, Sequence, Tuple, Type, Union
 
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import (
+    exceptions,  # type: ignore
+    gapic_v1,  # type: ignore
+)
 from google.api_core import retry as retries  # type: ignore
 from google.api_core.client_options import ClientOptions  # type: ignore
 from google.auth import credentials  # type: ignore
@@ -34,7 +36,6 @@ from google.monitoring.dashboard_v1.types import dashboard, dashboards_service, 
 from .client import DashboardsServiceClient
 from .transports.base import DashboardsServiceTransport
 from .transports.grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
-
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
