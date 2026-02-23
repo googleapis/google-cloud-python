@@ -23,6 +23,7 @@ import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
 import pandas as pd
 
 import bigframes.core.blocks
+import bigframes.core.col
 import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
@@ -36,7 +37,11 @@ import bigframes.series
 
 if typing.TYPE_CHECKING:
     LocSingleKey = Union[
-        bigframes.series.Series, indexes.Index, slice, bigframes.core.scalar.Scalar
+        bigframes.series.Series,
+        indexes.Index,
+        slice,
+        bigframes.core.scalar.Scalar,
+        bigframes.core.col.Expression,
     ]
 
 
@@ -309,6 +314,15 @@ def _loc_getitem_series_or_dataframe(
         raise NotImplementedError(
             f"loc does not yet support indexing with a slice. {constants.FEEDBACK_LINK}"
         )
+    if isinstance(key, bigframes.core.col.Expression):
+        label_to_col_ref = {
+            label: ex.deref(id)
+            for id, label in series_or_dataframe._block.col_id_to_label.items()
+        }
+        resolved_expr = key._value.bind_variables(label_to_col_ref)
+        result = series_or_dataframe.copy()
+        result._set_block(series_or_dataframe._block.filter(resolved_expr))
+        return result
     if callable(key):
         raise NotImplementedError(
             f"loc does not yet support indexing with a callable. {constants.FEEDBACK_LINK}"

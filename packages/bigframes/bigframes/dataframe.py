@@ -623,12 +623,17 @@ class DataFrame:
     ):  # No return type annotations (like pandas) as type cannot always be determined statically
         # NOTE: This implements the operations described in
         # https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html
+        import bigframes.core.col
+        import bigframes.pandas
 
-        if isinstance(key, bigframes.series.Series):
+        if isinstance(key, bigframes.pandas.Series):
             return self._getitem_bool_series(key)
 
         if isinstance(key, slice):
             return self.iloc[key]
+
+        if isinstance(key, bigframes.core.col.Expression):
+            return self.loc[key]
 
         # TODO(tswast): Fix this pylance warning: Class overlaps "Hashable"
         # unsafely and could produce a match at runtime

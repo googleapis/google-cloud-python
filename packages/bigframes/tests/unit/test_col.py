@@ -158,3 +158,21 @@ def test_pd_col_binary_bool_operators(scalars_dfs, op):
     pd_result = scalars_pandas_df.assign(**pd_kwargs)
 
     assert_frame_equal(bf_result, pd_result)
+
+
+def test_loc_with_pd_col(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.loc[bpd.col("float64_col") > 4].to_pandas()
+    pd_result = scalars_pandas_df.loc[pd.col("float64_col") > 4]  # type: ignore
+
+    assert_frame_equal(bf_result, pd_result)
+
+
+def test_getitem_with_pd_col(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df[bpd.col("float64_col") > 4].to_pandas()
+    pd_result = scalars_pandas_df[pd.col("float64_col") > 4]  # type: ignore
+
+    assert_frame_equal(bf_result, pd_result)

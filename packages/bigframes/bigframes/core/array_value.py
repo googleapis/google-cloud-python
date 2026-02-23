@@ -204,7 +204,12 @@ class ArrayValue:
         return self.filter(predicate)
 
     def filter(self, predicate: ex.Expression):
-        return ArrayValue(nodes.FilterNode(child=self.node, predicate=predicate))
+        if predicate.is_scalar_expr:
+            return ArrayValue(nodes.FilterNode(child=self.node, predicate=predicate))
+        else:
+            arr, filter_ids = self.compute_general_expression([predicate])
+            arr = arr.filter_by_id(filter_ids[0])
+            return arr.drop_columns(filter_ids)
 
     def order_by(
         self, by: Sequence[OrderingExpression], is_total_order: bool = False
