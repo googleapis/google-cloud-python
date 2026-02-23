@@ -11,7 +11,7 @@
     "api_id": "pubsub.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-pubsub",
+    "codeowner_team": "@googleapis/cloud-sdk-python-team @googleapis/pubsub-team",
     "api_shortname": "pubsub",
     "library_type": "GAPIC_COMBO",
     "api_description": "is designed to provide reliable, many-to-many, asynchronous messaging between applications. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications."
