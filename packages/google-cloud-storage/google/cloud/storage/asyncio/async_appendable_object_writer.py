@@ -310,7 +310,7 @@ class AsyncAppendableObjectWriter:
                 )
 
             await self.write_obj_stream.open(
-                metadata=current_metadata if metadata else None
+                metadata=current_metadata if current_metadata else None
             )
 
             if self.write_obj_stream.generation_number:
