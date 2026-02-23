@@ -1018,7 +1018,7 @@ def _convert_series(
 
 def _resolve_connection_id(series: series.Series, connection_id: str | None):
     return clients.get_canonical_bq_connection_id(
-        connection_id or series._session._bq_connection,
+        connection_id or series._session.bq_connection,
         series._session._project,
         series._session._location,
     )

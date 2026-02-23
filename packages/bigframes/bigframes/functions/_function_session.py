@@ -162,7 +162,7 @@ class FunctionSession:
     ) -> str:
         """Resolves BigQuery connection id."""
         if not bigquery_connection:
-            bigquery_connection = session._bq_connection  # type: ignore
+            bigquery_connection = session.bq_connection  # type: ignore
 
         bigquery_connection = clients.get_canonical_bq_connection_id(
             bigquery_connection,

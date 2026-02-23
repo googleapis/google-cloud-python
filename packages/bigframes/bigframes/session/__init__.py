@@ -374,6 +374,16 @@ class Session(
     def _anonymous_dataset(self):
         return self._anon_dataset_manager.dataset
 
+    @property
+    def bq_connection(self) -> str:
+        msg = bfe.format_message(
+            f"""You are using the BigFrames session default connection: {self._bq_connection},
+            which can be different from the BigQuery project default connection.
+            This default connection may change in the future."""
+        )
+        warnings.warn(msg, category=FutureWarning)
+        return self._bq_connection
+
     def __hash__(self):
         # Stable hash needed to use in expression tree
         return hash(str(self._session_id))
@@ -2253,7 +2263,7 @@ class Session(
     ) -> str:
         """Create the connection with the session settings and try to attach iam role to the connection SA.
         If any of project, location or connection isn't specified, use the session defaults. Returns fully-qualified connection name."""
-        connection = self._bq_connection if not connection else connection
+        connection = self.bq_connection if not connection else connection
         connection = bigframes.clients.get_canonical_bq_connection_id(
             connection_id=connection,
             default_project=self._project,
