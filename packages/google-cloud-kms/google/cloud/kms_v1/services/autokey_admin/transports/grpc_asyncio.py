@@ -17,23 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.kms_v1.types import autokey_admin
 
@@ -122,13 +124,15 @@ class AutokeyAdminGrpcAsyncIOTransport(AutokeyAdminTransport):
 
     Provides interfaces for managing `Cloud KMS
     Autokey <https://cloud.google.com/kms/help/autokey>`__ folder-level
-    configurations. A configuration is inherited by all descendent
-    projects. A configuration at one folder overrides any other
-    configurations in its ancestry. Setting a configuration on a folder
-    is a prerequisite for Cloud KMS Autokey, so that users working in a
-    descendant project can request provisioned
-    [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer
-    Managed Encryption Key (CMEK) use, on-demand.
+    or project-level configurations. A configuration is inherited by all
+    descendent folders and projects. A configuration at a folder or
+    project overrides any other configurations in its ancestry. Setting
+    a configuration on a folder is a prerequisite for Cloud KMS Autokey,
+    so that users working in a descendant project can request
+    provisioned [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for
+    Customer Managed Encryption Key (CMEK) use, on-demand when using the
+    dedicated key project mode. This is not required when using the
+    delegated key management mode for same-project keys.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -351,7 +355,7 @@ class AutokeyAdminGrpcAsyncIOTransport(AutokeyAdminTransport):
         r"""Return a callable for the update autokey config method over gRPC.
 
         Updates the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-        for a folder. The caller must have both
+        for a folder or a project. The caller must have both
         ``cloudkms.autokeyConfigs.update`` permission on the parent
         folder and ``cloudkms.cryptoKeys.setIamPolicy`` permission on
         the provided key project. A
@@ -387,7 +391,7 @@ class AutokeyAdminGrpcAsyncIOTransport(AutokeyAdminTransport):
         r"""Return a callable for the get autokey config method over gRPC.
 
         Returns the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-        for a folder.
+        for a folder or project.
 
         Returns:
             Callable[[~.GetAutokeyConfigRequest],
@@ -430,12 +434,12 @@ class AutokeyAdminGrpcAsyncIOTransport(AutokeyAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "show_effective_autokey_config" not in self._stubs:
-            self._stubs[
-                "show_effective_autokey_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.v1.AutokeyAdmin/ShowEffectiveAutokeyConfig",
-                request_serializer=autokey_admin.ShowEffectiveAutokeyConfigRequest.serialize,
-                response_deserializer=autokey_admin.ShowEffectiveAutokeyConfigResponse.deserialize,
+            self._stubs["show_effective_autokey_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.v1.AutokeyAdmin/ShowEffectiveAutokeyConfig",
+                    request_serializer=autokey_admin.ShowEffectiveAutokeyConfigRequest.serialize,
+                    response_deserializer=autokey_admin.ShowEffectiveAutokeyConfigResponse.deserialize,
+                )
             )
         return self._stubs["show_effective_autokey_config"]
 

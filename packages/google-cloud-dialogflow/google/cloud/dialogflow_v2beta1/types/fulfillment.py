@@ -140,6 +140,7 @@ class Fulfillment(proto.Message):
                 SMALLTALK (1):
                     Fulfillment is enabled for SmallTalk.
             """
+
             TYPE_UNSPECIFIED = 0
             SMALLTALK = 1
 

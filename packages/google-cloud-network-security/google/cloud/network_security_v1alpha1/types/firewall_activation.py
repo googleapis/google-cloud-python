@@ -111,6 +111,7 @@ class FirewallEndpoint(proto.Message):
             INACTIVE (4):
                 Down or in an error state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -501,6 +502,7 @@ class FirewallEndpointAssociation(proto.Message):
                 The project that housed the association has
                 been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -614,12 +616,12 @@ class ListFirewallEndpointAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    firewall_endpoint_associations: MutableSequence[
-        "FirewallEndpointAssociation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="FirewallEndpointAssociation",
+    firewall_endpoint_associations: MutableSequence["FirewallEndpointAssociation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="FirewallEndpointAssociation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

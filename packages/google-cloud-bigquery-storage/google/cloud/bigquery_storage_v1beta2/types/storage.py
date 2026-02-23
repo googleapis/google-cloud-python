@@ -668,6 +668,7 @@ class StorageError(proto.Message):
             STREAM_FINALIZED (6):
                 Stream is finalized.
         """
+
         STORAGE_ERROR_CODE_UNSPECIFIED = 0
         TABLE_NOT_FOUND = 1
         STREAM_ALREADY_COMMITTED = 2

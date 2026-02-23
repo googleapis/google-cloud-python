@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.configmanagement.v1",
@@ -68,6 +68,7 @@ class DeploymentState(proto.Enum):
         PENDING (4):
             Deployment is installing or terminating
     """
+
     DEPLOYMENT_STATE_UNSPECIFIED = 0
     NOT_INSTALLED = 1
     INSTALLED = 2
@@ -174,6 +175,7 @@ class MembershipSpec(proto.Message):
                 User will manually manage the Feature for the
                 cluster.
         """
+
         MANAGEMENT_UNSPECIFIED = 0
         MANAGEMENT_AUTOMATIC = 1
         MANAGEMENT_MANUAL = 2
@@ -629,6 +631,7 @@ class ConfigSyncState(proto.Message):
             INSTALLING (4):
                 CRD is installing
         """
+
         CRD_STATE_UNSPECIFIED = 0
         NOT_INSTALLED = 1
         INSTALLED = 2
@@ -651,6 +654,7 @@ class ConfigSyncState(proto.Message):
             CONFIG_SYNC_PENDING (4):
                 CS is installing or terminating.
         """
+
         STATE_UNSPECIFIED = 0
         CONFIG_SYNC_NOT_INSTALLED = 1
         CONFIG_SYNC_INSTALLED = 2
@@ -872,6 +876,7 @@ class SyncState(proto.Message):
             UNREACHABLE (7):
                 Cluster could not be reached
         """
+
         SYNC_CODE_UNSPECIFIED = 0
         SYNCED = 1
         PENDING = 2

@@ -295,6 +295,7 @@ class ActiveDirectory(proto.Message):
             DIAGNOSING (7):
                 Active Directory State is Diagnosing.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

@@ -327,6 +327,7 @@ class ImportProductsRequest(proto.Message):
                 deleted if they are not present in the source
                 location.
         """
+
         RECONCILIATION_MODE_UNSPECIFIED = 0
         INCREMENTAL = 1
         FULL = 2

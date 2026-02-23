@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,31 +31,30 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.netapp_v1.types import (
+    active_directory,
+    backup,
+    backup_policy,
+    backup_vault,
+    host_group,
+    kms,
+    quota_rule,
+    replication,
+    snapshot,
+    storage_pool,
+    volume,
+)
 from google.cloud.netapp_v1.types import active_directory as gcn_active_directory
-from google.cloud.netapp_v1.types import active_directory
-from google.cloud.netapp_v1.types import backup
 from google.cloud.netapp_v1.types import backup as gcn_backup
-from google.cloud.netapp_v1.types import backup_policy
 from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
-from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
-from google.cloud.netapp_v1.types import host_group
 from google.cloud.netapp_v1.types import host_group as gcn_host_group
-from google.cloud.netapp_v1.types import kms
-from google.cloud.netapp_v1.types import quota_rule
 from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
-from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
-from google.cloud.netapp_v1.types import snapshot
 from google.cloud.netapp_v1.types import snapshot as gcn_snapshot
-from google.cloud.netapp_v1.types import storage_pool
 from google.cloud.netapp_v1.types import storage_pool as gcn_storage_pool
-from google.cloud.netapp_v1.types import volume
 from google.cloud.netapp_v1.types import volume as gcn_volume
 
 from .base import DEFAULT_CLIENT_INFO, NetAppTransport
@@ -537,12 +539,12 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_directory_service" not in self._stubs:
-            self._stubs[
-                "validate_directory_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.netapp.v1.NetApp/ValidateDirectoryService",
-                request_serializer=storage_pool.ValidateDirectoryServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["validate_directory_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.netapp.v1.NetApp/ValidateDirectoryService",
+                    request_serializer=storage_pool.ValidateDirectoryServiceRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["validate_directory_service"]
 
@@ -569,12 +571,12 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "switch_active_replica_zone" not in self._stubs:
-            self._stubs[
-                "switch_active_replica_zone"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.netapp.v1.NetApp/SwitchActiveReplicaZone",
-                request_serializer=storage_pool.SwitchActiveReplicaZoneRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["switch_active_replica_zone"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.netapp.v1.NetApp/SwitchActiveReplicaZone",
+                    request_serializer=storage_pool.SwitchActiveReplicaZoneRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["switch_active_replica_zone"]
 
@@ -1431,12 +1433,12 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reverse_replication_direction" not in self._stubs:
-            self._stubs[
-                "reverse_replication_direction"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.netapp.v1.NetApp/ReverseReplicationDirection",
-                request_serializer=replication.ReverseReplicationDirectionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["reverse_replication_direction"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.netapp.v1.NetApp/ReverseReplicationDirection",
+                    request_serializer=replication.ReverseReplicationDirectionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["reverse_replication_direction"]
 

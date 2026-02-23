@@ -25,13 +25,11 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AggregateProductStatusesServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AggregateProductStatusesServiceTransport]]
 _transport_registry["grpc"] = AggregateProductStatusesServiceGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = AggregateProductStatusesServiceGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = (
+    AggregateProductStatusesServiceGrpcAsyncIOTransport
+)
 _transport_registry["rest"] = AggregateProductStatusesServiceRestTransport
 
 __all__ = (

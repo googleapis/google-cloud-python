@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.iam_v2beta import gapic_version as package_version
 
@@ -46,8 +46,8 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.iam_v2beta.services.policies import pagers
 from google.cloud.iam_v2beta.types import policy
@@ -111,7 +111,10 @@ class PoliciesAsyncClient:
         Returns:
             PoliciesAsyncClient: The constructed client.
         """
-        return PoliciesClient.from_service_account_info.__func__(PoliciesAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            PoliciesClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(PoliciesAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -127,7 +130,10 @@ class PoliciesAsyncClient:
         Returns:
             PoliciesAsyncClient: The constructed client.
         """
-        return PoliciesClient.from_service_account_file.__func__(PoliciesAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            PoliciesClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(PoliciesAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

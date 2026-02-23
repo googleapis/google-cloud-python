@@ -54,6 +54,7 @@ class VersionView(proto.Enum):
         FULL (2):
             Include everything.
     """
+
     VERSION_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2

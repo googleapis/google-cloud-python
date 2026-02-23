@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -952,9 +954,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_scan(
                 request, metadata
@@ -1104,9 +1104,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_scan(
                 request, metadata
@@ -1254,9 +1252,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_data_quality_rules(
                 request, metadata
@@ -1579,9 +1575,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_scan_job(
                 request, metadata
@@ -1725,9 +1719,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     List DataScanJobs response.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_scan_jobs(
                 request, metadata
@@ -2171,9 +2163,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_scan(
                 request, metadata
@@ -2291,7 +2281,9 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateDataQualityRules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateDataQualityRules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_data_scan(
@@ -2678,9 +2670,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2797,9 +2787,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3054,9 +3042,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDataScanServiceRestTransport._BaseListOperations._get_transcoded_request(

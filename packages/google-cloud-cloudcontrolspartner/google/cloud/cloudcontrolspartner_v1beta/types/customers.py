@@ -248,6 +248,7 @@ class CustomerOnboardingStep(proto.Message):
             CUSTOMER_ENVIRONMENT (2):
                 Customer Environment
         """
+
         STEP_UNSPECIFIED = 0
         KAJ_ENROLLMENT = 1
         CUSTOMER_ENVIRONMENT = 2

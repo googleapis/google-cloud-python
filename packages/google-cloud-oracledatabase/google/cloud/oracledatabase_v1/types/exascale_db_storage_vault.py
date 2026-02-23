@@ -167,6 +167,7 @@ class ExascaleDbStorageVaultProperties(proto.Message):
             FAILED (6):
                 The ExascaleDbStorageVault has failed.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -189,6 +190,7 @@ class ExascaleDbStorageVaultProperties(proto.Message):
                 Indicates that the resource is in block
                 storage.
         """
+
         SHAPE_ATTRIBUTE_UNSPECIFIED = 0
         SMART_STORAGE = 1
         BLOCK_STORAGE = 2
@@ -350,12 +352,12 @@ class ListExascaleDbStorageVaultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exascale_db_storage_vaults: MutableSequence[
-        "ExascaleDbStorageVault"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ExascaleDbStorageVault",
+    exascale_db_storage_vaults: MutableSequence["ExascaleDbStorageVault"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ExascaleDbStorageVault",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

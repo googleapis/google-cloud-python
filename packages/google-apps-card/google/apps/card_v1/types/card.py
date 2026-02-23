@@ -270,6 +270,7 @@ class Card(proto.Message):
                 The result is equivalent to not adding a divider
                 at all.
         """
+
         DIVIDER_STYLE_UNSPECIFIED = 0
         SOLID_DIVIDER = 1
         NO_DIVIDER = 2
@@ -293,6 +294,7 @@ class Card(proto.Message):
                 Default value. The card is shown by replacing
                 the view of the top card in the card stack.
         """
+
         DISPLAY_STYLE_UNSPECIFIED = 0
         PEEK = 1
         REPLACE = 2
@@ -942,6 +944,7 @@ class Widget(proto.Message):
                 example, a 4x3 image becomes a circle with a
                 diameter of 3.
         """
+
         SQUARE = 0
         CIRCLE = 1
 
@@ -967,6 +970,7 @@ class Widget(proto.Message):
                 widgets to the right. For right-to-left layouts,
                 aligns widgets to the left.
         """
+
         HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
         START = 1
         CENTER = 2
@@ -985,6 +989,7 @@ class Widget(proto.Message):
             BOTTOM (3):
                 Alignment to the bottom position.
         """
+
         VERTICAL_ALIGNMENT_UNSPECIFIED = 0
         TOP = 1
         MIDDLE = 2
@@ -1117,6 +1122,7 @@ class TextParagraph(proto.Message):
             MARKDOWN (2):
                 The text is rendered as Markdown.
         """
+
         TEXT_SYNTAX_UNSPECIFIED = 0
         HTML = 1
         MARKDOWN = 2
@@ -1335,6 +1341,7 @@ class DecoratedText(proto.Message):
                 CHECK_BOX (2):
                     A checkbox.
             """
+
             SWITCH = 0
             CHECKBOX = 1
             CHECK_BOX = 2
@@ -1564,6 +1571,7 @@ class TextInput(proto.Message):
                 The text input field has a fixed height of
                 multiple lines.
         """
+
         SINGLE_LINE = 0
         MULTIPLE_LINE = 1
 
@@ -1859,6 +1867,7 @@ class SelectionInput(proto.Message):
                 `Google Workspace add-ons and Chat
                 apps <https://developers.google.com/workspace/extend>`__:
         """
+
         CHECK_BOX = 0
         RADIO_BUTTON = 1
         SWITCH = 2
@@ -1954,6 +1963,7 @@ class SelectionInput(proto.Message):
                     view and select users from their Google
                     Workspace organization.
             """
+
             UNKNOWN = 0
             USER = 1
 
@@ -2091,6 +2101,7 @@ class DateTimePicker(proto.Message):
             TIME_ONLY (2):
                 Users input a time.
         """
+
         DATE_AND_TIME = 0
         DATE_ONLY = 1
         TIME_ONLY = 2
@@ -2288,6 +2299,7 @@ class Button(proto.Message):
                 lowest priority actions, especially when
                 presenting multiple options.
         """
+
         TYPE_UNSPECIFIED = 0
         OUTLINED = 1
         FILLED = 2
@@ -2559,6 +2571,7 @@ class ImageCropStyle(proto.Message):
                 Applies a rectangular crop with a 4:3 aspect
                 ratio.
         """
+
         IMAGE_CROP_TYPE_UNSPECIFIED = 0
         SQUARE = 1
         CIRCLE = 2
@@ -2626,6 +2639,7 @@ class BorderStyle(proto.Message):
             STROKE (2):
                 Default value. Outline.
         """
+
         BORDER_TYPE_UNSPECIFIED = 0
         NO_BORDER = 1
         STROKE = 2
@@ -2790,6 +2804,7 @@ class Grid(proto.Message):
                     The title and subtitle are shown above the
                     grid item's image.
             """
+
             GRID_ITEM_LAYOUT_UNSPECIFIED = 0
             TEXT_BELOW = 1
             TEXT_ABOVE = 2
@@ -2927,6 +2942,7 @@ class Columns(proto.Message):
                     possible and no more than 30% of the card's
                     width.
             """
+
             HORIZONTAL_SIZE_STYLE_UNSPECIFIED = 0
             FILL_AVAILABLE_SPACE = 1
             FILL_MINIMUM_SPACE = 2
@@ -2949,6 +2965,7 @@ class Columns(proto.Message):
                 BOTTOM (3):
                     Aligns widgets to the bottom of a column.
             """
+
             VERTICAL_ALIGNMENT_UNSPECIFIED = 0
             CENTER = 1
             TOP = 2
@@ -3321,6 +3338,7 @@ class OpenLink(proto.Message):
                 The link opens as an overlay, such as a
                 pop-up.
         """
+
         FULL_SIZE = 0
         OVERLAY = 1
 
@@ -3350,6 +3368,7 @@ class OpenLink(proto.Message):
                 the child window acts as a modal dialog and the parent card
                 is blocked until the child window closes.
         """
+
         NOTHING = 0
         RELOAD = 1
 
@@ -3464,6 +3483,7 @@ class Action(proto.Message):
             NONE (1):
                 Nothing is displayed.
         """
+
         SPINNER = 0
         NONE = 1
 
@@ -3504,6 +3524,7 @@ class Action(proto.Message):
                 `Google Chat
                 apps <https://developers.google.com/workspace/chat>`__:
         """
+
         INTERACTION_UNSPECIFIED = 0
         OPEN_DIALOG = 1
 
@@ -3610,6 +3631,7 @@ class Validation(proto.Message):
                 A emoji selected from system-provided emoji
                 picker.
         """
+
         INPUT_TYPE_UNSPECIFIED = 0
         TEXT = 1
         INTEGER = 2
@@ -3656,6 +3678,7 @@ class ChipList(proto.Message):
                 The chips scroll horizontally if they don't
                 fit in the available space.
         """
+
         LAYOUT_UNSPECIFIED = 0
         WRAPPED = 1
         HORIZONTAL_SCROLLABLE = 2

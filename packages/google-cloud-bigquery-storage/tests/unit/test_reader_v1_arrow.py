@@ -370,3 +370,35 @@ def test_to_dataframe_by_page_arrow(class_under_test, mock_gapic_client):
             drop=True
         ),
     )
+
+
+def test_to_dataframe_mid_stream_failure(mut, class_under_test, mock_gapic_client):
+    """
+    Verify RuntimeError is raised if stream changes from Arrow to Avro mid-stream.
+    This state is not expected in live environment.
+    """
+    if pandas is None or pyarrow is None:
+        pytest.skip("Requires pandas and pyarrow")
+
+    # Mock the first page to be a valid Arrow page.
+    arrow_page = mock.Mock(spec=mut.ReadRowsPage)
+    arrow_page.to_arrow.return_value = pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([1])], names=["col"]
+    )
+
+    # Mock the second page to raise NotImplementedError (simulating Avro/unknown).
+    avro_page = mock.Mock(spec=mut.ReadRowsPage)
+    avro_page.to_arrow.side_effect = NotImplementedError("Not Arrow")
+
+    # Setup the reader to yield these two pages.
+    reader = class_under_test(mock_gapic_client, "name", 0, {})
+
+    with mock.patch.object(
+        mut.ReadRowsIterable, "pages", new_callable=mock.PropertyMock
+    ) as mock_pages:
+        mock_pages.return_value = iter([arrow_page, avro_page])
+
+        it = reader.rows()
+
+        with pytest.raises(RuntimeError, match="Stream format changed mid-stream"):
+            it.to_dataframe()

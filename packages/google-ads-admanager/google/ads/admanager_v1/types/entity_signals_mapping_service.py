@@ -233,12 +233,12 @@ class BatchCreateEntitySignalsMappingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "CreateEntitySignalsMappingRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="CreateEntitySignalsMappingRequest",
+    requests: MutableSequence["CreateEntitySignalsMappingRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="CreateEntitySignalsMappingRequest",
+        )
     )
 
 
@@ -277,12 +277,12 @@ class BatchUpdateEntitySignalsMappingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "UpdateEntitySignalsMappingRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="UpdateEntitySignalsMappingRequest",
+    requests: MutableSequence["UpdateEntitySignalsMappingRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="UpdateEntitySignalsMappingRequest",
+        )
     )
 
 

@@ -17,25 +17,27 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import datacatalog, tags
 
@@ -1082,12 +1084,12 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_tag_template_field_enum_value" not in self._stubs:
-            self._stubs[
-                "rename_tag_template_field_enum_value"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.datacatalog.v1.DataCatalog/RenameTagTemplateFieldEnumValue",
-                request_serializer=datacatalog.RenameTagTemplateFieldEnumValueRequest.serialize,
-                response_deserializer=tags.TagTemplateField.deserialize,
+            self._stubs["rename_tag_template_field_enum_value"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.datacatalog.v1.DataCatalog/RenameTagTemplateFieldEnumValue",
+                    request_serializer=datacatalog.RenameTagTemplateFieldEnumValueRequest.serialize,
+                    response_deserializer=tags.TagTemplateField.deserialize,
+                )
             )
         return self._stubs["rename_tag_template_field_enum_value"]
 

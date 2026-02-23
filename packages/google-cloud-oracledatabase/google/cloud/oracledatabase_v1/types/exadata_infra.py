@@ -225,6 +225,7 @@ class CloudExadataInfrastructureProperties(proto.Message):
             MAINTENANCE_IN_PROGRESS (7):
                 The Exadata Infrastructure is in maintenance.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -426,6 +427,7 @@ class MaintenanceWindow(proto.Message):
             NO_PREFERENCE (2):
                 No preference.
         """
+
         MAINTENANCE_WINDOW_PREFERENCE_UNSPECIFIED = 0
         CUSTOM_PREFERENCE = 1
         NO_PREFERENCE = 2
@@ -444,6 +446,7 @@ class MaintenanceWindow(proto.Message):
                 updates your storage servers at the same time,
                 then your database servers at the same time.
         """
+
         PATCHING_MODE_UNSPECIFIED = 0
         ROLLING = 1
         NON_ROLLING = 2

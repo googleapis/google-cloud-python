@@ -82,6 +82,7 @@ class Allocation(proto.Message):
             UPDATING (5):
                 Reservation is currently being resized.
         """
+
         STATUS_UNSPECIFIED = 0
         INVALID = 1
         CREATING = 2
@@ -176,6 +177,7 @@ class Allocation(proto.Message):
                         ISCSI (4):
                             ISCSI disk interface.
                     """
+
                     DISK_INTERFACE_UNSPECIFIED = 0
                     SCSI = 1
                     NVME = 2
@@ -264,6 +266,7 @@ class Allocation(proto.Message):
                     Shared-reservation is open to direct child
                     projects of specific folders.
             """
+
             SHARE_TYPE_UNSPECIFIED = 0
             ORGANIZATION = 1
             SPECIFIC_PROJECTS = 2

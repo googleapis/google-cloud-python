@@ -101,6 +101,7 @@ class TextAnnotation(proto.Message):
                 LINE_BREAK (5):
                     Line break that ends a paragraph.
             """
+
             UNKNOWN = 0
             SPACE = 1
             SURE_SPACE = 2
@@ -129,12 +130,12 @@ class TextAnnotation(proto.Message):
                 Detected start or end of a text segment.
         """
 
-        detected_languages: MutableSequence[
-            "TextAnnotation.DetectedLanguage"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="TextAnnotation.DetectedLanguage",
+        detected_languages: MutableSequence["TextAnnotation.DetectedLanguage"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="TextAnnotation.DetectedLanguage",
+            )
         )
         detected_break: "TextAnnotation.DetectedBreak" = proto.Field(
             proto.MESSAGE,
@@ -255,6 +256,7 @@ class Block(proto.Message):
             BARCODE (5):
                 Barcode block.
         """
+
         UNKNOWN = 0
         TEXT = 1
         TABLE = 2

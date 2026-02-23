@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.channel_v1.types import (
     channel_partner_links,
@@ -497,12 +497,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "check_cloud_identity_accounts_exist" not in self._stubs:
-            self._stubs[
-                "check_cloud_identity_accounts_exist"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/CheckCloudIdentityAccountsExist",
-                request_serializer=service.CheckCloudIdentityAccountsExistRequest.serialize,
-                response_deserializer=service.CheckCloudIdentityAccountsExistResponse.deserialize,
+            self._stubs["check_cloud_identity_accounts_exist"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/CheckCloudIdentityAccountsExist",
+                    request_serializer=service.CheckCloudIdentityAccountsExistRequest.serialize,
+                    response_deserializer=service.CheckCloudIdentityAccountsExistResponse.deserialize,
+                )
             )
         return self._stubs["check_cloud_identity_accounts_exist"]
 
@@ -1484,12 +1484,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "transfer_entitlements_to_google" not in self._stubs:
-            self._stubs[
-                "transfer_entitlements_to_google"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/TransferEntitlementsToGoogle",
-                request_serializer=service.TransferEntitlementsToGoogleRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["transfer_entitlements_to_google"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/TransferEntitlementsToGoogle",
+                    request_serializer=service.TransferEntitlementsToGoogleRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["transfer_entitlements_to_google"]
 
@@ -1529,12 +1529,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_channel_partner_links" not in self._stubs:
-            self._stubs[
-                "list_channel_partner_links"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/ListChannelPartnerLinks",
-                request_serializer=service.ListChannelPartnerLinksRequest.serialize,
-                response_deserializer=service.ListChannelPartnerLinksResponse.deserialize,
+            self._stubs["list_channel_partner_links"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/ListChannelPartnerLinks",
+                    request_serializer=service.ListChannelPartnerLinksRequest.serialize,
+                    response_deserializer=service.ListChannelPartnerLinksResponse.deserialize,
+                )
             )
         return self._stubs["list_channel_partner_links"]
 
@@ -1628,12 +1628,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_channel_partner_link" not in self._stubs:
-            self._stubs[
-                "create_channel_partner_link"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/CreateChannelPartnerLink",
-                request_serializer=service.CreateChannelPartnerLinkRequest.serialize,
-                response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
+            self._stubs["create_channel_partner_link"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/CreateChannelPartnerLink",
+                    request_serializer=service.CreateChannelPartnerLinkRequest.serialize,
+                    response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
+                )
             )
         return self._stubs["create_channel_partner_link"]
 
@@ -1683,12 +1683,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_channel_partner_link" not in self._stubs:
-            self._stubs[
-                "update_channel_partner_link"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/UpdateChannelPartnerLink",
-                request_serializer=service.UpdateChannelPartnerLinkRequest.serialize,
-                response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
+            self._stubs["update_channel_partner_link"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/UpdateChannelPartnerLink",
+                    request_serializer=service.UpdateChannelPartnerLinkRequest.serialize,
+                    response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
+                )
             )
         return self._stubs["update_channel_partner_link"]
 
@@ -1729,12 +1729,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "get_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/GetCustomerRepricingConfig",
-                request_serializer=service.GetCustomerRepricingConfigRequest.serialize,
-                response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+            self._stubs["get_customer_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/GetCustomerRepricingConfig",
+                    request_serializer=service.GetCustomerRepricingConfigRequest.serialize,
+                    response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+                )
             )
         return self._stubs["get_customer_repricing_config"]
 
@@ -1785,12 +1785,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_customer_repricing_configs" not in self._stubs:
-            self._stubs[
-                "list_customer_repricing_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/ListCustomerRepricingConfigs",
-                request_serializer=service.ListCustomerRepricingConfigsRequest.serialize,
-                response_deserializer=service.ListCustomerRepricingConfigsResponse.deserialize,
+            self._stubs["list_customer_repricing_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/ListCustomerRepricingConfigs",
+                    request_serializer=service.ListCustomerRepricingConfigsRequest.serialize,
+                    response_deserializer=service.ListCustomerRepricingConfigsResponse.deserialize,
+                )
             )
         return self._stubs["list_customer_repricing_configs"]
 
@@ -1863,12 +1863,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "create_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/CreateCustomerRepricingConfig",
-                request_serializer=service.CreateCustomerRepricingConfigRequest.serialize,
-                response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+            self._stubs["create_customer_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/CreateCustomerRepricingConfig",
+                    request_serializer=service.CreateCustomerRepricingConfigRequest.serialize,
+                    response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+                )
             )
         return self._stubs["create_customer_repricing_config"]
 
@@ -1927,12 +1927,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "update_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/UpdateCustomerRepricingConfig",
-                request_serializer=service.UpdateCustomerRepricingConfigRequest.serialize,
-                response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+            self._stubs["update_customer_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/UpdateCustomerRepricingConfig",
+                    request_serializer=service.UpdateCustomerRepricingConfigRequest.serialize,
+                    response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+                )
             )
         return self._stubs["update_customer_repricing_config"]
 
@@ -1975,12 +1975,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "delete_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/DeleteCustomerRepricingConfig",
-                request_serializer=service.DeleteCustomerRepricingConfigRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_customer_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/DeleteCustomerRepricingConfig",
+                    request_serializer=service.DeleteCustomerRepricingConfigRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_customer_repricing_config"]
 
@@ -2022,12 +2022,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "get_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/GetChannelPartnerRepricingConfig",
-                request_serializer=service.GetChannelPartnerRepricingConfigRequest.serialize,
-                response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+            self._stubs["get_channel_partner_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/GetChannelPartnerRepricingConfig",
+                    request_serializer=service.GetChannelPartnerRepricingConfigRequest.serialize,
+                    response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+                )
             )
         return self._stubs["get_channel_partner_repricing_config"]
 
@@ -2077,12 +2077,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_channel_partner_repricing_configs" not in self._stubs:
-            self._stubs[
-                "list_channel_partner_repricing_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/ListChannelPartnerRepricingConfigs",
-                request_serializer=service.ListChannelPartnerRepricingConfigsRequest.serialize,
-                response_deserializer=service.ListChannelPartnerRepricingConfigsResponse.deserialize,
+            self._stubs["list_channel_partner_repricing_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/ListChannelPartnerRepricingConfigs",
+                    request_serializer=service.ListChannelPartnerRepricingConfigsRequest.serialize,
+                    response_deserializer=service.ListChannelPartnerRepricingConfigsResponse.deserialize,
+                )
             )
         return self._stubs["list_channel_partner_repricing_configs"]
 
@@ -2154,12 +2154,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "create_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/CreateChannelPartnerRepricingConfig",
-                request_serializer=service.CreateChannelPartnerRepricingConfigRequest.serialize,
-                response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+            self._stubs["create_channel_partner_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/CreateChannelPartnerRepricingConfig",
+                    request_serializer=service.CreateChannelPartnerRepricingConfigRequest.serialize,
+                    response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+                )
             )
         return self._stubs["create_channel_partner_repricing_config"]
 
@@ -2218,12 +2218,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "update_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/UpdateChannelPartnerRepricingConfig",
-                request_serializer=service.UpdateChannelPartnerRepricingConfigRequest.serialize,
-                response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+            self._stubs["update_channel_partner_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/UpdateChannelPartnerRepricingConfig",
+                    request_serializer=service.UpdateChannelPartnerRepricingConfigRequest.serialize,
+                    response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+                )
             )
         return self._stubs["update_channel_partner_repricing_config"]
 
@@ -2266,12 +2266,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "delete_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/DeleteChannelPartnerRepricingConfig",
-                request_serializer=service.DeleteChannelPartnerRepricingConfigRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_channel_partner_repricing_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/DeleteChannelPartnerRepricingConfig",
+                    request_serializer=service.DeleteChannelPartnerRepricingConfigRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_channel_partner_repricing_config"]
 
@@ -2361,12 +2361,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_sku_group_billable_skus" not in self._stubs:
-            self._stubs[
-                "list_sku_group_billable_skus"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/ListSkuGroupBillableSkus",
-                request_serializer=service.ListSkuGroupBillableSkusRequest.serialize,
-                response_deserializer=service.ListSkuGroupBillableSkusResponse.deserialize,
+            self._stubs["list_sku_group_billable_skus"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/ListSkuGroupBillableSkus",
+                    request_serializer=service.ListSkuGroupBillableSkusRequest.serialize,
+                    response_deserializer=service.ListSkuGroupBillableSkusResponse.deserialize,
+                )
             )
         return self._stubs["list_sku_group_billable_skus"]
 
@@ -2622,12 +2622,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_eligible_billing_accounts" not in self._stubs:
-            self._stubs[
-                "query_eligible_billing_accounts"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.channel.v1.CloudChannelService/QueryEligibleBillingAccounts",
-                request_serializer=service.QueryEligibleBillingAccountsRequest.serialize,
-                response_deserializer=service.QueryEligibleBillingAccountsResponse.deserialize,
+            self._stubs["query_eligible_billing_accounts"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.channel.v1.CloudChannelService/QueryEligibleBillingAccounts",
+                    request_serializer=service.QueryEligibleBillingAccountsRequest.serialize,
+                    response_deserializer=service.QueryEligibleBillingAccountsResponse.deserialize,
+                )
             )
         return self._stubs["query_eligible_billing_accounts"]
 

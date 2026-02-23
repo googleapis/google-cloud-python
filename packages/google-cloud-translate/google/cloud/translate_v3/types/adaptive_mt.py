@@ -433,12 +433,12 @@ class AdaptiveMtTranslateResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    glossary_translations: MutableSequence[
-        "AdaptiveMtTranslation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="AdaptiveMtTranslation",
+    glossary_translations: MutableSequence["AdaptiveMtTranslation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AdaptiveMtTranslation",
+        )
     )
 
 

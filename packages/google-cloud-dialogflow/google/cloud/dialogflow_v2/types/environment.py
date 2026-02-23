@@ -116,6 +116,7 @@ class Environment(proto.Message):
             RUNNING (3):
                 Running.
         """
+
         STATE_UNSPECIFIED = 0
         STOPPED = 1
         LOADING = 2

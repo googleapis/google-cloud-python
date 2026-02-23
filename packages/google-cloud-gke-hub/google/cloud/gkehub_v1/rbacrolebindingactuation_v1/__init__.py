@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.gkehub_v1 import gapic_version as package_version
+import sys
 
 import google.api_core as api_core
-import sys
+
+from google.cloud.gkehub_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -28,20 +29,21 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 
-from .types.rbacrolebindingactuation import FeatureSpec
-from .types.rbacrolebindingactuation import FeatureState
+from .types.rbacrolebindingactuation import FeatureSpec, FeatureState
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
 ):  # pragma: NO COVER
     api_core.check_python_version("google.cloud.gkehub.rbacrolebindingactuation_v1")  # type: ignore
-    api_core.check_dependency_versions("google.cloud.gkehub.rbacrolebindingactuation_v1")  # type: ignore
+    api_core.check_dependency_versions(
+        "google.cloud.gkehub.rbacrolebindingactuation_v1"
+    )  # type: ignore
 else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import warnings
         import sys
+        import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.gkehub.rbacrolebindingactuation_v1"

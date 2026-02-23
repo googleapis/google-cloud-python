@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.devicestreaming_v1.types import adb_service, service
@@ -493,9 +493,7 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_device_session(
                 request, metadata
@@ -617,9 +615,7 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_http_options()
 
             request, metadata = self._interceptor.pre_create_device_session(
                 request, metadata
@@ -774,9 +770,7 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_http_options()
 
             request, metadata = self._interceptor.pre_get_device_session(
                 request, metadata
@@ -924,9 +918,7 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_device_sessions(
                 request, metadata
@@ -1079,9 +1071,7 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_http_options()
 
             request, metadata = self._interceptor.pre_update_device_session(
                 request, metadata

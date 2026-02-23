@@ -17,33 +17,35 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.datalabeling_v1beta1.types import (
+    annotation_spec_set,
+    data_labeling_service,
+    dataset,
+    evaluation,
+    evaluation_job,
+    instruction,
+)
 from google.cloud.datalabeling_v1beta1.types import (
     annotation_spec_set as gcd_annotation_spec_set,
 )
-from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
-from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
-from google.cloud.datalabeling_v1beta1.types import data_labeling_service
-from google.cloud.datalabeling_v1beta1.types import dataset
 from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
-from google.cloud.datalabeling_v1beta1.types import evaluation
-from google.cloud.datalabeling_v1beta1.types import evaluation_job
-from google.cloud.datalabeling_v1beta1.types import instruction
+from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 
 from .base import DEFAULT_CLIENT_INFO, DataLabelingServiceTransport
 from .grpc import DataLabelingServiceGrpcTransport
@@ -851,12 +853,12 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_annotation_spec_set" not in self._stubs:
-            self._stubs[
-                "create_annotation_spec_set"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateAnnotationSpecSet",
-                request_serializer=data_labeling_service.CreateAnnotationSpecSetRequest.serialize,
-                response_deserializer=gcd_annotation_spec_set.AnnotationSpecSet.deserialize,
+            self._stubs["create_annotation_spec_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateAnnotationSpecSet",
+                    request_serializer=data_labeling_service.CreateAnnotationSpecSetRequest.serialize,
+                    response_deserializer=gcd_annotation_spec_set.AnnotationSpecSet.deserialize,
+                )
             )
         return self._stubs["create_annotation_spec_set"]
 
@@ -941,12 +943,12 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_annotation_spec_set" not in self._stubs:
-            self._stubs[
-                "delete_annotation_spec_set"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotationSpecSet",
-                request_serializer=data_labeling_service.DeleteAnnotationSpecSetRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_annotation_spec_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotationSpecSet",
+                    request_serializer=data_labeling_service.DeleteAnnotationSpecSetRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_annotation_spec_set"]
 
@@ -1152,12 +1154,12 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_example_comparisons" not in self._stubs:
-            self._stubs[
-                "search_example_comparisons"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchExampleComparisons",
-                request_serializer=data_labeling_service.SearchExampleComparisonsRequest.serialize,
-                response_deserializer=data_labeling_service.SearchExampleComparisonsResponse.deserialize,
+            self._stubs["search_example_comparisons"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchExampleComparisons",
+                    request_serializer=data_labeling_service.SearchExampleComparisonsRequest.serialize,
+                    response_deserializer=data_labeling_service.SearchExampleComparisonsResponse.deserialize,
+                )
             )
         return self._stubs["search_example_comparisons"]
 

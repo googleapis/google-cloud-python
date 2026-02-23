@@ -35,11 +35,13 @@ from google.cloud.kms_inventory_v1.types.key_dashboard_service import (
     ListCryptoKeysResponse,
 )
 from google.cloud.kms_inventory_v1.types.key_tracking_service import (
+    FallbackScope,
     GetProtectedResourcesSummaryRequest,
     ProtectedResource,
     ProtectedResourcesSummary,
     SearchProtectedResourcesRequest,
     SearchProtectedResourcesResponse,
+    Warning,
 )
 
 __all__ = (
@@ -54,4 +56,6 @@ __all__ = (
     "ProtectedResourcesSummary",
     "SearchProtectedResourcesRequest",
     "SearchProtectedResourcesResponse",
+    "Warning",
+    "FallbackScope",
 )

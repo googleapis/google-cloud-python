@@ -96,6 +96,7 @@ class EkmConnection(proto.Message):
             PERMISSION_DENIED (4):
                 Permission denied EKM connection state
         """
+
         CONNECTION_STATE_UNSPECIFIED = 0
         AVAILABLE = 1
         NOT_AVAILABLE = 2

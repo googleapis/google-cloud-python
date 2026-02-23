@@ -25,9 +25,19 @@
                 "delete_job"
               ]
             },
+            "GetBucketOperation": {
+              "methods": [
+                "get_bucket_operation"
+              ]
+            },
             "GetJob": {
               "methods": [
                 "get_job"
+              ]
+            },
+            "ListBucketOperations": {
+              "methods": [
+                "list_bucket_operations"
               ]
             },
             "ListJobs": {
@@ -55,9 +65,19 @@
                 "delete_job"
               ]
             },
+            "GetBucketOperation": {
+              "methods": [
+                "get_bucket_operation"
+              ]
+            },
             "GetJob": {
               "methods": [
                 "get_job"
+              ]
+            },
+            "ListBucketOperations": {
+              "methods": [
+                "list_bucket_operations"
               ]
             },
             "ListJobs": {
@@ -85,9 +105,19 @@
                 "delete_job"
               ]
             },
+            "GetBucketOperation": {
+              "methods": [
+                "get_bucket_operation"
+              ]
+            },
             "GetJob": {
               "methods": [
                 "get_job"
+              ]
+            },
+            "ListBucketOperations": {
+              "methods": [
+                "list_bucket_operations"
               ]
             },
             "ListJobs": {

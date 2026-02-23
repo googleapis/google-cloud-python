@@ -55,6 +55,7 @@ class OutputState(proto.Enum):
         OUTPUT_STATE_PENDING (5):
             Pending.
     """
+
     OUTPUT_STATE_UNSPECIFIED = 0
     OUTPUT_STATE_OK = 1
     OUTPUT_STATE_CANCELLED = 2

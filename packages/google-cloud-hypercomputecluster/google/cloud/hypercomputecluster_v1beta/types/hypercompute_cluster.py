@@ -778,6 +778,7 @@ class NewFilestoreConfig(proto.Message):
                 mission-critical, high-performance computing
                 workloads.
         """
+
         TIER_UNSPECIFIED = 0
         ZONAL = 4
         REGIONAL = 6
@@ -793,6 +794,7 @@ class NewFilestoreConfig(proto.Message):
             NFSV41 (2):
                 NFS 4.1.
         """
+
         PROTOCOL_UNSPECIFIED = 0
         NFSV3 = 1
         NFSV41 = 2
@@ -921,6 +923,7 @@ class NewBucketConfig(proto.Message):
                 Lowest-cost storage for data archiving,
                 online backup, and disaster recovery.
         """
+
         STORAGE_CLASS_UNSPECIFIED = 0
         STANDARD = 1
         NEARLINE = 2
@@ -969,6 +972,7 @@ class GcsAutoclassConfig(proto.Message):
             TERMINAL_STORAGE_CLASS_UNSPECIFIED (0):
                 Unspecified terminal storage class
         """
+
         TERMINAL_STORAGE_CLASS_UNSPECIFIED = 0
 
     enabled: bool = proto.Field(

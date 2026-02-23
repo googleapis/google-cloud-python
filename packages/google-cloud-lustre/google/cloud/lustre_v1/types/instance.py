@@ -104,6 +104,7 @@ class Instance(proto.Message):
             UPDATING (7):
                 The instance is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2

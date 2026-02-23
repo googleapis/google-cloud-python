@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1435,9 +1435,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_add_association(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
@@ -1618,9 +1616,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_packet_mirroring_rule(
                 request, metadata
@@ -1801,9 +1797,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseAddRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseAddRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseAddRule._get_transcoded_request(
@@ -1953,9 +1947,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseAggregatedList._get_transcoded_request(
@@ -2132,9 +2124,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_http_options()
 
             request, metadata = self._interceptor.pre_clone_rules(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseCloneRules._get_transcoded_request(
@@ -2307,9 +2297,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseDelete._get_transcoded_request(
@@ -2601,9 +2589,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_association(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
@@ -2826,9 +2812,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2977,9 +2961,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseGetPacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseGetPacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_packet_mirroring_rule(
                 request, metadata
@@ -3130,9 +3112,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseGetRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseGetRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseGetRule._get_transcoded_request(
@@ -3306,9 +3286,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseInsert._get_transcoded_request(
@@ -3814,9 +3792,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_packet_mirroring_rule(
                 request, metadata
@@ -3997,9 +3973,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BasePatchRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BasePatchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BasePatchRule._get_transcoded_request(
@@ -4177,9 +4151,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_association(
                 request, metadata
@@ -4359,9 +4331,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_packet_mirroring_rule(
                 request, metadata
@@ -4536,9 +4506,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(
@@ -4758,9 +4726,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -4911,9 +4877,7 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
 
             """
 
-            http_options = (
-                _BaseNetworkFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNetworkFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -5028,7 +4992,9 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AddPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._AddPacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def add_rule(
@@ -5101,7 +5067,9 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetPacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_rule(
@@ -5148,7 +5116,9 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PatchPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PatchPacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def patch_rule(
@@ -5177,7 +5147,9 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemovePacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemovePacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def remove_rule(

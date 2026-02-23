@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.36.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.36.1...google-cloud-bigquery-storage-v2.36.2) (2026-02-19)
+
+
+### Bug Fixes
+
+* missing first page in to_dataframe (#15575) ([397fb1475e55dd46331694bab5ca9e0329a7788d](https://github.com/googleapis/google-cloud-python/commit/397fb1475e55dd46331694bab5ca9e0329a7788d))
+
 ## [2.36.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.36.0...google-cloud-bigquery-storage-v2.36.1) (2026-02-12)
 
 

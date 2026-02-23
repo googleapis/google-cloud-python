@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .alert import AlertPolicy
+from .alert import (
+    AlertPolicy,
+)
 from .alert_service import (
     CreateAlertPolicyRequest,
     DeleteAlertPolicyRequest,
@@ -22,9 +24,19 @@ from .alert_service import (
     ListAlertPoliciesResponse,
     UpdateAlertPolicyRequest,
 )
-from .common import Aggregation, ComparisonType, ServiceTier, TimeInterval, TypedValue
-from .dropped_labels import DroppedLabels
-from .group import Group
+from .common import (
+    Aggregation,
+    ComparisonType,
+    ServiceTier,
+    TimeInterval,
+    TypedValue,
+)
+from .dropped_labels import (
+    DroppedLabels,
+)
+from .group import (
+    Group,
+)
 from .group_service import (
     CreateGroupRequest,
     DeleteGroupRequest,
@@ -62,8 +74,13 @@ from .metric_service import (
     QueryTimeSeriesRequest,
     QueryTimeSeriesResponse,
 )
-from .mutation_record import MutationRecord
-from .notification import NotificationChannel, NotificationChannelDescriptor
+from .mutation_record import (
+    MutationRecord,
+)
+from .notification import (
+    NotificationChannel,
+    NotificationChannelDescriptor,
+)
 from .notification_service import (
     CreateNotificationChannelRequest,
     DeleteNotificationChannelRequest,
@@ -104,7 +121,9 @@ from .service_service import (
     UpdateServiceLevelObjectiveRequest,
     UpdateServiceRequest,
 )
-from .snooze import Snooze
+from .snooze import (
+    Snooze,
+)
 from .snooze_service import (
     CreateSnoozeRequest,
     GetSnoozeRequest,
@@ -112,7 +131,9 @@ from .snooze_service import (
     ListSnoozesResponse,
     UpdateSnoozeRequest,
 )
-from .span_context import SpanContext
+from .span_context import (
+    SpanContext,
+)
 from .uptime import (
     GroupResourceType,
     InternalChecker,

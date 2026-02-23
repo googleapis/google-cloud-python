@@ -52,6 +52,7 @@ class Phase(proto.Enum):
         PHASE_ANY (4):
             Any phase.
     """
+
     PHASE_UNSPECIFIED = 0
     PHASE_WEEK1 = 1
     PHASE_WEEK2 = 2
@@ -153,12 +154,12 @@ class MaintenanceInfo(proto.Message):
         number=1,
         message="ResourceMaintenanceSchedule",
     )
-    deny_maintenance_schedules: MutableSequence[
-        "ResourceMaintenanceDenySchedule"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="ResourceMaintenanceDenySchedule",
+    deny_maintenance_schedules: MutableSequence["ResourceMaintenanceDenySchedule"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ResourceMaintenanceDenySchedule",
+        )
     )
     maintenance_version: str = proto.Field(
         proto.STRING,

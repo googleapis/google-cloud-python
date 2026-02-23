@@ -406,12 +406,12 @@ class ListConferenceRecordsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conference_records: MutableSequence[
-        resource.ConferenceRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resource.ConferenceRecord,
+    conference_records: MutableSequence[resource.ConferenceRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resource.ConferenceRecord,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -594,12 +594,12 @@ class ListParticipantSessionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    participant_sessions: MutableSequence[
-        resource.ParticipantSession
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resource.ParticipantSession,
+    participant_sessions: MutableSequence[resource.ParticipantSession] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resource.ParticipantSession,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

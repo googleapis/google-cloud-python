@@ -520,12 +520,12 @@ class WorkerPool(proto.Message):
         number=18,
         message=worker_pool_revision_template.WorkerPoolRevisionTemplate,
     )
-    instance_splits: MutableSequence[
-        instance_split.InstanceSplit
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=26,
-        message=instance_split.InstanceSplit,
+    instance_splits: MutableSequence[instance_split.InstanceSplit] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=26,
+            message=instance_split.InstanceSplit,
+        )
     )
     scaling: vendor_settings.WorkerPoolScaling = proto.Field(
         proto.MESSAGE,
@@ -554,12 +554,12 @@ class WorkerPool(proto.Message):
         proto.STRING,
         number=34,
     )
-    instance_split_statuses: MutableSequence[
-        instance_split.InstanceSplitStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=27,
-        message=instance_split.InstanceSplitStatus,
+    instance_split_statuses: MutableSequence[instance_split.InstanceSplitStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=27,
+            message=instance_split.InstanceSplitStatus,
+        )
     )
     threat_detection_enabled: bool = proto.Field(
         proto.BOOL,

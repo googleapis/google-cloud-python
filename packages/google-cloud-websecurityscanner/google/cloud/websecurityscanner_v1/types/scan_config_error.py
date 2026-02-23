@@ -183,6 +183,7 @@ class ScanConfigError(proto.Message):
                 The URL scheme of one or more of the supplied
                 URLs is not supported.
         """
+
         _pb_options = {"allow_alias": True}
         CODE_UNSPECIFIED = 0
         OK = 0

@@ -110,6 +110,7 @@ class ProcessorVersion(proto.Message):
             IMPORTING (8):
                 The processor version is being imported.
         """
+
         STATE_UNSPECIFIED = 0
         DEPLOYED = 1
         DEPLOYING = 2
@@ -133,6 +134,7 @@ class ProcessorVersion(proto.Message):
             MODEL_TYPE_CUSTOM (2):
                 The processor version has custom model type.
         """
+
         MODEL_TYPE_UNSPECIFIED = 0
         MODEL_TYPE_GENERATIVE = 1
         MODEL_TYPE_CUSTOM = 2
@@ -229,6 +231,7 @@ class ProcessorVersion(proto.Message):
                     FINE_TUNED (2):
                         The model is a finetuned foundation model.
                 """
+
                 CUSTOM_MODEL_TYPE_UNSPECIFIED = 0
                 VERSIONED_FOUNDATION = 1
                 FINE_TUNED = 2
@@ -417,6 +420,7 @@ class Processor(proto.Message):
                 The processor is being deleted, will be
                 removed if successful.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -447,12 +451,12 @@ class Processor(proto.Message):
         proto.STRING,
         number=9,
     )
-    processor_version_aliases: MutableSequence[
-        "ProcessorVersionAlias"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message="ProcessorVersionAlias",
+    processor_version_aliases: MutableSequence["ProcessorVersionAlias"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message="ProcessorVersionAlias",
+        )
     )
     process_endpoint: str = proto.Field(
         proto.STRING,

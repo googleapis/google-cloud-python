@@ -52,6 +52,7 @@ class TransferType(proto.Enum):
         EXPORT (2):
             Exports from Lustre.
     """
+
     TRANSFER_TYPE_UNSPECIFIED = 0
     IMPORT = 1
     EXPORT = 2

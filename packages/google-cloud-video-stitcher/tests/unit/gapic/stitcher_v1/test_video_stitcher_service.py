@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,13 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,18 +58,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.operation_async as operation_async  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.video.stitcher_v1.services.video_stitcher_service import (
     VideoStitcherServiceAsyncClient,
@@ -1017,10 +1017,9 @@ def test_video_stitcher_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1065,10 +1064,9 @@ def test_video_stitcher_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1104,10 +1102,9 @@ def test_video_stitcher_service_client_get_mtls_endpoint_and_cert_source(client_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1367,9 +1364,7 @@ def test_video_stitcher_service_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3382,9 +3377,9 @@ def test_create_vod_session_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_vod_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_vod_session] = (
+            mock_rpc
+        )
         request = {}
         client.create_vod_session(request)
 
@@ -4634,9 +4629,9 @@ def test_get_vod_stitch_detail_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_vod_stitch_detail
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_vod_stitch_detail] = (
+            mock_rpc
+        )
         request = {}
         client.get_vod_stitch_detail(request)
 
@@ -5524,9 +5519,9 @@ def test_get_vod_ad_tag_detail_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_vod_ad_tag_detail
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_vod_ad_tag_detail] = (
+            mock_rpc
+        )
         request = {}
         client.get_vod_ad_tag_detail(request)
 
@@ -6416,9 +6411,9 @@ def test_get_live_ad_tag_detail_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_live_ad_tag_detail
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_live_ad_tag_detail] = (
+            mock_rpc
+        )
         request = {}
         client.get_live_ad_tag_detail(request)
 
@@ -8627,9 +8622,9 @@ def test_create_live_session_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_live_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_live_session] = (
+            mock_rpc
+        )
         request = {}
         client.create_live_session(request)
 
@@ -8985,9 +8980,9 @@ def test_get_live_session_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_live_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_live_session] = (
+            mock_rpc
+        )
         request = {}
         client.get_live_session(request)
 
@@ -9324,9 +9319,9 @@ def test_create_live_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_live_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_live_config] = (
+            mock_rpc
+        )
         request = {}
         client.create_live_config(request)
 
@@ -9699,9 +9694,9 @@ def test_list_live_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_live_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_live_configs] = (
+            mock_rpc
+        )
         request = {}
         client.list_live_configs(request)
 
@@ -10594,9 +10589,9 @@ def test_delete_live_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_live_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_live_config] = (
+            mock_rpc
+        )
         request = {}
         client.delete_live_config(request)
 
@@ -10936,9 +10931,9 @@ def test_update_live_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_live_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_live_config] = (
+            mock_rpc
+        )
         request = {}
         client.update_live_config(request)
 
@@ -11294,9 +11289,9 @@ def test_create_vod_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_vod_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_vod_config] = (
+            mock_rpc
+        )
         request = {}
         client.create_vod_config(request)
 
@@ -11665,9 +11660,9 @@ def test_list_vod_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_vod_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_vod_configs] = (
+            mock_rpc
+        )
         request = {}
         client.list_vod_configs(request)
 
@@ -12524,9 +12519,9 @@ def test_delete_vod_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_vod_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_vod_config] = (
+            mock_rpc
+        )
         request = {}
         client.delete_vod_config(request)
 
@@ -12864,9 +12859,9 @@ def test_update_vod_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_vod_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_vod_config] = (
+            mock_rpc
+        )
         request = {}
         client.update_vod_config(request)
 
@@ -14167,9 +14162,9 @@ def test_create_vod_session_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_vod_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_vod_session] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_vod_session(request)
@@ -14811,9 +14806,9 @@ def test_get_vod_stitch_detail_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_vod_stitch_detail
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_vod_stitch_detail] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_vod_stitch_detail(request)
@@ -15266,9 +15261,9 @@ def test_get_vod_ad_tag_detail_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_vod_ad_tag_detail
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_vod_ad_tag_detail] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_vod_ad_tag_detail(request)
@@ -15721,9 +15716,9 @@ def test_get_live_ad_tag_detail_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_live_ad_tag_detail
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_live_ad_tag_detail] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_live_ad_tag_detail(request)
@@ -16919,9 +16914,9 @@ def test_create_live_session_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_live_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_live_session] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_live_session(request)
@@ -17110,9 +17105,9 @@ def test_get_live_session_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_live_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_live_session] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_live_session(request)
@@ -17294,9 +17289,9 @@ def test_create_live_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_live_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_live_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_live_config(request)
@@ -17512,9 +17507,9 @@ def test_list_live_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_live_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_live_configs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_live_configs(request)
@@ -17958,9 +17953,9 @@ def test_delete_live_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_live_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_live_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_live_config(request)
@@ -18141,9 +18136,9 @@ def test_update_live_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_live_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_live_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_live_config(request)
@@ -18332,9 +18327,9 @@ def test_create_vod_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_vod_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_vod_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_vod_config(request)
@@ -18549,9 +18544,9 @@ def test_list_vod_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_vod_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_vod_configs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_vod_configs(request)
@@ -18991,9 +18986,9 @@ def test_delete_vod_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_vod_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_vod_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_vod_config(request)
@@ -19171,9 +19166,9 @@ def test_update_vod_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_vod_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_vod_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_vod_config(request)

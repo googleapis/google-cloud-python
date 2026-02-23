@@ -16,9 +16,10 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,7 +27,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -612,9 +612,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiObservation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_discovered_api_observation(
                 request, metadata
@@ -680,11 +678,10 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             resp = self._interceptor.post_get_discovered_api_observation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_discovered_api_observation_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_discovered_api_observation_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -771,9 +768,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseGetDiscoveredApiOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_discovered_api_operation(
                 request, metadata
@@ -926,9 +921,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiObservations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_discovered_api_observations(
                 request, metadata
@@ -992,11 +985,10 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             resp = self._interceptor.post_list_discovered_api_observations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_discovered_api_observations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_discovered_api_observations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1084,9 +1076,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseListDiscoveredApiOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_discovered_api_operations(
                 request, metadata
@@ -1152,11 +1142,10 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
 
             resp = self._interceptor.post_list_discovered_api_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_discovered_api_operations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_discovered_api_operations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1194,7 +1183,9 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetDiscoveredApiObservation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetDiscoveredApiObservation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_discovered_api_operation(
@@ -1205,7 +1196,9 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetDiscoveredApiOperation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetDiscoveredApiOperation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_discovered_api_observations(
@@ -1216,7 +1209,9 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDiscoveredApiObservations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDiscoveredApiObservations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_discovered_api_operations(
@@ -1227,7 +1222,9 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDiscoveredApiOperations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDiscoveredApiOperations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -1564,9 +1561,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1683,9 +1678,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -1940,9 +1933,7 @@ class ApiHubDiscoveryRestTransport(_BaseApiHubDiscoveryRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseApiHubDiscoveryRestTransport._BaseListOperations._get_transcoded_request(

@@ -58,6 +58,7 @@ class Hash(proto.Message):
             DIRSUM_SHA256 (3):
                 Dirsum SHA256 hash.
         """
+
         HASH_TYPE_UNSPECIFIED = 0
         SHA256 = 1
         MD5 = 2

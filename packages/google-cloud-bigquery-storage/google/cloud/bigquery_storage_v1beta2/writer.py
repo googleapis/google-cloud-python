@@ -22,10 +22,10 @@ import threading
 import time
 from typing import Callable, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import bidi, exceptions
-from google.api_core.future import polling as polling_future
 import google.api_core.retry
 import grpc  # type: ignore
+from google.api_core import bidi, exceptions
+from google.api_core.future import polling as polling_future
 
 from google.cloud.bigquery_storage_v1beta2 import exceptions as bqstorage_exceptions
 from google.cloud.bigquery_storage_v1beta2 import types as gapic_types

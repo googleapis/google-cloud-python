@@ -86,6 +86,7 @@ class ClientConnectorService(proto.Message):
                 ClientConnectorService encountered an error
                 and is in an indeterministic state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -129,6 +130,7 @@ class ClientConnectorService(proto.Message):
                     TCP (1):
                         TCP protocol.
                 """
+
                 TRANSPORT_PROTOCOL_UNSPECIFIED = 0
                 TCP = 1
 
@@ -307,12 +309,12 @@ class ListClientConnectorServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    client_connector_services: MutableSequence[
-        "ClientConnectorService"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ClientConnectorService",
+    client_connector_services: MutableSequence["ClientConnectorService"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ClientConnectorService",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

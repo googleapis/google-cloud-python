@@ -124,6 +124,7 @@ class LfpStore(proto.Message):
                 The ``LfpStore`` is not matched with a Google Business
                 Profile store.
         """
+
         STORE_MATCHING_STATE_UNSPECIFIED = 0
         STORE_MATCHING_STATE_MATCHED = 1
         STORE_MATCHING_STATE_FAILED = 2

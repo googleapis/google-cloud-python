@@ -82,6 +82,7 @@ class OdbNetwork(proto.Message):
                 Indicates that the resource is in failed
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2

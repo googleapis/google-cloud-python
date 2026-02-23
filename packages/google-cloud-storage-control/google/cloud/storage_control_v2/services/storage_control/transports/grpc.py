@@ -16,21 +16,21 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.storage_control_v2.types import storage_control
 
@@ -881,12 +881,12 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_project_intelligence_config" not in self._stubs:
-            self._stubs[
-                "get_project_intelligence_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.storage.control.v2.StorageControl/GetProjectIntelligenceConfig",
-                request_serializer=storage_control.GetProjectIntelligenceConfigRequest.serialize,
-                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            self._stubs["get_project_intelligence_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/GetProjectIntelligenceConfig",
+                    request_serializer=storage_control.GetProjectIntelligenceConfigRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceConfig.deserialize,
+                )
             )
         return self._stubs["get_project_intelligence_config"]
 
@@ -914,12 +914,12 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_project_intelligence_config" not in self._stubs:
-            self._stubs[
-                "update_project_intelligence_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.storage.control.v2.StorageControl/UpdateProjectIntelligenceConfig",
-                request_serializer=storage_control.UpdateProjectIntelligenceConfigRequest.serialize,
-                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            self._stubs["update_project_intelligence_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/UpdateProjectIntelligenceConfig",
+                    request_serializer=storage_control.UpdateProjectIntelligenceConfigRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceConfig.deserialize,
+                )
             )
         return self._stubs["update_project_intelligence_config"]
 
@@ -946,12 +946,12 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_folder_intelligence_config" not in self._stubs:
-            self._stubs[
-                "get_folder_intelligence_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.storage.control.v2.StorageControl/GetFolderIntelligenceConfig",
-                request_serializer=storage_control.GetFolderIntelligenceConfigRequest.serialize,
-                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            self._stubs["get_folder_intelligence_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/GetFolderIntelligenceConfig",
+                    request_serializer=storage_control.GetFolderIntelligenceConfigRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceConfig.deserialize,
+                )
             )
         return self._stubs["get_folder_intelligence_config"]
 
@@ -979,12 +979,12 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_folder_intelligence_config" not in self._stubs:
-            self._stubs[
-                "update_folder_intelligence_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.storage.control.v2.StorageControl/UpdateFolderIntelligenceConfig",
-                request_serializer=storage_control.UpdateFolderIntelligenceConfigRequest.serialize,
-                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            self._stubs["update_folder_intelligence_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/UpdateFolderIntelligenceConfig",
+                    request_serializer=storage_control.UpdateFolderIntelligenceConfigRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceConfig.deserialize,
+                )
             )
         return self._stubs["update_folder_intelligence_config"]
 
@@ -1012,12 +1012,12 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_organization_intelligence_config" not in self._stubs:
-            self._stubs[
-                "get_organization_intelligence_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.storage.control.v2.StorageControl/GetOrganizationIntelligenceConfig",
-                request_serializer=storage_control.GetOrganizationIntelligenceConfigRequest.serialize,
-                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            self._stubs["get_organization_intelligence_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/GetOrganizationIntelligenceConfig",
+                    request_serializer=storage_control.GetOrganizationIntelligenceConfigRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceConfig.deserialize,
+                )
             )
         return self._stubs["get_organization_intelligence_config"]
 
@@ -1045,12 +1045,12 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_organization_intelligence_config" not in self._stubs:
-            self._stubs[
-                "update_organization_intelligence_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.storage.control.v2.StorageControl/UpdateOrganizationIntelligenceConfig",
-                request_serializer=storage_control.UpdateOrganizationIntelligenceConfigRequest.serialize,
-                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            self._stubs["update_organization_intelligence_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/UpdateOrganizationIntelligenceConfig",
+                    request_serializer=storage_control.UpdateOrganizationIntelligenceConfigRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceConfig.deserialize,
+                )
             )
         return self._stubs["update_organization_intelligence_config"]
 

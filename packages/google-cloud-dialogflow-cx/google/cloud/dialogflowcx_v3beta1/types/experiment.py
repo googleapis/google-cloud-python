@@ -119,6 +119,7 @@ class Experiment(proto.Message):
                 The experiment with auto-rollout enabled has
                 failed.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         RUNNING = 2
@@ -189,6 +190,7 @@ class Experiment(proto.Message):
                     Percentage of sessions reached Dialogflow 'END_PAGE' or
                     'END_SESSION'.
             """
+
             METRIC_UNSPECIFIED = 0
             CONTAINED_SESSION_NO_CALLBACK_RATE = 1
             LIVE_AGENT_HANDOFF_RATE = 2
@@ -209,6 +211,7 @@ class Experiment(proto.Message):
                 AVERAGE_TURN_COUNT (3):
                     Average turn count in a session.
             """
+
             COUNT_TYPE_UNSPECIFIED = 0
             TOTAL_NO_MATCH_COUNT = 1
             TOTAL_TURN_COUNT = 2
@@ -336,12 +339,12 @@ class Experiment(proto.Message):
                 number=3,
             )
 
-        version_metrics: MutableSequence[
-            "Experiment.Result.VersionMetrics"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Experiment.Result.VersionMetrics",
+        version_metrics: MutableSequence["Experiment.Result.VersionMetrics"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Experiment.Result.VersionMetrics",
+            )
         )
         last_update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,

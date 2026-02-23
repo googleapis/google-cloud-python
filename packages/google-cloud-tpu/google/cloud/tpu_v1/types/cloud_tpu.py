@@ -218,6 +218,7 @@ class Node(proto.Message):
                 TPU node has unknown state after a failed
                 repair.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -256,6 +257,7 @@ class Node(proto.Message):
                 caused rescheduling and will resume running once
                 rescheduled.
         """
+
         HEALTH_UNSPECIFIED = 0
         HEALTHY = 1
         DEPRECATED_UNHEALTHY = 2
@@ -276,6 +278,7 @@ class Node(proto.Message):
             V2_ALPHA1 (3):
                 TPU API V2Alpha1 version.
         """
+
         API_VERSION_UNSPECIFIED = 0
         V1_ALPHA1 = 1
         V1 = 2
@@ -834,6 +837,7 @@ class Symptom(proto.Message):
                 Abusive behaviors have been identified on the
                 current project.
         """
+
         SYMPTOM_TYPE_UNSPECIFIED = 0
         LOW_MEMORY = 1
         OUT_OF_MEMORY = 2

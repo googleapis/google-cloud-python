@@ -97,6 +97,7 @@ class Api(proto.Message):
             UPDATING (5):
                 API is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -217,6 +218,7 @@ class ApiConfig(proto.Message):
                 downstream systems. API Configs in this state
                 cannot be used by Gateways.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -394,6 +396,7 @@ class Gateway(proto.Message):
             UPDATING (5):
                 Gateway is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -847,6 +850,7 @@ class GetApiConfigRequest(proto.Message):
             FULL (2):
                 Include configuration source files.
         """
+
         CONFIG_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2

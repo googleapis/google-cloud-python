@@ -100,6 +100,7 @@ class Folder(proto.Message):
                 The folder has been marked for deletion by
                 the user.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2

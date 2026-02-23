@@ -56,7 +56,6 @@ class BigQueryAuditMetadata(_message.Message):
         "unlink_dataset",
         "first_party_app_metadata",
     )
-
     class CreateDisposition(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         CREATE_DISPOSITION_UNSPECIFIED: _ClassVar[
@@ -64,43 +63,43 @@ class BigQueryAuditMetadata(_message.Message):
         ]
         CREATE_NEVER: _ClassVar[BigQueryAuditMetadata.CreateDisposition]
         CREATE_IF_NEEDED: _ClassVar[BigQueryAuditMetadata.CreateDisposition]
+
     CREATE_DISPOSITION_UNSPECIFIED: BigQueryAuditMetadata.CreateDisposition
     CREATE_NEVER: BigQueryAuditMetadata.CreateDisposition
     CREATE_IF_NEEDED: BigQueryAuditMetadata.CreateDisposition
-
     class WriteDisposition(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         WRITE_DISPOSITION_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.WriteDisposition]
         WRITE_EMPTY: _ClassVar[BigQueryAuditMetadata.WriteDisposition]
         WRITE_TRUNCATE: _ClassVar[BigQueryAuditMetadata.WriteDisposition]
         WRITE_APPEND: _ClassVar[BigQueryAuditMetadata.WriteDisposition]
+
     WRITE_DISPOSITION_UNSPECIFIED: BigQueryAuditMetadata.WriteDisposition
     WRITE_EMPTY: BigQueryAuditMetadata.WriteDisposition
     WRITE_TRUNCATE: BigQueryAuditMetadata.WriteDisposition
     WRITE_APPEND: BigQueryAuditMetadata.WriteDisposition
-
     class OperationType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         OPERATION_TYPE_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.OperationType]
         COPY: _ClassVar[BigQueryAuditMetadata.OperationType]
         SNAPSHOT: _ClassVar[BigQueryAuditMetadata.OperationType]
         RESTORE: _ClassVar[BigQueryAuditMetadata.OperationType]
+
     OPERATION_TYPE_UNSPECIFIED: BigQueryAuditMetadata.OperationType
     COPY: BigQueryAuditMetadata.OperationType
     SNAPSHOT: BigQueryAuditMetadata.OperationType
     RESTORE: BigQueryAuditMetadata.OperationType
-
     class JobState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         JOB_STATE_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobState]
         PENDING: _ClassVar[BigQueryAuditMetadata.JobState]
         RUNNING: _ClassVar[BigQueryAuditMetadata.JobState]
         DONE: _ClassVar[BigQueryAuditMetadata.JobState]
+
     JOB_STATE_UNSPECIFIED: BigQueryAuditMetadata.JobState
     PENDING: BigQueryAuditMetadata.JobState
     RUNNING: BigQueryAuditMetadata.JobState
     DONE: BigQueryAuditMetadata.JobState
-
     class QueryStatementType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         QUERY_STATEMENT_TYPE_UNSPECIFIED: _ClassVar[
@@ -142,6 +141,7 @@ class BigQueryAuditMetadata(_message.Message):
         CREATE_EXTERNAL_TABLE: _ClassVar[BigQueryAuditMetadata.QueryStatementType]
         EXPORT_DATA: _ClassVar[BigQueryAuditMetadata.QueryStatementType]
         CALL: _ClassVar[BigQueryAuditMetadata.QueryStatementType]
+
     QUERY_STATEMENT_TYPE_UNSPECIFIED: BigQueryAuditMetadata.QueryStatementType
     SELECT: BigQueryAuditMetadata.QueryStatementType
     ASSERT: BigQueryAuditMetadata.QueryStatementType
@@ -179,15 +179,14 @@ class BigQueryAuditMetadata(_message.Message):
     CREATE_EXTERNAL_TABLE: BigQueryAuditMetadata.QueryStatementType
     EXPORT_DATA: BigQueryAuditMetadata.QueryStatementType
     CALL: BigQueryAuditMetadata.QueryStatementType
-
     class JobInsertion(_message.Message):
         __slots__ = ("job", "reason")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobInsertion.Reason]
             JOB_INSERT_REQUEST: _ClassVar[BigQueryAuditMetadata.JobInsertion.Reason]
             QUERY_REQUEST: _ClassVar[BigQueryAuditMetadata.JobInsertion.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.JobInsertion.Reason
         JOB_INSERT_REQUEST: BigQueryAuditMetadata.JobInsertion.Reason
         QUERY_REQUEST: BigQueryAuditMetadata.JobInsertion.Reason
@@ -220,11 +219,11 @@ class BigQueryAuditMetadata(_message.Message):
 
     class JobDeletion(_message.Message):
         __slots__ = ("job_name", "reason")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobDeletion.Reason]
             JOB_DELETE_REQUEST: _ClassVar[BigQueryAuditMetadata.JobDeletion.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.JobDeletion.Reason
         JOB_DELETE_REQUEST: BigQueryAuditMetadata.JobDeletion.Reason
         JOB_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -241,12 +240,12 @@ class BigQueryAuditMetadata(_message.Message):
 
     class DatasetCreation(_message.Message):
         __slots__ = ("dataset", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetCreation.Reason]
             CREATE: _ClassVar[BigQueryAuditMetadata.DatasetCreation.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.DatasetCreation.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.DatasetCreation.Reason
         CREATE: BigQueryAuditMetadata.DatasetCreation.Reason
         QUERY: BigQueryAuditMetadata.DatasetCreation.Reason
@@ -267,13 +266,13 @@ class BigQueryAuditMetadata(_message.Message):
 
     class DatasetChange(_message.Message):
         __slots__ = ("dataset", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetChange.Reason]
             UPDATE: _ClassVar[BigQueryAuditMetadata.DatasetChange.Reason]
             SET_IAM_POLICY: _ClassVar[BigQueryAuditMetadata.DatasetChange.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.DatasetChange.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.DatasetChange.Reason
         UPDATE: BigQueryAuditMetadata.DatasetChange.Reason
         SET_IAM_POLICY: BigQueryAuditMetadata.DatasetChange.Reason
@@ -295,12 +294,12 @@ class BigQueryAuditMetadata(_message.Message):
 
     class DatasetDeletion(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.DatasetDeletion.Reason]
             DELETE: _ClassVar[BigQueryAuditMetadata.DatasetDeletion.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.DatasetDeletion.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.DatasetDeletion.Reason
         DELETE: BigQueryAuditMetadata.DatasetDeletion.Reason
         QUERY: BigQueryAuditMetadata.DatasetDeletion.Reason
@@ -318,13 +317,13 @@ class BigQueryAuditMetadata(_message.Message):
 
     class TableCreation(_message.Message):
         __slots__ = ("table", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableCreation.Reason]
             JOB: _ClassVar[BigQueryAuditMetadata.TableCreation.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.TableCreation.Reason]
             TABLE_INSERT_REQUEST: _ClassVar[BigQueryAuditMetadata.TableCreation.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.TableCreation.Reason
         JOB: BigQueryAuditMetadata.TableCreation.Reason
         QUERY: BigQueryAuditMetadata.TableCreation.Reason
@@ -346,11 +345,11 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelCreation(_message.Message):
         __slots__ = ("model", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelCreation.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.ModelCreation.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.ModelCreation.Reason
         QUERY: BigQueryAuditMetadata.ModelCreation.Reason
         MODEL_FIELD_NUMBER: _ClassVar[int]
@@ -370,7 +369,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class RoutineCreation(_message.Message):
         __slots__ = ("routine", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineCreation.Reason]
@@ -378,6 +376,7 @@ class BigQueryAuditMetadata(_message.Message):
             ROUTINE_INSERT_REQUEST: _ClassVar[
                 BigQueryAuditMetadata.RoutineCreation.Reason
             ]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.RoutineCreation.Reason
         QUERY: BigQueryAuditMetadata.RoutineCreation.Reason
         ROUTINE_INSERT_REQUEST: BigQueryAuditMetadata.RoutineCreation.Reason
@@ -406,7 +405,6 @@ class BigQueryAuditMetadata(_message.Message):
             "job_name",
             "session_name",
         )
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDataRead.Reason]
@@ -422,6 +420,7 @@ class BigQueryAuditMetadata(_message.Message):
             MATERIALIZED_VIEW_REFRESH: _ClassVar[
                 BigQueryAuditMetadata.TableDataRead.Reason
             ]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.TableDataRead.Reason
         JOB: BigQueryAuditMetadata.TableDataRead.Reason
         TABLEDATA_LIST_REQUEST: BigQueryAuditMetadata.TableDataRead.Reason
@@ -458,13 +457,13 @@ class BigQueryAuditMetadata(_message.Message):
 
     class TableChange(_message.Message):
         __slots__ = ("table", "truncated", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableChange.Reason]
             TABLE_UPDATE_REQUEST: _ClassVar[BigQueryAuditMetadata.TableChange.Reason]
             JOB: _ClassVar[BigQueryAuditMetadata.TableChange.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.TableChange.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.TableChange.Reason
         TABLE_UPDATE_REQUEST: BigQueryAuditMetadata.TableChange.Reason
         JOB: BigQueryAuditMetadata.TableChange.Reason
@@ -489,7 +488,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelMetadataChange(_message.Message):
         __slots__ = ("model", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[
@@ -499,6 +497,7 @@ class BigQueryAuditMetadata(_message.Message):
                 BigQueryAuditMetadata.ModelMetadataChange.Reason
             ]
             QUERY: _ClassVar[BigQueryAuditMetadata.ModelMetadataChange.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.ModelMetadataChange.Reason
         MODEL_PATCH_REQUEST: BigQueryAuditMetadata.ModelMetadataChange.Reason
         QUERY: BigQueryAuditMetadata.ModelMetadataChange.Reason
@@ -519,7 +518,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class RoutineChange(_message.Message):
         __slots__ = ("routine", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineChange.Reason]
@@ -527,6 +525,7 @@ class BigQueryAuditMetadata(_message.Message):
             ROUTINE_UPDATE_REQUEST: _ClassVar[
                 BigQueryAuditMetadata.RoutineChange.Reason
             ]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.RoutineChange.Reason
         QUERY: BigQueryAuditMetadata.RoutineChange.Reason
         ROUTINE_UPDATE_REQUEST: BigQueryAuditMetadata.RoutineChange.Reason
@@ -554,7 +553,6 @@ class BigQueryAuditMetadata(_message.Message):
             "job_name",
             "stream_name",
         )
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDataChange.Reason]
@@ -564,6 +562,7 @@ class BigQueryAuditMetadata(_message.Message):
                 BigQueryAuditMetadata.TableDataChange.Reason
             ]
             WRITE_API: _ClassVar[BigQueryAuditMetadata.TableDataChange.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.TableDataChange.Reason
         JOB: BigQueryAuditMetadata.TableDataChange.Reason
         QUERY: BigQueryAuditMetadata.TableDataChange.Reason
@@ -595,11 +594,11 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelDataChange(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDataChange.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.ModelDataChange.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.ModelDataChange.Reason
         QUERY: BigQueryAuditMetadata.ModelDataChange.Reason
         REASON_FIELD_NUMBER: _ClassVar[int]
@@ -616,11 +615,11 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelDataRead(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDataRead.Reason]
             JOB: _ClassVar[BigQueryAuditMetadata.ModelDataRead.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.ModelDataRead.Reason
         JOB: BigQueryAuditMetadata.ModelDataRead.Reason
         REASON_FIELD_NUMBER: _ClassVar[int]
@@ -637,13 +636,13 @@ class BigQueryAuditMetadata(_message.Message):
 
     class TableDeletion(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.TableDeletion.Reason]
             TABLE_DELETE_REQUEST: _ClassVar[BigQueryAuditMetadata.TableDeletion.Reason]
             EXPIRED: _ClassVar[BigQueryAuditMetadata.TableDeletion.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.TableDeletion.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.TableDeletion.Reason
         TABLE_DELETE_REQUEST: BigQueryAuditMetadata.TableDeletion.Reason
         EXPIRED: BigQueryAuditMetadata.TableDeletion.Reason
@@ -662,13 +661,13 @@ class BigQueryAuditMetadata(_message.Message):
 
     class ModelDeletion(_message.Message):
         __slots__ = ("reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.ModelDeletion.Reason]
             MODEL_DELETE_REQUEST: _ClassVar[BigQueryAuditMetadata.ModelDeletion.Reason]
             EXPIRED: _ClassVar[BigQueryAuditMetadata.ModelDeletion.Reason]
             QUERY: _ClassVar[BigQueryAuditMetadata.ModelDeletion.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.ModelDeletion.Reason
         MODEL_DELETE_REQUEST: BigQueryAuditMetadata.ModelDeletion.Reason
         EXPIRED: BigQueryAuditMetadata.ModelDeletion.Reason
@@ -687,7 +686,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class RoutineDeletion(_message.Message):
         __slots__ = ("routine", "reason", "job_name")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.RoutineDeletion.Reason]
@@ -695,6 +693,7 @@ class BigQueryAuditMetadata(_message.Message):
             ROUTINE_DELETE_REQUEST: _ClassVar[
                 BigQueryAuditMetadata.RoutineDeletion.Reason
             ]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.RoutineDeletion.Reason
         QUERY: BigQueryAuditMetadata.RoutineDeletion.Reason
         ROUTINE_DELETE_REQUEST: BigQueryAuditMetadata.RoutineDeletion.Reason
@@ -766,11 +765,11 @@ class BigQueryAuditMetadata(_message.Message):
 
     class UnlinkDataset(_message.Message):
         __slots__ = ("linked_dataset", "source_dataset", "reason")
-
         class Reason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             REASON_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.UnlinkDataset.Reason]
             UNLINK_API: _ClassVar[BigQueryAuditMetadata.UnlinkDataset.Reason]
+
         REASON_UNSPECIFIED: BigQueryAuditMetadata.UnlinkDataset.Reason
         UNLINK_API: BigQueryAuditMetadata.UnlinkDataset.Reason
         LINKED_DATASET_FIELD_NUMBER: _ClassVar[int]
@@ -821,7 +820,6 @@ class BigQueryAuditMetadata(_message.Message):
             "table_copy_config",
             "labels",
         )
-
         class Type(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
             __slots__ = ()
             TYPE_UNSPECIFIED: _ClassVar[BigQueryAuditMetadata.JobConfig.Type]
@@ -829,12 +827,12 @@ class BigQueryAuditMetadata(_message.Message):
             COPY: _ClassVar[BigQueryAuditMetadata.JobConfig.Type]
             EXPORT: _ClassVar[BigQueryAuditMetadata.JobConfig.Type]
             IMPORT: _ClassVar[BigQueryAuditMetadata.JobConfig.Type]
+
         TYPE_UNSPECIFIED: BigQueryAuditMetadata.JobConfig.Type
         QUERY: BigQueryAuditMetadata.JobConfig.Type
         COPY: BigQueryAuditMetadata.JobConfig.Type
         EXPORT: BigQueryAuditMetadata.JobConfig.Type
         IMPORT: BigQueryAuditMetadata.JobConfig.Type
-
         class Query(_message.Message):
             __slots__ = (
                 "query",
@@ -848,7 +846,6 @@ class BigQueryAuditMetadata(_message.Message):
                 "destination_table_encryption",
                 "statement_type",
             )
-
             class Priority(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
                 __slots__ = ()
                 PRIORITY_UNSPECIFIED: _ClassVar[
@@ -858,6 +855,7 @@ class BigQueryAuditMetadata(_message.Message):
                     BigQueryAuditMetadata.JobConfig.Query.Priority
                 ]
                 QUERY_BATCH: _ClassVar[BigQueryAuditMetadata.JobConfig.Query.Priority]
+
             PRIORITY_UNSPECIFIED: BigQueryAuditMetadata.JobConfig.Query.Priority
             QUERY_INTERACTIVE: BigQueryAuditMetadata.JobConfig.Query.Priority
             QUERY_BATCH: BigQueryAuditMetadata.JobConfig.Query.Priority
@@ -1035,6 +1033,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self, key: _Optional[str] = ..., value: _Optional[str] = ...
             ) -> None: ...
+
         TYPE_FIELD_NUMBER: _ClassVar[int]
         QUERY_CONFIG_FIELD_NUMBER: _ClassVar[int]
         LOAD_CONFIG_FIELD_NUMBER: _ClassVar[int]
@@ -1105,7 +1104,6 @@ class BigQueryAuditMetadata(_message.Message):
             "reservation",
             "parent_job_name",
         )
-
         class Query(_message.Message):
             __slots__ = (
                 "total_processed_bytes",
@@ -1166,6 +1164,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self, name: _Optional[str] = ..., slot_ms: _Optional[int] = ...
             ) -> None: ...
+
         CREATE_TIME_FIELD_NUMBER: _ClassVar[int]
         START_TIME_FIELD_NUMBER: _ClassVar[int]
         END_TIME_FIELD_NUMBER: _ClassVar[int]
@@ -1320,7 +1319,6 @@ class BigQueryAuditMetadata(_message.Message):
 
     class EntityInfo(_message.Message):
         __slots__ = ("friendly_name", "description", "labels")
-
         class LabelsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -1330,6 +1328,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self, key: _Optional[str] = ..., value: _Optional[str] = ...
             ) -> None: ...
+
         FRIENDLY_NAME_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         LABELS_FIELD_NUMBER: _ClassVar[int]
@@ -1438,6 +1437,7 @@ class BigQueryAuditMetadata(_message.Message):
         DOC_ID_FIELD_NUMBER: _ClassVar[int]
         doc_id: str
         def __init__(self, doc_id: _Optional[str] = ...) -> None: ...
+
     JOB_INSERTION_FIELD_NUMBER: _ClassVar[int]
     JOB_CHANGE_FIELD_NUMBER: _ClassVar[int]
     JOB_DELETION_FIELD_NUMBER: _ClassVar[int]

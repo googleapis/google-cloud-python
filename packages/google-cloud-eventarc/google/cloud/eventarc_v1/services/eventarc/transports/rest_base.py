@@ -19,8 +19,10 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
@@ -31,12 +33,14 @@ from google.cloud.eventarc_v1.types import (
     enrollment,
     eventarc,
     google_api_source,
+    google_channel_config,
+    message_bus,
+    pipeline,
+    trigger,
 )
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
-from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
 from .base import DEFAULT_CLIENT_INFO, EventarcTransport
 

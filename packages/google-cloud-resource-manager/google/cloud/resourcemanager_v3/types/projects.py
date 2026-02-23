@@ -127,6 +127,7 @@ class Project(proto.Message):
                 be reversed by invoking [UndeleteProject]
                 [google.cloud.resourcemanager.v3.Projects.UndeleteProject].
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2

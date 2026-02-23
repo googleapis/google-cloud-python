@@ -236,6 +236,7 @@ class Space(proto.Message):
                 doesn't include direct messages between two
                 humans.
         """
+
         TYPE_UNSPECIFIED = 0
         ROOM = 1
         DM = 2
@@ -257,6 +258,7 @@ class Space(proto.Message):
                 1:1 messages between two humans or a human
                 and a Chat app.
         """
+
         SPACE_TYPE_UNSPECIFIED = 0
         SPACE = 1
         GROUP_CHAT = 2
@@ -281,6 +283,7 @@ class Space(proto.Message):
                 Direct messages (DMs) between two people and
                 group conversations between 3 or more people.
         """
+
         SPACE_THREADING_STATE_UNSPECIFIED = 0
         THREADED_MESSAGES = 2
         GROUPED_MESSAGES = 3
@@ -303,6 +306,7 @@ class Space(proto.Message):
                 space where only space managers can post
                 messages.
         """
+
         PREDEFINED_PERMISSION_SETTINGS_UNSPECIFIED = 0
         COLLABORATION_SPACE = 1
         ANNOUNCEMENT_SPACE = 2
@@ -421,6 +425,7 @@ class Space(proto.Message):
                     Creating discoverable spaces requires `user
                     authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
             """
+
             ACCESS_STATE_UNSPECIFIED = 0
             PRIVATE = 1
             DISCOVERABLE = 2

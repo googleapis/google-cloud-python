@@ -83,6 +83,7 @@ class JobView(proto.Enum):
             All available attributes are included in the
             search results.
     """
+
     JOB_VIEW_UNSPECIFIED = 0
     JOB_VIEW_ID_ONLY = 1
     JOB_VIEW_MINIMAL = 2
@@ -678,6 +679,7 @@ class SearchJobsRequest(proto.Message):
                 the search results), with relevance being used
                 as a tiebreaker.
         """
+
         SEARCH_MODE_UNSPECIFIED = 0
         JOB_SEARCH = 1
         FEATURED_JOB_SEARCH = 2
@@ -710,6 +712,7 @@ class SearchJobsRequest(proto.Message):
                 returned. If you are using page offset, latency
                 might be higher but all results are returned.
         """
+
         DIVERSIFICATION_LEVEL_UNSPECIFIED = 0
         DISABLED = 1
         SIMPLE = 2
@@ -754,6 +757,7 @@ class SearchJobsRequest(proto.Message):
                 Only enable keyword matching over
                 [Job.title][google.cloud.talent.v4beta1.Job.title].
         """
+
         KEYWORD_MATCH_MODE_UNSPECIFIED = 0
         KEYWORD_MATCH_DISABLED = 1
         KEYWORD_MATCH_ALL = 2
@@ -777,6 +781,7 @@ class SearchJobsRequest(proto.Message):
             HIGH (4):
                 High relevance threshold.
         """
+
         RELEVANCE_THRESHOLD_UNSPECIFIED = 0
         LOWEST = 1
         LOW = 2
@@ -861,6 +866,7 @@ class SearchJobsRequest(proto.Message):
                     position with existing relevance score
                     (determined by API algorithm) ignored.
             """
+
             IMPORTANCE_LEVEL_UNSPECIFIED = 0
             NONE = 1
             LOW = 2
@@ -1096,12 +1102,12 @@ class SearchJobsResponse(proto.Message):
         number=1,
         message=MatchingJob,
     )
-    histogram_query_results: MutableSequence[
-        histogram.HistogramQueryResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=histogram.HistogramQueryResult,
+    histogram_query_results: MutableSequence[histogram.HistogramQueryResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=histogram.HistogramQueryResult,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

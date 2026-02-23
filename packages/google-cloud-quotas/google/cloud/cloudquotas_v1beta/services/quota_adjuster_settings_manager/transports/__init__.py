@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[QuotaAdjusterSettingsManagerTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[QuotaAdjusterSettingsManagerTransport]]
 _transport_registry["grpc"] = QuotaAdjusterSettingsManagerGrpcTransport
 _transport_registry["grpc_asyncio"] = QuotaAdjusterSettingsManagerGrpcAsyncIOTransport
 _transport_registry["rest"] = QuotaAdjusterSettingsManagerRestTransport

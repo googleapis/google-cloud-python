@@ -846,6 +846,7 @@ class HumanAgentAssistantConfig(proto.Message):
                         amount, etc. Section names are prefixed by
                         "entities/".
                 """
+
                 SECTION_TYPE_UNSPECIFIED = 0
                 SITUATION = 1
                 ACTION = 2
@@ -1152,6 +1153,7 @@ class NotificationConfig(proto.Message):
             JSON (2):
                 Pub/Sub message will be json.
         """
+
         MESSAGE_FORMAT_UNSPECIFIED = 0
         PROTO = 1
         JSON = 2
@@ -1218,6 +1220,7 @@ class SuggestionFeature(proto.Message):
                 Run knowledge assist with automatic query
                 generation.
         """
+
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2

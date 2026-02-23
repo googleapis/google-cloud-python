@@ -77,6 +77,7 @@ class Protocols(proto.Enum):
         ISCSI (4):
             ISCSI protocol
     """
+
     PROTOCOLS_UNSPECIFIED = 0
     NFSV3 = 1
     NFSV4 = 2
@@ -98,6 +99,7 @@ class AccessType(proto.Enum):
         READ_NONE (3):
             None
     """
+
     ACCESS_TYPE_UNSPECIFIED = 0
     READ_ONLY = 1
     READ_WRITE = 2
@@ -131,6 +133,7 @@ class SMBSettings(proto.Enum):
         CONTINUOUSLY_AVAILABLE (9):
             Continuously available enumeration
     """
+
     SMB_SETTINGS_UNSPECIFIED = 0
     ENCRYPT_DATA = 1
     BROWSABLE = 2
@@ -154,6 +157,7 @@ class SecurityStyle(proto.Enum):
         UNIX (2):
             SecurityStyle uses UNIX
     """
+
     SECURITY_STYLE_UNSPECIFIED = 0
     NTFS = 1
     UNIX = 2
@@ -169,6 +173,7 @@ class RestrictedAction(proto.Enum):
             Prevent volume from being deleted when
             mounted.
     """
+
     RESTRICTED_ACTION_UNSPECIFIED = 0
     DELETE = 1
 
@@ -524,6 +529,7 @@ class Volume(proto.Message):
             READ_ONLY (9):
                 Volume State is Read Only
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2
@@ -851,6 +857,7 @@ class SimpleExportPolicyRule(proto.Message):
             ALL_SQUASH (3):
                 All users are squashed to anonymous user ID.
         """
+
         SQUASH_MODE_UNSPECIFIED = 0
         NO_ROOT_SQUASH = 1
         ROOT_SQUASH = 2
@@ -1328,6 +1335,7 @@ class TieringPolicy(proto.Message):
                 new data. Existing data stays tiered until
                 accessed.
         """
+
         TIER_ACTION_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2
@@ -1408,6 +1416,7 @@ class HybridReplicationParameters(proto.Message):
                 New field for reversible OnPrem replication,
                 to be used for data protection.
         """
+
         VOLUME_HYBRID_REPLICATION_TYPE_UNSPECIFIED = 0
         MIGRATION = 1
         CONTINUOUS_REPLICATION = 2
@@ -1523,6 +1532,7 @@ class CacheParameters(proto.Message):
                 Terminal state wherein peering with origin
                 volume's ONTAP cluster has failed.
         """
+
         CACHE_STATE_UNSPECIFIED = 0
         PENDING_CLUSTER_PEERING = 1
         PENDING_SVM_PEERING = 2
@@ -1628,6 +1638,7 @@ class CacheConfig(proto.Message):
                 update request requested a prepopulation job but
                 the prepopulate job failed.
         """
+
         CACHE_PRE_POPULATE_STATE_UNSPECIFIED = 0
         NOT_NEEDED = 1
         IN_PROGRESS = 2

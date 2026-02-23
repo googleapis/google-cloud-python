@@ -22,12 +22,12 @@ import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
+from google.analytics.admin_v1alpha.types import event_create_and_edit
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
 )
-from google.analytics.admin_v1alpha.types import audience as gaa_audience
-from google.analytics.admin_v1alpha.types import event_create_and_edit
 
 __protobuf__ = proto.module(
     package="google.analytics.admin.v1alpha",
@@ -144,6 +144,7 @@ class IndustryCategory(proto.Enum):
         SHOPPING (26):
             Shopping
     """
+
     INDUSTRY_CATEGORY_UNSPECIFIED = 0
     AUTOMOTIVE = 1
     BUSINESS_AND_INDUSTRIAL_MARKETS = 2
@@ -185,6 +186,7 @@ class ServiceLevel(proto.Enum):
             The paid, premium version of Google
             Analytics.
     """
+
     SERVICE_LEVEL_UNSPECIFIED = 0
     GOOGLE_ANALYTICS_STANDARD = 1
     GOOGLE_ANALYTICS_360 = 2
@@ -205,6 +207,7 @@ class ActorType(proto.Enum):
             Changes made by Google Analytics support team
             staff.
     """
+
     ACTOR_TYPE_UNSPECIFIED = 0
     USER = 1
     SYSTEM = 2
@@ -224,6 +227,7 @@ class ActionType(proto.Enum):
         DELETED (3):
             Resource was deleted in this change.
     """
+
     ACTION_TYPE_UNSPECIFIED = 0
     CREATED = 1
     UPDATED = 2
@@ -297,6 +301,7 @@ class ChangeHistoryResourceType(proto.Enum):
         REPORTING_IDENTITY_SETTINGS (34):
             ReportingIdentitySettings resource
     """
+
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
     PROPERTY = 2
@@ -342,6 +347,7 @@ class GoogleSignalsState(proto.Enum):
         GOOGLE_SIGNALS_DISABLED (2):
             Google Signals is disabled.
     """
+
     GOOGLE_SIGNALS_STATE_UNSPECIFIED = 0
     GOOGLE_SIGNALS_ENABLED = 1
     GOOGLE_SIGNALS_DISABLED = 2
@@ -360,6 +366,7 @@ class GoogleSignalsConsent(proto.Enum):
         GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED (1):
             Terms of service have not been accepted
     """
+
     GOOGLE_SIGNALS_CONSENT_UNSPECIFIED = 0
     GOOGLE_SIGNALS_CONSENT_CONSENTED = 2
     GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED = 1
@@ -379,6 +386,7 @@ class LinkProposalInitiatingProduct(proto.Enum):
             This proposal was created by a user from a
             linked product (not Google Analytics).
     """
+
     LINK_PROPOSAL_INITIATING_PRODUCT_UNSPECIFIED = 0
     GOOGLE_ANALYTICS = 1
     LINKED_PRODUCT = 2
@@ -418,6 +426,7 @@ class LinkProposalState(proto.Enum):
             This proposal will be automatically deleted
             after some time.
     """
+
     LINK_PROPOSAL_STATE_UNSPECIFIED = 0
     AWAITING_REVIEW_FROM_GOOGLE_ANALYTICS = 1
     AWAITING_REVIEW_FROM_LINKED_PRODUCT = 2
@@ -440,6 +449,7 @@ class PropertyType(proto.Enum):
         PROPERTY_TYPE_ROLLUP (3):
             Google Analytics rollup property
     """
+
     PROPERTY_TYPE_UNSPECIFIED = 0
     PROPERTY_TYPE_ORDINARY = 1
     PROPERTY_TYPE_SUBPROPERTY = 2
@@ -462,6 +472,7 @@ class CoarseValue(proto.Enum):
         COARSE_VALUE_HIGH (3):
             Coarse value of high.
     """
+
     COARSE_VALUE_UNSPECIFIED = 0
     COARSE_VALUE_LOW = 1
     COARSE_VALUE_MEDIUM = 2
@@ -720,6 +731,7 @@ class DataStream(proto.Message):
             IOS_APP_DATA_STREAM (3):
                 iOS app data stream.
         """
+
         DATA_STREAM_TYPE_UNSPECIFIED = 0
         WEB_DATA_STREAM = 1
         ANDROID_APP_DATA_STREAM = 2
@@ -2175,6 +2187,7 @@ class ConversionEvent(proto.Message):
                 An Event instance is considered a Conversion
                 at most once per session per user.
         """
+
         CONVERSION_COUNTING_METHOD_UNSPECIFIED = 0
         ONCE_PER_EVENT = 1
         ONCE_PER_SESSION = 2
@@ -2296,6 +2309,7 @@ class KeyEvent(proto.Message):
                 An Event instance is considered a Key Event
                 at most once per session per user.
         """
+
         COUNTING_METHOD_UNSPECIFIED = 0
         ONCE_PER_EVENT = 1
         ONCE_PER_SESSION = 2
@@ -2450,6 +2464,7 @@ class CustomDimension(proto.Message):
             ITEM (3):
                 Dimension scoped to eCommerce items
         """
+
         DIMENSION_SCOPE_UNSPECIFIED = 0
         EVENT = 1
         USER = 2
@@ -2553,6 +2568,7 @@ class CustomMetric(proto.Message):
             HOURS (10):
                 This metric measures hours.
         """
+
         MEASUREMENT_UNIT_UNSPECIFIED = 0
         STANDARD = 1
         CURRENCY = 2
@@ -2574,6 +2590,7 @@ class CustomMetric(proto.Message):
             EVENT (1):
                 Metric scoped to an event.
         """
+
         METRIC_SCOPE_UNSPECIFIED = 0
         EVENT = 1
 
@@ -2589,6 +2606,7 @@ class CustomMetric(proto.Message):
             REVENUE_DATA (2):
                 Metric reports revenue data.
         """
+
         RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
         COST_DATA = 1
         REVENUE_DATA = 2
@@ -2699,6 +2717,7 @@ class CalculatedMetric(proto.Message):
             HOURS (10):
                 This metric measures hours.
         """
+
         METRIC_UNIT_UNSPECIFIED = 0
         STANDARD = 1
         CURRENCY = 2
@@ -2724,6 +2743,7 @@ class CalculatedMetric(proto.Message):
             REVENUE_DATA (2):
                 Metric reports revenue data.
         """
+
         RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
         COST_DATA = 1
         REVENUE_DATA = 2
@@ -2809,6 +2829,7 @@ class DataRetentionSettings(proto.Message):
                 months. Available to 360 properties only.
                 Available for event data only.
         """
+
         RETENTION_DURATION_UNSPECIFIED = 0
         TWO_MONTHS = 1
         FOURTEEN_MONTHS = 3
@@ -2882,6 +2903,7 @@ class AttributionSettings(proto.Message):
             ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS (2):
                 30-day lookback window.
         """
+
         ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED = 0
         ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS = 1
         ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS = 2
@@ -2901,6 +2923,7 @@ class AttributionSettings(proto.Message):
             OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS (3):
                 90-day lookback window.
         """
+
         OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED = 0
         OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS = 1
         OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_60_DAYS = 2
@@ -2928,6 +2951,7 @@ class AttributionSettings(proto.Message):
                 Paid channel that the customer clicked through before
                 converting. Previously ADS_PREFERRED_LAST_CLICK
         """
+
         REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED = 0
         PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN = 1
         PAID_AND_ORGANIC_CHANNELS_LAST_CLICK = 2
@@ -2955,6 +2979,7 @@ class AttributionSettings(proto.Message):
                 conversion credit. To learn more, see `Google Paid
                 channels <https://support.google.com/analytics/answer/10632359>`__.
         """
+
         ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED = 0
         NOT_SELECTED_YET = 1
         PAID_AND_ORGANIC_CHANNELS = 2
@@ -3400,6 +3425,7 @@ class ReportingDataAnnotation(proto.Message):
                 Orange color. (Only used for system-generated
                 annotations)
         """
+
         COLOR_UNSPECIFIED = 0
         PURPLE = 1
         BROWN = 2
@@ -3518,6 +3544,7 @@ class SubpropertySyncConfig(proto.Message):
                 property. Local mutations are not allowed on the
                 subproperty (Create / Update / Delete)
         """
+
         SYNCHRONIZATION_MODE_UNSPECIFIED = 0
         NONE = 1
         ALL = 2
@@ -3565,6 +3592,7 @@ class ReportingIdentitySettings(proto.Message):
             DEVICE_BASED (3):
                 Device-based reporting identity strategy.
         """
+
         IDENTITY_BLENDING_STRATEGY_UNSPECIFIED = 0
         BLENDED = 1
         OBSERVED = 2

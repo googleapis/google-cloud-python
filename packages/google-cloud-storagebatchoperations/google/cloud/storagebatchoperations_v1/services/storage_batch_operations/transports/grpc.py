@@ -16,20 +16,20 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.storagebatchoperations_v1.types import (
     storage_batch_operations,
@@ -487,6 +487,64 @@ class StorageBatchOperationsGrpcTransport(StorageBatchOperationsTransport):
                 response_deserializer=storage_batch_operations.CancelJobResponse.deserialize,
             )
         return self._stubs["cancel_job"]
+
+    @property
+    def list_bucket_operations(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.ListBucketOperationsRequest],
+        storage_batch_operations.ListBucketOperationsResponse,
+    ]:
+        r"""Return a callable for the list bucket operations method over gRPC.
+
+        Lists BucketOperations in a given project and job.
+
+        Returns:
+            Callable[[~.ListBucketOperationsRequest],
+                    ~.ListBucketOperationsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_bucket_operations" not in self._stubs:
+            self._stubs["list_bucket_operations"] = self._logged_channel.unary_unary(
+                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListBucketOperations",
+                request_serializer=storage_batch_operations.ListBucketOperationsRequest.serialize,
+                response_deserializer=storage_batch_operations.ListBucketOperationsResponse.deserialize,
+            )
+        return self._stubs["list_bucket_operations"]
+
+    @property
+    def get_bucket_operation(
+        self,
+    ) -> Callable[
+        [storage_batch_operations.GetBucketOperationRequest],
+        storage_batch_operations_types.BucketOperation,
+    ]:
+        r"""Return a callable for the get bucket operation method over gRPC.
+
+        Gets a BucketOperation.
+
+        Returns:
+            Callable[[~.GetBucketOperationRequest],
+                    ~.BucketOperation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_bucket_operation" not in self._stubs:
+            self._stubs["get_bucket_operation"] = self._logged_channel.unary_unary(
+                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetBucketOperation",
+                request_serializer=storage_batch_operations.GetBucketOperationRequest.serialize,
+                response_deserializer=storage_batch_operations_types.BucketOperation.deserialize,
+            )
+        return self._stubs["get_bucket_operation"]
 
     def close(self):
         self._logged_channel.close()

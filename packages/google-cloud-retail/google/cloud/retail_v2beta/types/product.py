@@ -611,6 +611,7 @@ class Product(proto.Message):
                 together, such as a jewelry set with necklaces, earrings and
                 rings, etc.
         """
+
         TYPE_UNSPECIFIED = 0
         PRIMARY = 1
         VARIANT = 2
@@ -635,6 +636,7 @@ class Product(proto.Message):
                 Product that is back-ordered (i.e.
                 temporarily out of stock).
         """
+
         AVAILABILITY_UNSPECIFIED = 0
         IN_STOCK = 1
         OUT_OF_STOCK = 2

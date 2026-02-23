@@ -56,6 +56,7 @@ class IndustryVertical(proto.Enum):
         HEALTHCARE_FHIR (7):
             The healthcare FHIR vertical.
     """
+
     INDUSTRY_VERTICAL_UNSPECIFIED = 0
     GENERIC = 1
     MEDIA = 2
@@ -81,6 +82,7 @@ class SolutionType(proto.Enum):
             data stores must enrolled with ``SOLUTION_TYPE_CHAT``
             solution.
     """
+
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
     SOLUTION_TYPE_SEARCH = 2
@@ -103,6 +105,7 @@ class SearchUseCase(proto.Enum):
             Browse use case. Expects the traffic has an empty
             [query][google.cloud.discoveryengine.v1alpha.SearchRequest.query].
     """
+
     SEARCH_USE_CASE_UNSPECIFIED = 0
     SEARCH_USE_CASE_SEARCH = 1
     SEARCH_USE_CASE_BROWSE = 2
@@ -122,6 +125,7 @@ class SearchTier(proto.Enum):
         SEARCH_TIER_ENTERPRISE (2):
             Enterprise tier.
     """
+
     SEARCH_TIER_UNSPECIFIED = 0
     SEARCH_TIER_STANDARD = 1
     SEARCH_TIER_ENTERPRISE = 2
@@ -137,6 +141,7 @@ class SearchAddOn(proto.Enum):
         SEARCH_ADD_ON_LLM (1):
             Large language model add-on.
     """
+
     SEARCH_ADD_ON_UNSPECIFIED = 0
     SEARCH_ADD_ON_LLM = 1
 
@@ -155,6 +160,7 @@ class FileOriginType(proto.Enum):
             The file was generated from other files by an
             internal process.
     """
+
     FILE_ORIGIN_TYPE_UNSPECIFIED = 0
     USER_PROVIDED = 1
     AI_GENERATED = 2
@@ -391,6 +397,7 @@ class IdpConfig(proto.Message):
             THIRD_PARTY (2):
                 Third party provider.
         """
+
         IDP_TYPE_UNSPECIFIED = 0
         GSUITE = 1
         THIRD_PARTY = 2

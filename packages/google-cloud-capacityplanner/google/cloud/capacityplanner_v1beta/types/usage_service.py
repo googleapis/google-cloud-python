@@ -388,6 +388,7 @@ class QueryReservationsRequest(proto.Message):
             RESERVATION_TYPE_ALL (3):
                 All reservations.
         """
+
         RESERVATION_TYPE_UNSPECIFIED = 0
         RESERVATION_TYPE_ALLOCATION = 1
         RESERVATION_TYPE_FUTURE_RESERVATION = 2
@@ -406,6 +407,7 @@ class QueryReservationsRequest(proto.Message):
                 Shared-reservation is open to specific
                 projects.
         """
+
         SHARE_TYPE_UNSPECIFIED = 0
         SHARE_TYPE_LOCAL = 1
         SHARE_TYPE_SPECIFIC_PROJECTS = 2
@@ -427,6 +429,7 @@ class QueryReservationsRequest(proto.Message):
                 Container (project/folder/organization), but not
                 owned by them.
         """
+
         OWNERSHIP_TYPE_UNSPECIFIED = 0
         OWNERSHIP_TYPE_OWNED = 1
         OWNERSHIP_TYPE_SHARED_BY_OTHERS = 2
@@ -448,6 +451,7 @@ class QueryReservationsRequest(proto.Message):
                 limited fields which are useful for Capacity
                 Planning.
         """
+
         RESERVATION_DATA_LEVEL_UNSPECIFIED = 0
         RESERVATION_DATA_LEVEL_AGGREGATED = 1
         RESERVATION_DATA_LEVEL_PER_RESERVATION = 2
@@ -604,6 +608,7 @@ class Forecast(proto.Message):
                 Yearly Seasonality model provides generic
                 seasonality beyond BFCM.
         """
+
         FORECAST_TYPE_UNSPECIFIED = 0
         STATISTICAL = 1
         STATISTICAL_WITH_BFCM = 2
@@ -625,6 +630,7 @@ class Forecast(proto.Message):
                 The time series represents the lower bound of
                 the forecast.
         """
+
         BOUNDS_UNSPECIFIED = 0
         LOWER_BOUND = 1
         MEDIAN = 2
@@ -649,6 +655,7 @@ class Forecast(proto.Message):
                 ``PREDICTION_INTERVAL_50`` means that the ``UPPER_BOUND``
                 will represent the 75th precentile.
         """
+
         PREDICTION_INTERVAL_UNSPECIFIED = 0
         PREDICTION_INTERVAL_90 = 1
         PREDICTION_INTERVAL_50 = 2
@@ -718,6 +725,7 @@ class UsageHistory(proto.Message):
                 Time series values represent the 99th
                 percentile of the sampled values.
         """
+
         AGGREGATION_METHOD_UNSPECIFIED = 0
         MEDIAN = 1
         PEAK = 2
@@ -794,6 +802,7 @@ class TimeSeries(proto.Message):
                 Time series values represent usage aggregated
                 at the zone level.
         """
+
         LOCATION_TYPE_UNSPECIFIED = 0
         REGIONAL = 1
         ZONAL = 2
@@ -891,12 +900,12 @@ class ReservationData(proto.Message):
         number=5,
         message="TimeSeries",
     )
-    future_reservations: MutableSequence[
-        future_reservation.FutureReservation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=future_reservation.FutureReservation,
+    future_reservations: MutableSequence[future_reservation.FutureReservation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=future_reservation.FutureReservation,
+        )
     )
     allocations: MutableSequence[allocation.Allocation] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1286,6 +1295,7 @@ class ExportReservationsUsageRequest(proto.Message):
                 Shared-reservation is open to specific
                 projects.
         """
+
         SHARE_TYPE_UNSPECIFIED = 0
         SHARE_TYPE_LOCAL = 1
         SHARE_TYPE_SPECIFIC_PROJECTS = 2
@@ -1471,6 +1481,7 @@ class BigQueryDestination(proto.Message):
                 additional timestamp column representing when
                 the request was received.
         """
+
         PARTITION_KEY_UNSPECIFIED = 0
         REQUEST_TIME = 1
 
@@ -1494,6 +1505,7 @@ class BigQueryDestination(proto.Message):
                 If the table already exists and contains
                 data, an error is returned.
         """
+
         WRITE_DISPOSITION_UNSPECIFIED = 0
         WRITE_APPEND = 1
         WRITE_TRUNCATE = 2
@@ -1513,6 +1525,7 @@ class BigQueryDestination(proto.Message):
                 If the table does not exist, an error will be
                 returned.
         """
+
         CREATE_DISPOSITION_UNSPECIFIED = 0
         CREATE_IF_NEEDED = 1
         CREATE_NEVER = 2

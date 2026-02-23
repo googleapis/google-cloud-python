@@ -52,6 +52,7 @@ class Type(proto.Enum):
             Deprecated: This field is never used. Use release_render log
             type instead.
     """
+
     TYPE_UNSPECIFIED = 0
     TYPE_PUBSUB_NOTIFICATION_FAILURE = 1
     TYPE_RESOURCE_STATE_CHANGE = 3

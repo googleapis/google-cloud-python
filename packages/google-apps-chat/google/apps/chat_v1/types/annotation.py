@@ -54,6 +54,7 @@ class AnnotationType(proto.Enum):
         CUSTOM_EMOJI (4):
             A custom emoji annotation.
     """
+
     ANNOTATION_TYPE_UNSPECIFIED = 0
     USER_MENTION = 1
     SLASH_COMMAND = 2
@@ -192,6 +193,7 @@ class UserMentionMetadata(proto.Message):
             MENTION (2):
                 Mention user in space.
         """
+
         TYPE_UNSPECIFIED = 0
         ADD = 1
         MENTION = 2
@@ -236,6 +238,7 @@ class SlashCommandMetadata(proto.Message):
             INVOKE (2):
                 Invoke slash command in space.
         """
+
         TYPE_UNSPECIFIED = 0
         ADD = 1
         INVOKE = 2
@@ -324,6 +327,7 @@ class RichLinkMetadata(proto.Message):
                 A Calendar message rich link type. For
                 example, a Calendar chip.
         """
+
         RICH_LINK_TYPE_UNSPECIFIED = 0
         DRIVE_FILE = 1
         CHAT_SPACE = 2
@@ -462,6 +466,7 @@ class MeetSpaceLinkData(proto.Message):
             HUDDLE (2):
                 The Meet space is a huddle.
         """
+
         TYPE_UNSPECIFIED = 0
         MEETING = 1
         HUDDLE = 2
@@ -483,6 +488,7 @@ class MeetSpaceLinkData(proto.Message):
                 Meet space URI and identifiers will no longer be
                 valid.
         """
+
         HUDDLE_STATUS_UNSPECIFIED = 0
         STARTED = 1
         ENDED = 2

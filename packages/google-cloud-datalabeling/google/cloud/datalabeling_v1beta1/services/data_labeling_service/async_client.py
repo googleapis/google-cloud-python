@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.datalabeling_v1beta1 import gapic_version as package_version
 
@@ -50,21 +50,24 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.datalabeling_v1beta1.services.data_labeling_service import pagers
-from google.cloud.datalabeling_v1beta1.types import data_labeling_service, data_payloads
+from google.cloud.datalabeling_v1beta1.types import (
+    annotation,
+    annotation_spec_set,
+    data_labeling_service,
+    data_payloads,
+    dataset,
+    evaluation,
+    evaluation_job,
+    human_annotation_config,
+    instruction,
+    operations,
+)
 from google.cloud.datalabeling_v1beta1.types import (
     annotation_spec_set as gcd_annotation_spec_set,
 )
+from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
 from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
-from google.cloud.datalabeling_v1beta1.types import annotation
-from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
-from google.cloud.datalabeling_v1beta1.types import dataset
-from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
-from google.cloud.datalabeling_v1beta1.types import evaluation
-from google.cloud.datalabeling_v1beta1.types import evaluation_job
-from google.cloud.datalabeling_v1beta1.types import human_annotation_config
-from google.cloud.datalabeling_v1beta1.types import instruction
-from google.cloud.datalabeling_v1beta1.types import operations
 
 from .client import DataLabelingServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataLabelingServiceTransport
@@ -160,7 +163,10 @@ class DataLabelingServiceAsyncClient:
         Returns:
             DataLabelingServiceAsyncClient: The constructed client.
         """
-        return DataLabelingServiceClient.from_service_account_info.__func__(DataLabelingServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            DataLabelingServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(DataLabelingServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -176,7 +182,10 @@ class DataLabelingServiceAsyncClient:
         Returns:
             DataLabelingServiceAsyncClient: The constructed client.
         """
-        return DataLabelingServiceClient.from_service_account_file.__func__(DataLabelingServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            DataLabelingServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(DataLabelingServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -214,7 +223,9 @@ class DataLabelingServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return DataLabelingServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return DataLabelingServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> DataLabelingServiceTransport:

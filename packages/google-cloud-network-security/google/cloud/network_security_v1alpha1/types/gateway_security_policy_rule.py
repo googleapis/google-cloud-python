@@ -91,6 +91,7 @@ class GatewaySecurityPolicyRule(proto.Message):
             DENY (2):
                 Deny the matched traffic.
         """
+
         BASIC_PROFILE_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -272,12 +273,12 @@ class ListGatewaySecurityPolicyRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateway_security_policy_rules: MutableSequence[
-        "GatewaySecurityPolicyRule"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="GatewaySecurityPolicyRule",
+    gateway_security_policy_rules: MutableSequence["GatewaySecurityPolicyRule"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="GatewaySecurityPolicyRule",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

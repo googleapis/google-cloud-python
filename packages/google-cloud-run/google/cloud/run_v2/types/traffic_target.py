@@ -41,6 +41,7 @@ class TrafficTargetAllocationType(proto.Enum):
         TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION (2):
             Allocates instances to a Revision by name.
     """
+
     TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 0
     TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 1
     TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 2

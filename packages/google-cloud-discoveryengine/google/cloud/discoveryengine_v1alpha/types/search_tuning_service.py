@@ -68,12 +68,12 @@ class ListCustomModelsResponse(proto.Message):
             List of custom tuning models.
     """
 
-    models: MutableSequence[
-        custom_tuning_model.CustomTuningModel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=custom_tuning_model.CustomTuningModel,
+    models: MutableSequence[custom_tuning_model.CustomTuningModel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=custom_tuning_model.CustomTuningModel,
+        )
     )
 
 

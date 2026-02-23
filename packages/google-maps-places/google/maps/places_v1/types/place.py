@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.date_pb2 as date_pb2  # type: ignore
 import google.type.datetime_pb2 as datetime_pb2  # type: ignore
@@ -25,13 +24,12 @@ import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
 import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.places_v1.types import address_descriptor as gmp_address_descriptor
-from google.maps.places_v1.types import content_block, ev_charging
+from google.maps.places_v1.types import content_block, ev_charging, photo, review
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
-from google.maps.places_v1.types import photo
 from google.maps.places_v1.types import price_range as gmp_price_range
-from google.maps.places_v1.types import review
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
@@ -59,6 +57,7 @@ class PriceLevel(proto.Enum):
         PRICE_LEVEL_VERY_EXPENSIVE (5):
             Place provides very expensive services.
     """
+
     PRICE_LEVEL_UNSPECIFIED = 0
     PRICE_LEVEL_FREE = 1
     PRICE_LEVEL_INEXPENSIVE = 2
@@ -106,6 +105,13 @@ class Place(proto.Message):
             https://developers.google.com/maps/documentation/places/web-service/place-types.
             The primary type may be missing if the place's
             primary type is not a supported type.
+        google_maps_type_label (google.type.localized_text_pb2.LocalizedText):
+            The type label of the place on Google Maps, localized to the
+            request language if applicable, for example, "Restaurant",
+            "Cafe", "Airport", etc. The type label may be different from
+            the primary type display name and may not be a supported
+            type in `Places API Place Types
+            table <https://developers.google.com/maps/documentation/places/web-service/place-types>`__.
         national_phone_number (str):
             A human-readable phone number for the place,
             in national format.
@@ -384,6 +390,9 @@ class Place(proto.Message):
             areas. See address descriptor regional coverage
             in
             https://developers.google.com/maps/documentation/geocoding/address-descriptors/coverage.
+        google_maps_links (google.maps.places_v1.types.Place.GoogleMapsLinks):
+            Links to trigger different Google Maps
+            actions.
         price_range (google.maps.places_v1.types.PriceRange):
             The price range associated with a Place.
         review_summary (google.maps.places_v1.types.Place.ReviewSummary):
@@ -428,6 +437,7 @@ class Place(proto.Message):
             CLOSED_PERMANENTLY (3):
                 The establishment is permanently closed.
         """
+
         BUSINESS_STATUS_UNSPECIFIED = 0
         OPERATIONAL = 1
         CLOSED_TEMPORARILY = 2
@@ -602,6 +612,7 @@ class Place(proto.Message):
                 ONLINE_SERVICE_HOURS (13):
                     The online service hours.
             """
+
             SECONDARY_HOURS_TYPE_UNSPECIFIED = 0
             DRIVE_THROUGH = 1
             HAPPY_HOUR = 2
@@ -729,12 +740,12 @@ class Place(proto.Message):
             number=4,
             enum="Place.OpeningHours.SecondaryHoursType",
         )
-        special_days: MutableSequence[
-            "Place.OpeningHours.SpecialDay"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="Place.OpeningHours.SpecialDay",
+        special_days: MutableSequence["Place.OpeningHours.SpecialDay"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="Place.OpeningHours.SpecialDay",
+            )
         )
         next_open_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
@@ -1011,6 +1022,48 @@ class Place(proto.Message):
             number=2,
         )
 
+    class GoogleMapsLinks(proto.Message):
+        r"""Links to trigger different Google Maps actions.
+
+        Attributes:
+            directions_uri (str):
+                A link to show the directions to the place. The link only
+                populates the destination location and uses the default
+                travel mode ``DRIVE``.
+            place_uri (str):
+                A link to show this place.
+            write_a_review_uri (str):
+                A link to write a review for this place on
+                Google Maps.
+            reviews_uri (str):
+                A link to show reviews of this place on
+                Google Maps.
+            photos_uri (str):
+                A link to show photos of this place on Google
+                Maps.
+        """
+
+        directions_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        place_uri: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        write_a_review_uri: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        reviews_uri: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        photos_uri: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
     class ReviewSummary(proto.Message):
         r"""AI-generated summary of the place using user reviews.
 
@@ -1247,6 +1300,11 @@ class Place(proto.Message):
         number=32,
         message=localized_text_pb2.LocalizedText,
     )
+    google_maps_type_label: localized_text_pb2.LocalizedText = proto.Field(
+        proto.MESSAGE,
+        number=96,
+        message=localized_text_pb2.LocalizedText,
+    )
     national_phone_number: str = proto.Field(
         proto.STRING,
         number=7,
@@ -1422,19 +1480,19 @@ class Place(proto.Message):
         number=46,
         message=OpeningHours,
     )
-    current_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=47,
-        message=OpeningHours,
+    current_secondary_opening_hours: MutableSequence[OpeningHours] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=47,
+            message=OpeningHours,
+        )
     )
-    regular_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=49,
-        message=OpeningHours,
+    regular_secondary_opening_hours: MutableSequence[OpeningHours] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=49,
+            message=OpeningHours,
+        )
     )
     editorial_summary: localized_text_pb2.LocalizedText = proto.Field(
         proto.MESSAGE,
@@ -1546,6 +1604,11 @@ class Place(proto.Message):
         proto.MESSAGE,
         number=84,
         message=gmp_address_descriptor.AddressDescriptor,
+    )
+    google_maps_links: GoogleMapsLinks = proto.Field(
+        proto.MESSAGE,
+        number=85,
+        message=GoogleMapsLinks,
     )
     price_range: gmp_price_range.PriceRange = proto.Field(
         proto.MESSAGE,

@@ -16,25 +16,25 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.dialogflow_v2beta1.types import conversation_profile
 from google.cloud.dialogflow_v2beta1.types import (
     conversation_profile as gcd_conversation_profile,
 )
-from google.cloud.dialogflow_v2beta1.types import conversation_profile
 
 from .base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
 
@@ -368,12 +368,12 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_conversation_profiles" not in self._stubs:
-            self._stubs[
-                "list_conversation_profiles"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/ListConversationProfiles",
-                request_serializer=conversation_profile.ListConversationProfilesRequest.serialize,
-                response_deserializer=conversation_profile.ListConversationProfilesResponse.deserialize,
+            self._stubs["list_conversation_profiles"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.ConversationProfiles/ListConversationProfiles",
+                    request_serializer=conversation_profile.ListConversationProfilesRequest.serialize,
+                    response_deserializer=conversation_profile.ListConversationProfilesResponse.deserialize,
+                )
             )
         return self._stubs["list_conversation_profiles"]
 
@@ -434,12 +434,12 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_conversation_profile" not in self._stubs:
-            self._stubs[
-                "create_conversation_profile"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/CreateConversationProfile",
-                request_serializer=gcd_conversation_profile.CreateConversationProfileRequest.serialize,
-                response_deserializer=gcd_conversation_profile.ConversationProfile.deserialize,
+            self._stubs["create_conversation_profile"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.ConversationProfiles/CreateConversationProfile",
+                    request_serializer=gcd_conversation_profile.CreateConversationProfileRequest.serialize,
+                    response_deserializer=gcd_conversation_profile.ConversationProfile.deserialize,
+                )
             )
         return self._stubs["create_conversation_profile"]
 
@@ -471,12 +471,12 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_conversation_profile" not in self._stubs:
-            self._stubs[
-                "update_conversation_profile"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/UpdateConversationProfile",
-                request_serializer=gcd_conversation_profile.UpdateConversationProfileRequest.serialize,
-                response_deserializer=gcd_conversation_profile.ConversationProfile.deserialize,
+            self._stubs["update_conversation_profile"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.ConversationProfiles/UpdateConversationProfile",
+                    request_serializer=gcd_conversation_profile.UpdateConversationProfileRequest.serialize,
+                    response_deserializer=gcd_conversation_profile.ConversationProfile.deserialize,
+                )
             )
         return self._stubs["update_conversation_profile"]
 
@@ -501,12 +501,12 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_conversation_profile" not in self._stubs:
-            self._stubs[
-                "delete_conversation_profile"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/DeleteConversationProfile",
-                request_serializer=conversation_profile.DeleteConversationProfileRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_conversation_profile"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.ConversationProfiles/DeleteConversationProfile",
+                    request_serializer=conversation_profile.DeleteConversationProfileRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_conversation_profile"]
 
@@ -551,12 +551,12 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_suggestion_feature_config" not in self._stubs:
-            self._stubs[
-                "set_suggestion_feature_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/SetSuggestionFeatureConfig",
-                request_serializer=gcd_conversation_profile.SetSuggestionFeatureConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["set_suggestion_feature_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.ConversationProfiles/SetSuggestionFeatureConfig",
+                    request_serializer=gcd_conversation_profile.SetSuggestionFeatureConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["set_suggestion_feature_config"]
 
@@ -594,12 +594,12 @@ class ConversationProfilesGrpcTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "clear_suggestion_feature_config" not in self._stubs:
-            self._stubs[
-                "clear_suggestion_feature_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.ConversationProfiles/ClearSuggestionFeatureConfig",
-                request_serializer=gcd_conversation_profile.ClearSuggestionFeatureConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["clear_suggestion_feature_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.ConversationProfiles/ClearSuggestionFeatureConfig",
+                    request_serializer=gcd_conversation_profile.ClearSuggestionFeatureConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["clear_suggestion_feature_config"]
 

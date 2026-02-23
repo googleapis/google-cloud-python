@@ -22,6 +22,9 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.oracledatabase_v1.types import (
+    autonomous_database as gco_autonomous_database,
+)
+from google.cloud.oracledatabase_v1.types import (
     autonomous_database_character_set,
     autonomous_db_backup,
     autonomous_db_version,
@@ -30,14 +33,12 @@ from google.cloud.oracledatabase_v1.types import (
     db_system_shape,
     entitlement,
     exadata_infra,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database as gco_autonomous_database,
+    gi_version,
+    vm_cluster,
 )
 from google.cloud.oracledatabase_v1.types import (
     exadb_vm_cluster as gco_exadb_vm_cluster,
 )
-from google.cloud.oracledatabase_v1.types import gi_version, vm_cluster
 
 __protobuf__ = proto.module(
     package="google.cloud.oracledatabase.v1",
@@ -748,12 +749,12 @@ class ListDbSystemShapesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    db_system_shapes: MutableSequence[
-        db_system_shape.DbSystemShape
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=db_system_shape.DbSystemShape,
+    db_system_shapes: MutableSequence[db_system_shape.DbSystemShape] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=db_system_shape.DbSystemShape,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1593,12 +1594,12 @@ class ListExadbVmClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exadb_vm_clusters: MutableSequence[
-        gco_exadb_vm_cluster.ExadbVmCluster
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gco_exadb_vm_cluster.ExadbVmCluster,
+    exadb_vm_clusters: MutableSequence[gco_exadb_vm_cluster.ExadbVmCluster] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gco_exadb_vm_cluster.ExadbVmCluster,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

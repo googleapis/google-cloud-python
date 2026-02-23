@@ -130,6 +130,7 @@ class Entitlement(proto.Message):
             SUSPENDED (5):
                 The entitlement is currently suspended.
         """
+
         PROVISIONING_STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 5
@@ -156,6 +157,7 @@ class Entitlement(proto.Message):
                 Other reasons (internal reasons, abuse,
                 etc.).
         """
+
         SUSPENSION_REASON_UNSPECIFIED = 0
         RESELLER_INITIATED = 1
         TRIAL_ENDED = 2
@@ -467,6 +469,7 @@ class TransferEligibility(proto.Message):
                 this Product. See
                 https://support.google.com/channelservices/answer/9759265
         """
+
         REASON_UNSPECIFIED = 0
         PENDING_TOS_ACCEPTANCE = 1
         SKU_NOT_ELIGIBLE = 2

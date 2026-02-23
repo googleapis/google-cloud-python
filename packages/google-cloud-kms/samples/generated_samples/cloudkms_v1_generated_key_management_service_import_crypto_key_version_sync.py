@@ -42,7 +42,7 @@ def sample_import_crypto_key_version():
     request = kms_v1.ImportCryptoKeyVersionRequest(
         rsa_aes_wrapped_key=b"rsa_aes_wrapped_key_blob",
         parent="parent_value",
-        algorithm="PQ_SIGN_SLH_DSA_SHA2_128S",
+        algorithm="PQ_SIGN_ML_DSA_87_EXTERNAL_MU",
         import_job="import_job_value",
     )
 

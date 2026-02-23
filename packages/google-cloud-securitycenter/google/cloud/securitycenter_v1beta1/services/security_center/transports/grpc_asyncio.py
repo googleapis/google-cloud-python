@@ -17,34 +17,36 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.securitycenter_v1beta1.types import (
+    finding,
+    organization_settings,
+    securitycenter_service,
+    source,
+)
+from google.cloud.securitycenter_v1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1beta1.types import (
     organization_settings as gcs_organization_settings,
 )
 from google.cloud.securitycenter_v1beta1.types import (
     security_marks as gcs_security_marks,
 )
-from google.cloud.securitycenter_v1beta1.types import finding
-from google.cloud.securitycenter_v1beta1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1beta1.types import organization_settings
-from google.cloud.securitycenter_v1beta1.types import securitycenter_service
-from google.cloud.securitycenter_v1beta1.types import source
 from google.cloud.securitycenter_v1beta1.types import source as gcs_source
 
 from .base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
@@ -824,12 +826,12 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_organization_settings" not in self._stubs:
-            self._stubs[
-                "update_organization_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycenter.v1beta1.SecurityCenter/UpdateOrganizationSettings",
-                request_serializer=securitycenter_service.UpdateOrganizationSettingsRequest.serialize,
-                response_deserializer=gcs_organization_settings.OrganizationSettings.deserialize,
+            self._stubs["update_organization_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycenter.v1beta1.SecurityCenter/UpdateOrganizationSettings",
+                    request_serializer=securitycenter_service.UpdateOrganizationSettingsRequest.serialize,
+                    response_deserializer=gcs_organization_settings.OrganizationSettings.deserialize,
+                )
             )
         return self._stubs["update_organization_settings"]
 

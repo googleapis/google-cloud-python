@@ -13,12 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .diagnostic_config import DiagnosticConfig
-from .environment import ContainerImage, Environment, VmImage
-from .event import Event
-from .execution import Execution, ExecutionTemplate
-from .instance import Instance, ReservationAffinity
-from .instance_config import InstanceConfig
+from .diagnostic_config import (
+    DiagnosticConfig,
+)
+from .environment import (
+    ContainerImage,
+    Environment,
+    VmImage,
+)
+from .event import (
+    Event,
+)
+from .execution import (
+    Execution,
+    ExecutionTemplate,
+)
+from .instance import (
+    Instance,
+    ReservationAffinity,
+)
+from .instance_config import (
+    InstanceConfig,
+)
 from .managed_service import (
     CreateRuntimeRequest,
     DeleteRuntimeRequest,
@@ -49,7 +65,9 @@ from .runtime import (
     VirtualMachine,
     VirtualMachineConfig,
 )
-from .schedule import Schedule
+from .schedule import (
+    Schedule,
+)
 from .service import (
     CreateEnvironmentRequest,
     CreateExecutionRequest,

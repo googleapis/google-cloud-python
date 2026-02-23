@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
 
@@ -593,12 +593,12 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_manual_transfer_runs" not in self._stubs:
-            self._stubs[
-                "start_manual_transfer_runs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
-                request_serializer=datatransfer.StartManualTransferRunsRequest.serialize,
-                response_deserializer=datatransfer.StartManualTransferRunsResponse.deserialize,
+            self._stubs["start_manual_transfer_runs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
+                    request_serializer=datatransfer.StartManualTransferRunsRequest.serialize,
+                    response_deserializer=datatransfer.StartManualTransferRunsResponse.deserialize,
+                )
             )
         return self._stubs["start_manual_transfer_runs"]
 

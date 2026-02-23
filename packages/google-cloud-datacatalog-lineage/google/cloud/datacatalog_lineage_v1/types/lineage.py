@@ -161,6 +161,7 @@ class Run(proto.Message):
             ABORTED (4):
                 The run aborted.
         """
+
         UNKNOWN = 0
         STARTED = 1
         COMPLETED = 2
@@ -329,6 +330,7 @@ class OperationMetadata(proto.Message):
                 The operation is no longer running and did
                 not succeed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -346,6 +348,7 @@ class OperationMetadata(proto.Message):
             CREATE (2):
                 The resource creation operation.
         """
+
         TYPE_UNSPECIFIED = 0
         DELETE = 1
         CREATE = 2
@@ -1253,6 +1256,7 @@ class Origin(proto.Message):
             DATAPROC (6):
                 Dataproc
         """
+
         SOURCE_TYPE_UNSPECIFIED = 0
         CUSTOM = 1
         BIGQUERY = 2

@@ -20,8 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
+from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 
 __protobuf__ = proto.module(
     package="google.cloud.dataqna.v1alpha",

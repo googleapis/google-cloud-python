@@ -97,6 +97,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `API client core library <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-core>`_
+     - stable
+     - |PyPI-google-cloud-core|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `APIs Common Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos>`_
      - stable
      - |PyPI-googleapis-common-protos|
@@ -1123,12 +1129,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `DNS <https://github.com/googleapis/python-dns>`_
+   * - `DNS <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dns>`_
      - preview
      - |PyPI-google-cloud-dns|
      - `API Issues <https://issuetracker.google.com/savedsearches/559772>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187241>`_
-     - `Client Library Issues <https://github.com/googleapis/python-dns/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data Analytics API with Gemini <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-geminidataanalytics>`_
      - preview
      - |PyPI-google-cloud-geminidataanalytics|
@@ -1519,12 +1525,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
+   * - `Runtime Configurator <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-runtimeconfig>`_
      - preview
      - |PyPI-google-cloud-runtimeconfig|
      - `API Issues <https://issuetracker.google.com/savedsearches/559663>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187078>`_
-     - `Client Library Issues <https://github.com/googleapis/python-runtimeconfig/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
      - preview
      - |PyPI-sqlalchemy-bigquery|
@@ -1642,6 +1648,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-notebooks
 .. |PyPI-google-cloud-api-gateway| image:: https://img.shields.io/pypi/v/google-cloud-api-gateway.svg
      :target: https://pypi.org/project/google-cloud-api-gateway
+.. |PyPI-google-cloud-core| image:: https://img.shields.io/pypi/v/google-cloud-core.svg
+     :target: https://pypi.org/project/google-cloud-core
 .. |PyPI-googleapis-common-protos| image:: https://img.shields.io/pypi/v/googleapis-common-protos.svg
      :target: https://pypi.org/project/googleapis-common-protos
 .. |PyPI-google-cloud-access-approval| image:: https://img.shields.io/pypi/v/google-cloud-access-approval.svg

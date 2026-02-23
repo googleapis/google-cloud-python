@@ -91,6 +91,7 @@ class EncryptionConfig(proto.Message):
                 fails due to reasons like permission issues,
                 invalid key etc.
         """
+
         ENCRYPTION_STATE_UNSPECIFIED = 0
         ENCRYPTING = 1
         COMPLETED = 2
@@ -120,6 +121,7 @@ class EncryptionConfig(proto.Message):
                 REQUIRE_USER_ACTION (2):
                     User action is required to resolve the error.
             """
+
             UNKNOWN = 0
             INTERNAL_ERROR = 1
             REQUIRE_USER_ACTION = 2

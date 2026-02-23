@@ -72,6 +72,7 @@ class DnsThreatDetector(proto.Message):
             INFOBLOX (1):
                 The Infoblox DNS threat detector provider.
         """
+
         PROVIDER_UNSPECIFIED = 0
         INFOBLOX = 1
 

@@ -71,6 +71,7 @@ class GcsFileFormat(proto.Enum):
         AVRO (1):
             Avro file format
     """
+
     _pb_options = {"deprecated": True}
     GCS_FILE_FORMAT_UNSPECIFIED = 0
     AVRO = 1
@@ -87,6 +88,7 @@ class SchemaFileFormat(proto.Enum):
         AVRO_SCHEMA_FILE (2):
             Avro schema format.
     """
+
     SCHEMA_FILE_FORMAT_UNSPECIFIED = 0
     NO_SCHEMA_FILE = 1
     AVRO_SCHEMA_FILE = 2
@@ -323,6 +325,7 @@ class PrivateConnection(proto.Message):
             FAILED (3):
                 The private connection creation has failed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -960,6 +963,7 @@ class JsonFileFormat(proto.Message):
             GZIP (2):
                 Gzip compression.
         """
+
         JSON_COMPRESSION_UNSPECIFIED = 0
         NO_COMPRESSION = 1
         GZIP = 2
@@ -1141,6 +1145,7 @@ class Stream(proto.Message):
                 The Stream is no longer reading new events,
                 but still writing events in the buffer.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2
@@ -1338,6 +1343,7 @@ class Validation(proto.Message):
             PASSED (3):
                 Validation passed.
         """
+
         STATUS_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         FAILED = 2
@@ -1389,6 +1395,7 @@ class ValidationMessage(proto.Message):
             ERROR (2):
                 Definitely cause issues with the Stream.
         """
+
         LEVEL_UNSPECIFIED = 0
         WARNING = 1
         ERROR = 2

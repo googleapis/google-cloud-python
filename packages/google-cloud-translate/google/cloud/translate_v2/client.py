@@ -14,7 +14,6 @@
 
 """Client for interacting with the Google Cloud Translation API."""
 
-
 import google.api_core.client_options
 from google.cloud.client import Client as BaseClient
 
@@ -174,9 +173,9 @@ class Client(BaseClient):
             if len(detections[index]) == 1:
                 detections[index] = detections[index][0]
             else:
-                message = (
-                    "Expected a single detection per value, API " "returned %d"
-                ) % (len(detections[index]),)
+                message = ("Expected a single detection per value, API returned %d") % (
+                    len(detections[index]),
+                )
                 raise ValueError(message, value, detections[index])
 
             detections[index]["input"] = value

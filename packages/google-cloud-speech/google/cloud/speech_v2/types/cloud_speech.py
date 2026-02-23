@@ -694,6 +694,7 @@ class Recognizer(proto.Message):
             DELETED (4):
                 This Recognizer has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -865,6 +866,7 @@ class ExplicitDecodingConfig(proto.Message):
             MOV_AAC (12):
                 AAC audio frames in an MOV container.
         """
+
         AUDIO_ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
         MULAW = 2
@@ -1003,6 +1005,7 @@ class RecognitionFeatures(proto.Message):
                 selected [model][google.cloud.speech.v2.Recognizer.model] is
                 ``latest_short``.
         """
+
         MULTI_CHANNEL_MODE_UNSPECIFIED = 0
         SEPARATE_RECOGNITION_PER_CHANNEL = 1
 
@@ -1872,6 +1875,7 @@ class BatchRecognizeRequest(proto.Message):
                 lower utilization periods for a price discount.
                 The request is fulfilled within 24 hours.
         """
+
         PROCESSING_STRATEGY_UNSPECIFIED = 0
         DYNAMIC_BATCHING = 1
 
@@ -2493,6 +2497,7 @@ class StreamingRecognizeResponse(proto.Message):
                 repeatedly throughout the stream. This event is only sent if
                 ``voice_activity_events`` is set to true.
         """
+
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
         SPEECH_ACTIVITY_BEGIN = 2
@@ -2678,6 +2683,7 @@ class CustomClass(proto.Message):
             DELETED (4):
                 This CustomClass has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -2840,6 +2846,7 @@ class PhraseSet(proto.Message):
             DELETED (4):
                 This PhraseSet has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4

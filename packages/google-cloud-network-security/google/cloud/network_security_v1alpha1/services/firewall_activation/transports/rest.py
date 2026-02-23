@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1099,9 +1101,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_create_firewall_endpoint(
                 request, metadata
@@ -1258,15 +1258,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_firewall_endpoint_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_firewall_endpoint_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseFirewallActivationRestTransport._BaseCreateFirewallEndpointAssociation._get_transcoded_request(
                 http_options, request
@@ -1330,11 +1327,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_create_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_firewall_endpoint_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1417,9 +1413,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_firewall_endpoint(
                 request, metadata
@@ -1570,15 +1564,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_firewall_endpoint_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_firewall_endpoint_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseFirewallActivationRestTransport._BaseDeleteFirewallEndpointAssociation._get_transcoded_request(
                 http_options, request
@@ -1637,11 +1628,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_delete_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_firewall_endpoint_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1721,9 +1711,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     Message describing Endpoint object.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_get_firewall_endpoint(
                 request, metadata
@@ -1875,9 +1863,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                         Message describing Association object
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetFirewallEndpointAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_firewall_endpoint_association(
                 request, metadata
@@ -1941,11 +1927,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_get_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_firewall_endpoint_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2035,15 +2020,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_firewall_endpoint_associations(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_firewall_endpoint_associations(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseFirewallActivationRestTransport._BaseListFirewallEndpointAssociations._get_transcoded_request(
                 http_options, request
@@ -2106,11 +2088,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_list_firewall_endpoint_associations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_firewall_endpoint_associations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_firewall_endpoint_associations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2195,9 +2176,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListFirewallEndpoints._get_http_options()
 
             request, metadata = self._interceptor.pre_list_firewall_endpoints(
                 request, metadata
@@ -2352,9 +2331,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_update_firewall_endpoint(
                 request, metadata
@@ -2511,15 +2488,12 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_firewall_endpoint_association(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_firewall_endpoint_association(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseFirewallActivationRestTransport._BaseUpdateFirewallEndpointAssociation._get_transcoded_request(
                 http_options, request
@@ -2583,11 +2557,10 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
 
             resp = self._interceptor.post_update_firewall_endpoint_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_firewall_endpoint_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_firewall_endpoint_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2620,7 +2593,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateFirewallEndpoint(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateFirewallEndpoint(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_firewall_endpoint_association(
@@ -2631,7 +2606,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateFirewallEndpointAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_firewall_endpoint(
@@ -2641,7 +2618,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteFirewallEndpoint(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteFirewallEndpoint(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_firewall_endpoint_association(
@@ -2652,7 +2631,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteFirewallEndpointAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_firewall_endpoint(
@@ -2674,7 +2655,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetFirewallEndpointAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_firewall_endpoint_associations(
@@ -2685,7 +2668,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListFirewallEndpointAssociations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListFirewallEndpointAssociations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_firewall_endpoints(
@@ -2706,7 +2691,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateFirewallEndpoint(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateFirewallEndpoint(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_firewall_endpoint_association(
@@ -2717,7 +2704,9 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateFirewallEndpointAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateFirewallEndpointAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -2777,9 +2766,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseGetLocation._get_transcoded_request(
@@ -2918,9 +2905,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseListLocations._get_transcoded_request(
@@ -3059,9 +3044,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -3201,9 +3184,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -3348,9 +3329,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -3496,9 +3475,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3616,9 +3593,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3734,9 +3709,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3875,9 +3848,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseFirewallActivationRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseFirewallActivationRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseFirewallActivationRestTransport._BaseListOperations._get_transcoded_request(

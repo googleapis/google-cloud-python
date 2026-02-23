@@ -87,6 +87,7 @@ class OrganizationSettings(proto.Message):
                     under the projects specified. All other
                     resources will be retrieved.
             """
+
             INCLUSION_MODE_UNSPECIFIED = 0
             INCLUDE_ONLY = 1
             EXCLUDE = 2

@@ -19,8 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.documentai_v1beta3.types import document_schema as gcd_document_schema
 from google.cloud.documentai_v1beta3.types import document, document_io
+from google.cloud.documentai_v1beta3.types import document_schema as gcd_document_schema
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
@@ -90,6 +90,7 @@ class Dataset(proto.Message):
             INITIALIZED (3):
                 Dataset has been initialized.
         """
+
         STATE_UNSPECIFIED = 0
         UNINITIALIZED = 1
         INITIALIZING = 2

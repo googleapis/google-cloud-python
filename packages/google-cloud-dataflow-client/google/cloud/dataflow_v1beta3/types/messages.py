@@ -77,6 +77,7 @@ class JobMessageImportance(proto.Enum):
             default, and these messages are displayed by
             default in the Dataflow monitoring UI.
     """
+
     JOB_MESSAGE_IMPORTANCE_UNKNOWN = 0
     JOB_MESSAGE_DEBUG = 1
     JOB_MESSAGE_DETAILED = 2
@@ -224,6 +225,7 @@ class AutoscalingEvent(proto.Message):
                 specify both target_num_workers, current_num_workers and a
                 decision_message.
         """
+
         TYPE_UNKNOWN = 0
         TARGET_NUM_WORKERS_CHANGED = 1
         CURRENT_NUM_WORKERS_CHANGED = 2

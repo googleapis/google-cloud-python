@@ -17,23 +17,23 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.bigquery_analyticshub_v1.types import analyticshub
 
@@ -837,12 +837,12 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_shared_resource_subscriptions" not in self._stubs:
-            self._stubs[
-                "list_shared_resource_subscriptions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSharedResourceSubscriptions",
-                request_serializer=analyticshub.ListSharedResourceSubscriptionsRequest.serialize,
-                response_deserializer=analyticshub.ListSharedResourceSubscriptionsResponse.deserialize,
+            self._stubs["list_shared_resource_subscriptions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSharedResourceSubscriptions",
+                    request_serializer=analyticshub.ListSharedResourceSubscriptionsRequest.serialize,
+                    response_deserializer=analyticshub.ListSharedResourceSubscriptionsResponse.deserialize,
+                )
             )
         return self._stubs["list_shared_resource_subscriptions"]
 

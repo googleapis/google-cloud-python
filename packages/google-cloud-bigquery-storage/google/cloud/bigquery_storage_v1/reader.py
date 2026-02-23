@@ -176,7 +176,7 @@ class ReadRowsStream(object):
                 self._wrapped = self._client.read_rows(
                     read_stream=self._name,
                     offset=self._offset,
-                    **self._read_rows_kwargs
+                    **self._read_rows_kwargs,
                 )
                 break
             except Exception as exc:
@@ -364,6 +364,9 @@ class ReadRowsIterable(object):
             return pyarrow.Table.from_batches(record_batches)
 
         # No data, return an empty Table.
+        if self._stream_parser is None:
+            return pyarrow.Table.from_batches([], schema=pyarrow.schema([]))
+
         self._stream_parser._parse_arrow_schema()
         return pyarrow.Table.from_batches([], schema=self._stream_parser._schema)
 
@@ -396,38 +399,72 @@ class ReadRowsIterable(object):
         if dtypes is None:
             dtypes = {}
 
-        # If it's an Arrow stream, calling to_arrow, then converting to a
-        # pandas dataframe is about 2x faster. This is because pandas.concat is
-        # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
-        # usually no-copy.
+        # Use a "peek" strategy to check the first page, without consuming
+        # from self.pages generator.
+        pages = self.pages
         try:
-            record_batch = self.to_arrow()
-        except NotImplementedError:
-            pass
-        else:
-            df = record_batch.to_pandas()
+            first_page = next(pages)
+        except StopIteration:
+            return self._empty_dataframe(dtypes)
+
+        first_batch = None
+        try:
+            # Optimization: If it's an Arrow stream, calling to_arrow, then converting to a
+            # pandas dataframe is about 2x faster. This is because pandas.concat is
+            # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
+            # usually no-copy.
+            first_batch = first_page.to_arrow()
+            record_batches = [first_batch] + [p.to_arrow() for p in pages]
+
+            table = pyarrow.Table.from_batches(record_batches)
+            df = table.to_pandas()
             for column in dtypes:
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
             return df
-
-        frames = [page.to_dataframe(dtypes=dtypes) for page in self.pages]
-
-        if frames:
+        except NotImplementedError as e:
+            if first_batch is not None:
+                # Unexpected state: if Arrow parsing fails mid-stream,
+                # raise exception to prevent unreported data loss.
+                raise RuntimeError("Stream format changed mid-stream") from e
+            # Not an Arrow stream; use generic parser.
+            first_batch = first_page.to_dataframe(dtypes=dtypes)
+            frames = [first_batch] + [p.to_dataframe(dtypes=dtypes) for p in pages]
             return pandas.concat(frames)
 
-        # No data, construct an empty dataframe with columns matching the schema.
-        # The result should be consistent with what an empty ARROW stream would produce.
-        self._stream_parser._parse_avro_schema()
-        schema = self._stream_parser._avro_schema_json
+    def _empty_dataframe(self, dtypes):
+        """Create an empty DataFrame with the correct schema.
 
-        column_dtypes = self._dtypes_from_avro(schema["fields"])
-        column_dtypes.update(dtypes)
+        This handles cases where the stream is empty but we still need to
+        return a DataFrame with the correct columns and types. It handles
+        both Arrow and Avro parsers, as well as the case where no parser
+        is initialized.
+        """
+        if self._stream_parser is None:
+            df = pandas.DataFrame(columns=dtypes.keys())
+            for col, dtype in dtypes.items():
+                df[col] = pandas.Series([], dtype=dtype)
+            return df
 
-        df = pandas.DataFrame(columns=column_dtypes.keys())
-        for column in df:
-            df[column] = pandas.Series([], dtype=column_dtypes[column])
+        if isinstance(self._stream_parser, _ArrowStreamParser):
+            self._stream_parser._parse_arrow_schema()
 
-        return df
+            df = self._stream_parser._schema.empty_table().to_pandas()
+
+            for column, dtype in dtypes.items():
+                df[column] = pandas.Series(df.get(column, []), dtype=dtype)
+            return df
+        else:
+            self._stream_parser._parse_avro_schema()
+            schema = self._stream_parser._avro_schema_json
+
+            column_dtypes = self._dtypes_from_avro(schema["fields"])
+            column_dtypes.update(dtypes)
+
+            df = pandas.DataFrame(columns=column_dtypes.keys())
+            for column in df:
+                df[column] = pandas.Series([], dtype=column_dtypes[column])
+
+            return df
 
     def _dtypes_from_avro(self, avro_fields):
         """Determine Pandas dtypes for columns in Avro schema.
@@ -447,11 +484,13 @@ class ReadRowsIterable(object):
         for field_info in avro_fields:
             # If a type is an union of multiple types, pick the first type
             # that is not "null".
-            if isinstance(field_info["type"], list):
-                type_info = next(item for item in field_info["type"] if item != "null")
+            type_info = field_info["type"]
+            if isinstance(type_info, list):
+                type_info = next(item for item in type_info if item != "null")
 
             if isinstance(type_info, str):
                 field_dtype = type_map.get(type_info, "object")
+
             else:
                 logical_type = type_info.get("logicalType")
                 if logical_type == "timestamp-micros":

@@ -178,6 +178,7 @@ class SpaceConfig(proto.Message):
                 Only invitees can join without knocking.
                 Everyone else must knock.
         """
+
         ACCESS_TYPE_UNSPECIFIED = 0
         OPEN = 1
         TRUSTED = 2
@@ -200,6 +201,7 @@ class SpaceConfig(proto.Message):
                 Meet Embed SDK Web or mobile Meet SDKs to create
                 owned entry points.
         """
+
         ENTRY_POINT_ACCESS_UNSPECIFIED = 0
         ALL = 1
         CREATOR_APP_ONLY = 2
@@ -222,6 +224,7 @@ class SpaceConfig(proto.Message):
             ON (2):
                 Moderation is on.
         """
+
         MODERATION_UNSPECIFIED = 0
         OFF = 1
         ON = 2
@@ -240,6 +243,7 @@ class SpaceConfig(proto.Message):
             DO_NOT_GENERATE (2):
                 Attendance report will not be generated.
         """
+
         ATTENDANCE_REPORT_GENERATION_TYPE_UNSPECIFIED = 0
         GENERATE_REPORT = 1
         DO_NOT_GENERATE = 2
@@ -276,6 +280,7 @@ class SpaceConfig(proto.Message):
                 NO_RESTRICTION (2):
                     All Participants have permissions.
             """
+
             RESTRICTION_TYPE_UNSPECIFIED = 0
             HOSTS_ONLY = 1
             NO_RESTRICTION = 2
@@ -295,6 +300,7 @@ class SpaceConfig(proto.Message):
                 OFF (2):
                     Users will by default join as contributors.
             """
+
             DEFAULT_JOIN_AS_VIEWER_TYPE_UNSPECIFIED = 0
             ON = 1
             OFF = 2
@@ -352,6 +358,7 @@ class SpaceConfig(proto.Message):
                 OFF (2):
                     The artifact is not generated automatically.
             """
+
             AUTO_GENERATION_TYPE_UNSPECIFIED = 0
             ON = 1
             OFF = 2
@@ -495,6 +502,7 @@ class Member(proto.Message):
             COHOST (1):
                 Co-host role.
         """
+
         ROLE_UNSPECIFIED = 0
         COHOST = 1
 
@@ -775,6 +783,7 @@ class Recording(proto.Message):
                 Recording file is generated and ready to
                 download.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         ENDED = 2
@@ -878,6 +887,7 @@ class Transcript(proto.Message):
                 Transcript file is generated and ready to
                 download.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         ENDED = 2

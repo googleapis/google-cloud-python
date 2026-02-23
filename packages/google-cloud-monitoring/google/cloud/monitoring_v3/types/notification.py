@@ -234,6 +234,7 @@ class NotificationChannel(proto.Message):
                 someone on the project has access to messages
                 that are delivered to that channel.
         """
+
         VERIFICATION_STATUS_UNSPECIFIED = 0
         UNVERIFIED = 1
         VERIFIED = 2
@@ -279,12 +280,12 @@ class NotificationChannel(proto.Message):
         number=12,
         message=mutation_record.MutationRecord,
     )
-    mutation_records: MutableSequence[
-        mutation_record.MutationRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=mutation_record.MutationRecord,
+    mutation_records: MutableSequence[mutation_record.MutationRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=mutation_record.MutationRecord,
+        )
     )
 
 

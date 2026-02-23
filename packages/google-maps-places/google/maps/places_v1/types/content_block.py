@@ -20,8 +20,6 @@ from typing import MutableMapping, MutableSequence
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.places_v1.types import reference
-
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
     manifest={
@@ -34,33 +32,22 @@ class ContentBlock(proto.Message):
     r"""A block of content that can be served individually.
 
     Attributes:
-        topic (str):
-            The topic of the content, for example
-            "overview" or "restaurant".
         content (google.type.localized_text_pb2.LocalizedText):
             Content related to the topic.
-        references (google.maps.places_v1.types.References):
-            Experimental: See
-            https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
-            for more details.
-
-            References that are related to this block of
-            content.
+        referenced_places (MutableSequence[str]):
+            The list of resource names of the referenced
+            places. This name can be used in other APIs that
+            accept Place resource names.
     """
 
-    topic: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
     content: localized_text_pb2.LocalizedText = proto.Field(
         proto.MESSAGE,
         number=2,
         message=localized_text_pb2.LocalizedText,
     )
-    references: reference.References = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=reference.References,
+    referenced_places: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
 
 

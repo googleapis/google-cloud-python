@@ -50,6 +50,7 @@ class AdBreakStateEnum(proto.Message):
                 will start later. You can delete or update the
                 ad break.
         """
+
         AD_BREAK_STATE_UNSPECIFIED = 0
         DECISIONED = 1
         COMPLETE = 2

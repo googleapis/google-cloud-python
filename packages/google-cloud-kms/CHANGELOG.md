@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.10.0...google-cloud-kms-v3.11.0) (2026-02-19)
+
+
+### Documentation
+
+* Update documentation for AutokeyAdmin service and messages to support folder and project-level configurations ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* Clarify supported resources for the crypto_key_backend field in ImportJob ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
+
+### Features
+
+* Add KeyProjectResolutionMode to AutokeyConfig to support project-level configurations ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* Add more post-quantum (PQ) signature algorithms to CryptoKeyVersion ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* Added DeleteCryptoKey and DeleteCryptoKeyVersion RPCs to permanently remove resources ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* Added ListRetiredResources and GetRetiredResource RPCs to manage and view these records ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* Introduced the RetiredResource resource to track records of deleted keys and prevent the reuse of their resource names ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [3.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.9.0...google-cloud-kms-v3.10.0) (2026-01-22)
 
 

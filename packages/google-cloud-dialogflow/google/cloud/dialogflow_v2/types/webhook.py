@@ -20,9 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2.types import context, intent
+from google.cloud.dialogflow_v2.types import context, intent, session_entity_type
 from google.cloud.dialogflow_v2.types import session as gcd_session
-from google.cloud.dialogflow_v2.types import session_entity_type
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -174,12 +173,12 @@ class WebhookResponse(proto.Message):
         number=6,
         message=gcd_session.EventInput,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message=session_entity_type.SessionEntityType,
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=session_entity_type.SessionEntityType,
+        )
     )
 
 

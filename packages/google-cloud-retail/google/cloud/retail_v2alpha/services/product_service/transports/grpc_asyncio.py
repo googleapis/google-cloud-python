@@ -17,9 +17,13 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,17 +31,17 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.retail_v2alpha.types import export_config, import_config
-from google.cloud.retail_v2alpha.types import product
+from google.cloud.retail_v2alpha.types import (
+    export_config,
+    import_config,
+    product,
+    product_service,
+    purge_config,
+)
 from google.cloud.retail_v2alpha.types import product as gcr_product
-from google.cloud.retail_v2alpha.types import product_service, purge_config
 
 from .base import DEFAULT_CLIENT_INFO, ProductServiceTransport
 from .grpc import ProductServiceGrpcTransport

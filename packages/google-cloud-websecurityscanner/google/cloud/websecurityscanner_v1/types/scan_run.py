@@ -104,6 +104,7 @@ class ScanRun(proto.Message):
                 The scan is either finished or stopped by
                 user.
         """
+
         EXECUTION_STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCANNING = 2
@@ -123,6 +124,7 @@ class ScanRun(proto.Message):
             KILLED (3):
                 The scan was terminated by user.
         """
+
         RESULT_STATE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2
@@ -173,12 +175,12 @@ class ScanRun(proto.Message):
         number=10,
         message=scan_run_error_trace.ScanRunErrorTrace,
     )
-    warning_traces: MutableSequence[
-        scan_run_warning_trace.ScanRunWarningTrace
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message=scan_run_warning_trace.ScanRunWarningTrace,
+    warning_traces: MutableSequence[scan_run_warning_trace.ScanRunWarningTrace] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message=scan_run_warning_trace.ScanRunWarningTrace,
+        )
     )
 
 

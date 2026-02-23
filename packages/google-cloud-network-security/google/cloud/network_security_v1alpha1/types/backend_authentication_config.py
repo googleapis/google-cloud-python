@@ -122,6 +122,7 @@ class BackendAuthenticationConfig(proto.Message):
                 managed by Google. CAs in this set can be added
                 or removed without notice.
         """
+
         WELL_KNOWN_ROOTS_UNSPECIFIED = 0
         NONE = 1
         PUBLIC_ROOTS = 2
@@ -222,12 +223,12 @@ class ListBackendAuthenticationConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backend_authentication_configs: MutableSequence[
-        "BackendAuthenticationConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BackendAuthenticationConfig",
+    backend_authentication_configs: MutableSequence["BackendAuthenticationConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BackendAuthenticationConfig",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

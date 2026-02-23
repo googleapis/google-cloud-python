@@ -17,9 +17,13 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,17 +31,13 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.dialogflow_v2beta1.types import generator_evaluation
 from google.cloud.dialogflow_v2beta1.types import (
     generator_evaluation as gcd_generator_evaluation,
 )
-from google.cloud.dialogflow_v2beta1.types import generator_evaluation
 
 from .base import DEFAULT_CLIENT_INFO, GeneratorEvaluationsTransport
 from .grpc import GeneratorEvaluationsGrpcTransport
@@ -374,12 +374,12 @@ class GeneratorEvaluationsGrpcAsyncIOTransport(GeneratorEvaluationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_generator_evaluation" not in self._stubs:
-            self._stubs[
-                "create_generator_evaluation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.GeneratorEvaluations/CreateGeneratorEvaluation",
-                request_serializer=gcd_generator_evaluation.CreateGeneratorEvaluationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_generator_evaluation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.GeneratorEvaluations/CreateGeneratorEvaluation",
+                    request_serializer=gcd_generator_evaluation.CreateGeneratorEvaluationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_generator_evaluation"]
 
@@ -434,12 +434,12 @@ class GeneratorEvaluationsGrpcAsyncIOTransport(GeneratorEvaluationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_generator_evaluations" not in self._stubs:
-            self._stubs[
-                "list_generator_evaluations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.GeneratorEvaluations/ListGeneratorEvaluations",
-                request_serializer=generator_evaluation.ListGeneratorEvaluationsRequest.serialize,
-                response_deserializer=generator_evaluation.ListGeneratorEvaluationsResponse.deserialize,
+            self._stubs["list_generator_evaluations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.GeneratorEvaluations/ListGeneratorEvaluations",
+                    request_serializer=generator_evaluation.ListGeneratorEvaluationsRequest.serialize,
+                    response_deserializer=generator_evaluation.ListGeneratorEvaluationsResponse.deserialize,
+                )
             )
         return self._stubs["list_generator_evaluations"]
 
@@ -465,12 +465,12 @@ class GeneratorEvaluationsGrpcAsyncIOTransport(GeneratorEvaluationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_generator_evaluation" not in self._stubs:
-            self._stubs[
-                "delete_generator_evaluation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.GeneratorEvaluations/DeleteGeneratorEvaluation",
-                request_serializer=generator_evaluation.DeleteGeneratorEvaluationRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_generator_evaluation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2beta1.GeneratorEvaluations/DeleteGeneratorEvaluation",
+                    request_serializer=generator_evaluation.DeleteGeneratorEvaluationRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_generator_evaluation"]
 

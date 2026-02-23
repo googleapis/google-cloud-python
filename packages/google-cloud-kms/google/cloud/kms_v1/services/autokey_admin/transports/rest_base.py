@@ -19,8 +19,10 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
@@ -111,6 +113,10 @@ class _BaseAutokeyAdminRestTransport(AutokeyAdminTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=folders/*/autokeyConfig}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/autokeyConfig}",
                 },
             ]
             return http_options
@@ -207,6 +213,11 @@ class _BaseAutokeyAdminRestTransport(AutokeyAdminTransport):
                 {
                     "method": "patch",
                     "uri": "/v1/{autokey_config.name=folders/*/autokeyConfig}",
+                    "body": "autokey_config",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{autokey_config.name=projects/*/autokeyConfig}",
                     "body": "autokey_config",
                 },
             ]

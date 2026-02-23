@@ -62,9 +62,15 @@ from .file import (
     ListFilesResponse,
     UpdateFileRequest,
 )
-from .generic import GenericArtifact
-from .go import GoModule
-from .kfp_artifact import KfpArtifact
+from .generic import (
+    GenericArtifact,
+)
+from .go import (
+    GoModule,
+)
+from .kfp_artifact import (
+    KfpArtifact,
+)
 from .package import (
     DeletePackageRequest,
     GetPackageRequest,
@@ -97,7 +103,9 @@ from .rule import (
     Rule,
     UpdateRuleRequest,
 )
-from .service import OperationMetadata
+from .service import (
+    OperationMetadata,
+)
 from .settings import (
     GetProjectSettingsRequest,
     ProjectSettings,
@@ -123,7 +131,11 @@ from .version import (
     Version,
     VersionView,
 )
-from .vpcsc_config import GetVPCSCConfigRequest, UpdateVPCSCConfigRequest, VPCSCConfig
+from .vpcsc_config import (
+    GetVPCSCConfigRequest,
+    UpdateVPCSCConfigRequest,
+    VPCSCConfig,
+)
 from .yum_artifact import (
     ImportYumArtifactsErrorInfo,
     ImportYumArtifactsGcsSource,

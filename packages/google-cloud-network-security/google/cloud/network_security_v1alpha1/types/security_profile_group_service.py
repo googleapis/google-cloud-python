@@ -261,12 +261,12 @@ class ListSecurityProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_profiles: MutableSequence[
-        gcn_security_profile_group.SecurityProfile
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcn_security_profile_group.SecurityProfile,
+    security_profiles: MutableSequence[gcn_security_profile_group.SecurityProfile] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcn_security_profile_group.SecurityProfile,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

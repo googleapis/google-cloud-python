@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.dep_service import DepServiceAsyncClient, DepServiceClient
 from .services.network_services import NetworkServicesAsyncClient, NetworkServicesClient
 from .types.common import (

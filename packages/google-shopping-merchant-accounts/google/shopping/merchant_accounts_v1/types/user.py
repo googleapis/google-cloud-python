@@ -75,6 +75,7 @@ class User(proto.Message):
             VERIFIED (2):
                 The user is verified.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         VERIFIED = 2

@@ -36,9 +36,7 @@ from google.cloud import beyondcorp_clientconnectorservices_v1
 
 async def sample_update_client_connector_service():
     # Create a client
-    client = (
-        beyondcorp_clientconnectorservices_v1.ClientConnectorServicesServiceAsyncClient()
-    )
+    client = beyondcorp_clientconnectorservices_v1.ClientConnectorServicesServiceAsyncClient()
 
     # Initialize request argument(s)
     client_connector_service = (

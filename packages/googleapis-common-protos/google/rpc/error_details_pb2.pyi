@@ -27,7 +27,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class ErrorInfo(_message.Message):
     __slots__ = ("reason", "domain", "metadata")
-
     class MetadataEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -37,6 +36,7 @@ class ErrorInfo(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     REASON_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
@@ -72,7 +72,6 @@ class DebugInfo(_message.Message):
 
 class QuotaFailure(_message.Message):
     __slots__ = ("violations",)
-
     class Violation(_message.Message):
         __slots__ = (
             "subject",
@@ -84,7 +83,6 @@ class QuotaFailure(_message.Message):
             "quota_value",
             "future_quota_value",
         )
-
         class QuotaDimensionsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -94,6 +92,7 @@ class QuotaFailure(_message.Message):
             def __init__(
                 self, key: _Optional[str] = ..., value: _Optional[str] = ...
             ) -> None: ...
+
         SUBJECT_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         API_SERVICE_FIELD_NUMBER: _ClassVar[int]
@@ -121,6 +120,7 @@ class QuotaFailure(_message.Message):
             quota_value: _Optional[int] = ...,
             future_quota_value: _Optional[int] = ...,
         ) -> None: ...
+
     VIOLATIONS_FIELD_NUMBER: _ClassVar[int]
     violations: _containers.RepeatedCompositeFieldContainer[QuotaFailure.Violation]
     def __init__(
@@ -132,7 +132,6 @@ class QuotaFailure(_message.Message):
 
 class PreconditionFailure(_message.Message):
     __slots__ = ("violations",)
-
     class Violation(_message.Message):
         __slots__ = ("type", "subject", "description")
         TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -147,6 +146,7 @@ class PreconditionFailure(_message.Message):
             subject: _Optional[str] = ...,
             description: _Optional[str] = ...,
         ) -> None: ...
+
     VIOLATIONS_FIELD_NUMBER: _ClassVar[int]
     violations: _containers.RepeatedCompositeFieldContainer[
         PreconditionFailure.Violation
@@ -160,7 +160,6 @@ class PreconditionFailure(_message.Message):
 
 class BadRequest(_message.Message):
     __slots__ = ("field_violations",)
-
     class FieldViolation(_message.Message):
         __slots__ = ("field", "description", "reason", "localized_message")
         FIELD_FIELD_NUMBER: _ClassVar[int]
@@ -178,6 +177,7 @@ class BadRequest(_message.Message):
             reason: _Optional[str] = ...,
             localized_message: _Optional[_Union[LocalizedMessage, _Mapping]] = ...,
         ) -> None: ...
+
     FIELD_VIOLATIONS_FIELD_NUMBER: _ClassVar[int]
     field_violations: _containers.RepeatedCompositeFieldContainer[
         BadRequest.FieldViolation
@@ -219,7 +219,6 @@ class ResourceInfo(_message.Message):
 
 class Help(_message.Message):
     __slots__ = ("links",)
-
     class Link(_message.Message):
         __slots__ = ("description", "url")
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
@@ -229,6 +228,7 @@ class Help(_message.Message):
         def __init__(
             self, description: _Optional[str] = ..., url: _Optional[str] = ...
         ) -> None: ...
+
     LINKS_FIELD_NUMBER: _ClassVar[int]
     links: _containers.RepeatedCompositeFieldContainer[Help.Link]
     def __init__(

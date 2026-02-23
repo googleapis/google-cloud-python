@@ -53,6 +53,7 @@ class TaxonomyTypeEnum(proto.Message):
             TAXONOMY_GOOGLE_STRUCTURED_VIDEO_1_0 (7):
                 The PPS structured video signals taxonomy.
         """
+
         TAXONOMY_TYPE_UNSPECIFIED = 0
         TAXONOMY_IAB_AUDIENCE_1_1 = 3
         TAXONOMY_IAB_CONTENT_1_0 = 8

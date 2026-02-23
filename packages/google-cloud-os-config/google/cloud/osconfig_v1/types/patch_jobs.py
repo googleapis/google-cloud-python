@@ -191,12 +191,12 @@ class ListPatchJobInstanceDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    patch_job_instance_details: MutableSequence[
-        "PatchJobInstanceDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="PatchJobInstanceDetails",
+    patch_job_instance_details: MutableSequence["PatchJobInstanceDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="PatchJobInstanceDetails",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -389,6 +389,7 @@ class PatchJob(proto.Message):
             TIMED_OUT (7):
                 The patch job timed out.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         INSTANCE_LOOKUP = 2
@@ -628,6 +629,7 @@ class PatchConfig(proto.Message):
                 Never reboot the machine after the update
                 completes.
         """
+
         REBOOT_CONFIG_UNSPECIFIED = 0
         DEFAULT = 1
         ALWAYS = 2
@@ -727,6 +729,7 @@ class Instance(proto.Message):
                 installed, running, and able to communicate with
                 the service.
         """
+
         PATCH_STATE_UNSPECIFIED = 0
         PENDING = 1
         INACTIVE = 2
@@ -792,6 +795,7 @@ class AptSettings(proto.Message):
             UPGRADE (2):
                 Runs ``apt-get upgrade``.
         """
+
         TYPE_UNSPECIFIED = 0
         DIST = 1
         UPGRADE = 2
@@ -976,6 +980,7 @@ class WindowsUpdateSettings(proto.Message):
                 "A widely released fix for a specific problem. An update
                 addresses a noncritical, non-security-related bug." [1]
         """
+
         CLASSIFICATION_UNSPECIFIED = 0
         CRITICAL = 1
         SECURITY = 2
@@ -1074,6 +1079,7 @@ class ExecStepConfig(proto.Message):
                 ``-NonInteractive``, ``-NoProfile``, and
                 ``-ExecutionPolicy Bypass``.
         """
+
         INTERPRETER_UNSPECIFIED = 0
         SHELL = 1
         POWERSHELL = 2
@@ -1266,6 +1272,7 @@ class PatchRollout(proto.Message):
                 Patches are applied to VMs in all zones at
                 the same time.
         """
+
         MODE_UNSPECIFIED = 0
         ZONE_BY_ZONE = 1
         CONCURRENT_ZONES = 2

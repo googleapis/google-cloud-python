@@ -163,6 +163,7 @@ class ErrorReason(proto.Enum):
         TOO_MANY_ELEMENTS (51):
             Too many elements in a list in the request.
     """
+
     ERROR_REASON_UNSPECIFIED = 0
     INTERNAL_ERROR = 1
     DEADLINE_EXCEEDED = 2

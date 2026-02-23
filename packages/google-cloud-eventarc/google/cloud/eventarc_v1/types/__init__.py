@@ -13,10 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .channel import Channel
-from .channel_connection import ChannelConnection
-from .discovery import EventType, FilteringAttribute, Provider
-from .enrollment import Enrollment
+from .channel import (
+    Channel,
+)
+from .channel_connection import (
+    ChannelConnection,
+)
+from .discovery import (
+    EventType,
+    FilteringAttribute,
+    Provider,
+)
+from .enrollment import (
+    Enrollment,
+)
 from .eventarc import (
     CreateChannelConnectionRequest,
     CreateChannelRequest,
@@ -68,12 +78,24 @@ from .eventarc import (
     UpdatePipelineRequest,
     UpdateTriggerRequest,
 )
-from .google_api_source import GoogleApiSource
-from .google_channel_config import GoogleChannelConfig
-from .logging_config import LoggingConfig
-from .message_bus import MessageBus
-from .network_config import NetworkConfig
-from .pipeline import Pipeline
+from .google_api_source import (
+    GoogleApiSource,
+)
+from .google_channel_config import (
+    GoogleChannelConfig,
+)
+from .logging_config import (
+    LoggingConfig,
+)
+from .message_bus import (
+    MessageBus,
+)
+from .network_config import (
+    NetworkConfig,
+)
+from .pipeline import (
+    Pipeline,
+)
 from .trigger import (
     GKE,
     CloudRun,

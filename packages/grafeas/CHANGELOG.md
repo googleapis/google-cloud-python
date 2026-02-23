@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.19.1...grafeas-v1.20.0) (2026-02-19)
+
+
+### Features
+
+* A new field `advisory_publish_time` is added to message `.grafeas.v1.VulnerabilityNote` ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* A new field `registry` is added to message `.grafeas.v1.BaseImage` ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.19.0...grafeas-v1.19.1) (2026-02-05)
 
 

@@ -22,9 +22,7 @@ from .grpc_asyncio import HypercomputeClusterGrpcAsyncIOTransport
 from .rest import HypercomputeClusterRestInterceptor, HypercomputeClusterRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[HypercomputeClusterTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[HypercomputeClusterTransport]]
 _transport_registry["grpc"] = HypercomputeClusterGrpcTransport
 _transport_registry["grpc_asyncio"] = HypercomputeClusterGrpcAsyncIOTransport
 _transport_registry["rest"] = HypercomputeClusterRestTransport

@@ -53,6 +53,7 @@ class StringAggregationType(proto.Enum):
         NO_AGGREGATION (3):
             Preserve all answers by crowd compute.
     """
+
     STRING_AGGREGATION_TYPE_UNSPECIFIED = 0
     MAJORITY_VOTE = 1
     UNANIMOUS_VOTE = 2
@@ -284,12 +285,12 @@ class VideoClassificationConfig(proto.Message):
             number=2,
         )
 
-    annotation_spec_set_configs: MutableSequence[
-        AnnotationSpecSetConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=AnnotationSpecSetConfig,
+    annotation_spec_set_configs: MutableSequence[AnnotationSpecSetConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=AnnotationSpecSetConfig,
+        )
     )
     apply_shot_detection: bool = proto.Field(
         proto.BOOL,

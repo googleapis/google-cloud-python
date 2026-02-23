@@ -55,6 +55,7 @@ class IntentView(proto.Enum):
         INTENT_VIEW_FULL (1):
             All fields are populated.
     """
+
     INTENT_VIEW_UNSPECIFIED = 0
     INTENT_VIEW_FULL = 1
 
@@ -192,6 +193,7 @@ class Intent(proto.Message):
                 intent. Also, each slot filling prompt is
                 forwarded to the webhook.
         """
+
         WEBHOOK_STATE_UNSPECIFIED = 0
         WEBHOOK_STATE_ENABLED = 1
         WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING = 2
@@ -257,6 +259,7 @@ class Intent(proto.Message):
                     existing training phrases that you've created in
                     template mode, those will continue to work.
             """
+
             TYPE_UNSPECIFIED = 0
             EXAMPLE = 1
             TEMPLATE = 2
@@ -499,6 +502,7 @@ class Intent(proto.Message):
                 GOOGLE_HANGOUTS (11):
                     Google Hangouts.
             """
+
             PLATFORM_UNSPECIFIED = 0
             FACEBOOK = 1
             SLACK = 2
@@ -611,12 +615,12 @@ class Intent(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            buttons: MutableSequence[
-                "Intent.Message.Card.Button"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="Intent.Message.Card.Button",
+            buttons: MutableSequence["Intent.Message.Card.Button"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Intent.Message.Card.Button",
+                )
             )
 
         class SimpleResponse(proto.Message):
@@ -658,12 +662,12 @@ class Intent(proto.Message):
                     Required. The list of simple responses.
             """
 
-            simple_responses: MutableSequence[
-                "Intent.Message.SimpleResponse"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.SimpleResponse",
+            simple_responses: MutableSequence["Intent.Message.SimpleResponse"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.SimpleResponse",
+                )
             )
 
         class BasicCard(proto.Message):
@@ -736,12 +740,12 @@ class Intent(proto.Message):
                 number=4,
                 message="Intent.Message.Image",
             )
-            buttons: MutableSequence[
-                "Intent.Message.BasicCard.Button"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=5,
-                message="Intent.Message.BasicCard.Button",
+            buttons: MutableSequence["Intent.Message.BasicCard.Button"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=5,
+                    message="Intent.Message.BasicCard.Button",
+                )
             )
 
         class Suggestion(proto.Message):
@@ -767,12 +771,12 @@ class Intent(proto.Message):
                     Required. The list of suggested replies.
             """
 
-            suggestions: MutableSequence[
-                "Intent.Message.Suggestion"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.Suggestion",
+            suggestions: MutableSequence["Intent.Message.Suggestion"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.Suggestion",
+                )
             )
 
         class LinkOutSuggestion(proto.Message):
@@ -847,12 +851,12 @@ class Intent(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            items: MutableSequence[
-                "Intent.Message.ListSelect.Item"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Intent.Message.ListSelect.Item",
+            items: MutableSequence["Intent.Message.ListSelect.Item"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Intent.Message.ListSelect.Item",
+                )
             )
             subtitle: str = proto.Field(
                 proto.STRING,
@@ -901,12 +905,12 @@ class Intent(proto.Message):
                     message="Intent.Message.Image",
                 )
 
-            items: MutableSequence[
-                "Intent.Message.CarouselSelect.Item"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.CarouselSelect.Item",
+            items: MutableSequence["Intent.Message.CarouselSelect.Item"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.CarouselSelect.Item",
+                )
             )
 
         class SelectItemInfo(proto.Message):
@@ -951,6 +955,7 @@ class Intent(proto.Message):
                     AUDIO (1):
                         Response media type is audio.
                 """
+
                 RESPONSE_MEDIA_TYPE_UNSPECIFIED = 0
                 AUDIO = 1
 
@@ -1065,6 +1070,7 @@ class Intent(proto.Message):
                         Pad the gaps between image and image frame
                         with a blurred copy of the same image.
                 """
+
                 IMAGE_DISPLAY_OPTIONS_UNSPECIFIED = 0
                 GRAY = 1
                 WHITE = 2
@@ -1116,6 +1122,7 @@ class Intent(proto.Message):
                                 to a canonical URL which refers to AMP content
                                 via <link rel="amphtml">.
                         """
+
                         URL_TYPE_HINT_UNSPECIFIED = 0
                         AMP_ACTION = 1
                         AMP_CONTENT = 2
@@ -1199,24 +1206,24 @@ class Intent(proto.Message):
                 number=3,
                 message="Intent.Message.Image",
             )
-            column_properties: MutableSequence[
-                "Intent.Message.ColumnProperties"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="Intent.Message.ColumnProperties",
+            column_properties: MutableSequence["Intent.Message.ColumnProperties"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Intent.Message.ColumnProperties",
+                )
             )
             rows: MutableSequence["Intent.Message.TableCardRow"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="Intent.Message.TableCardRow",
             )
-            buttons: MutableSequence[
-                "Intent.Message.BasicCard.Button"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=6,
-                message="Intent.Message.BasicCard.Button",
+            buttons: MutableSequence["Intent.Message.BasicCard.Button"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=6,
+                    message="Intent.Message.BasicCard.Button",
+                )
             )
 
         class ColumnProperties(proto.Message):
@@ -1247,6 +1254,7 @@ class Intent(proto.Message):
                         Text is aligned to the trailing edge of the
                         column.
                 """
+
                 HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
                 LEADING = 1
                 CENTER = 2
@@ -1275,12 +1283,12 @@ class Intent(proto.Message):
                     after this row.
             """
 
-            cells: MutableSequence[
-                "Intent.Message.TableCardCell"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.TableCardCell",
+            cells: MutableSequence["Intent.Message.TableCardCell"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.TableCardCell",
+                )
             )
             divider_after: bool = proto.Field(
                 proto.BOOL,

@@ -100,6 +100,7 @@ class Version(proto.Message):
             FAILED (3):
                 Version training failed.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

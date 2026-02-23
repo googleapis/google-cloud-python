@@ -68,11 +68,11 @@ class AccessLevel(_message.Message):
 
 class BasicLevel(_message.Message):
     __slots__ = ("conditions", "combining_function")
-
     class ConditionCombiningFunction(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         AND: _ClassVar[BasicLevel.ConditionCombiningFunction]
         OR: _ClassVar[BasicLevel.ConditionCombiningFunction]
+
     AND: BasicLevel.ConditionCombiningFunction
     OR: BasicLevel.ConditionCombiningFunction
     CONDITIONS_FIELD_NUMBER: _ClassVar[int]

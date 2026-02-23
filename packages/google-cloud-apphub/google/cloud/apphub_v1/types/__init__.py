@@ -53,10 +53,25 @@ from .apphub_service import (
     UpdateServiceRequest,
     UpdateWorkloadRequest,
 )
-from .application import Application, Scope
-from .attributes import Attributes, ContactInfo, Criticality, Environment
-from .service import DiscoveredService, Service, ServiceProperties, ServiceReference
-from .service_project_attachment import ServiceProjectAttachment
+from .application import (
+    Application,
+    Scope,
+)
+from .attributes import (
+    Attributes,
+    ContactInfo,
+    Criticality,
+    Environment,
+)
+from .service import (
+    DiscoveredService,
+    Service,
+    ServiceProperties,
+    ServiceReference,
+)
+from .service_project_attachment import (
+    ServiceProjectAttachment,
+)
 from .workload import (
     DiscoveredWorkload,
     Workload,

@@ -21,9 +21,7 @@ from .grpc import InternalRangeServiceGrpcTransport
 from .grpc_asyncio import InternalRangeServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[InternalRangeServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[InternalRangeServiceTransport]]
 _transport_registry["grpc"] = InternalRangeServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = InternalRangeServiceGrpcAsyncIOTransport
 

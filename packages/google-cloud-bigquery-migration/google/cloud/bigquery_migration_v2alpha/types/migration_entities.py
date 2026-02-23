@@ -89,6 +89,7 @@ class MigrationWorkflow(proto.Message):
                 (e.g. forced termination), they will not be
                 scheduled.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         RUNNING = 2
@@ -193,6 +194,7 @@ class MigrationTask(proto.Message):
             FAILED (6):
                 The task finished unsuccessfully.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ORCHESTRATING = 2
@@ -323,6 +325,7 @@ class MigrationSubtask(proto.Message):
                 still finish but no new lease renewals will be
                 granted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RUNNING = 2

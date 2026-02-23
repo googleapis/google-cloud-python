@@ -245,6 +245,7 @@ class CreativeTemplateVariable(proto.Message):
                 GIF (3):
                     The ``image/gif`` MIME type.
             """
+
             MIME_TYPE_UNSPECIFIED = 0
             JPG = 1
             PNG = 2

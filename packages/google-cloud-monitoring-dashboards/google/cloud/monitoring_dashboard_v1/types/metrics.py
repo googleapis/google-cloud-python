@@ -47,6 +47,7 @@ class SparkChartType(proto.Enum):
             The sparkbar will be rendered as a small bar
             chart.
     """
+
     SPARK_CHART_TYPE_UNSPECIFIED = 0
     SPARK_LINE = 1
     SPARK_BAR = 2
@@ -324,6 +325,7 @@ class Threshold(proto.Message):
                 Crossing the threshold is "emergency"
                 behavior.
         """
+
         COLOR_UNSPECIFIED = 0
         YELLOW = 4
         RED = 6
@@ -342,6 +344,7 @@ class Threshold(proto.Message):
                 The threshold will be considered crossed if
                 the actual value is below the threshold value.
         """
+
         DIRECTION_UNSPECIFIED = 0
         ABOVE = 1
         BELOW = 2
@@ -358,6 +361,7 @@ class Threshold(proto.Message):
             Y2 (2):
                 The y2_axis (the left axis of chart).
         """
+
         TARGET_AXIS_UNSPECIFIED = 0
         Y1 = 1
         Y2 = 2

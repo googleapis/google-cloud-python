@@ -17,11 +17,11 @@
 
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
+import grpc  # type: ignore
 from google.api_core import grpc_helpers  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
-import grpc  # type: ignore
 
 from google import auth  # type: ignore
 from google.monitoring.dashboard_v1.types import dashboard, dashboards_service
@@ -55,7 +55,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
         channel: Optional[grpc.Channel] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None
+        quota_project_id: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -149,7 +149,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
@@ -183,7 +183,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
             credentials_file=credentials_file,
             scopes=scopes,
             quota_project_id=quota_project_id,
-            **kwargs
+            **kwargs,
         )
 
     @property

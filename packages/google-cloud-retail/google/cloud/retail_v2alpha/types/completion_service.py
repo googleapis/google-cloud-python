@@ -257,12 +257,12 @@ class CompleteQueryResponse(proto.Message):
             number=2,
             message=common.CustomAttribute,
         )
-        facets: MutableSequence[
-            search_service.SearchResponse.Facet
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message=search_service.SearchResponse.Facet,
+        facets: MutableSequence[search_service.SearchResponse.Facet] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message=search_service.SearchResponse.Facet,
+            )
         )
         total_product_count: int = proto.Field(
             proto.INT32,

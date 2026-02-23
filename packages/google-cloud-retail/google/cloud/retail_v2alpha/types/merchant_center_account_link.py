@@ -105,6 +105,7 @@ class MerchantCenterAccountLink(proto.Message):
             FAILED (3):
                 Link creation failed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2

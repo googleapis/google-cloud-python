@@ -376,12 +376,12 @@ class Region(proto.Message):
             proto.STRING,
             number=1,
         )
-        postal_codes: MutableSequence[
-            "Region.PostalCodeArea.PostalCodeRange"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="Region.PostalCodeArea.PostalCodeRange",
+        postal_codes: MutableSequence["Region.PostalCodeArea.PostalCodeRange"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="Region.PostalCodeArea.PostalCodeRange",
+            )
         )
 
     class GeoTargetArea(proto.Message):
@@ -429,6 +429,7 @@ class Region(proto.Message):
                 KILOMETERS (2):
                     The distance is measured in kilometers.
             """
+
             RADIUS_UNITS_UNSPECIFIED = 0
             MILES = 1
             KILOMETERS = 2

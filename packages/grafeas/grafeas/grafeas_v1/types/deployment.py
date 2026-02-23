@@ -83,6 +83,7 @@ class DeploymentOccurrence(proto.Message):
             CUSTOM (3):
                 Custom user-defined platform.
         """
+
         PLATFORM_UNSPECIFIED = 0
         GKE = 1
         FLEX = 2

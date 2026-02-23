@@ -36,6 +36,7 @@ class TermsOfServiceKind(proto.Enum):
         MERCHANT_CENTER (1):
             Merchant Center application.
     """
+
     TERMS_OF_SERVICE_KIND_UNSPECIFIED = 0
     MERCHANT_CENTER = 1
 

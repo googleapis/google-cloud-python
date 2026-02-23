@@ -44,7 +44,9 @@ from .job import (
     ServiceAccount,
     TaskGroup,
 )
-from .notification import Notification
+from .notification import (
+    Notification,
+)
 from .resource_allowance import (
     CalendarPeriod,
     ResourceAllowance,
@@ -65,7 +67,12 @@ from .task import (
     TaskSpec,
     TaskStatus,
 )
-from .volume import GCS, NFS, PD, Volume
+from .volume import (
+    GCS,
+    NFS,
+    PD,
+    Volume,
+)
 
 __all__ = (
     "CancelJobRequest",

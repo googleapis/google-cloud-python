@@ -15,15 +15,17 @@
 # limitations under the License.
 #
 
-from collections import OrderedDict
 import os
 import re
+from collections import OrderedDict
 from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries
 import google.api_core.client_options as client_options_lib  # type: ignore
+from google.api_core import (
+    exceptions,  # type: ignore
+    gapic_v1,  # type: ignore
+)
+from google.api_core import retry as retries
 from google.auth import credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
@@ -36,7 +38,6 @@ from google.monitoring.dashboard_v1.types import dashboard, dashboards_service, 
 from .transports.base import DashboardsServiceTransport
 from .transports.grpc import DashboardsServiceGrpcTransport
 from .transports.grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
-
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -52,9 +53,7 @@ class DashboardsServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DashboardsServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DashboardsServiceTransport]]
     _transport_registry["grpc"] = DashboardsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DashboardsServiceGrpcAsyncIOTransport
 
@@ -230,8 +229,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = transport
         else:

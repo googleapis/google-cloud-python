@@ -91,6 +91,7 @@ class LineItemTypeEnum(proto.Message):
                 The type of LineItem used for configuring
                 audience extension campaigns.
         """
+
         LINE_ITEM_TYPE_UNSPECIFIED = 0
         SPONSORSHIP = 12
         STANDARD = 13

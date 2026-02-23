@@ -54,6 +54,7 @@ class VerificationMailSettings(proto.Message):
                 invitation through the API without needing
                 another notification.
         """
+
         VERIFICATION_MAIL_MODE_UNSPECIFIED = 0
         SEND_VERIFICATION_MAIL = 1
         SUPPRESS_VERIFICATION_MAIL = 2

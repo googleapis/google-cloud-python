@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.shopping.merchant_accounts_v1.types import developerregistration
@@ -434,9 +434,7 @@ class DeveloperRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_http_options()
 
             request, metadata = self._interceptor.pre_get_account_for_gcp_registration(
                 request, metadata
@@ -502,11 +500,10 @@ class DeveloperRegistrationServiceRestTransport(
 
             resp = self._interceptor.post_get_account_for_gcp_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_account_for_gcp_registration_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_account_for_gcp_registration_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -594,9 +591,7 @@ class DeveloperRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration._get_http_options()
 
             request, metadata = self._interceptor.pre_get_developer_registration(
                 request, metadata
@@ -747,9 +742,7 @@ class DeveloperRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_http_options()
 
             request, metadata = self._interceptor.pre_register_gcp(request, metadata)
             transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_transcoded_request(
@@ -899,9 +892,7 @@ class DeveloperRegistrationServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_http_options()
 
             request, metadata = self._interceptor.pre_unregister_gcp(request, metadata)
             transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_transcoded_request(
@@ -970,7 +961,9 @@ class DeveloperRegistrationServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAccountForGcpRegistration(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAccountForGcpRegistration(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_developer_registration(
@@ -981,7 +974,9 @@ class DeveloperRegistrationServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetDeveloperRegistration(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetDeveloperRegistration(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def register_gcp(

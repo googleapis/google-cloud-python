@@ -98,6 +98,7 @@ class Event(proto.Message):
             ACCEPT_INVITATION (27):
                 Accept invitation event.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         CREATIVE_VIEW = 1
         START = 2

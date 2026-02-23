@@ -20,17 +20,15 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.channel_v1.types import billing_accounts, common, repricing
 from google.cloud.channel_v1.types import (
     channel_partner_links as gcc_channel_partner_links,
 )
-from google.cloud.channel_v1.types import entitlement_changes as gcc_entitlement_changes
-from google.cloud.channel_v1.types import billing_accounts
-from google.cloud.channel_v1.types import common
 from google.cloud.channel_v1.types import customers as gcc_customers
+from google.cloud.channel_v1.types import entitlement_changes as gcc_entitlement_changes
 from google.cloud.channel_v1.types import entitlements as gcc_entitlements
 from google.cloud.channel_v1.types import offers as gcc_offers
 from google.cloud.channel_v1.types import products as gcc_products
-from google.cloud.channel_v1.types import repricing
 
 __protobuf__ = proto.module(
     package="google.cloud.channel.v1",
@@ -213,12 +211,12 @@ class CheckCloudIdentityAccountsExistResponse(proto.Message):
             the domain.
     """
 
-    cloud_identity_accounts: MutableSequence[
-        "CloudIdentityCustomerAccount"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CloudIdentityCustomerAccount",
+    cloud_identity_accounts: MutableSequence["CloudIdentityCustomerAccount"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CloudIdentityCustomerAccount",
+        )
     )
 
 
@@ -676,12 +674,12 @@ class ListTransferableSkusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    transferable_skus: MutableSequence[
-        gcc_entitlements.TransferableSku
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcc_entitlements.TransferableSku,
+    transferable_skus: MutableSequence[gcc_entitlements.TransferableSku] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcc_entitlements.TransferableSku,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1099,12 +1097,12 @@ class ListCustomerRepricingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    customer_repricing_configs: MutableSequence[
-        repricing.CustomerRepricingConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=repricing.CustomerRepricingConfig,
+    customer_repricing_configs: MutableSequence[repricing.CustomerRepricingConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=repricing.CustomerRepricingConfig,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2341,6 +2339,7 @@ class ListPurchasableSkusRequest(proto.Message):
                     SKU is a downgrade on the current
                     entitlement.
             """
+
             CHANGE_TYPE_UNSPECIFIED = 0
             UPGRADE = 1
             DOWNGRADE = 2
@@ -2663,12 +2662,12 @@ class SkuPurchaseGroup(proto.Message):
         proto.STRING,
         number=1,
     )
-    billing_account_purchase_infos: MutableSequence[
-        "BillingAccountPurchaseInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="BillingAccountPurchaseInfo",
+    billing_account_purchase_infos: MutableSequence["BillingAccountPurchaseInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BillingAccountPurchaseInfo",
+        )
     )
 
 
@@ -2939,12 +2938,12 @@ class ListEntitlementChangesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entitlement_changes: MutableSequence[
-        gcc_entitlement_changes.EntitlementChange
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcc_entitlement_changes.EntitlementChange,
+    entitlement_changes: MutableSequence[gcc_entitlement_changes.EntitlementChange] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcc_entitlement_changes.EntitlementChange,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

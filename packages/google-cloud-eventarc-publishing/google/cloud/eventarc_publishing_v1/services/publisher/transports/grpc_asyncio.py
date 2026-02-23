@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.eventarc_publishing_v1.types import publisher
 
@@ -387,12 +387,12 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "publish_channel_connection_events" not in self._stubs:
-            self._stubs[
-                "publish_channel_connection_events"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.eventarc.publishing.v1.Publisher/PublishChannelConnectionEvents",
-                request_serializer=publisher.PublishChannelConnectionEventsRequest.serialize,
-                response_deserializer=publisher.PublishChannelConnectionEventsResponse.deserialize,
+            self._stubs["publish_channel_connection_events"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.eventarc.publishing.v1.Publisher/PublishChannelConnectionEvents",
+                    request_serializer=publisher.PublishChannelConnectionEventsRequest.serialize,
+                    response_deserializer=publisher.PublishChannelConnectionEventsResponse.deserialize,
+                )
             )
         return self._stubs["publish_channel_connection_events"]
 

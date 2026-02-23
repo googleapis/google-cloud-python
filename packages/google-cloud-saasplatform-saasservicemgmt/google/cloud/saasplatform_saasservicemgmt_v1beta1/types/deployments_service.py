@@ -1225,12 +1225,12 @@ class ListUnitOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    unit_operations: MutableSequence[
-        deployments_resources.UnitOperation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10509,
-        message=deployments_resources.UnitOperation,
+    unit_operations: MutableSequence[deployments_resources.UnitOperation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10509,
+            message=deployments_resources.UnitOperation,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

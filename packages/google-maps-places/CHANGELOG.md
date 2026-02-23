@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-maps-places/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.6.0...google-maps-places-v0.7.0) (2026-02-19)
+
+
+### Documentation
+
+* A comment for field `photos` in message `.google.maps.places.v1.ContextualContent` is changed ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* A comment for field `reviews` in message `.google.maps.places.v1.ContextualContent` is changed ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
+
+### Features
+
+* Add `googleMapsLinks` field for links to different actions on Google Maps ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* Add `googleMapsTypeLabel` field to show type information on Google Maps ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
+
+### Bug Fixes
+
+* An existing field `topic` is removed from message `.google.maps.places.v1.ContentBlock` ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+* An existing field `references` is removed from message `.google.maps.places.v1.ContentBlock` ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.5.0...google-maps-places-v0.6.0) (2026-01-09)
 
 

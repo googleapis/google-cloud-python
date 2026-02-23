@@ -21,13 +21,17 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datacatalog_v1beta1.types import (
+    common,
+    search,
+    table_spec,
+    timestamps,
+    usage,
+)
+from google.cloud.datacatalog_v1beta1.types import (
     gcs_fileset_spec as gcd_gcs_fileset_spec,
 )
-from google.cloud.datacatalog_v1beta1.types import common
 from google.cloud.datacatalog_v1beta1.types import schema as gcd_schema
-from google.cloud.datacatalog_v1beta1.types import search, table_spec
 from google.cloud.datacatalog_v1beta1.types import tags as gcd_tags
-from google.cloud.datacatalog_v1beta1.types import timestamps, usage
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1beta1",
@@ -89,6 +93,7 @@ class EntryType(proto.Enum):
             An entry type which is a set of files or
             objects. Example: Cloud Storage fileset.
     """
+
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
     MODEL = 5

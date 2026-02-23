@@ -1,0 +1,20 @@
+# This constraints file is used to check that lower bounds
+# are correct in pyproject.toml
+# List *all* library dependencies and extras in this file.
+# Pin the version to the lower bound.
+#
+# e.g., if pyproject.toml has "foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have foo==1.14.0
+googleapis-common-protos==1.56.3
+protobuf==4.25.8
+google-auth==2.35.0
+requests==2.20.0
+grpcio==1.33.2
+grpcio-status==1.33.2
+proto-plus==1.22.3
+# Some tests import aiohttp to test async rest
+# from google-auth[aiohttp]
+#   google-auth[aiohttp] v2.39.0 is the first release that requires aiohttp 3.6.2
+#   see - change: https://github.com/googleapis/google-auth-library-python/blame/9d5c0d81e8e69719a2b4cd034bf1ed5d128fdf0a/setup.py#L35
+#       - release: https://github.com/googleapis/google-auth-library-python/commits/main/?after=9d5c0d81e8e69719a2b4cd034bf1ed5d128fdf0a+104
+aiohttp==3.6.2

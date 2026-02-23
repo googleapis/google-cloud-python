@@ -115,6 +115,7 @@ class QuotaValidation(proto.Enum):
             deploy resources in terraform configuration
             files.
     """
+
     QUOTA_VALIDATION_UNSPECIFIED = 0
     ENABLED = 1
     ENFORCED = 2
@@ -272,6 +273,7 @@ class Deployment(proto.Message):
             DELETED (7):
                 The deployment has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -308,6 +310,7 @@ class Deployment(proto.Message):
                 Failed to import values from an external
                 source.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         REVISION_FAILED = 1
         CLOUD_BUILD_PERMISSION_DENIED = 3
@@ -337,6 +340,7 @@ class Deployment(proto.Message):
             UNLOCK_FAILED (6):
                 The deployment has failed to unlock.
         """
+
         LOCK_STATE_UNSPECIFIED = 0
         LOCKED = 1
         UNLOCKED = 2
@@ -971,6 +975,7 @@ class DeleteDeploymentRequest(proto.Message):
                 Abandons resources and only deletes the
                 deployment and its metadata.
         """
+
         DELETE_POLICY_UNSPECIFIED = 0
         DELETE = 1
         ABANDON = 2
@@ -1198,6 +1203,7 @@ class Revision(proto.Message):
             DELETE (3):
                 The revision was deleted.
         """
+
         ACTION_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -1218,6 +1224,7 @@ class Revision(proto.Message):
                 The revision could not be applied
                 successfully.
         """
+
         STATE_UNSPECIFIED = 0
         APPLYING = 1
         APPLIED = 2
@@ -1245,6 +1252,7 @@ class Revision(proto.Message):
                 Failed to import values from an external
                 source.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         CLOUD_BUILD_PERMISSION_DENIED = 1
         APPLY_BUILD_API_FAILED = 4
@@ -1483,6 +1491,7 @@ class DeploymentOperationMetadata(proto.Message):
             RUNNING_QUOTA_VALIDATION (12):
                 Running quota validation
         """
+
         DEPLOYMENT_STEP_UNSPECIFIED = 0
         PREPARING_STORAGE_BUCKET = 1
         DOWNLOADING_BLUEPRINT = 2
@@ -1559,6 +1568,7 @@ class Resource(proto.Message):
                 Infra Manager will leave this Resource
                 untouched.
         """
+
         INTENT_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -1583,6 +1593,7 @@ class Resource(proto.Message):
             FAILED (4):
                 Resource failed to reconcile.
         """
+
         STATE_UNSPECIFIED = 0
         PLANNED = 1
         IN_PROGRESS = 2
@@ -2112,6 +2123,7 @@ class Preview(proto.Message):
             DELETED (7):
                 The preview has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         SUCCEEDED = 2
@@ -2137,6 +2149,7 @@ class Preview(proto.Message):
                 DELETE mode generates as execution plan for
                 destroying current resources.
         """
+
         PREVIEW_MODE_UNSPECIFIED = 0
         DEFAULT = 1
         DELETE = 2
@@ -2169,6 +2182,7 @@ class Preview(proto.Message):
                 Failed to import values from an external
                 source.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         CLOUD_BUILD_PERMISSION_DENIED = 1
         BUCKET_CREATION_PERMISSION_DENIED = 2
@@ -2327,6 +2341,7 @@ class PreviewOperationMetadata(proto.Message):
             VALIDATING_REPOSITORY (10):
                 Validating the provided repository.
         """
+
         PREVIEW_STEP_UNSPECIFIED = 0
         PREPARING_STORAGE_BUCKET = 1
         DOWNLOADING_BLUEPRINT = 2
@@ -2784,6 +2799,7 @@ class TerraformVersion(proto.Message):
             OBSOLETE (3):
                 The version is obsolete.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DEPRECATED = 2
@@ -2892,6 +2908,7 @@ class ResourceChange(proto.Message):
             UNCHANGED (5):
                 The resource will be untouched.
         """
+
         INTENT_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -3318,6 +3335,7 @@ class ProviderConfig(proto.Message):
             SERVICE_MAINTAINED (1):
                 Service maintained provider source type.
         """
+
         PROVIDER_SOURCE_UNSPECIFIED = 0
         SERVICE_MAINTAINED = 1
 

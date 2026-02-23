@@ -16,22 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
+from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
 from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDashboardsServiceRestTransport
@@ -477,9 +476,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_http_options()
 
             request, metadata = self._interceptor.pre_create_dashboard(
                 request, metadata
@@ -625,9 +622,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_dashboard(
                 request, metadata
@@ -741,9 +736,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dashboard(request, metadata)
             transcoded_request = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_transcoded_request(
@@ -886,9 +879,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                     The ``ListDashboards`` request.
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseListDashboards._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_http_options()
 
             request, metadata = self._interceptor.pre_list_dashboards(request, metadata)
             transcoded_request = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_transcoded_request(
@@ -1038,9 +1029,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_http_options()
 
             request, metadata = self._interceptor.pre_update_dashboard(
                 request, metadata

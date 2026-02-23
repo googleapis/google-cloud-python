@@ -22,9 +22,8 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.lustre_v1.types import instance
+from google.cloud.lustre_v1.types import instance, transfer
 from google.cloud.lustre_v1.types import instance as gcl_instance
-from google.cloud.lustre_v1.types import transfer
 
 from .base import DEFAULT_CLIENT_INFO, LustreTransport
 

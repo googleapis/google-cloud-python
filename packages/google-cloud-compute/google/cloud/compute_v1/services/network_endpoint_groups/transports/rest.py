@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -745,9 +745,7 @@ class NetworkEndpointGroupsRestTransport(_BaseNetworkEndpointGroupsRestTransport
 
             """
 
-            http_options = (
-                _BaseNetworkEndpointGroupsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseNetworkEndpointGroupsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseNetworkEndpointGroupsRestTransport._BaseAggregatedList._get_transcoded_request(
@@ -923,9 +921,7 @@ class NetworkEndpointGroupsRestTransport(_BaseNetworkEndpointGroupsRestTransport
 
             """
 
-            http_options = (
-                _BaseNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_http_options()
-            )
+            http_options = _BaseNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_http_options()
 
             request, metadata = self._interceptor.pre_attach_network_endpoints(
                 request, metadata
@@ -1281,9 +1277,7 @@ class NetworkEndpointGroupsRestTransport(_BaseNetworkEndpointGroupsRestTransport
 
             """
 
-            http_options = (
-                _BaseNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_http_options()
-            )
+            http_options = _BaseNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_http_options()
 
             request, metadata = self._interceptor.pre_detach_network_endpoints(
                 request, metadata
@@ -1918,9 +1912,7 @@ class NetworkEndpointGroupsRestTransport(_BaseNetworkEndpointGroupsRestTransport
 
             """
 
-            http_options = (
-                _BaseNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_http_options()
-            )
+            http_options = _BaseNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_http_options()
 
             request, metadata = self._interceptor.pre_list_network_endpoints(
                 request, metadata
@@ -2079,9 +2071,7 @@ class NetworkEndpointGroupsRestTransport(_BaseNetworkEndpointGroupsRestTransport
 
             """
 
-            http_options = (
-                _BaseNetworkEndpointGroupsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNetworkEndpointGroupsRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -2197,7 +2187,9 @@ class NetworkEndpointGroupsRestTransport(_BaseNetworkEndpointGroupsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AttachNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore
+        return self._AttachNetworkEndpoints(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete(
@@ -2215,7 +2207,9 @@ class NetworkEndpointGroupsRestTransport(_BaseNetworkEndpointGroupsRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DetachNetworkEndpoints(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DetachNetworkEndpoints(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get(

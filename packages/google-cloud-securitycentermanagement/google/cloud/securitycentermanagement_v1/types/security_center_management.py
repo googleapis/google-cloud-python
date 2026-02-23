@@ -144,6 +144,7 @@ class SecurityCenterService(proto.Message):
                 Security Command Center is misconfigured. You
                 can't set this state yourself.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         INHERITED = 1
         ENABLED = 2
@@ -258,6 +259,7 @@ class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
             DISABLED (2):
                 The module is disabled at the given level.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -438,6 +440,7 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
                 with no parent) to the ``INHERITED`` state, you receive an
                 ``INVALID_ARGUMENT`` error.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -528,6 +531,7 @@ class CustomConfig(proto.Message):
             LOW (4):
                 Low severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -571,12 +575,12 @@ class CustomConfig(proto.Message):
                 message=expr_pb2.Expr,
             )
 
-        properties: MutableSequence[
-            "CustomConfig.CustomOutputSpec.Property"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="CustomConfig.CustomOutputSpec.Property",
+        properties: MutableSequence["CustomConfig.CustomOutputSpec.Property"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="CustomConfig.CustomOutputSpec.Property",
+            )
         )
 
     class ResourceSelector(proto.Message):
@@ -1064,6 +1068,7 @@ class SimulatedFinding(proto.Message):
                 non-issue, or otherwise addressed and is no
                 longer active.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -1135,6 +1140,7 @@ class SimulatedFinding(proto.Message):
                 not able to access data, execute code, or create
                 resources.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -1171,6 +1177,7 @@ class SimulatedFinding(proto.Message):
                 that represent a more severe security problem
                 when taken together.
         """
+
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
         VULNERABILITY = 2
@@ -1333,6 +1340,7 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
             DISABLED (2):
                 The module is disabled at the given level.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1519,6 +1527,7 @@ class EventThreatDetectionCustomModule(proto.Message):
                 with no parent) to the ``INHERITED`` state, you receive an
                 ``INVALID_ARGUMENT`` error.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -2082,12 +2091,12 @@ class ListSecurityCenterServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_center_services: MutableSequence[
-        "SecurityCenterService"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SecurityCenterService",
+    security_center_services: MutableSequence["SecurityCenterService"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SecurityCenterService",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

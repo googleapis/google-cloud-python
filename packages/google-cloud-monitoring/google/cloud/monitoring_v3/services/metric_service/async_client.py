@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.monitoring_v3 import gapic_version as package_version
 
@@ -51,9 +51,8 @@ import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: igno
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.metric_service import pagers
-from google.cloud.monitoring_v3.types import common
+from google.cloud.monitoring_v3.types import common, metric_service
 from google.cloud.monitoring_v3.types import metric as gm_metric
-from google.cloud.monitoring_v3.types import metric_service
 
 from .client import MetricServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, MetricServiceTransport
@@ -133,7 +132,10 @@ class MetricServiceAsyncClient:
         Returns:
             MetricServiceAsyncClient: The constructed client.
         """
-        return MetricServiceClient.from_service_account_info.__func__(MetricServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            MetricServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(MetricServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -149,7 +151,10 @@ class MetricServiceAsyncClient:
         Returns:
             MetricServiceAsyncClient: The constructed client.
         """
-        return MetricServiceClient.from_service_account_file.__func__(MetricServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            MetricServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(MetricServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,11 +43,16 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
@@ -982,10 +987,9 @@ def test_key_tracking_service_client_get_mtls_endpoint_and_cert_source(client_cl
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1030,10 +1034,9 @@ def test_key_tracking_service_client_get_mtls_endpoint_and_cert_source(client_cl
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1069,10 +1072,9 @@ def test_key_tracking_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1324,9 +1326,7 @@ def test_key_tracking_service_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -2332,6 +2332,8 @@ def test_get_protected_resources_summary_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_protected_resources_summary._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("fallback_scope",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2390,7 +2392,7 @@ def test_get_protected_resources_summary_rest_unset_required_fields():
     unset_fields = transport.get_protected_resources_summary._get_unset_required_fields(
         {}
     )
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("fallbackScope",)) & set(("name",)))
 
 
 def test_get_protected_resources_summary_rest_flattened():
@@ -3786,11 +3788,31 @@ def test_parse_crypto_key_version_path():
     assert expected == actual
 
 
+def test_protected_resource_scope_path():
+    organization = "scallop"
+    expected = "organizations/{organization}/protectedResourceScope".format(
+        organization=organization,
+    )
+    actual = KeyTrackingServiceClient.protected_resource_scope_path(organization)
+    assert expected == actual
+
+
+def test_parse_protected_resource_scope_path():
+    expected = {
+        "organization": "abalone",
+    }
+    path = KeyTrackingServiceClient.protected_resource_scope_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = KeyTrackingServiceClient.parse_protected_resource_scope_path(path)
+    assert expected == actual
+
+
 def test_protected_resources_summary_path():
-    project = "scallop"
-    location = "abalone"
-    key_ring = "squid"
-    crypto_key = "clam"
+    project = "squid"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/protectedResourcesSummary".format(
         project=project,
         location=location,
@@ -3805,10 +3827,10 @@ def test_protected_resources_summary_path():
 
 def test_parse_protected_resources_summary_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "key_ring": "oyster",
-        "crypto_key": "nudibranch",
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
     }
     path = KeyTrackingServiceClient.protected_resources_summary_path(**expected)
 
@@ -3818,7 +3840,7 @@ def test_parse_protected_resources_summary_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3828,7 +3850,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "nautilus",
     }
     path = KeyTrackingServiceClient.common_billing_account_path(**expected)
 
@@ -3838,7 +3860,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3848,7 +3870,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "abalone",
     }
     path = KeyTrackingServiceClient.common_folder_path(**expected)
 
@@ -3858,7 +3880,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3868,7 +3890,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "clam",
     }
     path = KeyTrackingServiceClient.common_organization_path(**expected)
 
@@ -3878,7 +3900,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3888,7 +3910,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "octopus",
     }
     path = KeyTrackingServiceClient.common_project_path(**expected)
 
@@ -3898,8 +3920,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3910,8 +3932,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = KeyTrackingServiceClient.common_location_path(**expected)
 

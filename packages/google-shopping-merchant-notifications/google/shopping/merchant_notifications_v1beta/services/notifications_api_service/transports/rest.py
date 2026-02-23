@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.shopping.merchant_notifications_v1beta.types import notificationsapi
@@ -489,9 +489,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_create_notification_subscription(
                 request, metadata
@@ -560,11 +558,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_create_notification_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_notification_subscription_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_notification_subscription_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -646,9 +643,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_notification_subscription(
                 request, metadata
@@ -766,9 +761,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_get_notification_subscription(
                 request, metadata
@@ -832,11 +825,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_get_notification_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_notification_subscription_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_notification_subscription_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -924,9 +916,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_notification_subscriptions(
                 request, metadata
@@ -990,11 +980,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_list_notification_subscriptions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_notification_subscriptions_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_notification_subscriptions_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1086,9 +1075,7 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_http_options()
-            )
+            http_options = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_http_options()
 
             request, metadata = self._interceptor.pre_update_notification_subscription(
                 request, metadata
@@ -1157,11 +1144,10 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
 
             resp = self._interceptor.post_update_notification_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_notification_subscription_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_notification_subscription_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1197,7 +1183,9 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateNotificationSubscription(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_notification_subscription(
@@ -1207,7 +1195,9 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteNotificationSubscription(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_notification_subscription(
@@ -1218,7 +1208,9 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetNotificationSubscription(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_notification_subscriptions(
@@ -1229,7 +1221,9 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListNotificationSubscriptions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListNotificationSubscriptions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_notification_subscription(
@@ -1240,7 +1234,9 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateNotificationSubscription(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateNotificationSubscription(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

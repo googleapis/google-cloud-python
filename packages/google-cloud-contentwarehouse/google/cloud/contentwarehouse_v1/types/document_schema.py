@@ -201,6 +201,7 @@ class PropertyDefinition(proto.Message):
             LOWEST (6):
                 Lowest importance (negative).
         """
+
         RETRIEVAL_IMPORTANCE_UNSPECIFIED = 0
         HIGHEST = 1
         HIGHER = 2

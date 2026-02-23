@@ -147,6 +147,7 @@ class SingleTenantHsmInstance(proto.Message):
                 [SingleTenantHsmInstance][google.cloud.kms.v1.SingleTenantHsmInstance]
                 has failed and can not be recovered or used.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         PENDING_TWO_FACTOR_AUTH_REGISTRATION = 2
@@ -418,6 +419,7 @@ class SingleTenantHsmInstanceProposal(proto.Message):
                 [SingleTenantHsmInstanceProposal][google.cloud.kms.v1.SingleTenantHsmInstanceProposal]
                 has been deleted and will be purged after the purge_time.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         PENDING = 2
@@ -877,12 +879,12 @@ class ListSingleTenantHsmInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    single_tenant_hsm_instances: MutableSequence[
-        "SingleTenantHsmInstance"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SingleTenantHsmInstance",
+    single_tenant_hsm_instances: MutableSequence["SingleTenantHsmInstance"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SingleTenantHsmInstance",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1091,19 +1093,19 @@ class ApproveSingleTenantHsmInstanceProposalRequest(proto.Message):
                 required_challenge_replies are provided.
         """
 
-        required_challenge_replies: MutableSequence[
-            "ChallengeReply"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ChallengeReply",
+        required_challenge_replies: MutableSequence["ChallengeReply"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ChallengeReply",
+            )
         )
-        quorum_challenge_replies: MutableSequence[
-            "ChallengeReply"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="ChallengeReply",
+        quorum_challenge_replies: MutableSequence["ChallengeReply"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="ChallengeReply",
+            )
         )
 
     name: str = proto.Field(

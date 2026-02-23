@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
         "ImportJob",
         "ExternalProtectionLevelOptions",
         "KeyAccessJustificationsPolicy",
+        "RetiredResource",
     },
 )
 
@@ -65,6 +66,7 @@ class ProtectionLevel(proto.Enum):
             Crypto operations are performed in a
             single-tenant HSM.
     """
+
     PROTECTION_LEVEL_UNSPECIFIED = 0
     SOFTWARE = 1
     HSM = 2
@@ -153,6 +155,7 @@ class AccessReason(proto.Enum):
             - Google-initiated support access to protect system
               reliability.
     """
+
     REASON_UNSPECIFIED = 0
     CUSTOMER_INITIATED_SUPPORT = 1
     GOOGLE_INITIATED_SERVICE = 2
@@ -379,6 +382,7 @@ class CryptoKey(proto.Message):
                 and
                 [Decapsulate][google.cloud.kms.v1.KeyManagementService.Decapsulate].
         """
+
         CRYPTO_KEY_PURPOSE_UNSPECIFIED = 0
         ENCRYPT_DECRYPT = 1
         ASYMMETRIC_SIGN = 5
@@ -524,6 +528,7 @@ class KeyOperationAttestation(proto.Message):
                 gzip. This is a new format introduced in
                 Cavium's version 3.2-08.
         """
+
         ATTESTATION_FORMAT_UNSPECIFIED = 0
         CAVIUM_V1_COMPRESSED = 3
         CAVIUM_V2_COMPRESSED = 4
@@ -823,15 +828,44 @@ class CryptoKeyVersion(proto.Message):
                 X-Wing hybrid KEM combining ML-KEM-768 with
                 X25519 following
                 datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem/.
+            PQ_SIGN_ML_DSA_44 (68):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 1.
+                Randomized version.
             PQ_SIGN_ML_DSA_65 (56):
                 The post-quantum Module-Lattice-Based Digital
                 Signature Algorithm, at security level 3.
+                Randomized version.
+            PQ_SIGN_ML_DSA_87 (69):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 5.
                 Randomized version.
             PQ_SIGN_SLH_DSA_SHA2_128S (57):
                 The post-quantum stateless hash-based digital
                 signature algorithm, at security level 1.
                 Randomized version.
+            PQ_SIGN_HASH_SLH_DSA_SHA2_128S_SHA256 (60):
+                The post-quantum stateless hash-based digital
+                signature algorithm, at security level 1.
+                Randomized pre-hash version supporting SHA256
+                digests.
+            PQ_SIGN_ML_DSA_44_EXTERNAL_MU (70):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 1.
+                Randomized version supporting
+                externally-computed message representatives.
+            PQ_SIGN_ML_DSA_65_EXTERNAL_MU (67):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 3.
+                Randomized version supporting
+                externally-computed message representatives.
+            PQ_SIGN_ML_DSA_87_EXTERNAL_MU (71):
+                The post-quantum Module-Lattice-Based Digital
+                Signature Algorithm, at security level 5.
+                Randomized version supporting
+                externally-computed message representatives.
         """
+
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
         AES_128_GCM = 41
@@ -871,8 +905,14 @@ class CryptoKeyVersion(proto.Message):
         ML_KEM_768 = 47
         ML_KEM_1024 = 48
         KEM_XWING = 63
+        PQ_SIGN_ML_DSA_44 = 68
         PQ_SIGN_ML_DSA_65 = 56
+        PQ_SIGN_ML_DSA_87 = 69
         PQ_SIGN_SLH_DSA_SHA2_128S = 57
+        PQ_SIGN_HASH_SLH_DSA_SHA2_128S_SHA256 = 60
+        PQ_SIGN_ML_DSA_44_EXTERNAL_MU = 70
+        PQ_SIGN_ML_DSA_65_EXTERNAL_MU = 67
+        PQ_SIGN_ML_DSA_87_EXTERNAL_MU = 71
 
     class CryptoKeyVersionState(proto.Enum):
         r"""The state of a
@@ -940,6 +980,7 @@ class CryptoKeyVersion(proto.Message):
                 manager was destroyed. Additional details can be found in
                 [CryptoKeyVersion.external_destruction_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.external_destruction_failure_reason].
         """
+
         CRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 5
         ENABLED = 1
@@ -974,6 +1015,7 @@ class CryptoKeyVersion(proto.Message):
                 including the
                 [attestation][google.cloud.kms.v1.CryptoKeyVersion.attestation].
         """
+
         CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED = 0
         FULL = 1
 
@@ -1187,6 +1229,7 @@ class PublicKey(proto.Message):
                 format defined in its standard
                 https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem.
         """
+
         PUBLIC_KEY_FORMAT_UNSPECIFIED = 0
         PEM = 1
         DER = 2
@@ -1379,6 +1422,7 @@ class ImportJob(proto.Message):
                 this method cannot be used to wrap RSA keys for
                 import.
         """
+
         IMPORT_METHOD_UNSPECIFIED = 0
         RSA_OAEP_3072_SHA1_AES_256 = 1
         RSA_OAEP_4096_SHA1_AES_256 = 2
@@ -1410,6 +1454,7 @@ class ImportJob(proto.Message):
                 This job can no longer be used and may not
                 leave this state once entered.
         """
+
         IMPORT_JOB_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 1
         ACTIVE = 2
@@ -1544,6 +1589,50 @@ class KeyAccessJustificationsPolicy(proto.Message):
         proto.ENUM,
         number=1,
         enum="AccessReason",
+    )
+
+
+class RetiredResource(proto.Message):
+    r"""A RetiredResource resource represents the record of a deleted
+    [CryptoKey][google.cloud.kms.v1.CryptoKey]. Its purpose is to
+    provide visibility into retained user data and to prevent reuse of
+    these names for new [CryptoKeys][google.cloud.kms.v1.CryptoKey].
+
+    Attributes:
+        name (str):
+            Output only. Identifier. The resource name for this
+            [RetiredResource][google.cloud.kms.v1.RetiredResource] in
+            the format ``projects/*/locations/*/retiredResources/*``.
+        original_resource (str):
+            Output only. The full resource name of the original
+            [CryptoKey][google.cloud.kms.v1.CryptoKey] that was deleted
+            in the format
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+        resource_type (str):
+            Output only. The resource type of the
+            original deleted resource.
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the original
+            resource was deleted and this RetiredResource
+            record was created.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    original_resource: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    delete_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 

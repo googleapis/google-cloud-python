@@ -301,6 +301,7 @@ class AppGateway(proto.Message):
                 TCP Proxy based BeyondCorp Connection. API
                 will default to this if unset.
         """
+
         TYPE_UNSPECIFIED = 0
         TCP_PROXY = 1
 
@@ -323,6 +324,7 @@ class AppGateway(proto.Message):
                 future. This happens when CCFE sends
                 ProjectState = OFF.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -341,6 +343,7 @@ class AppGateway(proto.Message):
                 AppGateway hosted in a GCP regional managed
                 instance group.
         """
+
         HOST_TYPE_UNSPECIFIED = 0
         GCP_REGIONAL_MIG = 1
 

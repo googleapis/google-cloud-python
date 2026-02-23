@@ -82,6 +82,7 @@ class OSPolicy(proto.Message):
                 resources in the policy are in their desired
                 state, and if not, enforces the desired state.
         """
+
         MODE_UNSPECIFIED = 0
         VALIDATION = 1
         ENFORCEMENT = 2
@@ -339,6 +340,7 @@ class OSPolicy(proto.Message):
                         The agent ensures that the package is not
                         installed and uninstalls it if detected.
                 """
+
                 DESIRED_STATE_UNSPECIFIED = 0
                 INSTALLED = 1
                 REMOVED = 2
@@ -594,6 +596,7 @@ class OSPolicy(proto.Message):
                             Deb-src indicates that the archive contains
                             source files.
                     """
+
                     ARCHIVE_TYPE_UNSPECIFIED = 0
                     DEB = 1
                     DEB_SRC = 2
@@ -843,6 +846,7 @@ class OSPolicy(proto.Message):
                             Indicates that the script runs with
                             PowerShell.
                     """
+
                     INTERPRETER_UNSPECIFIED = 0
                     NONE = 1
                     SHELL = 2
@@ -947,6 +951,7 @@ class OSPolicy(proto.Message):
                         matches. If the file does not exist it will be
                         created.
                 """
+
                 DESIRED_STATE_UNSPECIFIED = 0
                 PRESENT = 1
                 ABSENT = 2
@@ -1046,12 +1051,12 @@ class OSPolicy(proto.Message):
             number=1,
             message="OSPolicy.OSFilter",
         )
-        inventory_filters: MutableSequence[
-            "OSPolicy.InventoryFilter"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="OSPolicy.InventoryFilter",
+        inventory_filters: MutableSequence["OSPolicy.InventoryFilter"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="OSPolicy.InventoryFilter",
+            )
         )
         resources: MutableSequence["OSPolicy.Resource"] = proto.RepeatedField(
             proto.MESSAGE,

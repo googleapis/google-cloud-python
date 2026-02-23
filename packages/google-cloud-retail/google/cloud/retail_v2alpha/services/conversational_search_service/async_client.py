@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     Awaitable,
@@ -31,13 +31,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.retail_v2alpha import gapic_version as package_version
 
@@ -132,7 +132,12 @@ class ConversationalSearchServiceAsyncClient:
         Returns:
             ConversationalSearchServiceAsyncClient: The constructed client.
         """
-        return ConversationalSearchServiceClient.from_service_account_info.__func__(ConversationalSearchServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            ConversationalSearchServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(
+            ConversationalSearchServiceAsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -148,7 +153,12 @@ class ConversationalSearchServiceAsyncClient:
         Returns:
             ConversationalSearchServiceAsyncClient: The constructed client.
         """
-        return ConversationalSearchServiceClient.from_service_account_file.__func__(ConversationalSearchServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            ConversationalSearchServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(
+            ConversationalSearchServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -186,7 +196,9 @@ class ConversationalSearchServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return ConversationalSearchServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return ConversationalSearchServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> ConversationalSearchServiceTransport:

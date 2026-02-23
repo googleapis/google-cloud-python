@@ -13,8 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .environment import ContainerImage, Environment, VmImage
-from .instance import Instance, ReservationAffinity
+from .environment import (
+    ContainerImage,
+    Environment,
+    VmImage,
+)
+from .instance import (
+    Instance,
+    ReservationAffinity,
+)
 from .service import (
     CreateEnvironmentRequest,
     CreateInstanceRequest,

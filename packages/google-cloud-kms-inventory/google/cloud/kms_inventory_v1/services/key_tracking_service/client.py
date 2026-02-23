@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.kms_inventory_v1 import gapic_version as package_version
 
@@ -78,9 +78,7 @@ class KeyTrackingServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[KeyTrackingServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[KeyTrackingServiceTransport]]
     _transport_registry["grpc"] = KeyTrackingServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = KeyTrackingServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = KeyTrackingServiceRestTransport
@@ -260,6 +258,23 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
             path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def protected_resource_scope_path(
+        organization: str,
+    ) -> str:
+        """Returns a fully-qualified protected_resource_scope string."""
+        return "organizations/{organization}/protectedResourceScope".format(
+            organization=organization,
+        )
+
+    @staticmethod
+    def parse_protected_resource_scope_path(path: str) -> Dict[str, str]:
+        """Parses a protected_resource_scope path into its component segments."""
+        m = re.match(
+            r"^organizations/(?P<organization>.+?)/protectedResourceScope$", path
         )
         return m.groupdict() if m else {}
 
@@ -665,11 +680,9 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = KeyTrackingServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            KeyTrackingServiceClient._read_environment_variables()
+        )
         self._client_cert_source = KeyTrackingServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -704,8 +717,7 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(KeyTrackingServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -787,9 +799,15 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
     ) -> key_tracking_service.ProtectedResourcesSummary:
         r"""Returns aggregate information about the resources protected by
         the given Cloud KMS [CryptoKey][google.cloud.kms.v1.CryptoKey].
-        Only resources within the same Cloud organization as the key
-        will be returned. The project that holds the key must be part of
-        an organization in order for this call to succeed.
+        By default, summary of resources within the same Cloud
+        organization as the key will be returned, which requires the KMS
+        organization service account to be configured(refer
+        https://docs.cloud.google.com/kms/docs/view-key-usage#required-roles).
+        If the KMS organization service account is not configured or
+        key's project is not part of an organization, set
+        [fallback_scope][google.cloud.kms.inventory.v1.GetProtectedResourcesSummaryRequest.fallback_scope]
+        to ``FALLBACK_SCOPE_PROJECT`` to retrieve a summary of protected
+        resources within the key's project.
 
         .. code-block:: python
 
@@ -840,8 +858,8 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
             google.cloud.kms_inventory_v1.types.ProtectedResourcesSummary:
                 Aggregate information about the
                 resources protected by a Cloud KMS key
-                in the same Cloud organization as the
-                key.
+                in the same Cloud organization/project
+                as the key.
 
         """
         # Create or coerce a protobuf request object.
@@ -908,7 +926,7 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
     ) -> pagers.SearchProtectedResourcesPager:
         r"""Returns metadata about the resources protected by the given
         Cloud KMS [CryptoKey][google.cloud.kms.v1.CryptoKey] in the
-        given Cloud organization.
+        given Cloud organization/project.
 
         .. code-block:: python
 
@@ -943,8 +961,16 @@ class KeyTrackingServiceClient(metaclass=KeyTrackingServiceClientMeta):
                 The request object. Request message for
                 [KeyTrackingService.SearchProtectedResources][google.cloud.kms.inventory.v1.KeyTrackingService.SearchProtectedResources].
             scope (str):
-                Required. Resource name of the
-                organization. Example: organizations/123
+                Required. A scope can be an organization or a project.
+                Resources protected by the crypto key in provided scope
+                will be returned.
+
+                The following values are allowed:
+
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/12345678")
+                - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+                - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this

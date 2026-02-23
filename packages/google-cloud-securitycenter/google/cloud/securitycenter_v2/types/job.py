@@ -44,6 +44,7 @@ class JobState(proto.Enum):
         FAILED (4):
             Job has completed but with failure
     """
+
     JOB_STATE_UNSPECIFIED = 0
     PENDING = 1
     RUNNING = 2

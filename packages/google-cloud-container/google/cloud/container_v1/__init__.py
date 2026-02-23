@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.cluster_manager import ClusterManagerAsyncClient, ClusterManagerClient
 from .types.cluster_service import (
     AcceleratorConfig,

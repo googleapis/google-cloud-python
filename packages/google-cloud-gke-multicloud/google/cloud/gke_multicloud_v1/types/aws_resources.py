@@ -175,6 +175,7 @@ class AwsCluster(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -586,6 +587,7 @@ class AwsVolumeTemplate(proto.Message):
             GP3 (2):
                 GP3 (General Purpose SSD volume type).
         """
+
         VOLUME_TYPE_UNSPECIFIED = 0
         GP2 = 1
         GP3 = 2
@@ -768,6 +770,7 @@ class AwsNodePool(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -1344,6 +1347,7 @@ class AwsInstancePlacement(proto.Message):
             HOST (3):
                 Launch this instance to a dedicated host.
         """
+
         TENANCY_UNSPECIFIED = 0
         DEFAULT = 1
         DEDICATED = 2

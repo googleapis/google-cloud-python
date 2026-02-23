@@ -258,6 +258,7 @@ class GenerateGroundedContentRequest(proto.Message):
                         The V1 model which is evaluating each source
                         independently.
                 """
+
                 VERSION_UNSPECIFIED = 0
                 V1_INDEPENDENT = 1
 
@@ -325,12 +326,12 @@ class GenerateGroundedContentRequest(proto.Message):
                     author of the content).
             """
 
-            grounding_facts: MutableSequence[
-                grounding.GroundingFact
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message=grounding.GroundingFact,
+            grounding_facts: MutableSequence[grounding.GroundingFact] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message=grounding.GroundingFact,
+                )
             )
             attributes: MutableMapping[str, str] = proto.MapField(
                 proto.STRING,
@@ -558,6 +559,7 @@ class GenerateGroundedContentResponse(proto.Message):
                         GOOGLE_MAPS (4):
                             Google Maps.
                     """
+
                     SOURCE_UNSPECIFIED = 0
                     VERTEX_AI_SEARCH = 1
                     GOOGLE_SEARCH = 3
@@ -620,6 +622,7 @@ class GenerateGroundedContentResponse(proto.Message):
                             The V1 model which is evaluating each source
                             independently.
                     """
+
                     VERSION_UNSPECIFIED = 0
                     V1_INDEPENDENT = 1
 

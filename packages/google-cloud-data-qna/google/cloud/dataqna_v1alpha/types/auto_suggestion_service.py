@@ -46,6 +46,7 @@ class SuggestionType(proto.Enum):
             Template suggestion type. Suggestions are for
             full sentences.
     """
+
     SUGGESTION_TYPE_UNSPECIFIED = 0
     ENTITY = 1
     TEMPLATE = 2

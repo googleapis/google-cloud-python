@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-saasplatform-saasservicemgmt/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-saasplatform-saasservicemgmt-v0.3.0...google-cloud-saasplatform-saasservicemgmt-v0.4.0) (2026-02-19)
+
+
+### Features
+
+* Add AppHub related condition types to Deployment protos ([4ca6f9e2f825c185d092f9879c05098659b1a871](https://github.com/googleapis/google-cloud-python/commit/4ca6f9e2f825c185d092f9879c05098659b1a871))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-saasplatform-saasservicemgmt-v0.2.0...google-cloud-saasplatform-saasservicemgmt-v0.3.0) (2026-01-09)
 
 

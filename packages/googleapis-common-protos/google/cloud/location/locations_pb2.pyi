@@ -65,7 +65,6 @@ class GetLocationRequest(_message.Message):
 
 class Location(_message.Message):
     __slots__ = ("name", "location_id", "display_name", "labels", "metadata")
-
     class LabelsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -75,6 +74,7 @@ class Location(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     NAME_FIELD_NUMBER: _ClassVar[int]
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]

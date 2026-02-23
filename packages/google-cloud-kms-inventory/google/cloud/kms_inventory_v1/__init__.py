@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.key_dashboard_service import (
     KeyDashboardServiceAsyncClient,
     KeyDashboardServiceClient,
@@ -38,11 +39,13 @@ from .services.key_tracking_service import (
 )
 from .types.key_dashboard_service import ListCryptoKeysRequest, ListCryptoKeysResponse
 from .types.key_tracking_service import (
+    FallbackScope,
     GetProtectedResourcesSummaryRequest,
     ProtectedResource,
     ProtectedResourcesSummary,
     SearchProtectedResourcesRequest,
     SearchProtectedResourcesResponse,
+    Warning,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -142,6 +145,7 @@ else:  # pragma: NO COVER
 __all__ = (
     "KeyDashboardServiceAsyncClient",
     "KeyTrackingServiceAsyncClient",
+    "FallbackScope",
     "GetProtectedResourcesSummaryRequest",
     "KeyDashboardServiceClient",
     "KeyTrackingServiceClient",
@@ -151,4 +155,5 @@ __all__ = (
     "ProtectedResourcesSummary",
     "SearchProtectedResourcesRequest",
     "SearchProtectedResourcesResponse",
+    "Warning",
 )

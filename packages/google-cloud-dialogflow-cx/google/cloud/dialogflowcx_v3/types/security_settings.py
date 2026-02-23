@@ -306,6 +306,7 @@ class SecuritySettings(proto.Message):
                 Call redaction service to clean up the data
                 to be persisted.
         """
+
         REDACTION_STRATEGY_UNSPECIFIED = 0
         REDACT_WITH_SERVICE = 1
 
@@ -321,6 +322,7 @@ class SecuritySettings(proto.Message):
                 power is disconnected. This includes data that
                 are temporarily saved on disk.
         """
+
         REDACTION_SCOPE_UNSPECIFIED = 0
         REDACT_DISK_STORAGE = 2
 
@@ -338,6 +340,7 @@ class SecuritySettings(proto.Message):
                 conversation ends when the corresponding Dialogflow session
                 ends.
         """
+
         RETENTION_STRATEGY_UNSPECIFIED = 0
         REMOVE_AFTER_CONVERSATION = 1
 
@@ -353,6 +356,7 @@ class SecuritySettings(proto.Message):
                 Cloud logging, which is owned by the user - not
                 Dialogflow.
         """
+
         PURGE_DATA_TYPE_UNSPECIFIED = 0
         DIALOGFLOW_HISTORY = 1
 
@@ -400,6 +404,7 @@ class SecuritySettings(proto.Message):
                 OGG (3):
                     OGG Vorbis.
             """
+
             AUDIO_FORMAT_UNSPECIFIED = 0
             MULAW = 1
             MP3 = 2

@@ -84,6 +84,7 @@ class UserLicense(proto.Message):
                 cannot get license assigned will be assigned NO_LICENSE
                 state(License could be unassigned by admin).
         """
+
         LICENSE_ASSIGNMENT_STATE_UNSPECIFIED = 0
         ASSIGNED = 1
         UNASSIGNED = 2

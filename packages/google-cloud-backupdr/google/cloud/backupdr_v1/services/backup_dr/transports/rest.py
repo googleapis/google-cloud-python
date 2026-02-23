@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -2782,9 +2784,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup_plan_association(
                 request, metadata
@@ -2851,11 +2851,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_create_backup_plan_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_backup_plan_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_backup_plan_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3092,9 +3091,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseCreateManagementServer._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_http_options()
 
             request, metadata = self._interceptor.pre_create_management_server(
                 request, metadata
@@ -3542,9 +3539,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup_plan_association(
                 request, metadata
@@ -3606,11 +3601,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_delete_backup_plan_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_backup_plan_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_backup_plan_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3840,9 +3834,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_management_server(
                 request, metadata
@@ -3993,15 +3985,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_fetch_backup_plan_associations_for_resource_type(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_fetch_backup_plan_associations_for_resource_type(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_transcoded_request(
                 http_options, request
@@ -4055,9 +4044,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse()
-            )
+            resp = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse()
             pb_resp = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.pb(
                 resp
             )
@@ -4070,11 +4057,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_backup_plan_associations_for_resource_type_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_fetch_backup_plan_associations_for_resource_type_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4159,9 +4145,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_backups_for_resource_type(
                 request, metadata
@@ -4225,11 +4209,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_fetch_backups_for_resource_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_backups_for_resource_type_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_fetch_backups_for_resource_type_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4321,15 +4304,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_fetch_data_source_references_for_resource_type(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_fetch_data_source_references_for_resource_type(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_transcoded_request(
                 http_options, request
@@ -4400,11 +4380,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_data_source_references_for_resource_type_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_fetch_data_source_references_for_resource_type_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4489,9 +4468,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_usable_backup_vaults(
                 request, metadata
@@ -4940,9 +4917,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_plan_association(
                 request, metadata
@@ -5091,9 +5066,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_plan_revision(
                 request, metadata
@@ -5546,9 +5519,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_source_reference(
                 request, metadata
@@ -6001,9 +5972,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backup_plan_associations(
                 request, metadata
@@ -6067,11 +6036,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_backup_plan_associations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_backup_plan_associations_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_backup_plan_associations_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6156,9 +6124,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backup_plan_revisions(
                 request, metadata
@@ -6761,9 +6727,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_source_references(
                 request, metadata
@@ -7069,9 +7033,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListManagementServers._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListManagementServers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_management_servers(
                 request, metadata
@@ -7847,9 +7809,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup_plan_association(
                 request, metadata
@@ -7916,11 +7876,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_update_backup_plan_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_backup_plan_association_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_backup_plan_association_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8274,7 +8233,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateBackupPlanAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_backup_vault(
@@ -8290,7 +8251,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ) -> Callable[[backupdr.CreateManagementServerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateManagementServer(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateManagementServer(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_backup(
@@ -8317,7 +8280,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteBackupPlanAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_backup_vault(
@@ -8333,7 +8298,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ) -> Callable[[backupdr.DeleteManagementServerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteManagementServer(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteManagementServer(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_backup_plan_associations_for_resource_type(
@@ -8344,7 +8311,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchBackupPlanAssociationsForResourceType(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchBackupPlanAssociationsForResourceType(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_backups_for_resource_type(
@@ -8355,7 +8324,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchBackupsForResourceType(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchBackupsForResourceType(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_data_source_references_for_resource_type(
@@ -8366,7 +8337,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchDataSourceReferencesForResourceType(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchDataSourceReferencesForResourceType(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def fetch_usable_backup_vaults(
@@ -8377,7 +8350,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchUsableBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchUsableBackupVaults(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_backup(
@@ -8404,7 +8379,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetBackupPlanAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_backup_plan_revision(
@@ -8441,7 +8418,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetDataSourceReference(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetDataSourceReference(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_management_server(
@@ -8468,7 +8447,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListBackupPlanAssociations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListBackupPlanAssociations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_backup_plan_revisions(
@@ -8479,7 +8460,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListBackupPlanRevisions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListBackupPlanRevisions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_backup_plans(
@@ -8518,7 +8501,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDataSourceReferences(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDataSourceReferences(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_data_sources(
@@ -8583,7 +8568,9 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateBackupPlanAssociation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_backup_vault(

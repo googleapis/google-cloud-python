@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.storage_batch_operations import (
     StorageBatchOperationsAsyncClient,
     StorageBatchOperationsClient,
@@ -37,13 +38,17 @@ from .types.storage_batch_operations import (
     CancelJobResponse,
     CreateJobRequest,
     DeleteJobRequest,
+    GetBucketOperationRequest,
     GetJobRequest,
+    ListBucketOperationsRequest,
+    ListBucketOperationsResponse,
     ListJobsRequest,
     ListJobsResponse,
     OperationMetadata,
 )
 from .types.storage_batch_operations_types import (
     BucketList,
+    BucketOperation,
     Counters,
     DeleteObject,
     ErrorLogEntry,
@@ -155,6 +160,7 @@ else:  # pragma: NO COVER
 __all__ = (
     "StorageBatchOperationsAsyncClient",
     "BucketList",
+    "BucketOperation",
     "CancelJobRequest",
     "CancelJobResponse",
     "Counters",
@@ -163,8 +169,11 @@ __all__ = (
     "DeleteObject",
     "ErrorLogEntry",
     "ErrorSummary",
+    "GetBucketOperationRequest",
     "GetJobRequest",
     "Job",
+    "ListBucketOperationsRequest",
+    "ListBucketOperationsResponse",
     "ListJobsRequest",
     "ListJobsResponse",
     "LoggingConfig",

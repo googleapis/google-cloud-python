@@ -32,6 +32,9 @@ __protobuf__ = proto.module(
         "CancelJobRequest",
         "DeleteJobRequest",
         "CancelJobResponse",
+        "ListBucketOperationsRequest",
+        "ListBucketOperationsResponse",
+        "GetBucketOperationRequest",
         "OperationMetadata",
     },
 )
@@ -205,6 +208,14 @@ class DeleteJobRequest(proto.Message):
             for at least 60 minutes since the first request. The request
             ID must be a valid UUID with the exception that zero UUID is
             not supported (00000000-0000-0000-0000-000000000000).
+        force (bool):
+            Optional. If set to true, any child bucket
+            operations of the job will also be deleted.
+            Highly recommended to be set to true by all
+            clients. Users cannot mutate bucket operations
+            directly, so only the jobs.delete permission is
+            required to delete a job (and its child bucket
+            operations).
     """
 
     name: str = proto.Field(
@@ -215,10 +226,105 @@ class DeleteJobRequest(proto.Message):
         proto.STRING,
         number=2,
     )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class CancelJobResponse(proto.Message):
     r"""Message for response to cancel Job."""
+
+
+class ListBucketOperationsRequest(proto.Message):
+    r"""Message for request to list BucketOperations
+
+    Attributes:
+        parent (str):
+            Required. Format:
+            projects/{project_id}/locations/global/jobs/{job_id}.
+        filter (str):
+            Optional. Filters results as defined by
+            https://google.aip.dev/160.
+        page_size (int):
+            Optional. The list page size. Default page
+            size is 100.
+        page_token (str):
+            Optional. The list page token.
+        order_by (str):
+            Optional. Field to sort by. Supported fields are name,
+            create_time.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListBucketOperationsResponse(proto.Message):
+    r"""Message for response to listing BucketOperations
+
+    Attributes:
+        bucket_operations (MutableSequence[google.cloud.storagebatchoperations_v1.types.BucketOperation]):
+            A list of storage batch bucket operations.
+        next_page_token (str):
+            A token identifying a page of results.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    bucket_operations: MutableSequence[
+        storage_batch_operations_types.BucketOperation
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=storage_batch_operations_types.BucketOperation,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetBucketOperationRequest(proto.Message):
+    r"""Message for getting a BucketOperation.
+
+    Attributes:
+        name (str):
+            Required. ``name`` of the bucket operation to retrieve.
+            Format:
+            projects/{project_id}/locations/global/jobs/{job_id}/bucketOperations/{bucket_operation_id}.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):

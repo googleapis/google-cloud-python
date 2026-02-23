@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.container_v1beta1.types import cluster_service
 
@@ -1005,12 +1005,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_node_pool_upgrade" not in self._stubs:
-            self._stubs[
-                "complete_node_pool_upgrade"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/CompleteNodePoolUpgrade",
-                request_serializer=cluster_service.CompleteNodePoolUpgradeRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["complete_node_pool_upgrade"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/CompleteNodePoolUpgrade",
+                    request_serializer=cluster_service.CompleteNodePoolUpgradeRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["complete_node_pool_upgrade"]
 
@@ -1038,12 +1038,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_node_pool_upgrade" not in self._stubs:
-            self._stubs[
-                "rollback_node_pool_upgrade"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/RollbackNodePoolUpgrade",
-                request_serializer=cluster_service.RollbackNodePoolUpgradeRequest.serialize,
-                response_deserializer=cluster_service.Operation.deserialize,
+            self._stubs["rollback_node_pool_upgrade"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/RollbackNodePoolUpgrade",
+                    request_serializer=cluster_service.RollbackNodePoolUpgradeRequest.serialize,
+                    response_deserializer=cluster_service.Operation.deserialize,
+                )
             )
         return self._stubs["rollback_node_pool_upgrade"]
 
@@ -1331,12 +1331,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "check_autopilot_compatibility" not in self._stubs:
-            self._stubs[
-                "check_autopilot_compatibility"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/CheckAutopilotCompatibility",
-                request_serializer=cluster_service.CheckAutopilotCompatibilityRequest.serialize,
-                response_deserializer=cluster_service.CheckAutopilotCompatibilityResponse.deserialize,
+            self._stubs["check_autopilot_compatibility"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/CheckAutopilotCompatibility",
+                    request_serializer=cluster_service.CheckAutopilotCompatibilityRequest.serialize,
+                    response_deserializer=cluster_service.CheckAutopilotCompatibilityResponse.deserialize,
+                )
             )
         return self._stubs["check_autopilot_compatibility"]
 
@@ -1392,12 +1392,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_cluster_upgrade_info" not in self._stubs:
-            self._stubs[
-                "fetch_cluster_upgrade_info"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/FetchClusterUpgradeInfo",
-                request_serializer=cluster_service.FetchClusterUpgradeInfoRequest.serialize,
-                response_deserializer=cluster_service.ClusterUpgradeInfo.deserialize,
+            self._stubs["fetch_cluster_upgrade_info"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/FetchClusterUpgradeInfo",
+                    request_serializer=cluster_service.FetchClusterUpgradeInfoRequest.serialize,
+                    response_deserializer=cluster_service.ClusterUpgradeInfo.deserialize,
+                )
             )
         return self._stubs["fetch_cluster_upgrade_info"]
 
@@ -1423,12 +1423,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_node_pool_upgrade_info" not in self._stubs:
-            self._stubs[
-                "fetch_node_pool_upgrade_info"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/FetchNodePoolUpgradeInfo",
-                request_serializer=cluster_service.FetchNodePoolUpgradeInfoRequest.serialize,
-                response_deserializer=cluster_service.NodePoolUpgradeInfo.deserialize,
+            self._stubs["fetch_node_pool_upgrade_info"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/FetchNodePoolUpgradeInfo",
+                    request_serializer=cluster_service.FetchNodePoolUpgradeInfoRequest.serialize,
+                    response_deserializer=cluster_service.NodePoolUpgradeInfo.deserialize,
+                )
             )
         return self._stubs["fetch_node_pool_upgrade_info"]
 
@@ -1456,12 +1456,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_control_plane_upgrade" not in self._stubs:
-            self._stubs[
-                "complete_control_plane_upgrade"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/CompleteControlPlaneUpgrade",
-                request_serializer=cluster_service.CompleteControlPlaneUpgradeRequest.serialize,
-                response_deserializer=cluster_service.Operation.deserialize,
+            self._stubs["complete_control_plane_upgrade"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/CompleteControlPlaneUpgrade",
+                    request_serializer=cluster_service.CompleteControlPlaneUpgradeRequest.serialize,
+                    response_deserializer=cluster_service.Operation.deserialize,
+                )
             )
         return self._stubs["complete_control_plane_upgrade"]
 

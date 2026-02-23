@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.tpu_v2alpha1.types import cloud_tpu
 
@@ -726,12 +726,12 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "perform_maintenance_queued_resource" not in self._stubs:
-            self._stubs[
-                "perform_maintenance_queued_resource"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.tpu.v2alpha1.Tpu/PerformMaintenanceQueuedResource",
-                request_serializer=cloud_tpu.PerformMaintenanceQueuedResourceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["perform_maintenance_queued_resource"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.tpu.v2alpha1.Tpu/PerformMaintenanceQueuedResource",
+                    request_serializer=cloud_tpu.PerformMaintenanceQueuedResourceRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["perform_maintenance_queued_resource"]
 
@@ -959,12 +959,12 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "simulate_maintenance_event" not in self._stubs:
-            self._stubs[
-                "simulate_maintenance_event"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.tpu.v2alpha1.Tpu/SimulateMaintenanceEvent",
-                request_serializer=cloud_tpu.SimulateMaintenanceEventRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["simulate_maintenance_event"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.tpu.v2alpha1.Tpu/SimulateMaintenanceEvent",
+                    request_serializer=cloud_tpu.SimulateMaintenanceEventRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["simulate_maintenance_event"]
 

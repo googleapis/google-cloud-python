@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.oslogin_v1.common.types import common
@@ -544,9 +544,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsLoginServiceRestTransport._BaseCreateSshPublicKey._get_http_options()
-            )
+            http_options = _BaseOsLoginServiceRestTransport._BaseCreateSshPublicKey._get_http_options()
 
             request, metadata = self._interceptor.pre_create_ssh_public_key(
                 request, metadata
@@ -692,9 +690,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOsLoginServiceRestTransport._BaseDeletePosixAccount._get_http_options()
-            )
+            http_options = _BaseOsLoginServiceRestTransport._BaseDeletePosixAccount._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_posix_account(
                 request, metadata
@@ -801,9 +797,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOsLoginServiceRestTransport._BaseDeleteSshPublicKey._get_http_options()
-            )
+            http_options = _BaseOsLoginServiceRestTransport._BaseDeleteSshPublicKey._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_ssh_public_key(
                 request, metadata
@@ -917,9 +911,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsLoginServiceRestTransport._BaseGetLoginProfile._get_http_options()
-            )
+            http_options = _BaseOsLoginServiceRestTransport._BaseGetLoginProfile._get_http_options()
 
             request, metadata = self._interceptor.pre_get_login_profile(
                 request, metadata
@@ -1066,9 +1058,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsLoginServiceRestTransport._BaseGetSshPublicKey._get_http_options()
-            )
+            http_options = _BaseOsLoginServiceRestTransport._BaseGetSshPublicKey._get_http_options()
 
             request, metadata = self._interceptor.pre_get_ssh_public_key(
                 request, metadata
@@ -1216,9 +1206,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsLoginServiceRestTransport._BaseImportSshPublicKey._get_http_options()
-            )
+            http_options = _BaseOsLoginServiceRestTransport._BaseImportSshPublicKey._get_http_options()
 
             request, metadata = self._interceptor.pre_import_ssh_public_key(
                 request, metadata
@@ -1373,9 +1361,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsLoginServiceRestTransport._BaseUpdateSshPublicKey._get_http_options()
-            )
+            http_options = _BaseOsLoginServiceRestTransport._BaseUpdateSshPublicKey._get_http_options()
 
             request, metadata = self._interceptor.pre_update_ssh_public_key(
                 request, metadata

@@ -638,6 +638,7 @@ class EmptyDirVolumeSource(proto.Message):
                 Explicitly set the EmptyDir to be in memory.
                 Uses tmpfs.
         """
+
         MEDIUM_UNSPECIFIED = 0
         MEMORY = 1
 

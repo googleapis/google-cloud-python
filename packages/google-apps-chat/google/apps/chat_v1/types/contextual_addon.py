@@ -80,6 +80,7 @@ class ContextualAddOnMarkup(proto.Message):
                     AVATAR (2):
                         Circular border.
                 """
+
                 IMAGE_STYLE_UNSPECIFIED = 0
                 IMAGE = 1
                 AVATAR = 2
@@ -164,19 +165,19 @@ class ContextualAddOnMarkup(proto.Message):
             number=1,
             message="ContextualAddOnMarkup.Card.CardHeader",
         )
-        sections: MutableSequence[
-            "ContextualAddOnMarkup.Card.Section"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="ContextualAddOnMarkup.Card.Section",
+        sections: MutableSequence["ContextualAddOnMarkup.Card.Section"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="ContextualAddOnMarkup.Card.Section",
+            )
         )
-        card_actions: MutableSequence[
-            "ContextualAddOnMarkup.Card.CardAction"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="ContextualAddOnMarkup.Card.CardAction",
+        card_actions: MutableSequence["ContextualAddOnMarkup.Card.CardAction"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="ContextualAddOnMarkup.Card.CardAction",
+            )
         )
         name: str = proto.Field(
             proto.STRING,

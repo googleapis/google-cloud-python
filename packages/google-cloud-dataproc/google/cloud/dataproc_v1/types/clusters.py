@@ -179,6 +179,8 @@ class ClusterConfig(proto.Message):
     r"""The cluster config.
 
     Attributes:
+        cluster_type (google.cloud.dataproc_v1.types.ClusterConfig.ClusterType):
+            Optional. The type of the cluster.
         cluster_tier (google.cloud.dataproc_v1.types.ClusterConfig.ClusterTier):
             Optional. The cluster tier.
         config_bucket (str):
@@ -260,6 +262,28 @@ class ClusterConfig(proto.Message):
             Optional. The node group settings.
     """
 
+    class ClusterType(proto.Enum):
+        r"""The type of the cluster.
+
+        Values:
+            CLUSTER_TYPE_UNSPECIFIED (0):
+                Not set.
+            STANDARD (1):
+                Standard dataproc cluster with a minimum of
+                two primary workers.
+            SINGLE_NODE (2):
+                https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/single-node-clusters
+            ZERO_SCALE (3):
+                Clusters that can use only secondary workers
+                and be scaled down to zero secondary worker
+                nodes.
+        """
+
+        CLUSTER_TYPE_UNSPECIFIED = 0
+        STANDARD = 1
+        SINGLE_NODE = 2
+        ZERO_SCALE = 3
+
     class ClusterTier(proto.Enum):
         r"""The cluster tier.
 
@@ -271,10 +295,16 @@ class ClusterConfig(proto.Message):
             CLUSTER_TIER_PREMIUM (2):
                 Premium Dataproc cluster.
         """
+
         CLUSTER_TIER_UNSPECIFIED = 0
         CLUSTER_TIER_STANDARD = 1
         CLUSTER_TIER_PREMIUM = 2
 
+    cluster_type: ClusterType = proto.Field(
+        proto.ENUM,
+        number=27,
+        enum=ClusterType,
+    )
     cluster_tier: ClusterTier = proto.Field(
         proto.ENUM,
         number=29,
@@ -313,12 +343,12 @@ class ClusterConfig(proto.Message):
         number=13,
         message="SoftwareConfig",
     )
-    initialization_actions: MutableSequence[
-        "NodeInitializationAction"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message="NodeInitializationAction",
+    initialization_actions: MutableSequence["NodeInitializationAction"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message="NodeInitializationAction",
+        )
     )
     encryption_config: "EncryptionConfig" = proto.Field(
         proto.MESSAGE,
@@ -676,6 +706,7 @@ class GceClusterConfig(proto.Message):
                 between Google Services and the Dataproc
                 cluster.
         """
+
         PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 0
         INHERIT_FROM_SUBNETWORK = 1
         OUTBOUND = 2
@@ -962,6 +993,7 @@ class InstanceGroupConfig(proto.Message):
                 (https://cloud.google.com/compute/docs/instances/preemptible),
                 and provide additional features.
         """
+
         PREEMPTIBILITY_UNSPECIFIED = 0
         NON_PREEMPTIBLE = 1
         PREEMPTIBLE = 2
@@ -1256,12 +1288,12 @@ class InstanceFlexibilityPolicy(proto.Message):
         number=2,
         message=InstanceSelection,
     )
-    instance_selection_results: MutableSequence[
-        InstanceSelectionResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=InstanceSelectionResult,
+    instance_selection_results: MutableSequence[InstanceSelectionResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=InstanceSelectionResult,
+        )
     )
 
 
@@ -1442,6 +1474,7 @@ class NodeGroup(proto.Message):
             DRIVER (1):
                 Job drivers run on the node pool.
         """
+
         ROLE_UNSPECIFIED = 0
         DRIVER = 1
 
@@ -1557,6 +1590,7 @@ class ClusterStatus(proto.Message):
                 The cluster is being repaired. It is not
                 ready for use.
         """
+
         UNKNOWN = 0
         CREATING = 1
         RUNNING = 2
@@ -1588,6 +1622,7 @@ class ClusterStatus(proto.Message):
 
                 Applies to RUNNING state.
         """
+
         UNSPECIFIED = 0
         UNHEALTHY = 1
         STALE_STATUS = 2
@@ -1987,6 +2022,7 @@ class DataprocMetricConfig(proto.Message):
             FLINK (8):
                 flink metric source
         """
+
         METRIC_SOURCE_UNSPECIFIED = 0
         MONITORING_AGENT_DEFAULTS = 1
         HDFS = 2
@@ -2583,6 +2619,7 @@ class DiagnoseClusterRequest(proto.Message):
                 account has read access to the diagnostic
                 tarball
         """
+
         TARBALL_ACCESS_UNSPECIFIED = 0
         GOOGLE_CLOUD_SUPPORT = 1
         GOOGLE_DATAPROC_DIAGNOSE = 2
@@ -2670,6 +2707,7 @@ class ReservationAffinity(proto.Message):
                 Must specify key value fields for specifying the
                 reservations.
         """
+
         TYPE_UNSPECIFIED = 0
         NO_RESERVATION = 1
         ANY_RESERVATION = 2

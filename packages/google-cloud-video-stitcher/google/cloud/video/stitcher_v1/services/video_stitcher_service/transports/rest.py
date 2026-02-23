@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -2113,9 +2113,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cdn_key(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateCdnKey._get_transcoded_request(
@@ -2266,9 +2264,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_live_config(
                 request, metadata
@@ -2424,9 +2420,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateLiveSession._get_http_options()
 
             request, metadata = self._interceptor.pre_create_live_session(
                 request, metadata
@@ -2583,9 +2577,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_http_options()
 
             request, metadata = self._interceptor.pre_create_slate(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseCreateSlate._get_transcoded_request(
@@ -2736,9 +2728,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateVodConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_vod_config(
                 request, metadata
@@ -2891,9 +2881,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCreateVodSession._get_http_options()
 
             request, metadata = self._interceptor.pre_create_vod_session(
                 request, metadata
@@ -3049,9 +3037,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cdn_key(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteCdnKey._get_transcoded_request(
@@ -3196,9 +3182,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteLiveConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_live_config(
                 request, metadata
@@ -3347,9 +3331,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_slate(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseDeleteSlate._get_transcoded_request(
@@ -3494,9 +3476,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteVodConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_vod_config(
                 request, metadata
@@ -3644,9 +3624,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cdn_key(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetCdnKey._get_transcoded_request(
@@ -3795,9 +3773,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetLiveAdTagDetail._get_http_options()
 
             request, metadata = self._interceptor.pre_get_live_ad_tag_detail(
                 request, metadata
@@ -3947,9 +3923,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_live_config(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetLiveConfig._get_transcoded_request(
@@ -4097,9 +4071,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetLiveSession._get_http_options()
 
             request, metadata = self._interceptor.pre_get_live_session(
                 request, metadata
@@ -4396,9 +4368,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodAdTagDetail._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vod_ad_tag_detail(
                 request, metadata
@@ -4548,9 +4518,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vod_config(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodConfig._get_transcoded_request(
@@ -4697,9 +4665,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vod_session(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetVodSession._get_transcoded_request(
@@ -4848,9 +4814,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetVodStitchDetail._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vod_stitch_detail(
                 request, metadata
@@ -5000,9 +4964,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_http_options()
 
             request, metadata = self._interceptor.pre_list_cdn_keys(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListCdnKeys._get_transcoded_request(
@@ -5150,9 +5112,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListLiveAdTagDetails._get_http_options()
 
             request, metadata = self._interceptor.pre_list_live_ad_tag_details(
                 request, metadata
@@ -5306,9 +5266,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListLiveConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_live_configs(
                 request, metadata
@@ -5458,9 +5416,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_http_options()
 
             request, metadata = self._interceptor.pre_list_slates(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListSlates._get_transcoded_request(
@@ -5608,9 +5564,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListVodAdTagDetails._get_http_options()
 
             request, metadata = self._interceptor.pre_list_vod_ad_tag_details(
                 request, metadata
@@ -5764,9 +5718,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListVodConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_vod_configs(
                 request, metadata
@@ -5916,9 +5868,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListVodStitchDetails._get_http_options()
 
             request, metadata = self._interceptor.pre_list_vod_stitch_details(
                 request, metadata
@@ -6074,9 +6024,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cdn_key(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateCdnKey._get_transcoded_request(
@@ -6227,9 +6175,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateLiveConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_live_config(
                 request, metadata
@@ -6384,9 +6330,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_http_options()
 
             request, metadata = self._interceptor.pre_update_slate(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseUpdateSlate._get_transcoded_request(
@@ -6537,9 +6481,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseUpdateVodConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_vod_config(
                 request, metadata
@@ -6987,9 +6929,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -7107,9 +7047,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -7225,9 +7163,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -7366,9 +7302,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseVideoStitcherServiceRestTransport._BaseListOperations._get_transcoded_request(

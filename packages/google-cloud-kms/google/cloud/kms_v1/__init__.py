@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.autokey import AutokeyAsyncClient, AutokeyClient
 from .services.autokey_admin import AutokeyAdminAsyncClient, AutokeyAdminClient
 from .services.ekm_service import EkmServiceAsyncClient, EkmServiceClient
@@ -100,6 +101,7 @@ from .types.resources import (
     KeyRing,
     ProtectionLevel,
     PublicKey,
+    RetiredResource,
 )
 from .types.service import (
     AsymmetricDecryptRequest,
@@ -114,6 +116,10 @@ from .types.service import (
     DecapsulateResponse,
     DecryptRequest,
     DecryptResponse,
+    DeleteCryptoKeyMetadata,
+    DeleteCryptoKeyRequest,
+    DeleteCryptoKeyVersionMetadata,
+    DeleteCryptoKeyVersionRequest,
     DestroyCryptoKeyVersionRequest,
     Digest,
     EncryptRequest,
@@ -125,6 +131,7 @@ from .types.service import (
     GetImportJobRequest,
     GetKeyRingRequest,
     GetPublicKeyRequest,
+    GetRetiredResourceRequest,
     ImportCryptoKeyVersionRequest,
     ListCryptoKeysRequest,
     ListCryptoKeysResponse,
@@ -134,6 +141,8 @@ from .types.service import (
     ListImportJobsResponse,
     ListKeyRingsRequest,
     ListKeyRingsResponse,
+    ListRetiredResourcesRequest,
+    ListRetiredResourcesResponse,
     LocationMetadata,
     MacSignRequest,
     MacSignResponse,
@@ -281,6 +290,10 @@ __all__ = (
     "DecapsulateResponse",
     "DecryptRequest",
     "DecryptResponse",
+    "DeleteCryptoKeyMetadata",
+    "DeleteCryptoKeyRequest",
+    "DeleteCryptoKeyVersionMetadata",
+    "DeleteCryptoKeyVersionRequest",
     "DeleteSingleTenantHsmInstanceProposalRequest",
     "DestroyCryptoKeyVersionRequest",
     "Digest",
@@ -304,6 +317,7 @@ __all__ = (
     "GetKeyHandleRequest",
     "GetKeyRingRequest",
     "GetPublicKeyRequest",
+    "GetRetiredResourceRequest",
     "GetSingleTenantHsmInstanceProposalRequest",
     "GetSingleTenantHsmInstanceRequest",
     "HsmManagementClient",
@@ -326,6 +340,8 @@ __all__ = (
     "ListKeyHandlesResponse",
     "ListKeyRingsRequest",
     "ListKeyRingsResponse",
+    "ListRetiredResourcesRequest",
+    "ListRetiredResourcesResponse",
     "ListSingleTenantHsmInstanceProposalsRequest",
     "ListSingleTenantHsmInstanceProposalsResponse",
     "ListSingleTenantHsmInstancesRequest",
@@ -342,6 +358,7 @@ __all__ = (
     "RawEncryptRequest",
     "RawEncryptResponse",
     "RestoreCryptoKeyVersionRequest",
+    "RetiredResource",
     "ShowEffectiveAutokeyConfigRequest",
     "ShowEffectiveAutokeyConfigResponse",
     "SingleTenantHsmInstance",

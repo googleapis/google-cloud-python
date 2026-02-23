@@ -50,6 +50,7 @@ class PrivateMarketplaceDealStatusEnum(proto.Message):
             BUYER_PAUSED (5):
                 The deal is paused by the buyer.
         """
+
         PRIVATE_MARKETPLACE_DEAL_STATUS_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2

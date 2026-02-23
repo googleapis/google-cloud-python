@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_services_v1 import gapic_version as package_version
 
@@ -46,41 +46,45 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.network_services_v1.services.network_services import pagers
 from google.cloud.network_services_v1.types import (
+    common,
+    endpoint_policy,
+    extensibility,
+    gateway,
+    grpc_route,
+    http_route,
+    mesh,
+    route_view,
+    service_binding,
+    service_lb_policy,
+    tcp_route,
+    tls_route,
+)
+from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
+from google.cloud.network_services_v1.types import gateway as gcn_gateway
+from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
+from google.cloud.network_services_v1.types import http_route as gcn_http_route
+from google.cloud.network_services_v1.types import mesh as gcn_mesh
 from google.cloud.network_services_v1.types import (
     service_binding as gcn_service_binding,
 )
 from google.cloud.network_services_v1.types import (
     service_lb_policy as gcn_service_lb_policy,
 )
-from google.cloud.network_services_v1.types import common
-from google.cloud.network_services_v1.types import endpoint_policy
-from google.cloud.network_services_v1.types import extensibility
-from google.cloud.network_services_v1.types import gateway
-from google.cloud.network_services_v1.types import gateway as gcn_gateway
-from google.cloud.network_services_v1.types import grpc_route
-from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
-from google.cloud.network_services_v1.types import http_route
-from google.cloud.network_services_v1.types import http_route as gcn_http_route
-from google.cloud.network_services_v1.types import mesh
-from google.cloud.network_services_v1.types import mesh as gcn_mesh
-from google.cloud.network_services_v1.types import route_view
-from google.cloud.network_services_v1.types import service_binding
-from google.cloud.network_services_v1.types import service_lb_policy
-from google.cloud.network_services_v1.types import tcp_route
 from google.cloud.network_services_v1.types import tcp_route as gcn_tcp_route
-from google.cloud.network_services_v1.types import tls_route
 from google.cloud.network_services_v1.types import tls_route as gcn_tls_route
 
 from .client import NetworkServicesClient
@@ -223,7 +227,10 @@ class NetworkServicesAsyncClient:
         Returns:
             NetworkServicesAsyncClient: The constructed client.
         """
-        return NetworkServicesClient.from_service_account_info.__func__(NetworkServicesAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            NetworkServicesClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(NetworkServicesAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -239,7 +246,10 @@ class NetworkServicesAsyncClient:
         Returns:
             NetworkServicesAsyncClient: The constructed client.
         """
-        return NetworkServicesClient.from_service_account_file.__func__(NetworkServicesAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            NetworkServicesClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(NetworkServicesAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

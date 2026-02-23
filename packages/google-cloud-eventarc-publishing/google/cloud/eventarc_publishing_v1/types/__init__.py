@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .cloud_event import CloudEvent
+from .cloud_event import (
+    CloudEvent,
+)
 from .publisher import (
     PublishChannelConnectionEventsRequest,
     PublishChannelConnectionEventsResponse,

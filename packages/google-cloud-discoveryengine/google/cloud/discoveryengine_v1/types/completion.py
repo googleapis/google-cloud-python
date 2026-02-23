@@ -54,6 +54,7 @@ class SuggestionDenyListEntry(proto.Message):
             CONTAINS (2):
                 If the suggestion contains the block_phrase, then block it.
         """
+
         MATCH_OPERATOR_UNSPECIFIED = 0
         EXACT_MATCH = 1
         CONTAINS = 2

@@ -116,6 +116,7 @@ class Workflow(proto.Message):
                 The workflow has been deployed successfully
                 and is serving.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 

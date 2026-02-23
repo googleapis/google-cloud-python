@@ -62,7 +62,6 @@ class MonitoredResourceDescriptor(_message.Message):
 
 class MonitoredResource(_message.Message):
     __slots__ = ("type", "labels")
-
     class LabelsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -72,6 +71,7 @@ class MonitoredResource(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     TYPE_FIELD_NUMBER: _ClassVar[int]
     LABELS_FIELD_NUMBER: _ClassVar[int]
     type: str
@@ -82,7 +82,6 @@ class MonitoredResource(_message.Message):
 
 class MonitoredResourceMetadata(_message.Message):
     __slots__ = ("system_labels", "user_labels")
-
     class UserLabelsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -92,6 +91,7 @@ class MonitoredResourceMetadata(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     SYSTEM_LABELS_FIELD_NUMBER: _ClassVar[int]
     USER_LABELS_FIELD_NUMBER: _ClassVar[int]
     system_labels: _struct_pb2.Struct

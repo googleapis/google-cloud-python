@@ -325,6 +325,7 @@ class SubmitOrderRequest(proto.Message):
                 hardware physical and installation information, etc. Further
                 changes to any order information will no longer be allowed.
         """
+
         TYPE_UNSPECIFIED = 0
         INFO_PENDING = 1
         INFO_COMPLETE = 2
@@ -1094,6 +1095,7 @@ class RecordActionOnCommentRequest(proto.Message):
             UNREAD (2):
                 Mark comment as unread.
         """
+
         ACTION_TYPE_UNSPECIFIED = 0
         READ = 1
         UNREAD = 2
@@ -1538,6 +1540,7 @@ class SignalZoneStateRequest(proto.Message):
                 Verify that a valid cluster intent is
                 present.
         """
+
         _pb_options = {"allow_alias": True}
         STATE_SIGNAL_UNSPECIFIED = 0
         FACTORY_TURNUP_CHECKS_STARTED = 3
@@ -1557,6 +1560,7 @@ class SignalZoneStateRequest(proto.Message):
             PROVISIONING_COMPLETE (2):
                 Provisioning is complete.
         """
+
         PROVISIONING_STATE_SIGNAL_UNSPECIFIED = 0
         PROVISIONING_IN_PROGRESS = 1
         PROVISIONING_COMPLETE = 2

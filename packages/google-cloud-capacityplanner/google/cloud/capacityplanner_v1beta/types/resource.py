@@ -76,6 +76,7 @@ class Unit(proto.Enum):
         KOPS (18):
             No description available.
     """
+
     UNIT_UNSPECIFIED = 0
     UNIT_COUNT = 1
     KB = 2
@@ -123,6 +124,7 @@ class ResourceContainer(proto.Message):
             ORG (3):
                 No description available.
         """
+
         TYPE_UNSPECIFIED = 0
         PROJECT = 1
         FOLDER = 2

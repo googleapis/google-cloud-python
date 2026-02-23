@@ -122,6 +122,7 @@ class Conversation(proto.Message):
             COMPLETED (2):
                 Conversation has been completed.
         """
+
         LIFECYCLE_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         COMPLETED = 2
@@ -142,6 +143,7 @@ class Conversation(proto.Message):
                 The conversation should not provide
                 responses, just listen and provide suggestions.
         """
+
         CONVERSATION_STAGE_UNSPECIFIED = 0
         VIRTUAL_AGENT_STAGE = 1
         HUMAN_ASSIST_STAGE = 2
@@ -260,6 +262,7 @@ class Conversation(proto.Message):
                     Context content updates are applied in
                     overwrite mode.
             """
+
             UPDATE_MODE_UNSPECIFIED = 0
             APPEND = 1
             OVERWRITE = 2
@@ -295,6 +298,7 @@ class Conversation(proto.Message):
                     PLAIN_TEXT (2):
                         Content was provided as plain text.
                 """
+
                 CONTENT_FORMAT_UNSPECIFIED = 0
                 JSON = 1
                 PLAIN_TEXT = 2
@@ -657,13 +661,13 @@ class IngestContextReferencesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    context_references: MutableMapping[
-        str, "Conversation.ContextReference"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=2,
-        message="Conversation.ContextReference",
+    context_references: MutableMapping[str, "Conversation.ContextReference"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=2,
+            message="Conversation.ContextReference",
+        )
     )
 
 
@@ -1016,13 +1020,13 @@ class GenerateStatelessSuggestionRequest(proto.Message):
         number=3,
         oneof="generator_resource",
     )
-    context_references: MutableMapping[
-        str, "Conversation.ContextReference"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=4,
-        message="Conversation.ContextReference",
+    context_references: MutableMapping[str, "Conversation.ContextReference"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message="Conversation.ContextReference",
+        )
     )
     conversation_context: gcd_generator.ConversationContext = proto.Field(
         proto.MESSAGE,
@@ -1136,6 +1140,7 @@ class SearchKnowledgeRequest(proto.Message):
                 The query is a suggested query from
                 [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2.Participants.SuggestKnowledgeAssist].
         """
+
         QUERY_SOURCE_UNSPECIFIED = 0
         AGENT_QUERY = 1
         SUGGESTED_QUERY = 2
@@ -1281,6 +1286,7 @@ class SearchKnowledgeRequest(proto.Message):
                                     ``[nD][T[nH][nM][nS]]``. E.g. ``5D``, ``3DT12H30M``,
                                     ``T24H``.
                             """
+
                             ATTRIBUTE_TYPE_UNSPECIFIED = 0
                             NUMERICAL = 1
                             FRESHNESS = 2
@@ -1297,6 +1303,7 @@ class SearchKnowledgeRequest(proto.Message):
                                     Piecewise linear interpolation will be
                                     applied.
                             """
+
                             INTERPOLATION_TYPE_UNSPECIFIED = 0
                             LINEAR = 1
 
@@ -1524,6 +1531,7 @@ class SearchKnowledgeAnswer(proto.Message):
             INTENT (3):
                 The answer is from intent matching.
         """
+
         ANSWER_TYPE_UNSPECIFIED = 0
         FAQ = 1
         GENERATIVE = 2

@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.network_security_v1alpha1.types import intercept
 
@@ -367,12 +369,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_intercept_endpoint_groups" not in self._stubs:
-            self._stubs[
-                "list_intercept_endpoint_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptEndpointGroups",
-                request_serializer=intercept.ListInterceptEndpointGroupsRequest.serialize,
-                response_deserializer=intercept.ListInterceptEndpointGroupsResponse.deserialize,
+            self._stubs["list_intercept_endpoint_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptEndpointGroups",
+                    request_serializer=intercept.ListInterceptEndpointGroupsRequest.serialize,
+                    response_deserializer=intercept.ListInterceptEndpointGroupsResponse.deserialize,
+                )
             )
         return self._stubs["list_intercept_endpoint_groups"]
 
@@ -398,12 +400,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_intercept_endpoint_group" not in self._stubs:
-            self._stubs[
-                "get_intercept_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/GetInterceptEndpointGroup",
-                request_serializer=intercept.GetInterceptEndpointGroupRequest.serialize,
-                response_deserializer=intercept.InterceptEndpointGroup.deserialize,
+            self._stubs["get_intercept_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/GetInterceptEndpointGroup",
+                    request_serializer=intercept.GetInterceptEndpointGroupRequest.serialize,
+                    response_deserializer=intercept.InterceptEndpointGroup.deserialize,
+                )
             )
         return self._stubs["get_intercept_endpoint_group"]
 
@@ -430,12 +432,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_intercept_endpoint_group" not in self._stubs:
-            self._stubs[
-                "create_intercept_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptEndpointGroup",
-                request_serializer=intercept.CreateInterceptEndpointGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_intercept_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptEndpointGroup",
+                    request_serializer=intercept.CreateInterceptEndpointGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_intercept_endpoint_group"]
 
@@ -462,12 +464,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_intercept_endpoint_group" not in self._stubs:
-            self._stubs[
-                "update_intercept_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptEndpointGroup",
-                request_serializer=intercept.UpdateInterceptEndpointGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_intercept_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptEndpointGroup",
+                    request_serializer=intercept.UpdateInterceptEndpointGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_intercept_endpoint_group"]
 
@@ -494,12 +496,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_intercept_endpoint_group" not in self._stubs:
-            self._stubs[
-                "delete_intercept_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptEndpointGroup",
-                request_serializer=intercept.DeleteInterceptEndpointGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_intercept_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptEndpointGroup",
+                    request_serializer=intercept.DeleteInterceptEndpointGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_intercept_endpoint_group"]
 
@@ -527,12 +529,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_intercept_endpoint_group_associations" not in self._stubs:
-            self._stubs[
-                "list_intercept_endpoint_group_associations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptEndpointGroupAssociations",
-                request_serializer=intercept.ListInterceptEndpointGroupAssociationsRequest.serialize,
-                response_deserializer=intercept.ListInterceptEndpointGroupAssociationsResponse.deserialize,
+            self._stubs["list_intercept_endpoint_group_associations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptEndpointGroupAssociations",
+                    request_serializer=intercept.ListInterceptEndpointGroupAssociationsRequest.serialize,
+                    response_deserializer=intercept.ListInterceptEndpointGroupAssociationsResponse.deserialize,
+                )
             )
         return self._stubs["list_intercept_endpoint_group_associations"]
 
@@ -560,12 +562,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_intercept_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "get_intercept_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/GetInterceptEndpointGroupAssociation",
-                request_serializer=intercept.GetInterceptEndpointGroupAssociationRequest.serialize,
-                response_deserializer=intercept.InterceptEndpointGroupAssociation.deserialize,
+            self._stubs["get_intercept_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/GetInterceptEndpointGroupAssociation",
+                    request_serializer=intercept.GetInterceptEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=intercept.InterceptEndpointGroupAssociation.deserialize,
+                )
             )
         return self._stubs["get_intercept_endpoint_group_association"]
 
@@ -593,12 +595,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_intercept_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "create_intercept_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptEndpointGroupAssociation",
-                request_serializer=intercept.CreateInterceptEndpointGroupAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_intercept_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptEndpointGroupAssociation",
+                    request_serializer=intercept.CreateInterceptEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_intercept_endpoint_group_association"]
 
@@ -626,12 +628,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_intercept_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "update_intercept_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptEndpointGroupAssociation",
-                request_serializer=intercept.UpdateInterceptEndpointGroupAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_intercept_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptEndpointGroupAssociation",
+                    request_serializer=intercept.UpdateInterceptEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_intercept_endpoint_group_association"]
 
@@ -659,12 +661,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_intercept_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "delete_intercept_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptEndpointGroupAssociation",
-                request_serializer=intercept.DeleteInterceptEndpointGroupAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_intercept_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptEndpointGroupAssociation",
+                    request_serializer=intercept.DeleteInterceptEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_intercept_endpoint_group_association"]
 
@@ -692,12 +694,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_intercept_deployment_groups" not in self._stubs:
-            self._stubs[
-                "list_intercept_deployment_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptDeploymentGroups",
-                request_serializer=intercept.ListInterceptDeploymentGroupsRequest.serialize,
-                response_deserializer=intercept.ListInterceptDeploymentGroupsResponse.deserialize,
+            self._stubs["list_intercept_deployment_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptDeploymentGroups",
+                    request_serializer=intercept.ListInterceptDeploymentGroupsRequest.serialize,
+                    response_deserializer=intercept.ListInterceptDeploymentGroupsResponse.deserialize,
+                )
             )
         return self._stubs["list_intercept_deployment_groups"]
 
@@ -724,12 +726,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_intercept_deployment_group" not in self._stubs:
-            self._stubs[
-                "get_intercept_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/GetInterceptDeploymentGroup",
-                request_serializer=intercept.GetInterceptDeploymentGroupRequest.serialize,
-                response_deserializer=intercept.InterceptDeploymentGroup.deserialize,
+            self._stubs["get_intercept_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/GetInterceptDeploymentGroup",
+                    request_serializer=intercept.GetInterceptDeploymentGroupRequest.serialize,
+                    response_deserializer=intercept.InterceptDeploymentGroup.deserialize,
+                )
             )
         return self._stubs["get_intercept_deployment_group"]
 
@@ -756,12 +758,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_intercept_deployment_group" not in self._stubs:
-            self._stubs[
-                "create_intercept_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptDeploymentGroup",
-                request_serializer=intercept.CreateInterceptDeploymentGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_intercept_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptDeploymentGroup",
+                    request_serializer=intercept.CreateInterceptDeploymentGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_intercept_deployment_group"]
 
@@ -788,12 +790,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_intercept_deployment_group" not in self._stubs:
-            self._stubs[
-                "update_intercept_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptDeploymentGroup",
-                request_serializer=intercept.UpdateInterceptDeploymentGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_intercept_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptDeploymentGroup",
+                    request_serializer=intercept.UpdateInterceptDeploymentGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_intercept_deployment_group"]
 
@@ -820,12 +822,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_intercept_deployment_group" not in self._stubs:
-            self._stubs[
-                "delete_intercept_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptDeploymentGroup",
-                request_serializer=intercept.DeleteInterceptDeploymentGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_intercept_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptDeploymentGroup",
+                    request_serializer=intercept.DeleteInterceptDeploymentGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_intercept_deployment_group"]
 
@@ -852,12 +854,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_intercept_deployments" not in self._stubs:
-            self._stubs[
-                "list_intercept_deployments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptDeployments",
-                request_serializer=intercept.ListInterceptDeploymentsRequest.serialize,
-                response_deserializer=intercept.ListInterceptDeploymentsResponse.deserialize,
+            self._stubs["list_intercept_deployments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/ListInterceptDeployments",
+                    request_serializer=intercept.ListInterceptDeploymentsRequest.serialize,
+                    response_deserializer=intercept.ListInterceptDeploymentsResponse.deserialize,
+                )
             )
         return self._stubs["list_intercept_deployments"]
 
@@ -912,12 +914,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_intercept_deployment" not in self._stubs:
-            self._stubs[
-                "create_intercept_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptDeployment",
-                request_serializer=intercept.CreateInterceptDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_intercept_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/CreateInterceptDeployment",
+                    request_serializer=intercept.CreateInterceptDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_intercept_deployment"]
 
@@ -943,12 +945,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_intercept_deployment" not in self._stubs:
-            self._stubs[
-                "update_intercept_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptDeployment",
-                request_serializer=intercept.UpdateInterceptDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_intercept_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/UpdateInterceptDeployment",
+                    request_serializer=intercept.UpdateInterceptDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_intercept_deployment"]
 
@@ -974,12 +976,12 @@ class InterceptGrpcTransport(InterceptTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_intercept_deployment" not in self._stubs:
-            self._stubs[
-                "delete_intercept_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptDeployment",
-                request_serializer=intercept.DeleteInterceptDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_intercept_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Intercept/DeleteInterceptDeployment",
+                    request_serializer=intercept.DeleteInterceptDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_intercept_deployment"]
 

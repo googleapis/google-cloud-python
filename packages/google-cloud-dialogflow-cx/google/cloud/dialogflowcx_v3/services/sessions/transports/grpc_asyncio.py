@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import session
 
@@ -394,12 +394,12 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "server_streaming_detect_intent" not in self._stubs:
-            self._stubs[
-                "server_streaming_detect_intent"
-            ] = self._logged_channel.unary_stream(
-                "/google.cloud.dialogflow.cx.v3.Sessions/ServerStreamingDetectIntent",
-                request_serializer=session.DetectIntentRequest.serialize,
-                response_deserializer=session.DetectIntentResponse.deserialize,
+            self._stubs["server_streaming_detect_intent"] = (
+                self._logged_channel.unary_stream(
+                    "/google.cloud.dialogflow.cx.v3.Sessions/ServerStreamingDetectIntent",
+                    request_serializer=session.DetectIntentRequest.serialize,
+                    response_deserializer=session.DetectIntentResponse.deserialize,
+                )
             )
         return self._stubs["server_streaming_detect_intent"]
 

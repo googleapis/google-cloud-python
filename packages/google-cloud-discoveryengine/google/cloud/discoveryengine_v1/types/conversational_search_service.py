@@ -20,8 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1.types import answer as gcd_answer
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1.types import safety, search_service
 from google.cloud.discoveryengine_v1.types import session as gcd_session
 
@@ -197,12 +197,12 @@ class ConverseConversationResponse(proto.Message):
         number=2,
         message=gcd_conversation.Conversation,
     )
-    search_results: MutableSequence[
-        search_service.SearchResponse.SearchResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=search_service.SearchResponse.SearchResult,
+    search_results: MutableSequence[search_service.SearchResponse.SearchResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=search_service.SearchResponse.SearchResult,
+        )
     )
 
 
@@ -502,6 +502,7 @@ class AnswerQueryRequest(proto.Message):
                     OFF (5):
                         Turn off the safety filter.
                 """
+
                 HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
                 BLOCK_LOW_AND_ABOVE = 1
                 BLOCK_MEDIUM_AND_ABOVE = 2
@@ -573,6 +574,7 @@ class AnswerQueryRequest(proto.Message):
                 FILTERING_LEVEL_HIGH (2):
                     Filter answers based on a high threshold.
             """
+
             FILTERING_LEVEL_UNSPECIFIED = 0
             FILTERING_LEVEL_LOW = 1
             FILTERING_LEVEL_HIGH = 2
@@ -1095,6 +1097,7 @@ class AnswerQueryRequest(proto.Message):
                     USER_DEFINED_CLASSIFICATION_QUERY (5):
                         User defined query classification type.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
@@ -1150,6 +1153,7 @@ class AnswerQueryRequest(proto.Message):
                             Large query rephraser model. Gemini 1.0 Pro
                             model.
                     """
+
                     MODEL_TYPE_UNSPECIFIED = 0
                     SMALL = 1
                     LARGE = 2

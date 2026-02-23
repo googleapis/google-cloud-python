@@ -17,9 +17,13 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,19 +31,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import agent, generative_settings
+from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3beta1.types import (
     generative_settings as gcdc_generative_settings,
 )
-from google.cloud.dialogflowcx_v3beta1.types import agent
-from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
-from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 
 from .base import DEFAULT_CLIENT_INFO, AgentsTransport
 from .grpc import AgentsGrpcTransport
@@ -623,12 +622,12 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_agent_validation_result" not in self._stubs:
-            self._stubs[
-                "get_agent_validation_result"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgentValidationResult",
-                request_serializer=agent.GetAgentValidationResultRequest.serialize,
-                response_deserializer=agent.AgentValidationResult.deserialize,
+            self._stubs["get_agent_validation_result"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgentValidationResult",
+                    request_serializer=agent.GetAgentValidationResultRequest.serialize,
+                    response_deserializer=agent.AgentValidationResult.deserialize,
+                )
             )
         return self._stubs["get_agent_validation_result"]
 
@@ -683,12 +682,12 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_generative_settings" not in self._stubs:
-            self._stubs[
-                "update_generative_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Agents/UpdateGenerativeSettings",
-                request_serializer=agent.UpdateGenerativeSettingsRequest.serialize,
-                response_deserializer=gcdc_generative_settings.GenerativeSettings.deserialize,
+            self._stubs["update_generative_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3beta1.Agents/UpdateGenerativeSettings",
+                    request_serializer=agent.UpdateGenerativeSettingsRequest.serialize,
+                    response_deserializer=gcdc_generative_settings.GenerativeSettings.deserialize,
+                )
             )
         return self._stubs["update_generative_settings"]
 

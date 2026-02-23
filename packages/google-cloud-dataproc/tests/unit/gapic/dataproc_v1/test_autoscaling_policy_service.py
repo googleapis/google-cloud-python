@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,19 +43,26 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 
 from google.cloud.dataproc_v1.services.autoscaling_policy_service import (
     AutoscalingPolicyServiceAsyncClient,
@@ -1008,10 +1015,9 @@ def test_autoscaling_policy_service_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1056,10 +1062,9 @@ def test_autoscaling_policy_service_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1095,10 +1100,9 @@ def test_autoscaling_policy_service_client_get_mtls_endpoint_and_cert_source(
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1359,9 +1363,7 @@ def test_autoscaling_policy_service_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1408,6 +1410,7 @@ def test_create_autoscaling_policy(request_type, transport: str = "grpc"):
         call.return_value = autoscaling_policies.AutoscalingPolicy(
             id="id_value",
             name="name_value",
+            cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
         )
         response = client.create_autoscaling_policy(request)
 
@@ -1421,6 +1424,10 @@ def test_create_autoscaling_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 def test_create_autoscaling_policy_non_empty_request_with_auto_populated_field():
@@ -1558,6 +1565,7 @@ async def test_create_autoscaling_policy_async(
             autoscaling_policies.AutoscalingPolicy(
                 id="id_value",
                 name="name_value",
+                cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
             )
         )
         response = await client.create_autoscaling_policy(request)
@@ -1572,6 +1580,10 @@ async def test_create_autoscaling_policy_async(
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 @pytest.mark.asyncio
@@ -1765,6 +1777,7 @@ def test_update_autoscaling_policy(request_type, transport: str = "grpc"):
         call.return_value = autoscaling_policies.AutoscalingPolicy(
             id="id_value",
             name="name_value",
+            cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
         )
         response = client.update_autoscaling_policy(request)
 
@@ -1778,6 +1791,10 @@ def test_update_autoscaling_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 def test_update_autoscaling_policy_non_empty_request_with_auto_populated_field():
@@ -1911,6 +1928,7 @@ async def test_update_autoscaling_policy_async(
             autoscaling_policies.AutoscalingPolicy(
                 id="id_value",
                 name="name_value",
+                cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
             )
         )
         response = await client.update_autoscaling_policy(request)
@@ -1925,6 +1943,10 @@ async def test_update_autoscaling_policy_async(
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 @pytest.mark.asyncio
@@ -2108,6 +2130,7 @@ def test_get_autoscaling_policy(request_type, transport: str = "grpc"):
         call.return_value = autoscaling_policies.AutoscalingPolicy(
             id="id_value",
             name="name_value",
+            cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
         )
         response = client.get_autoscaling_policy(request)
 
@@ -2121,6 +2144,10 @@ def test_get_autoscaling_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 def test_get_autoscaling_policy_non_empty_request_with_auto_populated_field():
@@ -2177,9 +2204,9 @@ def test_get_autoscaling_policy_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_autoscaling_policy
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_autoscaling_policy] = (
+            mock_rpc
+        )
         request = {}
         client.get_autoscaling_policy(request)
 
@@ -2258,6 +2285,7 @@ async def test_get_autoscaling_policy_async(
             autoscaling_policies.AutoscalingPolicy(
                 id="id_value",
                 name="name_value",
+                cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
             )
         )
         response = await client.get_autoscaling_policy(request)
@@ -2272,6 +2300,10 @@ async def test_get_autoscaling_policy_async(
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 @pytest.mark.asyncio
@@ -3715,9 +3747,9 @@ def test_get_autoscaling_policy_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_autoscaling_policy
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_autoscaling_policy] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_autoscaling_policy(request)
@@ -4577,6 +4609,7 @@ async def test_create_autoscaling_policy_empty_call_grpc_asyncio():
             autoscaling_policies.AutoscalingPolicy(
                 id="id_value",
                 name="name_value",
+                cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
             )
         )
         await client.create_autoscaling_policy(request=None)
@@ -4607,6 +4640,7 @@ async def test_update_autoscaling_policy_empty_call_grpc_asyncio():
             autoscaling_policies.AutoscalingPolicy(
                 id="id_value",
                 name="name_value",
+                cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
             )
         )
         await client.update_autoscaling_policy(request=None)
@@ -4637,6 +4671,7 @@ async def test_get_autoscaling_policy_empty_call_grpc_asyncio():
             autoscaling_policies.AutoscalingPolicy(
                 id="id_value",
                 name="name_value",
+                cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
             )
         )
         await client.get_autoscaling_policy(request=None)
@@ -4765,6 +4800,7 @@ def test_create_autoscaling_policy_rest_call_success(request_type):
         "worker_config": {"min_instances": 1387, "max_instances": 1389, "weight": 648},
         "secondary_worker_config": {},
         "labels": {},
+        "cluster_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4843,6 +4879,7 @@ def test_create_autoscaling_policy_rest_call_success(request_type):
         return_value = autoscaling_policies.AutoscalingPolicy(
             id="id_value",
             name="name_value",
+            cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -4861,6 +4898,10 @@ def test_create_autoscaling_policy_rest_call_success(request_type):
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4996,6 +5037,7 @@ def test_update_autoscaling_policy_rest_call_success(request_type):
         "worker_config": {"min_instances": 1387, "max_instances": 1389, "weight": 648},
         "secondary_worker_config": {},
         "labels": {},
+        "cluster_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5074,6 +5116,7 @@ def test_update_autoscaling_policy_rest_call_success(request_type):
         return_value = autoscaling_policies.AutoscalingPolicy(
             id="id_value",
             name="name_value",
+            cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -5092,6 +5135,10 @@ def test_update_autoscaling_policy_rest_call_success(request_type):
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5215,6 +5262,7 @@ def test_get_autoscaling_policy_rest_call_success(request_type):
         return_value = autoscaling_policies.AutoscalingPolicy(
             id="id_value",
             name="name_value",
+            cluster_type=autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD,
         )
 
         # Wrap the value into a proper Response obj
@@ -5233,6 +5281,10 @@ def test_get_autoscaling_policy_rest_call_success(request_type):
     assert isinstance(response, autoscaling_policies.AutoscalingPolicy)
     assert response.id == "id_value"
     assert response.name == "name_value"
+    assert (
+        response.cluster_type
+        == autoscaling_policies.AutoscalingPolicy.ClusterType.STANDARD
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

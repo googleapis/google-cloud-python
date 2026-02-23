@@ -1,5 +1,5 @@
 click
-gapic-generator==1.30.8 # fix mypy issue for __func__ type https://github.com/googleapis/gapic-generator-python/pull/2562
+gapic-generator==1.30.9 # update repo location for core deps https://github.com/googleapis/gapic-generator-python/pull/2566
 nox
 starlark-pyo3>=2025.1
 build

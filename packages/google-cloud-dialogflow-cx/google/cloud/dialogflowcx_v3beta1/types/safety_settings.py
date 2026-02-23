@@ -64,6 +64,7 @@ class SafetySettings(proto.Message):
                 phrase will be matched, e.g. "foo" will match "a
                 foo bar" and "foo bar", but not "foobar".
         """
+
         PHRASE_MATCH_STRATEGY_UNSPECIFIED = 0
         PARTIAL_MATCH = 1
         WORD_MATCH = 2
@@ -113,6 +114,7 @@ class SafetySettings(proto.Message):
                 BLOCK_MOST (4):
                     Block most suspicious texts.
             """
+
             SAFETY_FILTER_LEVEL_UNSPECIFIED = 0
             BLOCK_NONE = 1
             BLOCK_FEW = 2
@@ -134,6 +136,7 @@ class SafetySettings(proto.Message):
                 SEXUALLY_EXPLICIT_CONTENT (4):
                     Sexually explicit content.
             """
+
             SAFETY_CATEGORY_UNSPECIFIED = 0
             DANGEROUS_CONTENT = 1
             HATE_SPEECH = 2

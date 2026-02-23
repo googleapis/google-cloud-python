@@ -43,6 +43,7 @@ class CompletionState(proto.Enum):
         NOT_APPLICABLE (4):
             Not applicable state.
     """
+
     COMPLETION_STATE_UNSPECIFIED = 0
     PENDING = 1
     SUCCEEDED = 2

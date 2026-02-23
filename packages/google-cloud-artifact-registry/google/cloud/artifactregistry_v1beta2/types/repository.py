@@ -98,6 +98,7 @@ class Repository(proto.Message):
             PYTHON (8):
                 Python package format.
         """
+
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
         MAVEN = 2
@@ -135,6 +136,7 @@ class Repository(proto.Message):
                     SNAPSHOT - repository will accept only
                     Snapshot versions.
             """
+
             VERSION_POLICY_UNSPECIFIED = 0
             RELEASE = 1
             SNAPSHOT = 2

@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1321,9 +1321,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_http_options()
 
             request, metadata = self._interceptor.pre_create_configuration(
                 request, metadata
@@ -1476,9 +1474,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_http_options()
 
             request, metadata = self._interceptor.pre_deactivate_configuration(
                 request, metadata
@@ -1631,9 +1627,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_configuration(
                 request, metadata
@@ -1777,9 +1771,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_http_options()
 
             request, metadata = self._interceptor.pre_get_configuration(
                 request, metadata
@@ -2216,9 +2208,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseListConfigurations._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseListConfigurations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_configurations(
                 request, metadata
@@ -2667,9 +2657,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_http_options()
 
             request, metadata = self._interceptor.pre_query_configuration_license_usage(
                 request, metadata
@@ -2733,11 +2721,10 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_query_configuration_license_usage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_configuration_license_usage_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_query_configuration_license_usage_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2825,9 +2812,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_http_options()
 
             request, metadata = self._interceptor.pre_reactivate_configuration(
                 request, metadata
@@ -2981,9 +2966,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_http_options()
 
             request, metadata = self._interceptor.pre_update_configuration(
                 request, metadata
@@ -3104,7 +3087,9 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeactivateConfiguration(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeactivateConfiguration(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_configuration(
@@ -3180,7 +3165,9 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._QueryConfigurationLicenseUsage(self._session, self._host, self._interceptor)  # type: ignore
+        return self._QueryConfigurationLicenseUsage(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def reactivate_configuration(
@@ -3190,7 +3177,9 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ReactivateConfiguration(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ReactivateConfiguration(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_configuration(
@@ -3537,9 +3526,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3656,9 +3643,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata

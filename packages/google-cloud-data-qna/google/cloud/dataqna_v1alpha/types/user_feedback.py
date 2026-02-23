@@ -52,6 +52,7 @@ class UserFeedback(proto.Message):
             NEGATIVE (2):
                 The user provided negative feedback.
         """
+
         USER_FEEDBACK_RATING_UNSPECIFIED = 0
         POSITIVE = 1
         NEGATIVE = 2

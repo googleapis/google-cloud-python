@@ -159,6 +159,10 @@ class _BaseKeyTrackingServiceRestTransport(KeyTrackingServiceTransport):
                     "method": "get",
                     "uri": "/v1/{scope=organizations/*}/protectedResources:search",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{scope=projects/*}/protectedResources:search",
+                },
             ]
             return http_options
 

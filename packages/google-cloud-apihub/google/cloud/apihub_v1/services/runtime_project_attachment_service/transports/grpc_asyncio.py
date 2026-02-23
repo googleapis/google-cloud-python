@@ -17,9 +17,13 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -27,12 +31,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.apihub_v1.types import runtime_project_attachment_service
 
@@ -358,12 +358,12 @@ class RuntimeProjectAttachmentServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "create_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/CreateRuntimeProjectAttachment",
-                request_serializer=runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest.serialize,
-                response_deserializer=runtime_project_attachment_service.RuntimeProjectAttachment.deserialize,
+            self._stubs["create_runtime_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/CreateRuntimeProjectAttachment",
+                    request_serializer=runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest.serialize,
+                    response_deserializer=runtime_project_attachment_service.RuntimeProjectAttachment.deserialize,
+                )
             )
         return self._stubs["create_runtime_project_attachment"]
 
@@ -389,12 +389,12 @@ class RuntimeProjectAttachmentServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "get_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/GetRuntimeProjectAttachment",
-                request_serializer=runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest.serialize,
-                response_deserializer=runtime_project_attachment_service.RuntimeProjectAttachment.deserialize,
+            self._stubs["get_runtime_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/GetRuntimeProjectAttachment",
+                    request_serializer=runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest.serialize,
+                    response_deserializer=runtime_project_attachment_service.RuntimeProjectAttachment.deserialize,
+                )
             )
         return self._stubs["get_runtime_project_attachment"]
 
@@ -423,12 +423,12 @@ class RuntimeProjectAttachmentServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_runtime_project_attachments" not in self._stubs:
-            self._stubs[
-                "list_runtime_project_attachments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/ListRuntimeProjectAttachments",
-                request_serializer=runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest.serialize,
-                response_deserializer=runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse.deserialize,
+            self._stubs["list_runtime_project_attachments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/ListRuntimeProjectAttachments",
+                    request_serializer=runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest.serialize,
+                    response_deserializer=runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse.deserialize,
+                )
             )
         return self._stubs["list_runtime_project_attachments"]
 
@@ -457,12 +457,12 @@ class RuntimeProjectAttachmentServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "delete_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/DeleteRuntimeProjectAttachment",
-                request_serializer=runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_runtime_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/DeleteRuntimeProjectAttachment",
+                    request_serializer=runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_runtime_project_attachment"]
 
@@ -492,12 +492,12 @@ class RuntimeProjectAttachmentServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "lookup_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "lookup_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/LookupRuntimeProjectAttachment",
-                request_serializer=runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest.serialize,
-                response_deserializer=runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse.deserialize,
+            self._stubs["lookup_runtime_project_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/LookupRuntimeProjectAttachment",
+                    request_serializer=runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest.serialize,
+                    response_deserializer=runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse.deserialize,
+                )
             )
         return self._stubs["lookup_runtime_project_attachment"]
 

@@ -59,6 +59,7 @@ class CommonOperationMetadata(proto.Message):
             PENDING (6):
                 Operation is pending not running yet.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2

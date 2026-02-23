@@ -75,6 +75,7 @@ class NoteKind(proto.Enum):
         SECRET (13):
             This represents a secret.
     """
+
     NOTE_KIND_UNSPECIFIED = 0
     VULNERABILITY = 1
     BUILD = 2
@@ -268,6 +269,8 @@ class BaseImage(proto.Message):
         layer_count (int):
             The number of layers that the base image is
             composed of.
+        registry (str):
+            The registry in which the base image is from.
     """
 
     name: str = proto.Field(
@@ -281,6 +284,10 @@ class BaseImage(proto.Message):
     layer_count: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+    registry: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

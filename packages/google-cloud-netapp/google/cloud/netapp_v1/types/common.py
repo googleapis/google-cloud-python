@@ -51,6 +51,7 @@ class ServiceLevel(proto.Enum):
         FLEX (4):
             Flex service level.
     """
+
     SERVICE_LEVEL_UNSPECIFIED = 0
     PREMIUM = 1
     EXTREME = 2
@@ -69,6 +70,7 @@ class FlexPerformance(proto.Enum):
         FLEX_PERFORMANCE_CUSTOM (2):
             Flex Storage Pool with custom performance.
     """
+
     FLEX_PERFORMANCE_UNSPECIFIED = 0
     FLEX_PERFORMANCE_DEFAULT = 1
     FLEX_PERFORMANCE_CUSTOM = 2
@@ -87,6 +89,7 @@ class EncryptionType(proto.Enum):
             Customer managed encryption key, which is
             stored in KMS.
     """
+
     ENCRYPTION_TYPE_UNSPECIFIED = 0
     SERVICE_MANAGED = 1
     CLOUD_KMS = 2
@@ -102,6 +105,7 @@ class DirectoryServiceType(proto.Enum):
             Active directory policy attached to the
             storage pool.
     """
+
     DIRECTORY_SERVICE_TYPE_UNSPECIFIED = 0
     ACTIVE_DIRECTORY = 1
 
@@ -119,6 +123,7 @@ class StoragePoolType(proto.Enum):
         UNIFIED_LARGE_CAPACITY (3):
             Storage pool type is unified large capacity.
     """
+
     STORAGE_POOL_TYPE_UNSPECIFIED = 0
     FILE = 1
     UNIFIED = 2
@@ -140,6 +145,7 @@ class HybridReplicationSchedule(proto.Enum):
         DAILY (3):
             Replication happens once every day.
     """
+
     HYBRID_REPLICATION_SCHEDULE_UNSPECIFIED = 0
     EVERY_10_MINUTES = 1
     HOURLY = 2
@@ -157,6 +163,7 @@ class QosType(proto.Enum):
         MANUAL (2):
             QoS Type is Manual
     """
+
     QOS_TYPE_UNSPECIFIED = 0
     AUTO = 1
     MANUAL = 2
@@ -175,6 +182,7 @@ class OsType(proto.Enum):
         ESXI (3):
             OS Type is VMware ESXi
     """
+
     OS_TYPE_UNSPECIFIED = 0
     LINUX = 1
     WINDOWS = 2
@@ -205,12 +213,12 @@ class LocationMetadata(proto.Message):
         number=1,
         enum="ServiceLevel",
     )
-    supported_flex_performance: MutableSequence[
-        "FlexPerformance"
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=2,
-        enum="FlexPerformance",
+    supported_flex_performance: MutableSequence["FlexPerformance"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum="FlexPerformance",
+        )
     )
     has_vcp: bool = proto.Field(
         proto.BOOL,

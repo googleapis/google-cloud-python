@@ -235,6 +235,7 @@ class CatalogAttribute(proto.Message):
             NUMERICAL (2):
                 Numerical attribute.
         """
+
         UNKNOWN = 0
         TEXTUAL = 1
         NUMERICAL = 2
@@ -250,6 +251,7 @@ class CatalogAttribute(proto.Message):
             INDEXABLE_DISABLED (2):
                 Indexable option disabled for an attribute.
         """
+
         INDEXABLE_OPTION_UNSPECIFIED = 0
         INDEXABLE_ENABLED = 1
         INDEXABLE_DISABLED = 2
@@ -268,6 +270,7 @@ class CatalogAttribute(proto.Message):
                 Dynamic facetable option disabled for an
                 attribute.
         """
+
         DYNAMIC_FACETABLE_OPTION_UNSPECIFIED = 0
         DYNAMIC_FACETABLE_ENABLED = 1
         DYNAMIC_FACETABLE_DISABLED = 2
@@ -283,6 +286,7 @@ class CatalogAttribute(proto.Message):
             SEARCHABLE_DISABLED (2):
                 Searchable option disabled for an attribute.
         """
+
         SEARCHABLE_OPTION_UNSPECIFIED = 0
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
@@ -301,6 +305,7 @@ class CatalogAttribute(proto.Message):
                 Exact searchable option disabled for an
                 attribute.
         """
+
         EXACT_SEARCHABLE_OPTION_UNSPECIFIED = 0
         EXACT_SEARCHABLE_ENABLED = 1
         EXACT_SEARCHABLE_DISABLED = 2
@@ -316,6 +321,7 @@ class CatalogAttribute(proto.Message):
             RETRIEVABLE_DISABLED (2):
                 Retrievable option disabled for an attribute.
         """
+
         RETRIEVABLE_OPTION_UNSPECIFIED = 0
         RETRIEVABLE_ENABLED = 1
         RETRIEVABLE_DISABLED = 2

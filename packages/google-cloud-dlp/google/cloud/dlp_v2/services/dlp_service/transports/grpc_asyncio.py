@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.dlp_v2.types import dlp
 
@@ -682,12 +682,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_deidentify_template" not in self._stubs:
-            self._stubs[
-                "create_deidentify_template"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/CreateDeidentifyTemplate",
-                request_serializer=dlp.CreateDeidentifyTemplateRequest.serialize,
-                response_deserializer=dlp.DeidentifyTemplate.deserialize,
+            self._stubs["create_deidentify_template"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/CreateDeidentifyTemplate",
+                    request_serializer=dlp.CreateDeidentifyTemplateRequest.serialize,
+                    response_deserializer=dlp.DeidentifyTemplate.deserialize,
+                )
             )
         return self._stubs["create_deidentify_template"]
 
@@ -715,12 +715,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_deidentify_template" not in self._stubs:
-            self._stubs[
-                "update_deidentify_template"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/UpdateDeidentifyTemplate",
-                request_serializer=dlp.UpdateDeidentifyTemplateRequest.serialize,
-                response_deserializer=dlp.DeidentifyTemplate.deserialize,
+            self._stubs["update_deidentify_template"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/UpdateDeidentifyTemplate",
+                    request_serializer=dlp.UpdateDeidentifyTemplateRequest.serialize,
+                    response_deserializer=dlp.DeidentifyTemplate.deserialize,
+                )
             )
         return self._stubs["update_deidentify_template"]
 
@@ -809,12 +809,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_deidentify_template" not in self._stubs:
-            self._stubs[
-                "delete_deidentify_template"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/DeleteDeidentifyTemplate",
-                request_serializer=dlp.DeleteDeidentifyTemplateRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_deidentify_template"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/DeleteDeidentifyTemplate",
+                    request_serializer=dlp.DeleteDeidentifyTemplateRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_deidentify_template"]
 
@@ -901,12 +901,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "hybrid_inspect_job_trigger" not in self._stubs:
-            self._stubs[
-                "hybrid_inspect_job_trigger"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/HybridInspectJobTrigger",
-                request_serializer=dlp.HybridInspectJobTriggerRequest.serialize,
-                response_deserializer=dlp.HybridInspectResponse.deserialize,
+            self._stubs["hybrid_inspect_job_trigger"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/HybridInspectJobTrigger",
+                    request_serializer=dlp.HybridInspectJobTriggerRequest.serialize,
+                    response_deserializer=dlp.HybridInspectResponse.deserialize,
+                )
             )
         return self._stubs["hybrid_inspect_job_trigger"]
 
@@ -1490,12 +1490,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_project_data_profiles" not in self._stubs:
-            self._stubs[
-                "list_project_data_profiles"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/ListProjectDataProfiles",
-                request_serializer=dlp.ListProjectDataProfilesRequest.serialize,
-                response_deserializer=dlp.ListProjectDataProfilesResponse.deserialize,
+            self._stubs["list_project_data_profiles"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/ListProjectDataProfiles",
+                    request_serializer=dlp.ListProjectDataProfilesRequest.serialize,
+                    response_deserializer=dlp.ListProjectDataProfilesResponse.deserialize,
+                )
             )
         return self._stubs["list_project_data_profiles"]
 
@@ -1606,12 +1606,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_file_store_data_profiles" not in self._stubs:
-            self._stubs[
-                "list_file_store_data_profiles"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/ListFileStoreDataProfiles",
-                request_serializer=dlp.ListFileStoreDataProfilesRequest.serialize,
-                response_deserializer=dlp.ListFileStoreDataProfilesResponse.deserialize,
+            self._stubs["list_file_store_data_profiles"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/ListFileStoreDataProfiles",
+                    request_serializer=dlp.ListFileStoreDataProfilesRequest.serialize,
+                    response_deserializer=dlp.ListFileStoreDataProfilesResponse.deserialize,
+                )
             )
         return self._stubs["list_file_store_data_profiles"]
 
@@ -1636,12 +1636,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_file_store_data_profile" not in self._stubs:
-            self._stubs[
-                "get_file_store_data_profile"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/GetFileStoreDataProfile",
-                request_serializer=dlp.GetFileStoreDataProfileRequest.serialize,
-                response_deserializer=dlp.FileStoreDataProfile.deserialize,
+            self._stubs["get_file_store_data_profile"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/GetFileStoreDataProfile",
+                    request_serializer=dlp.GetFileStoreDataProfileRequest.serialize,
+                    response_deserializer=dlp.FileStoreDataProfile.deserialize,
+                )
             )
         return self._stubs["get_file_store_data_profile"]
 
@@ -1666,12 +1666,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_file_store_data_profile" not in self._stubs:
-            self._stubs[
-                "delete_file_store_data_profile"
-            ] = self._logged_channel.unary_unary(
-                "/google.privacy.dlp.v2.DlpService/DeleteFileStoreDataProfile",
-                request_serializer=dlp.DeleteFileStoreDataProfileRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_file_store_data_profile"] = (
+                self._logged_channel.unary_unary(
+                    "/google.privacy.dlp.v2.DlpService/DeleteFileStoreDataProfile",
+                    request_serializer=dlp.DeleteFileStoreDataProfileRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_file_store_data_profile"]
 

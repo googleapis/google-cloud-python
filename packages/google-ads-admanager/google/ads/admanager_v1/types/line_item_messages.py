@@ -21,9 +21,8 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import custom_field_value
+from google.ads.admanager_v1.types import custom_field_value, line_item_enums
 from google.ads.admanager_v1.types import goal as gaa_goal
-from google.ads.admanager_v1.types import line_item_enums
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -144,12 +143,12 @@ class LineItem(proto.Message):
         optional=True,
         message=money_pb2.Money,
     )
-    custom_field_values: MutableSequence[
-        custom_field_value.CustomFieldValue
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=59,
-        message=custom_field_value.CustomFieldValue,
+    custom_field_values: MutableSequence[custom_field_value.CustomFieldValue] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=59,
+            message=custom_field_value.CustomFieldValue,
+        )
     )
     goal: gaa_goal.Goal = proto.Field(
         proto.MESSAGE,

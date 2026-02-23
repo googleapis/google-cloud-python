@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -340,9 +340,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Search all IAM policies response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_search_all_iam_policies(
                 request, metadata
@@ -488,9 +486,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Search all resources response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
 
             request, metadata = self._interceptor.pre_search_all_resources(
                 request, metadata

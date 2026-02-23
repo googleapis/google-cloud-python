@@ -195,6 +195,7 @@ class DiskRestoreProperties(proto.Message):
                 The AccessMode means the disk can be attached
                 to multiple instances in RO mode.
         """
+
         READ_WRITE_SINGLE = 0
         READ_WRITE_MANY = 1
         READ_ONLY_MANY = 2
@@ -210,6 +211,7 @@ class DiskRestoreProperties(proto.Message):
             ARM64 (2):
                 Disks with architecture ARM64
         """
+
         ARCHITECTURE_UNSPECIFIED = 0
         X86_64 = 1
         ARM64 = 2
@@ -233,12 +235,12 @@ class DiskRestoreProperties(proto.Message):
         proto.STRING,
         number=4,
     )
-    guest_os_feature: MutableSequence[
-        backupvault_gce.GuestOsFeature
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=backupvault_gce.GuestOsFeature,
+    guest_os_feature: MutableSequence[backupvault_gce.GuestOsFeature] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=backupvault_gce.GuestOsFeature,
+        )
     )
     disk_encryption_key: backupvault_gce.CustomerEncryptionKey = proto.Field(
         proto.MESSAGE,
@@ -367,6 +369,7 @@ class DiskBackupProperties(proto.Message):
             ARM64 (2):
                 Disks with architecture ARM64
         """
+
         ARCHITECTURE_UNSPECIFIED = 0
         X86_64 = 1
         ARM64 = 2
@@ -380,12 +383,12 @@ class DiskBackupProperties(proto.Message):
         proto.STRING,
         number=2,
     )
-    guest_os_feature: MutableSequence[
-        backupvault_gce.GuestOsFeature
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=backupvault_gce.GuestOsFeature,
+    guest_os_feature: MutableSequence[backupvault_gce.GuestOsFeature] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=backupvault_gce.GuestOsFeature,
+        )
     )
     architecture: Architecture = proto.Field(
         proto.ENUM,

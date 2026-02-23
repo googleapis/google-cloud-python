@@ -23,14 +23,14 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
+from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
+from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 from google.cloud.dialogflowcx_v3.types import (
     response_message,
     session,
     transition_route_group,
 )
-from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
-from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -84,6 +84,7 @@ class TestResult(proto.Enum):
         FAILED (2):
             The test did not pass.
     """
+
     TEST_RESULT_UNSPECIFIED = 0
     PASSED = 1
     FAILED = 2
@@ -145,12 +146,12 @@ class TestCase(proto.Message):
         number=13,
         message="TestConfig",
     )
-    test_case_conversation_turns: MutableSequence[
-        "ConversationTurn"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message="ConversationTurn",
+    test_case_conversation_turns: MutableSequence["ConversationTurn"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="ConversationTurn",
+        )
     )
     creation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -361,12 +362,12 @@ class ConversationTurn(proto.Message):
             number=8,
             message=gcdc_page.Page,
         )
-        text_responses: MutableSequence[
-            response_message.ResponseMessage.Text
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=9,
-            message=response_message.ResponseMessage.Text,
+        text_responses: MutableSequence[response_message.ResponseMessage.Text] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=9,
+                message=response_message.ResponseMessage.Text,
+            )
         )
         status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
@@ -415,6 +416,7 @@ class TestRunDifference(proto.Message):
             FLOW (5):
                 The flow.
         """
+
         DIFF_TYPE_UNSPECIFIED = 0
         INTENT = 1
         PAGE = 2
@@ -705,6 +707,7 @@ class CalculateCoverageRequest(proto.Message):
             TRANSITION_ROUTE_GROUP (3):
                 Transition route group coverage.
         """
+
         COVERAGE_TYPE_UNSPECIFIED = 0
         INTENT = 1
         PAGE_TRANSITION = 2
@@ -812,6 +815,7 @@ class ListTestCasesRequest(proto.Message):
             FULL (2):
                 Include everything.
         """
+
         TEST_CASE_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2
@@ -1252,6 +1256,7 @@ class ExportTestCasesRequest(proto.Message):
             JSON (2):
                 JSON format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON = 2

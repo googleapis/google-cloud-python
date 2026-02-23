@@ -51,6 +51,7 @@ class ImportStrategy(proto.Enum):
         IMPORT_STRATEGY_THROW_ERROR (5):
             Throw error if a conflict is encountered.
     """
+
     IMPORT_STRATEGY_UNSPECIFIED = 0
     IMPORT_STRATEGY_CREATE_NEW = 1
     IMPORT_STRATEGY_REPLACE = 2

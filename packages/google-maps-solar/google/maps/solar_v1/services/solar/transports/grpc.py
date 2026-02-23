@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.maps.solar_v1.types import solar_service
 
@@ -346,12 +346,12 @@ class SolarGrpcTransport(SolarTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "find_closest_building_insights" not in self._stubs:
-            self._stubs[
-                "find_closest_building_insights"
-            ] = self._logged_channel.unary_unary(
-                "/google.maps.solar.v1.Solar/FindClosestBuildingInsights",
-                request_serializer=solar_service.FindClosestBuildingInsightsRequest.serialize,
-                response_deserializer=solar_service.BuildingInsights.deserialize,
+            self._stubs["find_closest_building_insights"] = (
+                self._logged_channel.unary_unary(
+                    "/google.maps.solar.v1.Solar/FindClosestBuildingInsights",
+                    request_serializer=solar_service.FindClosestBuildingInsightsRequest.serialize,
+                    response_deserializer=solar_service.BuildingInsights.deserialize,
+                )
             )
         return self._stubs["find_closest_building_insights"]
 

@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -650,9 +650,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseCreatePolicyBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_create_policy_binding(
                 request, metadata
@@ -804,9 +802,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseDeletePolicyBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_policy_binding(
                 request, metadata
@@ -949,9 +945,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
                     IAM policy binding resource.
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseGetPolicyBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_policy_binding(
                 request, metadata
@@ -1100,9 +1094,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseListPolicyBindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_policy_bindings(
                 request, metadata
@@ -1255,9 +1247,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseSearchTargetPolicyBindings._get_http_options()
 
             request, metadata = self._interceptor.pre_search_target_policy_bindings(
                 request, metadata
@@ -1325,11 +1315,10 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             resp = self._interceptor.post_search_target_policy_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_search_target_policy_bindings_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_search_target_policy_bindings_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1416,9 +1405,7 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_http_options()
-            )
+            http_options = _BasePolicyBindingsRestTransport._BaseUpdatePolicyBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_update_policy_binding(
                 request, metadata
@@ -1562,7 +1549,9 @@ class PolicyBindingsRestTransport(_BasePolicyBindingsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SearchTargetPolicyBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SearchTargetPolicyBindings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_policy_binding(

@@ -98,6 +98,7 @@ class File(proto.Message):
             FAILED (10):
                 File failed processing.
         """
+
         STATE_UNSPECIFIED = 0
         PROCESSING = 1
         ACTIVE = 2
@@ -117,6 +118,7 @@ class File(proto.Message):
                 Indicates the file is a registered, i.e. a
                 Google Cloud Storage file.
         """
+
         SOURCE_UNSPECIFIED = 0
         UPLOADED = 1
         GENERATED = 2

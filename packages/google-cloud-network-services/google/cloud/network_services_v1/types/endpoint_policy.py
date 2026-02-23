@@ -109,6 +109,7 @@ class EndpointPolicy(proto.Message):
             GRPC_SERVER (2):
                 Represents a proxyless gRPC backend.
         """
+
         ENDPOINT_POLICY_TYPE_UNSPECIFIED = 0
         SIDECAR_PROXY = 1
         GRPC_SERVER = 2

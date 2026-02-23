@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.gkehub_v1 import gapic_version as package_version
 
@@ -51,10 +51,8 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.gkehub_v1.services.gke_hub import pagers
-from google.cloud.gkehub_v1.types import feature
-from google.cloud.gkehub_v1.types import fleet
+from google.cloud.gkehub_v1.types import feature, fleet, membership, service
 from google.cloud.gkehub_v1.types import fleet as gcg_fleet
-from google.cloud.gkehub_v1.types import membership, service
 
 from .client import GkeHubClient
 from .transports.base import DEFAULT_CLIENT_INFO, GkeHubTransport
@@ -145,7 +143,10 @@ class GkeHubAsyncClient:
         Returns:
             GkeHubAsyncClient: The constructed client.
         """
-        return GkeHubClient.from_service_account_info.__func__(GkeHubAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            GkeHubClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(GkeHubAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -161,7 +162,10 @@ class GkeHubAsyncClient:
         Returns:
             GkeHubAsyncClient: The constructed client.
         """
-        return GkeHubClient.from_service_account_file.__func__(GkeHubAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            GkeHubClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(GkeHubAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

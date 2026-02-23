@@ -22,9 +22,7 @@ from .grpc_asyncio import HealthCheckServiceGrpcAsyncIOTransport
 from .rest import HealthCheckServiceRestInterceptor, HealthCheckServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[HealthCheckServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[HealthCheckServiceTransport]]
 _transport_registry["grpc"] = HealthCheckServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = HealthCheckServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = HealthCheckServiceRestTransport

@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.gke_backup_v1.types import (
     backup,
@@ -1144,12 +1146,12 @@ class BackupForGKEGrpcTransport(BackupForGKETransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_restore_plan_bindings" not in self._stubs:
-            self._stubs[
-                "list_restore_plan_bindings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkebackup.v1.BackupForGKE/ListRestorePlanBindings",
-                request_serializer=gkebackup.ListRestorePlanBindingsRequest.serialize,
-                response_deserializer=gkebackup.ListRestorePlanBindingsResponse.deserialize,
+            self._stubs["list_restore_plan_bindings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkebackup.v1.BackupForGKE/ListRestorePlanBindings",
+                    request_serializer=gkebackup.ListRestorePlanBindingsRequest.serialize,
+                    response_deserializer=gkebackup.ListRestorePlanBindingsResponse.deserialize,
+                )
             )
         return self._stubs["list_restore_plan_bindings"]
 
@@ -1386,12 +1388,12 @@ class BackupForGKEGrpcTransport(BackupForGKETransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_index_download_url" not in self._stubs:
-            self._stubs[
-                "get_backup_index_download_url"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupIndexDownloadUrl",
-                request_serializer=gkebackup.GetBackupIndexDownloadUrlRequest.serialize,
-                response_deserializer=gkebackup.GetBackupIndexDownloadUrlResponse.deserialize,
+            self._stubs["get_backup_index_download_url"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupIndexDownloadUrl",
+                    request_serializer=gkebackup.GetBackupIndexDownloadUrlRequest.serialize,
+                    response_deserializer=gkebackup.GetBackupIndexDownloadUrlResponse.deserialize,
+                )
             )
         return self._stubs["get_backup_index_download_url"]
 

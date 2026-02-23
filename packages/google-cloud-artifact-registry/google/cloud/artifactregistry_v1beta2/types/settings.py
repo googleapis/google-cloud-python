@@ -62,6 +62,7 @@ class ProjectSettings(proto.Message):
                 Redirection is enabled, and has been
                 finalized so cannot be reverted.
         """
+
         REDIRECTION_STATE_UNSPECIFIED = 0
         REDIRECTION_FROM_GCR_IO_DISABLED = 1
         REDIRECTION_FROM_GCR_IO_ENABLED = 2

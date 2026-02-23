@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
 
@@ -46,34 +46,38 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.eventarc_v1.services.eventarc import pagers
+from google.cloud.eventarc_v1.types import (
+    channel,
+    channel_connection,
+    discovery,
+    enrollment,
+    eventarc,
+    google_api_source,
+    google_channel_config,
+    logging_config,
+    message_bus,
+    pipeline,
+    trigger,
+)
+from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
 from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
-from google.cloud.eventarc_v1.types import channel
-from google.cloud.eventarc_v1.types import channel as gce_channel
-from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import enrollment
-from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import google_api_source
-from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import logging_config
-from google.cloud.eventarc_v1.types import message_bus
 from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
-from google.cloud.eventarc_v1.types import pipeline
 from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
-from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
 
 from .client import EventarcClient
@@ -175,7 +179,10 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-        return EventarcClient.from_service_account_info.__func__(EventarcAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            EventarcClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(EventarcAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -191,7 +198,10 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-        return EventarcClient.from_service_account_file.__func__(EventarcAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            EventarcClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(EventarcAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

@@ -23,8 +23,6 @@
 #   python3 -m pip install google-cloud-bigquery-datapolicies
 
 
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-
 # [START bigquerydatapolicy_v2beta1_generated_DataPolicyService_TestIamPermissions_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -33,6 +31,8 @@ import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
 from google.cloud import bigquery_datapolicies_v2beta1
 
 

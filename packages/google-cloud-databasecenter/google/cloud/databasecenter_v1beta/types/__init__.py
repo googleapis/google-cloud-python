@@ -13,16 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .machine_config import MachineConfig
+from .machine_config import (
+    MachineConfig,
+)
 from .maintenance import (
     MaintenanceInfo,
     Phase,
     ResourceMaintenanceDenySchedule,
     ResourceMaintenanceSchedule,
 )
-from .metric_data import MetricData, Metrics, TypedValue
-from .operation_error_type import OperationErrorType
-from .product import Engine, Product, ProductType
+from .metric_data import (
+    MetricData,
+    Metrics,
+    TypedValue,
+)
+from .operation_error_type import (
+    OperationErrorType,
+)
+from .product import (
+    Engine,
+    Product,
+    ProductType,
+)
 from .service import (
     AggregateFleetRequest,
     AggregateFleetResponse,
@@ -76,7 +88,9 @@ from .signals import (
     SignalTypeGroup,
     SubResource,
 )
-from .suspension_reason import SuspensionReason
+from .suspension_reason import (
+    SuspensionReason,
+)
 
 __all__ = (
     "MachineConfig",

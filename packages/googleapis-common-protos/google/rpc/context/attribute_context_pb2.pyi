@@ -39,10 +39,8 @@ class AttributeContext(_message.Message):
         "api",
         "extensions",
     )
-
     class Peer(_message.Message):
         __slots__ = ("ip", "port", "labels", "principal", "region_code")
-
         class LabelsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -52,6 +50,7 @@ class AttributeContext(_message.Message):
             def __init__(
                 self, key: _Optional[str] = ..., value: _Optional[str] = ...
             ) -> None: ...
+
         IP_FIELD_NUMBER: _ClassVar[int]
         PORT_FIELD_NUMBER: _ClassVar[int]
         LABELS_FIELD_NUMBER: _ClassVar[int]
@@ -125,7 +124,6 @@ class AttributeContext(_message.Message):
             "reason",
             "auth",
         )
-
         class HeadersEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -135,6 +133,7 @@ class AttributeContext(_message.Message):
             def __init__(
                 self, key: _Optional[str] = ..., value: _Optional[str] = ...
             ) -> None: ...
+
         ID_FIELD_NUMBER: _ClassVar[int]
         METHOD_FIELD_NUMBER: _ClassVar[int]
         HEADERS_FIELD_NUMBER: _ClassVar[int]
@@ -177,7 +176,6 @@ class AttributeContext(_message.Message):
 
     class Response(_message.Message):
         __slots__ = ("code", "size", "headers", "time", "backend_latency")
-
         class HeadersEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -187,6 +185,7 @@ class AttributeContext(_message.Message):
             def __init__(
                 self, key: _Optional[str] = ..., value: _Optional[str] = ...
             ) -> None: ...
+
         CODE_FIELD_NUMBER: _ClassVar[int]
         SIZE_FIELD_NUMBER: _ClassVar[int]
         HEADERS_FIELD_NUMBER: _ClassVar[int]
@@ -221,7 +220,6 @@ class AttributeContext(_message.Message):
             "etag",
             "location",
         )
-
         class LabelsEntry(_message.Message):
             __slots__ = ("key", "value")
             KEY_FIELD_NUMBER: _ClassVar[int]
@@ -241,6 +239,7 @@ class AttributeContext(_message.Message):
             def __init__(
                 self, key: _Optional[str] = ..., value: _Optional[str] = ...
             ) -> None: ...
+
         SERVICE_FIELD_NUMBER: _ClassVar[int]
         NAME_FIELD_NUMBER: _ClassVar[int]
         TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -280,6 +279,7 @@ class AttributeContext(_message.Message):
             etag: _Optional[str] = ...,
             location: _Optional[str] = ...,
         ) -> None: ...
+
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
     SOURCE_FIELD_NUMBER: _ClassVar[int]
     DESTINATION_FIELD_NUMBER: _ClassVar[int]

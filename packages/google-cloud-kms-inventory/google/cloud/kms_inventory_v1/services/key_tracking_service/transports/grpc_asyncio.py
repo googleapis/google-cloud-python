@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.kms_inventory_v1.types import key_tracking_service
 
@@ -342,9 +342,15 @@ class KeyTrackingServiceGrpcAsyncIOTransport(KeyTrackingServiceTransport):
 
         Returns aggregate information about the resources protected by
         the given Cloud KMS [CryptoKey][google.cloud.kms.v1.CryptoKey].
-        Only resources within the same Cloud organization as the key
-        will be returned. The project that holds the key must be part of
-        an organization in order for this call to succeed.
+        By default, summary of resources within the same Cloud
+        organization as the key will be returned, which requires the KMS
+        organization service account to be configured(refer
+        https://docs.cloud.google.com/kms/docs/view-key-usage#required-roles).
+        If the KMS organization service account is not configured or
+        key's project is not part of an organization, set
+        [fallback_scope][google.cloud.kms.inventory.v1.GetProtectedResourcesSummaryRequest.fallback_scope]
+        to ``FALLBACK_SCOPE_PROJECT`` to retrieve a summary of protected
+        resources within the key's project.
 
         Returns:
             Callable[[~.GetProtectedResourcesSummaryRequest],
@@ -357,12 +363,12 @@ class KeyTrackingServiceGrpcAsyncIOTransport(KeyTrackingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_protected_resources_summary" not in self._stubs:
-            self._stubs[
-                "get_protected_resources_summary"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.inventory.v1.KeyTrackingService/GetProtectedResourcesSummary",
-                request_serializer=key_tracking_service.GetProtectedResourcesSummaryRequest.serialize,
-                response_deserializer=key_tracking_service.ProtectedResourcesSummary.deserialize,
+            self._stubs["get_protected_resources_summary"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.inventory.v1.KeyTrackingService/GetProtectedResourcesSummary",
+                    request_serializer=key_tracking_service.GetProtectedResourcesSummaryRequest.serialize,
+                    response_deserializer=key_tracking_service.ProtectedResourcesSummary.deserialize,
+                )
             )
         return self._stubs["get_protected_resources_summary"]
 
@@ -377,7 +383,7 @@ class KeyTrackingServiceGrpcAsyncIOTransport(KeyTrackingServiceTransport):
 
         Returns metadata about the resources protected by the given
         Cloud KMS [CryptoKey][google.cloud.kms.v1.CryptoKey] in the
-        given Cloud organization.
+        given Cloud organization/project.
 
         Returns:
             Callable[[~.SearchProtectedResourcesRequest],
@@ -390,12 +396,12 @@ class KeyTrackingServiceGrpcAsyncIOTransport(KeyTrackingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_protected_resources" not in self._stubs:
-            self._stubs[
-                "search_protected_resources"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.kms.inventory.v1.KeyTrackingService/SearchProtectedResources",
-                request_serializer=key_tracking_service.SearchProtectedResourcesRequest.serialize,
-                response_deserializer=key_tracking_service.SearchProtectedResourcesResponse.deserialize,
+            self._stubs["search_protected_resources"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.inventory.v1.KeyTrackingService/SearchProtectedResources",
+                    request_serializer=key_tracking_service.SearchProtectedResourcesRequest.serialize,
+                    response_deserializer=key_tracking_service.SearchProtectedResourcesResponse.deserialize,
+                )
             )
         return self._stubs["search_protected_resources"]
 

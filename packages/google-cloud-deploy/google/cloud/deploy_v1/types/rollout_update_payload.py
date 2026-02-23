@@ -89,6 +89,7 @@ class RolloutUpdateEvent(proto.Message):
             ADVANCED (13):
                 Rollout has been advanced.
         """
+
         ROLLOUT_UPDATE_TYPE_UNSPECIFIED = 0
         PENDING = 1
         PENDING_RELEASE = 2

@@ -69,6 +69,7 @@ class NetworkConfig(proto.Message):
                 provides an IP address range for multiple Google
                 Cloud services, including Cloud BackupDR.
         """
+
         PEERING_MODE_UNSPECIFIED = 0
         PRIVATE_SERVICE_ACCESS = 1
 
@@ -227,6 +228,7 @@ class ManagementServer(proto.Message):
                 Instance for backup and restore management
                 (i.e., AGM).
         """
+
         INSTANCE_TYPE_UNSPECIFIED = 0
         BACKUP_RESTORE = 1
 
@@ -260,6 +262,7 @@ class ManagementServer(proto.Message):
                 from the statusMessage field of Instance
                 resource.
         """
+
         INSTANCE_STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

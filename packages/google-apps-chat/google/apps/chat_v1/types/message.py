@@ -17,21 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.apps.card_v1.types import card as gac_card
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
+from google.apps.card_v1.types import card as gac_card
 
 from google.apps.chat_v1.types import action_status as gc_action_status
-from google.apps.chat_v1.types import annotation
+from google.apps.chat_v1.types import annotation, contextual_addon, reaction, user
 from google.apps.chat_v1.types import attachment as gc_attachment
-from google.apps.chat_v1.types import contextual_addon
 from google.apps.chat_v1.types import deletion_metadata as gc_deletion_metadata
 from google.apps.chat_v1.types import matched_url as gc_matched_url
-from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import slash_command as gc_slash_command
 from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import user
 
 __protobuf__ = proto.module(
     package="google.chat.v1",
@@ -296,12 +293,12 @@ class Message(proto.Message):
         proto.STRING,
         number=43,
     )
-    cards: MutableSequence[
-        contextual_addon.ContextualAddOnMarkup.Card
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=contextual_addon.ContextualAddOnMarkup.Card,
+    cards: MutableSequence[contextual_addon.ContextualAddOnMarkup.Card] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=contextual_addon.ContextualAddOnMarkup.Card,
+        )
     )
     cards_v2: MutableSequence["CardWithId"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -359,12 +356,12 @@ class Message(proto.Message):
         proto.STRING,
         number=32,
     )
-    emoji_reaction_summaries: MutableSequence[
-        reaction.EmojiReactionSummary
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=33,
-        message=reaction.EmojiReactionSummary,
+    emoji_reaction_summaries: MutableSequence[reaction.EmojiReactionSummary] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=33,
+            message=reaction.EmojiReactionSummary,
+        )
     )
     private_message_viewer: user.User = proto.Field(
         proto.MESSAGE,
@@ -466,6 +463,7 @@ class QuotedMessageMetadata(proto.Message):
 
                 You can't quote a message reply from a different thread.
         """
+
         QUOTE_TYPE_UNSPECIFIED = 0
         REPLY = 1
 
@@ -655,6 +653,7 @@ class ActionResponse(proto.Message):
             UPDATE_WIDGET (7):
                 Widget text autocomplete options query.
         """
+
         TYPE_UNSPECIFIED = 0
         NEW_MESSAGE = 1
         UPDATE_MESSAGE = 2
@@ -671,12 +670,12 @@ class ActionResponse(proto.Message):
                 An array of the SelectionItem objects.
         """
 
-        items: MutableSequence[
-            gac_card.SelectionInput.SelectionItem
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=gac_card.SelectionInput.SelectionItem,
+        items: MutableSequence[gac_card.SelectionInput.SelectionItem] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=gac_card.SelectionInput.SelectionItem,
+            )
         )
 
     class UpdatedWidget(proto.Message):
@@ -937,6 +936,7 @@ class CreateMessageRequest(proto.Message):
                 message creation fails, a ``NOT_FOUND`` error is returned
                 instead.
         """
+
         MESSAGE_REPLY_OPTION_UNSPECIFIED = 0
         REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD = 1
         REPLY_MESSAGE_OR_FAIL = 2

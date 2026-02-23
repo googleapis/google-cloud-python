@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -577,9 +577,7 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_order(request, metadata)
             transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_transcoded_request(
@@ -746,9 +744,7 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_get_order(request, metadata)
             transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_transcoded_request(
@@ -894,9 +890,7 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_orders(request, metadata)
             transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_transcoded_request(
@@ -1048,9 +1042,7 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_modify_order(request, metadata)
             transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_transcoded_request(
@@ -1203,9 +1195,7 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_place_order(request, metadata)
             transcoded_request = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_transcoded_request(
@@ -1396,9 +1386,7 @@ class ConsumerProcurementServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_transcoded_request(

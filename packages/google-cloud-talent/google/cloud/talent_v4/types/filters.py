@@ -360,6 +360,7 @@ class LocationFilter(proto.Message):
             TELECOMMUTE_JOBS_EXCLUDED (3):
                 Exclude telecommute jobs.
         """
+
         TELECOMMUTE_PREFERENCE_UNSPECIFIED = 0
         TELECOMMUTE_EXCLUDED = 1
         TELECOMMUTE_ALLOWED = 2
@@ -454,6 +455,7 @@ class CompensationFilter(proto.Message):
                 zero or more
                 [units][google.cloud.talent.v4.CompensationFilter.units].
         """
+
         FILTER_TYPE_UNSPECIFIED = 0
         UNIT_ONLY = 1
         UNIT_AND_AMOUNT = 2
@@ -465,12 +467,12 @@ class CompensationFilter(proto.Message):
         number=1,
         enum=FilterType,
     )
-    units: MutableSequence[
-        common.CompensationInfo.CompensationUnit
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=2,
-        enum=common.CompensationInfo.CompensationUnit,
+    units: MutableSequence[common.CompensationInfo.CompensationUnit] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum=common.CompensationInfo.CompensationUnit,
+        )
     )
     range_: common.CompensationInfo.CompensationRange = proto.Field(
         proto.MESSAGE,
@@ -540,6 +542,7 @@ class CommuteFilter(proto.Message):
                 Commute time calculation takes in account the
                 peak traffic impact.
         """
+
         ROAD_TRAFFIC_UNSPECIFIED = 0
         TRAFFIC_FREE = 1
         BUSY_HOUR = 2

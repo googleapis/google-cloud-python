@@ -61,6 +61,7 @@ class ReservationAffinity(proto.Message):
                 Must specify key value fields for specifying the
                 reservations.
         """
+
         TYPE_UNSPECIFIED = 0
         NO_RESERVATION = 1
         ANY_RESERVATION = 2
@@ -280,6 +281,7 @@ class Instance(proto.Message):
             TPU_V3 (7):
                 (Coming soon) Accelerator type is TPU V3.
         """
+
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -324,6 +326,7 @@ class Instance(proto.Message):
             SUSPENDED (11):
                 The instance is suspended.
         """
+
         STATE_UNSPECIFIED = 0
         STARTING = 1
         PROVISIONING = 2
@@ -352,6 +355,7 @@ class Instance(proto.Message):
             PD_EXTREME (4):
                 Extreme persistent disk type.
         """
+
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
@@ -371,6 +375,7 @@ class Instance(proto.Message):
                 Use customer managed encryption keys to
                 encrypt the boot disk.
         """
+
         DISK_ENCRYPTION_UNSPECIFIED = 0
         GMEK = 1
         CMEK = 2
@@ -386,6 +391,7 @@ class Instance(proto.Message):
             GVNIC (2):
                 GVNIC
         """
+
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2
@@ -525,12 +531,12 @@ class Instance(proto.Message):
             proto.INT64,
             number=4,
         )
-        guest_os_features: MutableSequence[
-            "Instance.Disk.GuestOsFeature"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="Instance.Disk.GuestOsFeature",
+        guest_os_features: MutableSequence["Instance.Disk.GuestOsFeature"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="Instance.Disk.GuestOsFeature",
+            )
         )
         index: int = proto.Field(
             proto.INT64,
@@ -648,6 +654,7 @@ class Instance(proto.Message):
                 FAILED (3):
                     The instance upgrade is failed.
             """
+
             STATE_UNSPECIFIED = 0
             STARTED = 1
             SUCCEEDED = 2
@@ -664,6 +671,7 @@ class Instance(proto.Message):
                 ROLLBACK (2):
                     Rollback.
             """
+
             ACTION_UNSPECIFIED = 0
             UPGRADE = 1
             ROLLBACK = 2

@@ -92,6 +92,7 @@ class Chunk(proto.Message):
             CHECKBOX_STRUCTURE (3):
                 Checkbox structure.
         """
+
         STRUCTURE_TYPE_UNSPECIFIED = 0
         SHAREHOLDER_STRUCTURE = 1
         SIGNATURE_STRUCTURE = 2

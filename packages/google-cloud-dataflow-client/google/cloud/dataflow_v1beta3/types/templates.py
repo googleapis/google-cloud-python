@@ -118,6 +118,7 @@ class ParameterType(proto.Enum):
             for a new Google Managed Kafka topic, or an
             existing non-managed Kafka topic.
     """
+
     DEFAULT = 0
     TEXT = 1
     GCS_READ_BUCKET = 2
@@ -969,6 +970,7 @@ class SDKInfo(proto.Message):
             GO (3):
                 Go.
         """
+
         UNKNOWN = 0
         JAVA = 1
         PYTHON = 2
@@ -1096,6 +1098,7 @@ class GetTemplateRequest(proto.Message):
                 Template view that retrieves only the
                 metadata associated with the template.
         """
+
         METADATA_ONLY = 0
 
     project_id: str = proto.Field(
@@ -1146,6 +1149,7 @@ class GetTemplateResponse(proto.Message):
             FLEX (2):
                 Flex Template.
         """
+
         UNKNOWN = 0
         LEGACY = 1
         FLEX = 2

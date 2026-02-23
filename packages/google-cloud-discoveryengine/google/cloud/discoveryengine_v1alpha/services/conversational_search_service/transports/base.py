@@ -17,23 +17,25 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
+from google.cloud.discoveryengine_v1alpha.types import (
+    answer,
+    conversation,
+    conversational_search_service,
+    session,
+)
 from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
-from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
-from google.cloud.discoveryengine_v1alpha.types import answer
-from google.cloud.discoveryengine_v1alpha.types import conversation
-from google.cloud.discoveryengine_v1alpha.types import session
 from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -388,7 +390,10 @@ class ConversationalSearchServiceTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property

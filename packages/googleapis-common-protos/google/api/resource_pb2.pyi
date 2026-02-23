@@ -41,20 +41,20 @@ class ResourceDescriptor(_message.Message):
         "singular",
         "style",
     )
-
     class History(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         HISTORY_UNSPECIFIED: _ClassVar[ResourceDescriptor.History]
         ORIGINALLY_SINGLE_PATTERN: _ClassVar[ResourceDescriptor.History]
         FUTURE_MULTI_PATTERN: _ClassVar[ResourceDescriptor.History]
+
     HISTORY_UNSPECIFIED: ResourceDescriptor.History
     ORIGINALLY_SINGLE_PATTERN: ResourceDescriptor.History
     FUTURE_MULTI_PATTERN: ResourceDescriptor.History
-
     class Style(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         STYLE_UNSPECIFIED: _ClassVar[ResourceDescriptor.Style]
         DECLARATIVE_FRIENDLY: _ClassVar[ResourceDescriptor.Style]
+
     STYLE_UNSPECIFIED: ResourceDescriptor.Style
     DECLARATIVE_FRIENDLY: ResourceDescriptor.Style
     TYPE_FIELD_NUMBER: _ClassVar[int]

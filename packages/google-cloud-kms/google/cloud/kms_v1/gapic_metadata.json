@@ -456,6 +456,16 @@
                 "decrypt"
               ]
             },
+            "DeleteCryptoKey": {
+              "methods": [
+                "delete_crypto_key"
+              ]
+            },
+            "DeleteCryptoKeyVersion": {
+              "methods": [
+                "delete_crypto_key_version"
+              ]
+            },
             "DestroyCryptoKeyVersion": {
               "methods": [
                 "destroy_crypto_key_version"
@@ -496,6 +506,11 @@
                 "get_public_key"
               ]
             },
+            "GetRetiredResource": {
+              "methods": [
+                "get_retired_resource"
+              ]
+            },
             "ImportCryptoKeyVersion": {
               "methods": [
                 "import_crypto_key_version"
@@ -519,6 +534,11 @@
             "ListKeyRings": {
               "methods": [
                 "list_key_rings"
+              ]
+            },
+            "ListRetiredResources": {
+              "methods": [
+                "list_retired_resources"
               ]
             },
             "MacSign": {
@@ -606,6 +626,16 @@
                 "decrypt"
               ]
             },
+            "DeleteCryptoKey": {
+              "methods": [
+                "delete_crypto_key"
+              ]
+            },
+            "DeleteCryptoKeyVersion": {
+              "methods": [
+                "delete_crypto_key_version"
+              ]
+            },
             "DestroyCryptoKeyVersion": {
               "methods": [
                 "destroy_crypto_key_version"
@@ -646,6 +676,11 @@
                 "get_public_key"
               ]
             },
+            "GetRetiredResource": {
+              "methods": [
+                "get_retired_resource"
+              ]
+            },
             "ImportCryptoKeyVersion": {
               "methods": [
                 "import_crypto_key_version"
@@ -669,6 +704,11 @@
             "ListKeyRings": {
               "methods": [
                 "list_key_rings"
+              ]
+            },
+            "ListRetiredResources": {
+              "methods": [
+                "list_retired_resources"
               ]
             },
             "MacSign": {
@@ -756,6 +796,16 @@
                 "decrypt"
               ]
             },
+            "DeleteCryptoKey": {
+              "methods": [
+                "delete_crypto_key"
+              ]
+            },
+            "DeleteCryptoKeyVersion": {
+              "methods": [
+                "delete_crypto_key_version"
+              ]
+            },
             "DestroyCryptoKeyVersion": {
               "methods": [
                 "destroy_crypto_key_version"
@@ -796,6 +846,11 @@
                 "get_public_key"
               ]
             },
+            "GetRetiredResource": {
+              "methods": [
+                "get_retired_resource"
+              ]
+            },
             "ImportCryptoKeyVersion": {
               "methods": [
                 "import_crypto_key_version"
@@ -819,6 +874,11 @@
             "ListKeyRings": {
               "methods": [
                 "list_key_rings"
+              ]
+            },
+            "ListRetiredResources": {
+              "methods": [
+                "list_retired_resources"
               ]
             },
             "MacSign": {

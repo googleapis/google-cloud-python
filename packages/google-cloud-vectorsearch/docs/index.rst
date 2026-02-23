@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Vector Search API.
+By default, you will get version ``vectorsearch_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    vectorsearch_v1/services_
+    vectorsearch_v1/types_
 
 API Reference
 -------------

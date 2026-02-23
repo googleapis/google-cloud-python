@@ -165,6 +165,7 @@ class Gateway(proto.Message):
                 The type of the customer managed gateway is
                 SecureWebGateway (SWG).
         """
+
         TYPE_UNSPECIFIED = 0
         OPEN_MESH = 1
         SECURE_WEB_GATEWAY = 2
@@ -184,6 +185,7 @@ class Gateway(proto.Message):
             IPV6 (2):
                 The type for IP version 6.
         """
+
         IP_VERSION_UNSPECIFIED = 0
         IPV4 = 1
         IPV6 = 2
@@ -209,6 +211,7 @@ class Gateway(proto.Message):
                 gateway then acts as a next-hop to the
                 destination.
         """
+
         EXPLICIT_ROUTING_MODE = 0
         NEXT_HOP_ROUTING_MODE = 1
 

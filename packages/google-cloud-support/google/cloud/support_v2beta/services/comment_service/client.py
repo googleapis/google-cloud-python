@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.support_v2beta import gapic_version as package_version
 
@@ -64,10 +64,8 @@ _LOGGER = std_logging.getLogger(__name__)
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.support_v2beta.services.comment_service import pagers
-from google.cloud.support_v2beta.types import actor
-from google.cloud.support_v2beta.types import comment
+from google.cloud.support_v2beta.types import actor, comment, comment_service
 from google.cloud.support_v2beta.types import comment as gcs_comment
-from google.cloud.support_v2beta.types import comment_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, CommentServiceTransport
 from .transports.grpc import CommentServiceGrpcTransport
@@ -83,9 +81,7 @@ class CommentServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[CommentServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[CommentServiceTransport]]
     _transport_registry["grpc"] = CommentServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CommentServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = CommentServiceRestTransport
@@ -642,11 +638,9 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = CommentServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            CommentServiceClient._read_environment_variables()
+        )
         self._client_cert_source = CommentServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -681,8 +675,7 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(CommentServiceTransport, transport)
             self._api_endpoint = self._transport.host

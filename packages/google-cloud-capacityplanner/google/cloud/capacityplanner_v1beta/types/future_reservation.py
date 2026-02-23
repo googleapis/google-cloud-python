@@ -204,6 +204,7 @@ class FutureReservation(proto.Message):
                     the Future Reservation will be restored to the
                     last known good state.
             """
+
             PROCUREMENT_STATUS_UNSPECIFIED = 0
             PENDING_APPROVAL = 1
             APPROVED = 2

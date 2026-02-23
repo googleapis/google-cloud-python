@@ -61,6 +61,7 @@ class AttributeConfigLevel(proto.Enum):
             At this level, we honor the attribute configurations set in
             ``CatalogConfig.attribute_configs``.
     """
+
     ATTRIBUTE_CONFIG_LEVEL_UNSPECIFIED = 0
     PRODUCT_LEVEL_ATTRIBUTE_CONFIG = 1
     CATALOG_LEVEL_ATTRIBUTE_CONFIG = 2
@@ -77,6 +78,7 @@ class SolutionType(proto.Enum):
         SOLUTION_TYPE_SEARCH (2):
             Used for Retail Search.
     """
+
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
     SOLUTION_TYPE_SEARCH = 2
@@ -95,6 +97,7 @@ class RecommendationsFilteringOption(proto.Enum):
         RECOMMENDATIONS_FILTERING_ENABLED (3):
             Recommendation filtering is enabled.
     """
+
     RECOMMENDATIONS_FILTERING_OPTION_UNSPECIFIED = 0
     RECOMMENDATIONS_FILTERING_DISABLED = 1
     RECOMMENDATIONS_FILTERING_ENABLED = 3
@@ -115,6 +118,7 @@ class SearchSolutionUseCase(proto.Enum):
             Browse use case. Expects the traffic has an empty
             [query][google.cloud.retail.v2alpha.SearchRequest.query].
     """
+
     SEARCH_SOLUTION_USE_CASE_UNSPECIFIED = 0
     SEARCH_SOLUTION_USE_CASE_SEARCH = 1
     SEARCH_SOLUTION_USE_CASE_BROWSE = 2
@@ -1481,6 +1485,7 @@ class LocalInventory(proto.Message):
                 Product that is back-ordered (i.e.
                 temporarily out of stock).
         """
+
         AVAILABILITY_UNSPECIFIED = 0
         IN_STOCK = 1
         OUT_OF_STOCK = 2

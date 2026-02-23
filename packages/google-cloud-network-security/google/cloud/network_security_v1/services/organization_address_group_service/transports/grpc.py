@@ -16,24 +16,26 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
-from google.cloud.network_security_v1.types import address_group as gcn_address_group
 from google.cloud.network_security_v1.types import address_group
+from google.cloud.network_security_v1.types import address_group as gcn_address_group
 
 from .base import DEFAULT_CLIENT_INFO, OrganizationAddressGroupServiceTransport
 
@@ -508,12 +510,12 @@ class OrganizationAddressGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_address_group_items" not in self._stubs:
-            self._stubs[
-                "remove_address_group_items"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1.OrganizationAddressGroupService/RemoveAddressGroupItems",
-                request_serializer=gcn_address_group.RemoveAddressGroupItemsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["remove_address_group_items"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.OrganizationAddressGroupService/RemoveAddressGroupItems",
+                    request_serializer=gcn_address_group.RemoveAddressGroupItemsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["remove_address_group_items"]
 
@@ -593,12 +595,12 @@ class OrganizationAddressGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_address_group_references" not in self._stubs:
-            self._stubs[
-                "list_address_group_references"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1.OrganizationAddressGroupService/ListAddressGroupReferences",
-                request_serializer=gcn_address_group.ListAddressGroupReferencesRequest.serialize,
-                response_deserializer=gcn_address_group.ListAddressGroupReferencesResponse.deserialize,
+            self._stubs["list_address_group_references"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1.OrganizationAddressGroupService/ListAddressGroupReferences",
+                    request_serializer=gcn_address_group.ListAddressGroupReferencesRequest.serialize,
+                    response_deserializer=gcn_address_group.ListAddressGroupReferencesResponse.deserialize,
+                )
             )
         return self._stubs["list_address_group_references"]
 

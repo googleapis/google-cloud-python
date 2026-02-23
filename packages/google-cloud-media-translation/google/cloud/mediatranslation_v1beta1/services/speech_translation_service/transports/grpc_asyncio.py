@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.mediatranslation_v1beta1.types import media_translation
 
@@ -353,12 +353,12 @@ class SpeechTranslationServiceGrpcAsyncIOTransport(SpeechTranslationServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "streaming_translate_speech" not in self._stubs:
-            self._stubs[
-                "streaming_translate_speech"
-            ] = self._logged_channel.stream_stream(
-                "/google.cloud.mediatranslation.v1beta1.SpeechTranslationService/StreamingTranslateSpeech",
-                request_serializer=media_translation.StreamingTranslateSpeechRequest.serialize,
-                response_deserializer=media_translation.StreamingTranslateSpeechResponse.deserialize,
+            self._stubs["streaming_translate_speech"] = (
+                self._logged_channel.stream_stream(
+                    "/google.cloud.mediatranslation.v1beta1.SpeechTranslationService/StreamingTranslateSpeech",
+                    request_serializer=media_translation.StreamingTranslateSpeechRequest.serialize,
+                    response_deserializer=media_translation.StreamingTranslateSpeechResponse.deserialize,
+                )
             )
         return self._stubs["streaming_translate_speech"]
 

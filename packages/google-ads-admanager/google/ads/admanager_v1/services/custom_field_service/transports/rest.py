@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -729,9 +729,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_activate_custom_fields(
                 request, metadata
@@ -887,9 +885,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
                         Response object for ``BatchCreateCustomFields`` method.
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_create_custom_fields(
                 request, metadata
@@ -1050,9 +1046,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_deactivate_custom_fields(
                 request, metadata
@@ -1121,11 +1115,10 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
 
             resp = self._interceptor.post_batch_deactivate_custom_fields(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_deactivate_custom_fields_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_batch_deactivate_custom_fields_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1209,9 +1202,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
                         Response object for ``BatchUpdateCustomFields`` method.
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_update_custom_fields(
                 request, metadata
@@ -1370,9 +1361,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_http_options()
 
             request, metadata = self._interceptor.pre_create_custom_field(
                 request, metadata
@@ -1526,9 +1515,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseGetCustomField._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseGetCustomField._get_http_options()
 
             request, metadata = self._interceptor.pre_get_custom_field(
                 request, metadata
@@ -1677,9 +1664,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseListCustomFields._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseListCustomFields._get_http_options()
 
             request, metadata = self._interceptor.pre_list_custom_fields(
                 request, metadata
@@ -1829,9 +1814,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_http_options()
 
             request, metadata = self._interceptor.pre_update_custom_field(
                 request, metadata
@@ -1937,7 +1920,9 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchActivateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchActivateCustomFields(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_create_custom_fields(
@@ -1948,7 +1933,9 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchCreateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchCreateCustomFields(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_deactivate_custom_fields(
@@ -1959,7 +1946,9 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchDeactivateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchDeactivateCustomFields(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_update_custom_fields(
@@ -1970,7 +1959,9 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchUpdateCustomFields(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchUpdateCustomFields(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_custom_field(
@@ -2073,9 +2064,7 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCustomFieldServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCustomFieldServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCustomFieldServiceRestTransport._BaseGetOperation._get_transcoded_request(

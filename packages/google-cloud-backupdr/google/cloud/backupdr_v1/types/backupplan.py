@@ -142,6 +142,7 @@ class BackupPlan(proto.Message):
             UPDATING (5):
                 The resource is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -351,6 +352,7 @@ class StandardSchedule(proto.Message):
             YEARLY (5):
                 The ``BackupRule`` is to be applied yearly.
         """
+
         RECURRENCE_TYPE_UNSPECIFIED = 0
         HOURLY = 1
         DAILY = 2
@@ -459,6 +461,7 @@ class WeekDayOfMonth(proto.Message):
             LAST (5):
                 The last  week of the month.
         """
+
         WEEK_OF_MONTH_UNSPECIFIED = 0
         FIRST = 1
         SECOND = 2
@@ -790,6 +793,7 @@ class BackupPlanRevision(proto.Message):
                 The resource has been created but is not
                 usable.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.managedkafka_schemaregistry_v1 import gapic_version as package_version
 
@@ -45,15 +45,17 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.any_pb2 as any_pb2  # type: ignore
 
+from google.cloud.managedkafka_schemaregistry_v1.types import (
+    schema_registry,
+    schema_registry_resources,
+)
 from google.cloud.managedkafka_schemaregistry_v1.types import (
     schema_registry as gcms_schema_registry,
 )
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
 from .client import ManagedSchemaRegistryClient
 from .transports.base import DEFAULT_CLIENT_INFO, ManagedSchemaRegistryTransport
@@ -201,7 +203,10 @@ class ManagedSchemaRegistryAsyncClient:
         Returns:
             ManagedSchemaRegistryAsyncClient: The constructed client.
         """
-        return ManagedSchemaRegistryClient.from_service_account_info.__func__(ManagedSchemaRegistryAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            ManagedSchemaRegistryClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(ManagedSchemaRegistryAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -217,7 +222,10 @@ class ManagedSchemaRegistryAsyncClient:
         Returns:
             ManagedSchemaRegistryAsyncClient: The constructed client.
         """
-        return ManagedSchemaRegistryClient.from_service_account_file.__func__(ManagedSchemaRegistryAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            ManagedSchemaRegistryClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(ManagedSchemaRegistryAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -255,7 +263,9 @@ class ManagedSchemaRegistryAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return ManagedSchemaRegistryClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return ManagedSchemaRegistryClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> ManagedSchemaRegistryTransport:

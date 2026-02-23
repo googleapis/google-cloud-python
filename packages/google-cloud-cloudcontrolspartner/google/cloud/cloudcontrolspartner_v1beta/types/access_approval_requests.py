@@ -134,12 +134,12 @@ class ListAccessApprovalRequestsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    access_approval_requests: MutableSequence[
-        "AccessApprovalRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AccessApprovalRequest",
+    access_approval_requests: MutableSequence["AccessApprovalRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AccessApprovalRequest",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -206,6 +206,7 @@ class AccessReason(proto.Message):
                 outage, or for security, fraud, abuse, or compliance review
                 purposes.
         """
+
         TYPE_UNSPECIFIED = 0
         CUSTOMER_INITIATED_SUPPORT = 1
         GOOGLE_INITIATED_SERVICE = 2

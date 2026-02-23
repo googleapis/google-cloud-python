@@ -408,6 +408,7 @@ class ManifestOptions(proto.Message):
             DESCENDING (2):
                 Order by descending.
         """
+
         ORDER_POLICY_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2

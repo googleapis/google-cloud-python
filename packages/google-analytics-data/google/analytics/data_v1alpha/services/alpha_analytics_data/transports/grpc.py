@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.analytics.data_v1alpha.types import analytics_data_api
 
@@ -526,12 +526,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "sheet_export_audience_list" not in self._stubs:
-            self._stubs[
-                "sheet_export_audience_list"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
-                request_serializer=analytics_data_api.SheetExportAudienceListRequest.serialize,
-                response_deserializer=analytics_data_api.SheetExportAudienceListResponse.deserialize,
+            self._stubs["sheet_export_audience_list"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
+                    request_serializer=analytics_data_api.SheetExportAudienceListRequest.serialize,
+                    response_deserializer=analytics_data_api.SheetExportAudienceListResponse.deserialize,
+                )
             )
         return self._stubs["sheet_export_audience_list"]
 
@@ -658,12 +658,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_recurring_audience_list" not in self._stubs:
-            self._stubs[
-                "create_recurring_audience_list"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateRecurringAudienceList",
-                request_serializer=analytics_data_api.CreateRecurringAudienceListRequest.serialize,
-                response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+            self._stubs["create_recurring_audience_list"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateRecurringAudienceList",
+                    request_serializer=analytics_data_api.CreateRecurringAudienceListRequest.serialize,
+                    response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+                )
             )
         return self._stubs["create_recurring_audience_list"]
 
@@ -700,12 +700,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_recurring_audience_list" not in self._stubs:
-            self._stubs[
-                "get_recurring_audience_list"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetRecurringAudienceList",
-                request_serializer=analytics_data_api.GetRecurringAudienceListRequest.serialize,
-                response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+            self._stubs["get_recurring_audience_list"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetRecurringAudienceList",
+                    request_serializer=analytics_data_api.GetRecurringAudienceListRequest.serialize,
+                    response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+                )
             )
         return self._stubs["get_recurring_audience_list"]
 
@@ -743,12 +743,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_recurring_audience_lists" not in self._stubs:
-            self._stubs[
-                "list_recurring_audience_lists"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListRecurringAudienceLists",
-                request_serializer=analytics_data_api.ListRecurringAudienceListsRequest.serialize,
-                response_deserializer=analytics_data_api.ListRecurringAudienceListsResponse.deserialize,
+            self._stubs["list_recurring_audience_lists"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListRecurringAudienceLists",
+                    request_serializer=analytics_data_api.ListRecurringAudienceListsRequest.serialize,
+                    response_deserializer=analytics_data_api.ListRecurringAudienceListsResponse.deserialize,
+                )
             )
         return self._stubs["list_recurring_audience_lists"]
 
@@ -776,12 +776,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_property_quotas_snapshot" not in self._stubs:
-            self._stubs[
-                "get_property_quotas_snapshot"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetPropertyQuotasSnapshot",
-                request_serializer=analytics_data_api.GetPropertyQuotasSnapshotRequest.serialize,
-                response_deserializer=analytics_data_api.PropertyQuotasSnapshot.deserialize,
+            self._stubs["get_property_quotas_snapshot"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetPropertyQuotasSnapshot",
+                    request_serializer=analytics_data_api.GetPropertyQuotasSnapshotRequest.serialize,
+                    response_deserializer=analytics_data_api.PropertyQuotasSnapshot.deserialize,
+                )
             )
         return self._stubs["get_property_quotas_snapshot"]
 

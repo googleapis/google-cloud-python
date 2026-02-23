@@ -13,7 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .subscription_resource import NotificationEndpoint, PayloadOptions, Subscription
+from .subscription_resource import (
+    NotificationEndpoint,
+    PayloadOptions,
+    Subscription,
+)
 from .subscriptions_service import (
     CreateSubscriptionMetadata,
     CreateSubscriptionRequest,

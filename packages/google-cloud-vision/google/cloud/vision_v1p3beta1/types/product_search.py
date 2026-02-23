@@ -199,12 +199,12 @@ class ProductSearchResults(proto.Message):
             number=2,
             message="ProductSearchResults.Result",
         )
-        object_annotations: MutableSequence[
-            "ProductSearchResults.ObjectAnnotation"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="ProductSearchResults.ObjectAnnotation",
+        object_annotations: MutableSequence["ProductSearchResults.ObjectAnnotation"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="ProductSearchResults.ObjectAnnotation",
+            )
         )
 
     index_time: timestamp_pb2.Timestamp = proto.Field(

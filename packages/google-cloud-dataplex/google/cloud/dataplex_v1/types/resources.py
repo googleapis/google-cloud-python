@@ -50,6 +50,7 @@ class State(proto.Enum):
             Resource is active but has unresolved
             actions.
     """
+
     STATE_UNSPECIFIED = 0
     ACTIVE = 1
     CREATING = 2
@@ -161,6 +162,7 @@ class Lake(proto.Message):
                     Attach/detach could not be done due to
                     errors.
             """
+
             STATE_UNSPECIFIED = 0
             NONE = 1
             READY = 2
@@ -334,6 +336,7 @@ class Zone(proto.Message):
                 file formats (parquet, avro and orc) and
                 organized in a hive-compatible directory layout.
         """
+
         TYPE_UNSPECIFIED = 0
         RAW = 1
         CURATED = 2
@@ -361,6 +364,7 @@ class Zone(proto.Message):
                     Resources that are associated with a
                     multi-region location.
             """
+
             LOCATION_TYPE_UNSPECIFIED = 0
             SINGLE_REGION = 1
             MULTI_REGION = 2
@@ -663,6 +667,7 @@ class Action(proto.Message):
             DATA_DISCOVERY (3):
                 Data and discovery related issues.
         """
+
         CATEGORY_UNSPECIFIED = 0
         RESOURCE_MANAGEMENT = 1
         SECURITY_POLICY = 2
@@ -768,6 +773,7 @@ class Action(proto.Message):
                     Newly discovered schema has changed from
                     existing schema for data in a curated zone.
             """
+
             SCHEMA_CHANGE_UNSPECIFIED = 0
             INCOMPATIBLE = 1
             MODIFIED = 2
@@ -816,6 +822,7 @@ class Action(proto.Message):
                     Hive style partition definition (curated zone
                     only).
             """
+
             PARTITION_STRUCTURE_UNSPECIFIED = 0
             CONSISTENT_KEYS = 1
             HIVE_STYLE_KEYS = 2
@@ -997,6 +1004,7 @@ class Asset(proto.Message):
                     Security policy could not be applied to the
                     attached resource due to errors.
             """
+
             STATE_UNSPECIFIED = 0
             READY = 1
             APPLYING = 2
@@ -1182,6 +1190,7 @@ class Asset(proto.Message):
                 BIGQUERY_DATASET (2):
                     BigQuery dataset.
             """
+
             TYPE_UNSPECIFIED = 0
             STORAGE_BUCKET = 1
             BIGQUERY_DATASET = 2
@@ -1200,6 +1209,7 @@ class Asset(proto.Message):
                     Data is accessed through a managed interface
                     using BigQuery APIs.
             """
+
             ACCESS_MODE_UNSPECIFIED = 0
             DIRECT = 1
             MANAGED = 2
@@ -1246,6 +1256,7 @@ class Asset(proto.Message):
                 ERROR (2):
                     Resource has errors.
             """
+
             STATE_UNSPECIFIED = 0
             READY = 1
             ERROR = 2
@@ -1306,6 +1317,7 @@ class Asset(proto.Message):
                 DISABLED (5):
                     Discovery for the asset is disabled.
             """
+
             STATE_UNSPECIFIED = 0
             SCHEDULED = 1
             IN_PROGRESS = 2

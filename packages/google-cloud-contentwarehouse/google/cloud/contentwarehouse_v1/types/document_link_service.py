@@ -205,6 +205,7 @@ class DocumentLink(proto.Message):
                 Target document is deleted, and mark the
                 documentlink as soft-deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SOFT_DELETED = 2

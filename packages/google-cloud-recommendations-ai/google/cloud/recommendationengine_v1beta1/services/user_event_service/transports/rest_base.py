@@ -22,9 +22,8 @@ from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
+from google.cloud.recommendationengine_v1beta1.types import import_, user_event_service
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
-from google.cloud.recommendationengine_v1beta1.types import import_
-from google.cloud.recommendationengine_v1beta1.types import user_event_service
 
 from .base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
 

@@ -20,11 +20,11 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.datamanager_v1.types import user_properties as gad_user_properties
 from google.ads.datamanager_v1.types import cart_data as gad_cart_data
 from google.ads.datamanager_v1.types import consent as gad_consent
 from google.ads.datamanager_v1.types import device_info, experimental_field
 from google.ads.datamanager_v1.types import user_data as gad_user_data
+from google.ads.datamanager_v1.types import user_properties as gad_user_properties
 
 __protobuf__ = proto.module(
     package="google.ads.datamanager.v1",
@@ -57,6 +57,7 @@ class EventSource(proto.Enum):
         OTHER (5):
             The event was generated from other sources.
     """
+
     EVENT_SOURCE_UNSPECIFIED = 0
     WEB = 1
     APP = 2
@@ -202,12 +203,12 @@ class Event(proto.Message):
         number=13,
         message="CustomVariable",
     )
-    experimental_fields: MutableSequence[
-        experimental_field.ExperimentalField
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message=experimental_field.ExperimentalField,
+    experimental_fields: MutableSequence[experimental_field.ExperimentalField] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message=experimental_field.ExperimentalField,
+        )
     )
     user_properties: gad_user_properties.UserProperties = proto.Field(
         proto.MESSAGE,
@@ -226,12 +227,12 @@ class Event(proto.Message):
         proto.STRING,
         number=18,
     )
-    additional_event_parameters: MutableSequence[
-        "EventParameter"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=19,
-        message="EventParameter",
+    additional_event_parameters: MutableSequence["EventParameter"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=19,
+            message="EventParameter",
+        )
     )
 
 

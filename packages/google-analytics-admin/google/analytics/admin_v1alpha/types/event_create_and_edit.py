@@ -260,6 +260,7 @@ class MatchingCondition(proto.Message):
                 regular expression, case insensitive. Only
                 supported for web streams.
         """
+
         COMPARISON_TYPE_UNSPECIFIED = 0
         EQUALS = 1
         EQUALS_CASE_INSENSITIVE = 2

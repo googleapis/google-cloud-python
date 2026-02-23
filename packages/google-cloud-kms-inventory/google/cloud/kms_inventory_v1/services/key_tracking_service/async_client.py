@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.kms_inventory_v1 import gapic_version as package_version
 
@@ -83,6 +83,12 @@ class KeyTrackingServiceAsyncClient:
     parse_crypto_key_version_path = staticmethod(
         KeyTrackingServiceClient.parse_crypto_key_version_path
     )
+    protected_resource_scope_path = staticmethod(
+        KeyTrackingServiceClient.protected_resource_scope_path
+    )
+    parse_protected_resource_scope_path = staticmethod(
+        KeyTrackingServiceClient.parse_protected_resource_scope_path
+    )
     protected_resources_summary_path = staticmethod(
         KeyTrackingServiceClient.protected_resources_summary_path
     )
@@ -127,7 +133,10 @@ class KeyTrackingServiceAsyncClient:
         Returns:
             KeyTrackingServiceAsyncClient: The constructed client.
         """
-        return KeyTrackingServiceClient.from_service_account_info.__func__(KeyTrackingServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            KeyTrackingServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(KeyTrackingServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -143,7 +152,10 @@ class KeyTrackingServiceAsyncClient:
         Returns:
             KeyTrackingServiceAsyncClient: The constructed client.
         """
-        return KeyTrackingServiceClient.from_service_account_file.__func__(KeyTrackingServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            KeyTrackingServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(KeyTrackingServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -181,7 +193,9 @@ class KeyTrackingServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return KeyTrackingServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return KeyTrackingServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> KeyTrackingServiceTransport:
@@ -318,9 +332,15 @@ class KeyTrackingServiceAsyncClient:
     ) -> key_tracking_service.ProtectedResourcesSummary:
         r"""Returns aggregate information about the resources protected by
         the given Cloud KMS [CryptoKey][google.cloud.kms.v1.CryptoKey].
-        Only resources within the same Cloud organization as the key
-        will be returned. The project that holds the key must be part of
-        an organization in order for this call to succeed.
+        By default, summary of resources within the same Cloud
+        organization as the key will be returned, which requires the KMS
+        organization service account to be configured(refer
+        https://docs.cloud.google.com/kms/docs/view-key-usage#required-roles).
+        If the KMS organization service account is not configured or
+        key's project is not part of an organization, set
+        [fallback_scope][google.cloud.kms.inventory.v1.GetProtectedResourcesSummaryRequest.fallback_scope]
+        to ``FALLBACK_SCOPE_PROJECT`` to retrieve a summary of protected
+        resources within the key's project.
 
         .. code-block:: python
 
@@ -371,8 +391,8 @@ class KeyTrackingServiceAsyncClient:
             google.cloud.kms_inventory_v1.types.ProtectedResourcesSummary:
                 Aggregate information about the
                 resources protected by a Cloud KMS key
-                in the same Cloud organization as the
-                key.
+                in the same Cloud organization/project
+                as the key.
 
         """
         # Create or coerce a protobuf request object.
@@ -440,7 +460,7 @@ class KeyTrackingServiceAsyncClient:
     ) -> pagers.SearchProtectedResourcesAsyncPager:
         r"""Returns metadata about the resources protected by the given
         Cloud KMS [CryptoKey][google.cloud.kms.v1.CryptoKey] in the
-        given Cloud organization.
+        given Cloud organization/project.
 
         .. code-block:: python
 
@@ -475,8 +495,16 @@ class KeyTrackingServiceAsyncClient:
                 The request object. Request message for
                 [KeyTrackingService.SearchProtectedResources][google.cloud.kms.inventory.v1.KeyTrackingService.SearchProtectedResources].
             scope (:class:`str`):
-                Required. Resource name of the
-                organization. Example: organizations/123
+                Required. A scope can be an organization or a project.
+                Resources protected by the crypto key in provided scope
+                will be returned.
+
+                The following values are allowed:
+
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/12345678")
+                - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+                - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this

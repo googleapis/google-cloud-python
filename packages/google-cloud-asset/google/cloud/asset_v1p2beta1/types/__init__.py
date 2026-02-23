@@ -29,7 +29,12 @@ from .asset_service import (
     PubsubDestination,
     UpdateFeedRequest,
 )
-from .assets import Asset, Resource, TemporalAsset, TimeWindow
+from .assets import (
+    Asset,
+    Resource,
+    TemporalAsset,
+    TimeWindow,
+)
 
 __all__ = (
     "BatchGetAssetsHistoryResponse",

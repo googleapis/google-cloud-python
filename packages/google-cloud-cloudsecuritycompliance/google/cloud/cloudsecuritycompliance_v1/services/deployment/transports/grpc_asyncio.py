@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.cloudsecuritycompliance_v1.types import deployment
 
@@ -375,12 +375,12 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_framework_deployment" not in self._stubs:
-            self._stubs[
-                "create_framework_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Deployment/CreateFrameworkDeployment",
-                request_serializer=deployment.CreateFrameworkDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_framework_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Deployment/CreateFrameworkDeployment",
+                    request_serializer=deployment.CreateFrameworkDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_framework_deployment"]
 
@@ -406,12 +406,12 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_framework_deployment" not in self._stubs:
-            self._stubs[
-                "delete_framework_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Deployment/DeleteFrameworkDeployment",
-                request_serializer=deployment.DeleteFrameworkDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_framework_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Deployment/DeleteFrameworkDeployment",
+                    request_serializer=deployment.DeleteFrameworkDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_framework_deployment"]
 
@@ -467,12 +467,12 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_framework_deployments" not in self._stubs:
-            self._stubs[
-                "list_framework_deployments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Deployment/ListFrameworkDeployments",
-                request_serializer=deployment.ListFrameworkDeploymentsRequest.serialize,
-                response_deserializer=deployment.ListFrameworkDeploymentsResponse.deserialize,
+            self._stubs["list_framework_deployments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Deployment/ListFrameworkDeployments",
+                    request_serializer=deployment.ListFrameworkDeploymentsRequest.serialize,
+                    response_deserializer=deployment.ListFrameworkDeploymentsResponse.deserialize,
+                )
             )
         return self._stubs["list_framework_deployments"]
 
@@ -498,12 +498,12 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cloud_control_deployment" not in self._stubs:
-            self._stubs[
-                "get_cloud_control_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Deployment/GetCloudControlDeployment",
-                request_serializer=deployment.GetCloudControlDeploymentRequest.serialize,
-                response_deserializer=deployment.CloudControlDeployment.deserialize,
+            self._stubs["get_cloud_control_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Deployment/GetCloudControlDeployment",
+                    request_serializer=deployment.GetCloudControlDeploymentRequest.serialize,
+                    response_deserializer=deployment.CloudControlDeployment.deserialize,
+                )
             )
         return self._stubs["get_cloud_control_deployment"]
 
@@ -530,12 +530,12 @@ class DeploymentGrpcAsyncIOTransport(DeploymentTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_cloud_control_deployments" not in self._stubs:
-            self._stubs[
-                "list_cloud_control_deployments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.Deployment/ListCloudControlDeployments",
-                request_serializer=deployment.ListCloudControlDeploymentsRequest.serialize,
-                response_deserializer=deployment.ListCloudControlDeploymentsResponse.deserialize,
+            self._stubs["list_cloud_control_deployments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.Deployment/ListCloudControlDeployments",
+                    request_serializer=deployment.ListCloudControlDeploymentsRequest.serialize,
+                    response_deserializer=deployment.ListCloudControlDeploymentsResponse.deserialize,
+                )
             )
         return self._stubs["list_cloud_control_deployments"]
 
