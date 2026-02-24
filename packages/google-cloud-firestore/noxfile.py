@@ -554,25 +554,40 @@ def prerelease_deps(session, protobuf_implementation):
     session.run("python", "-c", "import grpc; print(grpc.__version__)")
     session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
 
+    # 1. Collect variables from the host environment
+    # Priority: Firestore-specific > Standard Google > Kokoro-specific
+    creds_path = (
+        os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS") or 
+        os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    )
+    
+    # Priority: Kokoro PROJECT_ID > GCLOUD_PROJECT > FIRESTORE_PROJECT
+    project_id = (
+        os.environ.get("PROJECT_ID") or 
+        os.environ.get("GCLOUD_PROJECT") or 
+        os.environ.get("FIRESTORE_PROJECT")
+    )
+
+    # 2. Debugging: Print exactly what was found (helps verify Kokoro logs)
+    print(f"--- Debug: Environment Check ---")
+    print(f"Found Credentials: {creds_path}")
+    print(f"Found Project ID: {project_id}")
+    print(f"-------------------------------")
+
+    # 3. Build the environment dictionary
     test_env = {
         "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
     }
 
-    # 1. Handle Credentials
-    # Enable a fallback to GOOGLE_APPLICATION_CREDENTIALS
-    creds = os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS") or os.environ.get(
-        "GOOGLE_APPLICATION_CREDENTIALS"
-    )
-    if creds:
-        test_env["GOOGLE_APPLICATION_CREDENTIALS"] = creds
-        test_env["FIRESTORE_APPLICATION_CREDENTIALS"] = creds
+    if creds_path:
+        test_env["GOOGLE_APPLICATION_CREDENTIALS"] = creds_path
+        test_env["FIRESTORE_APPLICATION_CREDENTIALS"] = creds_path
     else:
-        session.error("System tests require GOOGLE_APPLICATION_CREDENTIALS or FIRESTORE_APPLICATION_CREDENTIALS to be set in the shell.")
+        session.error("Missing Credentials! Set GOOGLE_APPLICATION_CREDENTIALS or FIRESTORE_APPLICATION_CREDENTIALS.")
 
-    # 2. Handle Project ID
-    # Enable a fallback to FIRESTORE_PROJECT
-    project_id = os.environ.get("GCLOUD_PROJECT") or os.environ.get("FIRESTORE_PROJECT")
     if project_id:
+        # We set all three to be safe, as different helpers look for different keys
+        test_env["PROJECT_ID"] = project_id
         test_env["GCLOUD_PROJECT"] = project_id
         test_env["FIRESTORE_PROJECT"] = project_id
 
