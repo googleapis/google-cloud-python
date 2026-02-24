@@ -20,14 +20,13 @@ from google.cloud import _http as connection_module
 from google.cloud import exceptions
 from google.cloud.datastore_v1.types import datastore as _datastore_pb2
 
-
 DATASTORE_API_HOST = "datastore.googleapis.com"
 """Datastore API request host."""
 API_BASE_URL = "https://" + DATASTORE_API_HOST
 """The base of the API call URL."""
 API_VERSION = "v1"
 """The version of the API, used in building the API call's URL."""
-API_URL_TEMPLATE = "{api_base}/{api_version}/projects" "/{project}:{method}"
+API_URL_TEMPLATE = "{api_base}/{api_version}/projects/{project}:{method}"
 """A template for the URL of a particular API call."""
 
 
@@ -500,6 +499,6 @@ def _update_headers(headers, project_id, database_id=None):
     """
     headers["x-goog-request-params"] = f"project_id={project_id}"
     if database_id:
-        headers[
-            "x-goog-request-params"
-        ] = f"project_id={project_id}&database_id={database_id}"
+        headers["x-goog-request-params"] = (
+            f"project_id={project_id}&database_id={database_id}"
+        )

@@ -14,7 +14,6 @@
 
 """Class for representing a single entity in the Cloud Datastore."""
 
-
 from google.cloud._helpers import _ensure_tuple_or_list
 
 

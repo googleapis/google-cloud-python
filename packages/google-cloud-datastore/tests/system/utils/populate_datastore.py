@@ -14,7 +14,6 @@
 
 """Script to populate datastore with system test data."""
 
-
 from __future__ import print_function
 
 import os
@@ -24,7 +23,6 @@ import time
 import uuid
 
 from google.cloud import datastore
-
 
 ANCESTOR = ("Book", "GoT")
 RICKARD = ANCESTOR + ("Character", "Rickard")

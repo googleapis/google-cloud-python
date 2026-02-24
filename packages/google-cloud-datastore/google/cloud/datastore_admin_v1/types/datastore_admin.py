@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datastore_admin_v1.types import index as gda_index
 from google.cloud.datastore_admin_v1.types import migration
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.datastore.admin.v1",
@@ -62,6 +61,7 @@ class OperationType(proto.Enum):
         DELETE_INDEX (4):
             DeleteIndex.
     """
+
     OPERATION_TYPE_UNSPECIFIED = 0
     EXPORT_ENTITIES = 1
     IMPORT_ENTITIES = 2
@@ -117,6 +117,7 @@ class CommonMetadata(proto.Message):
                 user called
                 google.longrunning.Operations.CancelOperation.
         """
+
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         PROCESSING = 2

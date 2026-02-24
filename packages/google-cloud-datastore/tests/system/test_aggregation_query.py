@@ -13,14 +13,11 @@
 # limitations under the License.
 
 import pytest
-
 from google.api_core import exceptions
 from test_utils.retry import RetryErrors
 
-from .utils import clear_datastore
-from .utils import populate_datastore
 from . import _helpers
-
+from .utils import clear_datastore, populate_datastore
 
 retry_503 = RetryErrors(exceptions.ServiceUnavailable)
 
@@ -375,9 +372,11 @@ def test_aggregation_query_multiple_aggregations(
 def test_aggregation_query_add_aggregation(
     aggregation_query_client, nested_query, database_id
 ):
-    from google.cloud.datastore.aggregation import CountAggregation
-    from google.cloud.datastore.aggregation import SumAggregation
-    from google.cloud.datastore.aggregation import AvgAggregation
+    from google.cloud.datastore.aggregation import (
+        AvgAggregation,
+        CountAggregation,
+        SumAggregation,
+    )
 
     query = nested_query
 
@@ -409,9 +408,9 @@ def test_aggregation_query_add_aggregations(
     aggregation_query_client, nested_query, database_id
 ):
     from google.cloud.datastore.aggregation import (
+        AvgAggregation,
         CountAggregation,
         SumAggregation,
-        AvgAggregation,
     )
 
     query = nested_query
@@ -442,8 +441,9 @@ def test_aggregation_query_add_aggregations(
 def test_aggregation_query_add_aggregations_duplicated_alias(
     aggregation_query_client, nested_query, database_id
 ):
-    from google.cloud.datastore.aggregation import CountAggregation
     from google.api_core.exceptions import BadRequest
+
+    from google.cloud.datastore.aggregation import CountAggregation
 
     query = nested_query
 
@@ -566,10 +566,12 @@ def test_aggregation_query_explain(aggregation_query_client, nested_query, datab
     When explain_options(analyze=False) is set, iterator should contain explain_metrics field
     with plan_summary but no execution_stats
     """
-    from google.cloud.datastore.query_profile import QueryExplainError
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore.query_profile import PlanSummary
+    from google.cloud.datastore.query_profile import (
+        ExplainMetrics,
+        ExplainOptions,
+        PlanSummary,
+        QueryExplainError,
+    )
 
     agg_query = aggregation_query_client.aggregation_query(
         nested_query, explain_options=ExplainOptions(analyze=False)
@@ -601,11 +603,13 @@ def test_aggregation_query_explain_analyze(
 
     Should not be present until iterator is exhausted
     """
-    from google.cloud.datastore.query_profile import QueryExplainError
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore.query_profile import ExecutionStats
-    from google.cloud.datastore.query_profile import PlanSummary
+    from google.cloud.datastore.query_profile import (
+        ExecutionStats,
+        ExplainMetrics,
+        ExplainOptions,
+        PlanSummary,
+        QueryExplainError,
+    )
 
     expected_error = "explain_metrics not available until query is complete."
     agg_query = aggregation_query_client.aggregation_query(
@@ -655,8 +659,7 @@ def test_aggregation_query_explain_in_transaction(
     When an aggregation query is run in a transaction, the transaction id should be sent with the request.
     The result is the same as when it is run outside of a transaction.
     """
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import ExplainMetrics, ExplainOptions
 
     with aggregation_query_client.transaction():
         agg_query = aggregation_query_client.aggregation_query(

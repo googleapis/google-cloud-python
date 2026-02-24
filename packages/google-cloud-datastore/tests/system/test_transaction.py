@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import pytest
+from google.cloud.exceptions import Conflict
 
 from google.cloud import datastore
-from google.cloud.exceptions import Conflict
 
 from . import _helpers
 

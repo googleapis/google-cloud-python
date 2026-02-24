@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.datastore_admin_v1 import gapic_version as package_version
+import sys
 
 import google.api_core as api_core
-import sys
+
+from google.cloud.datastore_admin_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -28,30 +29,32 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 
-from .services.datastore_admin import DatastoreAdminClient
-from .services.datastore_admin import DatastoreAdminAsyncClient
-
-from .types.datastore_admin import CommonMetadata
-from .types.datastore_admin import CreateIndexRequest
-from .types.datastore_admin import DatastoreFirestoreMigrationMetadata
-from .types.datastore_admin import DeleteIndexRequest
-from .types.datastore_admin import EntityFilter
-from .types.datastore_admin import ExportEntitiesMetadata
-from .types.datastore_admin import ExportEntitiesRequest
-from .types.datastore_admin import ExportEntitiesResponse
-from .types.datastore_admin import GetIndexRequest
-from .types.datastore_admin import ImportEntitiesMetadata
-from .types.datastore_admin import ImportEntitiesRequest
-from .types.datastore_admin import IndexOperationMetadata
-from .types.datastore_admin import ListIndexesRequest
-from .types.datastore_admin import ListIndexesResponse
-from .types.datastore_admin import Progress
-from .types.datastore_admin import OperationType
+from .services.datastore_admin import DatastoreAdminAsyncClient, DatastoreAdminClient
+from .types.datastore_admin import (
+    CommonMetadata,
+    CreateIndexRequest,
+    DatastoreFirestoreMigrationMetadata,
+    DeleteIndexRequest,
+    EntityFilter,
+    ExportEntitiesMetadata,
+    ExportEntitiesRequest,
+    ExportEntitiesResponse,
+    GetIndexRequest,
+    ImportEntitiesMetadata,
+    ImportEntitiesRequest,
+    IndexOperationMetadata,
+    ListIndexesRequest,
+    ListIndexesResponse,
+    OperationType,
+    Progress,
+)
 from .types.index import Index
-from .types.migration import MigrationProgressEvent
-from .types.migration import MigrationStateEvent
-from .types.migration import MigrationState
-from .types.migration import MigrationStep
+from .types.migration import (
+    MigrationProgressEvent,
+    MigrationState,
+    MigrationStateEvent,
+    MigrationStep,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -62,8 +65,8 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import warnings
         import sys
+        import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.datastore_admin_v1"

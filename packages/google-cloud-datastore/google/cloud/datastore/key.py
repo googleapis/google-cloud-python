@@ -17,11 +17,10 @@
 import base64
 import copy
 
-from google.cloud.datastore_v1.types import entity as _entity_pb2
-
 from google.cloud._helpers import _to_bytes
-from google.cloud.datastore import _app_engine_key_pb2
 
+from google.cloud.datastore import _app_engine_key_pb2
+from google.cloud.datastore_v1.types import entity as _entity_pb2
 
 _DATABASE_ID_TEMPLATE = (
     "Received non-empty database ID: {!r}.\n"
@@ -265,7 +264,7 @@ class Key(object):
             *self.flat_path,
             project=self.project,
             database=self.database,
-            namespace=self.namespace
+            namespace=self.namespace,
         )
         # If the current parent has already been set, we re-use
         # the same instance
@@ -517,7 +516,7 @@ class Key(object):
                 *parent_args,
                 project=self.project,
                 database=self.database,
-                namespace=self.namespace
+                namespace=self.namespace,
             )
 
     @property

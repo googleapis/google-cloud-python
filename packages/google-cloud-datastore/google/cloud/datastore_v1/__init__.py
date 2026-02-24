@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.datastore_v1 import gapic_version as package_version
+import sys
 
 import google.api_core as api_core
-import sys
+
+from google.cloud.datastore_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -28,56 +29,55 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 
-from .services.datastore import DatastoreClient
-from .services.datastore import DatastoreAsyncClient
-
-from .types.aggregation_result import AggregationResult
-from .types.aggregation_result import AggregationResultBatch
-from .types.datastore import AllocateIdsRequest
-from .types.datastore import AllocateIdsResponse
-from .types.datastore import BeginTransactionRequest
-from .types.datastore import BeginTransactionResponse
-from .types.datastore import CommitRequest
-from .types.datastore import CommitResponse
-from .types.datastore import LookupRequest
-from .types.datastore import LookupResponse
-from .types.datastore import Mutation
-from .types.datastore import MutationResult
-from .types.datastore import PropertyMask
-from .types.datastore import PropertyTransform
-from .types.datastore import ReadOptions
-from .types.datastore import ReserveIdsRequest
-from .types.datastore import ReserveIdsResponse
-from .types.datastore import RollbackRequest
-from .types.datastore import RollbackResponse
-from .types.datastore import RunAggregationQueryRequest
-from .types.datastore import RunAggregationQueryResponse
-from .types.datastore import RunQueryRequest
-from .types.datastore import RunQueryResponse
-from .types.datastore import TransactionOptions
-from .types.entity import ArrayValue
-from .types.entity import Entity
-from .types.entity import Key
-from .types.entity import PartitionId
-from .types.entity import Value
-from .types.query import AggregationQuery
-from .types.query import CompositeFilter
-from .types.query import EntityResult
-from .types.query import Filter
-from .types.query import FindNearest
-from .types.query import GqlQuery
-from .types.query import GqlQueryParameter
-from .types.query import KindExpression
-from .types.query import Projection
-from .types.query import PropertyFilter
-from .types.query import PropertyOrder
-from .types.query import PropertyReference
-from .types.query import Query
-from .types.query import QueryResultBatch
-from .types.query_profile import ExecutionStats
-from .types.query_profile import ExplainMetrics
-from .types.query_profile import ExplainOptions
-from .types.query_profile import PlanSummary
+from .services.datastore import DatastoreAsyncClient, DatastoreClient
+from .types.aggregation_result import AggregationResult, AggregationResultBatch
+from .types.datastore import (
+    AllocateIdsRequest,
+    AllocateIdsResponse,
+    BeginTransactionRequest,
+    BeginTransactionResponse,
+    CommitRequest,
+    CommitResponse,
+    LookupRequest,
+    LookupResponse,
+    Mutation,
+    MutationResult,
+    PropertyMask,
+    PropertyTransform,
+    ReadOptions,
+    ReserveIdsRequest,
+    ReserveIdsResponse,
+    RollbackRequest,
+    RollbackResponse,
+    RunAggregationQueryRequest,
+    RunAggregationQueryResponse,
+    RunQueryRequest,
+    RunQueryResponse,
+    TransactionOptions,
+)
+from .types.entity import ArrayValue, Entity, Key, PartitionId, Value
+from .types.query import (
+    AggregationQuery,
+    CompositeFilter,
+    EntityResult,
+    Filter,
+    FindNearest,
+    GqlQuery,
+    GqlQueryParameter,
+    KindExpression,
+    Projection,
+    PropertyFilter,
+    PropertyOrder,
+    PropertyReference,
+    Query,
+    QueryResultBatch,
+)
+from .types.query_profile import (
+    ExecutionStats,
+    ExplainMetrics,
+    ExplainOptions,
+    PlanSummary,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -88,8 +88,8 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import warnings
         import sys
+        import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.datastore_v1"

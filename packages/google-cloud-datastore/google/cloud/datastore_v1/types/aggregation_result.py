@@ -17,12 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datastore_v1.types import entity
-from google.cloud.datastore_v1.types import query
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
+from google.cloud.datastore_v1.types import entity, query
 
 __protobuf__ = proto.module(
     package="google.datastore.v1",

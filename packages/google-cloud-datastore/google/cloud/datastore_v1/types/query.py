@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import entity as gd_entity
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.datastore.v1",
@@ -100,6 +99,7 @@ class EntityResult(proto.Message):
             KEY_ONLY (3):
                 Only the key.
         """
+
         RESULT_TYPE_UNSPECIFIED = 0
         FULL = 1
         PROJECTION = 2
@@ -529,6 +529,7 @@ class PropertyOrder(proto.Message):
             DESCENDING (2):
                 Descending.
         """
+
         DIRECTION_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2
@@ -608,6 +609,7 @@ class CompositeFilter(proto.Message):
                 Documents are required to satisfy at least
                 one of the combined filters.
         """
+
         OPERATOR_UNSPECIFIED = 0
         AND = 1
         OR = 2
@@ -706,6 +708,7 @@ class PropertyFilter(proto.Message):
                   the same query.
                 - That ``field`` comes first in the ``order_by``.
         """
+
         OPERATOR_UNSPECIFIED = 0
         LESS_THAN = 1
         LESS_THAN_OR_EQUAL = 2
@@ -802,6 +805,7 @@ class FindNearest(proto.Message):
                 learn more. The resulting distance increases the more
                 similar two vectors are.
         """
+
         DISTANCE_MEASURE_UNSPECIFIED = 0
         EUCLIDEAN = 1
         COSINE = 2
@@ -988,6 +992,7 @@ class QueryResultBatch(proto.Message):
                 The query is finished, and there are no more
                 results.
         """
+
         MORE_RESULTS_TYPE_UNSPECIFIED = 0
         NOT_FINISHED = 1
         MORE_RESULTS_AFTER_LIMIT = 2

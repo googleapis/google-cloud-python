@@ -20,16 +20,15 @@ The non-private functions are part of the API.
 import datetime
 import itertools
 
-from google.protobuf import struct_pb2
+from google.cloud._helpers import _datetime_to_pb_timestamp
+from google.protobuf import struct_pb2, timestamp_pb2
 from google.type import latlng_pb2
 from proto.datetime_helpers import DatetimeWithNanoseconds
 
-from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud.datastore_v1.types import datastore as datastore_pb2
-from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
-from google.protobuf import timestamp_pb2
+from google.cloud.datastore_v1.types import datastore as datastore_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
 
 
 def _get_meaning(value_pb, is_list=False):

@@ -16,16 +16,14 @@ import datetime
 import mock
 import pytest
 
-
-from google.cloud.datastore.query import (
-    Query,
-    PropertyFilter,
-    And,
-    Or,
-    BaseCompositeFilter,
-)
-
 from google.cloud.datastore.helpers import set_database_id_to_request
+from google.cloud.datastore.query import (
+    And,
+    BaseCompositeFilter,
+    Or,
+    PropertyFilter,
+    Query,
+)
 
 _PROJECT = "PROJECT"
 
@@ -705,6 +703,7 @@ def test_query_transaction_begin_later(database_id):
     the new_transaction field should be populated in the request read_options.
     """
     import mock
+
     from google.cloud.datastore_v1.types import TransactionOptions
 
     # make a fake begin_later transaction
@@ -795,8 +794,8 @@ def test_iterator_constructor_explicit():
 
 
 def test_iterator__build_protobuf_empty():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import Query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     client = _Client(None)
     query = Query(client)
@@ -811,8 +810,8 @@ def test_iterator__build_protobuf_all_values_except_offset():
     # this test and the following (all_values_except_start_and_end_cursor)
     # test mutually exclusive states; the offset is ignored
     # if a start_cursor is supplied
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import Query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     client = _Client(None)
     query = Query(client)
@@ -838,8 +837,8 @@ def test_iterator__build_protobuf_all_values_except_start_and_end_cursor():
     # this test and the previous (all_values_except_start_offset)
     # test mutually exclusive states; the offset is ignored
     # if a start_cursor is supplied
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import Query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     client = _Client(None)
     query = Query(client)
@@ -913,11 +912,12 @@ def _next_page_helper(
     txn_id=None, retry=None, timeout=None, read_time=None, database=None
 ):
     from google.api_core import page_iterator
+    from google.protobuf.timestamp_pb2 import Timestamp
+
     from google.cloud.datastore.query import Query
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore_v1.types import query as query_pb2
-    from google.protobuf.timestamp_pb2 import Timestamp
 
     more_enum = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
     result = _make_query_response([], b"", more_enum, 0)
@@ -1022,10 +1022,11 @@ def test_iterator__next_page_no_more(database_id):
 @pytest.mark.parametrize("skipped_cursor_1", [b"DEADBEEF", b""])
 def test_iterator__next_page_w_skipped_lt_offset(skipped_cursor_1, database_id):
     from google.api_core import page_iterator
+
+    from google.cloud.datastore.query import Query
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore_v1.types import query as query_pb2
-    from google.cloud.datastore.query import Query
 
     project = "prujekt"
     skipped_1 = 100
@@ -1100,9 +1101,10 @@ def test_iterator_explain_metrics(database_id):
     """
     If explain_metrics is recieved from backend, it should be set on the iterator
     """
+    from google.protobuf import duration_pb2
+
     from google.cloud.datastore.query_profile import ExplainMetrics
     from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
-    from google.protobuf import duration_pb2
 
     expected_metrics = query_profile_pb2.ExplainMetrics(
         plan_summary=query_profile_pb2.PlanSummary(),
@@ -1154,10 +1156,10 @@ def test_iterator_explain_metrics_no_analyze_make_call(database_id):
     If query.explain_options(analyze=False), accessing iterator.explain_metrics
     should make a network call to get the data.
     """
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
     from google.protobuf import duration_pb2
+
+    from google.cloud.datastore.query_profile import ExplainMetrics, ExplainOptions
+    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
 
     response_pb = _make_query_response([], b"", 0, 0)
     expected_metrics = query_profile_pb2.ExplainMetrics(
@@ -1190,8 +1192,7 @@ def test_iterator_explain_metrics_no_analyze_make_call_failed(database_id):
     should make a network call to get the data.
     If the call does not result in explain_metrics data, it should raise a QueryExplainError.
     """
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import QueryExplainError
+    from google.cloud.datastore.query_profile import ExplainOptions, QueryExplainError
 
     # mocked response does not return explain_metrics
     response_pb = _make_query_response([], b"", 0, 0)
@@ -1212,8 +1213,7 @@ def test_iterator_explain_analyze_access_before_complete(database_id):
     If query.explain_options(analyze=True), accessing iterator.explain_metrics
     before the query is complete should raise an exception.
     """
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import QueryExplainError
+    from google.cloud.datastore.query_profile import ExplainOptions, QueryExplainError
 
     ds_api = _make_datastore_api()
     client = _Client(None, datastore_api=ds_api)
@@ -1239,8 +1239,8 @@ def test__item_to_entity():
 
 
 def test_pb_from_query_empty():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     pb = _pb_from_query(_make_stub_query())
     assert list(pb.projection) == []
@@ -1274,8 +1274,8 @@ def test_pb_from_query_kind():
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_pb_from_query_ancestor(database_id):
     from google.cloud.datastore.key import Key
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     ancestor = Key("Ancestor", 123, project="PROJECT", database=database_id)
     pb = _pb_from_query(_make_stub_query(ancestor=ancestor))
@@ -1289,8 +1289,8 @@ def test_pb_from_query_ancestor(database_id):
 
 
 def test_pb_from_query_filter():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     query = _make_stub_query(filters=[("name", "=", "John")])
     query.OPERATORS = {"=": query_pb2.PropertyFilter.Operator.EQUAL}
@@ -1306,8 +1306,8 @@ def test_pb_from_query_filter():
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_pb_from_query_filter_key(database_id):
     from google.cloud.datastore.key import Key
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     key = Key("Kind", 123, project="PROJECT", database=database_id)
     query = _make_stub_query(filters=[("__key__", "=", key)])
@@ -1323,8 +1323,8 @@ def test_pb_from_query_filter_key(database_id):
 
 
 def test_pb_from_complex_filter():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     query = _make_stub_query(
         filters=[
@@ -1425,8 +1425,8 @@ def test_base_composite_filter():
 
 
 def test_pb_from_query_order():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.query import _pb_from_query
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     pb = _pb_from_query(_make_stub_query(order=["a", "-b", "c"]))
     assert [item.property.name for item in pb.order] == ["a", "b", "c"]

@@ -16,21 +16,18 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.cloud.datastore_admin_v1 import gapic_version as package_version
-
-import google.auth  # type: ignore
 import google.api_core
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import retry as retries
-from google.api_core import operations_v1
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+import google.auth  # type: ignore
 import google.protobuf
-
-from google.cloud.datastore_admin_v1.types import datastore_admin
-from google.cloud.datastore_admin_v1.types import index
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.datastore_admin_v1 import gapic_version as package_version
+from google.cloud.datastore_admin_v1.types import datastore_admin, index
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -309,13 +306,19 @@ class DatastoreAdminTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
     def delete_operation(
         self,
-    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.DeleteOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property

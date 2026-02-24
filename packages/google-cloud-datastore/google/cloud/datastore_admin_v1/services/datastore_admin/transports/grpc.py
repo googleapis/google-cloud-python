@@ -19,22 +19,19 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.datastore_admin_v1.types import datastore_admin
-from google.cloud.datastore_admin_v1.types import index
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from .base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
+from google.protobuf.json_format import MessageToJson
+
+from google.cloud.datastore_admin_v1.types import datastore_admin, index
+
+from .base import DEFAULT_CLIENT_INFO, DatastoreAdminTransport
 
 try:
     from google.api_core import client_logging  # type: ignore

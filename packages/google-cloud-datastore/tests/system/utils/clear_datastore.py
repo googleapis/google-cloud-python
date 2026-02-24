@@ -21,7 +21,6 @@ import sys
 
 from google.cloud import datastore
 
-
 FETCH_MAX = 20
 ALL_KINDS = (
     "Character",

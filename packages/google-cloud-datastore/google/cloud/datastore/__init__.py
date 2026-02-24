@@ -54,8 +54,6 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-
-from google.cloud.datastore.version import __version__
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.client import Client
 from google.cloud.datastore.entity import Entity
@@ -63,6 +61,7 @@ from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
 from google.cloud.datastore.query_profile import ExplainOptions
 from google.cloud.datastore.transaction import Transaction
+from google.cloud.datastore.version import __version__
 
 __all__ = [
     "__version__",

@@ -14,19 +14,16 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from .base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
-from google.cloud.datastore_admin_v1.types import datastore_admin
-from google.cloud.datastore_admin_v1.types import index
+from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+
+from google.cloud.datastore_admin_v1.types import datastore_admin, index
+
+from .base import DEFAULT_CLIENT_INFO, DatastoreAdminTransport
 
 
 class _BaseDatastoreAdminRestTransport(DatastoreAdminTransport):

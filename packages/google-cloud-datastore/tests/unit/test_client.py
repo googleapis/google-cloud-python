@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict
-from typing import Any
+from typing import Any, Dict
 
 import mock
 import pytest
@@ -35,8 +34,7 @@ def test__get_gcd_project_wo_value_set():
 
 
 def test__get_gcd_project_w_value_set():
-    from google.cloud.datastore.client import _get_gcd_project
-    from google.cloud.datastore.client import DATASTORE_DATASET
+    from google.cloud.datastore.client import DATASTORE_DATASET, _get_gcd_project
 
     environ = {DATASTORE_DATASET: PROJECT}
 
@@ -130,9 +128,7 @@ def test_client_ctor_w_project_no_environ():
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_ctor_w_implicit_inputs(database_id):
-    from google.cloud.datastore.client import Client
-    from google.cloud.datastore.client import _CLIENT_INFO
-    from google.cloud.datastore.client import _DATASTORE_BASE_URL
+    from google.cloud.datastore.client import _CLIENT_INFO, _DATASTORE_BASE_URL, Client
 
     other = "other"
     patch1 = mock.patch(
@@ -251,6 +247,7 @@ def test_client_ctor_w_emulator_w_creds():
 
 def test_client_ctor_w_emulator_wo_creds():
     from google.auth.credentials import AnonymousCredentials
+
     from google.cloud.datastore.client import DATASTORE_EMULATOR_HOST
 
     host = "localhost:1234"
@@ -267,6 +264,7 @@ def test_client_ctor_w_emulator_wo_creds():
 
 def test_client_base_url_property():
     from google.api_core.client_options import ClientOptions
+
     from google.cloud.datastore.client import _DATASTORE_BASE_URL
 
     alternate_url = "https://alias.example.com/"
@@ -432,8 +430,8 @@ def test_client_get_multi_no_keys():
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_miss(database_id):
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     creds = _make_credentials()
     client = _make_client(credentials=creds, database=database_id)
@@ -456,9 +454,9 @@ def test_client_get_multi_miss(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_miss_w_missing(database_id):
+    from google.cloud.datastore.key import Key
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.key import Key
 
     KIND = "Kind"
     ID = 1234
@@ -521,8 +519,8 @@ def test_client_get_multi_w_deferred_non_empty():
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_miss_w_deferred(database_id):
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     key = Key("Kind", 1234, project=PROJECT, database=database_id)
     key_pb = key.to_protobuf()
@@ -551,10 +549,10 @@ def test_client_get_multi_miss_w_deferred(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_w_deferred_from_backend_but_not_passed(database_id):
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     key1 = Key("Kind", project=PROJECT, database=database_id)
     key1_pb = key1.to_protobuf()
@@ -618,8 +616,8 @@ def test_client_get_multi_w_deferred_from_backend_but_not_passed(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_hit_w_retry_w_timeout(database_id):
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     kind = "Kind"
     id_ = 1234
@@ -664,8 +662,8 @@ def test_client_get_multi_hit_w_retry_w_timeout(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_hit_w_transaction(database_id):
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     txn_id = b"123"
     kind = "Kind"
@@ -710,8 +708,8 @@ def test_client_get_multi_hit_w_transaction_begin_later(database_id):
     """
     Transactions with begin_later set should begin on first read
     """
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     kind = "Kind"
     id_ = 1234
@@ -755,9 +753,10 @@ def test_client_get_multi_hit_w_transaction_begin_later(database_id):
 def test_client_get_multi_hit_w_read_time(database_id):
     from datetime import datetime
 
+    from google.protobuf.timestamp_pb2 import Timestamp
+
     from google.cloud.datastore.key import Key
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
-    from google.protobuf.timestamp_pb2 import Timestamp
 
     read_time = datetime.utcfromtimestamp(1641058200.123456)
     read_time_pb = Timestamp(seconds=1641058200, nanos=123456000)
@@ -798,8 +797,8 @@ def test_client_get_multi_hit_w_read_time(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_get_multi_hit_multiple_keys_same_project(database_id):
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     kind = "Kind"
     id1 = 1234
@@ -1925,8 +1924,8 @@ def _make_credentials():
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None, database=None):
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity_pb = entity_pb2.Entity()
     entity_pb.key.partition_id.project_id = project

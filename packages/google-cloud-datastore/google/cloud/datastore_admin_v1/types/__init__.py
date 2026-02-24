@@ -28,16 +28,16 @@ from .datastore_admin import (
     IndexOperationMetadata,
     ListIndexesRequest,
     ListIndexesResponse,
-    Progress,
     OperationType,
+    Progress,
 )
 from .index import (
     Index,
 )
 from .migration import (
     MigrationProgressEvent,
-    MigrationStateEvent,
     MigrationState,
+    MigrationStateEvent,
     MigrationStep,
 )
 

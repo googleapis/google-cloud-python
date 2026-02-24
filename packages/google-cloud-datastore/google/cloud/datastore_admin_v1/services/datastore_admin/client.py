@@ -13,15 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
-    Dict,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -32,20 +33,19 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
-from google.cloud.datastore_admin_v1 import gapic_version as package_version
-
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
+
+from google.cloud.datastore_admin_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -61,14 +61,15 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
-from google.cloud.datastore_admin_v1.types import datastore_admin
-from google.cloud.datastore_admin_v1.types import index
-from google.longrunning import operations_pb2  # type: ignore
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from .transports.base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
+from google.longrunning import operations_pb2  # type: ignore
+
+from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
+from google.cloud.datastore_admin_v1.types import datastore_admin, index
+
+from .transports.base import DEFAULT_CLIENT_INFO, DatastoreAdminTransport
 from .transports.grpc import DatastoreAdminGrpcTransport
 from .transports.grpc_asyncio import DatastoreAdminGrpcAsyncIOTransport
 from .transports.rest import DatastoreAdminRestTransport
@@ -82,9 +83,7 @@ class DatastoreAdminClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DatastoreAdminTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DatastoreAdminTransport]]
     _transport_registry["grpc"] = DatastoreAdminGrpcTransport
     _transport_registry["grpc_asyncio"] = DatastoreAdminGrpcAsyncIOTransport
     _transport_registry["rest"] = DatastoreAdminRestTransport
@@ -695,8 +694,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(DatastoreAdminTransport, transport)
             self._api_endpoint = self._transport.host

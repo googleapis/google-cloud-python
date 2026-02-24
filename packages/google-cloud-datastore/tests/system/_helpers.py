@@ -14,9 +14,10 @@
 
 import os
 
+from test_utils.system import unique_resource_id
+
 from google.cloud import datastore
 from google.cloud.datastore.client import DATASTORE_DATASET
-from test_utils.system import unique_resource_id
 
 _DATASTORE_DATABASE = "SYSTEM_TESTS_DATABASE"
 TEST_DATABASE = os.getenv(_DATASTORE_DATABASE, "system-tests-named-db")

@@ -16,6 +16,7 @@ import pytest
 import requests
 
 from google.cloud import datastore
+
 from . import _helpers
 
 

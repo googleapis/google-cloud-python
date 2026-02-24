@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.datastore.admin.v1",
     manifest={
@@ -44,6 +43,7 @@ class MigrationState(proto.Enum):
         COMPLETE (3):
             The migration is complete.
     """
+
     MIGRATION_STATE_UNSPECIFIED = 0
     RUNNING = 1
     PAUSED = 2
@@ -76,6 +76,7 @@ class MigrationStep(proto.Enum):
         REDIRECT_WRITES (5):
             Writes are redirected to Cloud Firestore.
     """
+
     MIGRATION_STEP_UNSPECIFIED = 0
     PREPARE = 6
     START = 1
@@ -145,6 +146,7 @@ class MigrationProgressEvent(proto.Message):
             OPTIMISTIC_WITH_ENTITY_GROUPS (3):
                 Optimistic concurrency with entity groups.
         """
+
         CONCURRENCY_MODE_UNSPECIFIED = 0
         PESSIMISTIC = 1
         OPTIMISTIC = 2

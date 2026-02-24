@@ -16,8 +16,8 @@ import pytest
 
 
 def test__new_value_pb():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity_pb = entity_pb2.Entity()
     name = "foo"
@@ -29,9 +29,8 @@ def test__new_value_pb():
 
 
 def test_entity_from_protobuf_w_defaults():
+    from google.cloud.datastore.helpers import _new_value_pb, entity_from_protobuf
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_from_protobuf
 
     _PROJECT = "PROJECT"
     _KIND = "KIND"
@@ -75,9 +74,8 @@ def test_entity_from_protobuf_w_defaults():
 
 
 def test_entity_from_protobuf_w_mismatched_value_indexed():
+    from google.cloud.datastore.helpers import _new_value_pb, entity_from_protobuf
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_from_protobuf
 
     _PROJECT = "PROJECT"
     _KIND = "KIND"
@@ -101,8 +99,8 @@ def test_entity_from_protobuf_w_mismatched_value_indexed():
 
 
 def test_entity_from_protobuf_w_entity_no_key():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import entity_from_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity_pb = entity_pb2.Entity()
     entity = entity_from_protobuf(entity_pb._pb)
@@ -112,8 +110,8 @@ def test_entity_from_protobuf_w_entity_no_key():
 
 
 def test_entity_from_protobuf_w_pb2_entity_no_key():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import entity_from_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity_pb = entity_pb2.Entity()
     entity = entity_from_protobuf(entity_pb)
@@ -123,9 +121,8 @@ def test_entity_from_protobuf_w_pb2_entity_no_key():
 
 
 def test_entity_from_protobuf_w_entity_with_meaning():
+    from google.cloud.datastore.helpers import _new_value_pb, entity_from_protobuf
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_from_protobuf
 
     entity_pb = entity_pb2.Entity()
     name = "hello"
@@ -140,9 +137,8 @@ def test_entity_from_protobuf_w_entity_with_meaning():
 
 
 def test_entity_from_protobuf_w_nested_entity_no_key():
+    from google.cloud.datastore.helpers import _new_value_pb, entity_from_protobuf
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_from_protobuf
 
     PROJECT = "FOO"
     KIND = "KIND"
@@ -174,8 +170,8 @@ def test_entity_from_protobuf_w_nested_entity_no_key():
 
 
 def test_entity_from_protobuf_w_index_mismatch_w_empty_list():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import entity_from_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     _PROJECT = "PROJECT"
     _KIND = "KIND"
@@ -209,9 +205,9 @@ def _compare_entity_proto(entity_pb1, entity_pb2):
 
 
 def test_entity_to_protobuf_w_empty():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity = Entity()
     entity_pb = entity_to_protobuf(entity)
@@ -219,10 +215,10 @@ def test_entity_to_protobuf_w_empty():
 
 
 def test_entity_to_protobuf_w_key_only():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
     from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     kind, name = "PATH", "NAME"
     project = "PROJECT"
@@ -240,10 +236,9 @@ def test_entity_to_protobuf_w_key_only():
 
 
 def test_entity_to_protobuf_w_simple_fields():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_to_protobuf
+    from google.cloud.datastore.helpers import _new_value_pb, entity_to_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity = Entity()
     name1 = "foo"
@@ -262,9 +257,9 @@ def test_entity_to_protobuf_w_simple_fields():
 
 
 def test_entity_to_protobuf_w_with_empty_list():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity = Entity()
     entity["foo"] = []
@@ -278,10 +273,12 @@ def test_entity_to_protobuf_w_with_empty_list():
 
 
 def test_entity_to_protobuf_w_inverts_to_protobuf():
+    from google.cloud.datastore.helpers import (
+        _new_value_pb,
+        entity_from_protobuf,
+        entity_to_protobuf,
+    )
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_from_protobuf
-    from google.cloud.datastore.helpers import entity_to_protobuf
 
     original_pb = entity_pb2.Entity()
     # Add a key.
@@ -333,10 +330,9 @@ def test_entity_to_protobuf_w_inverts_to_protobuf():
 
 
 def test_entity_to_protobuf_w_meaning_with_change():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_to_protobuf
+    from google.cloud.datastore.helpers import _new_value_pb, entity_to_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity = Entity()
     name = "foo"
@@ -353,10 +349,9 @@ def test_entity_to_protobuf_w_meaning_with_change():
 
 
 def test_entity_to_protobuf_w_variable_meanings():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import entity_to_protobuf
+    from google.cloud.datastore.helpers import _new_value_pb, entity_to_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity = Entity()
     name = "quux"
@@ -383,9 +378,9 @@ def test_entity_to_protobuf_w_variable_meanings():
 
 
 def test_entity_to_protobuf_w_dict_to_entity():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity = Entity()
     entity["a"] = {"b": "c"}
@@ -404,9 +399,9 @@ def test_entity_to_protobuf_w_dict_to_entity():
 
 
 def test_entity_to_protobuf_w_dict_to_entity_recursive():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     entity = Entity()
     entity["a"] = {"b": {"c": {"d": 1.25}, "e": True}, "f": 10}
@@ -577,9 +572,10 @@ def test__get_read_options_w_default_w_txn_w_read_time():
 def test__get_read_options_w_default_wo_txn_w_read_time():
     from datetime import datetime
 
+    from google.protobuf.timestamp_pb2 import Timestamp
+
     from google.cloud.datastore.helpers import get_read_options
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
-    from google.protobuf.timestamp_pb2 import Timestamp
 
     read_time = datetime.utcfromtimestamp(1641058200.123456)
     read_time_pb = Timestamp(seconds=1641058200, nanos=123456000)
@@ -636,8 +632,8 @@ def test__get_transaction_options_w_id():
     """
     test with transaction with id set
     """
-    from google.cloud.datastore.helpers import get_transaction_options
     from google.cloud.datastore import Transaction
+    from google.cloud.datastore.helpers import get_transaction_options
 
     expected_id = b"123abc"
     txn = Transaction(None, begin_later=True)
@@ -651,8 +647,8 @@ def test__get_transaction_options_w_begin_later():
     """
     if begin later is set and it hasn't begun, should return new_transaction_options
     """
-    from google.cloud.datastore.helpers import get_transaction_options
     from google.cloud.datastore import Transaction
+    from google.cloud.datastore.helpers import get_transaction_options
 
     txn = Transaction(None, begin_later=True)
     t_id, new_t = get_transaction_options(txn)
@@ -664,8 +660,8 @@ def test__get_transaction_options_not_started():
     """
     If the transaction is noet set as begin_later, but it hasn't begun, return None for both
     """
-    from google.cloud.datastore.helpers import get_transaction_options
     from google.cloud.datastore import Transaction
+    from google.cloud.datastore.helpers import get_transaction_options
 
     txn = Transaction(None, begin_later=False)
     t_id, new_t = get_transaction_options(txn)
@@ -676,7 +672,9 @@ def test__get_transaction_options_not_started():
 def test__pb_attr_value_w_datetime_naive():
     import calendar
     import datetime
+
     from google.cloud._helpers import UTC
+
     from google.cloud.datastore.helpers import _pb_attr_value
 
     micros = 4375
@@ -691,7 +689,9 @@ def test__pb_attr_value_w_datetime_naive():
 def test__pb_attr_value_w_datetime_w_zone():
     import calendar
     import datetime
+
     from google.cloud._helpers import UTC
+
     from google.cloud.datastore.helpers import _pb_attr_value
 
     micros = 4375
@@ -703,8 +703,8 @@ def test__pb_attr_value_w_datetime_w_zone():
 
 
 def test__pb_attr_value_w_key():
-    from google.cloud.datastore.key import Key
     from google.cloud.datastore.helpers import _pb_attr_value
+    from google.cloud.datastore.key import Key
 
     key = Key("PATH", 1234, project="PROJECT")
     name, value = _pb_attr_value(key)
@@ -805,8 +805,8 @@ def test__pb_attr_value_w_array():
 
 def test__pb_attr_value_w_geo_point():
     from google.type import latlng_pb2
-    from google.cloud.datastore.helpers import GeoPoint
-    from google.cloud.datastore.helpers import _pb_attr_value
+
+    from google.cloud.datastore.helpers import GeoPoint, _pb_attr_value
 
     lat = 42.42
     lng = 99.0007
@@ -819,6 +819,7 @@ def test__pb_attr_value_w_geo_point():
 
 def test__pb_attr_value_w_null():
     from google.protobuf import struct_pb2
+
     from google.cloud.datastore.helpers import _pb_attr_value
 
     name, value = _pb_attr_value(None)
@@ -844,9 +845,11 @@ def _make_value_pb(attr_name, attr_value):
 def test__get_value_from_value_pb_w_datetime():
     import calendar
     import datetime
+
     from google.cloud._helpers import UTC
-    from google.cloud.datastore_v1.types import entity as entity_pb2
+
     from google.cloud.datastore.helpers import _get_value_from_value_pb
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     micros = 4375
     utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
@@ -857,9 +860,9 @@ def test__get_value_from_value_pb_w_datetime():
 
 
 def test__get_value_from_value_pb_w_key():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.key import Key
     from google.cloud.datastore.helpers import _get_value_from_value_pb
+    from google.cloud.datastore.key import Key
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value = entity_pb2.Value()
     expected = Key("KIND", 1234, project="PROJECT").to_protobuf()
@@ -904,10 +907,9 @@ def test__get_value_from_value_pb_w_unicode():
 
 
 def test__get_value_from_value_pb_w_entity():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
-    from google.cloud.datastore.helpers import _new_value_pb
-    from google.cloud.datastore.helpers import _get_value_from_value_pb
+    from google.cloud.datastore.helpers import _get_value_from_value_pb, _new_value_pb
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value = entity_pb2.Value()
     entity_pb = value.entity_value
@@ -922,8 +924,8 @@ def test__get_value_from_value_pb_w_entity():
 
 
 def test__get_value_from_value_pb_w_array():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_value_from_value_pb
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value = entity_pb2.Value()
     array_pb = value.array_value.values
@@ -937,9 +939,9 @@ def test__get_value_from_value_pb_w_array():
 
 def test__get_value_from_value_pb_w_geo_point():
     from google.type import latlng_pb2
+
+    from google.cloud.datastore.helpers import GeoPoint, _get_value_from_value_pb
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import GeoPoint
-    from google.cloud.datastore.helpers import _get_value_from_value_pb
 
     lat = -3.14
     lng = 13.37
@@ -953,8 +955,9 @@ def test__get_value_from_value_pb_w_geo_point():
 
 def test__get_value_from_value_pb_w_null():
     from google.protobuf import struct_pb2
-    from google.cloud.datastore_v1.types import entity as entity_pb2
+
     from google.cloud.datastore.helpers import _get_value_from_value_pb
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value = entity_pb2.Value(null_value=struct_pb2.NULL_VALUE)
     result = _get_value_from_value_pb(value._pb)
@@ -962,8 +965,8 @@ def test__get_value_from_value_pb_w_null():
 
 
 def test__get_value_from_value_pb_w_unknown():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_value_from_value_pb
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value = entity_pb2.Value()
     with pytest.raises(ValueError):
@@ -979,7 +982,9 @@ def _make_empty_value_pb():
 def test__set_protobuf_value_w_datetime():
     import calendar
     import datetime
+
     from google.cloud._helpers import UTC
+
     from google.cloud.datastore.helpers import _set_protobuf_value
 
     pb = _make_empty_value_pb()
@@ -992,8 +997,8 @@ def test__set_protobuf_value_w_datetime():
 
 
 def test__set_protobuf_value_w_key():
-    from google.cloud.datastore.key import Key
     from google.cloud.datastore.helpers import _set_protobuf_value
+    from google.cloud.datastore.key import Key
 
     pb = _make_empty_value_pb()
     key = Key("KIND", 1234, project="PROJECT")
@@ -1089,8 +1094,8 @@ def test__set_protobuf_value_w_entity_empty_wo_key():
 
 def test__set_protobuf_value_w_entity_w_key():
     from google.cloud.datastore.entity import Entity
-    from google.cloud.datastore.key import Key
     from google.cloud.datastore.helpers import _set_protobuf_value
+    from google.cloud.datastore.key import Key
 
     name = "foo"
     value = "Foo"
@@ -1123,8 +1128,8 @@ def test__set_protobuf_value_w_array():
 
 def test__set_protobuf_value_w_geo_point():
     from google.type import latlng_pb2
-    from google.cloud.datastore.helpers import GeoPoint
-    from google.cloud.datastore.helpers import _set_protobuf_value
+
+    from google.cloud.datastore.helpers import GeoPoint, _set_protobuf_value
 
     pb = _make_empty_value_pb()
     lat = 9.11
@@ -1136,8 +1141,8 @@ def test__set_protobuf_value_w_geo_point():
 
 
 def test__get_meaning_w_no_meaning():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     result = _get_meaning(value_pb)
@@ -1145,8 +1150,8 @@ def test__get_meaning_w_no_meaning():
 
 
 def test__get_meaning_w_single():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     value_pb.meaning = meaning = 22
@@ -1156,8 +1161,8 @@ def test__get_meaning_w_single():
 
 
 def test__get_meaning_w_empty_array_value():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     value_pb._pb.array_value.values.add()
@@ -1168,8 +1173,8 @@ def test__get_meaning_w_empty_array_value():
 
 
 def test__get_meaning_w_array_value():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     meaning = 9
@@ -1186,8 +1191,8 @@ def test__get_meaning_w_array_value():
 
 
 def test__get_meaning_w_array_value_root_meaning():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     meaning = 9
@@ -1204,8 +1209,8 @@ def test__get_meaning_w_array_value_root_meaning():
 
 
 def test__get_meaning_w_array_value_root_and_sub_meanings():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     root_meaning = 9
@@ -1224,8 +1229,8 @@ def test__get_meaning_w_array_value_root_and_sub_meanings():
 
 
 def test__get_meaning_w_array_value_multiple_meanings():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     meaning1 = 9
@@ -1243,8 +1248,8 @@ def test__get_meaning_w_array_value_multiple_meanings():
 
 
 def test__get_meaning_w_array_value_meaning_partially_unset():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     meaning1 = 9
@@ -1260,8 +1265,8 @@ def test__get_meaning_w_array_value_meaning_partially_unset():
 
 
 def test__get_meaning_w_array_value_meaning_fully_unset():
-    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _get_meaning
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     value_pb = entity_pb2.Value()
     sub_value_pb1 = value_pb._pb.array_value.values.add()
@@ -1281,9 +1286,9 @@ def test__set_pb_meaning_w_array_value_fully_unset(orig_root_meaning, orig_sub_m
     call _set_pb_meaning_from_entity with meaning=None data.
     Should not touch proto's meaning field
     """
-    from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
     from google.cloud.datastore.entity import Entity
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     orig_pb = entity_pb2.Entity()
     value_pb = orig_pb._pb.properties.get_or_create("value")
@@ -1304,9 +1309,9 @@ def test__set_pb_meaning_w_value_unset(orig_meaning):
     call _set_pb_meaning_from_entity with meaning=None data.
     Should not touch proto's meaning field
     """
-    from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
     from google.cloud.datastore.entity import Entity
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     orig_pb = entity_pb2.Entity()
     value_pb = orig_pb._pb.properties.get_or_create("value")
@@ -1325,9 +1330,9 @@ def test__set_pb_meaning_w_list_and_single_value():
     This check ensures _set_pb_meaning_from_entity is backwards
     compatible with the old meaning style, still used by python-ndb
     """
-    from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
     from google.cloud.datastore.entity import Entity
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     orig_root_meaning = 1
     updated_meaning = 22
@@ -1352,9 +1357,9 @@ def test__set_pb_meaning_w_list_and_list():
     This check ensures _set_pb_meaning_from_entity is backwards
     compatible with the old meaning style, still used by python-ndb
     """
-    from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
     from google.cloud.datastore.entity import Entity
+    from google.cloud.datastore.helpers import _set_pb_meaning_from_entity
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     orig_root_meaning = 1
     updated_meaning_1 = 12
@@ -1377,9 +1382,8 @@ def test__array_w_meaning_end_to_end():
     """
     Test proto->entity->proto with an array with a meaning field
     """
+    from google.cloud.datastore.helpers import entity_from_protobuf, entity_to_protobuf
     from google.cloud.datastore_v1.types import entity as entity_pb2
-    from google.cloud.datastore.helpers import entity_from_protobuf
-    from google.cloud.datastore.helpers import entity_to_protobuf
 
     orig_pb = entity_pb2.Entity()
     value_pb = orig_pb._pb.properties.get_or_create("value")

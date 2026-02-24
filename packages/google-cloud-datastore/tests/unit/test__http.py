@@ -157,9 +157,9 @@ def test__request_w_timeout(database_id):
 
 def test__request_failure():
     from google.cloud.exceptions import BadRequest
+    from google.rpc import code_pb2, status_pb2
+
     from google.cloud.datastore._http import _request
-    from google.rpc import code_pb2
-    from google.rpc import status_pb2
 
     project = "PROJECT"
     method = "METHOD"
@@ -578,10 +578,10 @@ def test_api_run_query_w_namespace_nonempty_result():
 def _run_aggregation_query_helper(
     transaction=None, retry=None, timeout=None, database=None
 ):
+    from google.cloud.datastore_v1.types import aggregation_result
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore_v1.types import query as query_pb2
-    from google.cloud.datastore_v1.types import aggregation_result
 
     project = "PROJECT"
     kind = "Nonesuch"
@@ -740,8 +740,8 @@ def test_api_begin_transaction_w_timeout(database_id):
 
 
 def _commit_helper(transaction=None, retry=None, timeout=None, database=None):
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore.helpers import _new_value_pb
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     project = "PROJECT"
     key_pb = _make_key_pb(project, database=database)

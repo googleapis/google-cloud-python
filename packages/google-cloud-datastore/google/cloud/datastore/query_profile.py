@@ -13,11 +13,10 @@
 # limitations under the License.
 from __future__ import annotations
 
+import datetime
+from dataclasses import dataclass
 from typing import Any
 
-import datetime
-
-from dataclasses import dataclass
 from google.protobuf.json_format import MessageToDict
 
 

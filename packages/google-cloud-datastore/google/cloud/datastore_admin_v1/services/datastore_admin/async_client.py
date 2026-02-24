@@ -14,11 +14,11 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 from typing import (
-    Dict,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -29,32 +29,32 @@ from typing import (
     Union,
 )
 
-from google.cloud.datastore_admin_v1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
+from google.cloud.datastore_admin_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
-from google.cloud.datastore_admin_v1.types import datastore_admin
-from google.cloud.datastore_admin_v1.types import index
-from google.longrunning import operations_pb2  # type: ignore
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from .transports.base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import DatastoreAdminGrpcAsyncIOTransport
+from google.longrunning import operations_pb2  # type: ignore
+
+from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
+from google.cloud.datastore_admin_v1.types import datastore_admin, index
+
 from .client import DatastoreAdminClient
+from .transports.base import DEFAULT_CLIENT_INFO, DatastoreAdminTransport
+from .transports.grpc_asyncio import DatastoreAdminGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore

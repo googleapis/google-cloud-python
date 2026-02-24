@@ -18,16 +18,11 @@ from abc import ABC
 
 from google.api_core import page_iterator
 
+from google.cloud.datastore import helpers
+from google.cloud.datastore.query import _FINISHED, _NOT_FINISHED, _pb_from_query
+from google.cloud.datastore.query_profile import ExplainMetrics, QueryExplainError
 from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.datastore_v1.types import query as query_pb2
-from google.cloud.datastore import helpers
-from google.cloud.datastore.query import _pb_from_query
-
-from google.cloud.datastore.query_profile import ExplainMetrics
-from google.cloud.datastore.query_profile import QueryExplainError
-
-from google.cloud.datastore.query import _NOT_FINISHED
-from google.cloud.datastore.query import _FINISHED
 
 
 class BaseAggregation(ABC):
@@ -474,9 +469,9 @@ class AggregationResultIterator(page_iterator.Iterator):
             "aggregation_query": self._build_protobuf(),
         }
         if self._aggregation_query._explain_options:
-            request[
-                "explain_options"
-            ] = self._aggregation_query._explain_options._to_dict()
+            request["explain_options"] = (
+                self._aggregation_query._explain_options._to_dict()
+            )
         helpers.set_database_id_to_request(request, self.client.database)
 
         response_pb = None

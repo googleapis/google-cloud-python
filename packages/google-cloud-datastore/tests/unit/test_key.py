@@ -14,7 +14,6 @@
 
 import pytest
 
-
 _DEFAULT_PROJECT = "PROJECT"
 _DEFAULT_DATABASE = ""
 PROJECT = "my-prahjekt"
@@ -28,7 +27,7 @@ DATABASE = "my-database"
 #               namespace='space', app='s~sample-app')
 #           urlsafe = key.urlsafe()
 _URLSAFE_EXAMPLE1 = (
-    b"agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ" b"WF0aGVyDKIBBXNwYWNl"
+    b"agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZWF0aGVyDKIBBXNwYWNl"
 )
 _URLSAFE_APP1 = "s~sample-app"
 _URLSAFE_NAMESPACE1 = "space"

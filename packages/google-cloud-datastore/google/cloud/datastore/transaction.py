@@ -13,11 +13,12 @@
 # limitations under the License.
 
 """Create / interact with Google Cloud Datastore transactions."""
-from google.cloud.datastore.batch import Batch
-from google.cloud.datastore_v1.types import TransactionOptions
+
 from google.protobuf import timestamp_pb2
 
+from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.helpers import set_database_id_to_request
+from google.cloud.datastore_v1.types import TransactionOptions
 
 
 def _make_retry_timeout_kwargs(retry, timeout):

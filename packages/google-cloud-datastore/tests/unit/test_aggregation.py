@@ -16,14 +16,13 @@ import mock
 import pytest
 
 from google.cloud.datastore.aggregation import (
+    AggregationQuery,
+    AvgAggregation,
     CountAggregation,
     SumAggregation,
-    AvgAggregation,
-    AggregationQuery,
 )
 from google.cloud.datastore.helpers import set_database_id_to_request
-
-from tests.unit.test_query import _make_query, _make_client
+from tests.unit.test_query import _make_client, _make_query
 
 _PROJECT = "PROJECT"
 
@@ -391,8 +390,8 @@ def test_iterator__build_protobuf_all_values():
 
 
 def test_iterator__process_query_results():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.aggregation import AggregationResult
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     iterator = _make_aggregation_iterator(None, None)
 
@@ -408,8 +407,8 @@ def test_iterator__process_query_results():
 
 
 def test_iterator__process_query_results_finished_result():
-    from google.cloud.datastore_v1.types import query as query_pb2
     from google.cloud.datastore.aggregation import AggregationResult
+    from google.cloud.datastore_v1.types import query as query_pb2
 
     iterator = _make_aggregation_iterator(None, None)
 
@@ -501,9 +500,10 @@ def test_iterator_explain_metrics(database_id):
     """
     If explain_metrics is recieved from backend, it should be set on the iterator
     """
+    from google.protobuf import duration_pb2
+
     from google.cloud.datastore.query_profile import ExplainMetrics
     from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
-    from google.protobuf import duration_pb2
 
     expected_metrics = query_profile_pb2.ExplainMetrics(
         plan_summary=query_profile_pb2.PlanSummary(),
@@ -554,10 +554,10 @@ def test_iterator_explain_metrics_no_analyze_make_call(database_id):
     If query.explain_options(analyze=False), accessing iterator.explain_metrics
     should make a network call to get the data.
     """
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
     from google.protobuf import duration_pb2
+
+    from google.cloud.datastore.query_profile import ExplainMetrics, ExplainOptions
+    from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
 
     response_pb = _make_aggregation_query_response([], 0)
     expected_metrics = query_profile_pb2.ExplainMetrics(
@@ -592,8 +592,7 @@ def test_iterator_explain_metrics_no_analyze_make_call_failed(database_id):
     should make a network call to get the data.
     If the call does not result in explain_metrics data, it should raise a QueryExplainError.
     """
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import QueryExplainError
+    from google.cloud.datastore.query_profile import ExplainOptions, QueryExplainError
 
     # mocked response does not return explain_metrics
     response_pb = _make_aggregation_query_response([], 0)
@@ -616,8 +615,7 @@ def test_iterator_explain_analyze_access_before_complete(database_id):
     If query.explain_options(analyze=True), accessing iterator.explain_metrics
     before the query is complete should raise an exception.
     """
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import QueryExplainError
+    from google.cloud.datastore.query_profile import ExplainOptions, QueryExplainError
 
     ds_api = _make_datastore_api_for_aggregation()
     client = _Client(None, datastore_api=ds_api)
@@ -634,10 +632,11 @@ def test_iterator_explain_analyze_access_before_complete(database_id):
 
 def _next_page_helper(txn_id=None, retry=None, timeout=None, database_id=None):
     from google.api_core import page_iterator
+
+    from google.cloud.datastore.aggregation import AggregationResult
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore_v1.types import query as query_pb2
-    from google.cloud.datastore.aggregation import AggregationResult
 
     more_enum = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
     aggregation_pbs = [AggregationResult(alias="total", value=1)]
@@ -703,8 +702,10 @@ def _next_page_helper(txn_id=None, retry=None, timeout=None, database_id=None):
 
 
 def test__item_to_aggregation_result():
-    from google.cloud.datastore.aggregation import _item_to_aggregation_result
-    from google.cloud.datastore.aggregation import AggregationResult
+    from google.cloud.datastore.aggregation import (
+        AggregationResult,
+        _item_to_aggregation_result,
+    )
 
     with mock.patch(
         "proto.marshal.collections.maps.MapComposite"
@@ -813,6 +814,7 @@ def test_transaction_begin_later(database_id, aggregation_type, aggregation_args
     the new_transaction field should be populated in the request read_options.
     """
     import mock
+
     from google.cloud.datastore_v1.types import TransactionOptions
 
     # make a fake begin_later transaction
@@ -882,8 +884,8 @@ def _make_aggregation_iterator(*args, **kw):
 def _make_aggregation_query_response(
     aggregation_pbs, more_results_enum=3
 ):  # 3 = NO_MORE_RESULTS
-    from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import aggregation_result
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     aggregation_results = []
     for aggr in aggregation_pbs:

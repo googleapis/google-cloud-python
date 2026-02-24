@@ -17,14 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datastore_v1.types import aggregation_result
-from google.cloud.datastore_v1.types import entity
+from google.cloud.datastore_v1.types import aggregation_result, entity, query_profile
 from google.cloud.datastore_v1.types import query as gd_query
-from google.cloud.datastore_v1.types import query_profile
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.datastore.v1",
@@ -587,6 +584,7 @@ class CommitRequest(proto.Message):
                 Non-transactional: The mutations may not
                 apply as all or none.
         """
+
         MODE_UNSPECIFIED = 0
         TRANSACTIONAL = 1
         NON_TRANSACTIONAL = 2
@@ -830,6 +828,7 @@ class Mutation(proto.Message):
             FAIL (3):
                 The whole commit request fails.
         """
+
         STRATEGY_UNSPECIFIED = 0
         SERVER_VALUE = 1
         FAIL = 3
@@ -1019,6 +1018,7 @@ class PropertyTransform(proto.Message):
                 in a transaction, all the properties will get
                 the same server timestamp.
         """
+
         SERVER_VALUE_UNSPECIFIED = 0
         REQUEST_TIME = 1
 
@@ -1213,6 +1213,7 @@ class ReadOptions(proto.Message):
             EVENTUAL (2):
                 Eventual consistency.
         """
+
         READ_CONSISTENCY_UNSPECIFIED = 0
         STRONG = 1
         EVENTUAL = 2

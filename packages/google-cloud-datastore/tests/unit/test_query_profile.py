@@ -19,14 +19,15 @@ def test_explain_metrics__from_pb():
     """
     Test creating an instance of ExplainMetrics from a protobuf.
     """
+    from google.protobuf import duration_pb2, struct_pb2
+
     from google.cloud.datastore.query_profile import (
         ExplainMetrics,
-        _ExplainAnalyzeMetrics,
-        QueryExplainError,
         PlanSummary,
+        QueryExplainError,
+        _ExplainAnalyzeMetrics,
     )
     from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
-    from google.protobuf import struct_pb2, duration_pb2
 
     # test without execution_stats field
     expected_metrics = query_profile_pb2.ExplainMetrics(
@@ -65,14 +66,15 @@ def test_explain_metrics__from_pb_empty():
     """
     Test with empty ExplainMetrics protobuf.
     """
+    from google.protobuf import struct_pb2
+
     from google.cloud.datastore.query_profile import (
-        ExplainMetrics,
         ExecutionStats,
-        _ExplainAnalyzeMetrics,
+        ExplainMetrics,
         PlanSummary,
+        _ExplainAnalyzeMetrics,
     )
     from google.cloud.datastore_v1.types import query_profile as query_profile_pb2
-    from google.protobuf import struct_pb2
 
     expected_metrics = query_profile_pb2.ExplainMetrics(
         plan_summary=query_profile_pb2.PlanSummary(

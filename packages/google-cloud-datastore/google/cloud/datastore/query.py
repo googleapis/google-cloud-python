@@ -13,24 +13,20 @@
 # limitations under the License.
 
 """Create / interact with Google Cloud Datastore queries."""
+
+import abc
 import base64
 import warnings
+from abc import ABC
 
 from google.api_core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
 
-from google.cloud.datastore_v1.types import entity as entity_pb2
-from google.cloud.datastore_v1.types import query as query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
-
-
-from google.cloud.datastore.query_profile import ExplainMetrics
-from google.cloud.datastore.query_profile import QueryExplainError
-
-import abc
-from abc import ABC
-
+from google.cloud.datastore.query_profile import ExplainMetrics, QueryExplainError
+from google.cloud.datastore_v1.types import entity as entity_pb2
+from google.cloud.datastore_v1.types import query as query_pb2
 
 _NOT_FINISHED = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
 _NO_MORE_RESULTS = query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS

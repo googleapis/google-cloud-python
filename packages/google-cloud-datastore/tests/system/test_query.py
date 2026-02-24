@@ -13,16 +13,13 @@
 # limitations under the License.
 
 import pytest
-
 from google.api_core import exceptions
 from test_utils.retry import RetryErrors
 
-from .utils import clear_datastore
-from .utils import populate_datastore
+from google.cloud.datastore.query import And, Or, PropertyFilter
+
 from . import _helpers
-
-from google.cloud.datastore.query import PropertyFilter, And, Or
-
+from .utils import clear_datastore, populate_datastore
 
 retry_503 = RetryErrors(exceptions.ServiceUnavailable)
 
@@ -555,10 +552,12 @@ def test_query_explain(query_client, ancestor_key, database_id):
     When explain_options(analyze=False) is set, iterator should contain explain_metrics field
     with plan_summary but no execution_stats
     """
-    from google.cloud.datastore.query_profile import QueryExplainError
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore.query_profile import PlanSummary
+    from google.cloud.datastore.query_profile import (
+        ExplainMetrics,
+        ExplainOptions,
+        PlanSummary,
+        QueryExplainError,
+    )
 
     query = _make_ancestor_query(
         query_client, ancestor_key, explain_options=ExplainOptions(analyze=False)
@@ -588,11 +587,13 @@ def test_query_explain_analyze(query_client, ancestor_key, database_id):
 
     Should not be present until iterator is exhausted
     """
-    from google.cloud.datastore.query_profile import QueryExplainError
-    from google.cloud.datastore.query_profile import ExplainOptions
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore.query_profile import ExecutionStats
-    from google.cloud.datastore.query_profile import PlanSummary
+    from google.cloud.datastore.query_profile import (
+        ExecutionStats,
+        ExplainMetrics,
+        ExplainOptions,
+        PlanSummary,
+        QueryExplainError,
+    )
 
     expected_error = "explain_metrics not available until query is complete."
     query = _make_ancestor_query(
@@ -633,8 +634,7 @@ def test_query_explain_in_transaction(query_client, ancestor_key, database_id):
     """
     Should be able to access explain metrics when called in a transaction
     """
-    from google.cloud.datastore.query_profile import ExplainMetrics
-    from google.cloud.datastore.query_profile import ExplainOptions
+    from google.cloud.datastore.query_profile import ExplainMetrics, ExplainOptions
 
     query = _make_ancestor_query(
         query_client, ancestor_key, explain_options=ExplainOptions(analyze=True)

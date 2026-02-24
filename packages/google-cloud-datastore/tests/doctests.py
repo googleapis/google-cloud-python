@@ -19,7 +19,6 @@ import unittest
 
 from google.cloud import datastore
 
-
 SPHINX_CONF = """\
 root_doc = "contents"
 

@@ -14,11 +14,12 @@
 
 """Helpers for making API requests via gapic / gRPC."""
 
-from grpc import insecure_channel
 from urllib.parse import urlparse
 
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
+from grpc import insecure_channel
+
 from google.cloud.datastore_v1.services.datastore import client as datastore_client
 from google.cloud.datastore_v1.services.datastore.transports import grpc
 

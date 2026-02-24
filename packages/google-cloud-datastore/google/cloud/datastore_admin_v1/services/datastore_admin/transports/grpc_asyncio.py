@@ -15,29 +15,26 @@
 #
 import inspect
 import json
-import pickle
 import logging as std_logging
+import pickle
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry_async as retries
-from google.api_core import operations_v1
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import retry_async as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.datastore_admin_v1.types import datastore_admin
-from google.cloud.datastore_admin_v1.types import index
-from google.longrunning import operations_pb2  # type: ignore
-from .base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
+from google.cloud.datastore_admin_v1.types import datastore_admin, index
+
+from .base import DEFAULT_CLIENT_INFO, DatastoreAdminTransport
 from .grpc import DatastoreAdminGrpcTransport
 
 try:

@@ -15,8 +15,8 @@
 import datetime
 
 import pytest
-
 from google.cloud._helpers import UTC
+
 from google.cloud import datastore
 from google.cloud.datastore.helpers import GeoPoint
 

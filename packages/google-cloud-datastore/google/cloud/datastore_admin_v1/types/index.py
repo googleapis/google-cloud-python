@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.datastore.admin.v1",
     manifest={
@@ -67,6 +66,7 @@ class Index(proto.Message):
                 Include all the entity's ancestors in the
                 index.
         """
+
         ANCESTOR_MODE_UNSPECIFIED = 0
         NONE = 1
         ALL_ANCESTORS = 2
@@ -86,6 +86,7 @@ class Index(proto.Message):
                 support sequencing in descending order and also
                 query by <, >, <=, >=, and =.
         """
+
         DIRECTION_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2
@@ -122,6 +123,7 @@ class Index(proto.Message):
                 index is not updated when writing an entity.
                 Some index data may exist.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

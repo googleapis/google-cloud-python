@@ -642,8 +642,9 @@ class _NoCommitBatch(object):
 
 
 def _make_options(read_only=False, previous_transaction=None, read_time=None):
-    from google.cloud.datastore_v1.types import TransactionOptions
     from google.protobuf.timestamp_pb2 import Timestamp
+
+    from google.cloud.datastore_v1.types import TransactionOptions
 
     kw = {}
 
