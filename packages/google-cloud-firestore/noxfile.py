@@ -555,8 +555,14 @@ def prerelease_deps(session, protobuf_implementation):
     session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
 
     # 1. Collect variables
-    creds_path = os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS") or os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
-    project_id = os.environ.get("PROJECT_ID") or os.environ.get("GCLOUD_PROJECT") or os.environ.get("FIRESTORE_PROJECT")
+    creds_path = os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS") or os.environ.get(
+        "GOOGLE_APPLICATION_CREDENTIALS"
+    )
+    project_id = (
+        os.environ.get("PROJECT_ID")
+        or os.environ.get("GCLOUD_PROJECT")
+        or os.environ.get("FIRESTORE_PROJECT")
+    )
 
     # 2. Run Unit Tests (Always run these)
     session.run(
@@ -571,7 +577,7 @@ def prerelease_deps(session, protobuf_implementation):
     system_test_folder_path = os.path.join("tests", "system")
     if os.path.exists(system_test_folder_path):
         if not creds_path:
-            # DO NOT use session.error here. 
+            # DO NOT use session.error here.
             # In CI Prerelease jobs, we expect credentials to be missing.
             print("SKIPPING SYSTEM TESTS: No credentials found in environment.")
         else:
