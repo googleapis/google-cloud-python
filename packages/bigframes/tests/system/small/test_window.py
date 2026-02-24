@@ -19,6 +19,7 @@ import pandas as pd
 import pytest
 
 from bigframes import dtypes
+import bigframes.testing
 
 
 @pytest.fixture(scope="module")
@@ -61,7 +62,9 @@ def test_dataframe_rolling_closed_param(rows_rolling_dfs, closed):
     actual_result = bf_df.rolling(window=3, closed=closed).sum().to_pandas()
 
     expected_result = pd_df.rolling(window=3, closed=closed).sum()
-    pd.testing.assert_frame_equal(actual_result, expected_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        actual_result, expected_result, check_dtype=False
+    )
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
@@ -80,7 +83,7 @@ def test_dataframe_groupby_rolling_closed_param(rows_rolling_dfs, closed):
     expected_result = (
         pd_df.groupby(pd_df["int64_too"] % 2).rolling(window=3, closed=closed).sum()
     )
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         actual_result[check_columns], expected_result, check_dtype=False
     )
 
@@ -91,7 +94,9 @@ def test_dataframe_rolling_on(rows_rolling_dfs):
     actual_result = bf_df.rolling(window=3, on="int64_too").sum().to_pandas()
 
     expected_result = pd_df.rolling(window=3, on="int64_too").sum()
-    pd.testing.assert_frame_equal(actual_result, expected_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        actual_result, expected_result, check_dtype=False
+    )
 
 
 def test_dataframe_rolling_on_invalid_column_raise_error(rows_rolling_dfs):
@@ -116,7 +121,7 @@ def test_dataframe_groupby_rolling_on(rows_rolling_dfs):
     expected_result = (
         pd_df.groupby(pd_df["int64_too"] % 2).rolling(window=3, on="float64_col").sum()
     )
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         actual_result[check_columns], expected_result, check_dtype=False
     )
 
@@ -135,7 +140,9 @@ def test_series_rolling_closed_param(rows_rolling_series, closed):
     actual_result = bf_series.rolling(window=3, closed=closed).sum().to_pandas()
 
     expected_result = df_series.rolling(window=3, closed=closed).sum()
-    pd.testing.assert_series_equal(actual_result, expected_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(
+        actual_result, expected_result, check_dtype=False
+    )
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
@@ -152,7 +159,9 @@ def test_series_groupby_rolling_closed_param(rows_rolling_series, closed):
     expected_result = (
         df_series.groupby(df_series % 2).rolling(window=3, closed=closed).sum()
     )
-    pd.testing.assert_series_equal(actual_result, expected_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(
+        actual_result, expected_result, check_dtype=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -186,7 +195,9 @@ def test_series_window_agg_ops(rows_rolling_series, windowing, agg_op):
     actual_result = agg_op(windowing(bf_series)).to_pandas()
 
     expected_result = agg_op(windowing(pd_series))
-    pd.testing.assert_series_equal(expected_result, actual_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(
+        expected_result, actual_result, check_dtype=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -225,7 +236,7 @@ def test_dataframe_window_agg_ops(scalars_dfs, windowing, agg_op):
     bf_result = agg_op(windowing(bf_df)).to_pandas()
 
     pd_result = agg_op(windowing(pd_df))
-    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -258,6 +269,10 @@ def test_dataframe_window_agg_ops(scalars_dfs, windowing, agg_op):
     ],
 )
 def test_dataframe_window_agg_func(scalars_dfs, windowing, func):
+    if pd.__version__.startswith("3"):
+        pytest.skip(
+            "pandas 3.0 bugged for this case 'Length of values (8) does not match length of index (9)'"
+        )
     bf_df, pd_df = scalars_dfs
     target_columns = ["int64_too", "float64_col", "bool_col", "int64_col"]
     index_column = "bool_col"
@@ -268,7 +283,7 @@ def test_dataframe_window_agg_func(scalars_dfs, windowing, func):
 
     pd_result = windowing(pd_df).agg(func)
 
-    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_series_window_agg_single_func(scalars_dfs):
@@ -281,7 +296,7 @@ def test_series_window_agg_single_func(scalars_dfs):
 
     pd_result = pd_series.expanding().agg("sum")
 
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_series_window_agg_multi_func(scalars_dfs):
@@ -294,7 +309,7 @@ def test_series_window_agg_multi_func(scalars_dfs):
 
     pd_result = pd_series.expanding().agg(["sum", np.mean])
 
-    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize("closed", ["left", "right", "both", "neither"])
@@ -320,7 +335,7 @@ def test_series_range_rolling(range_rolling_dfs, window, closed, ascending):
         .rolling(window=window, closed=closed)
         .min()
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_dtype=False, check_index=False
     )
 
@@ -341,7 +356,7 @@ def test_series_groupby_range_rolling(range_rolling_dfs):
     expected_result = (
         pd_series.sort_index().groupby(pd_series % 2 == 0).rolling(window="3s").min()
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_dtype=False, check_index=False
     )
 
@@ -372,7 +387,7 @@ def test_dataframe_range_rolling(range_rolling_dfs, window, closed, ascending):
     # Need to cast Pandas index type. Otherwise it uses DatetimeIndex that
     # does not exist in BigFrame
     expected_result.index = expected_result.index.astype(dtypes.TIMESTAMP_DTYPE)
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         actual_result,
         expected_result,
         check_dtype=False,
@@ -389,7 +404,7 @@ def test_dataframe_range_rolling_on(range_rolling_dfs):
     # Need to specify the column order because Pandas (seemingly)
     # re-arranges columns alphabetically
     cols = ["ts_col", "int_col", "float_col"]
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         actual_result[cols],
         expected_result[cols],
         check_dtype=False,
@@ -413,7 +428,7 @@ def test_dataframe_groupby_range_rolling(range_rolling_dfs):
         pd_df.sort_values(on).groupby("int_col").rolling(window="3s", on=on).min()
     )
     expected_result.index = expected_result.index.set_names("index", level=1)
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         actual_result,
         expected_result,
         check_dtype=False,
@@ -440,7 +455,7 @@ def test_range_rolling_order_info_lookup(range_rolling_dfs):
         .rolling(window="3s")
         .count()
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_dtype=False, check_index=False
     )
 

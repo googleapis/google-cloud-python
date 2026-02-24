@@ -67,7 +67,11 @@ import bigframes.pandas as bpd
 )
 def test_array_length(input_data, expected):
     series = bpd.Series(input_data)
-    expected = pd.Series(expected, dtype=bigframes.dtypes.INT_DTYPE)
+    expected = pd.Series(
+        expected,
+        index=pd.Index(range(len(input_data)), dtype="Int64"),
+        dtype=bigframes.dtypes.INT_DTYPE,
+    )
     pd.testing.assert_series_equal(
         bbq.array_length(series).to_pandas(),
         expected,

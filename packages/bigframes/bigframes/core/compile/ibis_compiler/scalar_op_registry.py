@@ -169,6 +169,8 @@ def arctanh_op_impl(x: ibis_types.Value):
 @scalar_op_compiler.register_unary_op(ops.floor_op)
 def floor_op_impl(x: ibis_types.Value):
     x_numeric = typing.cast(ibis_types.NumericValue, x)
+    if x_numeric.type().is_boolean():
+        return x_numeric.cast(ibis_dtypes.Int64()).cast(ibis_dtypes.Float64())
     if x_numeric.type().is_integer():
         return x_numeric.cast(ibis_dtypes.Float64())
     if x_numeric.type().is_floating():
@@ -181,6 +183,8 @@ def floor_op_impl(x: ibis_types.Value):
 @scalar_op_compiler.register_unary_op(ops.ceil_op)
 def ceil_op_impl(x: ibis_types.Value):
     x_numeric = typing.cast(ibis_types.NumericValue, x)
+    if x_numeric.type().is_boolean():
+        return x_numeric.cast(ibis_dtypes.Int64()).cast(ibis_dtypes.Float64())
     if x_numeric.type().is_integer():
         return x_numeric.cast(ibis_dtypes.Float64())
     if x_numeric.type().is_floating():
@@ -1026,7 +1030,7 @@ def to_timedelta_op_impl(x: ibis_types.Value, op: ops.ToTimedeltaOp):
 
 @scalar_op_compiler.register_unary_op(ops.timedelta_floor_op)
 def timedelta_floor_op_impl(x: ibis_types.NumericValue):
-    return x.floor()
+    return ibis_api.case().when(x > ibis.literal(0), x.floor()).else_(x.ceil()).end()
 
 
 @scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)

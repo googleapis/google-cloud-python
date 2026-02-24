@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
 import pytest
 
 import bigframes.bigquery as bbq
 import bigframes.series as series
+import bigframes.testing
 
 
 @pytest.mark.parametrize(
@@ -53,9 +53,10 @@ def test_struct_from_dataframe(columns_arg):
     srs = series.Series(
         columns_arg,
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         srs.to_pandas(),
         bbq.struct(srs.struct.explode()).to_pandas(),
         check_index_type=False,
         check_dtype=False,
+        check_names=False,  # None vs nan version dependent
     )

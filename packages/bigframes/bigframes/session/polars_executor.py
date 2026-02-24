@@ -79,6 +79,8 @@ _COMPATIBLE_SCALAR_OPS = (
     numeric_ops.SubOp,
     numeric_ops.MulOp,
     numeric_ops.DivOp,
+    numeric_ops.CeilOp,
+    numeric_ops.FloorOp,
     numeric_ops.FloorDivOp,
     numeric_ops.ModOp,
     generic_ops.AsTypeOp,

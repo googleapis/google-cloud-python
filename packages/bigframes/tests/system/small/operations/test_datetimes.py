@@ -17,13 +17,12 @@ import typing
 
 import numpy
 from packaging import version
-from pandas import testing
 import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
 import bigframes.series
-from bigframes.testing.utils import assert_series_equal
+from bigframes.testing.utils import assert_frame_equal, assert_series_equal
 
 DATETIME_COL_NAMES = [("datetime_col",), ("timestamp_col",)]
 DATE_COLUMNS = [
@@ -304,7 +303,7 @@ def test_dt_isocalendar(session):
     actual_result = bf_s.dt.isocalendar().to_pandas()
 
     expected_result = pd_s.dt.isocalendar()
-    testing.assert_frame_equal(
+    assert_frame_equal(
         actual_result, expected_result, check_dtype=False, check_index_type=False
     )
 
@@ -340,9 +339,7 @@ def test_dt_tz_localize(scalars_dfs, col_name, tz):
     bf_result = bf_series.dt.tz_localize(tz)
     pd_result = scalars_pandas_df[col_name].dt.tz_localize(tz)
 
-    testing.assert_series_equal(
-        bf_result.to_pandas(), pd_result, check_index_type=False
-    )
+    assert_series_equal(bf_result.to_pandas(), pd_result, check_index_type=False)
 
 
 @pytest.mark.parametrize(
@@ -389,7 +386,7 @@ def test_dt_strftime(scalars_df_index, scalars_pandas_df_index, column, date_for
     pytest.importorskip("pandas", minversion="2.0.0")
     bf_result = scalars_df_index[column].dt.strftime(date_format).to_pandas()
     pd_result = scalars_pandas_df_index[column].dt.strftime(date_format)
-    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
     assert bf_result.dtype == "string[pyarrow]"
 
 
@@ -401,7 +398,7 @@ def test_dt_strftime_date():
     expected_result = pd.Series(["08/15/2014", "08/15/2215", "02/29/2016"])
     bf_result = bf_series.dt.strftime("%m/%d/%Y").to_pandas()
 
-    pd.testing.assert_series_equal(
+    assert_series_equal(
         bf_result, expected_result, check_index_type=False, check_dtype=False
     )
     assert bf_result.dtype == "string[pyarrow]"
@@ -417,7 +414,7 @@ def test_dt_strftime_time():
     )
     bf_result = bf_series.dt.strftime("%X").to_pandas()
 
-    pd.testing.assert_series_equal(
+    assert_series_equal(
         bf_result, expected_result, check_index_type=False, check_dtype=False
     )
     assert bf_result.dtype == "string[pyarrow]"
@@ -557,7 +554,7 @@ def test_timestamp_diff_two_dataframes(scalars_dfs):
     actual_result = (bf_df - bf_df).to_pandas()
 
     expected_result = pd_df - pd_df
-    testing.assert_frame_equal(actual_result, expected_result)
+    assert_frame_equal(actual_result, expected_result)
 
 
 def test_timestamp_diff_two_series_with_different_types_raise_error(scalars_dfs):
@@ -579,9 +576,12 @@ def test_timestamp_diff_series_sub_literal(scalars_dfs, column, value):
     bf_series = bf_df[column]
     pd_series = pd_df[column]
 
-    actual_result = (bf_series - value).to_pandas()
+    # Pandas doesn't handle nulls properly here so we ffill
+    # overflows for no good reason
+    # related? https://github.com/apache/arrow/issues/43031
+    actual_result = (bf_series.ffill() - value).to_pandas()
 
-    expected_result = pd_series - value
+    expected_result = pd_series.ffill() - value
     assert_series_equal(actual_result, expected_result)
 
 
@@ -597,9 +597,12 @@ def test_timestamp_diff_literal_sub_series(scalars_dfs, column, value):
     bf_series = bf_df[column]
     pd_series = pd_df[column]
 
-    actual_result = (value - bf_series).to_pandas()
+    # Pandas doesn't handle nulls properly here so we ffill
+    # overflows for no good reason
+    # related? https://github.com/apache/arrow/issues/43031
+    actual_result = (value - bf_series.ffill()).to_pandas()
 
-    expected_result = value - pd_series
+    expected_result = value - pd_series.ffill()
     assert_series_equal(actual_result, expected_result)
 
 
@@ -611,7 +614,12 @@ def test_timestamp_series_diff_agg(scalars_dfs, column):
 
     actual_result = bf_series.diff().to_pandas()
 
-    expected_result = pd_series.diff()
+    # overflows for no good reason
+    # related? https://github.com/apache/arrow/issues/43031
+    expected_result = pd_series.ffill().diff()
+    expected_result = expected_result.mask(
+        pd_series.isnull() | pd_series.shift(1).isnull()
+    )
     assert_series_equal(actual_result, expected_result)
 
 
@@ -666,6 +674,6 @@ def test_to_datetime(scalars_dfs, col):
     ).to_pandas()
 
     expected_result = pd.Series(pd.to_datetime(pd_df[col]))
-    testing.assert_series_equal(
+    assert_series_equal(
         actual_result, expected_result, check_dtype=False, check_index_type=False
     )

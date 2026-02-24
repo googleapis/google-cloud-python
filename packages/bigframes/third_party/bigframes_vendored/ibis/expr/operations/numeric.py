@@ -158,8 +158,6 @@ class Round(Value):
     def dtype(self):
         if self.arg.dtype.is_decimal():
             return self.arg.dtype
-        elif self.digits is None:
-            return dt.int64
         else:
             return dt.double
 

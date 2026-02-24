@@ -1261,14 +1261,14 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
             cloud_function_service_account=gcf_service_account,
             cloud_function_ingress_settings="all",
         )
-        def square_num(x):
+        def double_num(x):
             if x is None:
                 return x
-            return x * x
+            return x + x
 
         # assert that the GCF is created with the intended SA
         gcf = rf_session.cloudfunctionsclient.get_function(
-            name=square_num.bigframes_cloud_function
+            name=double_num.bigframes_cloud_function
         )
         assert gcf.service_config.service_account_email == gcf_service_account
 
@@ -1276,18 +1276,18 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
         scalars_df, scalars_pandas_df = scalars_dfs
 
         bf_int64_col = scalars_df["int64_col"]
-        bf_result_col = bf_int64_col.apply(square_num)
+        bf_result_col = bf_int64_col.apply(double_num)
         bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
 
         pd_int64_col = scalars_pandas_df["int64_col"]
-        pd_result_col = pd_int64_col.apply(lambda x: x if x is None else x * x)
+        pd_result_col = pd_int64_col.apply(lambda x: x if x is None else x + x)
         pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
 
         assert_frame_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_function_assets(
-            square_num, rf_session.bqclient, rf_session.cloudfunctionsclient
+            double_num, rf_session.bqclient, rf_session.cloudfunctionsclient
         )
 
 
@@ -1335,14 +1335,14 @@ def test_remote_function_via_session_custom_build_sa(
             cloud_build_service_account=set_build_service_account,
             cloud_function_ingress_settings="all",
         )
-        def square_num(x):
+        def double_num(x):
             if x is None:
                 return x
-            return x * x
+            return x + x
 
         # assert that the GCF is created with the intended SA
         gcf = rf_session.cloudfunctionsclient.get_function(
-            name=square_num.bigframes_cloud_function
+            name=double_num.bigframes_cloud_function
         )
         assert gcf.build_config.service_account == expected_build_service_account
 
@@ -1350,18 +1350,18 @@ def test_remote_function_via_session_custom_build_sa(
         scalars_df, scalars_pandas_df = scalars_dfs
 
         bf_int64_col = scalars_df["int64_col"]
-        bf_result_col = bf_int64_col.apply(square_num)
+        bf_result_col = bf_int64_col.apply(double_num)
         bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
 
         pd_int64_col = scalars_pandas_df["int64_col"]
-        pd_result_col = pd_int64_col.apply(lambda x: x if x is None else x * x)
+        pd_result_col = pd_int64_col.apply(lambda x: x if x is None else x + x)
         pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
 
         assert_frame_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_function_assets(
-            square_num, rf_session.bqclient, rf_session.cloudfunctionsclient
+            double_num, rf_session.bqclient, rf_session.cloudfunctionsclient
         )
 
 
@@ -1465,14 +1465,14 @@ def test_remote_function_via_session_vpc(scalars_dfs):
 
     try:
 
-        def square_num(x):
+        def double_num(x):
             if x is None:
                 return x
-            return x * x
+            return x + x
 
         # TODO(shobs): See if the test vpc can be configured to make this flow
         # work with the default ingress setting (internal-only)
-        square_num_remote = rf_session.remote_function(
+        double_num_remote = rf_session.remote_function(
             input_types=[int],
             output_type=int,
             reuse=False,
@@ -1480,13 +1480,13 @@ def test_remote_function_via_session_vpc(scalars_dfs):
             cloud_function_vpc_connector=gcf_vpc_connector,
             cloud_function_vpc_connector_egress_settings="all",
             cloud_function_ingress_settings="all",
-        )(square_num)
+        )(double_num)
 
         gcf = rf_session.cloudfunctionsclient.get_function(
-            name=square_num_remote.bigframes_cloud_function
+            name=double_num_remote.bigframes_cloud_function
         )
 
-        # assert that the GCF is created with the intended vpc connector and
+        # assert that the GCF test_remote_function_via_session_custom_sais created with the intended vpc connector and
         # egress settings.
         assert gcf.service_config.vpc_connector == gcf_vpc_connector
         # The value is <VpcConnectorEgressSettings.ALL_TRAFFIC: 2> since we set
@@ -1497,18 +1497,18 @@ def test_remote_function_via_session_vpc(scalars_dfs):
         scalars_df, scalars_pandas_df = scalars_dfs
 
         bf_int64_col = scalars_df["int64_col"]
-        bf_result_col = bf_int64_col.apply(square_num_remote)
+        bf_result_col = bf_int64_col.apply(double_num_remote)
         bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
 
         pd_int64_col = scalars_pandas_df["int64_col"]
-        pd_result_col = pd_int64_col.apply(square_num)
+        pd_result_col = pd_int64_col.apply(double_num).astype("Int64")
         pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
 
         assert_frame_equal(bf_result, pd_result, check_dtype=False)
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_function_assets(
-            square_num_remote, rf_session.bqclient, rf_session.cloudfunctionsclient
+            double_num_remote, rf_session.bqclient, rf_session.cloudfunctionsclient
         )
 
 

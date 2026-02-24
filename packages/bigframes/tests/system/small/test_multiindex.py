@@ -17,7 +17,7 @@ import pandas
 import pytest
 
 import bigframes.pandas as bpd
-from bigframes.testing.utils import assert_frame_equal
+import bigframes.testing
 
 # Sample MultiIndex for testing DataFrames where() method.
 _MULTI_INDEX = pandas.MultiIndex.from_tuples(
@@ -58,7 +58,7 @@ def test_multi_index_from_arrays():
         names=[" 1index 1", "_1index 2"],
     )
     assert bf_idx.names == pd_idx.names
-    pandas.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
+    bigframes.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
 
 
 def test_read_pandas_multi_index_axes():
@@ -90,7 +90,7 @@ def test_read_pandas_multi_index_axes():
     bf_df = bpd.DataFrame(pandas_df)
     bf_df_computed = bf_df.to_pandas()
 
-    pandas.testing.assert_frame_equal(bf_df_computed, pandas_df)
+    bigframes.testing.assert_frame_equal(bf_df_computed, pandas_df)
 
 
 # Row Multi-index tests
@@ -98,7 +98,7 @@ def test_set_multi_index(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.set_index(["bool_col", "int64_too"]).to_pandas()
     pd_result = scalars_pandas_df_index.set_index(["bool_col", "int64_too"])
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -127,7 +127,7 @@ def test_df_reset_multi_index(scalars_df_index, scalars_pandas_df_index, level, 
     if pd_result.index.dtype != bf_result.index.dtype:
         pd_result.index = pd_result.index.astype(bf_result.index.dtype)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -160,9 +160,9 @@ def test_series_reset_multi_index(
         pd_result.index = pd_result.index.astype(pandas.Int64Dtype())
 
     if drop:
-        pandas.testing.assert_series_equal(bf_result, pd_result)
+        bigframes.testing.assert_series_equal(bf_result, pd_result)
     else:
-        pandas.testing.assert_frame_equal(bf_result, pd_result)
+        bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_series_multi_index_idxmin(scalars_df_index, scalars_pandas_df_index):
@@ -187,7 +187,7 @@ def test_binop_series_series_matching_multi_indices(
     bf_result = bf_left["int64_col"] + bf_right["int64_too"]
     pd_result = pd_left["int64_col"] + pd_right["int64_too"]
 
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         bf_result.sort_index().to_pandas(), pd_result.sort_index()
     )
 
@@ -203,7 +203,7 @@ def test_binop_df_series_matching_multi_indices(
     bf_result = bf_left[["int64_col", "int64_too"]].add(bf_right["int64_too"], axis=0)
     pd_result = pd_left[["int64_col", "int64_too"]].add(pd_right["int64_too"], axis=0)
 
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result.sort_index().to_pandas(), pd_result.sort_index()
     )
 
@@ -217,7 +217,7 @@ def test_binop_multi_index_mono_index(scalars_df_index, scalars_pandas_df_index)
     bf_result = bf_left["int64_col"] + bf_right["int64_too"]
     pd_result = pd_left["int64_col"] + pd_right["int64_too"]
 
-    pandas.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
+    bigframes.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
 
 
 def test_binop_overlapping_multi_indices(scalars_df_index, scalars_pandas_df_index):
@@ -229,7 +229,7 @@ def test_binop_overlapping_multi_indices(scalars_df_index, scalars_pandas_df_ind
     bf_result = bf_left["int64_col"] + bf_right["int64_too"]
     pd_result = pd_left["int64_col"] + pd_right["int64_too"]
 
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         bf_result.sort_index().to_pandas(), pd_result.sort_index()
     )
 
@@ -245,7 +245,7 @@ def test_concat_compatible_multi_indices(scalars_df_index, scalars_pandas_df_ind
     bf_result = bpd.concat([bf_left, bf_right])
     pd_result = pandas.concat([pd_left, pd_right])
 
-    pandas.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
+    bigframes.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
 
 
 def test_concat_multi_indices_ignore_index(scalars_df_index, scalars_pandas_df_index):
@@ -260,7 +260,7 @@ def test_concat_multi_indices_ignore_index(scalars_df_index, scalars_pandas_df_i
     # Pandas uses int64 instead of Int64 (nullable) dtype.
     pd_result.index = pd_result.index.astype(pandas.Int64Dtype())
 
-    pandas.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
+    bigframes.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
 
 
 @pytest.mark.parametrize(
@@ -277,7 +277,7 @@ def test_multi_index_loc_multi_row(scalars_df_index, scalars_pandas_df_index, ke
     )
     pd_result = scalars_pandas_df_index.set_index(["int64_too", "string_col"]).loc[key]
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_multi_index_loc_single_row(scalars_df_index, scalars_pandas_df_index):
@@ -288,7 +288,7 @@ def test_multi_index_loc_single_row(scalars_df_index, scalars_pandas_df_index):
         (2, "capitalize, This ")
     ]
 
-    pandas.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result)
 
 
 def test_multi_index_getitem_bool(scalars_df_index, scalars_pandas_df_index):
@@ -298,7 +298,7 @@ def test_multi_index_getitem_bool(scalars_df_index, scalars_pandas_df_index):
     bf_result = bf_frame[bf_frame["int64_col"] > 0].to_pandas()
     pd_result = pd_frame[pd_frame["int64_col"] > 0]
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -318,7 +318,7 @@ def test_df_multi_index_droplevel(scalars_df_index, scalars_pandas_df_index, lev
     bf_result = bf_frame.droplevel(level).to_pandas()
     pd_result = pd_frame.droplevel(level)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -338,7 +338,7 @@ def test_series_multi_index_droplevel(scalars_df_index, scalars_pandas_df_index,
     bf_result = bf_frame["string_col"].droplevel(level).to_pandas()
     pd_result = pd_frame["string_col"].droplevel(level)
 
-    pandas.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -357,7 +357,7 @@ def test_multi_index_drop(scalars_df_index, scalars_pandas_df_index, labels, lev
     bf_result = bf_frame.drop(labels=labels, axis="index", level=level).to_pandas()
     pd_result = pd_frame.drop(labels=labels, axis="index", level=level)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -382,7 +382,7 @@ def test_df_multi_index_reorder_levels(
     bf_result = bf_frame.reorder_levels(order).to_pandas()
     pd_result = pd_frame.reorder_levels(order)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -407,7 +407,7 @@ def test_series_multi_index_reorder_levels(
     bf_result = bf_frame["string_col"].reorder_levels(order).to_pandas()
     pd_result = pd_frame["string_col"].reorder_levels(order)
 
-    pandas.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result)
 
 
 def test_df_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index):
@@ -417,7 +417,7 @@ def test_df_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index):
     bf_result = bf_frame.swaplevel().to_pandas()
     pd_result = pd_frame.swaplevel()
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_series_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index):
@@ -427,7 +427,7 @@ def test_series_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index)
     bf_result = bf_frame["string_col"].swaplevel(0, 2).to_pandas()
     pd_result = pd_frame["string_col"].swaplevel(0, 2)
 
-    pandas.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result)
 
 
 def test_multi_index_series_groupby(scalars_df_index, scalars_pandas_df_index):
@@ -443,7 +443,7 @@ def test_multi_index_series_groupby(scalars_df_index, scalars_pandas_df_index):
         pd_frame["float64_col"].groupby([pd_frame.int64_col % 2, "bool_col"]).mean()
     )
 
-    pandas.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -470,7 +470,7 @@ def test_multi_index_series_groupby_level(
         .mean()
     )
 
-    pandas.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result)
 
 
 def test_multi_index_dataframe_groupby(scalars_df_index, scalars_pandas_df_index):
@@ -485,7 +485,7 @@ def test_multi_index_dataframe_groupby(scalars_df_index, scalars_pandas_df_index
         numeric_only=True
     )
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -514,13 +514,14 @@ def test_multi_index_dataframe_groupby_level_aggregate(
     )
     # For as_index=False, pandas will drop index levels used as groupings
     # In the future, it will include this in the result, bigframes already does this behavior
-    if not as_index:
-        for col in index_cols:
-            if col in bf_result.columns:
-                bf_result = bf_result.drop(col, axis=1)
+    if not pandas.__version__.startswith("3"):
+        if not as_index:
+            for col in index_cols:
+                if col in bf_result.columns:
+                    bf_result = bf_result.drop(col, axis=1)
 
     # Pandas will have int64 index, while bigquery will have Int64 when resetting
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
 
 
 @pytest.mark.parametrize(
@@ -553,7 +554,7 @@ def test_multi_index_dataframe_groupby_level_analytic(
         .cumsum(numeric_only=True)
     )
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 all_joins = pytest.mark.parametrize(
@@ -583,7 +584,7 @@ def test_multi_index_dataframe_join(scalars_dfs, how):
         (["bool_col", "rowindex_2"])
     )[["float64_col"]]
     pd_result = pd_df_a.join(pd_df_b, how=how)
-    assert_frame_equal(bf_result, pd_result, ignore_order=True)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, ignore_order=True)
 
 
 @all_joins
@@ -604,7 +605,7 @@ def test_multi_index_dataframe_join_on(scalars_dfs, how):
     pd_df_a = pd_df_a.assign(rowindex_2=pd_df_a["rowindex_2"] + 2)
     pd_df_b = pd_df[["float64_col"]]
     pd_result = pd_df_a.join(pd_df_b, on="rowindex_2", how=how)
-    assert_frame_equal(bf_result, pd_result, ignore_order=True)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, ignore_order=True)
 
 
 def test_multi_index_dataframe_where_series_cond_none_other(
@@ -632,7 +633,7 @@ def test_multi_index_dataframe_where_series_cond_none_other(
 
     bf_result = dataframe_bf.where(series_cond_bf).to_pandas()
     pd_result = dataframe_pd.where(series_cond_pd)
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result,
         pd_result,
         check_index_type=False,
@@ -668,7 +669,7 @@ def test_multi_index_dataframe_where_series_cond_dataframe_other(
 
     bf_result = dataframe_bf.where(series_cond_bf, dataframe_other_bf).to_pandas()
     pd_result = dataframe_pd.where(series_cond_pd, dataframe_other_pd)
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result,
         pd_result,
         check_index_type=False,
@@ -700,7 +701,7 @@ def test_multi_index_dataframe_where_dataframe_cond_constant_other(
 
     bf_result = dataframe_bf.where(dataframe_cond_bf, other).to_pandas()
     pd_result = dataframe_pd.where(dataframe_cond_pd, other)
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result,
         pd_result,
         check_index_type=False,
@@ -733,7 +734,7 @@ def test_multi_index_dataframe_where_dataframe_cond_dataframe_other(
 
     bf_result = dataframe_bf.where(dataframe_cond_bf, dataframe_other_bf).to_pandas()
     pd_result = dataframe_pd.where(dataframe_cond_pd, dataframe_other_pd)
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result,
         pd_result,
         check_index_type=False,
@@ -765,7 +766,7 @@ def test_multi_index_series_groupby_level_aggregate(
         .mean()
     )
 
-    pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -792,7 +793,7 @@ def test_multi_index_series_groupby_level_analytic(
         .cumsum()
     )
 
-    pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
 def test_multi_index_series_rename_dict_same_type(
@@ -807,7 +808,7 @@ def test_multi_index_series_rename_dict_same_type(
         "string_col"
     ].rename({1: 100, 2: 200})
 
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 
@@ -825,7 +826,7 @@ def test_multi_index_df_reindex(scalars_df_index, scalars_pandas_df_index):
     pd_result = scalars_pandas_df_index.set_index(["rowindex_2", "string_col"]).reindex(
         index=new_index
     )
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 
@@ -843,15 +844,15 @@ def test_column_multi_index_getitem(scalars_df_index, scalars_pandas_df_index):
 
     bf_a = bf_df["a"].to_pandas()
     pd_a = pd_df["a"]
-    pandas.testing.assert_frame_equal(bf_a, pd_a)
+    bigframes.testing.assert_frame_equal(bf_a, pd_a)
 
     bf_b = bf_df["b"].to_pandas()
     pd_b = pd_df["b"]
-    pandas.testing.assert_frame_equal(bf_b, pd_b)
+    bigframes.testing.assert_frame_equal(bf_b, pd_b)
 
     bf_fullkey = bf_df[("a", "int64_too")].to_pandas()
     pd_fullkey = pd_df[("a", "int64_too")]
-    pandas.testing.assert_series_equal(bf_fullkey, pd_fullkey)
+    bigframes.testing.assert_series_equal(bf_fullkey, pd_fullkey)
 
 
 def test_column_multi_index_concat(scalars_df_index, scalars_pandas_df_index):
@@ -876,7 +877,7 @@ def test_column_multi_index_concat(scalars_df_index, scalars_pandas_df_index):
     bf_result = bpd.concat([bf_df1, bf_df2, bf_df1]).to_pandas()
     pd_result = pandas.concat([pd_df1, pd_df2, pd_df1])
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_column_multi_index_drop(scalars_df_index, scalars_pandas_df_index):
@@ -889,7 +890,7 @@ def test_column_multi_index_drop(scalars_df_index, scalars_pandas_df_index):
 
     bf_a = bf_df.drop(("a", "int64_too"), axis=1).to_pandas()
     pd_a = pd_df.drop(("a", "int64_too"), axis=1)
-    pandas.testing.assert_frame_equal(bf_a, pd_a)
+    bigframes.testing.assert_frame_equal(bf_a, pd_a)
 
 
 @pytest.mark.parametrize(
@@ -913,7 +914,7 @@ def test_column_multi_index_assign(scalars_df_index, scalars_pandas_df_index, ke
     pd_result = pd_df.assign(**kwargs)
 
     # Pandas assign results in non-nullable dtype
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 def test_column_multi_index_rename(scalars_df_index, scalars_pandas_df_index):
@@ -927,7 +928,7 @@ def test_column_multi_index_rename(scalars_df_index, scalars_pandas_df_index):
     bf_result = bf_df.rename(columns={"b": "c"}).to_pandas()
     pd_result = pd_df.rename(columns={"b": "c"})
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -957,7 +958,7 @@ def test_column_multi_index_reset_index(
 
     # Pandas uses int64 instead of Int64 (nullable) dtype.
     pd_result.index = pd_result.index.astype(pandas.Int64Dtype())
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_column_multi_index_binary_op(scalars_df_index, scalars_pandas_df_index):
@@ -971,7 +972,7 @@ def test_column_multi_index_binary_op(scalars_df_index, scalars_pandas_df_index)
     bf_result = (bf_df[("a", "a")] + 3).to_pandas()
     pd_result = pd_df[("a", "a")] + 3
 
-    pandas.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result)
 
 
 def test_column_multi_index_any():
@@ -988,7 +989,7 @@ def test_column_multi_index_any():
     pd_result = pd_df.isna().any()
     bf_result = bf_df.isna().any().to_pandas()
 
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result.reset_index(drop=False),
         pd_result.reset_index(drop=False),
         check_dtype=False,
@@ -1008,7 +1009,7 @@ def test_column_multi_index_agg(scalars_df_index, scalars_pandas_df_index):
 
     # Pandas may produce narrower numeric types, but bigframes always produces Float64
     pd_result = pd_result.astype("Float64")
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
 
 
 def test_column_multi_index_prefix_suffix(scalars_df_index, scalars_pandas_df_index):
@@ -1022,7 +1023,7 @@ def test_column_multi_index_prefix_suffix(scalars_df_index, scalars_pandas_df_in
     bf_result = bf_df.add_prefix("prefixed_").add_suffix("_suffixed").to_pandas()
     pd_result = pd_df.add_prefix("prefixed_").add_suffix("_suffixed")
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_column_multi_index_cumsum(scalars_df_index, scalars_pandas_df_index):
@@ -1038,7 +1039,7 @@ def test_column_multi_index_cumsum(scalars_df_index, scalars_pandas_df_index):
     bf_result = bf_df.cumsum().to_pandas()
     pd_result = pd_df.cumsum()
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -1071,7 +1072,7 @@ def test_column_multi_index_stack(level):
     # Pandas produces NaN, where bq dataframes produces pd.NA
     # Column ordering seems to depend on pandas version
     assert isinstance(pd_result, pandas.DataFrame)
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 
@@ -1099,7 +1100,7 @@ def test_column_multi_index_melt():
     pd_result = pd_df.melt()
 
     # BigFrames uses different string and int types, but values are identical
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result, pd_result, check_index_type=False, check_dtype=False
     )
 
@@ -1121,7 +1122,7 @@ def test_column_multi_index_unstack(scalars_df_index, scalars_pandas_df_index):
 
     # Pandas produces NaN, where bq dataframes produces pd.NA
     # Column ordering seems to depend on pandas version
-    pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
 def test_corr_w_multi_index(scalars_df_index, scalars_pandas_df_index):
@@ -1142,7 +1143,7 @@ def test_corr_w_multi_index(scalars_df_index, scalars_pandas_df_index):
     # BigFrames and Pandas differ in their data type handling:
     # - Column types: BigFrames uses Float64, Pandas uses float64.
     # - Index types: BigFrames uses strign, Pandas uses object.
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 
@@ -1165,7 +1166,7 @@ def test_cov_w_multi_index(scalars_df_index, scalars_pandas_df_index):
     # BigFrames and Pandas differ in their data type handling:
     # - Column types: BigFrames uses Float64, Pandas uses float64.
     # - Index types: BigFrames uses string, Pandas uses object.
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 
@@ -1244,7 +1245,7 @@ def test_column_multi_index_droplevel(scalars_df_index, scalars_pandas_df_index)
     bf_result = bf_df.droplevel(1, axis=1).to_pandas()
     pd_result = pd_df.droplevel(1, axis=1)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_df_column_multi_index_reindex(scalars_df_index, scalars_pandas_df_index):
@@ -1266,7 +1267,7 @@ def test_df_column_multi_index_reindex(scalars_df_index, scalars_pandas_df_index
     # Pandas uses float64 as default for newly created empty column, bf uses Float64
     pd_result[("z", "a")] = pd_result[("z", "a")].astype(pandas.Float64Dtype())
 
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result,
         pd_result,
     )
@@ -1285,7 +1286,7 @@ def test_column_multi_index_reorder_levels(scalars_df_index, scalars_pandas_df_i
     bf_result = bf_df.reorder_levels([-2, -1, 0], axis=1).to_pandas()
     pd_result = pd_df.reorder_levels([-2, -1, 0], axis=1)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(
@@ -1302,7 +1303,7 @@ def test_df_multi_index_unstack(hockey_df, hockey_pandas_df, level):
         ["team_name", "position"], append=True
     ).unstack(level=level)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -1319,7 +1320,7 @@ def test_series_multi_index_unstack(hockey_df, hockey_pandas_df, level):
         "number"
     ].unstack(level=level)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 def test_column_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index):
@@ -1335,7 +1336,7 @@ def test_column_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index)
     bf_result = bf_df.swaplevel(-3, -1, axis=1).to_pandas()
     pd_result = pd_df.swaplevel(-3, -1, axis=1)
 
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_df_multi_index_dot_not_supported():
@@ -1409,7 +1410,7 @@ def test_explode_w_column_multi_index():
 
     assert isinstance(pd_df, pandas.DataFrame)
     assert isinstance(pd_df["col0"], pandas.DataFrame)
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         df["col0"].explode("col00").to_pandas(),
         pd_df["col0"].explode("col00"),
         check_dtype=False,
@@ -1427,7 +1428,7 @@ def test_explode_w_multi_index():
     df = bpd.DataFrame(data, index=multi_index, columns=columns)
     pd_df = df.to_pandas()
 
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         df.explode("col00").to_pandas(),
         pd_df.explode("col00"),
         check_dtype=False,
@@ -1451,7 +1452,7 @@ def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index
 
     # Pandas produces pd.NA, where bq dataframes produces NaN
     pd_result["c"] = pd_result["c"].replace(pandas.NA, np.nan)
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -1482,6 +1483,6 @@ def test_multiindex_eq_const(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.set_index(col_name).index == (2, False)
     pd_result = scalars_pandas_df_index.set_index(col_name).index == (2, False)
 
-    pandas.testing.assert_index_equal(
+    bigframes.testing.assert_index_equal(
         pandas.Index(pd_result, dtype="boolean"), bf_result.to_pandas()
     )

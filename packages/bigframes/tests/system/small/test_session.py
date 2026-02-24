@@ -37,6 +37,7 @@ import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.ml.linear_model
 import bigframes.session.execution_spec
+import bigframes.testing
 from bigframes.testing import utils
 
 all_write_engines = pytest.mark.parametrize(
@@ -326,7 +327,7 @@ def test_read_gbq_w_anonymous_query_results_table(session: bigframes.Session):
     df = session.read_gbq(destination, index_col="name")
     result = df.to_pandas()
     expected.index = expected.index.astype(result.index.dtype)
-    pd.testing.assert_frame_equal(result, expected, check_dtype=False)
+    bigframes.testing.assert_frame_equal(result, expected, check_dtype=False)
 
 
 def test_read_gbq_w_primary_keys_table(
@@ -349,7 +350,7 @@ def test_read_gbq_w_primary_keys_table(
 
     # Verify that the DataFrame is already sorted by primary keys.
     sorted_result = result.sort_values(primary_keys)
-    pd.testing.assert_frame_equal(result, sorted_result)
+    bigframes.testing.assert_frame_equal(result, sorted_result)
 
     # Verify that we're working from a snapshot rather than a copy of the table.
     assert "FOR SYSTEM_TIME AS OF" in df.sql
@@ -388,7 +389,7 @@ def test_read_gbq_w_primary_keys_table_and_filters(
 
     # Verify that the DataFrame is already sorted by primary keys.
     sorted_result = result.sort_values(primary_keys)
-    pd.testing.assert_frame_equal(result, sorted_result)
+    bigframes.testing.assert_frame_equal(result, sorted_result)
 
 
 @pytest.mark.parametrize(
@@ -533,7 +534,9 @@ def test_read_gbq_w_ambigous_name(
         .to_pandas()
     )
     pd_df = pd.DataFrame({"x": [2, 1], "ambiguous_name": [20, 10]})
-    pd.testing.assert_frame_equal(df, pd_df, check_dtype=False, check_index_type=False)
+    bigframes.testing.assert_frame_equal(
+        df, pd_df, check_dtype=False, check_index_type=False
+    )
 
 
 def test_read_gbq_table_clustered_with_filter(session: bigframes.Session):
@@ -768,8 +771,8 @@ def test_read_gbq_w_json_and_compare_w_pandas_json(session):
         dtype=pd.ArrowDtype(db_dtypes.JSONArrowType()),
     )
     pd_df.index = pd_df.index.astype("Int64")
-    pd.testing.assert_series_equal(df.dtypes, pd_df.dtypes)
-    pd.testing.assert_series_equal(df["json_col"].to_pandas(), pd_df["json_col"])
+    bigframes.testing.assert_series_equal(df.dtypes, pd_df.dtypes)
+    bigframes.testing.assert_series_equal(df["json_col"].to_pandas(), pd_df["json_col"])
 
 
 def test_read_gbq_w_json_in_struct(session):
@@ -867,7 +870,7 @@ def test_read_pandas(session, scalars_dfs):
     result = df.to_pandas()
     expected = scalars_pandas_df
 
-    pd.testing.assert_frame_equal(result, expected)
+    bigframes.testing.assert_frame_equal(result, expected)
 
 
 def test_read_pandas_series(session):
@@ -876,7 +879,7 @@ def test_read_pandas_series(session):
     pd_series = pd.Series([3, 1, 4, 1, 5], dtype=pd.Int64Dtype(), index=idx)
     bf_series = session.read_pandas(pd_series)
 
-    pd.testing.assert_series_equal(bf_series.to_pandas(), pd_series)
+    bigframes.testing.assert_series_equal(bf_series.to_pandas(), pd_series)
 
 
 def test_read_pandas_index(session):
@@ -884,7 +887,7 @@ def test_read_pandas_index(session):
     pd_idx: pd.Index = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
     bf_idx = session.read_pandas(pd_idx)
 
-    pd.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
+    bigframes.testing.assert_index_equal(bf_idx.to_pandas(), pd_idx)
 
 
 def test_read_pandas_w_unsupported_mixed_dtype(session):
@@ -914,7 +917,7 @@ def test_read_pandas_col_label_w_space(session: bigframes.Session):
     )
     result = session.read_pandas(expected).to_pandas()
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         result, expected, check_index_type=False, check_dtype=False
     )
 
@@ -922,7 +925,7 @@ def test_read_pandas_col_label_w_space(session: bigframes.Session):
 def test_read_pandas_multi_index(session, scalars_pandas_df_multi_index):
     df = session.read_pandas(scalars_pandas_df_multi_index)
     result = df.to_pandas()
-    pd.testing.assert_frame_equal(result, scalars_pandas_df_multi_index)
+    bigframes.testing.assert_frame_equal(result, scalars_pandas_df_multi_index)
 
 
 def test_read_pandas_rowid_exists_adds_suffix(session, scalars_pandas_df_default_index):
@@ -930,7 +933,7 @@ def test_read_pandas_rowid_exists_adds_suffix(session, scalars_pandas_df_default
     pandas_df["rowid"] = np.arange(pandas_df.shape[0])
 
     df_roundtrip = session.read_pandas(pandas_df).to_pandas()
-    pd.testing.assert_frame_equal(df_roundtrip, pandas_df, check_dtype=False)
+    bigframes.testing.assert_frame_equal(df_roundtrip, pandas_df, check_dtype=False)
 
 
 def test_read_pandas_tokyo(
@@ -969,12 +972,14 @@ def test_read_pandas_timedelta_dataframes(session, write_engine):
     expected_result = pandas_df.astype(bigframes.dtypes.TIMEDELTA_DTYPE)
     expected_result.index = expected_result.index.astype(bigframes.dtypes.INT_DTYPE)
 
-    pd.testing.assert_frame_equal(actual_result, expected_result)
+    bigframes.testing.assert_frame_equal(actual_result, expected_result)
 
 
 @all_write_engines
 def test_read_pandas_timedelta_series(session, write_engine):
-    expected_series = pd.Series(pd.to_timedelta([1, 2, 3], unit="d"))
+    expected_series = pd.Series(pd.to_timedelta([1, 2, 3], unit="d")).astype(
+        "timedelta64[ns]"
+    )
 
     actual_result = (
         session.read_pandas(expected_series, write_engine=write_engine)
@@ -982,15 +987,15 @@ def test_read_pandas_timedelta_series(session, write_engine):
         .astype("timedelta64[ns]")
     )
 
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_series, check_index_type=False
     )
 
 
 @all_write_engines
 def test_read_pandas_timedelta_index(session, write_engine):
-    expected_index = pd.to_timedelta(
-        [1, 2, 3], unit="d"
+    expected_index = pd.to_timedelta([1, 2, 3], unit="d").astype(
+        "timedelta64[ns]"
     )  # to_timedelta returns an index
 
     actual_result = (
@@ -999,7 +1004,7 @@ def test_read_pandas_timedelta_index(session, write_engine):
         .astype("timedelta64[ns]")
     )
 
-    pd.testing.assert_index_equal(actual_result, expected_index)
+    bigframes.testing.assert_index_equal(actual_result, expected_index)
 
 
 @all_write_engines
@@ -1018,7 +1023,9 @@ def test_read_pandas_json_dataframes(session, write_engine):
         expected_df, write_engine=write_engine
     ).to_pandas()
 
-    pd.testing.assert_frame_equal(actual_result, expected_df, check_index_type=False)
+    bigframes.testing.assert_frame_equal(
+        actual_result, expected_df, check_index_type=False
+    )
 
 
 @all_write_engines
@@ -1034,7 +1041,7 @@ def test_read_pandas_json_series(session, write_engine):
     actual_result = session.read_pandas(
         expected_series, write_engine=write_engine
     ).to_pandas()
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_series, check_index_type=False
     )
 
@@ -1062,7 +1069,7 @@ def test_read_pandas_json_index(session, write_engine):
     actual_result = session.read_pandas(
         expected_index, write_engine=write_engine
     ).to_pandas()
-    pd.testing.assert_index_equal(actual_result, expected_index)
+    bigframes.testing.assert_index_equal(actual_result, expected_index)
 
 
 @pytest.mark.parametrize(
@@ -1121,7 +1128,7 @@ def test_read_pandas_w_nested_json(session, write_engine):
         .to_pandas()
         .reset_index(drop=True)
     )
-    pd.testing.assert_series_equal(bq_s, pd_s)
+    bigframes.testing.assert_series_equal(bq_s, pd_s)
 
 
 @pytest.mark.parametrize(
@@ -1203,7 +1210,7 @@ def test_read_pandas_w_nested_json_index(session, write_engine):
         ),
     )
     bq_idx = session.read_pandas(pd_idx, write_engine=write_engine).to_pandas()
-    pd.testing.assert_index_equal(bq_idx, pd_idx)
+    bigframes.testing.assert_index_equal(bq_idx, pd_idx)
 
 
 @all_write_engines
@@ -1217,13 +1224,13 @@ def test_read_csv_for_gcs_file_w_write_engine(session, df_and_gcs_csv, write_eng
         write_engine=write_engine,
         dtype=scalars_df.dtypes.to_dict(),
     )
-    pd.testing.assert_frame_equal(pd_df.to_pandas(), scalars_df.to_pandas())
+    bigframes.testing.assert_frame_equal(pd_df.to_pandas(), scalars_df.to_pandas())
 
     if write_engine in ("default", "bigquery_load"):
         bf_df = session.read_csv(
             path, engine="bigquery", index_col="rowindex", write_engine=write_engine
         )
-        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+        bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -1251,8 +1258,8 @@ def test_read_csv_for_local_file_w_sep(session, df_and_local_csv, sep):
             pd_df = session.read_csv(
                 buffer, index_col="rowindex", sep=sep, dtype=scalars_df.dtypes.to_dict()
             )
-        pd.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
-        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+        bigframes.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
+        bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -1284,7 +1291,7 @@ def test_read_csv_for_index_col_w_false(session, df_and_local_csv, index_col):
     # (b/280889935) or guarantee row ordering.
     bf_df = bf_df.set_index("rowindex").sort_index()
     pd_df = pd_df.set_index("rowindex")
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -1307,7 +1314,7 @@ def test_read_csv_for_index_col(session, df_and_gcs_csv, index_col):
     )
 
     assert bf_df.shape == pd_df.shape
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -1360,7 +1367,7 @@ def test_read_csv_for_gcs_wildcard_path(session, df_and_gcs_csv):
 
     assert bf_df.shape == pd_df.shape
     assert bf_df.columns.tolist() == pd_df.columns.tolist()
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_for_names(session, df_and_gcs_csv_for_two_columns):
@@ -1379,7 +1386,7 @@ def test_read_csv_for_names(session, df_and_gcs_csv_for_two_columns):
     # (b/280889935) or guarantee row ordering.
     bf_df = bf_df.set_index(names[0]).sort_index()
     pd_df = pd_df.set_index(names[0])
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_for_names_more_than_columns_can_raise_error(
@@ -1408,7 +1415,7 @@ def test_read_csv_for_names_less_than_columns(session, df_and_gcs_csv_for_two_co
 
     # Pandas's index name is None, while BigFrames's index name is "rowindex".
     pd_df.index.name = "rowindex"
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_for_names_less_than_columns_raise_error_when_index_col_set(
@@ -1446,7 +1453,7 @@ def test_read_csv_for_names_and_index_col(
 
     assert bf_df.shape == pd_df.shape
     assert bf_df.columns.tolist() == pd_df.columns.tolist()
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_df.to_pandas(), pd_df.to_pandas(), check_index_type=False
     )
 
@@ -1478,7 +1485,7 @@ def test_read_csv_for_names_and_usecols(
     # (b/280889935) or guarantee row ordering.
     bf_df = bf_df.set_index(names[0]).sort_index()
     pd_df = pd_df.set_index(names[0])
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_for_names_and_invalid_usecols(
@@ -1525,7 +1532,7 @@ def test_read_csv_for_names_and_usecols_and_indexcol(
     assert bf_df.shape == pd_df.shape
     assert bf_df.columns.tolist() == pd_df.columns.tolist()
 
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_for_names_less_than_columns_and_same_usecols(
@@ -1548,7 +1555,7 @@ def test_read_csv_for_names_less_than_columns_and_same_usecols(
     # (b/280889935) or guarantee row ordering.
     bf_df = bf_df.set_index(names[0]).sort_index()
     pd_df = pd_df.set_index(names[0])
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_for_names_less_than_columns_and_mismatched_usecols(
@@ -1593,7 +1600,7 @@ def test_read_csv_for_dtype(session, df_and_gcs_csv_for_two_columns):
     # (b/280889935) or guarantee row ordering.
     bf_df = bf_df.set_index("rowindex").sort_index()
     pd_df = pd_df.set_index("rowindex")
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_for_dtype_w_names(session, df_and_gcs_csv_for_two_columns):
@@ -1613,7 +1620,7 @@ def test_read_csv_for_dtype_w_names(session, df_and_gcs_csv_for_two_columns):
     # (b/280889935) or guarantee row ordering.
     bf_df = bf_df.set_index("a").sort_index()
     pd_df = pd_df.set_index("a")
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -1680,8 +1687,8 @@ def test_read_csv_for_gcs_file_w_header(session, df_and_gcs_csv, header):
         # (b/280889935) or guarantee row ordering.
         bf_df = bf_df.set_index("rowindex").sort_index()
         pd_df = pd_df.set_index("rowindex")
-        pd.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
-        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+        bigframes.testing.assert_frame_equal(bf_df.to_pandas(), scalars_df.to_pandas())
+        bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_w_usecols(session, df_and_local_csv):
@@ -1709,7 +1716,7 @@ def test_read_csv_w_usecols(session, df_and_local_csv):
     # (b/280889935) or guarantee row ordering.
     bf_df = bf_df.set_index("rowindex").sort_index()
     pd_df = pd_df.set_index("rowindex")
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_w_usecols_and_indexcol(session, df_and_local_csv):
@@ -1735,7 +1742,7 @@ def test_read_csv_w_usecols_and_indexcol(session, df_and_local_csv):
     assert bf_df.shape == pd_df.shape
     assert bf_df.columns.tolist() == pd_df.columns.tolist()
 
-    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+    bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_csv_w_indexcol_not_in_usecols(session, df_and_local_csv):
@@ -1790,10 +1797,10 @@ def test_read_csv_local_w_encoding(session, penguins_pandas_df_default_index):
         bf_df = session.read_csv(
             path, engine="bigquery", index_col="rowindex", encoding="ISO-8859-1"
         )
-        pd.testing.assert_frame_equal(
+        bigframes.testing.assert_frame_equal(
             bf_df.to_pandas(), penguins_pandas_df_default_index
         )
-        pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+        bigframes.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
 
 
 def test_read_pickle_local(session, penguins_pandas_df_default_index, tmp_path):
@@ -1802,7 +1809,9 @@ def test_read_pickle_local(session, penguins_pandas_df_default_index, tmp_path):
     penguins_pandas_df_default_index.to_pickle(path)
     df = session.read_pickle(path)
 
-    pd.testing.assert_frame_equal(penguins_pandas_df_default_index, df.to_pandas())
+    bigframes.testing.assert_frame_equal(
+        penguins_pandas_df_default_index, df.to_pandas()
+    )
 
 
 def test_read_pickle_buffer(session, penguins_pandas_df_default_index):
@@ -1811,7 +1820,9 @@ def test_read_pickle_buffer(session, penguins_pandas_df_default_index):
     buffer.seek(0)
     df = session.read_pickle(buffer)
 
-    pd.testing.assert_frame_equal(penguins_pandas_df_default_index, df.to_pandas())
+    bigframes.testing.assert_frame_equal(
+        penguins_pandas_df_default_index, df.to_pandas()
+    )
 
 
 def test_read_pickle_series_buffer(session):
@@ -1830,7 +1841,9 @@ def test_read_pickle_gcs(session, penguins_pandas_df_default_index, gcs_folder):
     penguins_pandas_df_default_index.to_pickle(path)
     df = session.read_pickle(path)
 
-    pd.testing.assert_frame_equal(penguins_pandas_df_default_index, df.to_pandas())
+    bigframes.testing.assert_frame_equal(
+        penguins_pandas_df_default_index, df.to_pandas()
+    )
 
 
 @pytest.mark.parametrize(
@@ -1903,7 +1916,7 @@ def test_read_parquet_gcs(
     assert df_out.size != 0
     pd_df_in = df_in.to_pandas()
     pd_df_out = df_out.to_pandas()
-    pd.testing.assert_frame_equal(pd_df_in, pd_df_out)
+    bigframes.testing.assert_frame_equal(pd_df_in, pd_df_out)
 
 
 @pytest.mark.parametrize(
@@ -1953,7 +1966,7 @@ def test_read_parquet_gcs_compressed(
     assert df_out.size != 0
     pd_df_in = df_in.to_pandas()
     pd_df_out = df_out.to_pandas()
-    pd.testing.assert_frame_equal(pd_df_in, pd_df_out)
+    bigframes.testing.assert_frame_equal(pd_df_in, pd_df_out)
 
 
 @pytest.mark.parametrize(
@@ -1998,7 +2011,7 @@ def test_read_json_gcs_bq_engine(session, scalars_dfs, gcs_folder):
     df = session.read_json(read_path, lines=True, orient="records", engine="bigquery")
 
     # The auto detects of BigQuery load job does not preserve any ordering of columns for json.
-    pd.testing.assert_index_equal(
+    bigframes.testing.assert_index_equal(
         df.columns.sort_values(), scalars_df.columns.sort_values()
     )
 
@@ -2023,7 +2036,7 @@ def test_read_json_gcs_bq_engine(session, scalars_dfs, gcs_folder):
         ]
     )
     assert df.shape[0] == scalars_df.shape[0]
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         df.dtypes.sort_index(), scalars_df.dtypes.sort_index()
     )
 
@@ -2049,7 +2062,7 @@ def test_read_json_gcs_default_engine(session, scalars_dfs, gcs_folder):
         orient="records",
     )
 
-    pd.testing.assert_index_equal(df.columns, scalars_df.columns)
+    bigframes.testing.assert_index_equal(df.columns, scalars_df.columns)
 
     # The auto detects of BigQuery load job have restrictions to detect the bytes,
     # numeric and geometry types, so they're skipped here.
@@ -2063,7 +2076,7 @@ def test_read_json_gcs_default_engine(session, scalars_dfs, gcs_folder):
     scalars_df = scalars_df.drop(columns=["date_col", "datetime_col", "time_col"])
 
     assert df.shape[0] == scalars_df.shape[0]
-    pd.testing.assert_series_equal(df.dtypes, scalars_df.dtypes)
+    bigframes.testing.assert_series_equal(df.dtypes, scalars_df.dtypes)
 
 
 @pytest.mark.parametrize(
@@ -2211,7 +2224,7 @@ def _assert_query_dry_run_stats_are_valid(result: pd.Series):
         ]
     )
 
-    pd.testing.assert_index_equal(result.index, expected_index)
+    bigframes.testing.assert_index_equal(result.index, expected_index)
     assert result["columnCount"] + result["indexLevel"] > 0
 
 
@@ -2231,5 +2244,5 @@ def _assert_table_dry_run_stats_are_valid(result: pd.Series):
         ]
     )
 
-    pd.testing.assert_index_equal(result.index, expected_index)
+    bigframes.testing.assert_index_equal(result.index, expected_index)
     assert result["columnCount"] == len(result["columnDtypes"])

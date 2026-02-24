@@ -20,6 +20,7 @@ import bigframes_vendored.sqlglot.expressions as sge
 from bigframes import dtypes
 from bigframes import operations as ops
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+from bigframes.core.compile.sqlglot.expressions.common import round_towards_zero
 import bigframes.core.compile.sqlglot.expressions.constants as constants
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 from bigframes.operations import numeric_ops
@@ -467,7 +468,7 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
     result = sge.func("IEEE_DIVIDE", left_expr, right_expr)
     if left.dtype == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
-        return sge.Cast(this=sge.Floor(this=result), to="INT64")
+        return round_towards_zero(result)
     else:
         return result
 
@@ -510,7 +511,7 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     )
 
     if dtypes.is_numeric(right.dtype) and left.dtype == dtypes.TIMEDELTA_DTYPE:
-        result = sge.Cast(this=sge.Floor(this=result), to="INT64")
+        result = round_towards_zero(sge.func("IEEE_DIVIDE", left_expr, right_expr))
 
     return result
 
@@ -578,7 +579,7 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     if (dtypes.is_numeric(left.dtype) and right.dtype == dtypes.TIMEDELTA_DTYPE) or (
         left.dtype == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype)
     ):
-        return sge.Cast(this=sge.Floor(this=result), to="INT64")
+        return round_towards_zero(result)
     else:
         return result
 

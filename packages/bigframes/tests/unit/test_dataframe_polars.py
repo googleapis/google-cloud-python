@@ -4116,9 +4116,12 @@ def test_df_to_dict(scalars_df_index, scalars_pandas_df_index):
 
 
 def test_df_to_json_local_str(scalars_df_index, scalars_pandas_df_index):
-    bf_result = scalars_df_index.to_json()
+    # pandas 3.0 bugged for serializing date col
+    bf_result = scalars_df_index.drop(columns="date_col").to_json()
     # default_handler for arrow types that have no default conversion
-    pd_result = scalars_pandas_df_index.to_json(default_handler=str)
+    pd_result = scalars_pandas_df_index.drop(columns="date_col").to_json(
+        default_handler=str
+    )
 
     assert bf_result == pd_result
 

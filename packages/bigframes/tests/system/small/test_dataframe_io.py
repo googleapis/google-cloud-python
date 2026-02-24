@@ -12,34 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import typing
 from typing import Tuple
 
 import google.api_core.exceptions
+from google.cloud import bigquery
 import numpy
 import numpy.testing
 import pandas as pd
-import pandas.testing
 import pyarrow as pa
 import pytest
 
-import bigframes.dtypes as dtypes
-from bigframes.testing import utils
-
-try:
-    import pandas_gbq  # type: ignore
-except ImportError:  # pragma: NO COVER
-    # TODO(b/332758806): Run system tests without "extras"
-    pandas_gbq = None
-
-import typing
-
-from google.cloud import bigquery
-
 import bigframes
 import bigframes.dataframe
+import bigframes.dtypes as dtypes
 import bigframes.enums
 import bigframes.features
 import bigframes.pandas as bpd
+import bigframes.testing
+from bigframes.testing import utils
+
+pandas_gbq = pytest.importorskip("pandas_gbq")
 
 
 def test_sql_executes(scalars_df_default_index, bigquery_client):
@@ -69,7 +62,8 @@ def test_sql_executes(scalars_df_default_index, bigquery_client):
         .sort_values("rowindex")
         .reset_index(drop=True)
     )
-    pandas.testing.assert_frame_equal(bf_result, bq_result, check_dtype=False)
+    bq_result["bytes_col"] = bq_result["bytes_col"].astype(dtypes.BYTES_DTYPE)
+    bigframes.testing.assert_frame_equal(bf_result, bq_result, check_dtype=False)
 
 
 def test_sql_executes_and_includes_named_index(
@@ -100,7 +94,8 @@ def test_sql_executes_and_includes_named_index(
         .set_index("string_col")
         .sort_values("rowindex")
     )
-    pandas.testing.assert_frame_equal(
+    bq_result["bytes_col"] = bq_result["bytes_col"].astype(dtypes.BYTES_DTYPE)
+    bigframes.testing.assert_frame_equal(
         bf_result, bq_result, check_dtype=False, check_index_type=False
     )
 
@@ -133,7 +128,8 @@ def test_sql_executes_and_includes_named_multiindex(
         .set_index(["string_col", "bool_col"])
         .sort_values("rowindex")
     )
-    pandas.testing.assert_frame_equal(
+    bq_result["bytes_col"] = bq_result["bytes_col"].astype(dtypes.BYTES_DTYPE)
+    bigframes.testing.assert_frame_equal(
         bf_result, bq_result, check_dtype=False, check_index_type=False
     )
 
@@ -363,8 +359,8 @@ def test_to_pandas_batches_w_empty_dataframe(session):
         {
             "idx1": [],
             "idx2": [],
-            "col1": pandas.Series([], dtype="string[pyarrow]"),
-            "col2": pandas.Series([], dtype="Int64"),
+            "col1": pd.Series([], dtype="string[pyarrow]"),
+            "col2": pd.Series([], dtype="Int64"),
         },
         session=session,
     ).set_index(["idx1", "idx2"], drop=True)
@@ -373,7 +369,7 @@ def test_to_pandas_batches_w_empty_dataframe(session):
     assert len(results) == 1
     assert list(results[0].index.names) == ["idx1", "idx2"]
     assert list(results[0].columns) == ["col1", "col2"]
-    pandas.testing.assert_series_equal(results[0].dtypes, empty.dtypes)
+    bigframes.testing.assert_series_equal(results[0].dtypes, empty.dtypes)
 
 
 @pytest.mark.skipif(
@@ -514,8 +510,9 @@ def test_to_csv_index(
     dtype = scalars_df.reset_index().dtypes.to_dict()
     dtype.pop("geography_col")
     dtype.pop("rowindex")
-    # read_csv will decode into bytes inproperly, convert_pandas_dtypes will encode properly from string
+    # read_csv will decode into bytes, numeric inproperly, convert_pandas_dtypes will encode properly from string
     dtype.pop("bytes_col")
+    dtype.pop("numeric_col")
     gcs_df = pd.read_csv(
         utils.get_first_file_from_wildcard(path),
         dtype=dtype,
@@ -552,8 +549,9 @@ def test_to_csv_tabs(
     dtype = scalars_df.reset_index().dtypes.to_dict()
     dtype.pop("geography_col")
     dtype.pop("rowindex")
-    # read_csv will decode into bytes inproperly, convert_pandas_dtypes will encode properly from string
+    # read_csv will decode into bytes, numeric inproperly, convert_pandas_dtypes will encode properly from string
     dtype.pop("bytes_col")
+    dtype.pop("numeric_col")
     gcs_df = pd.read_csv(
         utils.get_first_file_from_wildcard(path),
         sep="\t",
@@ -575,7 +573,7 @@ def test_to_csv_tabs(
     ("index"),
     [True, False],
 )
-@pytest.mark.skipif(pandas_gbq is None, reason="required by pd.read_gbq")
+@pytest.mark.skipif(pandas_gbq is None, reason="required by pandas_gbq.read_gbq")
 def test_to_gbq_w_index(scalars_dfs, dataset_id, index):
     """Test the `to_gbq` API with the `index` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
@@ -588,7 +586,7 @@ def test_to_gbq_w_index(scalars_dfs, dataset_id, index):
         index_col = None
 
     df_in.to_gbq(destination_table, if_exists="replace", index=index)
-    df_out = pd.read_gbq(destination_table, index_col=index_col)
+    df_out = pandas_gbq.read_gbq(destination_table, index_col=index_col)
 
     if index:
         df_out = df_out.sort_index()
@@ -596,7 +594,7 @@ def test_to_gbq_w_index(scalars_dfs, dataset_id, index):
         df_out = df_out.sort_values("rowindex_2").reset_index(drop=True)
 
     utils.convert_pandas_dtypes(df_out, bytes_col=False)
-    # pd.read_gbq interprets bytes_col as object, reconvert to pyarrow binary
+    # pandas_gbq.read_gbq interprets bytes_col as object, reconvert to pyarrow binary
     df_out["bytes_col"] = df_out["bytes_col"].astype(pd.ArrowDtype(pa.binary()))
     expected = scalars_pandas_df.copy()
     expected.index.name = index_col
@@ -608,7 +606,7 @@ def test_to_gbq_if_exists_is_fail(scalars_dfs, dataset_id):
     destination_table = f"{dataset_id}.test_to_gbq_if_exists_is_fails"
     scalars_df.to_gbq(destination_table)
 
-    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
     assert len(gcs_df) == len(scalars_pandas_df)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
 
@@ -625,20 +623,20 @@ def test_to_gbq_if_exists_is_replace(scalars_dfs, dataset_id):
     destination_table = f"{dataset_id}.test_to_gbq_if_exists_is_replace"
     scalars_df.to_gbq(destination_table)
 
-    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
     assert len(gcs_df) == len(scalars_pandas_df)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
 
     # When replacing a table with same schema
     scalars_df.to_gbq(destination_table, if_exists="replace")
-    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
     assert len(gcs_df) == len(scalars_pandas_df)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
 
     # When replacing a table with different schema
     partitial_scalars_df = scalars_df.drop(columns=["string_col"])
     partitial_scalars_df.to_gbq(destination_table, if_exists="replace")
-    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
     assert len(gcs_df) == len(partitial_scalars_df)
     pd.testing.assert_index_equal(gcs_df.columns, partitial_scalars_df.columns)
 
@@ -648,20 +646,20 @@ def test_to_gbq_if_exists_is_append(scalars_dfs, dataset_id):
     destination_table = f"{dataset_id}.test_to_gbq_if_exists_is_append"
     scalars_df.to_gbq(destination_table)
 
-    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
     assert len(gcs_df) == len(scalars_pandas_df)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
 
     # When appending to a table with same schema
     scalars_df.to_gbq(destination_table, if_exists="append")
-    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
     assert len(gcs_df) == 2 * len(scalars_pandas_df)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
 
     # When appending to a table with different schema
     partitial_scalars_df = scalars_df.drop(columns=["string_col"])
     partitial_scalars_df.to_gbq(destination_table, if_exists="append")
-    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    gcs_df = pandas_gbq.read_gbq(destination_table, index_col="rowindex")
     assert len(gcs_df) == 3 * len(partitial_scalars_df)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_df.columns)
 
@@ -846,6 +844,8 @@ def test_to_gbq_w_None_column_names(
     """Test the `to_gbq` API with None as a column name."""
     destination_table = f"{dataset_id}.test_to_gbq_w_none_column_names"
 
+    # pandas 3.0 str datatypes produces nan instead of None, so cast to object
+    # scalars_df_index.columns = scalars_df_index.columns.astype(object)
     scalars_df_index = scalars_df_index.rename(columns={"int64_too": None})
     scalars_df_index.to_gbq(destination_table, if_exists="replace")
 

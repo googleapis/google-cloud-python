@@ -19,6 +19,7 @@ import pyarrow as pa
 import pytest
 
 from bigframes import bigquery
+import bigframes.testing
 
 _TIMESTAMP_DTYPE = pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
 
@@ -40,7 +41,7 @@ def test_unix_seconds(scalars_dfs):
         .apply(lambda ts: _to_unix_epoch(ts, "s"))
         .astype("Int64")
     )
-    pd.testing.assert_series_equal(actual_res, expected_res)
+    bigframes.testing.assert_series_equal(actual_res, expected_res)
 
 
 def test_unix_seconds_after_type_casting(int_series):
@@ -53,7 +54,9 @@ def test_unix_seconds_after_type_casting(int_series):
         .apply(lambda ts: _to_unix_epoch(ts, "s"))
         .astype("Int64")
     )
-    pd.testing.assert_series_equal(actual_res, expected_res, check_index_type=False)
+    bigframes.testing.assert_series_equal(
+        actual_res, expected_res, check_index_type=False
+    )
 
 
 def test_unix_seconds_incorrect_input_type_raise_error(scalars_dfs):
@@ -73,7 +76,7 @@ def test_unix_millis(scalars_dfs):
         .apply(lambda ts: _to_unix_epoch(ts, "ms"))
         .astype("Int64")
     )
-    pd.testing.assert_series_equal(actual_res, expected_res)
+    bigframes.testing.assert_series_equal(actual_res, expected_res)
 
 
 def test_unix_millis_after_type_casting(int_series):
@@ -86,7 +89,9 @@ def test_unix_millis_after_type_casting(int_series):
         .apply(lambda ts: _to_unix_epoch(ts, "ms"))
         .astype("Int64")
     )
-    pd.testing.assert_series_equal(actual_res, expected_res, check_index_type=False)
+    bigframes.testing.assert_series_equal(
+        actual_res, expected_res, check_index_type=False
+    )
 
 
 def test_unix_millis_incorrect_input_type_raise_error(scalars_dfs):
@@ -106,7 +111,7 @@ def test_unix_micros(scalars_dfs):
         .apply(lambda ts: _to_unix_epoch(ts, "us"))
         .astype("Int64")
     )
-    pd.testing.assert_series_equal(actual_res, expected_res)
+    bigframes.testing.assert_series_equal(actual_res, expected_res)
 
 
 def test_unix_micros_after_type_casting(int_series):
@@ -119,7 +124,9 @@ def test_unix_micros_after_type_casting(int_series):
         .apply(lambda ts: _to_unix_epoch(ts, "us"))
         .astype("Int64")
     )
-    pd.testing.assert_series_equal(actual_res, expected_res, check_index_type=False)
+    bigframes.testing.assert_series_equal(
+        actual_res, expected_res, check_index_type=False
+    )
 
 
 def test_unix_micros_incorrect_input_type_raise_error(scalars_dfs):

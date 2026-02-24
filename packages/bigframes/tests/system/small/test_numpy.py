@@ -16,6 +16,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
+import bigframes.testing
+
 
 @pytest.mark.parametrize(
     ("opname",),
@@ -45,7 +47,7 @@ def test_series_ufuncs(floats_pd, floats_bf, opname):
     bf_result = getattr(np, opname)(floats_bf).to_pandas()
     pd_result = getattr(np, opname)(floats_pd)
 
-    pd.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result, nulls_are_nan=True)
 
 
 @pytest.mark.parametrize(
@@ -79,7 +81,7 @@ def test_df_ufuncs(scalars_dfs, opname):
     ):
         pd_result["int64_col"] = pd_result["int64_col"].astype(pd.Float64Dtype())
 
-    pd.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, nulls_are_nan=True)
 
 
 @pytest.mark.parametrize(
@@ -99,7 +101,7 @@ def test_df_binary_ufuncs(scalars_dfs, opname):
     bf_result = op(scalars_df[["float64_col", "int64_col"]], 5.1).to_pandas()
     pd_result = op(scalars_pandas_df[["float64_col", "int64_col"]], 5.1)
 
-    pd.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, nulls_are_nan=True)
 
 
 # Operations tested here don't work on full dataframe in numpy+pandas
@@ -131,7 +133,7 @@ def test_series_binary_ufuncs(scalars_dfs, x, y, opname):
     bf_result = op(scalars_df[x], scalars_df[y]).to_pandas()
     pd_result = op(scalars_pandas_df[x], scalars_pandas_df[y])
 
-    pd.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result, nulls_are_nan=True)
 
 
 def test_series_binary_ufuncs_reverse(scalars_dfs):
@@ -141,7 +143,7 @@ def test_series_binary_ufuncs_reverse(scalars_dfs):
     bf_result = np.subtract(5.1, scalars_df["int64_col"]).to_pandas()
     pd_result = np.subtract(5.1, scalars_pandas_df["int64_col"])
 
-    pd.testing.assert_series_equal(bf_result, pd_result)
+    bigframes.testing.assert_series_equal(bf_result, pd_result, nulls_are_nan=True)
 
 
 def test_df_binary_ufuncs_reverse(scalars_dfs):
@@ -154,4 +156,4 @@ def test_df_binary_ufuncs_reverse(scalars_dfs):
         scalars_pandas_df[["float64_col", "int64_col"]],
     )
 
-    pd.testing.assert_frame_equal(bf_result, pd_result)
+    bigframes.testing.assert_frame_equal(bf_result, pd_result, nulls_are_nan=True)

@@ -174,12 +174,10 @@ class LowerDivRule(op_lowering.OpLoweringRule):
             divisor.output_type
         ):
             # exact same as floordiv impl for timedelta
-            numeric_result = ops.floordiv_op.as_expr(
+            numeric_result = ops.div_op.as_expr(
                 ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(dividend), divisor
             )
-            int_result = ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(numeric_result)
-            return ops.AsTypeOp(to_type=dtypes.TIMEDELTA_DTYPE).as_expr(int_result)
-
+            return _numeric_to_timedelta(numeric_result)
         if (
             dividend.output_type == dtypes.BOOL_DTYPE
             and divisor.output_type == dtypes.BOOL_DTYPE
@@ -226,11 +224,10 @@ class LowerFloorDivRule(op_lowering.OpLoweringRule):
             divisor.output_type
         ):
             # this is pretty fragile as zero will break it, and must fit back into int
-            numeric_result = expr.op.as_expr(
+            numeric_result = ops.div_op.as_expr(
                 ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(dividend), divisor
             )
-            int_result = ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(numeric_result)
-            return ops.AsTypeOp(to_type=dtypes.TIMEDELTA_DTYPE).as_expr(int_result)
+            return _numeric_to_timedelta(numeric_result)
 
         if dividend.output_type == dtypes.BOOL_DTYPE:
             dividend = ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(dividend)
@@ -316,6 +313,32 @@ class LowerInvertOp(op_lowering.OpLoweringRule):
             return generic_ops.PyUdfOp(invert_bytes, dtypes.BYTES_DTYPE).as_expr(
                 expr.inputs[0]
             )
+        return expr
+
+
+class LowerCeilOp(op_lowering.OpLoweringRule):
+    @property
+    def op(self) -> type[ops.ScalarOp]:
+        return numeric_ops.CeilOp
+
+    def lower(self, expr: expression.OpExpression) -> expression.Expression:
+        assert isinstance(expr.op, numeric_ops.CeilOp)
+        arg = expr.children[0]
+        if arg.output_type in (dtypes.INT_DTYPE, dtypes.BOOL_DTYPE):
+            return expr.op.as_expr(ops.AsTypeOp(dtypes.FLOAT_DTYPE).as_expr(arg))
+        return expr
+
+
+class LowerFloorOp(op_lowering.OpLoweringRule):
+    @property
+    def op(self) -> type[ops.ScalarOp]:
+        return numeric_ops.FloorOp
+
+    def lower(self, expr: expression.OpExpression) -> expression.Expression:
+        assert isinstance(expr.op, numeric_ops.FloorOp)
+        arg = expr.children[0]
+        if arg.output_type in (dtypes.INT_DTYPE, dtypes.BOOL_DTYPE):
+            return expr.op.as_expr(ops.AsTypeOp(dtypes.FLOAT_DTYPE).as_expr(arg))
         return expr
 
 
@@ -465,8 +488,21 @@ POLARS_LOWERING_RULES = (
     LowerInvertOp(),
     LowerIsinOp(),
     LowerLenOp(),
+    LowerCeilOp(),
+    LowerFloorOp(),
 )
 
 
 def lower_ops_to_polars(root: bigframe_node.BigFrameNode) -> bigframe_node.BigFrameNode:
     return op_lowering.lower_ops(root, rules=POLARS_LOWERING_RULES)
+
+
+def _numeric_to_timedelta(expr: expression.Expression) -> expression.Expression:
+    """rounding logic used for emulating timedelta ops"""
+    rounded_value = ops.where_op.as_expr(
+        ops.floor_op.as_expr(expr),
+        ops.gt_op.as_expr(expr, expression.const(0)),
+        ops.ceil_op.as_expr(expr),
+    )
+    int_value = ops.AsTypeOp(to_type=dtypes.INT_DTYPE).as_expr(rounded_value)
+    return ops.AsTypeOp(to_type=dtypes.TIMEDELTA_DTYPE).as_expr(int_value)

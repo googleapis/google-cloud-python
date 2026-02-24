@@ -17,10 +17,10 @@ import datetime
 
 from packaging import version
 import pandas as pd
-import pandas.testing
 import pytest
 
 from bigframes import dtypes
+import bigframes.testing
 
 
 def test_date_diff_between_series(session):
@@ -35,7 +35,7 @@ def test_date_diff_between_series(session):
     actual_result = (bf_df["col_1"] - bf_df["col_2"]).to_pandas()
 
     expected_result = (pd_df["col_1"] - pd_df["col_2"]).astype(dtypes.TIMEDELTA_DTYPE)
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
 
@@ -47,7 +47,7 @@ def test_date_diff_literal_sub_series(scalars_dfs):
     actual_result = (literal - bf_df["date_col"]).to_pandas()
 
     expected_result = (literal - pd_df["date_col"]).astype(dtypes.TIMEDELTA_DTYPE)
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
 
@@ -59,7 +59,7 @@ def test_date_diff_series_sub_literal(scalars_dfs):
     actual_result = (bf_df["date_col"] - literal).to_pandas()
 
     expected_result = (pd_df["date_col"] - literal).astype(dtypes.TIMEDELTA_DTYPE)
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
 
@@ -70,7 +70,7 @@ def test_date_series_diff_agg(scalars_dfs):
     actual_result = bf_df["date_col"].diff().to_pandas()
 
     expected_result = pd_df["date_col"].diff().astype(dtypes.TIMEDELTA_DTYPE)
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )
 
@@ -86,6 +86,6 @@ def test_date_can_cast_after_accessor(scalars_dfs):
         pd.to_datetime(pd_df["date_col"]).dt.isocalendar().week.astype("Int64")
     )
 
-    pandas.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         actual_result, expected_result, check_dtype=False, check_index_type=False
     )

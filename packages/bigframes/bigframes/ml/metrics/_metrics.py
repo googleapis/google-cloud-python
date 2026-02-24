@@ -214,7 +214,7 @@ def confusion_matrix(
         y_true = row["y_true"]
         y_pred = row["y_pred"]
         count = row["dummy"]
-        confusion_matrix[y_pred][y_true] = count
+        confusion_matrix.at[y_true, y_pred] = count
 
     return confusion_matrix
 
@@ -251,7 +251,7 @@ def recall_score(
         / is_accurate.groupby(y_true_series).count()
     ).to_pandas()
 
-    recall_score = pd.Series(0, index=index)
+    recall_score = pd.Series(0.0, index=index)
     for i in recall_score.index:
         recall_score.loc[i] = recall.loc[i]
 
@@ -321,7 +321,7 @@ def _precision_score_per_label(y_true: bpd.Series, y_pred: bpd.Series) -> pd.Ser
         is_accurate.groupby(y_pred).sum() / is_accurate.groupby(y_pred).count()
     ).to_pandas()
 
-    precision_score = pd.Series(0, index=index)
+    precision_score = pd.Series(0.0, index=index)
     for i in precision.index:
         precision_score.loc[i] = precision.loc[i]
 
@@ -366,7 +366,7 @@ def f1_score(
     recall = recall_score(y_true_series, y_pred_series, average=None)
     precision = precision_score(y_true_series, y_pred_series, average=None)
 
-    f1_score = pd.Series(0, index=recall.index)
+    f1_score = pd.Series(0.0, index=recall.index)
     for index in recall.index:
         if precision[index] + recall[index] != 0:
             f1_score[index] = (

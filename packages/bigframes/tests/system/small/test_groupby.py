@@ -17,7 +17,7 @@ import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
-from bigframes.testing.utils import assert_frame_equal
+import bigframes.testing
 
 # =================
 # DataFrame.groupby
@@ -51,14 +51,16 @@ def test_dataframe_groupby_numeric_aggregate(
     pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
     bf_result_computed = bf_result.to_pandas()
     # Pandas std function produces float64, not matching Float64 from bigframes
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 def test_dataframe_groupby_head(scalars_df_index, scalars_pandas_df_index):
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = scalars_df_index[col_names].groupby("bool_col").head(2).to_pandas()
     pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").head(2)
-    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_dataframe_groupby_len(scalars_df_index, scalars_pandas_df_index):
@@ -99,7 +101,7 @@ def test_dataframe_groupby_quantile(scalars_df_index, scalars_pandas_df_index, q
         scalars_df_index[col_names].groupby("string_col").quantile(q)
     ).to_pandas()
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").quantile(q)
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
 
@@ -139,7 +141,7 @@ def test_dataframe_groupby_rank(
         .astype("float64")
         .astype("Float64")
     )
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
 
@@ -167,7 +169,9 @@ def test_dataframe_groupby_aggregate(
     pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 def test_dataframe_groupby_corr(scalars_df_index, scalars_pandas_df_index):
@@ -175,7 +179,7 @@ def test_dataframe_groupby_corr(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index[col_names].groupby("bool_col").corr().to_pandas()
     pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").corr()
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
 
@@ -185,7 +189,7 @@ def test_dataframe_groupby_cov(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index[col_names].groupby("bool_col").cov().to_pandas()
     pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").cov()
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
 
@@ -205,7 +209,7 @@ def test_dataframe_groupby_agg_string(
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").agg("count")
     bf_result_computed = bf_result.to_pandas(ordered=ordered)
 
-    assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, ignore_order=not ordered
     )
 
@@ -215,7 +219,9 @@ def test_dataframe_groupby_agg_size_string(scalars_df_index, scalars_pandas_df_i
     bf_result = scalars_df_index[col_names].groupby("string_col").agg("size")
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").agg("size")
 
-    pd.testing.assert_series_equal(pd_result, bf_result.to_pandas(), check_dtype=False)
+    bigframes.testing.assert_series_equal(
+        pd_result, bf_result.to_pandas(), check_dtype=False
+    )
 
 
 def test_dataframe_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
@@ -233,7 +239,7 @@ def test_dataframe_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     # some inconsistency between versions, so normalize to bigframes behavior
     pd_result = pd_result.rename({"amin": "min"}, axis="columns")
     bf_result_computed = bf_result_computed.rename({"amin": "min"}, axis="columns")
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, check_index_type=False
     )
 
@@ -252,7 +258,9 @@ def test_dataframe_groupby_agg_list_w_column_multi_index(
     pd_result = pd_df.groupby(level=0).agg(["count", np.min, "size"])
 
     bf_result_computed = bf_result.to_pandas()
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -282,7 +290,7 @@ def test_dataframe_groupby_agg_dict_with_list(
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, check_index_type=False
     )
 
@@ -301,7 +309,9 @@ def test_dataframe_groupby_agg_dict_no_lists(scalars_df_index, scalars_pandas_df
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 def test_dataframe_groupby_agg_named(scalars_df_index, scalars_pandas_df_index):
@@ -324,7 +334,9 @@ def test_dataframe_groupby_agg_named(scalars_df_index, scalars_pandas_df_index):
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 def test_dataframe_groupby_agg_kw_tuples(scalars_df_index, scalars_pandas_df_index):
@@ -344,7 +356,9 @@ def test_dataframe_groupby_agg_kw_tuples(scalars_df_index, scalars_pandas_df_ind
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -389,7 +403,7 @@ def test_dataframe_groupby_multi_sum(
         # BigQuery DataFrames default indices use nullable Int64 always
         pd_series.index = pd_series.index.astype("Int64")
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_series,
         bf_result,
     )
@@ -428,7 +442,9 @@ def test_dataframe_groupby_analytic(
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -449,7 +465,9 @@ def test_dataframe_groupby_cumcount(
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_series_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_series_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 def test_dataframe_groupby_size_as_index_false(
@@ -459,7 +477,7 @@ def test_dataframe_groupby_size_as_index_false(
     bf_result_computed = bf_result.to_pandas()
     pd_result = scalars_pandas_df_index.groupby("string_col", as_index=False).size()
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, check_index_type=False
     )
 
@@ -471,7 +489,9 @@ def test_dataframe_groupby_size_as_index_true(
     pd_result = scalars_pandas_df_index.groupby("string_col", as_index=True).size()
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_series_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_series_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 def test_dataframe_groupby_skew(scalars_df_index, scalars_pandas_df_index):
@@ -479,21 +499,20 @@ def test_dataframe_groupby_skew(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index[col_names].groupby("bool_col").skew().to_pandas()
     pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").skew()
 
-    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
+@pytest.mark.skipif(
+    not pd.__version__.startswith("3"),
+    reason="groupby.kurt not supported on legacy pandas versions",
+)
 def test_dataframe_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
     col_names = ["float64_col", "int64_col", "bool_col"]
     bf_result = scalars_df_index[col_names].groupby("bool_col").kurt().to_pandas()
     # Pandas doesn't have groupby.kurt yet: https://github.com/pandas-dev/pandas/issues/40139
-    pd_result = (
-        scalars_pandas_df_index[col_names]
-        .groupby("bool_col")
-        .apply(pd.Series.kurt)
-        .drop("bool_col", axis=1)
-    )
+    pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").kurt()
 
-    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -509,7 +528,7 @@ def test_dataframe_groupby_diff(scalars_df_index, scalars_pandas_df_index, order
     pd_result = scalars_pandas_df_index[col_names].groupby("string_col").diff(-1)
     bf_result_computed = bf_result.to_pandas(ordered=ordered)
 
-    assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, ignore_order=not ordered
     )
 
@@ -526,7 +545,7 @@ def test_dataframe_groupby_getitem(
         scalars_pandas_df_index[col_names].groupby("string_col")["int64_col"].min()
     )
 
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_dataframe_groupby_getitem_error(
@@ -557,7 +576,7 @@ def test_dataframe_groupby_getitem_list(
         scalars_pandas_df_index[col_names].groupby("string_col")[col_names].min()
     )
 
-    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_dataframe_groupby_getitem_list_error(
@@ -590,11 +609,15 @@ def test_dataframe_groupby_nonnumeric_with_mean():
 
     bf_result = bpd.DataFrame(df).groupby(["key1", "key2"]).mean().to_pandas()
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result, check_index_type=False, check_dtype=False
     )
 
 
+@pytest.mark.skipif(
+    pd.__version__.startswith("3"),
+    reason="value_counts behavior change b/485962498",
+)
 @pytest.mark.parametrize(
     ("subset", "normalize", "ascending", "dropna", "as_index"),
     [
@@ -631,10 +654,10 @@ def test_dataframe_groupby_value_counts(
     )
 
     if as_index:
-        pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+        bigframes.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
     else:
         pd_result.index = pd_result.index.astype("Int64")
-        pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+        bigframes.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -660,7 +683,7 @@ def test_dataframe_groupby_first(
         .groupby(scalars_pandas_df_index.int64_col % 2)
         .first(numeric_only=numeric_only, min_count=min_count)
     )
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result,
         bf_result,
     )
@@ -684,7 +707,7 @@ def test_dataframe_groupby_last(
     pd_result = scalars_pandas_df_index.groupby(
         scalars_pandas_df_index.int64_col % 2
     ).last(numeric_only=numeric_only, min_count=min_count)
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result,
         bf_result,
     )
@@ -720,7 +743,7 @@ def test_series_groupby_agg_string(scalars_df_index, scalars_pandas_df_index, ag
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_result, bf_result_computed, check_dtype=False, check_names=False
     )
 
@@ -738,7 +761,7 @@ def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         pd_result, bf_result_computed, check_dtype=False, check_names=False
     )
 
@@ -793,7 +816,7 @@ def test_series_groupby_rank(
         .astype("float64")
         .astype("Float64")
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
 
@@ -808,7 +831,7 @@ def test_series_groupby_head(scalars_df_index, scalars_pandas_df_index, dropna):
     pd_result = scalars_pandas_df_index.groupby("bool_col", dropna=dropna)[
         "int64_too"
     ].head(1)
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_series_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
@@ -823,7 +846,7 @@ def test_series_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
         pd.Series.kurt
     )
 
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 def test_series_groupby_size(scalars_df_index, scalars_pandas_df_index):
@@ -837,7 +860,9 @@ def test_series_groupby_size(scalars_df_index, scalars_pandas_df_index):
     )
     bf_result_computed = bf_result.to_pandas()
 
-    pd.testing.assert_series_equal(pd_result, bf_result_computed, check_dtype=False)
+    bigframes.testing.assert_series_equal(
+        pd_result, bf_result_computed, check_dtype=False
+    )
 
 
 def test_series_groupby_skew(scalars_df_index, scalars_pandas_df_index):
@@ -853,7 +878,7 @@ def test_series_groupby_skew(scalars_df_index, scalars_pandas_df_index):
         .skew()
     )
 
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -868,11 +893,15 @@ def test_series_groupby_quantile(scalars_df_index, scalars_pandas_df_index, q):
         scalars_df_index.groupby("string_col")["int64_col"].quantile(q)
     ).to_pandas()
     pd_result = scalars_pandas_df_index.groupby("string_col")["int64_col"].quantile(q)
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
 
 
+@pytest.mark.skipif(
+    pd.__version__.startswith("3"),
+    reason="Pandas 3 change value_counts behavior",
+)
 @pytest.mark.parametrize(
     ("normalize", "ascending", "dropna"),
     [
@@ -905,7 +934,7 @@ def test_series_groupby_value_counts(
     pd_result = scalars_pandas_df_index.groupby("bool_col")["string_col"].value_counts(
         normalize=normalize, ascending=ascending, dropna=dropna
     )
-    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+    bigframes.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
 @pytest.mark.parametrize(
@@ -926,7 +955,7 @@ def test_series_groupby_first(
     pd_result = scalars_pandas_df_index.groupby("string_col")["int64_col"].first(
         numeric_only=numeric_only, min_count=min_count
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_result,
         bf_result,
     )
@@ -950,4 +979,4 @@ def test_series_groupby_last(
     pd_result = scalars_pandas_df_index.groupby("string_col")["int64_col"].last(
         numeric_only=numeric_only, min_count=min_count
     )
-    pd.testing.assert_series_equal(pd_result, bf_result)
+    bigframes.testing.assert_series_equal(pd_result, bf_result)

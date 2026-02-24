@@ -12,15 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""[Experimental] Utilities for testing BigQuery DataFrames.
+from __future__ import annotations
 
-These modules are provided for testing the BigQuery DataFrames package. The
-interface is not considered stable.
-"""
-from bigframes.testing.utils import (
-    assert_frame_equal,
-    assert_index_equal,
-    assert_series_equal,
-)
+import bigframes_vendored.sqlglot.expressions as sge
 
-__all__ = ["assert_frame_equal", "assert_series_equal", "assert_index_equal"]
+
+def round_towards_zero(expr: sge.Expression):
+    """
+    Round a float value to to an integer, always rounding towards zero.
+
+    This is used to handle duration/timedelta emulation mostly.
+    """
+    return sge.Cast(
+        this=sge.If(
+            this=sge.GT(this=expr, expression=sge.convert(0)),
+            true=sge.Floor(this=expr),
+            false=sge.Ceil(this=expr),
+        ),
+        to="INT64",
+    )

@@ -113,13 +113,13 @@ def get_standardized_ids(
     """
     col_ids = [
         UNNAMED_COLUMN_ID
-        if col_label is None
+        if pd.isna(col_label)  # type: ignore
         else label_to_identifier(col_label, strict=strict)
         for col_label in col_labels
     ]
     idx_ids = [
         UNNAMED_INDEX_ID
-        if idx_label is None
+        if pd.isna(idx_label)  # type: ignore
         else label_to_identifier(idx_label, strict=strict)
         for idx_label in idx_labels
     ]

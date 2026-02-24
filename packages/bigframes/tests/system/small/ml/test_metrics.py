@@ -20,6 +20,7 @@ import pytest
 
 import bigframes
 from bigframes.ml import metrics
+import bigframes.testing
 
 
 def test_r2_score_perfect_fit(session):
@@ -161,7 +162,7 @@ def test_roc_curve_binary_classification_prediction_returns_expected(session):
     pd_tpr = tpr.to_pandas()
     pd_thresholds = thresholds.to_pandas()
 
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         # skip testing the first value, as it is redundant and inconsistent across sklearn versions
         pd_thresholds[1:],
         pd.Series(
@@ -171,7 +172,7 @@ def test_roc_curve_binary_classification_prediction_returns_expected(session):
         ),
         check_index=False,
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_fpr,
         pd.Series(
             [0.0, 0.0, 0.0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 0.75, 1.0],
@@ -180,7 +181,7 @@ def test_roc_curve_binary_classification_prediction_returns_expected(session):
         ),
         check_index_type=False,
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_tpr,
         pd.Series(
             [
@@ -261,7 +262,7 @@ def test_roc_curve_binary_classification_decision_returns_expected(session):
     pd_tpr = tpr.to_pandas()
     pd_thresholds = thresholds.to_pandas()
 
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         # skip testing the first value, as it is redundant and inconsistent across sklearn versions
         pd_thresholds[1:],
         pd.Series(
@@ -271,7 +272,7 @@ def test_roc_curve_binary_classification_decision_returns_expected(session):
         ),
         check_index=False,
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_fpr,
         pd.Series(
             [0.0, 0.0, 1.0],
@@ -280,7 +281,7 @@ def test_roc_curve_binary_classification_decision_returns_expected(session):
         ),
         check_index_type=False,
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_tpr,
         pd.Series(
             [
@@ -353,7 +354,7 @@ def test_roc_curve_binary_classification_prediction_series(session):
     pd_tpr = tpr.to_pandas()
     pd_thresholds = thresholds.to_pandas()
 
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         # skip testing the first value, as it is redundant and inconsistent across sklearn versions
         pd_thresholds[1:],
         pd.Series(
@@ -363,7 +364,7 @@ def test_roc_curve_binary_classification_prediction_series(session):
         ),
         check_index=False,
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_fpr,
         pd.Series(
             [0.0, 0.0, 0.0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 0.75, 1.0],
@@ -372,7 +373,7 @@ def test_roc_curve_binary_classification_prediction_series(session):
         ),
         check_index_type=False,
     )
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         pd_tpr,
         pd.Series(
             [
@@ -505,7 +506,7 @@ def test_confusion_matrix(session):
             2: [0, 1, 2],
         }
     ).astype("int64")
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         confusion_matrix, expected_pd_df, check_index_type=False
     )
 
@@ -523,7 +524,7 @@ def test_confusion_matrix_column_index(session):
         {1: [1, 0, 1, 0], 2: [0, 0, 2, 0], 3: [0, 0, 0, 0], 4: [0, 1, 0, 1]},
         index=[1, 2, 3, 4],
     ).astype("int64")
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         confusion_matrix, expected_pd_df, check_index_type=False
     )
 
@@ -542,7 +543,7 @@ def test_confusion_matrix_matches_sklearn(session):
         pd_df[["y_true"]], pd_df[["y_pred"]]
     )
     expected_pd_df = pd.DataFrame(expected_confusion_matrix)
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         confusion_matrix, expected_pd_df, check_index_type=False
     )
 
@@ -564,7 +565,7 @@ def test_confusion_matrix_str_matches_sklearn(session):
         expected_confusion_matrix, index=["ant", "bird", "cat"]
     )
     expected_pd_df.columns = pd.Index(["ant", "bird", "cat"])
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         confusion_matrix, expected_pd_df, check_index_type=False
     )
 
@@ -585,7 +586,7 @@ def test_confusion_matrix_series(session):
             2: [0, 1, 2],
         }
     ).astype("int64")
-    pd.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         confusion_matrix, expected_pd_df, check_index_type=False
     )
 
@@ -605,7 +606,9 @@ def test_recall_score(session):
     expected_index = [0, 1, 2]
     expected_recall = pd.Series(expected_values, index=expected_index)
 
-    pd.testing.assert_series_equal(recall, expected_recall, check_index_type=False)
+    bigframes.testing.assert_series_equal(
+        recall, expected_recall, check_index_type=False
+    )
 
 
 def test_recall_score_matches_sklearn(session):
@@ -623,7 +626,9 @@ def test_recall_score_matches_sklearn(session):
     )
     expected_index = [0, 1, 2]
     expected_recall = pd.Series(expected_values, index=expected_index)
-    pd.testing.assert_series_equal(recall, expected_recall, check_index_type=False)
+    bigframes.testing.assert_series_equal(
+        recall, expected_recall, check_index_type=False
+    )
 
 
 def test_recall_score_str_matches_sklearn(session):
@@ -641,7 +646,9 @@ def test_recall_score_str_matches_sklearn(session):
     )
     expected_index = ["ant", "bird", "cat"]
     expected_recall = pd.Series(expected_values, index=expected_index)
-    pd.testing.assert_series_equal(recall, expected_recall, check_index_type=False)
+    bigframes.testing.assert_series_equal(
+        recall, expected_recall, check_index_type=False
+    )
 
 
 def test_recall_score_series(session):
@@ -657,7 +664,9 @@ def test_recall_score_series(session):
     expected_index = [0, 1, 2]
     expected_recall = pd.Series(expected_values, index=expected_index)
 
-    pd.testing.assert_series_equal(recall, expected_recall, check_index_type=False)
+    bigframes.testing.assert_series_equal(
+        recall, expected_recall, check_index_type=False
+    )
 
 
 def test_precision_score(session):
@@ -675,7 +684,7 @@ def test_precision_score(session):
     expected_index = [0, 1, 2]
     expected_precision = pd.Series(expected_values, index=expected_index)
 
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         precision_score, expected_precision, check_index_type=False
     )
 
@@ -698,7 +707,7 @@ def test_precision_score_matches_sklearn(session):
     )
     expected_index = [0, 1, 2]
     expected_precision = pd.Series(expected_values, index=expected_index)
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         precision_score, expected_precision, check_index_type=False
     )
 
@@ -720,7 +729,7 @@ def test_precision_score_str_matches_sklearn(session):
     )
     expected_index = ["ant", "bird", "cat"]
     expected_precision = pd.Series(expected_values, index=expected_index)
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         precision_score, expected_precision, check_index_type=False
     )
 
@@ -738,7 +747,7 @@ def test_precision_score_series(session):
     expected_index = [0, 1, 2]
     expected_precision = pd.Series(expected_values, index=expected_index)
 
-    pd.testing.assert_series_equal(
+    bigframes.testing.assert_series_equal(
         precision_score, expected_precision, check_index_type=False
     )
 
@@ -823,7 +832,7 @@ def test_f1_score(session):
     expected_index = [0, 1, 2]
     expected_f1 = pd.Series(expected_values, index=expected_index)
 
-    pd.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
+    bigframes.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
 
 
 def test_f1_score_matches_sklearn(session):
@@ -841,7 +850,7 @@ def test_f1_score_matches_sklearn(session):
     )
     expected_index = [0, 1, 2]
     expected_f1 = pd.Series(expected_values, index=expected_index)
-    pd.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
+    bigframes.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
 
 
 def test_f1_score_str_matches_sklearn(session):
@@ -859,7 +868,7 @@ def test_f1_score_str_matches_sklearn(session):
     )
     expected_index = ["ant", "bird", "cat"]
     expected_f1 = pd.Series(expected_values, index=expected_index)
-    pd.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
+    bigframes.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
 
 
 def test_f1_score_series(session):
@@ -875,7 +884,7 @@ def test_f1_score_series(session):
     expected_index = [0, 1, 2]
     expected_f1 = pd.Series(expected_values, index=expected_index)
 
-    pd.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
+    bigframes.testing.assert_series_equal(f1_score, expected_f1, check_index_type=False)
 
 
 def test_mean_squared_error(session: bigframes.Session):

@@ -206,12 +206,12 @@ def _rewrite_div_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
 
 
 def _rewrite_floordiv_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
-    result = _TypedExpr.create_op_expr(ops.floordiv_op, left, right)
-
     if left.dtype == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
-        return _TypedExpr.create_op_expr(ops.timedelta_floor_op, result)
+        return _TypedExpr.create_op_expr(
+            ops.timedelta_floor_op, _TypedExpr.create_op_expr(ops.div_op, left, right)
+        )
 
-    return result
+    return _TypedExpr.create_op_expr(ops.floordiv_op, left, right)
 
 
 def _rewrite_to_timedelta_op(op: ops.ToTimedeltaOp, arg: _TypedExpr):

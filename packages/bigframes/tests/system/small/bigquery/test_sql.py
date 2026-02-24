@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
 import pytest
 
 import bigframes.bigquery as bbq
 import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
+import bigframes.testing
 
 
 def test_sql_scalar_for_all_scalar_types(scalars_df_null_index):
@@ -59,8 +59,8 @@ def test_sql_scalar_for_bool_series(scalars_df_index):
     series: bpd.Series = scalars_df_index["bool_col"]
     result = bbq.sql_scalar("CAST({0} AS INT64)", [series])
     expected = series.astype(dtypes.INT_DTYPE)
-    expected.name = None
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    expected.name = result.name
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
 
 
 @pytest.mark.parametrize(
@@ -83,8 +83,8 @@ def test_sql_scalar_outputs_all_scalar_types(scalars_df_index, column_name):
     series: bpd.Series = scalars_df_index[column_name]
     result = bbq.sql_scalar("{0}", [series])
     expected = series
-    expected.name = None
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    expected.name = result.name
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
 
 
 def test_sql_scalar_for_array_series(repeated_df):
@@ -114,14 +114,14 @@ def test_sql_scalar_for_array_series(repeated_df):
         + repeated_df["numeric_list_col"].list.len()
         + repeated_df["string_list_col"].list.len()
     )
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
 
 
 def test_sql_scalar_outputs_array_series(repeated_df):
     result = bbq.sql_scalar("{0}", [repeated_df["int_list_col"]])
     expected = repeated_df["int_list_col"]
-    expected.name = None
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    expected.name = result.name
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
 
 
 def test_sql_scalar_for_struct_series(nested_structs_df):
@@ -132,14 +132,14 @@ def test_sql_scalar_for_struct_series(nested_structs_df):
     expected = nested_structs_df["person"].struct.field(
         "name"
     ).str.len() + nested_structs_df["person"].struct.field("age")
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
 
 
 def test_sql_scalar_outputs_struct_series(nested_structs_df):
     result = bbq.sql_scalar("{0}", [nested_structs_df["person"]])
     expected = nested_structs_df["person"]
-    expected.name = None
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    expected.name = result.name
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
 
 
 def test_sql_scalar_for_json_series(json_df):
@@ -150,12 +150,12 @@ def test_sql_scalar_for_json_series(json_df):
         ],
     )
     expected = bbq.json_value(json_df["json_col"], "$.int_value")
-    expected.name = None
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    expected.name = result.name
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
 
 
 def test_sql_scalar_outputs_json_series(json_df):
     result = bbq.sql_scalar("{0}", [json_df["json_col"]])
     expected = json_df["json_col"]
-    expected.name = None
-    pd.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())
+    expected.name = result.name
+    bigframes.testing.assert_series_equal(result.to_pandas(), expected.to_pandas())

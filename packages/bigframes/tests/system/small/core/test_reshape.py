@@ -13,11 +13,11 @@
 # limitations under the License.
 
 import pandas as pd
-import pandas.testing
 import pytest
 
 from bigframes import session
 from bigframes.core.reshape import merge
+import bigframes.testing
 
 
 @pytest.mark.parametrize(
@@ -56,7 +56,7 @@ def test_join_with_index(
         how=how,
     )
 
-    pandas.testing.assert_frame_equal(
+    bigframes.testing.assert_frame_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 

@@ -53,6 +53,47 @@ def apply_op_pairwise(
     return new_arr
 
 
+def apply_op(
+    array: array_value.ArrayValue, op: ops.UnaryOp, excluded_cols=[]
+) -> array_value.ArrayValue:
+    exprs = []
+    labels = []
+    for arg in array.column_ids:
+        if arg in excluded_cols:
+            continue
+        try:
+            _ = op.output_type(array.get_column_type(arg))
+            expr = op.as_expr(arg)
+            exprs.append(expr)
+            labels.append(f"{arg}_{op.name}")
+        except TypeError:
+            continue
+    assert len(exprs) > 0
+    new_arr, ids = array.compute_values(exprs)
+    new_arr = new_arr.rename_columns(
+        {new_col: label for new_col, label in zip(ids, labels)}
+    )
+    return new_arr
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+def test_engines_project_ceil(
+    scalars_array_value: array_value.ArrayValue,
+    engine,
+):
+    arr = apply_op(scalars_array_value, ops.ceil_op)
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+def test_engines_project_floor(
+    scalars_array_value: array_value.ArrayValue,
+    engine,
+):
+    arr = apply_op(scalars_array_value, ops.floor_op)
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_project_add(
     scalars_array_value: array_value.ArrayValue,

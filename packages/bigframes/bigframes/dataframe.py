@@ -4398,7 +4398,7 @@ class DataFrame:
         **kwargs,
     ) -> None:
         return self.to_pandas(allow_large_results=allow_large_results).to_excel(
-            excel_writer, sheet_name, **kwargs
+            excel_writer, sheet_name=sheet_name, **kwargs
         )
 
     def to_latex(
