@@ -72,6 +72,13 @@ class ExperimentOptions:
 
     @property
     def sql_compiler(self) -> Literal["legacy", "stable", "experimental"]:
+        """Set to 'experimental' to try out the latest in compilation experiments..
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.experiments.sql_compiler = 'experimental'  # doctest: +SKIP
+        """
         return self._sql_compiler
 
     @sql_compiler.setter
