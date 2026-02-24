@@ -583,7 +583,7 @@ def prerelease_deps(session, protobuf_implementation):
     # 4. Handle Emulator (if you ever test against one)
     if "_FIRESTORE_EMULATOR_HOST" in os.environ:
         test_env["_FIRESTORE_EMULATOR_HOST"] = os.environ["_FIRESTORE_EMULATOR_HOST"]
-
+    
     session.run(
         "py.test",
         "tests/unit",
@@ -594,7 +594,7 @@ def prerelease_deps(session, protobuf_implementation):
 
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
-
+    print("DINOSAUR:",test_env)
     # Only run system tests if found.
     if os.path.exists(system_test_path):
         session.run(
