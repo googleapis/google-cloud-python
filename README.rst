@@ -97,6 +97,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `API client core library <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-api-core>`_
+     - stable
+     - |PyPI-google-api-core|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `API client core library <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-core>`_
      - stable
      - |PyPI-google-cloud-core|
@@ -616,6 +622,12 @@ Libraries
    * - `Private Certificate Authority <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-private-ca>`_
      - stable
      - |PyPI-google-cloud-private-ca|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Proto Plus <https://github.com/googleapis/google-cloud-python/tree/main/packages/proto-plus>`_
+     - stable
+     - |PyPI-proto-plus|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
@@ -1231,12 +1243,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
+   * - `Error Reporting API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-error-reporting>`_
      - preview
      - |PyPI-google-cloud-error-reporting|
      - `API Issues <https://issuetracker.google.com/savedsearches/559780>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187271>`_
-     - `Client Library Issues <https://github.com/googleapis/python-error-reporting/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Eventarc Publishing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc-publishing>`_
      - preview
      - |PyPI-google-cloud-eventarc-publishing|
@@ -1648,6 +1660,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-notebooks
 .. |PyPI-google-cloud-api-gateway| image:: https://img.shields.io/pypi/v/google-cloud-api-gateway.svg
      :target: https://pypi.org/project/google-cloud-api-gateway
+.. |PyPI-google-api-core| image:: https://img.shields.io/pypi/v/google-api-core.svg
+     :target: https://pypi.org/project/google-api-core
 .. |PyPI-google-cloud-core| image:: https://img.shields.io/pypi/v/google-cloud-core.svg
      :target: https://pypi.org/project/google-cloud-core
 .. |PyPI-googleapis-common-protos| image:: https://img.shields.io/pypi/v/googleapis-common-protos.svg
@@ -1822,6 +1836,8 @@ Libraries
      :target: https://pypi.org/project/db-dtypes
 .. |PyPI-google-cloud-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
      :target: https://pypi.org/project/google-cloud-private-ca
+.. |PyPI-proto-plus| image:: https://img.shields.io/pypi/v/proto-plus.svg
+     :target: https://pypi.org/project/proto-plus
 .. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
      :target: https://pypi.org/project/google-cloud-pubsub
 .. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
