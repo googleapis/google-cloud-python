@@ -566,6 +566,8 @@ def prerelease_deps(session, protobuf_implementation):
     if creds:
         test_env["GOOGLE_APPLICATION_CREDENTIALS"] = creds
         test_env["FIRESTORE_APPLICATION_CREDENTIALS"] = creds
+    else:
+        session.error("System tests require GOOGLE_APPLICATION_CREDENTIALS or FIRESTORE_APPLICATION_CREDENTIALS to be set in the shell.")
 
     # 2. Handle Project ID
     # Enable a fallback to FIRESTORE_PROJECT
@@ -599,6 +601,7 @@ def prerelease_deps(session, protobuf_implementation):
     if os.path.exists(system_test_path):
         session.run(
             "py.test",
+            "-s",
             "--verbose",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
@@ -608,6 +611,7 @@ def prerelease_deps(session, protobuf_implementation):
     if os.path.exists(system_test_folder_path):
         session.run(
             "py.test",
+            "-s",
             "--verbose",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
