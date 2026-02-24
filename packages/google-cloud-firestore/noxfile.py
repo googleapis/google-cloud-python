@@ -560,7 +560,9 @@ def prerelease_deps(session, protobuf_implementation):
 
     # 1. Handle Credentials
     # Enable a fallback to GOOGLE_APPLICATION_CREDENTIALS
-    creds = os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS") or os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    creds = os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS") or os.environ.get(
+        "GOOGLE_APPLICATION_CREDENTIALS"
+    )
     if creds:
         test_env["GOOGLE_APPLICATION_CREDENTIALS"] = creds
         test_env["FIRESTORE_APPLICATION_CREDENTIALS"] = creds
