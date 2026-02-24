@@ -577,7 +577,6 @@ def prerelease_deps(session, protobuf_implementation):
     system_test_folder_path = os.path.join("tests", "system")
     if os.path.exists(system_test_folder_path):
         if not creds_path:
-            # DO NOT use session.error here.
             # In CI Prerelease jobs, we expect credentials to be missing.
             print("SKIPPING SYSTEM TESTS: No credentials found in environment.")
         else:
