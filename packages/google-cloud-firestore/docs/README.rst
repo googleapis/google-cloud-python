@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-firestore/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/packages/google-cloud-firestore/samples
 
 
 Supported Python Versions
