@@ -35,7 +35,7 @@ dependencies = [
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
     # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
     "jinja2 >= 2.11",
-    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf >= 4.25.8, <7.0.0",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
     "grpc-google-iam-v1 >= 0.14.0, < 1.0.0",
@@ -70,8 +70,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
@@ -83,7 +81,7 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     platforms="Posix; MacOS X",
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     install_requires=dependencies,
     include_package_data=True,
     zip_safe=False,

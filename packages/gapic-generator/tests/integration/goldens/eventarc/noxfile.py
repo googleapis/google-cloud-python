@@ -32,8 +32,6 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -286,7 +284,10 @@ def unit(session, protobuf_implementation):
 
 
 def install_systemtest_dependencies(session, *constraints):
-    session.install("--pre", "grpcio")
+    if session.python >= "3.12":
+        session.install("--pre", "grpcio>=1.75.1")
+    else:
+        session.install("--pre", "grpcio<=1.62.2")
 
     session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
 
@@ -509,7 +510,7 @@ def prerelease_deps(session, protobuf_implementation):
         "google-api-core",
         "google-auth",
         "grpc-google-iam-v1",
-        "grpcio",
+        "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
         "grpcio-status",
         "protobuf",
         "proto-plus",

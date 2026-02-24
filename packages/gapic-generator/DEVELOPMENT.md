@@ -18,7 +18,7 @@
 
 Execute unit tests by running one of the sessions prefixed with `unit-`.
 
--   Example: `nox -s unit-3.8`
+-   Example: `nox -s unit-3.13`
 -   See all Nox sessions with `nox -l`.
 
 ## Formatting

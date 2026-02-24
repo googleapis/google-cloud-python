@@ -3,7 +3,7 @@ google-api-core
 googleapis-common-protos
 jinja2
 MarkupSafe
-protobuf
+protobuf>=4.25.8
 pypandoc
 PyYAML
 grpc-google-iam-v1

@@ -39,7 +39,7 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "google-api-core[grpc] >= 2.11.0, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -47,7 +47,7 @@ dependencies = [
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf >= 4.25.8, <7.0.0",
     "google-cloud-access-context-manager >= 0.1.2, <1.0.0",
     "google-cloud-os-config >= 1.0.0, <2.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
@@ -83,8 +83,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
@@ -96,7 +94,7 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     install_requires=dependencies,
     extras_require=extras,
     include_package_data=True,

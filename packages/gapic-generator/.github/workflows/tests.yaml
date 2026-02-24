@@ -16,7 +16,7 @@ concurrency:
 env:
   SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
-  OLDEST_PYTHON: 3.7
+  OLDEST_PYTHON: 3.9
   LATEST_STABLE_PYTHON: 3.14
   # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
   # Switch this to Python 3.15 alpha1 pre-release
@@ -25,7 +25,7 @@ env:
   # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
   # Add Python 3.15 alpha1 pre-release
   # https://peps.python.org/pep-0790/
-  ALL_PYTHON: "['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
+  ALL_PYTHON: "['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']"
 
 permissions:
   contents: read
@@ -93,9 +93,6 @@ jobs:
         # Run mypy on all of the supported python versions listed in setup.py
         # https://github.com/python/mypy/blob/master/setup.py
         python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
-        exclude:
-          # Remove once https://github.com/googleapis/gapic-generator-python/issues/2303 is fixed
-          - python: '3.7'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -119,9 +116,7 @@ jobs:
         target: [showcase, showcase_w_rest_async]
         logging_scope: ["", "google"]
 
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
-    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "${{ matrix.python }}"
@@ -212,9 +207,7 @@ jobs:
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
         logging_scope: ["", "google"]
     
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
-    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python "${{ matrix.python }}"
@@ -318,9 +311,7 @@ jobs:
     strategy:
       matrix:
         python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
-    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python ${{ matrix.python }}
@@ -344,9 +335,7 @@ jobs:
       matrix:
         python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
         variant: ['', _alternative_templates]
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
-    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python ${{ matrix.python }}

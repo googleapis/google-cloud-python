@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Helpful notes for local usage:
+#   unset PYENV_VERSION
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   PIP_INDEX_URL=https://pypi.org/simple nox
+
 from __future__ import absolute_import
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -39,8 +44,6 @@ LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -172,17 +175,13 @@ def fragment(session, use_ads_templates=False):
         "pytest",
         "pytest-cov",
         "pytest-xdist",
-        "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
         "grpcio-tools",
     )
     session.install("-e", ".")
 
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
-    # Warnings emitted from google-api-core starting in 2.28
-    # appear to cause issues when running protoc.
     # The specific failure is `Plugin output is unparseable`
-    if session.python in ("3.7", "3.8", "3.9", "3.10"):
+    if session.python in ("3.9", "3.10"):
         session.install("google-api-core<2.28")
 
     frag_files = (
@@ -252,7 +251,7 @@ def showcase_library(
     # Warnings emitted from google-api-core starting in 2.28
     # appear to cause issues when running protoc.
     # The specific failure is `Plugin output is unparseable`
-    if session.python in ("3.7", "3.8", "3.9", "3.10"):
+    if session.python in ("3.9", "3.10"):
         session.install("google-api-core<2.28")
 
     # Install a client library for Showcase.
@@ -359,40 +358,20 @@ def showcase_library(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
-            if session.python == "3.7":
-                session.install("-e", tmp_dir, "-r", constraints_path)
-                if rest_async_io_enabled:
-                    # NOTE: We re-install `google-api-core` and `google-auth` to override the respective
-                    # versions for each specified in constraints-3.7.txt. This is needed because async REST
-                    # is not supported with the minimum version of `google-api-core` and `google-auth`.
-                    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2211): Remove hardcoded dependencies
-                    # from here and add a new constraints file for testing the minimum supported versions for async REST feature.
-                    session.install(
-                        "--no-cache-dir",
-                        "--force-reinstall",
-                        "google-api-core[grpc, async_rest]==2.21.0",
-                    )
-                    # session.install('--no-cache-dir', '--force-reinstall', "google-api-core==2.20.0")
-                    session.install(
-                        "--no-cache-dir",
-                        "--force-reinstall",
-                        "google-auth[aiohttp]==2.35.0",
-                    )
-            else:
-                session.install(
-                    "-e",
-                    tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""),
-                    "-r",
-                    constraints_path,
-                )
-                # Exclude `google-auth==2.40.0` which contains a regression
-                # https://github.com/googleapis/gapic-generator-python/issues/2385
-                session.install(
-                    "--no-cache-dir",
-                    "--force-reinstall",
-                    "--upgrade",
-                    "google-auth[aiohttp]!=2.40.0",
-                )
+            session.install(
+                "-e",
+                tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""),
+                "-r",
+                constraints_path,
+            )
+            # Exclude `google-auth==2.40.0` which contains a regression
+            # https://github.com/googleapis/gapic-generator-python/issues/2385
+            session.install(
+                "--no-cache-dir",
+                "--force-reinstall",
+                "--upgrade",
+                "google-auth[aiohttp]!=2.40.0",
+            )
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
@@ -499,41 +478,23 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
         "pytest",
         "pytest-cov",
         "pytest-xdist",
-        "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
     )
     # Run the tests.
-    # NOTE: async rest is not supported against the minimum supported version of google-api-core.
-    # Therefore, we ignore the coverage requirement in this case.
-    if session.python == "3.7" and rest_async_io_enabled:
-        session.run(
-            "py.test",
-            *(
-                session.posargs
-                or [
-                    "-n=auto",
-                    "--quiet",
-                    "--cov=google",
-                    "--cov-append",
-                    path.join("tests", "unit"),
-                ]
-            ),
-        )
-    else:
-        session.run(
-            "py.test",
-            *(
-                session.posargs
-                or [
-                    "-n=auto",
-                    "--quiet",
-                    "--cov=google",
-                    "--cov-append",
-                    f"--cov-fail-under={str(fail_under)}",
-                    path.join("tests", "unit"),
-                ]
-            ),
-        )
+    session.run(
+        "py.test",
+        *(
+            session.posargs
+            or [
+                "-n=auto",
+                "--quiet",
+                "--cov=google",
+                "--cov-append",
+                f"--cov-fail-under={str(fail_under)}",
+                path.join("tests", "unit"),
+            ]
+        ),
+    )
 
 
 @nox.session(python=ALL_PYTHON)
