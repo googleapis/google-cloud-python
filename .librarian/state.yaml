@@ -943,6 +943,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-certificate-manager/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-ces
+    version: 0.0.0
+    last_generated_commit: dc505966accc82576fc1ebed3d7924fe9df4ab49
+    apis:
+      - path: google/cloud/ces/v1
+        service_config: ces_v1.yaml
+    source_roots:
+      - packages/google-cloud-ces
+    preserve_regex:
+      - packages/google-cloud-ces/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-ces
+    tag_format: '{id}-v{version}'
   - id: google-cloud-channel
     version: 1.26.0
     last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
