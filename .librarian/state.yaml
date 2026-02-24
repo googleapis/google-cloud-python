@@ -3319,6 +3319,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-workflows/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-workloadmanager
+    version: 0.0.0
+    last_generated_commit: 1499898e0aed31b9aee1a41f5997bc787f1bf4b4
+    apis:
+      - path: google/cloud/workloadmanager/v1
+        service_config: workloadmanager_v1.yaml
+    source_roots:
+      - packages/google-cloud-workloadmanager
+    preserve_regex:
+      - packages/google-cloud-workloadmanager/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-workloadmanager
+    tag_format: '{id}-v{version}'
   - id: google-cloud-workstations
     version: 0.7.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
