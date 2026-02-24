@@ -77,7 +77,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-datastore",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/python-datastore",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",

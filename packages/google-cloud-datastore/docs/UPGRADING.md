@@ -2,7 +2,7 @@
 
 The 2.0 release of the `google-cloud-datastore` client is a significant upgrade based on a [next-gen code generator](https://github.com/googleapis/gapic-generator-python), and includes substantial interface changes. Existing code written for earlier versions of this library may require updates to use this version. This document describes the changes that have been made, and what you need to do to update your usage.
 
-If you experience issues or have questions, please file an [issue](https://github.com/googleapis/python-datastore/issues).
+If you experience issues or have questions, please file an [issue](https://github.com/googleapis/google-cloud-python/issues).
 
 ## Supported Python Versions
 
