@@ -121,7 +121,7 @@ class Request(transport.Request):
     .. automethod:: __call__
     """
 
-    def __init__(self, session: aiohttp.ClientSession = None):
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None):
         self._session = session
         self._closed = False
 

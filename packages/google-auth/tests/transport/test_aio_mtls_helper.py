@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import ssl
 from unittest import mock
 
 import pytest
@@ -24,6 +26,70 @@ KEY_DATA = b"client-key"
 
 
 class TestMTLS:
+    @pytest.mark.asyncio
+    async def test__create_temp_file(self):
+        """Tests that _create_temp_file creates a file with correct content and deletes it."""
+        content = b"test cert data"
+
+        # Test file creation and content
+        with mtls._create_temp_file(content) as file_path:
+            assert os.path.exists(file_path)
+            # Verify file is not readable by others (mkstemp default)
+            if os.name == "posix":
+                assert (os.stat(file_path).st_mode & 0o777) == 0o600
+
+            with open(file_path, "rb") as f:
+                assert f.read() == content
+
+        # Test file deletion after context exit
+        assert not os.path.exists(file_path)
+
+    @pytest.mark.asyncio
+    async def test_make_client_cert_ssl_context_success(self):
+        """Tests successful creation of an SSLContext with client certificates."""
+        cert_bytes = b"cert_data"
+        key_bytes = b"key_data"
+        passphrase = b"password"
+
+        mock_context = mock.Mock(spec=ssl.SSLContext)
+
+        with mock.patch(
+            "ssl.create_default_context", return_value=mock_context
+        ) as mock_create:
+            context = mtls.make_client_cert_ssl_context(
+                cert_bytes, key_bytes, passphrase=passphrase
+            )
+
+            assert context == mock_context
+            mock_create.assert_called_once_with(ssl.Purpose.SERVER_AUTH)
+
+            # Verify load_cert_chain was called
+            assert mock_context.load_cert_chain.called
+            kwargs = mock_context.load_cert_chain.call_args.kwargs
+            assert "certfile" in kwargs
+            assert "keyfile" in kwargs
+            assert kwargs["password"] == passphrase
+
+            assert not os.path.exists(kwargs["certfile"])
+            assert not os.path.exists(kwargs["keyfile"])
+
+    @pytest.mark.asyncio
+    async def test_make_client_cert_ssl_context_error(self):
+        """Verifies that TransportError is raised when SSL loading fails."""
+        cert_bytes = b"cert_data"
+        key_bytes = b"key_data"
+
+        mock_context = mock.Mock(spec=ssl.SSLContext)
+        # Mocking an SSLError to trigger the exception handler in make_client_cert_ssl_context
+        mock_context.load_cert_chain.side_effect = ssl.SSLError("Mock SSL Error")
+
+        with mock.patch("ssl.create_default_context", return_value=mock_context):
+            with pytest.raises(exceptions.TransportError) as exc_info:
+                mtls.make_client_cert_ssl_context(cert_bytes, key_bytes)
+
+            assert "Failed to load client certificate" in str(exc_info.value)
+            assert isinstance(exc_info.value.__cause__, ssl.SSLError)
+
     @pytest.mark.asyncio
     @mock.patch(
         "google.auth.transport.mtls.has_default_client_cert_source", return_value=False

@@ -21,17 +21,22 @@ from typing import Mapping, Optional, TYPE_CHECKING, Union
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
 from google.auth.aio.credentials import Credentials
+from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
+import google.auth.transport._mtls_helper
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    import aiohttp
     from aiohttp import ClientTimeout  # type: ignore
 
 else:
     try:
+        import aiohttp
         from aiohttp import ClientTimeout
     except (ImportError, AttributeError):
         ClientTimeout = None
 
+# Tracks the internal aiohttp installation and usage
 try:
     from google.auth.aio.transport.aiohttp import Request as AiohttpRequest
 
@@ -133,11 +138,87 @@ class AsyncAuthorizedSession:
         _auth_request = auth_request
         if not _auth_request and AIOHTTP_INSTALLED:
             _auth_request = AiohttpRequest()
+        self._is_mtls = False
+        self._mtls_init_task = None
+        self._cached_cert = None
         if _auth_request is None:
             raise exceptions.TransportError(
                 "`auth_request` must either be configured or the external package `aiohttp` must be installed to use the default value."
             )
         self._auth_request = _auth_request
+
+    async def configure_mtls_channel(self, client_cert_callback=None):
+        """Configure the client certificate and key for SSL connection.
+
+        The function does nothing unless `GOOGLE_API_USE_CLIENT_CERTIFICATE` is
+        explicitly set to `true`. In this case if client certificate and key are
+        successfully obtained (from the given client_cert_callback or from application
+        default SSL credentials), the underlying transport will be reconfigured
+        to use mTLS.
+        Note: This function does nothing if the `aiohttp` library is not
+        installed.
+        Important: Calling this method will close any ongoing API requests associated
+        with the current session. To ensure a smooth transition, it is recommended
+        to call this during session initialization.
+
+        Args:
+            client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
+                The optional callback returns the client certificate and private
+                key bytes both in PEM format.
+                If the callback is None, application default SSL credentials
+                will be used.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                creation failed for any reason.
+        """
+        if self._mtls_init_task is None:
+
+            async def _do_configure():
+                # Run the blocking check in an executor
+                use_client_cert = await mtls._run_in_executor(
+                    google.auth.transport._mtls_helper.check_use_client_cert
+                )
+                if not use_client_cert:
+                    self._is_mtls = False
+                    return
+
+                try:
+                    (
+                        self._is_mtls,
+                        cert,
+                        key,
+                    ) = await mtls.get_client_cert_and_key(client_cert_callback)
+
+                    if self._is_mtls:
+                        self._cached_cert = cert
+                        ssl_context = await mtls._run_in_executor(
+                            mtls.make_client_cert_ssl_context, cert, key
+                        )
+
+                        # Re-create the auth request with the new SSL context
+                        if AIOHTTP_INSTALLED and isinstance(
+                            self._auth_request, AiohttpRequest
+                        ):
+                            connector = aiohttp.TCPConnector(ssl=ssl_context)
+                            new_session = aiohttp.ClientSession(connector=connector)
+
+                            old_auth_request = self._auth_request
+                            self._auth_request = AiohttpRequest(session=new_session)
+
+                            await old_auth_request.close()
+
+                except (
+                    exceptions.ClientCertError,
+                    ImportError,
+                    OSError,
+                ) as caught_exc:
+                    new_exc = exceptions.MutualTLSChannelError(caught_exc)
+                    raise new_exc from caught_exc
+
+            self._mtls_init_task = asyncio.create_task(_do_configure())
+
+        return await self._mtls_init_task
 
     async def request(
         self,
@@ -182,10 +263,18 @@ class AsyncAuthorizedSession:
                 the configured `max_allowed_time` or the request exceeds the configured
                 `timeout`.
         """
-
+        if self._mtls_init_task:
+            try:
+                await self._mtls_init_task
+            except Exception:
+                # Suppress all exceptions from the background mTLS initialization task,
+                # allowing the request to fail naturally elsewhere.
+                pass
         retries = _exponential_backoff.AsyncExponentialBackoff(
             total_attempts=total_attempts,
         )
+        if headers is None:
+            headers = {}
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
@@ -193,11 +282,18 @@ class AsyncAuthorizedSession:
                     self._auth_request, method, url, headers
                 )
             )
+            actual_timeout: float = 0.0
+            if ClientTimeout is not None and isinstance(timeout, ClientTimeout):
+                actual_timeout = timeout.total if timeout.total is not None else 0.0
+            elif isinstance(timeout, (int, float)):
+                actual_timeout = float(timeout)
             # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
             # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
             async for _ in retries:  # pragma: no branch
                 response = await with_timeout(
-                    self._auth_request(url, method, data, headers, timeout, **kwargs)
+                    self._auth_request(
+                        url, method, data, headers, actual_timeout, **kwargs
+                    )
                 )
                 if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
                     break
@@ -467,6 +563,11 @@ class AsyncAuthorizedSession:
             total_attempts,
             **kwargs,
         )
+
+    @property
+    def is_mtls(self):
+        """Indicates if mutual TLS is enabled."""
+        return self._is_mtls
 
     async def close(self) -> None:
         """

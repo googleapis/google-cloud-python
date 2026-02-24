@@ -17,13 +17,73 @@ Helper functions for mTLS in async for discovery of certs.
 """
 
 import asyncio
+import contextlib
 import logging
+import os
+import ssl
+import tempfile
+from typing import Optional
 
 from google.auth import exceptions
 import google.auth.transport._mtls_helper
 import google.auth.transport.mtls
 
 _LOGGER = logging.getLogger(__name__)
+
+
+@contextlib.contextmanager
+def _create_temp_file(content: bytes):
+    """Creates a temporary file with the given content.
+
+    Args:
+        content (bytes): The content to write to the file.
+
+    Yields:
+        str: The path to the temporary file.
+    """
+    # Create a temporary file that is readable only by the owner.
+    fd, file_path = tempfile.mkstemp()
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(content)
+        yield file_path
+    finally:
+        # Securely delete the file after use.
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+
+def make_client_cert_ssl_context(
+    cert_bytes: bytes, key_bytes: bytes, passphrase: Optional[bytes] = None
+) -> ssl.SSLContext:
+    """Creates an SSLContext with the given client certificate and key.
+    This function writes the certificate and key to temporary files so that
+    ssl.create_default_context can load them, as the ssl module requires
+    file paths for client certificates. These temporary files are deleted
+    immediately after the SSL context is created.
+    Args:
+        cert_bytes (bytes): The client certificate content in PEM format.
+        key_bytes (bytes): The client private key content in PEM format.
+        passphrase (Optional[bytes]): The passphrase for the private key, if any.
+    Returns:
+        ssl.SSLContext: The configured SSL context with client certificate.
+
+    Raises:
+        google.auth.exceptions.TransportError: If there is an error loading the certificate.
+    """
+    with _create_temp_file(cert_bytes) as cert_path, _create_temp_file(
+        key_bytes
+    ) as key_path:
+        try:
+            context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+            context.load_cert_chain(
+                certfile=cert_path, keyfile=key_path, password=passphrase
+            )
+            return context
+        except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
+            raise exceptions.TransportError(
+                "Failed to load client certificate and key for mTLS."
+            ) from exc
 
 
 async def _run_in_executor(func, *args):
@@ -44,7 +104,7 @@ def default_client_cert_source():
     """Get a callback which returns the default client SSL credentials.
 
     Returns:
-        Awaitable[Callable[[], [bytes, bytes]]]: A callback which returns the default
+        Awaitable[Callable[[], Tuple[bytes, bytes]]]: A callback which returns the default
             client certificate bytes and private key bytes, both in PEM format.
 
     Raises:
