@@ -119,7 +119,7 @@ class InsightsConfigServiceGrpcTransport(InsightsConfigServiceTransport):
 
     The InsightsConfig resource is the core configuration object to
     capture events from your Software Development Lifecycle. It acts
-    as the central hub for managing how Developer connect
+    as the central hub for managing how Developer Connect
     understands your application, its runtime environments, and the
     artifacts deployed within them. A user can create an
     InsightsConfig, list previously-requested InsightsConfigs or get
@@ -475,7 +475,7 @@ class InsightsConfigServiceGrpcTransport(InsightsConfigServiceTransport):
     ]:
         r"""Return a callable for the delete insights config method over gRPC.
 
-        Delete a single Insight.
+        Deletes a single Insight.
 
         Returns:
             Callable[[~.DeleteInsightsConfigRequest],
@@ -494,6 +494,63 @@ class InsightsConfigServiceGrpcTransport(InsightsConfigServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_insights_config"]
+
+    @property
+    def get_deployment_event(
+        self,
+    ) -> Callable[
+        [insights_config.GetDeploymentEventRequest], insights_config.DeploymentEvent
+    ]:
+        r"""Return a callable for the get deployment event method over gRPC.
+
+        Gets a single Deployment Event.
+
+        Returns:
+            Callable[[~.GetDeploymentEventRequest],
+                    ~.DeploymentEvent]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_deployment_event" not in self._stubs:
+            self._stubs["get_deployment_event"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.InsightsConfigService/GetDeploymentEvent",
+                request_serializer=insights_config.GetDeploymentEventRequest.serialize,
+                response_deserializer=insights_config.DeploymentEvent.deserialize,
+            )
+        return self._stubs["get_deployment_event"]
+
+    @property
+    def list_deployment_events(
+        self,
+    ) -> Callable[
+        [insights_config.ListDeploymentEventsRequest],
+        insights_config.ListDeploymentEventsResponse,
+    ]:
+        r"""Return a callable for the list deployment events method over gRPC.
+
+        Lists Deployment Events in a given insights config.
+
+        Returns:
+            Callable[[~.ListDeploymentEventsRequest],
+                    ~.ListDeploymentEventsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_deployment_events" not in self._stubs:
+            self._stubs["list_deployment_events"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.InsightsConfigService/ListDeploymentEvents",
+                request_serializer=insights_config.ListDeploymentEventsRequest.serialize,
+                response_deserializer=insights_config.ListDeploymentEventsResponse.deserialize,
+            )
+        return self._stubs["list_deployment_events"]
 
     def close(self):
         self._logged_channel.close()

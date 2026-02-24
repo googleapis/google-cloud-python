@@ -70,6 +70,9 @@ class Event(proto.Message):
     r"""An event representing a user interaction with an advertiser's
     website or app.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         destination_references (MutableSequence[str]):
             Optional. Reference string used to determine the
@@ -103,6 +106,8 @@ class Event(proto.Message):
         conversion_value (float):
             Optional. The conversion value associated
             with the event, for value-based conversions.
+
+            This field is a member of `oneof`_ ``_conversion_value``.
         event_source (google.ads.datamanager_v1.types.EventSource):
             Optional. Signal for where the event happened
             (web, app, in-store, etc.).
@@ -182,6 +187,7 @@ class Event(proto.Message):
     conversion_value: float = proto.Field(
         proto.DOUBLE,
         number=9,
+        optional=True,
     )
     event_source: "EventSource" = proto.Field(
         proto.ENUM,

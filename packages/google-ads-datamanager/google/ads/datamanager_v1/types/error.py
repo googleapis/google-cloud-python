@@ -29,6 +29,8 @@ __protobuf__ = proto.module(
 
 class ErrorReason(proto.Enum):
     r"""Error reasons for Data Manager API.
+    NOTE: This enum is not frozen and new values may be added in the
+    future.
 
     Values:
         ERROR_REASON_UNSPECIFIED (0):
@@ -162,6 +164,134 @@ class ErrorReason(proto.Enum):
             The field value is too long.
         TOO_MANY_ELEMENTS (51):
             Too many elements in a list in the request.
+        ALREADY_EXISTS (52):
+            The resource already exists.
+        IMMUTABLE_FIELD_FOR_UPDATE (53):
+            Attempted to set an immutable field for an
+            update request.
+        INVALID_RESOURCE_NAME (54):
+            The resource name is invalid.
+        INVALID_FILTER (55):
+            The query filter is invalid.
+        INVALID_UPDATE_MASK (56):
+            The update mask is invalid.
+        INVALID_PAGE_TOKEN (57):
+            The page token is invalid.
+        CANNOT_UPDATE_DISABLED_LICENSE (58):
+            Cannot update a license that has been
+            disabled.
+        CANNOT_CREATE_LICENSE_FOR_SENSITIVE_USERLIST (59):
+            Sensitive user lists cannot be licensed to
+            this client.
+        INSUFFICIENT_COST (60):
+            Cost too low for this license.
+        CANNOT_DISABLE_LICENSE (61):
+            Reseller license cannot be disabled since it
+            is in use.
+        INVALID_CLIENT_ACCOUNT_ID (62):
+            Invalid client account id.
+        PRICING_ONLY_ZERO_COST_ALLOWED (63):
+            Non-zero cost not allowed for this client
+            account.
+        PRICE_TOO_HIGH (64):
+            Cost too high for this license.
+        CUSTOMER_NOT_ALLOWED_TO_CREATE_LICENSE (65):
+            Customer not allowed to create license.
+        INVALID_PRICING_END_DATE (66):
+            Pricing end date is invalid for this license.
+        CANNOT_LICENSE_LOGICAL_LIST_WITH_LICENSED_OR_SHARED_SEGMENT (67):
+            Logical user list with shared or licensed
+            segment cannot be licensed.
+        MISMATCHED_ACCOUNT_TYPE (68):
+            Client customer's account type in the request
+            does not match the customer's actual account
+            type.
+        MEDIA_SHARE_COST_NOT_ALLOWED_FOR_LICENSE_TYPE (69):
+            License type does not support media share
+            cost.
+        MEDIA_SHARE_COST_NOT_ALLOWED_FOR_CLIENT_CUSTOMER (70):
+            Client customer type does not support media
+            share cost.
+        INVALID_MEDIA_SHARE_COST (71):
+            Invalid media share cost.
+        INVALID_COST_TYPE (72):
+            Invalid cost type.
+        MEDIA_SHARE_COST_NOT_ALLOWED_FOR_NON_COMMERCE_USER_LIST (73):
+            UserList type does not support media share
+            cost.
+        MAX_COST_NOT_ALLOWED (74):
+            Max cost is only allowed for cost_type MEDIA_SHARE.
+        COMMERCE_AUDIENCE_CAN_ONLY_BE_DIRECTLY_LICENSED (75):
+            Commerce audience can only be directly
+            licensed.
+        INVALID_DESCRIPTION (76):
+            The description is not valid.
+        INVALID_DISPLAY_NAME (77):
+            The display name is not valid.
+        DISPLAY_NAME_ALREADY_USED (78):
+            The display name is already being used for
+            another user list for the account.
+        OWNERSHIP_REQUIRED_FOR_UPDATE (79):
+            Ownership is required to modify the user
+            list.
+        USER_LIST_MUTATION_NOT_SUPPORTED (80):
+            The user list type is read-only and does not
+            support mutation.
+        SENSITIVE_USER_LIST_IMMUTABLE (81):
+            A user list which is privacy sensitive or
+            legal rejected cannot be mutated by external
+            users.
+        BILLABLE_RECORD_COUNT_IMMUTABLE (82):
+            The remarketing user list's billable record
+            field cannot be modified once it is set.
+        USER_LIST_NAME_RESERVED (83):
+            The user list name is reserved for system
+            lists.
+        ADVERTISER_NOT_ALLOWLISTED_FOR_UPLOADED_DATA (84):
+            The advertiser needs to be allowlisted to use
+            remarketing lists created from advertiser
+            uploaded data.
+        UNSUPPORTED_PARTNER_AUDIENCE_SOURCE (85):
+            The partner audience source is not supported
+            for the user list type.
+        COMMERCE_PARTNER_NOT_ALLOWED (86):
+            Setting the ``commerce_partner`` field is only supported if
+            the ``partner_audience_source`` is ``COMMERCE_AUDIENCE``.
+        UNSUPPORTED_PARTNER_AUDIENCE_INFO (87):
+            The ``partner_audience_info`` field is not supported for the
+            user list type.
+        PARTNER_MATCH_FOR_MANAGER_ACCOUNT_DISALLOWED (88):
+            Partner Match user lists cannot be created by
+            manager accounts.
+        DATA_PARTNER_NOT_ALLOWLISTED_FOR_THIRD_PARTY_PARTNER_DATA (89):
+            The data partner is not allowlisted for
+            THIRD_PARTY_PARTNER_DATA.
+        ADVERTISER_TOS_NOT_ACCEPTED (90):
+            The advertiser has not accepted the partner's
+            terms of service.
+        ADVERTISER_NOT_ALLOWLISTED_FOR_THIRD_PARTY_PARTNER_DATA (91):
+            The advertiser is not allowlisted for
+            THIRD_PARTY_PARTNER_DATA.
+        USER_LIST_TYPE_NOT_SUPPORTED_FOR_ACCOUNT (92):
+            This user list type is not supported for this
+            account.
+        INVALID_COMMERCE_PARTNER (93):
+            The ``commerce_partner`` field is invalid.
+        CUSTOMER_NOT_ALLOWLISTED_FOR_COMMERCE_AUDIENCE (94):
+            The data provider is not allowlisted to
+            create commerce audiences.
+        UNSUPPORTED_USER_LIST_UPLOAD_KEY_TYPES (95):
+            The user list upload key types are not
+            supported.
+        UNSUPPORTED_INGESTED_USER_LIST_INFO_CONFIG (96):
+            The ingested user list info config is not
+            supported.
+        UNSUPPORTED_ACCOUNT_TYPES_FOR_USER_LIST_TYPE (97):
+            The account types are not supported for the
+            user list type.
+        UNSUPPORTED_ACCOUNT_TYPE_FOR_PARTNER_LINK (98):
+            The account types are not supported for the
+            partner link.
     """
 
     ERROR_REASON_UNSPECIFIED = 0
@@ -216,6 +346,53 @@ class ErrorReason(proto.Enum):
     MULTIPLE_DESTINATIONS_FOR_GOOGLE_ANALYTICS_EVENT = 49
     FIELD_VALUE_TOO_LONG = 50
     TOO_MANY_ELEMENTS = 51
+    ALREADY_EXISTS = 52
+    IMMUTABLE_FIELD_FOR_UPDATE = 53
+    INVALID_RESOURCE_NAME = 54
+    INVALID_FILTER = 55
+    INVALID_UPDATE_MASK = 56
+    INVALID_PAGE_TOKEN = 57
+    CANNOT_UPDATE_DISABLED_LICENSE = 58
+    CANNOT_CREATE_LICENSE_FOR_SENSITIVE_USERLIST = 59
+    INSUFFICIENT_COST = 60
+    CANNOT_DISABLE_LICENSE = 61
+    INVALID_CLIENT_ACCOUNT_ID = 62
+    PRICING_ONLY_ZERO_COST_ALLOWED = 63
+    PRICE_TOO_HIGH = 64
+    CUSTOMER_NOT_ALLOWED_TO_CREATE_LICENSE = 65
+    INVALID_PRICING_END_DATE = 66
+    CANNOT_LICENSE_LOGICAL_LIST_WITH_LICENSED_OR_SHARED_SEGMENT = 67
+    MISMATCHED_ACCOUNT_TYPE = 68
+    MEDIA_SHARE_COST_NOT_ALLOWED_FOR_LICENSE_TYPE = 69
+    MEDIA_SHARE_COST_NOT_ALLOWED_FOR_CLIENT_CUSTOMER = 70
+    INVALID_MEDIA_SHARE_COST = 71
+    INVALID_COST_TYPE = 72
+    MEDIA_SHARE_COST_NOT_ALLOWED_FOR_NON_COMMERCE_USER_LIST = 73
+    MAX_COST_NOT_ALLOWED = 74
+    COMMERCE_AUDIENCE_CAN_ONLY_BE_DIRECTLY_LICENSED = 75
+    INVALID_DESCRIPTION = 76
+    INVALID_DISPLAY_NAME = 77
+    DISPLAY_NAME_ALREADY_USED = 78
+    OWNERSHIP_REQUIRED_FOR_UPDATE = 79
+    USER_LIST_MUTATION_NOT_SUPPORTED = 80
+    SENSITIVE_USER_LIST_IMMUTABLE = 81
+    BILLABLE_RECORD_COUNT_IMMUTABLE = 82
+    USER_LIST_NAME_RESERVED = 83
+    ADVERTISER_NOT_ALLOWLISTED_FOR_UPLOADED_DATA = 84
+    UNSUPPORTED_PARTNER_AUDIENCE_SOURCE = 85
+    COMMERCE_PARTNER_NOT_ALLOWED = 86
+    UNSUPPORTED_PARTNER_AUDIENCE_INFO = 87
+    PARTNER_MATCH_FOR_MANAGER_ACCOUNT_DISALLOWED = 88
+    DATA_PARTNER_NOT_ALLOWLISTED_FOR_THIRD_PARTY_PARTNER_DATA = 89
+    ADVERTISER_TOS_NOT_ACCEPTED = 90
+    ADVERTISER_NOT_ALLOWLISTED_FOR_THIRD_PARTY_PARTNER_DATA = 91
+    USER_LIST_TYPE_NOT_SUPPORTED_FOR_ACCOUNT = 92
+    INVALID_COMMERCE_PARTNER = 93
+    CUSTOMER_NOT_ALLOWLISTED_FOR_COMMERCE_AUDIENCE = 94
+    UNSUPPORTED_USER_LIST_UPLOAD_KEY_TYPES = 95
+    UNSUPPORTED_INGESTED_USER_LIST_INFO_CONFIG = 96
+    UNSUPPORTED_ACCOUNT_TYPES_FOR_USER_LIST_TYPE = 97
+    UNSUPPORTED_ACCOUNT_TYPE_FOR_PARTNER_LINK = 98
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

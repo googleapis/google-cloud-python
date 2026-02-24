@@ -3,13 +3,13 @@ Python Client for Database Center API
 
 |preview| |pypi| |versions|
 
-`Database Center API`_: Database Center provides an organization-wide, cross-product fleet health
-platform to eliminate the overhead, complexity, and risk associated with
-aggregating and summarizing health signals through custom dashboards.
-Through Database Center’s fleet health dashboard and API, database
-platform teams that are responsible for reliability, compliance, security,
-cost, and administration of database fleets will now have a single pane of
-glass that pinpoints issues relevant to each team.
+`Database Center API`_: Database Center offers a comprehensive, organization-wide platform for
+monitoring database fleet health across various products. It simplifies
+management and reduces risk by automatically aggregating and summarizing
+key health signals, removing the need for custom dashboards. The platform
+provides a unified view through its dashboard and API, enabling teams
+focused on reliability, compliance, security, cost, and administration to
+quickly identify and address relevant issues within their database fleets.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

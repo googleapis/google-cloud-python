@@ -447,7 +447,6 @@ class DatabaseResourceGroup(proto.Message):
 class DatabaseResource(proto.Message):
     r"""DatabaseResource represents every individually configured
     database unit representing compute and/or storage.
-    NextId: 20
 
     Attributes:
         child_resources (MutableSequence[google.cloud.databasecenter_v1beta.types.DatabaseResource]):
@@ -466,15 +465,17 @@ class DatabaseResource(proto.Message):
             ``//alloydb.googleapis.com/projects/project-number/locations/us-central1/clusters/c1/instances/i1``
         container (str):
             Specifies where the resource is created. For
-            GCP, it is the full name of the project.
+            Google Cloud resources, it is the full name of
+            the project.
         product (google.cloud.databasecenter_v1beta.types.Product):
             The product this resource represents.
         location (str):
             The location of the resources. It supports
-            returning only regional locations in GCP. These
-            are of the form: "us-central1", "us-east1", etc.
-            See https://cloud.google.com/about/locations for
-            a list of such regions.
+            returning only regional locations in Google
+            Cloud. These are of the form: "us-central1",
+            "us-east1", etc. See
+            https://cloud.google.com/about/locations for a
+            list of such regions.
         labels (MutableSequence[google.cloud.databasecenter_v1beta.types.Label]):
             Labels applied on the resource. The
             requirements for labels assigned to Google Cloud
@@ -1085,7 +1086,8 @@ class Dimension(proto.Message):
     Attributes:
         container (str):
             Specifies where the resource is created. For
-            GCP, it is the full name of the project.
+            Google Cloud resources, it is the full name of
+            the project.
 
             This field is a member of `oneof`_ ``dimension``.
         product_type (google.cloud.databasecenter_v1beta.types.ProductType):
@@ -1103,7 +1105,8 @@ class Dimension(proto.Message):
             This field is a member of `oneof`_ ``dimension``.
         location (str):
             The location of the resources. It supports
-            returning only regional locations in GCP.
+            returning only regional locations in Google
+            Cloud.
 
             This field is a member of `oneof`_ ``dimension``.
         resource_type (str):
@@ -1511,7 +1514,8 @@ class ResourceDetails(proto.Message):
             Full resource name of the resource.
         container (str):
             Specifies where the resource is created. For
-            GCP, it is the full name of the project.
+            Google Cloud resources, it is the full name of
+            the project.
         product (google.cloud.databasecenter_v1beta.types.Product):
             Product type of the resource.
         location (str):

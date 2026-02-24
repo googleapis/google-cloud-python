@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "CryptoKeyConfig",
         "GitProxyConfig",
         "InstallationState",
+        "GenericHTTPEndpointConfig",
         "GitHubConfig",
         "GitHubEnterpriseConfig",
         "ServiceDirectoryConfig",
@@ -40,6 +41,7 @@ __protobuf__ = proto.module(
         "GitLabEnterpriseConfig",
         "BitbucketDataCenterConfig",
         "BitbucketCloudConfig",
+        "SecureSourceManagerInstanceConfig",
         "ListConnectionsRequest",
         "ListConnectionsResponse",
         "GetConnectionRequest",
@@ -58,6 +60,10 @@ __protobuf__ = proto.module(
         "DeleteSelfRequest",
         "FetchAccessTokenRequest",
         "FetchAccessTokenResponse",
+        "StartOAuthRequest",
+        "StartOAuthResponse",
+        "FinishOAuthRequest",
+        "FinishOAuthResponse",
         "ExchangeError",
         "GitRepositoryLink",
         "CreateGitRepositoryLinkRequest",
@@ -244,6 +250,16 @@ class Connection(proto.Message):
             of Bitbucket Clouds.
 
             This field is a member of `oneof`_ ``connection_config``.
+        secure_source_manager_instance_config (google.cloud.developerconnect_v1.types.SecureSourceManagerInstanceConfig):
+            Configuration for connections to an instance
+            of Secure Source Manager.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        http_config (google.cloud.developerconnect_v1.types.GenericHTTPEndpointConfig):
+            Optional. Configuration for connections to an
+            HTTP service provider.
+
+            This field is a member of `oneof`_ ``connection_config``.
         name (str):
             Identifier. The resource name of the connection, in the
             format
@@ -326,6 +342,20 @@ class Connection(proto.Message):
         number=18,
         oneof="connection_config",
         message="BitbucketCloudConfig",
+    )
+    secure_source_manager_instance_config: "SecureSourceManagerInstanceConfig" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=20,
+            oneof="connection_config",
+            message="SecureSourceManagerInstanceConfig",
+        )
+    )
+    http_config: "GenericHTTPEndpointConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        oneof="connection_config",
+        message="GenericHTTPEndpointConfig",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -415,11 +445,22 @@ class GitProxyConfig(proto.Message):
             Optional. Setting this to true allows the git
             proxy to be used for performing git operations
             on the repositories linked in the connection.
+        http_proxy_base_uri (str):
+            Output only. The base URI for the HTTP proxy endpoint. Has
+            the format
+            ``https://{generatedID}-c-h-{shortRegion}.developerconnect.dev``
+            Populated only when enabled is set to true. This endpoint is
+            used by other Google services that integrate with Developer
+            Connect.
     """
 
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    http_proxy_base_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -483,6 +524,115 @@ class InstallationState(proto.Message):
     )
 
 
+class GenericHTTPEndpointConfig(proto.Message):
+    r"""Defines the configuration for connections to an HTTP service
+    provider.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        basic_authentication (google.cloud.developerconnect_v1.types.GenericHTTPEndpointConfig.BasicAuthentication):
+            Optional. Basic authentication with username
+            and password.
+
+            This field is a member of `oneof`_ ``authentication``.
+        bearer_token_authentication (google.cloud.developerconnect_v1.types.GenericHTTPEndpointConfig.BearerTokenAuthentication):
+            Optional. Bearer token authentication with a
+            token.
+
+            This field is a member of `oneof`_ ``authentication``.
+        host_uri (str):
+            Required. Immutable. The service provider's
+            https endpoint.
+        service_directory_config (google.cloud.developerconnect_v1.types.ServiceDirectoryConfig):
+            Optional. Configuration for using Service
+            Directory to privately connect to a HTTP service
+            provider. This should only be set if the Http
+            service provider is hosted on-premises and not
+            reachable by public internet. If this field is
+            left empty, calls to the HTTP service provider
+            will be made over the public internet.
+        ssl_ca_certificate (str):
+            Optional. The SSL certificate to use for
+            requests to the HTTP service provider.
+    """
+
+    class BasicAuthentication(proto.Message):
+        r"""Basic authentication with username and password.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            password_secret_version (str):
+                The password SecretManager secret version to
+                authenticate as.
+
+                This field is a member of `oneof`_ ``password``.
+            username (str):
+                Required. The username to authenticate as.
+        """
+
+        password_secret_version: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="password",
+        )
+        username: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class BearerTokenAuthentication(proto.Message):
+        r"""Bearer token authentication with a token.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            token_secret_version (str):
+                Optional. The token SecretManager secret
+                version to authenticate as.
+
+                This field is a member of `oneof`_ ``token``.
+        """
+
+        token_secret_version: str = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="token",
+        )
+
+    basic_authentication: BasicAuthentication = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="authentication",
+        message=BasicAuthentication,
+    )
+    bearer_token_authentication: BearerTokenAuthentication = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="authentication",
+        message=BearerTokenAuthentication,
+    )
+    host_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    service_directory_config: "ServiceDirectoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ServiceDirectoryConfig",
+    )
+    ssl_ca_certificate: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
 class GitHubConfig(proto.Message):
     r"""Configuration for connections to github.com.
 
@@ -517,11 +667,14 @@ class GitHubConfig(proto.Message):
                 The Developer Connect GitHub Application.
             FIREBASE (2):
                 The Firebase GitHub Application.
+            GEMINI_CODE_ASSIST (3):
+                The Gemini Code Assist Application.
         """
 
         GIT_HUB_APP_UNSPECIFIED = 0
         DEVELOPER_CONNECT = 1
         FIREBASE = 2
+        GEMINI_CODE_ASSIST = 3
 
     github_app: GitHubApp = proto.Field(
         proto.ENUM,
@@ -560,11 +713,15 @@ class GitHubEnterpriseConfig(proto.Message):
         private_key_secret_version (str):
             Optional. SecretManager resource containing the private key
             of the GitHub App, formatted as
-            ``projects/*/secrets/*/versions/*``.
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location).
         webhook_secret_secret_version (str):
             Optional. SecretManager resource containing the webhook
             secret of the GitHub App, formatted as
-            ``projects/*/secrets/*/versions/*``.
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location).
         app_installation_id (int):
             Optional. ID of the installation of the
             GitHub App.
@@ -587,6 +744,9 @@ class GitHubEnterpriseConfig(proto.Message):
         ssl_ca_certificate (str):
             Optional. SSL certificate to use for requests
             to GitHub Enterprise.
+        organization (str):
+            Optional. Immutable. GitHub Enterprise
+            organization in which the GitHub App is created.
     """
 
     host_uri: str = proto.Field(
@@ -630,6 +790,10 @@ class GitHubEnterpriseConfig(proto.Message):
         proto.STRING,
         number=14,
     )
+    organization: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
 
 
 class ServiceDirectoryConfig(proto.Message):
@@ -658,7 +822,9 @@ class OAuthCredential(proto.Message):
         oauth_token_secret_version (str):
             Required. A SecretManager resource containing the OAuth
             token that authorizes the connection. Format:
-            ``projects/*/secrets/*/versions/*``.
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location).
         username (str):
             Output only. The username associated with
             this token.
@@ -681,7 +847,9 @@ class GitLabConfig(proto.Message):
         webhook_secret_secret_version (str):
             Required. Immutable. SecretManager resource containing the
             webhook secret of a GitLab project, formatted as
-            ``projects/*/secrets/*/versions/*``. This is used to
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location). This is used to
             validate webhooks.
         read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
             Required. A GitLab personal access token with the minimum
@@ -720,7 +888,9 @@ class UserCredential(proto.Message):
         user_token_secret_version (str):
             Required. A SecretManager resource containing the user token
             that authorizes the Developer Connect connection. Format:
-            ``projects/*/secrets/*/versions/*``.
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location).
         username (str):
             Output only. The username associated with
             this token.
@@ -747,7 +917,9 @@ class GitLabEnterpriseConfig(proto.Message):
         webhook_secret_secret_version (str):
             Required. Immutable. SecretManager resource containing the
             webhook secret of a GitLab project, formatted as
-            ``projects/*/secrets/*/versions/*``. This is used to
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location). This is used to
             validate webhooks.
         read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
             Required. A GitLab personal access token with the minimum
@@ -822,7 +994,9 @@ class BitbucketDataCenterConfig(proto.Message):
         webhook_secret_secret_version (str):
             Required. Immutable. SecretManager resource containing the
             webhook secret used to verify webhook events, formatted as
-            ``projects/*/secrets/*/versions/*``. This is used to
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location). This is used to
             validate webhooks.
         read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
             Required. An http access token with the minimum
@@ -893,7 +1067,9 @@ class BitbucketCloudConfig(proto.Message):
         webhook_secret_secret_version (str):
             Required. Immutable. SecretManager resource containing the
             webhook secret used to verify webhook events, formatted as
-            ``projects/*/secrets/*/versions/*``. This is used to
+            ``projects/*/secrets/*/versions/*`` or
+            ``projects/*/locations/*/secrets/*/versions/*`` (if regional
+            secrets are supported in that location). This is used to
             validate and create webhooks.
         read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
             Required. An access token with the minimum ``repository``
@@ -925,6 +1101,23 @@ class BitbucketCloudConfig(proto.Message):
         proto.MESSAGE,
         number=4,
         message="UserCredential",
+    )
+
+
+class SecureSourceManagerInstanceConfig(proto.Message):
+    r"""Configuration for connections to Secure Source Manager
+    instance
+
+    Attributes:
+        instance (str):
+            Required. Immutable. Secure Source Manager instance
+            resource, formatted as
+            ``projects/*/locations/*/instances/*``
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1680,6 +1873,192 @@ class FetchAccessTokenResponse(proto.Message):
     )
 
 
+class StartOAuthRequest(proto.Message):
+    r"""Message for starting an OAuth flow.
+
+    Attributes:
+        account_connector (str):
+            Required. The resource name of the AccountConnector in the
+            format ``projects/*/locations/*/accountConnectors/*``.
+    """
+
+    account_connector: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class StartOAuthResponse(proto.Message):
+    r"""Message for responding to starting an OAuth flow.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        system_provider_id (google.cloud.developerconnect_v1.types.SystemProvider):
+            The ID of the system provider.
+
+            This field is a member of `oneof`_ ``id``.
+        ticket (str):
+            The ticket to be used for post processing the
+            callback from the service provider.
+        code_challenge (str):
+            Please refer to
+            https://datatracker.ietf.org/doc/html/rfc7636#section-4.1
+        code_challenge_method (str):
+            Please refer to
+            https://datatracker.ietf.org/doc/html/rfc7636#section-4.2
+        client_id (str):
+            The client ID to the OAuth App of the service
+            provider.
+        scopes (MutableSequence[str]):
+            The list of scopes requested by the
+            application.
+        auth_uri (str):
+            The authorization server URL to the OAuth
+            flow of the service provider.
+    """
+
+    system_provider_id: "SystemProvider" = proto.Field(
+        proto.ENUM,
+        number=7,
+        oneof="id",
+        enum="SystemProvider",
+    )
+    ticket: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    code_challenge: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    code_challenge_method: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    client_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    scopes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    auth_uri: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class FinishOAuthRequest(proto.Message):
+    r"""Message for finishing an OAuth flow.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        oauth_params (google.cloud.developerconnect_v1.types.FinishOAuthRequest.OAuthParams):
+            The params returned by non-Google OAuth 2.0
+            flow redirect.
+
+            This field is a member of `oneof`_ ``params``.
+        google_oauth_params (google.cloud.developerconnect_v1.types.FinishOAuthRequest.GoogleOAuthParams):
+            The params returned by Google OAuth flow
+            redirects.
+
+            This field is a member of `oneof`_ ``params``.
+        account_connector (str):
+            Required. The resource name of the AccountConnector in the
+            format ``projects/*/locations/*/accountConnectors/*``.
+    """
+
+    class OAuthParams(proto.Message):
+        r"""The params returned by non-Google OAuth 2.0 flow redirect.
+
+        Attributes:
+            code (str):
+                Required. The code to be used for getting the
+                token from SCM provider.
+            ticket (str):
+                Required. The ticket to be used for post
+                processing the callback from SCM provider.
+        """
+
+        code: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        ticket: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class GoogleOAuthParams(proto.Message):
+        r"""The params returned by Google OAuth flow redirects.
+
+        Attributes:
+            scopes (MutableSequence[str]):
+                Required. The scopes returned by Google OAuth
+                flow.
+            version_info (str):
+                Optional. The version info returned by Google
+                OAuth flow.
+            ticket (str):
+                Required. The ticket to be used for post
+                processing the callback from Google OAuth flow.
+        """
+
+        scopes: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        version_info: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        ticket: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    oauth_params: OAuthParams = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="params",
+        message=OAuthParams,
+    )
+    google_oauth_params: GoogleOAuthParams = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="params",
+        message=GoogleOAuthParams,
+    )
+    account_connector: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FinishOAuthResponse(proto.Message):
+    r"""Message for responding to finishing an OAuth flow.
+
+    Attributes:
+        exchange_error (google.cloud.developerconnect_v1.types.ExchangeError):
+            The error resulted from exchanging OAuth
+            tokens from the service provider.
+    """
+
+    exchange_error: "ExchangeError" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ExchangeError",
+    )
+
+
 class ExchangeError(proto.Message):
     r"""Message for representing an error from exchanging OAuth
     tokens.
@@ -2315,7 +2694,7 @@ class AccountConnector(proto.Message):
 
     Attributes:
         provider_oauth_config (google.cloud.developerconnect_v1.types.ProviderOAuthConfig):
-            Provider OAuth config.
+            Optional. Provider OAuth config.
 
             This field is a member of `oneof`_ ``account_connector_config``.
         name (str):
@@ -2431,7 +2810,8 @@ class ProviderOAuthConfig(proto.Message):
 
     Attributes:
         system_provider_id (google.cloud.developerconnect_v1.types.SystemProvider):
-            Immutable. Developer Connect provided OAuth.
+            Optional. Immutable. Developer Connect
+            provided OAuth.
 
             This field is a member of `oneof`_ ``oauth_provider_id``.
         scopes (MutableSequence[str]):

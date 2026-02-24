@@ -1653,7 +1653,42 @@ class StreamingRecognitionFeatures(proto.Message):
             the specified duration has elapsed after the last
             VOICE_ACTIVITY speech event has been sent. The field
             ``voice_activity_events`` must also be set to true.
+        endpointing_sensitivity (google.cloud.speech_v2.types.StreamingRecognitionFeatures.EndpointingSensitivity):
+            Optional. Endpointing sensitivity for this
+            stream.
     """
+
+    class EndpointingSensitivity(proto.Enum):
+        r"""Endpointing sensitivity is intended for applications that
+        want to minimize result latency, possibly at the expense of
+        quality. Some utterances may be broken up into multiple
+        fragments.
+
+        Values:
+            ENDPOINTING_SENSITIVITY_UNSPECIFIED (0):
+                If no value is specified, the values for
+                ENDPOINTING_SENSITIVITY_STANDARD will be used.
+            ENDPOINTING_SENSITIVITY_STANDARD (1):
+                Standard sensitivity, no optimization for
+                latency.
+            ENDPOINTING_SENSITIVITY_SUPERSHORT (2):
+                Super short sensitivity, optimized for super
+                short utterances like single words ("Yes", "No",
+                "Hello", etc.) or a single phrase, command or
+                short query (e.g. "check balance", "five
+                dollars", "call Mom").
+            ENDPOINTING_SENSITIVITY_SHORT (3):
+                Short sensitivity, optimized for short
+                utterances like single sentences. (e.g. "Remind
+                me to call the dentist tomorrow morning at
+                nine", "Navigate to the nearest coffee shop that
+                is currently open")
+        """
+
+        ENDPOINTING_SENSITIVITY_UNSPECIFIED = 0
+        ENDPOINTING_SENSITIVITY_STANDARD = 1
+        ENDPOINTING_SENSITIVITY_SUPERSHORT = 2
+        ENDPOINTING_SENSITIVITY_SHORT = 3
 
     class VoiceActivityTimeout(proto.Message):
         r"""Events that a timeout can be set on for voice activity.
@@ -1694,6 +1729,11 @@ class StreamingRecognitionFeatures(proto.Message):
         proto.MESSAGE,
         number=3,
         message=VoiceActivityTimeout,
+    )
+    endpointing_sensitivity: EndpointingSensitivity = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=EndpointingSensitivity,
     )
 
 

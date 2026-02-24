@@ -25,12 +25,20 @@ __protobuf__ = proto.module(
     package="google.cloud.developerconnect.v1",
     manifest={
         "InsightsConfig",
+        "Projects",
         "RuntimeConfig",
         "GKEWorkload",
+        "GoogleCloudRun",
         "AppHubWorkload",
+        "AppHubService",
         "ArtifactConfig",
         "GoogleArtifactAnalysis",
         "GoogleArtifactRegistry",
+        "DeploymentEvent",
+        "GetDeploymentEventRequest",
+        "ListDeploymentEventsRequest",
+        "ListDeploymentEventsResponse",
+        "ArtifactDeployment",
         "CreateInsightsConfigRequest",
         "GetInsightsConfigRequest",
         "ListInsightsConfigsRequest",
@@ -44,10 +52,14 @@ __protobuf__ = proto.module(
 class InsightsConfig(proto.Message):
     r"""The InsightsConfig resource is the core configuration object
     to capture events from your Software Development Lifecycle. It
-    acts as the central hub for managing how Developer connect
+    acts as the central hub for managing how Developer Connect
     understands your application, its runtime environments, and the
     artifacts deployed within them.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -59,15 +71,20 @@ class InsightsConfig(proto.Message):
             projects/{project}/locations/{location}/applications/{application}
 
             This field is a member of `oneof`_ ``insights_config_context``.
+        projects (google.cloud.developerconnect_v1.types.Projects):
+            Optional. The projects to track with the
+            InsightsConfig.
+
+            This field is a member of `oneof`_ ``insights_config_context``.
         name (str):
             Identifier. The name of the InsightsConfig.
             Format:
 
             projects/{project}/locations/{location}/insightsConfigs/{insightsConfig}
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. [Output only] Create timestamp
+            Output only. Create timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. [Output only] Update timestamp
+            Output only. Update timestamp.
         runtime_configs (MutableSequence[google.cloud.developerconnect_v1.types.RuntimeConfig]):
             Output only. The runtime configurations where
             the application is deployed.
@@ -126,6 +143,12 @@ class InsightsConfig(proto.Message):
         number=4,
         oneof="insights_config_context",
     )
+    projects: "Projects" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="insights_config_context",
+        message="Projects",
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -176,10 +199,30 @@ class InsightsConfig(proto.Message):
     )
 
 
+class Projects(proto.Message):
+    r"""Projects represents the projects to track with the
+    InsightsConfig.
+
+    Attributes:
+        project_ids (MutableSequence[str]):
+            Optional. The project IDs.
+            Format: {project}
+    """
+
+    project_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
 class RuntimeConfig(proto.Message):
     r"""RuntimeConfig represents the runtimes where the application
     is deployed.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -189,8 +232,16 @@ class RuntimeConfig(proto.Message):
             runtime.
 
             This field is a member of `oneof`_ ``runtime``.
+        google_cloud_run (google.cloud.developerconnect_v1.types.GoogleCloudRun):
+            Output only. Cloud Run runtime.
+
+            This field is a member of `oneof`_ ``runtime``.
         app_hub_workload (google.cloud.developerconnect_v1.types.AppHubWorkload):
             Output only. App Hub Workload.
+
+            This field is a member of `oneof`_ ``derived_from``.
+        app_hub_service (google.cloud.developerconnect_v1.types.AppHubService):
+            Output only. App Hub Service.
 
             This field is a member of `oneof`_ ``derived_from``.
         uri (str):
@@ -226,11 +277,23 @@ class RuntimeConfig(proto.Message):
         oneof="runtime",
         message="GKEWorkload",
     )
+    google_cloud_run: "GoogleCloudRun" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="runtime",
+        message="GoogleCloudRun",
+    )
     app_hub_workload: "AppHubWorkload" = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="derived_from",
         message="AppHubWorkload",
+    )
+    app_hub_service: "AppHubService" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="derived_from",
+        message="AppHubService",
     )
     uri: str = proto.Field(
         proto.STRING,
@@ -265,6 +328,22 @@ class GKEWorkload(proto.Message):
     )
 
 
+class GoogleCloudRun(proto.Message):
+    r"""GoogleCloudRun represents the Cloud Run runtime.
+
+    Attributes:
+        service_uri (str):
+            Required. Immutable. The name of the Cloud Run service.
+            Format:
+            ``projects/{project}/locations/{location}/services/{service}``.
+    """
+
+    service_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class AppHubWorkload(proto.Message):
     r"""AppHubWorkload represents the App Hub Workload.
 
@@ -295,6 +374,36 @@ class AppHubWorkload(proto.Message):
     )
 
 
+class AppHubService(proto.Message):
+    r"""AppHubService represents the App Hub Service.
+
+    Attributes:
+        apphub_service (str):
+            Required. Output only. Immutable. The name of the App Hub
+            Service. Format:
+            ``projects/{project}/locations/{location}/applications/{application}/services/{service}``.
+        criticality (str):
+            Output only. The criticality of the App Hub
+            Service.
+        environment (str):
+            Output only. The environment of the App Hub
+            Service.
+    """
+
+    apphub_service: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    criticality: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    environment: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class ArtifactConfig(proto.Message):
     r"""The artifact config of the artifact that is deployed.
 
@@ -303,7 +412,7 @@ class ArtifactConfig(proto.Message):
     Attributes:
         google_artifact_registry (google.cloud.developerconnect_v1.types.GoogleArtifactRegistry):
             Optional. Set if the artifact is stored in
-            Artifact regsitry.
+            Artifact registry.
 
             This field is a member of `oneof`_ ``artifact_storage``.
         google_artifact_analysis (google.cloud.developerconnect_v1.types.GoogleArtifactAnalysis):
@@ -371,6 +480,266 @@ class GoogleArtifactRegistry(proto.Message):
     artifact_registry_package: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class DeploymentEvent(proto.Message):
+    r"""The DeploymentEvent resource represents the deployment of the
+    artifact within the InsightsConfig resource.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the DeploymentEvent. This name is
+            provided by Developer Connect insights. Format:
+            projects/{project}/locations/{location}/insightsConfigs/{insights_config}/deploymentEvents/{uuid}
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The create time of the
+            DeploymentEvent.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update time of the
+            DeploymentEvent.
+        runtime_config (google.cloud.developerconnect_v1.types.RuntimeConfig):
+            Output only. The runtime configurations where
+            the DeploymentEvent happened.
+        runtime_deployment_uri (str):
+            Output only. The runtime assigned URI of the
+            DeploymentEvent. For GKE, this is the fully
+            qualified replica set uri. e.g.
+            container.googleapis.com/projects/{project}/locations/{location}/clusters/{cluster}/k8s/namespaces/{namespace}/apps/replicasets/{replica-set-id}
+            For Cloud Run, this is the revision name.
+        state (google.cloud.developerconnect_v1.types.DeploymentEvent.State):
+            Output only. The state of the
+            DeploymentEvent.
+        artifact_deployments (MutableSequence[google.cloud.developerconnect_v1.types.ArtifactDeployment]):
+            Output only. The artifact deployments of the
+            DeploymentEvent. Each artifact deployment
+            contains the artifact uri and the runtime
+            configuration uri. For GKE, this would be all
+            the containers images that are deployed in the
+            pod.
+        deploy_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the DeploymentEvent was
+            deployed. This would be the min of all ArtifactDeployment
+            deploy_times.
+        undeploy_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the DeploymentEvent was
+            undeployed, all artifacts are considered undeployed once
+            this time is set. This would be the max of all
+            ArtifactDeployment undeploy_times. If any ArtifactDeployment
+            is still active (i.e. does not have an undeploy_time), this
+            field will be empty.
+    """
+
+    class State(proto.Enum):
+        r"""The state of the DeploymentEvent.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                No state specified.
+            STATE_ACTIVE (1):
+                The deployment is active in the runtime.
+            STATE_INACTIVE (2):
+                The deployment is not in the runtime.
+        """
+
+        STATE_UNSPECIFIED = 0
+        STATE_ACTIVE = 1
+        STATE_INACTIVE = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    runtime_config: "RuntimeConfig" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="RuntimeConfig",
+    )
+    runtime_deployment_uri: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=State,
+    )
+    artifact_deployments: MutableSequence["ArtifactDeployment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="ArtifactDeployment",
+    )
+    deploy_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    undeploy_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetDeploymentEventRequest(proto.Message):
+    r"""Request for getting a DeploymentEvent.
+
+    Attributes:
+        name (str):
+            Required. The name of the deployment event to retrieve.
+            Format:
+            projects/{project}/locations/{location}/insightsConfigs/{insights_config}/deploymentEvents/{uuid}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListDeploymentEventsRequest(proto.Message):
+    r"""Request for requesting list of DeploymentEvents.
+
+    Attributes:
+        parent (str):
+            Required. The parent insights config that owns this
+            collection of deployment events. Format:
+            projects/{project}/locations/{location}/insightsConfigs/{insights_config}
+        page_size (int):
+            Optional. The maximum number of deployment
+            events to return. The service may return fewer
+            than this value. If unspecified, at most 50
+            deployment events will be returned. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListDeploymentEvents`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListDeploymentEvents`` must match the call that provided
+            the page token.
+        filter (str):
+            Optional. Filter expression that matches a
+            subset of the DeploymentEvents.
+            https://google.aip.dev/160.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListDeploymentEventsResponse(proto.Message):
+    r"""Response to listing DeploymentEvents.
+
+    Attributes:
+        deployment_events (MutableSequence[google.cloud.developerconnect_v1.types.DeploymentEvent]):
+            The list of DeploymentEvents.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    deployment_events: MutableSequence["DeploymentEvent"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DeploymentEvent",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ArtifactDeployment(proto.Message):
+    r"""The ArtifactDeployment resource represents the deployment of
+    the artifact within the InsightsConfig resource.
+
+    Attributes:
+        id (str):
+            Output only. Unique identifier of ``ArtifactDeployment``.
+        artifact_reference (str):
+            Output only. The artifact that is deployed.
+        artifact_alias (str):
+            Output only. The artifact alias in the
+            deployment spec, with Tag/SHA. e.g.
+            us-docker.pkg.dev/my-project/my-repo/image:1.0.0
+        source_commit_uris (MutableSequence[str]):
+            Output only. The source commits at which this
+            artifact was built. Extracted from provenance.
+        deploy_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the deployment
+            was deployed.
+        undeploy_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the deployment
+            was undeployed, all artifacts are considered
+            undeployed once this time is set.
+        container_status_summary (str):
+            Output only. The summary of container status of the artifact
+            deployment. Format as
+            ``ContainerStatusState-Reason : restartCount`` e.g.
+            "Waiting-ImagePullBackOff : 3".
+    """
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    artifact_reference: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    artifact_alias: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    source_commit_uris: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    deploy_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    undeploy_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    container_status_summary: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

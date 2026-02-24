@@ -40,7 +40,7 @@ def sample_update_connection():
 
     # Initialize request argument(s)
     connection = developerconnect_v1.Connection()
-    connection.github_config.github_app = "FIREBASE"
+    connection.github_config.github_app = "GEMINI_CODE_ASSIST"
 
     request = developerconnect_v1.UpdateConnectionRequest(
         connection=connection,

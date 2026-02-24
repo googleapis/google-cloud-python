@@ -166,20 +166,20 @@ class SignalType(proto.Enum):
             Represents if the last backup of a resource
             is older than some threshold value.
         SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_2_0 (8):
-            Represents if a resource violates CIS GCP
-            Foundation 2.0.
+            Represents if a resource violates CIS Google
+            Cloud Platform Foundation 2.0.
         SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_3 (9):
-            Represents if a resource violates CIS GCP
-            Foundation 1.3.
+            Represents if a resource violates CIS Google
+            Cloud Platform Foundation 1.3.
         SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_2 (10):
-            Represents if a resource violates CIS GCP
-            Foundation 1.2.
+            Represents if a resource violates CIS Google
+            Cloud Platform Foundation 1.2.
         SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_1 (11):
-            Represents if a resource violates CIS GCP
-            Foundation 1.1.
+            Represents if a resource violates CIS Google
+            Cloud Platform Foundation 1.1.
         SIGNAL_TYPE_VIOLATES_CIS_GCP_FOUNDATION_1_0 (12):
-            Represents if a resource violates CIS GCP
-            Foundation 1.0.
+            Represents if a resource violates CIS Google
+            Cloud Platform Foundation 1.0.
         SIGNAL_TYPE_VIOLATES_CIS_CONTROLS_V8_0 (76):
             Represents if a resource violates CIS
             Controls 8.0.
@@ -847,7 +847,8 @@ class SubResource(proto.Message):
             instance OPTIONAL
         container (str):
             Specifies where the resource is created. For
-            GCP, it is the full name of the project.
+            Google Cloud resources, it is the full name of
+            the project.
     """
 
     resource_type: str = proto.Field(

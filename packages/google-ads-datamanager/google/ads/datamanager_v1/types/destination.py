@@ -154,6 +154,8 @@ class ProductAccount(proto.Message):
                 Data Partner.
             GOOGLE_ANALYTICS_PROPERTY (5):
                 Google Analytics.
+            GOOGLE_AD_MANAGER_AUDIENCE_LINK (6):
+                Google Ad Manager audience link.
         """
 
         ACCOUNT_TYPE_UNSPECIFIED = 0
@@ -162,6 +164,7 @@ class ProductAccount(proto.Message):
         DISPLAY_VIDEO_ADVERTISER = 3
         DATA_PARTNER = 4
         GOOGLE_ANALYTICS_PROPERTY = 5
+        GOOGLE_AD_MANAGER_AUDIENCE_LINK = 6
 
     product: "Product" = proto.Field(
         proto.ENUM,

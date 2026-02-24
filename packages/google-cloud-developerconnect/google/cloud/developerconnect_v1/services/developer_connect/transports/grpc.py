@@ -494,7 +494,9 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         Repository, Developer Connect will configure the Git
         Repository to send webhook events to Developer Connect.
         Connections that use Firebase GitHub Application will
-        have events forwarded to the Firebase service. All other
+        have events forwarded to the Firebase service.
+        Connections that use Gemini Code Assist will have events
+        forwarded to Gemini Code Assist service. All other
         Connections will have events forwarded to Cloud Build.
 
         Returns:
@@ -1042,6 +1044,62 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_self"]
+
+    @property
+    def start_o_auth(
+        self,
+    ) -> Callable[
+        [developer_connect.StartOAuthRequest], developer_connect.StartOAuthResponse
+    ]:
+        r"""Return a callable for the start o auth method over gRPC.
+
+        Starts OAuth flow for an account connector.
+
+        Returns:
+            Callable[[~.StartOAuthRequest],
+                    ~.StartOAuthResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "start_o_auth" not in self._stubs:
+            self._stubs["start_o_auth"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/StartOAuth",
+                request_serializer=developer_connect.StartOAuthRequest.serialize,
+                response_deserializer=developer_connect.StartOAuthResponse.deserialize,
+            )
+        return self._stubs["start_o_auth"]
+
+    @property
+    def finish_o_auth(
+        self,
+    ) -> Callable[
+        [developer_connect.FinishOAuthRequest], developer_connect.FinishOAuthResponse
+    ]:
+        r"""Return a callable for the finish o auth method over gRPC.
+
+        Finishes OAuth flow for an account connector.
+
+        Returns:
+            Callable[[~.FinishOAuthRequest],
+                    ~.FinishOAuthResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "finish_o_auth" not in self._stubs:
+            self._stubs["finish_o_auth"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/FinishOAuth",
+                request_serializer=developer_connect.FinishOAuthRequest.serialize,
+                response_deserializer=developer_connect.FinishOAuthResponse.deserialize,
+            )
+        return self._stubs["finish_o_auth"]
 
     def close(self):
         self._logged_channel.close()

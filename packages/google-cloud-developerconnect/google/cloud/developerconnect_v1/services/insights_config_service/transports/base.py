@@ -166,6 +166,16 @@ class InsightsConfigServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_deployment_event: gapic_v1.method.wrap_method(
+                self.get_deployment_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_deployment_events: gapic_v1.method.wrap_method(
+                self.list_deployment_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -259,6 +269,29 @@ class InsightsConfigServiceTransport(abc.ABC):
     ) -> Callable[
         [insights_config.DeleteInsightsConfigRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_deployment_event(
+        self,
+    ) -> Callable[
+        [insights_config.GetDeploymentEventRequest],
+        Union[
+            insights_config.DeploymentEvent, Awaitable[insights_config.DeploymentEvent]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_deployment_events(
+        self,
+    ) -> Callable[
+        [insights_config.ListDeploymentEventsRequest],
+        Union[
+            insights_config.ListDeploymentEventsResponse,
+            Awaitable[insights_config.ListDeploymentEventsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
