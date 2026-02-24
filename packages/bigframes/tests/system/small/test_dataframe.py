@@ -949,7 +949,6 @@ def test_repr_w_display_options(scalars_dfs, session):
     with bigframes.option_context(
         "display.max_rows", 10, "display.max_columns", 5, "display.max_colwidth", 10
     ):
-
         # When there are 10 or fewer rows, the outputs should be identical except for the extra note.
         actual = scalars_df.head(10).__repr__()
         executions_post = metrics.execution_count
@@ -2691,7 +2690,6 @@ def test_df_idxmax():
     ],
 )
 def test_df_align(join, axis):
-
     index1: pandas.Index = pandas.Index([1, 2, 3, 4], dtype="Int64")
 
     index2: pandas.Index = pandas.Index([1, 2, 4, 5], dtype="Int64")
@@ -5084,7 +5082,6 @@ def test_iloc_list_multiindex(scalars_dfs):
 
 
 def test_iloc_empty_list(scalars_df_index, scalars_pandas_df_index):
-
     index_list: List[int] = []
 
     bf_result = scalars_df_index.iloc[index_list]

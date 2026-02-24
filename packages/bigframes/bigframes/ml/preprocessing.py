@@ -328,7 +328,6 @@ class KBinsDiscretizer(
             ]
 
         elif self.strategy == "quantile":
-
             return [
                 self._base_sql_generator.ml_quantile_bucketize(
                     column, self.n_bins, f"kbinsdiscretizer_{column}"

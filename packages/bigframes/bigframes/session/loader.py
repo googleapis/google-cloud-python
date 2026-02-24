@@ -1453,7 +1453,6 @@ class GbqDataLoader:
 
 
 def _transform_read_gbq_configuration(configuration: Optional[dict]) -> dict:
-
     """
     For backwards-compatibility, convert any previously client-side only
     parameters such as timeoutMs to the property name expected by the REST API.

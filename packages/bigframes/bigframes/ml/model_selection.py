@@ -41,7 +41,6 @@ def train_test_split(
     stratify: Union[bpd.Series, None] = None,
     shuffle: bool = True,
 ) -> List[Union[bpd.DataFrame, bpd.Series]]:
-
     if test_size is None:
         if train_size is None:
             test_size = 0.25

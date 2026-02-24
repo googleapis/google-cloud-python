@@ -381,9 +381,9 @@ def push_into_tree(
         # TODO: We can prune expressions that won't be reused here,
         return tuple(nodes.ColumnDef(expr, id) for id, expr in results.items())
 
-    def graph_extract_window_expr() -> Optional[
-        Tuple[Sequence[nodes.ColumnDef], window_spec.WindowSpec]
-    ]:
+    def graph_extract_window_expr() -> (
+        Optional[Tuple[Sequence[nodes.ColumnDef], window_spec.WindowSpec]]
+    ):
         for id in graph.sinks:
             next_def = by_id[id]
             if isinstance(next_def.expression, agg_expressions.WindowExpression):

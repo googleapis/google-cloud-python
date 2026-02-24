@@ -406,7 +406,6 @@ def test_widget_with_empty_dataframe_should_have_zero_row_count(
 def test_widget_with_empty_dataframe_should_render_table_headers(
     empty_bf_df: bf.dataframe.DataFrame,
 ):
-
     """
 
 
@@ -422,7 +421,6 @@ def test_widget_with_empty_dataframe_should_render_table_headers(
     """
 
     with bigframes.option_context("display.repr_mode", "anywidget"):
-
         from bigframes.display import TableWidget
 
         widget = TableWidget(empty_bf_df)

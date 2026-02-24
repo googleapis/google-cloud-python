@@ -633,7 +633,6 @@ class BigQueryCachingExecutor(executor.Executor):
 
             create_table = True
             if not cache_spec.cluster_cols:
-
                 offsets_id = bigframes.core.identifiers.ColumnId(
                     bigframes.core.guid.generate_guid()
                 )

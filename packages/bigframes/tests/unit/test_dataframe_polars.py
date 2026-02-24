@@ -1999,7 +1999,6 @@ def test_df_idxmax():
     ],
 )
 def test_df_align(join, axis):
-
     index1: pandas.Index = pandas.Index([1, 2, 3, 4], dtype="Int64")
 
     index2: pandas.Index = pandas.Index([1, 2, 4, 5], dtype="Int64")
@@ -3926,7 +3925,6 @@ def test_iloc_list_multiindex(scalars_dfs):
 
 
 def test_iloc_empty_list(scalars_df_index, scalars_pandas_df_index):
-
     index_list: List[int] = []
 
     bf_result = scalars_df_index.iloc[index_list]

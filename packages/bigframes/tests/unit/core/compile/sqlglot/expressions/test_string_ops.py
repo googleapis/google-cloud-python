@@ -183,7 +183,6 @@ def test_rstrip(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_startswith(scalar_types_df: bpd.DataFrame, snapshot):
-
     col_name = "string_col"
     bf_df = scalar_types_df[[col_name]]
     ops_map = {

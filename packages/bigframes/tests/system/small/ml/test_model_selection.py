@@ -323,7 +323,13 @@ def test_train_test_split_value_error(penguins_df_default_index, train_size, tes
 )
 def test_train_test_split_stratify(df_fixture, request):
     df = request.getfixturevalue(df_fixture)
-    X = df[["species", "island", "culmen_length_mm",]].rename(
+    X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+        ]
+    ].rename(
         columns={"species": "x_species"}
     )  # Keep "species" col just for easy checking. Rename to avoid conflicts.
     y = df[["species"]]

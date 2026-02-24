@@ -160,7 +160,8 @@ class BaseSqlGenerator:
         name: str,
     ) -> str:
         """Encode ML.ONE_HOT_ENCODER for BQML.
-        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder for params."""
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder for params.
+        """
         return f"""ML.ONE_HOT_ENCODER({sql_utils.identifier(numeric_expr_sql)}, '{drop}', {top_k}, {frequency_threshold}) OVER() AS {sql_utils.identifier(name)}"""
 
     def ml_label_encoder(
@@ -171,14 +172,16 @@ class BaseSqlGenerator:
         name: str,
     ) -> str:
         """Encode ML.LABEL_ENCODER for BQML.
-        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-label-encoder for params."""
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-label-encoder for params.
+        """
         return f"""ML.LABEL_ENCODER({sql_utils.identifier(numeric_expr_sql)}, {top_k}, {frequency_threshold}) OVER() AS {sql_utils.identifier(name)}"""
 
     def ml_polynomial_expand(
         self, columns: Iterable[str], degree: int, name: str
     ) -> str:
         """Encode ML.POLYNOMIAL_EXPAND.
-        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-polynomial-expand"""
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-polynomial-expand
+        """
         return f"""ML.POLYNOMIAL_EXPAND({self.struct_columns(columns)}, {degree}) AS {sql_utils.identifier(name)}"""
 
     def ml_distance(
@@ -190,7 +193,8 @@ class BaseSqlGenerator:
         name: str,
     ) -> str:
         """Encode ML.DISTANCE for BQML.
-        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance"""
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance
+        """
         return f"""SELECT *, ML.DISTANCE({sql_utils.identifier(col_x)}, {sql_utils.identifier(col_y)}, '{type}') AS {sql_utils.identifier(name)} FROM ({source_sql})"""
 
     def ai_forecast(
@@ -199,7 +203,8 @@ class BaseSqlGenerator:
         options: Mapping[str, Union[int, float, bool, Iterable[str]]],
     ):
         """Encode AI.FORECAST.
-        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-forecast"""
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-forecast
+        """
         named_parameters_sql = self.build_named_parameters(**options)
 
         return f"""SELECT * FROM AI.FORECAST(({source_sql}),{named_parameters_sql})"""

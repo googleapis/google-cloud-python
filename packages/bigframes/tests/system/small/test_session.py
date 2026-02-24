@@ -874,7 +874,6 @@ def test_read_pandas(session, scalars_dfs):
 
 
 def test_read_pandas_series(session):
-
     idx: pd.Index = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
     pd_series = pd.Series([3, 1, 4, 1, 5], dtype=pd.Int64Dtype(), index=idx)
     bf_series = session.read_pandas(pd_series)
@@ -883,7 +882,6 @@ def test_read_pandas_series(session):
 
 
 def test_read_pandas_index(session):
-
     pd_idx: pd.Index = pd.Index([2, 7, 1, 2, 8], dtype=pd.Int64Dtype())
     bf_idx = session.read_pandas(pd_idx)
 

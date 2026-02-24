@@ -218,7 +218,6 @@ def create_range_window(
     grouping_keys: Sequence[str] = tuple(),
     drop_null_groups: bool = True,
 ) -> Window:
-
     if on is None:
         # Rolling on index
         index_dtypes = block.index.dtypes

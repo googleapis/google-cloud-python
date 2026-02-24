@@ -50,7 +50,6 @@ def test_read_gbq_start_sets_session_location(
     query_prefix,
     reset_default_session_and_location,
 ):
-
     # Form query as a table name or a SQL depending on the test scenario
     query_tokyo = test_data_tables_tokyo["scalars"]
     query = test_data_tables["scalars"]

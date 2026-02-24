@@ -807,7 +807,6 @@ def test_precision_score_binary_default_arguments(session):
 def test_precision_score_binary_invalid_input_raise_error(
     session, y_true, y_pred, pos_label
 ):
-
     bf_y_true = session.read_pandas(y_true)
     bf_y_pred = session.read_pandas(y_pred)
 

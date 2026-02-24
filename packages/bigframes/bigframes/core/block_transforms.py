@@ -618,7 +618,6 @@ def skew(
     skew_column_ids: typing.Sequence[str],
     grouping_column_ids: typing.Sequence[str] = (),
 ) -> blocks.Block:
-
     original_columns = skew_column_ids
     column_labels = block.select_columns(original_columns).column_labels
 

@@ -44,7 +44,6 @@ class KMeans(
     base.UnsupervisedTrainablePredictor,
     bigframes_vendored.sklearn.cluster._kmeans.KMeans,
 ):
-
     __doc__ = bigframes_vendored.sklearn.cluster._kmeans.KMeans.__doc__
 
     def __init__(

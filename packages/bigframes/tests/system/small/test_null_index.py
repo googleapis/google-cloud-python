@@ -381,7 +381,6 @@ def test_null_index_df_concat(scalars_df_null_index, scalars_pandas_df_default_i
 def test_null_index_map_dict_input(
     scalars_df_null_index, scalars_pandas_df_default_index
 ):
-
     local_map = dict()
     # construct a local map, incomplete to cover <NA> behavior
     for s in scalars_pandas_df_default_index.string_col[:-3]:

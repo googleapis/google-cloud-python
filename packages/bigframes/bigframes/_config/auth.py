@@ -30,9 +30,9 @@ _cached_credentials: Optional[google.auth.credentials.Credentials] = None
 _cached_project_default: Optional[str] = None
 
 
-def get_default_credentials_with_project() -> tuple[
-    google.auth.credentials.Credentials, Optional[str]
-]:
+def get_default_credentials_with_project() -> (
+    tuple[google.auth.credentials.Credentials, Optional[str]]
+):
     global _AUTH_LOCK, _cached_credentials, _cached_project_default
 
     with _AUTH_LOCK:

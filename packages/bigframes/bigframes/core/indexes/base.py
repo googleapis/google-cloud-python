@@ -211,7 +211,6 @@ class Index:
     @property
     @validations.requires_ordering()
     def is_monotonic_decreasing(self) -> bool:
-
         return typing.cast(
             bool,
             self._block.is_monotonic_decreasing(self._block.index_columns),

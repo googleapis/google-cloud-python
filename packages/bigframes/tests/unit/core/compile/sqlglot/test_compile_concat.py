@@ -28,7 +28,6 @@ def test_compile_concat(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_compile_concat_filter_sorted(scalar_types_df: bpd.DataFrame, snapshot):
-
     scalars_array_value = scalar_types_df._block.expr
     input_1 = scalars_array_value.select_columns(["float64_col", "int64_col"]).order_by(
         [ordering.ascending_over("int64_col")]

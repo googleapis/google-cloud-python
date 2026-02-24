@@ -28,7 +28,6 @@ from bigframes.operations import date_ops
 
 @docs.inherit_docs(vendored_pandas_datetime_index.DatetimeIndex)
 class DatetimeIndex(Index):
-
     # Must be above 5000 for pandas to delegate to bigframes for binops
     __pandas_priority__ = 12000
 

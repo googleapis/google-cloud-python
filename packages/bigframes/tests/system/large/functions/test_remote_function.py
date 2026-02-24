@@ -842,7 +842,6 @@ def test_remote_function_with_external_package_dependencies(
     session, scalars_dfs, dataset_id, bq_cf_connection
 ):
     try:
-
         # The return type hint in this function's signature has conflict. The
         # `output_type` argument from remote_function decorator takes precedence
         # and will be used instead.
@@ -897,7 +896,6 @@ def test_remote_function_with_explicit_name_reuse(
     session, scalars_dfs, dataset_id, bq_cf_connection
 ):
     try:
-
         dirs_to_cleanup = []
 
         # Define a user code
@@ -1251,7 +1249,6 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
     rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=project))
 
     try:
-
         # TODO(shobs): Figure out why the default ingress setting
         # (internal-only) does not work here
         @rf_session.remote_function(
@@ -1324,7 +1321,6 @@ def test_remote_function_via_session_custom_build_sa(
     rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=project))
 
     try:
-
         # TODO(shobs): Figure out why the default ingress setting
         # (internal-only) does not work here
         @rf_session.remote_function(
@@ -3007,7 +3003,6 @@ def test_remote_function_connection_path_format(
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_df_where_mask(session, dataset_id, scalars_dfs):
     try:
-
         # The return type has to be bool type for callable where condition.
         def is_sum_positive(a, b):
             return a + b > 0
@@ -3086,7 +3081,6 @@ def test_remote_function_df_where_other_issue(session, dataset_id, scalars_df_in
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_df_where_mask_series(session, dataset_id, scalars_dfs):
     try:
-
         # The return type has to be bool type for callable where condition.
         def is_sum_positive_series(s: pandas.Series) -> bool:
             return s["int64_col"] + s["int64_too"] > 0

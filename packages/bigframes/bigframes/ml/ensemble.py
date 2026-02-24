@@ -213,7 +213,6 @@ class XGBClassifier(
     base.SupervisedTrainableWithEvaluationPredictor,
     bigframes_vendored.xgboost.sklearn.XGBClassifier,
 ):
-
     __doc__ = bigframes_vendored.xgboost.sklearn.XGBClassifier.__doc__
 
     def __init__(
@@ -370,7 +369,6 @@ class RandomForestRegressor(
     base.SupervisedTrainableWithEvaluationPredictor,
     bigframes_vendored.sklearn.ensemble._forest.RandomForestRegressor,
 ):
-
     __doc__ = bigframes_vendored.sklearn.ensemble._forest.RandomForestRegressor.__doc__
 
     def __init__(
@@ -536,7 +534,6 @@ class RandomForestClassifier(
     base.SupervisedTrainableWithEvaluationPredictor,
     bigframes_vendored.sklearn.ensemble._forest.RandomForestClassifier,
 ):
-
     __doc__ = bigframes_vendored.sklearn.ensemble._forest.RandomForestClassifier.__doc__
 
     def __init__(

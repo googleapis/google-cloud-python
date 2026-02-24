@@ -253,7 +253,6 @@ def test_to_pandas_override_global_option(scalars_df_index):
     # Direct call to_pandas uses global default setting (allow_large_results=True),
     # table has 'bqdf' prefix.
     with bigframes.option_context("compute.allow_large_results", True):
-
         scalars_df_index.to_pandas()
         table_id = scalars_df_index._query_job.destination.table_id
         assert table_id is not None
@@ -324,7 +323,6 @@ def test_to_pandas_dry_run(session, scalars_pandas_df_multi_index):
 def test_to_arrow_override_global_option(scalars_df_index):
     # Direct call to_arrow uses global default setting (allow_large_results=True),
     with bigframes.option_context("compute.allow_large_results", True):
-
         scalars_df_index.to_arrow()
         table_id = scalars_df_index._query_job.destination.table_id
         assert table_id is not None

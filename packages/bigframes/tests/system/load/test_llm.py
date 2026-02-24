@@ -147,7 +147,6 @@ def test_claude3_text_generator_predict_with_params_success(
 def test_claude3_text_generator_predict_multi_col_success(
     llm_text_df, session, bq_connection
 ):
-
     llm_text_df["additional_col"] = 1
     claude3_text_generator_model = llm.Claude3TextGenerator(
         model_name="claude-3-haiku", connection_name=bq_connection, session=session

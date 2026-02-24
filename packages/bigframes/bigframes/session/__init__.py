@@ -1383,7 +1383,6 @@ class Session(
             write_engine=write_engine,
         )
         if engine == "bigquery":
-
             if dtype is not None:
                 raise NotImplementedError(
                     "BigQuery engine does not support the dtype arguments."
@@ -2262,7 +2261,8 @@ class Session(
         iam_role: Optional[str] = None,
     ) -> str:
         """Create the connection with the session settings and try to attach iam role to the connection SA.
-        If any of project, location or connection isn't specified, use the session defaults. Returns fully-qualified connection name."""
+        If any of project, location or connection isn't specified, use the session defaults. Returns fully-qualified connection name.
+        """
         connection = self.bq_connection if not connection else connection
         connection = bigframes.clients.get_canonical_bq_connection_id(
             connection_id=connection,

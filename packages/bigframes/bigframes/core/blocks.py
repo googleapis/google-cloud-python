@@ -657,7 +657,6 @@ class Block:
         sampling_method: Optional[str] = None,
         random_state: Optional[int] = None,
     ) -> sampling_options.SamplingOptions:
-
         if (sampling_method is not None) and (sampling_method not in _SAMPLING_METHODS):
             raise NotImplementedError(
                 f"The downsampling method {sampling_method} is not implemented, "
@@ -700,7 +699,8 @@ class Block:
         """Download results one message at a time.
 
         page_size and max_results determine the size and number of batches,
-        see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result"""
+        see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob#google_cloud_bigquery_job_QueryJob_result
+        """
 
         under_10gb = (
             (not allow_large_results)

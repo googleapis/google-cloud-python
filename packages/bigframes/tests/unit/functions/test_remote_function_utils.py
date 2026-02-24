@@ -441,7 +441,6 @@ def test_has_conflict_output_type_no_annotation():
     ),
 )
 def test_get_bigframes_metadata(metadata_options, metadata_string):
-
     assert _utils.get_bigframes_metadata(**metadata_options) == metadata_string
 
 
@@ -514,7 +513,6 @@ def test_get_bigframes_metadata_array_type_not_serializable(output_type):
 def test_get_python_output_type_from_bigframes_metadata(
     metadata_string, python_output_type
 ):
-
     assert (
         _utils.get_python_output_type_from_bigframes_metadata(metadata_string)
         == python_output_type

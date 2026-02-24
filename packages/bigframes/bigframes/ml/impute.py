@@ -33,7 +33,6 @@ class SimpleImputer(
     base.Transformer,
     bigframes_vendored.sklearn.impute._base.SimpleImputer,
 ):
-
     __doc__ = bigframes_vendored.sklearn.impute._base.SimpleImputer.__doc__
 
     def __init__(

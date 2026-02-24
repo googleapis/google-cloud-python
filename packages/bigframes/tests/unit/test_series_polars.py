@@ -3025,7 +3025,6 @@ def test_value_counts_w_cut(scalars_dfs):
 
 
 def test_iloc_nested(scalars_df_index, scalars_pandas_df_index):
-
     bf_result = scalars_df_index["string_col"].iloc[1:].iloc[1:].to_pandas()
     pd_result = scalars_pandas_df_index["string_col"].iloc[1:].iloc[1:]
 

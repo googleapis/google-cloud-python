@@ -32,7 +32,6 @@ prefixer = test_utils.prefixer.Prefixer("bigframes", "")
 
 def test_managed_function_array_output(session, scalars_dfs, dataset_id):
     try:
-
         with warnings.catch_warnings(record=True) as record:
 
             @session.udf(
@@ -85,7 +84,6 @@ def test_managed_function_array_output(session, scalars_dfs, dataset_id):
 
 def test_managed_function_series_apply(session, dataset_id, scalars_dfs):
     try:
-
         # An explicit name with "def" in it is used to test the robustness of
         # the user code extraction logic, which depends on that term.
         bq_name = f"{prefixer.create_prefix()}_def_to_test_code_extraction"
@@ -145,7 +143,6 @@ def test_managed_function_series_apply_array_output(
     scalars_dfs,
 ):
     try:
-
         with pytest.warns(bfe.PreviewWarning, match="udf is in preview."):
 
             @session.udf(dataset=dataset_id, name=prefixer.create_prefix())
@@ -233,7 +230,6 @@ def test_managed_function_series_combine(session, dataset_id, scalars_dfs):
 
 def test_managed_function_series_combine_array_output(session, dataset_id, scalars_dfs):
     try:
-
         # The type hints in this function's signature has conflicts. The
         # `input_types` and `output_type` arguments from udf decorator take
         # precedence and will be used instead.
@@ -451,7 +447,6 @@ def test_managed_function_dataframe_apply_axis_1_array_output(session, dataset_i
         return [str(x), str(y), z]
 
     try:
-
         assert getattr(foo, "is_row_processor") is False
         assert getattr(foo, "input_dtypes") == expected_dtypes
         assert getattr(foo, "output_dtype") == pandas.ArrowDtype(
@@ -771,7 +766,6 @@ def test_managed_function_df_apply_axis_1_aggregates(session, dataset_id, scalar
                 "\nenvironment may not precisely match your local environment."
             ),
         ):
-
             analyze_mf = session.udf(
                 input_types=pandas.Series,
                 output_type=str,
@@ -1087,7 +1081,6 @@ def test_managed_function_df_apply_axis_1_series_args(session, dataset_id, scala
 
 def test_managed_function_df_where_mask(session, dataset_id, scalars_dfs):
     try:
-
         # The return type has to be bool type for callable where condition.
         def is_sum_positive(a, b):
             return a + b > 0
@@ -1154,7 +1147,6 @@ def test_managed_function_df_where_mask(session, dataset_id, scalars_dfs):
 
 def test_managed_function_df_where_mask_series(session, dataset_id, scalars_dfs):
     try:
-
         # The return type has to be bool type for callable where condition.
         def is_sum_positive_series(s):
             return s["int64_col"] + s["int64_too"] > 0
@@ -1254,7 +1246,6 @@ def test_managed_function_df_where_other_issue(session, dataset_id, scalars_df_i
 
 def test_managed_function_series_where_mask_map(session, dataset_id, scalars_dfs):
     try:
-
         # The return type has to be bool type for callable where condition.
         def _is_positive(s):
             return s + 1000 > 0
@@ -1307,7 +1298,6 @@ def test_managed_function_series_where_mask_map(session, dataset_id, scalars_dfs
 
 def test_managed_function_series_apply_args(session, dataset_id, scalars_dfs):
     try:
-
         with pytest.warns(bfe.PreviewWarning, match="udf is in preview."):
 
             @session.udf(dataset=dataset_id, name=prefixer.create_prefix())

@@ -13,7 +13,7 @@ We use `nox` to instrument our tests.
 - To run a single unit test:
 
   ```bash
-  nox -r -s unit-3.13 -- -k <name of test>
+  nox -r -s unit-3.14 -- -k <name of test>
   ```
 
 - Ignore this step if you lack access to Google Cloud resources. To run system
@@ -23,7 +23,7 @@ We use `nox` to instrument our tests.
    $ nox -r -s system
 
    # Run a single system test
-   $ nox -r -s system-3.13 -- -k <name of test>
+   $ nox -r -s system-3.14 -- -k <name of test>
 
 - The codebase must have better coverage than it had previously after each
   change. You can test coverage via `nox -s unit system cover` (takes a long
