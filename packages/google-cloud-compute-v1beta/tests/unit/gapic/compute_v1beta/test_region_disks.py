@@ -1719,7 +1719,9 @@ def test_bulk_insert_rest_flattened():
             project="project_value",
             region="region_value",
             bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
-                source_consistency_group_policy="source_consistency_group_policy_value"
+                instant_snapshot_group_parameters=compute.InstantSnapshotGroupParameters(
+                    source_instant_snapshot_group="source_instant_snapshot_group_value"
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -1761,7 +1763,9 @@ def test_bulk_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
-                source_consistency_group_policy="source_consistency_group_policy_value"
+                instant_snapshot_group_parameters=compute.InstantSnapshotGroupParameters(
+                    source_instant_snapshot_group="source_instant_snapshot_group_value"
+                )
             ),
         )
 
@@ -1925,7 +1929,9 @@ def test_bulk_insert_unary_rest_flattened():
             project="project_value",
             region="region_value",
             bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
-                source_consistency_group_policy="source_consistency_group_policy_value"
+                instant_snapshot_group_parameters=compute.InstantSnapshotGroupParameters(
+                    source_instant_snapshot_group="source_instant_snapshot_group_value"
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -1967,7 +1973,9 @@ def test_bulk_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             bulk_insert_disk_resource_resource=compute.BulkInsertDiskResource(
-                source_consistency_group_policy="source_consistency_group_policy_value"
+                instant_snapshot_group_parameters=compute.InstantSnapshotGroupParameters(
+                    source_instant_snapshot_group="source_instant_snapshot_group_value"
+                )
             ),
         )
 
@@ -7706,7 +7714,10 @@ def test_bulk_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["bulk_insert_disk_resource_resource"] = {
-        "source_consistency_group_policy": "source_consistency_group_policy_value"
+        "instant_snapshot_group_parameters": {
+            "source_instant_snapshot_group": "source_instant_snapshot_group_value"
+        },
+        "source_consistency_group_policy": "source_consistency_group_policy_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

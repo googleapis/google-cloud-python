@@ -34,6 +34,7 @@ Services for Google Cloud Compute v1beta API
     instances
     instance_settings_service
     instance_templates
+    instant_snapshot_groups
     instant_snapshots
     interconnect_attachment_groups
     interconnect_attachments
@@ -77,6 +78,7 @@ Services for Google Cloud Compute v1beta API
     region_instance_groups
     region_instances
     region_instance_templates
+    region_instant_snapshot_groups
     region_instant_snapshots
     region_multi_mig_members
     region_multi_migs
@@ -98,6 +100,7 @@ Services for Google Cloud Compute v1beta API
     region_zones
     reservation_blocks
     reservations
+    reservation_slots
     reservation_sub_blocks
     resource_policies
     rollout_plans

@@ -1694,6 +1694,7 @@ def test_bulk_insert_rest_call_success(request_type):
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["bulk_insert_instance_resource_resource"] = {
         "count": 553,
+        "instance_flexibility_policy": {"instance_selections": {}},
         "instance_properties": {
             "advanced_machine_features": {
                 "enable_nested_virtualization": True,
@@ -1813,6 +1814,7 @@ def test_bulk_insert_rest_call_success(request_type):
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
                     ],
+                    "enable_vpc_scoped_dns": True,
                     "fingerprint": "fingerprint_value",
                     "igmp_query": "igmp_query_value",
                     "internal_ipv6_prefix_length": 2831,
@@ -1874,6 +1876,7 @@ def test_bulk_insert_rest_call_success(request_type):
                 "on_host_maintenance": "on_host_maintenance_value",
                 "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
+                "preemption_notice_duration": {},
                 "provisioning_model": "provisioning_model_value",
                 "skip_guest_os_shutdown": True,
                 "termination_time": "termination_time_value",
@@ -1894,6 +1897,10 @@ def test_bulk_insert_rest_call_success(request_type):
             "tags": {
                 "fingerprint": "fingerprint_value",
                 "items": ["items_value1", "items_value2"],
+            },
+            "workload_identity_config": {
+                "identity": "identity_value",
+                "identity_certificate_enabled": True,
             },
         },
         "location_policy": {"locations": {}, "target_shape": "target_shape_value"},

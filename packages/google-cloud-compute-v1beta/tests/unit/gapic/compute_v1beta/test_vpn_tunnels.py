@@ -3944,6 +3944,7 @@ def test_insert_rest_call_success(request_type):
             "local_traffic_selector_value2",
         ],
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "peer_external_gateway": "peer_external_gateway_value",
         "peer_external_gateway_interface": 3279,
         "peer_gcp_gateway": "peer_gcp_gateway_value",

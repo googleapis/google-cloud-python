@@ -4000,6 +4000,7 @@ def test_insert_rest_call_success(request_type):
         "labels": {},
         "name": "name_value",
         "network": "network_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "self_link": "self_link_value",
         "status": "status_value",

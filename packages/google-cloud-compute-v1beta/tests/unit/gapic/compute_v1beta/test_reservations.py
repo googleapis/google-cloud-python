@@ -5111,6 +5111,7 @@ def test_get_rest_call_success(request_type):
             delete_at_time="delete_at_time_value",
             deployment_type="deployment_type_value",
             description="description_value",
+            early_access_maintenance="early_access_maintenance_value",
             enable_emergent_maintenance=True,
             id=205,
             kind="kind_value",
@@ -5145,6 +5146,7 @@ def test_get_rest_call_success(request_type):
     assert response.delete_at_time == "delete_at_time_value"
     assert response.deployment_type == "deployment_type_value"
     assert response.description == "description_value"
+    assert response.early_access_maintenance == "early_access_maintenance_value"
     assert response.enable_emergent_maintenance is True
     assert response.id == 205
     assert response.kind == "kind_value"
@@ -5414,6 +5416,7 @@ def test_insert_rest_call_success(request_type):
         "delete_at_time": "delete_at_time_value",
         "deployment_type": "deployment_type_value",
         "description": "description_value",
+        "early_access_maintenance": "early_access_maintenance_value",
         "enable_emergent_maintenance": True,
         "id": 205,
         "kind": "kind_value",
@@ -6841,6 +6844,7 @@ def test_update_rest_call_success(request_type):
         "delete_at_time": "delete_at_time_value",
         "deployment_type": "deployment_type_value",
         "description": "description_value",
+        "early_access_maintenance": "early_access_maintenance_value",
         "enable_emergent_maintenance": True,
         "id": 205,
         "kind": "kind_value",

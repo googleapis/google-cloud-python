@@ -4267,6 +4267,8 @@ def test_get_rest_call_success(request_type):
             self_link_with_id="self_link_with_id_value",
             source_disk="source_disk_value",
             source_disk_id="source_disk_id_value",
+            source_instant_snapshot_group="source_instant_snapshot_group_value",
+            source_instant_snapshot_group_id="source_instant_snapshot_group_id_value",
             status="status_value",
             zone="zone_value",
         )
@@ -4300,6 +4302,13 @@ def test_get_rest_call_success(request_type):
     assert response.self_link_with_id == "self_link_with_id_value"
     assert response.source_disk == "source_disk_value"
     assert response.source_disk_id == "source_disk_id_value"
+    assert (
+        response.source_instant_snapshot_group == "source_instant_snapshot_group_value"
+    )
+    assert (
+        response.source_instant_snapshot_group_id
+        == "source_instant_snapshot_group_id_value"
+    )
     assert response.status == "status_value"
     assert response.zone == "zone_value"
 
@@ -4544,6 +4553,7 @@ def test_insert_rest_call_success(request_type):
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "resource_status": {"storage_size_bytes": 1941},
         "satisfies_pzi": True,
@@ -4552,6 +4562,8 @@ def test_insert_rest_call_success(request_type):
         "self_link_with_id": "self_link_with_id_value",
         "source_disk": "source_disk_value",
         "source_disk_id": "source_disk_id_value",
+        "source_instant_snapshot_group": "source_instant_snapshot_group_value",
+        "source_instant_snapshot_group_id": "source_instant_snapshot_group_id_value",
         "status": "status_value",
         "zone": "zone_value",
     }

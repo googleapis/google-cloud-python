@@ -2654,8 +2654,8 @@ def test_insert_rest_flattened():
             project="project_value",
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -2698,8 +2698,8 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -2864,8 +2864,8 @@ def test_insert_unary_rest_flattened():
             project="project_value",
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -2908,8 +2908,8 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -3365,8 +3365,8 @@ def test_update_rest_flattened():
             zone="zone_value",
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -3410,8 +3410,8 @@ def test_update_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -3596,8 +3596,8 @@ def test_update_unary_rest_flattened():
             zone="zone_value",
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -3641,8 +3641,8 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             future_reservation="future_reservation_value",
             future_reservation_resource=compute.FutureReservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    host_count=1094
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -4433,6 +4433,9 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["future_reservation_resource"] = {
+        "advanced_deployment_control": {
+            "reservation_operational_mode": "reservation_operational_mode_value"
+        },
         "aggregate_reservation": {
             "host_count": 1094,
             "in_use_host_count": 1832,
@@ -4921,6 +4924,9 @@ def test_update_rest_call_success(request_type):
         "future_reservation": "sample3",
     }
     request_init["future_reservation_resource"] = {
+        "advanced_deployment_control": {
+            "reservation_operational_mode": "reservation_operational_mode_value"
+        },
         "aggregate_reservation": {
             "host_count": 1094,
             "in_use_host_count": 1832,

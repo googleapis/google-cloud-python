@@ -1175,6 +1175,24 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 different use cases, seeNetwork endpoint
                 groups overview.
 
+                Note: Use the following APIs to manage
+                network endpoint groups:
+
+                   -
+                   To manage NEGs with zonal scope (such
+                as zonal NEGs, hybrid connectivity
+                NEGs): zonal
+                   API
+                   -
+                   To manage NEGs with regional scope
+                (such as regional internet NEGs,
+                serverless NEGs, Private Service Connect
+                NEGs): regional    API
+                   -
+                   To manage NEGs with global scope
+                (such as global internet NEGs):global
+                API
+
             """
 
             http_options = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseGet._get_http_options()

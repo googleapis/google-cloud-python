@@ -3481,6 +3481,7 @@ def test_insert_rest_call_success(request_type):
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "redundancy_type": "redundancy_type_value",
         "self_link": "self_link_value",
     }
