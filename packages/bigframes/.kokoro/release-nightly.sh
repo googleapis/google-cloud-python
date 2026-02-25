@@ -93,9 +93,9 @@ for gcs_path in gs://vertex_sdk_private_releases/bigframe/ \
                     gs://dl-platform-colab/bigframes/ \
                     gs://bigframes-wheels/;
     do
-      gsutil cp -v dist/* ${gcs_path}
-      gsutil cp -v LICENSE ${gcs_path}
-      gsutil -m cp -r -v "notebooks/" ${gcs_path}notebooks/
+      gcloud storage cp --print-created-message dist/* ${gcs_path}
+      gcloud storage cp --print-created-message LICENSE ${gcs_path}
+      gcloud storage cp --recursive --print-created-message "notebooks/" ${gcs_path}notebooks/
 
     done
 
