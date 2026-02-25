@@ -315,7 +315,7 @@ class GraphServer:
             # Daemon threads automatically terminate when the main program exits
             daemon_threads = True
 
-        with ThreadedTCPServer(("", self.port), GraphServerHandler) as httpd:
+        with ThreadedTCPServer(("127.0.0.1", self.port), GraphServerHandler) as httpd:
             self._server = httpd
             self._server.serve_forever()
 
