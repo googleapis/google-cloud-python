@@ -1693,6 +1693,7 @@ def test_bulk_insert_rest_call_success(request_type):
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["bulk_insert_instance_resource_resource"] = {
         "count": 553,
+        "instance_flexibility_policy": {"instance_selections": {}},
         "instance_properties": {
             "advanced_machine_features": {
                 "enable_nested_virtualization": True,
