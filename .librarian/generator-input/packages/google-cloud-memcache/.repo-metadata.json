@@ -10,7 +10,7 @@
   "library_type": "GAPIC_AUTO",
   "name": "memcache",
   "name_pretty": "Cloud Memorystore for Memcached",
-  "product_documentation": "cloud.google.com/memorystore/docs/memcached/",
+  "product_documentation": "https://cloud.google.com/memorystore/docs/memcached/",
   "release_level": "stable",
   "repo": "googleapis/google-cloud-python"
 }

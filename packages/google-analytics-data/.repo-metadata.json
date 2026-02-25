@@ -5,7 +5,7 @@
   "client_documentation": "https://googleapis.dev/python/analyticsdata/latest",
   "default_version": "v1beta",
   "distribution_name": "google-analytics-data",
-  "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:187400%2B%20",
+  "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:187400",
   "language": "python",
   "library_type": "GAPIC_AUTO",
   "name": "analyticsdata",
