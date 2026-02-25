@@ -33,7 +33,28 @@ from .services.ingestion_service import (
     IngestionServiceAsyncClient,
     IngestionServiceClient,
 )
-from .types.audience import AudienceMember, MobileData, PairData
+from .services.marketing_data_insights_service import (
+    MarketingDataInsightsServiceAsyncClient,
+    MarketingDataInsightsServiceClient,
+)
+from .services.partner_link_service import (
+    PartnerLinkServiceAsyncClient,
+    PartnerLinkServiceClient,
+)
+from .services.user_list_direct_license_service import (
+    UserListDirectLicenseServiceAsyncClient,
+    UserListDirectLicenseServiceClient,
+)
+from .services.user_list_global_license_service import (
+    UserListGlobalLicenseServiceAsyncClient,
+    UserListGlobalLicenseServiceClient,
+)
+from .services.user_list_service import (
+    UserListServiceAsyncClient,
+    UserListServiceClient,
+)
+from .types.age_range import AgeRange
+from .types.audience import AudienceMember, MobileData, PairData, PpidData, UserIdData
 from .types.cart_data import CartData, Item
 from .types.consent import Consent, ConsentStatus
 from .types.destination import Destination, Product, ProductAccount
@@ -48,6 +69,7 @@ from .types.event import (
     EventSource,
 )
 from .types.experimental_field import ExperimentalField
+from .types.gender import Gender
 from .types.ingestion_service import (
     Encoding,
     IngestAudienceMembersRequest,
@@ -59,8 +81,20 @@ from .types.ingestion_service import (
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
+from .types.insights_service import (
+    Baseline,
+    RetrieveInsightsRequest,
+    RetrieveInsightsResponse,
+)
 from .types.item_parameter import ItemParameter
 from .types.match_rate import MatchRateRange
+from .types.partner_link_service import (
+    CreatePartnerLinkRequest,
+    DeletePartnerLinkRequest,
+    PartnerLink,
+    SearchPartnerLinksRequest,
+    SearchPartnerLinksResponse,
+)
 from .types.processing_errors import (
     ErrorCount,
     ErrorInfo,
@@ -72,6 +106,55 @@ from .types.processing_errors import (
 from .types.request_status_per_destination import RequestStatusPerDestination
 from .types.terms_of_service import TermsOfService, TermsOfServiceStatus
 from .types.user_data import AddressInfo, UserData, UserIdentifier
+from .types.user_list import (
+    ContactIdInfo,
+    DataSourceType,
+    IngestedUserListInfo,
+    MobileIdInfo,
+    PairIdInfo,
+    PartnerAudienceInfo,
+    PseudonymousIdInfo,
+    SizeInfo,
+    TargetNetworkInfo,
+    UserIdInfo,
+    UserList,
+)
+from .types.user_list_direct_license import UserListDirectLicense
+from .types.user_list_direct_license_service import (
+    CreateUserListDirectLicenseRequest,
+    GetUserListDirectLicenseRequest,
+    ListUserListDirectLicensesRequest,
+    ListUserListDirectLicensesResponse,
+    UpdateUserListDirectLicenseRequest,
+)
+from .types.user_list_global_license import (
+    UserListGlobalLicense,
+    UserListGlobalLicenseCustomerInfo,
+)
+from .types.user_list_global_license_service import (
+    CreateUserListGlobalLicenseRequest,
+    GetUserListGlobalLicenseRequest,
+    ListUserListGlobalLicenseCustomerInfosRequest,
+    ListUserListGlobalLicenseCustomerInfosResponse,
+    ListUserListGlobalLicensesRequest,
+    ListUserListGlobalLicensesResponse,
+    UpdateUserListGlobalLicenseRequest,
+)
+from .types.user_list_global_license_type import UserListGlobalLicenseType
+from .types.user_list_license_client_account_type import (
+    UserListLicenseClientAccountType,
+)
+from .types.user_list_license_metrics import UserListLicenseMetrics
+from .types.user_list_license_pricing import UserListLicensePricing
+from .types.user_list_license_status import UserListLicenseStatus
+from .types.user_list_service import (
+    CreateUserListRequest,
+    DeleteUserListRequest,
+    GetUserListRequest,
+    ListUserListsRequest,
+    ListUserListsResponse,
+    UpdateUserListRequest,
+)
 from .types.user_properties import (
     CustomerType,
     CustomerValueBucket,
@@ -175,16 +258,31 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "IngestionServiceAsyncClient",
+    "MarketingDataInsightsServiceAsyncClient",
+    "PartnerLinkServiceAsyncClient",
+    "UserListDirectLicenseServiceAsyncClient",
+    "UserListGlobalLicenseServiceAsyncClient",
+    "UserListServiceAsyncClient",
     "AdIdentifiers",
     "AddressInfo",
+    "AgeRange",
     "AudienceMember",
     "AwsWrappedKeyInfo",
+    "Baseline",
     "CartData",
     "Consent",
     "ConsentStatus",
+    "ContactIdInfo",
+    "CreatePartnerLinkRequest",
+    "CreateUserListDirectLicenseRequest",
+    "CreateUserListGlobalLicenseRequest",
+    "CreateUserListRequest",
     "CustomVariable",
     "CustomerType",
     "CustomerValueBucket",
+    "DataSourceType",
+    "DeletePartnerLinkRequest",
+    "DeleteUserListRequest",
     "Destination",
     "DeviceInfo",
     "Encoding",
@@ -197,29 +295,73 @@ __all__ = (
     "EventSource",
     "ExperimentalField",
     "GcpWrappedKeyInfo",
+    "Gender",
+    "GetUserListDirectLicenseRequest",
+    "GetUserListGlobalLicenseRequest",
+    "GetUserListRequest",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
     "IngestEventsResponse",
+    "IngestedUserListInfo",
     "IngestionServiceClient",
     "Item",
     "ItemParameter",
+    "ListUserListDirectLicensesRequest",
+    "ListUserListDirectLicensesResponse",
+    "ListUserListGlobalLicenseCustomerInfosRequest",
+    "ListUserListGlobalLicenseCustomerInfosResponse",
+    "ListUserListGlobalLicensesRequest",
+    "ListUserListGlobalLicensesResponse",
+    "ListUserListsRequest",
+    "ListUserListsResponse",
+    "MarketingDataInsightsServiceClient",
     "MatchRateRange",
     "MobileData",
+    "MobileIdInfo",
     "PairData",
+    "PairIdInfo",
+    "PartnerAudienceInfo",
+    "PartnerLink",
+    "PartnerLinkServiceClient",
+    "PpidData",
     "ProcessingErrorReason",
     "ProcessingWarningReason",
     "Product",
     "ProductAccount",
+    "PseudonymousIdInfo",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
     "RequestStatusPerDestination",
+    "RetrieveInsightsRequest",
+    "RetrieveInsightsResponse",
     "RetrieveRequestStatusRequest",
     "RetrieveRequestStatusResponse",
+    "SearchPartnerLinksRequest",
+    "SearchPartnerLinksResponse",
+    "SizeInfo",
+    "TargetNetworkInfo",
     "TermsOfService",
     "TermsOfServiceStatus",
+    "UpdateUserListDirectLicenseRequest",
+    "UpdateUserListGlobalLicenseRequest",
+    "UpdateUserListRequest",
     "UserData",
+    "UserIdData",
+    "UserIdInfo",
     "UserIdentifier",
+    "UserList",
+    "UserListDirectLicense",
+    "UserListDirectLicenseServiceClient",
+    "UserListGlobalLicense",
+    "UserListGlobalLicenseCustomerInfo",
+    "UserListGlobalLicenseServiceClient",
+    "UserListGlobalLicenseType",
+    "UserListLicenseClientAccountType",
+    "UserListLicenseMetrics",
+    "UserListLicensePricing",
+    "UserListLicenseStatus",
+    "UserListServiceClient",
     "UserProperties",
     "UserProperty",
     "WarningCount",

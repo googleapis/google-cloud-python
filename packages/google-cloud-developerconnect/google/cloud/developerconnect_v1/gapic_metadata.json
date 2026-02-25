@@ -85,6 +85,11 @@
                 "fetch_self"
               ]
             },
+            "FinishOAuth": {
+              "methods": [
+                "finish_o_auth"
+              ]
+            },
             "GetAccountConnector": {
               "methods": [
                 "get_account_connector"
@@ -118,6 +123,11 @@
             "ListUsers": {
               "methods": [
                 "list_users"
+              ]
+            },
+            "StartOAuth": {
+              "methods": [
+                "start_o_auth"
               ]
             },
             "UpdateAccountConnector": {
@@ -210,6 +220,11 @@
                 "fetch_self"
               ]
             },
+            "FinishOAuth": {
+              "methods": [
+                "finish_o_auth"
+              ]
+            },
             "GetAccountConnector": {
               "methods": [
                 "get_account_connector"
@@ -243,6 +258,11 @@
             "ListUsers": {
               "methods": [
                 "list_users"
+              ]
+            },
+            "StartOAuth": {
+              "methods": [
+                "start_o_auth"
               ]
             },
             "UpdateAccountConnector": {
@@ -335,6 +355,11 @@
                 "fetch_self"
               ]
             },
+            "FinishOAuth": {
+              "methods": [
+                "finish_o_auth"
+              ]
+            },
             "GetAccountConnector": {
               "methods": [
                 "get_account_connector"
@@ -370,6 +395,11 @@
                 "list_users"
               ]
             },
+            "StartOAuth": {
+              "methods": [
+                "start_o_auth"
+              ]
+            },
             "UpdateAccountConnector": {
               "methods": [
                 "update_account_connector"
@@ -399,9 +429,19 @@
                 "delete_insights_config"
               ]
             },
+            "GetDeploymentEvent": {
+              "methods": [
+                "get_deployment_event"
+              ]
+            },
             "GetInsightsConfig": {
               "methods": [
                 "get_insights_config"
+              ]
+            },
+            "ListDeploymentEvents": {
+              "methods": [
+                "list_deployment_events"
               ]
             },
             "ListInsightsConfigs": {
@@ -429,9 +469,19 @@
                 "delete_insights_config"
               ]
             },
+            "GetDeploymentEvent": {
+              "methods": [
+                "get_deployment_event"
+              ]
+            },
             "GetInsightsConfig": {
               "methods": [
                 "get_insights_config"
+              ]
+            },
+            "ListDeploymentEvents": {
+              "methods": [
+                "list_deployment_events"
               ]
             },
             "ListInsightsConfigs": {
@@ -459,9 +509,19 @@
                 "delete_insights_config"
               ]
             },
+            "GetDeploymentEvent": {
+              "methods": [
+                "get_deployment_event"
+              ]
+            },
             "GetInsightsConfig": {
               "methods": [
                 "get_insights_config"
+              ]
+            },
+            "ListDeploymentEvents": {
+              "methods": [
+                "list_deployment_events"
               ]
             },
             "ListInsightsConfigs": {

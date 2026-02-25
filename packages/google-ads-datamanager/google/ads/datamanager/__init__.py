@@ -24,10 +24,43 @@ from google.ads.datamanager_v1.services.ingestion_service.async_client import (
 from google.ads.datamanager_v1.services.ingestion_service.client import (
     IngestionServiceClient,
 )
+from google.ads.datamanager_v1.services.marketing_data_insights_service.async_client import (
+    MarketingDataInsightsServiceAsyncClient,
+)
+from google.ads.datamanager_v1.services.marketing_data_insights_service.client import (
+    MarketingDataInsightsServiceClient,
+)
+from google.ads.datamanager_v1.services.partner_link_service.async_client import (
+    PartnerLinkServiceAsyncClient,
+)
+from google.ads.datamanager_v1.services.partner_link_service.client import (
+    PartnerLinkServiceClient,
+)
+from google.ads.datamanager_v1.services.user_list_direct_license_service.async_client import (
+    UserListDirectLicenseServiceAsyncClient,
+)
+from google.ads.datamanager_v1.services.user_list_direct_license_service.client import (
+    UserListDirectLicenseServiceClient,
+)
+from google.ads.datamanager_v1.services.user_list_global_license_service.async_client import (
+    UserListGlobalLicenseServiceAsyncClient,
+)
+from google.ads.datamanager_v1.services.user_list_global_license_service.client import (
+    UserListGlobalLicenseServiceClient,
+)
+from google.ads.datamanager_v1.services.user_list_service.async_client import (
+    UserListServiceAsyncClient,
+)
+from google.ads.datamanager_v1.services.user_list_service.client import (
+    UserListServiceClient,
+)
+from google.ads.datamanager_v1.types.age_range import AgeRange
 from google.ads.datamanager_v1.types.audience import (
     AudienceMember,
     MobileData,
     PairData,
+    PpidData,
+    UserIdData,
 )
 from google.ads.datamanager_v1.types.cart_data import CartData, Item
 from google.ads.datamanager_v1.types.consent import Consent, ConsentStatus
@@ -51,6 +84,7 @@ from google.ads.datamanager_v1.types.event import (
     EventSource,
 )
 from google.ads.datamanager_v1.types.experimental_field import ExperimentalField
+from google.ads.datamanager_v1.types.gender import Gender
 from google.ads.datamanager_v1.types.ingestion_service import (
     Encoding,
     IngestAudienceMembersRequest,
@@ -62,8 +96,20 @@ from google.ads.datamanager_v1.types.ingestion_service import (
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
+from google.ads.datamanager_v1.types.insights_service import (
+    Baseline,
+    RetrieveInsightsRequest,
+    RetrieveInsightsResponse,
+)
 from google.ads.datamanager_v1.types.item_parameter import ItemParameter
 from google.ads.datamanager_v1.types.match_rate import MatchRateRange
+from google.ads.datamanager_v1.types.partner_link_service import (
+    CreatePartnerLinkRequest,
+    DeletePartnerLinkRequest,
+    PartnerLink,
+    SearchPartnerLinksRequest,
+    SearchPartnerLinksResponse,
+)
 from google.ads.datamanager_v1.types.processing_errors import (
     ErrorCount,
     ErrorInfo,
@@ -84,6 +130,65 @@ from google.ads.datamanager_v1.types.user_data import (
     UserData,
     UserIdentifier,
 )
+from google.ads.datamanager_v1.types.user_list import (
+    ContactIdInfo,
+    DataSourceType,
+    IngestedUserListInfo,
+    MobileIdInfo,
+    PairIdInfo,
+    PartnerAudienceInfo,
+    PseudonymousIdInfo,
+    SizeInfo,
+    TargetNetworkInfo,
+    UserIdInfo,
+    UserList,
+)
+from google.ads.datamanager_v1.types.user_list_direct_license import (
+    UserListDirectLicense,
+)
+from google.ads.datamanager_v1.types.user_list_direct_license_service import (
+    CreateUserListDirectLicenseRequest,
+    GetUserListDirectLicenseRequest,
+    ListUserListDirectLicensesRequest,
+    ListUserListDirectLicensesResponse,
+    UpdateUserListDirectLicenseRequest,
+)
+from google.ads.datamanager_v1.types.user_list_global_license import (
+    UserListGlobalLicense,
+    UserListGlobalLicenseCustomerInfo,
+)
+from google.ads.datamanager_v1.types.user_list_global_license_service import (
+    CreateUserListGlobalLicenseRequest,
+    GetUserListGlobalLicenseRequest,
+    ListUserListGlobalLicenseCustomerInfosRequest,
+    ListUserListGlobalLicenseCustomerInfosResponse,
+    ListUserListGlobalLicensesRequest,
+    ListUserListGlobalLicensesResponse,
+    UpdateUserListGlobalLicenseRequest,
+)
+from google.ads.datamanager_v1.types.user_list_global_license_type import (
+    UserListGlobalLicenseType,
+)
+from google.ads.datamanager_v1.types.user_list_license_client_account_type import (
+    UserListLicenseClientAccountType,
+)
+from google.ads.datamanager_v1.types.user_list_license_metrics import (
+    UserListLicenseMetrics,
+)
+from google.ads.datamanager_v1.types.user_list_license_pricing import (
+    UserListLicensePricing,
+)
+from google.ads.datamanager_v1.types.user_list_license_status import (
+    UserListLicenseStatus,
+)
+from google.ads.datamanager_v1.types.user_list_service import (
+    CreateUserListRequest,
+    DeleteUserListRequest,
+    GetUserListRequest,
+    ListUserListsRequest,
+    ListUserListsResponse,
+    UpdateUserListRequest,
+)
 from google.ads.datamanager_v1.types.user_properties import (
     CustomerType,
     CustomerValueBucket,
@@ -94,9 +199,22 @@ from google.ads.datamanager_v1.types.user_properties import (
 __all__ = (
     "IngestionServiceClient",
     "IngestionServiceAsyncClient",
+    "MarketingDataInsightsServiceClient",
+    "MarketingDataInsightsServiceAsyncClient",
+    "PartnerLinkServiceClient",
+    "PartnerLinkServiceAsyncClient",
+    "UserListDirectLicenseServiceClient",
+    "UserListDirectLicenseServiceAsyncClient",
+    "UserListGlobalLicenseServiceClient",
+    "UserListGlobalLicenseServiceAsyncClient",
+    "UserListServiceClient",
+    "UserListServiceAsyncClient",
+    "AgeRange",
     "AudienceMember",
     "MobileData",
     "PairData",
+    "PpidData",
+    "UserIdData",
     "CartData",
     "Item",
     "Consent",
@@ -115,6 +233,7 @@ __all__ = (
     "EventParameter",
     "EventSource",
     "ExperimentalField",
+    "Gender",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
@@ -124,8 +243,16 @@ __all__ = (
     "RetrieveRequestStatusRequest",
     "RetrieveRequestStatusResponse",
     "Encoding",
+    "Baseline",
+    "RetrieveInsightsRequest",
+    "RetrieveInsightsResponse",
     "ItemParameter",
     "MatchRateRange",
+    "CreatePartnerLinkRequest",
+    "DeletePartnerLinkRequest",
+    "PartnerLink",
+    "SearchPartnerLinksRequest",
+    "SearchPartnerLinksResponse",
     "ErrorCount",
     "ErrorInfo",
     "WarningCount",
@@ -138,6 +265,43 @@ __all__ = (
     "AddressInfo",
     "UserData",
     "UserIdentifier",
+    "ContactIdInfo",
+    "IngestedUserListInfo",
+    "MobileIdInfo",
+    "PairIdInfo",
+    "PartnerAudienceInfo",
+    "PseudonymousIdInfo",
+    "SizeInfo",
+    "TargetNetworkInfo",
+    "UserIdInfo",
+    "UserList",
+    "DataSourceType",
+    "UserListDirectLicense",
+    "CreateUserListDirectLicenseRequest",
+    "GetUserListDirectLicenseRequest",
+    "ListUserListDirectLicensesRequest",
+    "ListUserListDirectLicensesResponse",
+    "UpdateUserListDirectLicenseRequest",
+    "UserListGlobalLicense",
+    "UserListGlobalLicenseCustomerInfo",
+    "CreateUserListGlobalLicenseRequest",
+    "GetUserListGlobalLicenseRequest",
+    "ListUserListGlobalLicenseCustomerInfosRequest",
+    "ListUserListGlobalLicenseCustomerInfosResponse",
+    "ListUserListGlobalLicensesRequest",
+    "ListUserListGlobalLicensesResponse",
+    "UpdateUserListGlobalLicenseRequest",
+    "UserListGlobalLicenseType",
+    "UserListLicenseClientAccountType",
+    "UserListLicenseMetrics",
+    "UserListLicensePricing",
+    "UserListLicenseStatus",
+    "CreateUserListRequest",
+    "DeleteUserListRequest",
+    "GetUserListRequest",
+    "ListUserListsRequest",
+    "ListUserListsResponse",
+    "UpdateUserListRequest",
     "UserProperties",
     "UserProperty",
     "CustomerType",

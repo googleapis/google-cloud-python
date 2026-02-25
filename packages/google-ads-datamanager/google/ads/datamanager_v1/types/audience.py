@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
         "AudienceMember",
         "PairData",
         "MobileData",
+        "UserIdData",
+        "PpidData",
     },
 )
 
@@ -55,9 +57,22 @@ class AudienceMember(proto.Message):
             `Publisher Advertiser Identity Reconciliation (PAIR)
             IDs <//support.google.com/admanager/answer/15067908>`__.
 
+            This feature is only available to data partners.
+
             This field is a member of `oneof`_ ``data``.
         mobile_data (google.ads.datamanager_v1.types.MobileData):
             Data identifying the user's mobile devices.
+
+            This field is a member of `oneof`_ ``data``.
+        user_id_data (google.ads.datamanager_v1.types.UserIdData):
+            Data related to unique identifiers for a
+            user, as defined by the advertiser.
+
+            This field is a member of `oneof`_ ``data``.
+        ppid_data (google.ads.datamanager_v1.types.PpidData):
+            Data related to publisher provided
+            identifiers.
+            This feature is only available to data partners.
 
             This field is a member of `oneof`_ ``data``.
         consent (google.ads.datamanager_v1.types.Consent):
@@ -86,6 +101,18 @@ class AudienceMember(proto.Message):
         oneof="data",
         message="MobileData",
     )
+    user_id_data: "UserIdData" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="data",
+        message="UserIdData",
+    )
+    ppid_data: "PpidData" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="data",
+        message="PpidData",
+    )
     consent: gad_consent.Consent = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -96,6 +123,8 @@ class AudienceMember(proto.Message):
 class PairData(proto.Message):
     r"""`PAIR <//support.google.com/admanager/answer/15067908>`__ IDs for
     the audience. At least one PAIR ID is required.
+
+    This feature is only available to data partners.
 
     Attributes:
         pair_ids (MutableSequence[str]):
@@ -127,6 +156,39 @@ class MobileData(proto.Message):
     """
 
     mobile_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UserIdData(proto.Message):
+    r"""User id data holding the user id.
+
+    Attributes:
+        user_id (str):
+            Required. A unique identifier for a user, as
+            defined by the advertiser.
+    """
+
+    user_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PpidData(proto.Message):
+    r"""Publisher provided identifiers data holding the ppids. At
+    least one ppid is required.
+
+    This feature is only available to data partners.
+
+    Attributes:
+        ppids (MutableSequence[str]):
+            Required. The list of publisher provided
+            identifiers for a user.
+    """
+
+    ppids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )

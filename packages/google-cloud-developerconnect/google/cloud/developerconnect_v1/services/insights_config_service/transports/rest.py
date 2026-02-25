@@ -93,11 +93,27 @@ class InsightsConfigServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_deployment_event(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_deployment_event(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_insights_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_insights_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_deployment_events(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_deployment_events(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -221,6 +237,57 @@ class InsightsConfigServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_deployment_event(
+        self,
+        request: insights_config.GetDeploymentEventRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        insights_config.GetDeploymentEventRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_deployment_event
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InsightsConfigService server.
+        """
+        return request, metadata
+
+    def post_get_deployment_event(
+        self, response: insights_config.DeploymentEvent
+    ) -> insights_config.DeploymentEvent:
+        """Post-rpc interceptor for get_deployment_event
+
+        DEPRECATED. Please use the `post_get_deployment_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the InsightsConfigService server but before
+        it is returned to user code. This `post_get_deployment_event` interceptor runs
+        before the `post_get_deployment_event_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_deployment_event_with_metadata(
+        self,
+        response: insights_config.DeploymentEvent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        insights_config.DeploymentEvent, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_deployment_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InsightsConfigService server but before it is returned to user code.
+
+        We recommend only using this `post_get_deployment_event_with_metadata`
+        interceptor in new development instead of the `post_get_deployment_event` interceptor.
+        When both interceptors are used, this `post_get_deployment_event_with_metadata` interceptor runs after the
+        `post_get_deployment_event` interceptor. The (possibly modified) response returned by
+        `post_get_deployment_event` will be passed to
+        `post_get_deployment_event_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_insights_config(
         self,
         request: insights_config.GetInsightsConfigRequest,
@@ -267,6 +334,58 @@ class InsightsConfigServiceRestInterceptor:
         `post_get_insights_config` interceptor. The (possibly modified) response returned by
         `post_get_insights_config` will be passed to
         `post_get_insights_config_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_deployment_events(
+        self,
+        request: insights_config.ListDeploymentEventsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        insights_config.ListDeploymentEventsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_deployment_events
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InsightsConfigService server.
+        """
+        return request, metadata
+
+    def post_list_deployment_events(
+        self, response: insights_config.ListDeploymentEventsResponse
+    ) -> insights_config.ListDeploymentEventsResponse:
+        """Post-rpc interceptor for list_deployment_events
+
+        DEPRECATED. Please use the `post_list_deployment_events_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the InsightsConfigService server but before
+        it is returned to user code. This `post_list_deployment_events` interceptor runs
+        before the `post_list_deployment_events_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_deployment_events_with_metadata(
+        self,
+        response: insights_config.ListDeploymentEventsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        insights_config.ListDeploymentEventsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_deployment_events
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InsightsConfigService server but before it is returned to user code.
+
+        We recommend only using this `post_list_deployment_events_with_metadata`
+        interceptor in new development instead of the `post_list_deployment_events` interceptor.
+        When both interceptors are used, this `post_list_deployment_events_with_metadata` interceptor runs after the
+        `post_list_deployment_events` interceptor. The (possibly modified) response returned by
+        `post_list_deployment_events` will be passed to
+        `post_list_deployment_events_with_metadata`.
         """
         return response, metadata
 
@@ -532,7 +651,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
     The InsightsConfig resource is the core configuration object to
     capture events from your Software Development Lifecycle. It acts
-    as the central hub for managing how Developer connect
+    as the central hub for managing how Developer Connect
     understands your application, its runtime environments, and the
     artifacts deployed within them. A user can create an
     InsightsConfig, list previously-requested InsightsConfigs or get
@@ -972,6 +1091,158 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
             return resp
 
+    class _GetDeploymentEvent(
+        _BaseInsightsConfigServiceRestTransport._BaseGetDeploymentEvent,
+        InsightsConfigServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("InsightsConfigServiceRestTransport.GetDeploymentEvent")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: insights_config.GetDeploymentEventRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> insights_config.DeploymentEvent:
+            r"""Call the get deployment event method over HTTP.
+
+            Args:
+                request (~.insights_config.GetDeploymentEventRequest):
+                    The request object. Request for getting a
+                DeploymentEvent.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.insights_config.DeploymentEvent:
+                    The DeploymentEvent resource
+                represents the deployment of the
+                artifact within the InsightsConfig
+                resource.
+
+            """
+
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseGetDeploymentEvent._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_deployment_event(
+                request, metadata
+            )
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetDeploymentEvent._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseGetDeploymentEvent._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.InsightsConfigServiceClient.GetDeploymentEvent",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.InsightsConfigService",
+                        "rpcName": "GetDeploymentEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                InsightsConfigServiceRestTransport._GetDeploymentEvent._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = insights_config.DeploymentEvent()
+            pb_resp = insights_config.DeploymentEvent.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_deployment_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_deployment_event_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = insights_config.DeploymentEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.InsightsConfigServiceClient.get_deployment_event",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.InsightsConfigService",
+                        "rpcName": "GetDeploymentEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetInsightsConfig(
         _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig,
         InsightsConfigServiceRestStub,
@@ -1029,7 +1300,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 core configuration object to capture
                 events from your Software Development
                 Lifecycle. It acts as the central hub
-                for managing how Developer connect
+                for managing how Developer Connect
                 understands your application, its
                 runtime environments, and the artifacts
                 deployed within them.
@@ -1122,6 +1393,156 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                     extra={
                         "serviceName": "google.cloud.developerconnect.v1.InsightsConfigService",
                         "rpcName": "GetInsightsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListDeploymentEvents(
+        _BaseInsightsConfigServiceRestTransport._BaseListDeploymentEvents,
+        InsightsConfigServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("InsightsConfigServiceRestTransport.ListDeploymentEvents")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: insights_config.ListDeploymentEventsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> insights_config.ListDeploymentEventsResponse:
+            r"""Call the list deployment events method over HTTP.
+
+            Args:
+                request (~.insights_config.ListDeploymentEventsRequest):
+                    The request object. Request for requesting list of
+                DeploymentEvents.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.insights_config.ListDeploymentEventsResponse:
+                    Response to listing DeploymentEvents.
+            """
+
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseListDeploymentEvents._get_http_options()
+
+            request, metadata = self._interceptor.pre_list_deployment_events(
+                request, metadata
+            )
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListDeploymentEvents._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseListDeploymentEvents._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.InsightsConfigServiceClient.ListDeploymentEvents",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.InsightsConfigService",
+                        "rpcName": "ListDeploymentEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                InsightsConfigServiceRestTransport._ListDeploymentEvents._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = insights_config.ListDeploymentEventsResponse()
+            pb_resp = insights_config.ListDeploymentEventsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_deployment_events(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_deployment_events_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        insights_config.ListDeploymentEventsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.InsightsConfigServiceClient.list_deployment_events",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.InsightsConfigService",
+                        "rpcName": "ListDeploymentEvents",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1456,6 +1877,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
         return self._DeleteInsightsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_deployment_event(
+        self,
+    ) -> Callable[
+        [insights_config.GetDeploymentEventRequest], insights_config.DeploymentEvent
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDeploymentEvent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_insights_config(
         self,
     ) -> Callable[
@@ -1464,6 +1895,17 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInsightsConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_deployment_events(
+        self,
+    ) -> Callable[
+        [insights_config.ListDeploymentEventsRequest],
+        insights_config.ListDeploymentEventsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDeploymentEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_insights_configs(

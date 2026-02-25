@@ -366,6 +366,16 @@ class DeveloperConnectTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.start_o_auth: gapic_v1.method.wrap_method(
+                self.start_o_auth,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.finish_o_auth: gapic_v1.method.wrap_method(
+                self.finish_o_auth,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -661,6 +671,30 @@ class DeveloperConnectTransport(abc.ABC):
     ) -> Callable[
         [developer_connect.DeleteSelfRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def start_o_auth(
+        self,
+    ) -> Callable[
+        [developer_connect.StartOAuthRequest],
+        Union[
+            developer_connect.StartOAuthResponse,
+            Awaitable[developer_connect.StartOAuthResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def finish_o_auth(
+        self,
+    ) -> Callable[
+        [developer_connect.FinishOAuthRequest],
+        Union[
+            developer_connect.FinishOAuthResponse,
+            Awaitable[developer_connect.FinishOAuthResponse],
+        ],
     ]:
         raise NotImplementedError()
 
