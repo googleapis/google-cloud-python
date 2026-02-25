@@ -648,7 +648,10 @@ def _get_graph_name(query_text: str):
     """
     match = re.match(r"\s*GRAPH\s+(\S+)\.(\S+)", query_text, re.IGNORECASE)
     if match:
-        return (match.group(1), match.group(2))
+        (dataset_id, graph_id) = (match.group(1)), match.group(2)
+        if "`" in dataset_id or "`" in graph_id:
+            return None  # Backticks in graph name not support for schema view
+        return (dataset_id, graph_id)
     return None
 
 
@@ -668,10 +671,15 @@ def _get_graph_schema(
     job_config = bigquery.QueryJobConfig(
         query_parameters=[bigquery.ScalarQueryParameter("graph_id", "STRING", graph_id)]
     )
-    info_schema_results = bq_client.query(
-        info_schema_query, job_config=job_config
-    ).to_dataframe()
-
+    job_config.use_legacy_sql = False
+    try:
+        info_schema_results = bq_client.query(
+            info_schema_query, job_config=job_config
+        ).to_dataframe()
+    except Exception:
+        # If the INFORMATION_SCHEMA query fails for some reason, disable only schema
+        # view, not the entire visualizer.
+        return None
     if info_schema_results.shape == (1, 1):
         return graph_server._convert_schema(info_schema_results.iloc[0, 0])
     return None
@@ -733,7 +741,7 @@ def _add_graph_widget(
                 "<big><b>Error:</b> The query result is too large for graph visualization.</big>"
             )
         )
-        return
+        return False
 
     schema = _get_graph_schema(bq_client, query_text, query_job)
 
@@ -764,6 +772,7 @@ def _add_graph_widget(
         '"bigquery.graph_visualization.NodeExpansion"',
     )
     IPython.display.display(IPython.core.display.HTML(html_content))
+    return True
 
 
 def _is_valid_json(s: str):
@@ -870,7 +879,12 @@ def _make_bq_query(
         result = result.to_dataframe(**dataframe_kwargs)
 
     if args.graph and _supports_graph_widget(result):
-        _add_graph_widget(bq_client, result, query, query_job, args)
+        if _add_graph_widget(bq_client, result, query, query_job, args):
+            # Invoke _handle_result() in case the result is saved to a variable,
+            # but return None to suppress the default table view, which is redundant
+            # with the table view in the graph visualizer.
+            _handle_result(result, args)
+            return None
     return _handle_result(result, args)
 
 
