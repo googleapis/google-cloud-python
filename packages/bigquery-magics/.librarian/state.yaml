@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:160860d189ff1c2f7515638478823712fa5b243e27ccc33a2728669fa1e2ed0c
 libraries:
   - id: bigquery-magics
-    version: 0.12.0
+    version: 0.12.1
     last_generated_commit: ""
     apis: []
     source_roots:

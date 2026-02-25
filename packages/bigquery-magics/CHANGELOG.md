@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/bigquery-magics/#history
 
+## [0.12.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.12.0...v0.12.1) (2026-02-25)
+
+
+### Bug Fixes
+
+* usability improvement to the graph visualizer (#215) ([7655ada777d16f6514040747855fd1f0e9d77b1b](https://github.com/googleapis/python-bigquery-magics/commit/7655ada777d16f6514040747855fd1f0e9d77b1b))
+
 ## [0.12.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.11.0...v0.12.0) (2026-02-10)
 
 
