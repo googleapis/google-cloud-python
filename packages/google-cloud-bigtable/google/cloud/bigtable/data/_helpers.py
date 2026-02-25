@@ -17,14 +17,24 @@ Helper functions used in various places in the library.
 
 from __future__ import annotations
 
+<<<<<<< HEAD
+=======
+from typing import Callable, Sequence, List, Tuple, TYPE_CHECKING, Union
+import time
+>>>>>>> 3426dbfbca1 (feat: Added rst_stream exception handling for ReadRows. (#1298))
 import enum
 import time
 from collections import namedtuple
 from typing import TYPE_CHECKING, List, Sequence, Tuple, Union
 
 from google.api_core import exceptions as core_exceptions
+<<<<<<< HEAD
 from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
 
+=======
+from google.api_core import retry as retries
+from google.api_core.retry import RetryFailureReason
+>>>>>>> 3426dbfbca1 (feat: Added rst_stream exception handling for ReadRows. (#1298))
 from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 
@@ -49,6 +59,15 @@ _CONCURRENCY_LIMIT = 10
 
 # used by every data client as a default project name for testing on Bigtable emulator.
 _DEFAULT_BIGTABLE_EMULATOR_CLIENT = "google-cloud-bigtable-emulator"
+
+# Internal error messages that can be retried during ReadRows. Internal error messages with this error
+# text should be treated as Unavailable error messages with the same error text, and will therefore be
+# treated as Unavailable errors rather than Internal errors.
+_RETRYABLE_INTERNAL_ERROR_MESSAGES = (
+    "rst_stream",
+    "rst stream",
+    "received unexpected eos on data frame from server",
+)
 
 # used to identify an active bigtable resource that needs to be warmed through PingAndWarm
 # each instance/app_profile_id pair needs to be individually tracked
@@ -124,6 +143,33 @@ def _retry_exception_factory(
     cause_exc: Exception | None = RetryExceptionGroup(exc_list) if exc_list else None
     source_exc.__cause__ = cause_exc
     return source_exc, cause_exc
+
+
+def _rst_stream_aware_predicate(
+    *exception_types: type[Exception],
+) -> Callable[[Exception], bool]:
+    """A custom retry predicate.
+
+    This predicate treats Internal error messages with RST_STREAM errors as
+    ServiceUnavailable errors and will retry them if the Unavailable exception is retryable.
+
+    Args:
+        exception_types: Exception types to be retried during operation
+
+    Returns:
+        Callable[[Exception], bool]: A retry predicate that takes in an exception and
+            returns whether or not that exception is retryable
+    """
+    # predicate to check for retryable error types
+    if_exception_type = retries.if_exception_type(*exception_types)
+    # special case: treat InternalServerError with rst_stream error message as ServiceUnavailable
+    rst_check = (
+        lambda e: core_exceptions.ServiceUnavailable in exception_types
+        and isinstance(e, core_exceptions.InternalServerError)
+        and any(m in e.message.lower() for m in _RETRYABLE_INTERNAL_ERROR_MESSAGES)
+    )
+
+    return lambda e: if_exception_type(e) or rst_check(e)
 
 
 def _get_timeouts(
