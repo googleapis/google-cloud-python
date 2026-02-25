@@ -37,7 +37,20 @@ from google.cloud.bigtable.data.row import Cell, Row
 from google.cloud.bigtable_v2.types import ReadRowsRequest as ReadRowsRequestPB
 from google.cloud.bigtable_v2.types import ReadRowsResponse as ReadRowsResponsePB
 from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+<<<<<<< HEAD
 from google.cloud.bigtable_v2.types import RowSet as RowSetPB
+=======
+from google.cloud.bigtable.data.row import Row, Cell
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.data.exceptions import InvalidChunk
+from google.cloud.bigtable.data.exceptions import _RowSetComplete
+from google.cloud.bigtable.data.exceptions import _ResetRow
+from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
+from google.cloud.bigtable.data._helpers import _retry_exception_factory
+from google.cloud.bigtable.data._helpers import _rst_stream_aware_predicate
+from google.api_core.retry import exponential_sleep_generator
+from google.cloud.bigtable.data._cross_sync import CrossSync
+>>>>>>> 3426dbfbca1 (feat: Added rst_stream exception handling for ReadRows. (#1298))
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._metrics import ActiveOperationMetric
@@ -98,7 +111,7 @@ class _ReadRowsOperation:
         else:
             self.request = query._to_pb(target)
         self.target = target
-        self._predicate = retries.if_exception_type(*retryable_exceptions)
+        self._predicate = _rst_stream_aware_predicate(*retryable_exceptions)
         self._last_yielded_row_key: bytes | None = None
         self._remaining_count: int | None = self.request.rows_limit or None
         self._operation_metric = metric
