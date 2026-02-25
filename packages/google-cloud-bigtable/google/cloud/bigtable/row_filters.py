@@ -47,13 +47,18 @@ from google.cloud.bigtable.data.row_filters import (
 from google.cloud.bigtable.data.row_filters import (
     ConditionalRowFilter as BaseConditionalRowFilter,
 )
+<<<<<<< HEAD
 from google.cloud.bigtable.data.row_filters import (
     TimestampRangeFilter as BaseTimestampRangeFilter,
 )
+=======
+from google.cloud.bigtable.helpers import _MappableAttributesMixin
+>>>>>>> 80c350f891a (feat: Shimmed RowSet and RowRange for ReadRows. (#1296))
 
 _PACK_I64 = struct.Struct(">q").pack
 
 
+<<<<<<< HEAD
 def _deprecated_to_pb(self):
     import warnings
 
@@ -99,6 +104,8 @@ class _MappableAttributesMixin:
         super(_MappableAttributesMixin, self).__setattr__(attribute, value)
 
 
+=======
+>>>>>>> 80c350f891a (feat: Shimmed RowSet and RowRange for ReadRows. (#1296))
 # The classes defined below are to provide constructors and members
 # that have an interface that does not match the one used by the data
 # client, for backwards compatibility purposes.
