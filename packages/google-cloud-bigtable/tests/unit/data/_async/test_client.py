@@ -1510,11 +1510,12 @@ class TestTableAsync:
     @CrossSync.pytest
     # iterate over all retryable rpcs
     @pytest.mark.parametrize(
-        "fn_name,fn_args,is_stream,extra_retryables",
+        "fn_name,fn_args,is_read_rows_fn,is_stream,extra_retryables",
         [
             (
                 "read_rows_stream",
                 (ReadRowsQuery(),),
+                True,
                 True,
                 (),
             ),
@@ -1522,11 +1523,13 @@ class TestTableAsync:
                 "read_rows",
                 (ReadRowsQuery(),),
                 True,
+                True,
                 (),
             ),
             (
                 "read_row",
                 (b"row_key",),
+                True,
                 True,
                 (),
             ),
@@ -1534,24 +1537,28 @@ class TestTableAsync:
                 "read_rows_sharded",
                 ([ReadRowsQuery()],),
                 True,
+                True,
                 (),
             ),
             (
                 "row_exists",
                 (b"row_key",),
                 True,
+                True,
                 (),
             ),
-            ("sample_row_keys", (), False, ()),
+            ("sample_row_keys", (), False, False, ()),
             (
                 "mutate_row",
                 (b"row_key", [DeleteAllFromRow()]),
+                False,
                 False,
                 (),
             ),
             (
                 "bulk_mutate_rows",
                 ([mutations.RowMutationEntry(b"key", [DeleteAllFromRow()])],),
+                False,
                 False,
                 (_MutateRowsIncomplete,),
             ),
@@ -1588,6 +1595,7 @@ class TestTableAsync:
         expected_retryables,
         fn_name,
         fn_args,
+        is_read_rows_fn,
         is_stream,
         extra_retryables,
     ):
@@ -1600,8 +1608,18 @@ class TestTableAsync:
             retry_fn += "_stream"
         if CrossSync.is_async:
             retry_fn = f"CrossSync.{retry_fn}"
+            subpackage = "_async"
         else:
             retry_fn = f"CrossSync._Sync_Impl.{retry_fn}"
+            subpackage = "_sync_autogen"
+
+        # Read Rows has its own custom predicate builder that also takes in
+        # a list of exceptions
+        if is_read_rows_fn:
+            predicate_builder = f"google.cloud.bigtable.data.{subpackage}._read_rows._rst_stream_aware_predicate"
+        else:
+            predicate_builder = "google.api_core.retry.if_exception_type"
+
         with mock.patch(
             f"google.cloud.bigtable.data._cross_sync.{retry_fn}"
         ) as retry_fn_mock:
@@ -1609,9 +1627,7 @@ class TestTableAsync:
                 table = client.get_table("instance-id", "table-id")
                 expected_predicate = expected_retryables.__contains__
                 retry_fn_mock.side_effect = RuntimeError("stop early")
-                with mock.patch(
-                    "google.api_core.retry.if_exception_type"
-                ) as predicate_builder_mock:
+                with mock.patch(predicate_builder) as predicate_builder_mock:
                     predicate_builder_mock.return_value = expected_predicate
                     with pytest.raises(Exception):
                         # we expect an exception from attempting to call the mock
@@ -1621,6 +1637,7 @@ class TestTableAsync:
                     predicate_builder_mock.assert_called_once_with(
                         *expected_retryables, *extra_retryables
                     )
+<<<<<<< HEAD
                     # output of if_exception_type should be sent in to retry constructor
                     retry_call_kwargs = retry_fn_mock.call_args_list[0].kwargs
                     # check for predicate passed as kwarg
@@ -1630,6 +1647,12 @@ class TestTableAsync:
                         # check for predicate passed as arg
                         retry_call_args = retry_fn_mock.call_args_list[0].args
                         assert retry_call_args[1] is expected_predicate
+=======
+                    retry_call_args = retry_fn_mock.call_args_list[0].args
+
+                    # output of the predicate builder should be sent in to retry constructor
+                    assert retry_call_args[1] is expected_predicate
+>>>>>>> 3426dbfbca1 (feat: Added rst_stream exception handling for ReadRows. (#1298))
 
     @pytest.mark.parametrize(
         "fn_name,fn_args,gapic_fn",
