@@ -48,6 +48,7 @@ def test_row_set__eq__type_differ():
     assert not (row_set1 == row_set2)
 
 
+<<<<<<< HEAD
 def test_row_set__eq__len_row_keys_differ():
     from google.cloud.bigtable.row_set import RowSet
 
@@ -80,6 +81,8 @@ def test_row_set__eq__len_row_ranges_differ():
     assert not (row_set1 == row_set2)
 
 
+=======
+>>>>>>> 80c350f891a (feat: Shimmed RowSet and RowRange for ReadRows. (#1296))
 def test_row_set__eq__row_keys_differ():
     from google.cloud.bigtable.row_set import RowSet
 
@@ -223,8 +226,8 @@ def test_row_range_constructor():
     start_key = "row_key1"
     end_key = "row_key9"
     row_range = RowRange(start_key, end_key)
-    assert start_key == row_range.start_key
-    assert end_key == row_range.end_key
+    assert start_key == row_range.start_key.decode()
+    assert end_key == row_range.end_key.decode()
     assert row_range.start_inclusive
     assert not row_range.end_inclusive
 
