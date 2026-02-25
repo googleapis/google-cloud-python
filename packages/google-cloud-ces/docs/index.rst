@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Gemini Enterprise for Customer Experience API.
+By default, you will get version ``ces_v1``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     ces_v1/services_
     ces_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    ces_v1beta/services_
+    ces_v1beta/types_
 
 
 Changelog

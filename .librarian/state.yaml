@@ -954,10 +954,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
     version: 0.0.0
-    last_generated_commit: dc505966accc82576fc1ebed3d7924fe9df4ab49
+    last_generated_commit: 69bf99a9d0910fa86c3c5867ea357aa004dfcc55
     apis:
       - path: google/cloud/ces/v1
         service_config: ces_v1.yaml
+      - path: google/cloud/ces/v1beta
+        service_config: ces_v1beta.yaml
     source_roots:
       - packages/google-cloud-ces
     preserve_regex:
