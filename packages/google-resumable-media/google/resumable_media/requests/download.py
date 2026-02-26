@@ -667,17 +667,22 @@ class _GzipDecoder(urllib3.response.GzipDecoder):
         super().__init__()
         self._checksum = checksum
 
-    def decompress(self, data):
+    def decompress(self, data, max_length=-1):
         """Decompress the bytes.
 
         Args:
             data (bytes): The compressed bytes to be decompressed.
+            max_length (int): Maximum number of bytes to return. -1 for no
+                limit. Forwarded to the underlying decoder when supported.
 
         Returns:
             bytes: The decompressed bytes from ``data``.
         """
         self._checksum.update(data)
-        return super().decompress(data)
+        try:
+            return super().decompress(data, max_length=max_length)
+        except TypeError:
+            return super().decompress(data)
 
 
 # urllib3.response.BrotliDecoder might not exist depending on whether brotli is
@@ -703,17 +708,29 @@ if hasattr(urllib3.response, "BrotliDecoder"):
             self._decoder = urllib3.response.BrotliDecoder()
             self._checksum = checksum
 
-        def decompress(self, data):
+        def decompress(self, data, max_length=-1):
             """Decompress the bytes.
 
             Args:
                 data (bytes): The compressed bytes to be decompressed.
+                max_length (int): Maximum number of bytes to return. -1 for no
+                    limit. Forwarded to the underlying decoder when supported.
 
             Returns:
                 bytes: The decompressed bytes from ``data``.
             """
             self._checksum.update(data)
-            return self._decoder.decompress(data)
+            try:
+                return self._decoder.decompress(data, max_length=max_length)
+            except TypeError:
+                return self._decoder.decompress(data)
+
+        @property
+        def has_unconsumed_tail(self):
+            try:
+                return self._decoder.has_unconsumed_tail
+            except AttributeError:
+                return False
 
         def flush(self):
             return self._decoder.flush()

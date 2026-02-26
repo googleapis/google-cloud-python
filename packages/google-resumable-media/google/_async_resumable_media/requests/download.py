@@ -452,14 +452,19 @@ class _GzipDecoder(urllib3.response.GzipDecoder):
         super(_GzipDecoder, self).__init__()
         self._checksum = checksum
 
-    def decompress(self, data):
+    def decompress(self, data, max_length=-1):
         """Decompress the bytes.
 
         Args:
             data (bytes): The compressed bytes to be decompressed.
+            max_length (int): Maximum number of bytes to return. -1 for no
+                limit. Forwarded to the underlying decoder when supported.
 
         Returns:
             bytes: The decompressed bytes from ``data``.
         """
         self._checksum.update(data)
-        return super(_GzipDecoder, self).decompress(data)
+        try:
+            return super(_GzipDecoder, self).decompress(data, max_length=max_length)
+        except TypeError:
+            return super(_GzipDecoder, self).decompress(data)

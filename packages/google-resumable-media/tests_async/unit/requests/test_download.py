@@ -761,6 +761,21 @@ class Test_GzipDecoder(object):
         assert result == b""
         md5_hash.update.assert_called_once_with(data)
 
+    def test_decompress_with_max_length(self):
+        md5_hash = mock.Mock(spec=["update"])
+        decoder = download_mod._GzipDecoder(md5_hash)
+
+        with mock.patch.object(
+            type(decoder).__bases__[0], "decompress"
+        ) as mock_super_decompress:
+            mock_super_decompress.return_value = b"decompressed"
+            data = b"\x1f\x8b\x08\x08"
+            result = decoder.decompress(data, max_length=10)
+
+            assert result == b"decompressed"
+            md5_hash.update.assert_called_once_with(data)
+            mock_super_decompress.assert_called_once_with(data, max_length=10)
+
 
 class AsyncIter:
     def __init__(self, items):

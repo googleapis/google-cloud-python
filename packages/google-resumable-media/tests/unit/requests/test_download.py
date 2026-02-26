@@ -1274,6 +1274,37 @@ class Test_GzipDecoder(object):
         assert result == b""
         md5_hash.update.assert_called_once_with(data)
 
+    def test_decompress_with_max_length(self):
+        md5_hash = mock.Mock(spec=["update"])
+        decoder = download_mod._GzipDecoder(md5_hash)
+
+        with mock.patch.object(
+            type(decoder).__bases__[0], "decompress"
+        ) as mock_super_decompress:
+            mock_super_decompress.return_value = b"decompressed"
+            data = b"\x1f\x8b\x08\x08"
+            result = decoder.decompress(data, max_length=10)
+
+            assert result == b"decompressed"
+            md5_hash.update.assert_called_once_with(data)
+            mock_super_decompress.assert_called_once_with(data, max_length=10)
+
+    def test_decompress_with_max_length_fallback(self):
+        md5_hash = mock.Mock(spec=["update"])
+        decoder = download_mod._GzipDecoder(md5_hash)
+
+        with mock.patch.object(
+            type(decoder).__bases__[0],
+            "decompress",
+            side_effect=[TypeError, b"decompressed"],
+        ) as mock_super_decompress:
+            data = b"\x1f\x8b\x08\x08"
+            result = decoder.decompress(data, max_length=10)
+
+            assert result == b"decompressed"
+            md5_hash.update.assert_called_once_with(data)
+            assert mock_super_decompress.call_count == 2
+
 
 class Test_BrotliDecoder(object):
     def test_constructor(self):
@@ -1289,6 +1320,45 @@ class Test_BrotliDecoder(object):
 
         assert result == b""
         md5_hash.update.assert_called_once_with(data)
+
+    def test_decompress_with_max_length(self):
+        md5_hash = mock.Mock(spec=["update"])
+        decoder = download_mod._BrotliDecoder(md5_hash)
+
+        decoder._decoder = mock.Mock(spec=["decompress"])
+        decoder._decoder.decompress.return_value = b"decompressed"
+
+        data = b"compressed"
+        result = decoder.decompress(data, max_length=10)
+
+        assert result == b"decompressed"
+        md5_hash.update.assert_called_once_with(data)
+        decoder._decoder.decompress.assert_called_once_with(data, max_length=10)
+
+    def test_decompress_with_max_length_fallback(self):
+        md5_hash = mock.Mock(spec=["update"])
+        decoder = download_mod._BrotliDecoder(md5_hash)
+
+        decoder._decoder = mock.Mock(spec=["decompress"])
+        decoder._decoder.decompress.side_effect = [TypeError, b"decompressed"]
+
+        data = b"compressed"
+        result = decoder.decompress(data, max_length=10)
+
+        assert result == b"decompressed"
+        md5_hash.update.assert_called_once_with(data)
+        assert decoder._decoder.decompress.call_count == 2
+
+    def test_has_unconsumed_tail(self):
+        decoder = download_mod._BrotliDecoder(mock.sentinel.md5_hash)
+        decoder._decoder = mock.Mock(spec=["has_unconsumed_tail"])
+        decoder._decoder.has_unconsumed_tail = True
+        assert decoder.has_unconsumed_tail is True
+
+    def test_has_unconsumed_tail_fallback(self):
+        decoder = download_mod._BrotliDecoder(mock.sentinel.md5_hash)
+        decoder._decoder = mock.Mock(spec=[])
+        assert decoder.has_unconsumed_tail is False
 
 
 def _mock_response(status_code=http.client.OK, chunks=(), headers=None):
