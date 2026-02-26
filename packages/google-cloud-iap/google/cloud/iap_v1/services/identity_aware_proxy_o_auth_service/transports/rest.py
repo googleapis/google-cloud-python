@@ -667,7 +667,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -719,7 +719,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.Brand.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -828,7 +828,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -882,7 +882,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     response_payload = service.IdentityAwareProxyClient.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -980,7 +980,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1092,7 +1092,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1143,7 +1143,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.Brand.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1245,7 +1245,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1298,7 +1298,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     response_payload = service.IdentityAwareProxyClient.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1392,7 +1392,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1443,7 +1443,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListBrandsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1545,7 +1545,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1598,7 +1598,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     response_payload = (
                         service.ListIdentityAwareProxyClientsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1707,7 +1707,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1761,7 +1761,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     response_payload = service.IdentityAwareProxyClient.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

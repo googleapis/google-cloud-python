@@ -1026,7 +1026,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1076,7 +1076,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = conversation.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1184,7 +1184,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1234,7 +1234,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_conversation.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1339,7 +1339,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1397,7 +1397,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1502,7 +1502,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1556,7 +1556,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     response_payload = (
                         conversation.GenerateStatelessSummaryResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1659,7 +1659,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1711,7 +1711,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     response_payload = participant.GenerateSuggestionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1816,7 +1816,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1865,7 +1865,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = conversation.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1969,7 +1969,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2025,7 +2025,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2123,7 +2123,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2174,7 +2174,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     response_payload = conversation.ListConversationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2272,7 +2272,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2323,7 +2323,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     response_payload = conversation.ListMessagesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2428,7 +2428,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2480,7 +2480,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                     response_payload = conversation.SearchKnowledgeResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2585,7 +2585,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2641,7 +2641,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2862,7 +2862,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2904,7 +2904,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3002,7 +3002,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3044,7 +3044,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3141,7 +3141,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3256,7 +3256,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3298,7 +3298,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3396,7 +3396,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3438,7 +3438,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

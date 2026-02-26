@@ -772,7 +772,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -820,7 +820,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -920,7 +920,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -967,7 +967,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1070,7 +1070,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1119,7 +1119,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = schema.Schema.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1221,7 +1221,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1272,7 +1272,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                     response_payload = schema_service.ListSchemasResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1377,7 +1377,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1425,7 +1425,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1567,7 +1567,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1683,7 +1683,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1725,7 +1725,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1823,7 +1823,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1865,7 +1865,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

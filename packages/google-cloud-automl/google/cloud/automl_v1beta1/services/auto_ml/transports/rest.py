@@ -1644,7 +1644,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1694,7 +1694,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gca_dataset.Dataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1798,7 +1798,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1846,7 +1846,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1947,7 +1947,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1994,7 +1994,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2093,7 +2093,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2140,7 +2140,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2244,7 +2244,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2292,7 +2292,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2396,7 +2396,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2444,7 +2444,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2548,7 +2548,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2596,7 +2596,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2702,7 +2702,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2750,7 +2750,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2852,7 +2852,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2901,7 +2901,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = annotation_spec.AnnotationSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3004,7 +3004,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3053,7 +3053,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = column_spec.ColumnSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3153,7 +3153,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3202,7 +3202,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataset.Dataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3300,7 +3300,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3349,7 +3349,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = model.Model.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3449,7 +3449,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3500,7 +3500,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     response_payload = model_evaluation.ModelEvaluation.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3609,7 +3609,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3658,7 +3658,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = table_spec.TableSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3762,7 +3762,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3810,7 +3810,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3914,7 +3914,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3963,7 +3963,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListColumnSpecsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4063,7 +4063,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4112,7 +4112,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListDatasetsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4212,7 +4212,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4263,7 +4263,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     response_payload = service.ListModelEvaluationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4361,7 +4361,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4410,7 +4410,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListModelsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4512,7 +4512,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4561,7 +4561,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListTableSpecsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4667,7 +4667,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4715,7 +4715,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4829,7 +4829,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4879,7 +4879,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gca_column_spec.ColumnSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4986,7 +4986,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5036,7 +5036,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gca_dataset.Dataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5154,7 +5154,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5204,7 +5204,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gca_table_spec.TableSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

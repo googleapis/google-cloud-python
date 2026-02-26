@@ -706,7 +706,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -754,7 +754,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -855,7 +855,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -902,7 +902,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1002,7 +1002,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1051,7 +1051,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = datafusion.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1149,7 +1149,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1200,7 +1200,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                     response_payload = datafusion.ListAvailableVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1302,7 +1302,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1353,7 +1353,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                     response_payload = datafusion.ListInstancesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1459,7 +1459,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1507,7 +1507,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1618,7 +1618,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1666,7 +1666,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

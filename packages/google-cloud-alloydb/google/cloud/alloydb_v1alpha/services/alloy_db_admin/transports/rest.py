@@ -2483,7 +2483,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2531,7 +2531,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2638,7 +2638,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2686,7 +2686,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2789,7 +2789,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2837,7 +2837,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2937,7 +2937,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2987,7 +2987,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Database.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3090,7 +3090,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3138,7 +3138,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3241,7 +3241,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3289,7 +3289,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3394,7 +3394,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3442,7 +3442,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3548,7 +3548,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3598,7 +3598,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.User.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3698,7 +3698,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3745,7 +3745,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3843,7 +3843,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3890,7 +3890,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3988,7 +3988,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4035,7 +4035,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4130,7 +4130,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4251,7 +4251,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4301,7 +4301,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ExecuteSqlResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4404,7 +4404,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4452,7 +4452,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4558,7 +4558,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4606,7 +4606,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4712,7 +4712,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4766,7 +4766,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     response_payload = (
                         service.GenerateClientCertificateResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4865,7 +4865,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4914,7 +4914,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Backup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5019,7 +5019,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5068,7 +5068,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Cluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5166,7 +5166,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5215,7 +5215,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.ConnectionInfo.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5318,7 +5318,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5367,7 +5367,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5464,7 +5464,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5513,7 +5513,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.User.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5616,7 +5616,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5664,7 +5664,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5774,7 +5774,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5822,7 +5822,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5924,7 +5924,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5973,7 +5973,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListBackupsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6073,7 +6073,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6122,7 +6122,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListClustersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6217,7 +6217,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6266,7 +6266,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListDatabasesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6364,7 +6364,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6413,7 +6413,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListInstancesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6513,7 +6513,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6568,7 +6568,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     response_payload = (
                         service.ListSupportedDatabaseFlagsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6667,7 +6667,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6716,7 +6716,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListUsersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6819,7 +6819,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6867,7 +6867,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6972,7 +6972,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7020,7 +7020,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7124,7 +7124,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7172,7 +7172,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7276,7 +7276,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7324,7 +7324,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7431,7 +7431,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7479,7 +7479,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7582,7 +7582,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7630,7 +7630,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7733,7 +7733,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7781,7 +7781,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7887,7 +7887,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7937,7 +7937,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.User.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8040,7 +8040,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8088,7 +8088,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8496,7 +8496,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8538,7 +8538,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8636,7 +8636,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8678,7 +8678,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8780,7 +8780,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8895,7 +8895,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9012,7 +9012,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9054,7 +9054,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9152,7 +9152,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9194,7 +9194,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

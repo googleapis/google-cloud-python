@@ -1501,7 +1501,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1553,7 +1553,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     response_payload = managed_kafka.AddAclEntryResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1660,7 +1660,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1710,7 +1710,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Acl.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1813,7 +1813,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1861,7 +1861,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1967,7 +1967,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2017,7 +2017,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Topic.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2112,7 +2112,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2225,7 +2225,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2272,7 +2272,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2363,7 +2363,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2473,7 +2473,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2588,7 +2588,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2637,7 +2637,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Acl.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2738,7 +2738,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2787,7 +2787,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Cluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2886,7 +2886,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2935,7 +2935,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.ConsumerGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3032,7 +3032,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3081,7 +3081,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Topic.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3178,7 +3178,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3227,7 +3227,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = managed_kafka.ListAclsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3324,7 +3324,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3375,7 +3375,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     response_payload = managed_kafka.ListClustersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3470,7 +3470,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3521,7 +3521,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     response_payload = managed_kafka.ListConsumerGroupsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3620,7 +3620,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3671,7 +3671,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     response_payload = managed_kafka.ListTopicsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3773,7 +3773,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3825,7 +3825,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     response_payload = managed_kafka.RemoveAclEntryResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3932,7 +3932,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3982,7 +3982,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Acl.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4085,7 +4085,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4133,7 +4133,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4235,7 +4235,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4285,7 +4285,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.ConsumerGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4391,7 +4391,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4441,7 +4441,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Topic.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4710,7 +4710,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4752,7 +4752,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4850,7 +4850,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4892,7 +4892,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4994,7 +4994,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5109,7 +5109,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5226,7 +5226,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5268,7 +5268,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5366,7 +5366,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5408,7 +5408,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

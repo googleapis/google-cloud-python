@@ -441,7 +441,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -492,7 +492,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                     response_payload = private_catalog.SearchCatalogsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -590,7 +590,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -641,7 +641,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                     response_payload = private_catalog.SearchProductsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -739,7 +739,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -790,7 +790,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                     response_payload = private_catalog.SearchVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

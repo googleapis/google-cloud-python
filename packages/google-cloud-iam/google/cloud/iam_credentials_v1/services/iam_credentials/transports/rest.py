@@ -476,7 +476,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -528,7 +528,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     response_payload = common.GenerateAccessTokenResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -628,7 +628,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -678,7 +678,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.GenerateIdTokenResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -784,7 +784,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -834,7 +834,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.SignBlobResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -938,7 +938,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -988,7 +988,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.SignJwtResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

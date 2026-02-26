@@ -1053,7 +1053,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1103,7 +1103,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Catalog.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1202,7 +1202,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1252,7 +1252,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1353,7 +1353,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1403,7 +1403,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1499,7 +1499,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1548,7 +1548,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Catalog.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1642,7 +1642,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1691,7 +1691,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1787,7 +1787,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1836,7 +1836,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1934,7 +1934,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1983,7 +1983,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Catalog.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2079,7 +2079,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2128,7 +2128,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2226,7 +2226,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2275,7 +2275,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2373,7 +2373,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2422,7 +2422,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListCatalogsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2518,7 +2518,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2567,7 +2567,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListDatabasesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2665,7 +2665,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2714,7 +2714,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListTablesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2815,7 +2815,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2865,7 +2865,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2964,7 +2964,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3014,7 +3014,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3115,7 +3115,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3165,7 +3165,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -421,7 +421,7 @@ class ErrorStatsServiceRestTransport(_BaseErrorStatsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -472,7 +472,7 @@ class ErrorStatsServiceRestTransport(_BaseErrorStatsServiceRestTransport):
                     response_payload = error_stats_service.DeleteEventsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -570,7 +570,7 @@ class ErrorStatsServiceRestTransport(_BaseErrorStatsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -621,7 +621,7 @@ class ErrorStatsServiceRestTransport(_BaseErrorStatsServiceRestTransport):
                     response_payload = error_stats_service.ListEventsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -719,7 +719,7 @@ class ErrorStatsServiceRestTransport(_BaseErrorStatsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -770,7 +770,7 @@ class ErrorStatsServiceRestTransport(_BaseErrorStatsServiceRestTransport):
                     response_payload = (
                         error_stats_service.ListGroupStatsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

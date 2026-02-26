@@ -747,7 +747,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -798,7 +798,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                     response_payload = compute.InstantSnapshotAggregatedList.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -927,7 +927,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -976,7 +976,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1079,7 +1079,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1126,7 +1126,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.InstantSnapshot.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1297,7 +1297,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1346,7 +1346,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1482,7 +1482,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1532,7 +1532,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1633,7 +1633,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1680,7 +1680,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.InstantSnapshotList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1856,7 +1856,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1906,7 +1906,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2036,7 +2036,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2086,7 +2086,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2189,7 +2189,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2239,7 +2239,7 @@ class InstantSnapshotsRestTransport(_BaseInstantSnapshotsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

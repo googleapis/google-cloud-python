@@ -699,7 +699,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -751,7 +751,7 @@ class MarketingplatformAdminServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalyticsAccountLink.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -847,7 +847,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -971,7 +971,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1027,7 +1027,7 @@ class MarketingplatformAdminServiceRestTransport(
                     response_payload = marketingplatform_admin.FindSalesPartnerManagedClientsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1126,7 +1126,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1175,7 +1175,7 @@ class MarketingplatformAdminServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Organization.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1277,7 +1277,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1328,7 +1328,7 @@ class MarketingplatformAdminServiceRestTransport(
                     response_payload = marketingplatform_admin.ListAnalyticsAccountLinksResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1427,7 +1427,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1480,7 +1480,7 @@ class MarketingplatformAdminServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1586,7 +1586,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1640,7 +1640,7 @@ class MarketingplatformAdminServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1747,7 +1747,7 @@ class MarketingplatformAdminServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1801,7 +1801,7 @@ class MarketingplatformAdminServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

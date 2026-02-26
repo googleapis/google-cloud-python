@@ -784,7 +784,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -832,7 +832,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -933,7 +933,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -980,7 +980,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1079,7 +1079,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1128,7 +1128,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = data_store.DataStore.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1228,7 +1228,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1279,7 +1279,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                     response_payload = (
                         data_store_service.ListDataStoresResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1384,7 +1384,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1434,7 +1434,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_data_store.DataStore.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1584,7 +1584,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1700,7 +1700,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1742,7 +1742,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1838,7 +1838,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1880,7 +1880,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -2138,7 +2138,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2186,7 +2186,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2291,7 +2291,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2341,7 +2341,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2447,7 +2447,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2499,7 +2499,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = sessions.LiveSession.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2602,7 +2602,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2650,7 +2650,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2755,7 +2755,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2803,7 +2803,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2908,7 +2908,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2960,7 +2960,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = sessions.VodSession.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3058,7 +3058,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3105,7 +3105,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3205,7 +3205,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3254,7 +3254,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3352,7 +3352,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3399,7 +3399,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3499,7 +3499,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3546,7 +3546,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3645,7 +3645,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3694,7 +3694,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cdn_keys.CdnKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3796,7 +3796,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3847,7 +3847,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = ad_tag_details.LiveAdTagDetail.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3944,7 +3944,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3993,7 +3993,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = live_configs.LiveConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4094,7 +4094,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4143,7 +4143,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = sessions.LiveSession.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4240,7 +4240,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4289,7 +4289,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = slates.Slate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4391,7 +4391,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4442,7 +4442,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = ad_tag_details.VodAdTagDetail.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4539,7 +4539,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4588,7 +4588,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vod_configs.VodConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4686,7 +4686,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4735,7 +4735,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = sessions.VodSession.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4837,7 +4837,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4888,7 +4888,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = stitch_details.VodStitchDetail.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4985,7 +4985,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5036,7 +5036,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     response_payload = (
                         video_stitcher_service.ListCdnKeysResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5135,7 +5135,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5190,7 +5190,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5289,7 +5289,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5340,7 +5340,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     response_payload = (
                         video_stitcher_service.ListLiveConfigsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5437,7 +5437,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5488,7 +5488,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     response_payload = (
                         video_stitcher_service.ListSlatesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5587,7 +5587,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5642,7 +5642,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5741,7 +5741,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5792,7 +5792,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                     response_payload = (
                         video_stitcher_service.ListVodConfigsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5891,7 +5891,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5946,7 +5946,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6049,7 +6049,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6097,7 +6097,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6202,7 +6202,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6252,7 +6252,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6355,7 +6355,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6403,7 +6403,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6508,7 +6508,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6556,7 +6556,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6956,7 +6956,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7070,7 +7070,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7184,7 +7184,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7226,7 +7226,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7323,7 +7323,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7365,7 +7365,7 @@ class VideoStitcherServiceRestTransport(_BaseVideoStitcherServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

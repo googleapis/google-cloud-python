@@ -557,7 +557,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -607,7 +607,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gmm_dataset.Dataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -697,7 +697,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -811,7 +811,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -866,7 +866,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -962,7 +962,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1011,7 +1011,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataset.Dataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1106,7 +1106,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1157,7 +1157,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                     response_payload = (
                         maps_platform_datasets.ListDatasetsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1261,7 +1261,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1313,7 +1313,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gmm_dataset.Dataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

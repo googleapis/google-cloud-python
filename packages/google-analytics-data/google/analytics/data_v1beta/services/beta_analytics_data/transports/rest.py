@@ -931,7 +931,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -987,7 +987,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1091,7 +1091,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1143,7 +1143,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = (
                         analytics_data_api.BatchRunReportsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1251,7 +1251,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1303,7 +1303,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = (
                         analytics_data_api.CheckCompatibilityResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1408,7 +1408,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1458,7 +1458,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1561,7 +1561,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1612,7 +1612,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = analytics_data_api.AudienceExport.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1711,7 +1711,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1760,7 +1760,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = analytics_data_api.Metadata.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1859,7 +1859,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1912,7 +1912,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = (
                         analytics_data_api.ListAudienceExportsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2016,7 +2016,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2070,7 +2070,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = (
                         analytics_data_api.QueryAudienceExportResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2174,7 +2174,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2226,7 +2226,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = (
                         analytics_data_api.RunPivotReportResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2330,7 +2330,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2382,7 +2382,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = (
                         analytics_data_api.RunRealtimeReportResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2484,7 +2484,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2536,7 +2536,7 @@ class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
                     response_payload = analytics_data_api.RunReportResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

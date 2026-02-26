@@ -1269,7 +1269,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1319,7 +1319,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1425,7 +1425,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1477,7 +1477,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     response_payload = business_glossary.GlossaryCategory.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1584,7 +1584,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1636,7 +1636,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.GlossaryTerm.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1733,7 +1733,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1782,7 +1782,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1874,7 +1874,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1981,7 +1981,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2099,7 +2099,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2148,7 +2148,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.Glossary.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2248,7 +2248,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2301,7 +2301,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     response_payload = business_glossary.GlossaryCategory.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2402,7 +2402,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2453,7 +2453,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.GlossaryTerm.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2547,7 +2547,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2600,7 +2600,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     response_payload = business_glossary.ListGlossariesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2696,7 +2696,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2749,7 +2749,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2845,7 +2845,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2898,7 +2898,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     response_payload = (
                         business_glossary.ListGlossaryTermsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3000,7 +3000,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3050,7 +3050,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3155,7 +3155,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3207,7 +3207,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                     response_payload = business_glossary.GlossaryCategory.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3313,7 +3313,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3365,7 +3365,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = business_glossary.GlossaryTerm.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3614,7 +3614,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3656,7 +3656,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3753,7 +3753,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3797,7 +3797,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3898,7 +3898,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4014,7 +4014,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4130,7 +4130,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4172,7 +4172,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4269,7 +4269,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4313,7 +4313,7 @@ class BusinessGlossaryServiceRestTransport(_BaseBusinessGlossaryServiceRestTrans
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

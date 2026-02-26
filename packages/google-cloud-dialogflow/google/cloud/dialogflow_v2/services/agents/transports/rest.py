@@ -872,7 +872,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -991,7 +991,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1039,7 +1039,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1147,7 +1147,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1196,7 +1196,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = agent.Agent.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1296,7 +1296,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1347,7 +1347,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                     response_payload = validation_result.ValidationResult.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1451,7 +1451,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1499,7 +1499,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1605,7 +1605,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1653,7 +1653,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1753,7 +1753,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1802,7 +1802,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = agent.SearchAgentsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1915,7 +1915,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1965,7 +1965,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_agent.Agent.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2069,7 +2069,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2117,7 +2117,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2283,7 +2283,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2325,7 +2325,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2425,7 +2425,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2467,7 +2467,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2568,7 +2568,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2685,7 +2685,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2727,7 +2727,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2827,7 +2827,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2869,7 +2869,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -791,7 +791,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -840,7 +840,7 @@ class InterconnectAttachmentGroupsRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -940,7 +940,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -989,7 +989,7 @@ class InterconnectAttachmentGroupsRestTransport(
                     response_payload = compute.InterconnectAttachmentGroup.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1159,7 +1159,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1210,7 +1210,7 @@ class InterconnectAttachmentGroupsRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1312,7 +1312,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1367,7 +1367,7 @@ class InterconnectAttachmentGroupsRestTransport(
                     response_payload = compute.InterconnectAttachmentGroupsGetOperationalStatusResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1496,7 +1496,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1546,7 +1546,7 @@ class InterconnectAttachmentGroupsRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1642,7 +1642,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1693,7 +1693,7 @@ class InterconnectAttachmentGroupsRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1822,7 +1822,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1872,7 +1872,7 @@ class InterconnectAttachmentGroupsRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2047,7 +2047,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2099,7 +2099,7 @@ class InterconnectAttachmentGroupsRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2202,7 +2202,7 @@ class InterconnectAttachmentGroupsRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2252,7 +2252,7 @@ class InterconnectAttachmentGroupsRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

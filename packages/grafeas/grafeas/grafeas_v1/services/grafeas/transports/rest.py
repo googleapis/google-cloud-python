@@ -956,7 +956,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1008,7 +1008,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     response_payload = grafeas.BatchCreateNotesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1111,7 +1111,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1163,7 +1163,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     response_payload = grafeas.BatchCreateOccurrencesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1265,7 +1265,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1315,7 +1315,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.Note.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1425,7 +1425,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1475,7 +1475,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.Occurrence.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1566,7 +1566,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1678,7 +1678,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1790,7 +1790,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1839,7 +1839,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.Note.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1938,7 +1938,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1987,7 +1987,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.Occurrence.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2089,7 +2089,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2138,7 +2138,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.Note.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2238,7 +2238,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2289,7 +2289,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     response_payload = grafeas.ListNoteOccurrencesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2384,7 +2384,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2433,7 +2433,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.ListNotesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2534,7 +2534,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2583,7 +2583,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.ListOccurrencesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2685,7 +2685,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2735,7 +2735,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.Note.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2845,7 +2845,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2895,7 +2895,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grafeas.Occurrence.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

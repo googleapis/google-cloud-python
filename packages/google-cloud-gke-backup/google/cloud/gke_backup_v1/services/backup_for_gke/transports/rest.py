@@ -2729,7 +2729,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2777,7 +2777,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2881,7 +2881,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2929,7 +2929,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3034,7 +3034,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3082,7 +3082,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3185,7 +3185,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3233,7 +3233,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3337,7 +3337,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3385,7 +3385,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3489,7 +3489,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3537,7 +3537,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3637,7 +3637,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3684,7 +3684,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3783,7 +3783,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3830,7 +3830,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3930,7 +3930,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3977,7 +3977,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4075,7 +4075,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4122,7 +4122,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4221,7 +4221,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4268,7 +4268,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4367,7 +4367,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4414,7 +4414,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4520,7 +4520,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4569,7 +4569,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backup.Backup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4670,7 +4670,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4719,7 +4719,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backup_channel.BackupChannel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4819,7 +4819,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4874,7 +4874,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = (
                         gkebackup.GetBackupIndexDownloadUrlResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4971,7 +4971,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5020,7 +5020,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backup_plan.BackupPlan.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5124,7 +5124,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5175,7 +5175,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = backup_plan_binding.BackupPlanBinding.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5278,7 +5278,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5327,7 +5327,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = restore.Restore.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5427,7 +5427,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5476,7 +5476,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = restore_channel.RestoreChannel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5577,7 +5577,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5626,7 +5626,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = restore_plan.RestorePlan.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5730,7 +5730,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5781,7 +5781,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = restore_plan_binding.RestorePlanBinding.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5883,7 +5883,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5932,7 +5932,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume.VolumeBackup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6031,7 +6031,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6080,7 +6080,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume.VolumeRestore.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6178,7 +6178,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6229,7 +6229,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = gkebackup.ListBackupChannelsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6327,7 +6327,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6378,7 +6378,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = gkebackup.ListBackupPlanBindingsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6475,7 +6475,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6526,7 +6526,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = gkebackup.ListBackupPlansResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6625,7 +6625,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6674,7 +6674,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gkebackup.ListBackupsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6772,7 +6772,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6823,7 +6823,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = gkebackup.ListRestoreChannelsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6923,7 +6923,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6974,7 +6974,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = (
                         gkebackup.ListRestorePlanBindingsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7073,7 +7073,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7124,7 +7124,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = gkebackup.ListRestorePlansResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7221,7 +7221,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7270,7 +7270,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gkebackup.ListRestoresResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7368,7 +7368,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7419,7 +7419,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = gkebackup.ListVolumeBackupsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7517,7 +7517,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7568,7 +7568,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     response_payload = gkebackup.ListVolumeRestoresResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7675,7 +7675,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7723,7 +7723,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7827,7 +7827,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7875,7 +7875,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7980,7 +7980,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8028,7 +8028,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8131,7 +8131,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8179,7 +8179,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8283,7 +8283,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8331,7 +8331,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8435,7 +8435,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8483,7 +8483,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8925,7 +8925,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8967,7 +8967,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9065,7 +9065,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9107,7 +9107,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9207,7 +9207,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9249,7 +9249,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9356,7 +9356,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9399,7 +9399,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9502,7 +9502,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9545,7 +9545,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9647,7 +9647,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9762,7 +9762,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9879,7 +9879,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9921,7 +9921,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10019,7 +10019,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10061,7 +10061,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -2258,7 +2258,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2312,7 +2312,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                     response_payload = service.AsymmetricDecryptResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2414,7 +2414,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2464,7 +2464,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.AsymmetricSignResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2575,7 +2575,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2625,7 +2625,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2742,7 +2742,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2794,7 +2794,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2941,7 +2941,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2991,7 +2991,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.ImportJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3094,7 +3094,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3144,7 +3144,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.KeyRing.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3246,7 +3246,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3296,7 +3296,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.DecapsulateResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3400,7 +3400,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3450,7 +3450,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.DecryptResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3550,7 +3550,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3597,7 +3597,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3697,7 +3697,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3746,7 +3746,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3864,7 +3864,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3914,7 +3914,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4018,7 +4018,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4068,7 +4068,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.EncryptResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4172,7 +4172,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4226,7 +4226,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                     response_payload = service.GenerateRandomBytesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4330,7 +4330,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4379,7 +4379,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4491,7 +4491,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4542,7 +4542,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4682,7 +4682,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4731,7 +4731,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.ImportJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4829,7 +4829,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4878,7 +4878,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.KeyRing.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4977,7 +4977,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5026,7 +5026,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.PublicKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5128,7 +5128,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5179,7 +5179,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.RetiredResource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5296,7 +5296,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5348,7 +5348,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5447,7 +5447,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5496,7 +5496,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListCryptoKeysResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5595,7 +5595,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5648,7 +5648,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                     response_payload = service.ListCryptoKeyVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5747,7 +5747,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5796,7 +5796,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListImportJobsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5893,7 +5893,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5942,7 +5942,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListKeyRingsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6041,7 +6041,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6094,7 +6094,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                     response_payload = service.ListRetiredResourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6198,7 +6198,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6248,7 +6248,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.MacSignResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6350,7 +6350,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6400,7 +6400,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.MacVerifyResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6502,7 +6502,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6552,7 +6552,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.RawDecryptResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6654,7 +6654,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6704,7 +6704,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.RawEncryptResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6822,7 +6822,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6872,7 +6872,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6983,7 +6983,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7033,7 +7033,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7147,7 +7147,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7199,7 +7199,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7316,7 +7316,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7368,7 +7368,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.CryptoKeyVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7743,7 +7743,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7785,7 +7785,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7882,7 +7882,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7924,7 +7924,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8021,7 +8021,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8063,7 +8063,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8165,7 +8165,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8208,7 +8208,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8312,7 +8312,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8357,7 +8357,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8454,7 +8454,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8496,7 +8496,7 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

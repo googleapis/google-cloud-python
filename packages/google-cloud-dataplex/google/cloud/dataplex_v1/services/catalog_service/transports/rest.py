@@ -1993,7 +1993,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2112,7 +2112,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2160,7 +2160,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2263,7 +2263,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2313,7 +2313,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2416,7 +2416,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2464,7 +2464,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2566,7 +2566,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2616,7 +2616,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryLink.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2719,7 +2719,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2767,7 +2767,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2870,7 +2870,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2918,7 +2918,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3016,7 +3016,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3063,7 +3063,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3161,7 +3161,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3210,7 +3210,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3308,7 +3308,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3355,7 +3355,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3452,7 +3452,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3501,7 +3501,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryLink.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3599,7 +3599,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3646,7 +3646,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3745,7 +3745,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3794,7 +3794,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.AspectType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3896,7 +3896,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3945,7 +3945,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4042,7 +4042,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4091,7 +4091,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4188,7 +4188,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4237,7 +4237,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryLink.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4334,7 +4334,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4383,7 +4383,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4480,7 +4480,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4529,7 +4529,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.MetadataJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4624,7 +4624,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4673,7 +4673,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListAspectTypesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4768,7 +4768,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4817,7 +4817,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListEntriesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4912,7 +4912,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4961,7 +4961,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListEntryGroupsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5058,7 +5058,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5107,7 +5107,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListEntryTypesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5202,7 +5202,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5253,7 +5253,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     response_payload = catalog.ListMetadataJobsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5352,7 +5352,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5401,7 +5401,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5496,7 +5496,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5545,7 +5545,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.SearchEntriesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5648,7 +5648,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5696,7 +5696,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5799,7 +5799,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5849,7 +5849,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5952,7 +5952,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6000,7 +6000,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6103,7 +6103,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6151,7 +6151,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6471,7 +6471,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6513,7 +6513,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6611,7 +6611,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6653,7 +6653,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6753,7 +6753,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6866,7 +6866,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6981,7 +6981,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7023,7 +7023,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7121,7 +7121,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7163,7 +7163,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -946,7 +946,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -996,7 +996,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1123,7 +1123,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1172,7 +1172,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1297,7 +1297,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1346,7 +1346,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1449,7 +1449,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1496,7 +1496,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.BackendBucket.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1667,7 +1667,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1716,7 +1716,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1848,7 +1848,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1898,7 +1898,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1999,7 +1999,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2046,7 +2046,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.BackendBucketList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2178,7 +2178,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2228,7 +2228,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2359,7 +2359,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2409,7 +2409,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2585,7 +2585,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2635,7 +2635,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2737,7 +2737,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2787,7 +2787,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2919,7 +2919,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2969,7 +2969,7 @@ class BackendBucketsRestTransport(_BaseBackendBucketsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

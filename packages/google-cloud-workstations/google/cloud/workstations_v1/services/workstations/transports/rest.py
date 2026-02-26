@@ -1631,7 +1631,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1679,7 +1679,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1785,7 +1785,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1835,7 +1835,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1940,7 +1940,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1988,7 +1988,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2087,7 +2087,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2134,7 +2134,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2235,7 +2235,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2284,7 +2284,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2384,7 +2384,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2431,7 +2431,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2534,7 +2534,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2586,7 +2586,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     response_payload = workstations.GenerateAccessTokenResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2684,7 +2684,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2733,7 +2733,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = workstations.Workstation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2834,7 +2834,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2883,7 +2883,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = workstations.WorkstationCluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2992,7 +2992,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3041,7 +3041,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = workstations.WorkstationConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3141,7 +3141,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3198,7 +3198,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3296,7 +3296,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3347,7 +3347,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     response_payload = (
                         workstations.ListUsableWorkstationsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3446,7 +3446,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3497,7 +3497,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     response_payload = (
                         workstations.ListWorkstationClustersResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3595,7 +3595,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3646,7 +3646,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     response_payload = (
                         workstations.ListWorkstationConfigsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3745,7 +3745,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3796,7 +3796,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     response_payload = workstations.ListWorkstationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3901,7 +3901,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3949,7 +3949,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4054,7 +4054,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4102,7 +4102,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4206,7 +4206,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4254,7 +4254,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4360,7 +4360,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4410,7 +4410,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4515,7 +4515,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4563,7 +4563,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4876,7 +4876,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4918,7 +4918,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5025,7 +5025,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5068,7 +5068,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5171,7 +5171,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5214,7 +5214,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5316,7 +5316,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5431,7 +5431,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5548,7 +5548,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5590,7 +5590,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5688,7 +5688,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5730,7 +5730,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

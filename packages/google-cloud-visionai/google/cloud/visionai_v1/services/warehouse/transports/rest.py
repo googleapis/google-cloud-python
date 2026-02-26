@@ -3730,7 +3730,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3782,7 +3782,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.AddCollectionItemResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3889,7 +3889,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3937,7 +3937,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4046,7 +4046,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4094,7 +4094,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4196,7 +4196,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4246,7 +4246,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ClipAssetResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4351,7 +4351,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4401,7 +4401,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Annotation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4511,7 +4511,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4561,7 +4561,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Asset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4666,7 +4666,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4714,7 +4714,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4821,7 +4821,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4869,7 +4869,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4974,7 +4974,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5024,7 +5024,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.DataSchema.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5129,7 +5129,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5177,7 +5177,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5283,7 +5283,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5331,7 +5331,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5437,7 +5437,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5487,7 +5487,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5593,7 +5593,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5643,7 +5643,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchHypernym.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5737,7 +5737,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5852,7 +5852,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5899,7 +5899,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6000,7 +6000,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6047,7 +6047,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6142,7 +6142,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6250,7 +6250,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6365,7 +6365,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6412,7 +6412,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6513,7 +6513,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6560,7 +6560,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6654,7 +6654,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6761,7 +6761,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6881,7 +6881,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6929,7 +6929,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7040,7 +7040,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7092,7 +7092,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.GenerateHlsUriResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7195,7 +7195,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7247,7 +7247,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.GenerateRetrievalUrlResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7350,7 +7350,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7399,7 +7399,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Annotation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7501,7 +7501,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7550,7 +7550,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Asset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7653,7 +7653,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7702,7 +7702,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Collection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7803,7 +7803,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7852,7 +7852,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Corpus.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7954,7 +7954,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8003,7 +8003,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.DataSchema.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8103,7 +8103,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8152,7 +8152,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Index.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8251,7 +8251,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8300,7 +8300,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.IndexEndpoint.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8402,7 +8402,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8451,7 +8451,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8554,7 +8554,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8603,7 +8603,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchHypernym.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8710,7 +8710,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8758,7 +8758,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8863,7 +8863,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8911,7 +8911,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9029,7 +9029,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9080,7 +9080,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ListAnnotationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9177,7 +9177,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9226,7 +9226,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ListAssetsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9325,7 +9325,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9376,7 +9376,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ListCollectionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9473,7 +9473,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9522,7 +9522,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ListCorporaResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9621,7 +9621,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9672,7 +9672,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ListDataSchemasResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9772,7 +9772,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9823,7 +9823,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ListIndexEndpointsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9920,7 +9920,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9969,7 +9969,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ListIndexesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10069,7 +10069,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10120,7 +10120,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ListSearchConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10220,7 +10220,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10271,7 +10271,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ListSearchHypernymsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10374,7 +10374,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10426,7 +10426,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.RemoveCollectionItemResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10531,7 +10531,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10579,7 +10579,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10683,7 +10683,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10733,7 +10733,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchAssetsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10838,7 +10838,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10890,7 +10890,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.SearchIndexEndpointResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11000,7 +11000,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11048,7 +11048,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11154,7 +11154,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11204,7 +11204,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Annotation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11313,7 +11313,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11363,7 +11363,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Asset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11469,7 +11469,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11519,7 +11519,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Collection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11627,7 +11627,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11677,7 +11677,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Corpus.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11782,7 +11782,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11832,7 +11832,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.DataSchema.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11937,7 +11937,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11985,7 +11985,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12091,7 +12091,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12139,7 +12139,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12245,7 +12245,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12295,7 +12295,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12401,7 +12401,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12451,7 +12451,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchHypernym.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12556,7 +12556,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12604,7 +12604,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12704,7 +12704,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12755,7 +12755,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ViewCollectionItemsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12855,7 +12855,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12906,7 +12906,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     response_payload = warehouse.ViewIndexedAssetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13524,7 +13524,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13566,7 +13566,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13668,7 +13668,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13710,7 +13710,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13816,7 +13816,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13933,7 +13933,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14052,7 +14052,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14094,7 +14094,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14196,7 +14196,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14238,7 +14238,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

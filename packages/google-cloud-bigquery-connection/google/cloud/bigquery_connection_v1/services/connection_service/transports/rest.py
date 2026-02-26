@@ -669,7 +669,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -719,7 +719,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcbc_connection.Connection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -812,7 +812,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -925,7 +925,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -974,7 +974,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = connection.Connection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1147,7 +1147,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1197,7 +1197,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1296,7 +1296,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1347,7 +1347,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                     response_payload = connection.ListConnectionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1520,7 +1520,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1570,7 +1570,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1671,7 +1671,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1721,7 +1721,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1826,7 +1826,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1876,7 +1876,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcbc_connection.Connection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

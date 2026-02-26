@@ -1101,7 +1101,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1151,7 +1151,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1250,7 +1250,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1299,7 +1299,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroupAggregatedList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1424,7 +1424,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1473,7 +1473,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1607,7 +1607,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1657,7 +1657,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1762,7 +1762,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1809,7 +1809,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1984,7 +1984,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2033,7 +2033,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2163,7 +2163,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2213,7 +2213,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2310,7 +2310,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2357,7 +2357,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroupList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2456,7 +2456,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2505,7 +2505,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroupsListNodes.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2635,7 +2635,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2685,7 +2685,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2817,7 +2817,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2867,7 +2867,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3049,7 +3049,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3099,7 +3099,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3231,7 +3231,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3281,7 +3281,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3412,7 +3412,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3462,7 +3462,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3566,7 +3566,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3616,7 +3616,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

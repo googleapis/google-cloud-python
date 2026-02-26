@@ -1193,7 +1193,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1244,7 +1244,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     response_payload = licensemanager.AggregateUsageResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1348,7 +1348,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1396,7 +1396,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1501,7 +1501,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1551,7 +1551,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1650,7 +1650,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1697,7 +1697,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1794,7 +1794,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1843,7 +1843,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Configuration.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1938,7 +1938,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1987,7 +1987,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2084,7 +2084,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2133,7 +2133,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Product.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2231,7 +2231,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2282,7 +2282,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     response_payload = (
                         licensemanager.ListConfigurationsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2380,7 +2380,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2431,7 +2431,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     response_payload = licensemanager.ListInstancesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2529,7 +2529,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2580,7 +2580,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     response_payload = licensemanager.ListProductsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2680,7 +2680,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2735,7 +2735,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2839,7 +2839,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2889,7 +2889,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2993,7 +2993,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3041,7 +3041,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3271,7 +3271,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3313,7 +3313,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3411,7 +3411,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3453,7 +3453,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3553,7 +3553,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3666,7 +3666,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3781,7 +3781,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3823,7 +3823,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3921,7 +3921,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3963,7 +3963,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

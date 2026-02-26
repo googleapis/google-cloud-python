@@ -914,7 +914,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -963,7 +963,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = resource.ConferenceRecord.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1059,7 +1059,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1110,7 +1110,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = resource.Participant.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1215,7 +1215,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1264,7 +1264,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = resource.ParticipantSession.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1361,7 +1361,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1412,7 +1412,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = resource.Recording.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1510,7 +1510,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1561,7 +1561,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = resource.Transcript.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1660,7 +1660,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1711,7 +1711,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = resource.TranscriptEntry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1810,7 +1810,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1861,7 +1861,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     response_payload = service.ListConferenceRecordsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1958,7 +1958,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2011,7 +2011,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     response_payload = service.ListParticipantsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2109,7 +2109,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2160,7 +2160,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     response_payload = service.ListParticipantSessionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2254,7 +2254,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2305,7 +2305,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListRecordingsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2404,7 +2404,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2455,7 +2455,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     response_payload = service.ListTranscriptEntriesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2551,7 +2551,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2602,7 +2602,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListTranscriptsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

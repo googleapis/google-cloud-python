@@ -618,7 +618,7 @@ class GenerativeQuestionServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -674,7 +674,7 @@ class GenerativeQuestionServiceRestTransport(
                     response_payload = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -779,7 +779,7 @@ class GenerativeQuestionServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -834,7 +834,7 @@ class GenerativeQuestionServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -933,7 +933,7 @@ class GenerativeQuestionServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -990,7 +990,7 @@ class GenerativeQuestionServiceRestTransport(
                     response_payload = generative_question_service.ListGenerativeQuestionConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1097,7 +1097,7 @@ class GenerativeQuestionServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1151,7 +1151,7 @@ class GenerativeQuestionServiceRestTransport(
                     response_payload = (
                         generative_question.GenerativeQuestionConfig.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1261,7 +1261,7 @@ class GenerativeQuestionServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1319,7 +1319,7 @@ class GenerativeQuestionServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1481,7 +1481,7 @@ class GenerativeQuestionServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1525,7 +1525,7 @@ class GenerativeQuestionServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1622,7 +1622,7 @@ class GenerativeQuestionServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1666,7 +1666,7 @@ class GenerativeQuestionServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

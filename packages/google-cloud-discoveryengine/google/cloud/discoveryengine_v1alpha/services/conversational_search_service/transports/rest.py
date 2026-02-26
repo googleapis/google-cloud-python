@@ -1004,7 +1004,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1060,7 +1060,7 @@ class ConversationalSearchServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1166,7 +1166,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1220,7 +1220,7 @@ class ConversationalSearchServiceRestTransport(
                     response_payload = conversational_search_service.ConverseConversationResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1324,7 +1324,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1374,7 +1374,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_conversation.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1473,7 +1473,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1525,7 +1525,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_session.Session.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1618,7 +1618,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1723,7 +1723,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1834,7 +1834,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1885,7 +1885,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = answer.Answer.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1983,7 +1983,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2034,7 +2034,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = conversation.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2128,7 +2128,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2179,7 +2179,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = session.Session.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2277,7 +2277,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2330,7 +2330,7 @@ class ConversationalSearchServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2424,7 +2424,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2479,7 +2479,7 @@ class ConversationalSearchServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2583,7 +2583,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2633,7 +2633,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_conversation.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2732,7 +2732,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2784,7 +2784,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_session.Session.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3018,7 +3018,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3135,7 +3135,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3179,7 +3179,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3276,7 +3276,7 @@ class ConversationalSearchServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3320,7 +3320,7 @@ class ConversationalSearchServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

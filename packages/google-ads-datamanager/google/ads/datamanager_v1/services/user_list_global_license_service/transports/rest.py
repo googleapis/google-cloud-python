@@ -575,7 +575,7 @@ class UserListGlobalLicenseServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -631,7 +631,7 @@ class UserListGlobalLicenseServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -736,7 +736,7 @@ class UserListGlobalLicenseServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -787,7 +787,7 @@ class UserListGlobalLicenseServiceRestTransport(
                     response_payload = (
                         user_list_global_license.UserListGlobalLicense.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -892,7 +892,7 @@ class UserListGlobalLicenseServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -949,7 +949,7 @@ class UserListGlobalLicenseServiceRestTransport(
                     response_payload = user_list_global_license_service.ListUserListGlobalLicenseCustomerInfosResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1052,7 +1052,7 @@ class UserListGlobalLicenseServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1109,7 +1109,7 @@ class UserListGlobalLicenseServiceRestTransport(
                     response_payload = user_list_global_license_service.ListUserListGlobalLicensesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1219,7 +1219,7 @@ class UserListGlobalLicenseServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1275,7 +1275,7 @@ class UserListGlobalLicenseServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

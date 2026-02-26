@@ -1789,7 +1789,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1837,7 +1837,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1940,7 +1940,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1988,7 +1988,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2091,7 +2091,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2139,7 +2139,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2242,7 +2242,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2290,7 +2290,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2388,7 +2388,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2435,7 +2435,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2533,7 +2533,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2580,7 +2580,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2678,7 +2678,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2725,7 +2725,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2823,7 +2823,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2870,7 +2870,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2974,7 +2974,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3028,7 +3028,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     response_payload = (
                         streams_service.GenerateStreamHlsTokenResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3127,7 +3127,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3176,7 +3176,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.Cluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3275,7 +3275,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3324,7 +3324,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = streams_resources.Event.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3423,7 +3423,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3472,7 +3472,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = streams_resources.Series.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3577,7 +3577,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3626,7 +3626,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = streams_resources.Stream.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3730,7 +3730,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3778,7 +3778,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3876,7 +3876,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3927,7 +3927,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     response_payload = streams_service.ListClustersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4027,7 +4027,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4078,7 +4078,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     response_payload = streams_service.ListEventsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4178,7 +4178,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4229,7 +4229,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     response_payload = streams_service.ListSeriesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4327,7 +4327,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4378,7 +4378,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                     response_payload = streams_service.ListStreamsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4481,7 +4481,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4529,7 +4529,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4632,7 +4632,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4680,7 +4680,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4783,7 +4783,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4831,7 +4831,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4934,7 +4934,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4982,7 +4982,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5085,7 +5085,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5133,7 +5133,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5432,7 +5432,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5474,7 +5474,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5572,7 +5572,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5614,7 +5614,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5714,7 +5714,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5827,7 +5827,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5942,7 +5942,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5984,7 +5984,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6082,7 +6082,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6124,7 +6124,7 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

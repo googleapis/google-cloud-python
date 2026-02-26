@@ -1136,7 +1136,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1184,7 +1184,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1323,7 +1323,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1373,7 +1373,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1478,7 +1478,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1526,7 +1526,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1625,7 +1625,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1672,7 +1672,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1776,7 +1776,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1828,7 +1828,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                     response_payload = (
                         servicemanager.GenerateConfigReportResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1928,7 +1928,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1977,7 +1977,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.ManagedService.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2110,7 +2110,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2159,7 +2159,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2261,7 +2261,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2310,7 +2310,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Rollout.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2408,7 +2408,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2459,7 +2459,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                     response_payload = (
                         servicemanager.ListServiceConfigsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2558,7 +2558,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2609,7 +2609,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                     response_payload = (
                         servicemanager.ListServiceRolloutsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2704,7 +2704,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2755,7 +2755,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                     response_payload = servicemanager.ListServicesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2859,7 +2859,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2907,7 +2907,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3006,7 +3006,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3053,7 +3053,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3273,7 +3273,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3316,7 +3316,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3419,7 +3419,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3462,7 +3462,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3565,7 +3565,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3608,7 +3608,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3706,7 +3706,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3748,7 +3748,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

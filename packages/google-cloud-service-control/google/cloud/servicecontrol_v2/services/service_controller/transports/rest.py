@@ -377,7 +377,7 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -429,7 +429,7 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
                     response_payload = service_controller.CheckResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -540,7 +540,7 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -592,7 +592,7 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
                     response_payload = service_controller.ReportResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

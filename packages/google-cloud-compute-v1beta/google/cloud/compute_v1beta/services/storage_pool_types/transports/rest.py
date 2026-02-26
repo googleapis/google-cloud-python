@@ -416,7 +416,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -467,7 +467,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                     response_payload = compute.StoragePoolTypeAggregatedList.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -566,7 +566,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -613,7 +613,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.StoragePoolType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -714,7 +714,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -761,7 +761,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.StoragePoolTypeList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -1682,7 +1682,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1730,7 +1730,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1833,7 +1833,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1883,7 +1883,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gda_tag.Tag.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1979,7 +1979,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2026,7 +2026,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2125,7 +2125,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2172,7 +2172,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2263,7 +2263,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2374,7 +2374,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2421,7 +2421,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2523,7 +2523,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2572,7 +2572,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = file.File.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2742,7 +2742,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2791,7 +2791,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2888,7 +2888,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2937,7 +2937,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = package.Package.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3036,7 +3036,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3085,7 +3085,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = settings.ProjectSettings.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3180,7 +3180,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3229,7 +3229,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = repository.Repository.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3331,7 +3331,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3380,7 +3380,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tag.Tag.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3480,7 +3480,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3529,7 +3529,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = version.Version.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3634,7 +3634,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3682,7 +3682,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3787,7 +3787,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3835,7 +3835,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3930,7 +3930,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3979,7 +3979,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = file.ListFilesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4074,7 +4074,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4123,7 +4123,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = package.ListPackagesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4221,7 +4221,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4272,7 +4272,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                     response_payload = repository.ListRepositoriesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4369,7 +4369,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4418,7 +4418,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tag.ListTagsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4513,7 +4513,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4562,7 +4562,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = version.ListVersionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4737,7 +4737,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4787,7 +4787,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4888,7 +4888,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4938,7 +4938,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5041,7 +5041,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5093,7 +5093,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = settings.ProjectSettings.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5196,7 +5196,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5246,7 +5246,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gda_repository.Repository.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5350,7 +5350,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5400,7 +5400,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gda_tag.Tag.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5685,7 +5685,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5727,7 +5727,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5823,7 +5823,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5865,7 +5865,7 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

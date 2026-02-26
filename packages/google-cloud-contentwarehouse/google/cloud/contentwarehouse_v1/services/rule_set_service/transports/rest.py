@@ -526,7 +526,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -576,7 +576,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule_engine.RuleSet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -668,7 +668,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -783,7 +783,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -832,7 +832,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule_engine.RuleSet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -930,7 +930,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -981,7 +981,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                     response_payload = (
                         ruleset_service_request.ListRuleSetsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1084,7 +1084,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1134,7 +1134,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule_engine.RuleSet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1275,7 +1275,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1317,7 +1317,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

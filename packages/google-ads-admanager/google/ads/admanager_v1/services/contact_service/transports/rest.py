@@ -621,7 +621,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -673,7 +673,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                     response_payload = (
                         contact_service.BatchCreateContactsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -774,7 +774,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -826,7 +826,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                     response_payload = (
                         contact_service.BatchUpdateContactsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -932,7 +932,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -982,7 +982,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = contact_messages.Contact.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1085,7 +1085,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1134,7 +1134,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = contact_messages.Contact.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1231,7 +1231,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1282,7 +1282,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                     response_payload = contact_service.ListContactsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1388,7 +1388,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1438,7 +1438,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = contact_messages.Contact.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1592,7 +1592,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1634,7 +1634,7 @@ class ContactServiceRestTransport(_BaseContactServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

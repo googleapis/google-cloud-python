@@ -2168,7 +2168,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2216,7 +2216,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2326,7 +2326,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2376,7 +2376,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2480,7 +2480,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2530,7 +2530,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2635,7 +2635,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2683,7 +2683,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2787,7 +2787,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2837,7 +2837,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2941,7 +2941,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2989,7 +2989,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3088,7 +3088,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3135,7 +3135,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3240,7 +3240,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3289,7 +3289,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3388,7 +3388,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3437,7 +3437,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3537,7 +3537,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3584,7 +3584,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3683,7 +3683,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3732,7 +3732,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3831,7 +3831,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3878,7 +3878,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3972,7 +3972,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4021,7 +4021,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = certificate_manager.Certificate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4120,7 +4120,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4175,7 +4175,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4273,7 +4273,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4324,7 +4324,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     response_payload = certificate_manager.CertificateMap.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4420,7 +4420,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4473,7 +4473,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     response_payload = certificate_manager.CertificateMapEntry.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4572,7 +4572,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4625,7 +4625,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     response_payload = certificate_manager.DnsAuthorization.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4721,7 +4721,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4770,7 +4770,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = trust_config.TrustConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4872,7 +4872,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4929,7 +4929,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     response_payload = certificate_issuance_config.ListCertificateIssuanceConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5026,7 +5026,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5079,7 +5079,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5175,7 +5175,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5230,7 +5230,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5326,7 +5326,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5377,7 +5377,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     response_payload = (
                         certificate_manager.ListCertificatesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5473,7 +5473,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5528,7 +5528,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5624,7 +5624,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5675,7 +5675,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     response_payload = trust_config.ListTrustConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5779,7 +5779,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5827,7 +5827,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5931,7 +5931,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5981,7 +5981,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6086,7 +6086,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6134,7 +6134,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6238,7 +6238,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6288,7 +6288,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6392,7 +6392,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6440,7 +6440,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6858,7 +6858,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6900,7 +6900,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6997,7 +6997,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7039,7 +7039,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7140,7 +7140,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7254,7 +7254,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7368,7 +7368,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7410,7 +7410,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7507,7 +7507,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7549,7 +7549,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

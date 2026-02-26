@@ -1776,7 +1776,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1826,7 +1826,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Assignment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1943,7 +1943,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1995,7 +1995,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2099,7 +2099,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2149,7 +2149,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcbr_reservation.Reservation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2253,7 +2253,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2305,7 +2305,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.ReservationGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2400,7 +2400,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2509,7 +2509,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2619,7 +2619,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2727,7 +2727,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2848,7 +2848,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2900,7 +2900,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Reservation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2997,7 +2997,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3046,7 +3046,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.BiReservation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3157,7 +3157,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3208,7 +3208,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3377,7 +3377,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3426,7 +3426,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3523,7 +3523,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3572,7 +3572,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Reservation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3671,7 +3671,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3722,7 +3722,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.ReservationGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3821,7 +3821,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3872,7 +3872,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     response_payload = reservation.ListAssignmentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3971,7 +3971,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4024,7 +4024,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     response_payload = (
                         reservation.ListCapacityCommitmentsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4123,7 +4123,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4176,7 +4176,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     response_payload = (
                         reservation.ListReservationGroupsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4275,7 +4275,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4326,7 +4326,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     response_payload = reservation.ListReservationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4443,7 +4443,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4495,7 +4495,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4605,7 +4605,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4655,7 +4655,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Assignment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4756,7 +4756,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4809,7 +4809,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     response_payload = reservation.SearchAllAssignmentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4910,7 +4910,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4961,7 +4961,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     response_payload = reservation.SearchAssignmentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5135,7 +5135,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5185,7 +5185,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5289,7 +5289,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5343,7 +5343,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     response_payload = (
                         reservation.SplitCapacityCommitmentResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5444,7 +5444,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5496,7 +5496,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5601,7 +5601,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5651,7 +5651,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Assignment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5752,7 +5752,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5804,7 +5804,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.BiReservation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5921,7 +5921,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5973,7 +5973,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6077,7 +6077,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6127,7 +6127,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcbr_reservation.Reservation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

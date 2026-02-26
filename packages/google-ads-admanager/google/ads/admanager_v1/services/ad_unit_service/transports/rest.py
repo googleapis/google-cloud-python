@@ -858,7 +858,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -910,7 +910,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     response_payload = (
                         ad_unit_service.BatchActivateAdUnitsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1010,7 +1010,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1062,7 +1062,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     response_payload = (
                         ad_unit_service.BatchArchiveAdUnitsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1162,7 +1162,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1214,7 +1214,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     response_payload = (
                         ad_unit_service.BatchCreateAdUnitsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1315,7 +1315,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1367,7 +1367,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     response_payload = (
                         ad_unit_service.BatchDeactivateAdUnitsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1467,7 +1467,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1519,7 +1519,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     response_payload = (
                         ad_unit_service.BatchUpdateAdUnitsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1619,7 +1619,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1669,7 +1669,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = ad_unit_messages.AdUnit.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1768,7 +1768,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1817,7 +1817,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = ad_unit_messages.AdUnit.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1918,7 +1918,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1969,7 +1969,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     response_payload = ad_unit_service.ListAdUnitsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2070,7 +2070,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2121,7 +2121,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     response_payload = ad_unit_service.ListAdUnitSizesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2221,7 +2221,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2271,7 +2271,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = ad_unit_messages.AdUnit.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2471,7 +2471,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2513,7 +2513,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

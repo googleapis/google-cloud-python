@@ -929,7 +929,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -979,7 +979,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = auditmanager.Enrollment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1083,7 +1083,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1131,7 +1131,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1234,7 +1234,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1286,7 +1286,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = auditmanager.AuditScopeReport.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1384,7 +1384,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1433,7 +1433,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = auditmanager.AuditReport.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1533,7 +1533,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1588,7 +1588,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                     response_payload = auditmanager.ResourceEnrollmentStatus.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1688,7 +1688,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1739,7 +1739,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                     response_payload = auditmanager.ListAuditReportsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1839,7 +1839,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1890,7 +1890,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                     response_payload = auditmanager.ListControlsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1991,7 +1991,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2048,7 +2048,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2232,7 +2232,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2274,7 +2274,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2372,7 +2372,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2414,7 +2414,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2516,7 +2516,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2631,7 +2631,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2748,7 +2748,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2790,7 +2790,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2888,7 +2888,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2930,7 +2930,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

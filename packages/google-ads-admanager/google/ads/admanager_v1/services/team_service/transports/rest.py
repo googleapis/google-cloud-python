@@ -718,7 +718,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -770,7 +770,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     response_payload = team_service.BatchActivateTeamsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -872,7 +872,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -924,7 +924,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     response_payload = team_service.BatchCreateTeamsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1024,7 +1024,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1076,7 +1076,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     response_payload = (
                         team_service.BatchDeactivateTeamsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1178,7 +1178,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1230,7 +1230,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     response_payload = team_service.BatchUpdateTeamsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1336,7 +1336,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1386,7 +1386,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = team_messages.Team.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1485,7 +1485,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1534,7 +1534,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = team_messages.Team.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1633,7 +1633,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1682,7 +1682,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = team_service.ListTeamsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1788,7 +1788,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1838,7 +1838,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = team_messages.Team.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2012,7 +2012,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2054,7 +2054,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

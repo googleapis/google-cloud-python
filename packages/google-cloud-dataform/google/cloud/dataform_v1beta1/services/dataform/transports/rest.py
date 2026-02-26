@@ -4180,7 +4180,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4232,7 +4232,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = (
                         dataform.CancelWorkflowInvocationResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4332,7 +4332,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4384,7 +4384,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.CommitRepositoryChangesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4484,7 +4484,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4536,7 +4536,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.CommitWorkspaceChangesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4635,7 +4635,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4692,7 +4692,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4794,7 +4794,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4844,7 +4844,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.CompilationResult.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4950,7 +4950,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5000,7 +5000,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Folder.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5104,7 +5104,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5154,7 +5154,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReleaseConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5260,7 +5260,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5310,7 +5310,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Repository.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5423,7 +5423,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5473,7 +5473,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.TeamFolder.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5577,7 +5577,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5627,7 +5627,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5730,7 +5730,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5780,7 +5780,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowInvocation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5888,7 +5888,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5938,7 +5938,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Workspace.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6031,7 +6031,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6139,7 +6139,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6249,7 +6249,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6359,7 +6359,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6467,7 +6467,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6574,7 +6574,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6686,7 +6686,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6800,7 +6800,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6849,7 +6849,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.FetchFileDiffResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6946,7 +6946,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6997,7 +6997,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.FetchFileGitStatusesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7094,7 +7094,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7145,7 +7145,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.FetchGitAheadBehindResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7242,7 +7242,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7293,7 +7293,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.FetchRemoteBranchesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7388,7 +7388,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7439,7 +7439,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.FetchRepositoryHistoryResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7538,7 +7538,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7587,7 +7587,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.CompilationResult.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7684,7 +7684,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7733,7 +7733,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Config.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7832,7 +7832,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7881,7 +7881,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Folder.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8053,7 +8053,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8102,7 +8102,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8203,7 +8203,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8252,7 +8252,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReleaseConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8351,7 +8351,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8400,7 +8400,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Repository.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8506,7 +8506,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8555,7 +8555,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.TeamFolder.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8654,7 +8654,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8703,7 +8703,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8800,7 +8800,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8849,7 +8849,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowInvocation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8946,7 +8946,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8995,7 +8995,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Workspace.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9097,7 +9097,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9149,7 +9149,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.InstallNpmPackagesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9244,7 +9244,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9295,7 +9295,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.ListCompilationResultsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9392,7 +9392,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9443,7 +9443,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.ListReleaseConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9542,7 +9542,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9593,7 +9593,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.ListRepositoriesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9690,7 +9690,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9741,7 +9741,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.ListWorkflowConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9836,7 +9836,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9887,7 +9887,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.ListWorkflowInvocationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9986,7 +9986,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10035,7 +10035,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ListWorkspacesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10139,7 +10139,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10189,7 +10189,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.MakeDirectoryResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10293,7 +10293,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10343,7 +10343,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.MoveDirectoryResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10443,7 +10443,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10493,7 +10493,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.MoveFileResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10598,7 +10598,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10646,7 +10646,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10755,7 +10755,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10803,7 +10803,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10911,7 +10911,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10961,7 +10961,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.PullGitCommitsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11069,7 +11069,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11119,7 +11119,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.PushGitCommitsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11215,7 +11215,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11270,7 +11270,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = (
                         dataform.QueryCompilationResultActionsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11365,7 +11365,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11416,7 +11416,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.QueryDirectoryContentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11513,7 +11513,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11564,7 +11564,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.QueryFolderContentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11663,7 +11663,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11720,7 +11720,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11816,7 +11816,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11867,7 +11867,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.QueryTeamFolderContentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11962,7 +11962,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12013,7 +12013,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.QueryUserRootContentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12109,7 +12109,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12166,7 +12166,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12261,7 +12261,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12310,7 +12310,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReadFileResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12407,7 +12407,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12458,7 +12458,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.ReadRepositoryFileResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12566,7 +12566,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12618,7 +12618,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.RemoveDirectoryResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12720,7 +12720,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12770,7 +12770,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.RemoveFileResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12870,7 +12870,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12922,7 +12922,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.ResetWorkspaceChangesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13022,7 +13022,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13071,7 +13071,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.SearchFilesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13168,7 +13168,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13219,7 +13219,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     response_payload = dataform.SearchTeamFoldersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13396,7 +13396,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13446,7 +13446,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13548,7 +13548,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13598,7 +13598,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13702,7 +13702,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13752,7 +13752,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Config.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13858,7 +13858,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13908,7 +13908,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Folder.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14012,7 +14012,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14062,7 +14062,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReleaseConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14168,7 +14168,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14218,7 +14218,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Repository.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14331,7 +14331,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14381,7 +14381,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.TeamFolder.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14485,7 +14485,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14535,7 +14535,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14635,7 +14635,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14685,7 +14685,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WriteFileResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15446,7 +15446,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15488,7 +15488,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15590,7 +15590,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15632,7 +15632,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15740,7 +15740,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15859,7 +15859,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15976,7 +15976,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -16018,7 +16018,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -16120,7 +16120,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -16162,7 +16162,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

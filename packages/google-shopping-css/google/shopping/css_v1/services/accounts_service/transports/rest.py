@@ -407,7 +407,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -456,7 +456,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = accounts.Account.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -553,7 +553,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -604,7 +604,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                     response_payload = accounts.ListChildAccountsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -704,7 +704,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -754,7 +754,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = accounts.Account.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -1862,7 +1862,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1912,7 +1912,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2041,7 +2041,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2093,7 +2093,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2227,7 +2227,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2277,7 +2277,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2408,7 +2408,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2460,7 +2460,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2584,7 +2584,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2633,7 +2633,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2764,7 +2764,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2816,7 +2816,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2950,7 +2950,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3000,7 +3000,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3108,7 +3108,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3155,7 +3155,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.InstanceGroupManager.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3284,7 +3284,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3334,7 +3334,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3432,7 +3432,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3481,7 +3481,7 @@ class RegionInstanceGroupManagersRestTransport(
                     response_payload = compute.RegionInstanceGroupManagerList.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3577,7 +3577,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3632,7 +3632,7 @@ class RegionInstanceGroupManagersRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3730,7 +3730,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3781,7 +3781,7 @@ class RegionInstanceGroupManagersRestTransport(
                     response_payload = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3881,7 +3881,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3934,7 +3934,7 @@ class RegionInstanceGroupManagersRestTransport(
                     response_payload = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4063,7 +4063,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4113,7 +4113,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4247,7 +4247,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4297,7 +4297,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4428,7 +4428,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4478,7 +4478,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4602,7 +4602,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4651,7 +4651,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4780,7 +4780,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4832,7 +4832,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4963,7 +4963,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5015,7 +5015,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5148,7 +5148,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5198,7 +5198,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5329,7 +5329,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5379,7 +5379,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5510,7 +5510,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5562,7 +5562,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5691,7 +5691,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5743,7 +5743,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5872,7 +5872,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5924,7 +5924,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6055,7 +6055,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6105,7 +6105,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6208,7 +6208,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6258,7 +6258,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6387,7 +6387,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6437,7 +6437,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6571,7 +6571,7 @@ class RegionInstanceGroupManagersRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6621,7 +6621,7 @@ class RegionInstanceGroupManagersRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -484,7 +484,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -534,7 +534,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = programs.Program.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -652,7 +652,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -702,7 +702,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = programs.Program.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -815,7 +815,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -864,7 +864,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = programs.Program.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -962,7 +962,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1011,7 +1011,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = programs.ListProgramsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

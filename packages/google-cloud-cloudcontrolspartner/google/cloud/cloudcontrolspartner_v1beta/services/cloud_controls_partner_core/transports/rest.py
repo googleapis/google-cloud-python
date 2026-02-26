@@ -834,7 +834,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -886,7 +886,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = customers.Customer.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -976,7 +976,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1089,7 +1089,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1138,7 +1138,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = customers.Customer.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1237,7 +1237,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1288,7 +1288,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = ekm_connections.EkmConnections.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1382,7 +1382,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1431,7 +1431,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = partners.Partner.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1530,7 +1530,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1581,7 +1581,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     response_payload = partner_permissions.PartnerPermissions.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1679,7 +1679,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1728,7 +1728,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = customer_workloads.Workload.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1830,7 +1830,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1885,7 +1885,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     response_payload = access_approval_requests.ListAccessApprovalRequestsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1981,7 +1981,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2032,7 +2032,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = customers.ListCustomersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2128,7 +2128,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2181,7 +2181,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     response_payload = customer_workloads.ListWorkloadsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2282,7 +2282,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2334,7 +2334,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = customers.Customer.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -637,7 +637,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -685,7 +685,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -778,7 +778,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -893,7 +893,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -942,7 +942,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = model.Model.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1040,7 +1040,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1089,7 +1089,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tuned_model.TunedModel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1190,7 +1190,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1241,7 +1241,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                     response_payload = model_service.ListModelsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1340,7 +1340,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1391,7 +1391,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                     response_payload = model_service.ListTunedModelsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1495,7 +1495,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1545,7 +1545,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gag_tuned_model.TunedModel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

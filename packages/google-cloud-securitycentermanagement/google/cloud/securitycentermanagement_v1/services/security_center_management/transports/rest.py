@@ -1501,7 +1501,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1559,7 +1559,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1676,7 +1676,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1736,7 +1736,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1834,7 +1834,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1947,7 +1947,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2073,7 +2073,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2134,7 +2134,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.EffectiveEventThreatDetectionCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2246,7 +2246,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2303,7 +2303,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2411,7 +2411,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2466,7 +2466,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2576,7 +2576,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2629,7 +2629,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2741,7 +2741,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2798,7 +2798,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2902,7 +2902,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2959,7 +2959,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3063,7 +3063,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3120,7 +3120,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3224,7 +3224,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3281,7 +3281,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3385,7 +3385,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3442,7 +3442,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3546,7 +3546,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3603,7 +3603,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ListEventThreatDetectionCustomModulesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3705,7 +3705,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3760,7 +3760,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ListSecurityCenterServicesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3866,7 +3866,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3923,7 +3923,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4033,7 +4033,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4093,7 +4093,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4206,7 +4206,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4264,7 +4264,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4379,7 +4379,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4435,7 +4435,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4552,7 +4552,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4612,7 +4612,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4723,7 +4723,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4781,7 +4781,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     response_payload = security_center_management.ValidateEventThreatDetectionCustomModuleResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5163,7 +5163,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5205,7 +5205,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5302,7 +5302,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5346,7 +5346,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -3067,7 +3067,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3119,7 +3119,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.AbandonReleaseResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3219,7 +3219,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3271,7 +3271,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.AdvanceRolloutResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3371,7 +3371,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3423,7 +3423,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ApproveRolloutResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3523,7 +3523,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3575,7 +3575,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.CancelAutomationRunResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3679,7 +3679,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3731,7 +3731,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.CancelRolloutResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3836,7 +3836,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3884,7 +3884,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3987,7 +3987,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4035,7 +4035,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4138,7 +4138,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4186,7 +4186,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4289,7 +4289,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4337,7 +4337,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4444,7 +4444,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4492,7 +4492,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4600,7 +4600,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4648,7 +4648,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4757,7 +4757,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4805,7 +4805,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4905,7 +4905,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4952,7 +4952,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5050,7 +5050,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5097,7 +5097,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5195,7 +5195,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5242,7 +5242,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5340,7 +5340,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5387,7 +5387,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5489,7 +5489,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5536,7 +5536,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5641,7 +5641,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5690,7 +5690,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Automation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5791,7 +5791,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5840,7 +5840,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.AutomationRun.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5937,7 +5937,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5986,7 +5986,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Config.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6087,7 +6087,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6136,7 +6136,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.CustomTargetType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6235,7 +6235,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6284,7 +6284,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.DeliveryPipeline.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6385,7 +6385,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6434,7 +6434,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.DeployPolicy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6536,7 +6536,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6585,7 +6585,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.JobRun.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6688,7 +6688,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6737,7 +6737,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Release.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6841,7 +6841,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6890,7 +6890,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Rollout.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6991,7 +6991,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7040,7 +7040,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.Target.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7142,7 +7142,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7192,7 +7192,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.IgnoreJobResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7287,7 +7287,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7338,7 +7338,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ListAutomationRunsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7435,7 +7435,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7486,7 +7486,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ListAutomationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7581,7 +7581,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7632,7 +7632,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = (
                         cloud_deploy.ListCustomTargetTypesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7727,7 +7727,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7778,7 +7778,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = (
                         cloud_deploy.ListDeliveryPipelinesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7873,7 +7873,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7924,7 +7924,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ListDeployPoliciesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8026,7 +8026,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8077,7 +8077,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ListJobRunsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8176,7 +8176,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8227,7 +8227,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ListReleasesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8329,7 +8329,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8380,7 +8380,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ListRolloutsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8479,7 +8479,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8530,7 +8530,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.ListTargetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8633,7 +8633,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8683,7 +8683,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_deploy.RetryJobResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8783,7 +8783,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8835,7 +8835,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.RollbackTargetResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8937,7 +8937,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8989,7 +8989,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                     response_payload = cloud_deploy.TerminateJobRunResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9094,7 +9094,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9142,7 +9142,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9245,7 +9245,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9293,7 +9293,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9396,7 +9396,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9444,7 +9444,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9547,7 +9547,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9595,7 +9595,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9704,7 +9704,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9752,7 +9752,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10275,7 +10275,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10317,7 +10317,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10417,7 +10417,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10459,7 +10459,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10561,7 +10561,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10603,7 +10603,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10712,7 +10712,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10755,7 +10755,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10858,7 +10858,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10901,7 +10901,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11003,7 +11003,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11118,7 +11118,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11237,7 +11237,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11279,7 +11279,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11377,7 +11377,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11419,7 +11419,7 @@ class CloudDeployRestTransport(_BaseCloudDeployRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

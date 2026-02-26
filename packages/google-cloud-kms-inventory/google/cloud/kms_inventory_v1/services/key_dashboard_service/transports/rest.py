@@ -308,7 +308,7 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -359,7 +359,7 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
                     response_payload = (
                         key_dashboard_service.ListCryptoKeysResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

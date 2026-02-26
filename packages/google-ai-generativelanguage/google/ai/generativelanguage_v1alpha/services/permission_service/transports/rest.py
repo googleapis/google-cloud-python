@@ -635,7 +635,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -685,7 +685,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gag_permission.Permission.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -777,7 +777,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -910,7 +910,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -959,7 +959,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = permission.Permission.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1057,7 +1057,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1108,7 +1108,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                     response_payload = (
                         permission_service.ListPermissionsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1210,7 +1210,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1262,7 +1262,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                     response_payload = (
                         permission_service.TransferOwnershipResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1386,7 +1386,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1436,7 +1436,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gag_permission.Permission.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1590,7 +1590,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1632,7 +1632,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1729,7 +1729,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1771,7 +1771,7 @@ class PermissionServiceRestTransport(_BasePermissionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

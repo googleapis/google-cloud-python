@@ -519,7 +519,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -569,7 +569,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = datasources.DataSource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -662,7 +662,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -775,7 +775,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -889,7 +889,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -938,7 +938,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = datasources.DataSource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1037,7 +1037,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1088,7 +1088,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                     response_payload = datasources.ListDataSourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1193,7 +1193,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1243,7 +1243,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = datasources.DataSource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

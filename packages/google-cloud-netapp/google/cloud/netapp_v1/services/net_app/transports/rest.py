@@ -4148,7 +4148,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4196,7 +4196,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4301,7 +4301,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4349,7 +4349,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4459,7 +4459,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4507,7 +4507,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4619,7 +4619,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4667,7 +4667,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4777,7 +4777,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4825,7 +4825,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4935,7 +4935,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4983,7 +4983,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5093,7 +5093,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5141,7 +5141,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5253,7 +5253,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5301,7 +5301,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5407,7 +5407,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5455,7 +5455,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5567,7 +5567,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5615,7 +5615,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5720,7 +5720,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5768,7 +5768,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5869,7 +5869,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5916,7 +5916,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6016,7 +6016,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6063,7 +6063,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6166,7 +6166,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6213,7 +6213,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6318,7 +6318,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6365,7 +6365,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6470,7 +6470,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6517,7 +6517,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6622,7 +6622,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6669,7 +6669,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6774,7 +6774,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6821,7 +6821,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6926,7 +6926,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6973,7 +6973,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7074,7 +7074,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7121,7 +7121,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7226,7 +7226,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7273,7 +7273,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7373,7 +7373,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7420,7 +7420,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7526,7 +7526,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7574,7 +7574,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7687,7 +7687,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7735,7 +7735,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7838,7 +7838,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7889,7 +7889,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = active_directory.ActiveDirectory.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7985,7 +7985,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8034,7 +8034,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backup.Backup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8136,7 +8136,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8185,7 +8185,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backup_policy.BackupPolicy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8285,7 +8285,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8334,7 +8334,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backup_vault.BackupVault.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8435,7 +8435,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8484,7 +8484,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = host_group.HostGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8584,7 +8584,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8633,7 +8633,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = kms.KmsConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8735,7 +8735,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8784,7 +8784,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = quota_rule.QuotaRule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8886,7 +8886,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8935,7 +8935,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = replication.Replication.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9033,7 +9033,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9082,7 +9082,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = snapshot.Snapshot.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9188,7 +9188,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9237,7 +9237,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = storage_pool.StoragePool.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9334,7 +9334,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9383,7 +9383,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume.Volume.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9484,7 +9484,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9535,7 +9535,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = (
                         active_directory.ListActiveDirectoriesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9637,7 +9637,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9688,7 +9688,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = backup_policy.ListBackupPoliciesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9785,7 +9785,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9834,7 +9834,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backup.ListBackupsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9938,7 +9938,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9989,7 +9989,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = backup_vault.ListBackupVaultsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10091,7 +10091,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10142,7 +10142,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = host_group.ListHostGroupsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10244,7 +10244,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10293,7 +10293,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = kms.ListKmsConfigsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10395,7 +10395,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10446,7 +10446,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = quota_rule.ListQuotaRulesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10549,7 +10549,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10600,7 +10600,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = replication.ListReplicationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10699,7 +10699,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10748,7 +10748,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = snapshot.ListSnapshotsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10852,7 +10852,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10903,7 +10903,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     response_payload = storage_pool.ListStoragePoolsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11001,7 +11001,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11050,7 +11050,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume.ListVolumesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11160,7 +11160,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11208,7 +11208,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11320,7 +11320,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11368,7 +11368,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11475,7 +11475,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11525,7 +11525,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11631,7 +11631,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11679,7 +11679,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11789,7 +11789,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11837,7 +11837,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11943,7 +11943,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11991,7 +11991,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12101,7 +12101,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12149,7 +12149,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12255,7 +12255,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12303,7 +12303,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12409,7 +12409,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12457,7 +12457,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12567,7 +12567,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12615,7 +12615,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12728,7 +12728,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12776,7 +12776,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12886,7 +12886,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12934,7 +12934,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13044,7 +13044,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13092,7 +13092,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13202,7 +13202,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13250,7 +13250,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13363,7 +13363,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13411,7 +13411,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13518,7 +13518,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13566,7 +13566,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13678,7 +13678,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13726,7 +13726,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13831,7 +13831,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13879,7 +13879,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13985,7 +13985,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14033,7 +14033,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14143,7 +14143,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14193,7 +14193,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = kms.VerifyKmsConfigResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14861,7 +14861,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14903,7 +14903,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15003,7 +15003,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15045,7 +15045,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15151,7 +15151,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15270,7 +15270,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15387,7 +15387,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15429,7 +15429,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15529,7 +15529,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15571,7 +15571,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

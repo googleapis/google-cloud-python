@@ -678,7 +678,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -728,7 +728,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Deployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -822,7 +822,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -938,7 +938,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -987,7 +987,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Authorization.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1082,7 +1082,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1131,7 +1131,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Deployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1231,7 +1231,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1280,7 +1280,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.InstallStatus.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1377,7 +1377,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1491,7 +1491,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1542,7 +1542,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     response_payload = gsuiteaddons.ListDeploymentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1643,7 +1643,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1693,7 +1693,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Deployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1790,7 +1790,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,

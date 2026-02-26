@@ -310,7 +310,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -362,7 +362,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                     response_payload = prediction_service.PredictResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

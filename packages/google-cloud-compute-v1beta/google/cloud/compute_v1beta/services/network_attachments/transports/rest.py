@@ -752,7 +752,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -803,7 +803,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                     response_payload = compute.NetworkAttachmentAggregatedList.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -930,7 +930,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -979,7 +979,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1082,7 +1082,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1129,7 +1129,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.NetworkAttachment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1299,7 +1299,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1348,7 +1348,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1482,7 +1482,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1532,7 +1532,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1633,7 +1633,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1680,7 +1680,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.NetworkAttachmentList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1816,7 +1816,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1866,7 +1866,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2041,7 +2041,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2091,7 +2091,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2194,7 +2194,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2246,7 +2246,7 @@ class NetworkAttachmentsRestTransport(_BaseNetworkAttachmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

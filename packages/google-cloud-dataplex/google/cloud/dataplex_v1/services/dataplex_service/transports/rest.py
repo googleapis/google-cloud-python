@@ -2219,7 +2219,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2338,7 +2338,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2386,7 +2386,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2490,7 +2490,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2538,7 +2538,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2641,7 +2641,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2689,7 +2689,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2792,7 +2792,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2840,7 +2840,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2943,7 +2943,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2991,7 +2991,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3089,7 +3089,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3136,7 +3136,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3235,7 +3235,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3282,7 +3282,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3380,7 +3380,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3427,7 +3427,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3525,7 +3525,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3572,7 +3572,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3670,7 +3670,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3717,7 +3717,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3819,7 +3819,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3868,7 +3868,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Asset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3964,7 +3964,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4013,7 +4013,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = analyze.Environment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4114,7 +4114,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4163,7 +4163,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Job.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4278,7 +4278,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4327,7 +4327,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Lake.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4426,7 +4426,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4475,7 +4475,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4582,7 +4582,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4631,7 +4631,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Zone.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4726,7 +4726,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4775,7 +4775,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListActionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4870,7 +4870,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4919,7 +4919,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListAssetsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5014,7 +5014,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5065,7 +5065,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     response_payload = service.ListEnvironmentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5164,7 +5164,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5213,7 +5213,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListJobsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5308,7 +5308,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5357,7 +5357,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListActionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5454,7 +5454,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5503,7 +5503,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListLakesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5598,7 +5598,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5647,7 +5647,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSessionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5744,7 +5744,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5793,7 +5793,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListTasksResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5888,7 +5888,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5937,7 +5937,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListActionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6034,7 +6034,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6083,7 +6083,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListZonesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6189,7 +6189,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6239,7 +6239,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.RunTaskResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6342,7 +6342,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6390,7 +6390,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6494,7 +6494,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6542,7 +6542,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6645,7 +6645,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6693,7 +6693,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6796,7 +6796,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6844,7 +6844,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6947,7 +6947,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6995,7 +6995,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7343,7 +7343,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7385,7 +7385,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7483,7 +7483,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7525,7 +7525,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7625,7 +7625,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7738,7 +7738,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7853,7 +7853,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7895,7 +7895,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7991,7 +7991,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8033,7 +8033,7 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -2856,7 +2856,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2906,7 +2906,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DlpJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3009,7 +3009,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3130,7 +3130,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3180,7 +3180,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.Connection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3287,7 +3287,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3337,7 +3337,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3445,7 +3445,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3495,7 +3495,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DiscoveryConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3607,7 +3607,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3657,7 +3657,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DlpJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3765,7 +3765,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3815,7 +3815,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3921,7 +3921,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3971,7 +3971,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.JobTrigger.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4075,7 +4075,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4125,7 +4125,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.StoredInfoType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4229,7 +4229,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4279,7 +4279,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyContentResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4372,7 +4372,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4480,7 +4480,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4587,7 +4587,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4698,7 +4698,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4806,7 +4806,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4915,7 +4915,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5023,7 +5023,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5130,7 +5130,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5237,7 +5237,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5355,7 +5355,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5468,7 +5468,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5517,7 +5517,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ColumnDataProfile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5619,7 +5619,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5668,7 +5668,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.Connection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5769,7 +5769,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5818,7 +5818,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5923,7 +5923,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5972,7 +5972,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DiscoveryConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6072,7 +6072,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6121,7 +6121,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DlpJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6222,7 +6222,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6271,7 +6271,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.FileStoreDataProfile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6376,7 +6376,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6425,7 +6425,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6528,7 +6528,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6577,7 +6577,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.JobTrigger.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6676,7 +6676,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6725,7 +6725,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ProjectDataProfile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6826,7 +6826,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6875,7 +6875,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.StoredInfoType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6970,7 +6970,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7019,7 +7019,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.TableDataProfile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7122,7 +7122,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7172,7 +7172,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.HybridInspectResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7276,7 +7276,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7326,7 +7326,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.HybridInspectResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7431,7 +7431,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7481,7 +7481,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectContentResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7580,7 +7580,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7631,7 +7631,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     response_payload = dlp.ListColumnDataProfilesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7728,7 +7728,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7777,7 +7777,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListConnectionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7875,7 +7875,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7926,7 +7926,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     response_payload = dlp.ListDeidentifyTemplatesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8024,7 +8024,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8075,7 +8075,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     response_payload = dlp.ListDiscoveryConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8177,7 +8177,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8226,7 +8226,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListDlpJobsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8327,7 +8327,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8380,7 +8380,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     response_payload = dlp.ListFileStoreDataProfilesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8481,7 +8481,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8530,7 +8530,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListInfoTypesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8628,7 +8628,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8679,7 +8679,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     response_payload = dlp.ListInspectTemplatesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8776,7 +8776,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8825,7 +8825,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListJobTriggersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8925,7 +8925,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8976,7 +8976,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     response_payload = dlp.ListProjectDataProfilesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9074,7 +9074,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9123,7 +9123,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListStoredInfoTypesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9222,7 +9222,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9273,7 +9273,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     response_payload = dlp.ListTableDataProfilesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9379,7 +9379,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9429,7 +9429,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.RedactImageResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9531,7 +9531,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9581,7 +9581,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ReidentifyContentResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9681,7 +9681,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9730,7 +9730,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.SearchConnectionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9835,7 +9835,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9885,7 +9885,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.Connection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9992,7 +9992,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10042,7 +10042,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10150,7 +10150,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10200,7 +10200,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DiscoveryConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10308,7 +10308,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10358,7 +10358,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10464,7 +10464,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10514,7 +10514,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.JobTrigger.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10618,7 +10618,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10668,7 +10668,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = dlp.StoredInfoType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

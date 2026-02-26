@@ -2216,7 +2216,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2333,7 +2333,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2390,7 +2390,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2495,7 +2495,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2545,7 +2545,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2645,7 +2645,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2768,7 +2768,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2818,7 +2818,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2925,7 +2925,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2975,7 +2975,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3075,7 +3075,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3124,7 +3124,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3226,7 +3226,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3275,7 +3275,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3376,7 +3376,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3429,7 +3429,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     response_payload = cluster_service.ClusterUpgradeInfo.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3530,7 +3530,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3583,7 +3583,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     response_payload = cluster_service.NodePoolUpgradeInfo.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3681,7 +3681,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3730,7 +3730,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Cluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3834,7 +3834,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3885,7 +3885,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     response_payload = cluster_service.GetJSONWebKeysResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3991,7 +3991,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4040,7 +4040,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.NodePool.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4140,7 +4140,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4189,7 +4189,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4287,7 +4287,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4336,7 +4336,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.ServerConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4433,7 +4433,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4484,7 +4484,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     response_payload = cluster_service.ListClustersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4582,7 +4582,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4633,7 +4633,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     response_payload = cluster_service.ListNodePoolsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4731,7 +4731,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4782,7 +4782,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     response_payload = cluster_service.ListOperationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4883,7 +4883,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4934,7 +4934,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     response_payload = (
                         cluster_service.ListUsableSubnetworksResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5044,7 +5044,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5096,7 +5096,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5201,7 +5201,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5251,7 +5251,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5365,7 +5365,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5415,7 +5415,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5521,7 +5521,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5571,7 +5571,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5676,7 +5676,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5726,7 +5726,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5831,7 +5831,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5881,7 +5881,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5987,7 +5987,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6037,7 +6037,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6142,7 +6142,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6192,7 +6192,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6298,7 +6298,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6348,7 +6348,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6454,7 +6454,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6504,7 +6504,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6610,7 +6610,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6662,7 +6662,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6769,7 +6769,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6819,7 +6819,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6924,7 +6924,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6974,7 +6974,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7081,7 +7081,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7131,7 +7131,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7236,7 +7236,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7286,7 +7286,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7391,7 +7391,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7441,7 +7441,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7548,7 +7548,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7598,7 +7598,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cluster_service.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -551,7 +551,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -601,7 +601,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_question.Question.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -706,7 +706,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -756,7 +756,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = question.Question.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -857,7 +857,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -906,7 +906,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = question.Question.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1001,7 +1001,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1050,7 +1050,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = user_feedback.UserFeedback.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1151,7 +1151,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1201,7 +1201,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_user_feedback.UserFeedback.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

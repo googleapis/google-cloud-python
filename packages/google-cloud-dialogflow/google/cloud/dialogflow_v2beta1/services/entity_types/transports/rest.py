@@ -965,7 +965,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1013,7 +1013,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1117,7 +1117,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1165,7 +1165,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1269,7 +1269,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1317,7 +1317,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1421,7 +1421,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1469,7 +1469,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1573,7 +1573,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1621,7 +1621,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1739,7 +1739,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1789,7 +1789,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_entity_type.EntityType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1883,7 +1883,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2011,7 +2011,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2060,7 +2060,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = entity_type.EntityType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2160,7 +2160,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2211,7 +2211,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                     response_payload = entity_type.ListEntityTypesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2329,7 +2329,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2379,7 +2379,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_entity_type.EntityType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2575,7 +2575,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2617,7 +2617,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2717,7 +2717,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2759,7 +2759,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2856,7 +2856,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2975,7 +2975,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3017,7 +3017,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3115,7 +3115,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3157,7 +3157,7 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -1774,7 +1774,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1822,7 +1822,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1932,7 +1932,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1984,7 +1984,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_processor.Processor.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2085,7 +2085,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2134,7 +2134,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2235,7 +2235,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2282,7 +2282,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2388,7 +2388,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2436,7 +2436,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2542,7 +2542,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2592,7 +2592,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2698,7 +2698,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2748,7 +2748,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2857,7 +2857,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2905,7 +2905,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3007,7 +3007,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3060,7 +3060,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3156,7 +3156,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3207,7 +3207,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = evaluation.Evaluation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3307,7 +3307,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3358,7 +3358,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = processor.Processor.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3460,7 +3460,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3511,7 +3511,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = processor_type.ProcessorType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3617,7 +3617,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3666,7 +3666,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = processor.ProcessorVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3786,7 +3786,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3834,7 +3834,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3931,7 +3931,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3986,7 +3986,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4084,7 +4084,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4139,7 +4139,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4241,7 +4241,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4296,7 +4296,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4397,7 +4397,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4448,7 +4448,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                     response_payload = document_processor_service.ListProcessorVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4554,7 +4554,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4608,7 +4608,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                     response_payload = (
                         document_processor_service.ProcessResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4712,7 +4712,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4762,7 +4762,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4871,7 +4871,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4921,7 +4921,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5027,7 +5027,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5075,7 +5075,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5184,7 +5184,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5232,7 +5232,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5586,7 +5586,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5628,7 +5628,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5725,7 +5725,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5769,7 +5769,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5865,7 +5865,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5981,7 +5981,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6025,7 +6025,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6122,7 +6122,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6166,7 +6166,7 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

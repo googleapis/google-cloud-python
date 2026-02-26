@@ -417,7 +417,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -534,7 +534,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -583,7 +583,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = lfpstore.LfpStore.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -691,7 +691,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -741,7 +741,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = lfpstore.LfpStore.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -839,7 +839,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -888,7 +888,7 @@ class LfpStoreServiceRestTransport(_BaseLfpStoreServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = lfpstore.ListLfpStoresResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

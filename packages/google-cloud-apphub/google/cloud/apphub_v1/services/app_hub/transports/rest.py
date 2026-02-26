@@ -2093,7 +2093,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2141,7 +2141,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2246,7 +2246,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2294,7 +2294,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2399,7 +2399,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2451,7 +2451,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2556,7 +2556,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2604,7 +2604,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2708,7 +2708,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2755,7 +2755,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2855,7 +2855,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2902,7 +2902,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3002,7 +3002,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3053,7 +3053,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3153,7 +3153,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3200,7 +3200,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3304,7 +3304,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3362,7 +3362,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3465,7 +3465,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3514,7 +3514,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = application.Application.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3616,7 +3616,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3665,7 +3665,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.DiscoveredService.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3769,7 +3769,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3818,7 +3818,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = workload.DiscoveredWorkload.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3919,7 +3919,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3968,7 +3968,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.Service.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4075,7 +4075,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4130,7 +4130,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4232,7 +4232,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4281,7 +4281,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = workload.Workload.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4382,7 +4382,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4433,7 +4433,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     response_payload = apphub_service.ListApplicationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4530,7 +4530,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4581,7 +4581,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     response_payload = (
                         apphub_service.ListDiscoveredServicesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4676,7 +4676,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4727,7 +4727,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     response_payload = (
                         apphub_service.ListDiscoveredWorkloadsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4826,7 +4826,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4881,7 +4881,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4978,7 +4978,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5029,7 +5029,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     response_payload = apphub_service.ListServicesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5126,7 +5126,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5177,7 +5177,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     response_payload = apphub_service.ListWorkloadsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5272,7 +5272,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5323,7 +5323,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     response_payload = (
                         apphub_service.LookupDiscoveredServiceResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5421,7 +5421,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5474,7 +5474,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5573,7 +5573,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5630,7 +5630,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5741,7 +5741,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5789,7 +5789,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5894,7 +5894,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5942,7 +5942,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6047,7 +6047,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6095,7 +6095,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6468,7 +6468,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6510,7 +6510,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6610,7 +6610,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6652,7 +6652,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6752,7 +6752,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6794,7 +6794,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6899,7 +6899,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6942,7 +6942,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7051,7 +7051,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7094,7 +7094,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7200,7 +7200,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7319,7 +7319,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7436,7 +7436,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7478,7 +7478,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7578,7 +7578,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7620,7 +7620,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

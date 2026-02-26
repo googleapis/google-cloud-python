@@ -1746,7 +1746,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1794,7 +1794,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1897,7 +1897,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1945,7 +1945,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2051,7 +2051,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2107,7 +2107,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.UserWorkloadsConfigMap.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2212,7 +2212,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2266,7 +2266,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.UserWorkloadsSecret.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2373,7 +2373,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2421,7 +2421,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2519,7 +2519,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2566,7 +2566,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2660,7 +2660,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2770,7 +2770,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2889,7 +2889,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2941,7 +2941,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = (
                         environments.ExecuteAirflowCommandResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3040,7 +3040,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3091,7 +3091,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = (
                         environments.FetchDatabasePropertiesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3188,7 +3188,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3237,7 +3237,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = environments.Environment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3337,7 +3337,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3392,7 +3392,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.UserWorkloadsConfigMap.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3490,7 +3490,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3541,7 +3541,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.UserWorkloadsSecret.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3641,7 +3641,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3692,7 +3692,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.ListEnvironmentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3792,7 +3792,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3849,7 +3849,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3948,7 +3948,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4001,7 +4001,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = (
                         environments.ListUserWorkloadsSecretsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4097,7 +4097,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4148,7 +4148,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.ListWorkloadsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4256,7 +4256,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4304,7 +4304,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4406,7 +4406,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4458,7 +4458,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.PollAirflowCommandResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4563,7 +4563,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4611,7 +4611,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4719,7 +4719,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4767,7 +4767,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4869,7 +4869,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4921,7 +4921,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.StopAirflowCommandResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5024,7 +5024,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5072,7 +5072,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5178,7 +5178,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5234,7 +5234,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.UserWorkloadsConfigMap.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5339,7 +5339,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5393,7 +5393,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     response_payload = environments.UserWorkloadsSecret.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5751,7 +5751,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5868,7 +5868,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5910,7 +5910,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6008,7 +6008,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6050,7 +6050,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

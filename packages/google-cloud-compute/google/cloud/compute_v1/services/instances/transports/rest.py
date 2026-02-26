@@ -3110,7 +3110,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3160,7 +3160,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3292,7 +3292,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3342,7 +3342,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3474,7 +3474,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3524,7 +3524,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3625,7 +3625,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3674,7 +3674,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.InstanceAggregatedList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3806,7 +3806,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3856,7 +3856,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3988,7 +3988,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4038,7 +4038,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4163,7 +4163,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4212,7 +4212,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4339,7 +4339,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4388,7 +4388,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4513,7 +4513,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4562,7 +4562,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4689,7 +4689,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4738,7 +4738,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4838,7 +4838,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4885,7 +4885,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4982,7 +4982,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5033,7 +5033,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                     response_payload = (
                         compute.InstancesGetEffectiveFirewallsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5132,7 +5132,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5181,7 +5181,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.GuestAttributes.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5356,7 +5356,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5405,7 +5405,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5506,7 +5506,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5555,7 +5555,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Screenshot.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5654,7 +5654,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5703,7 +5703,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.SerialPortOutput.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5801,7 +5801,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5856,7 +5856,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                     response_payload = compute.ShieldedInstanceIdentity.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5986,7 +5986,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6036,7 +6036,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6130,7 +6130,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6177,7 +6177,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.InstanceList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6280,7 +6280,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6329,7 +6329,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.InstanceListReferrers.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6456,7 +6456,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6505,7 +6505,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6635,7 +6635,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6685,7 +6685,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6817,7 +6817,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6867,7 +6867,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6992,7 +6992,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7041,7 +7041,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7166,7 +7166,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7215,7 +7215,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7315,7 +7315,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7368,7 +7368,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7493,7 +7493,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7542,7 +7542,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7669,7 +7669,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7718,7 +7718,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7898,7 +7898,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7948,7 +7948,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8080,7 +8080,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8130,7 +8130,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8262,7 +8262,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8312,7 +8312,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8450,7 +8450,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8500,7 +8500,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8632,7 +8632,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8682,7 +8682,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8814,7 +8814,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8864,7 +8864,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8994,7 +8994,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9044,7 +9044,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9180,7 +9180,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9230,7 +9230,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9362,7 +9362,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9412,7 +9412,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9544,7 +9544,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9594,7 +9594,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9728,7 +9728,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9780,7 +9780,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9910,7 +9910,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9960,7 +9960,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10086,7 +10086,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10135,7 +10135,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10260,7 +10260,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10309,7 +10309,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10439,7 +10439,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10489,7 +10489,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10611,7 +10611,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10658,7 +10658,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10783,7 +10783,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10832,7 +10832,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10936,7 +10936,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10986,7 +10986,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11116,7 +11116,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11166,7 +11166,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11298,7 +11298,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11348,7 +11348,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11480,7 +11480,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11530,7 +11530,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11660,7 +11660,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11710,7 +11710,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11841,7 +11841,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11895,7 +11895,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

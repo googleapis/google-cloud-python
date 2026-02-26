@@ -2084,7 +2084,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2132,7 +2132,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2237,7 +2237,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2285,7 +2285,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2389,7 +2389,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2436,7 +2436,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2536,7 +2536,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2583,7 +2583,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2686,7 +2686,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2807,7 +2807,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2857,7 +2857,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.Statefile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2959,7 +2959,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3008,7 +3008,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.LockInfo.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3112,7 +3112,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3164,7 +3164,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                     response_payload = config.ExportPreviewResultResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3268,7 +3268,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3318,7 +3318,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.Statefile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3419,7 +3419,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3468,7 +3468,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.AutoMigrationConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3568,7 +3568,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3617,7 +3617,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.Deployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3717,7 +3717,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3766,7 +3766,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.Preview.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3866,7 +3866,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3915,7 +3915,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.Resource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4019,7 +4019,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4068,7 +4068,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.ResourceChange.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4172,7 +4172,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4221,7 +4221,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.ResourceDrift.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4322,7 +4322,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4371,7 +4371,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.Revision.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4472,7 +4472,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4521,7 +4521,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.TerraformVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4630,7 +4630,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4680,7 +4680,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.Statefile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4781,7 +4781,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4830,7 +4830,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.ListDeploymentsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4930,7 +4930,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4979,7 +4979,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.ListPreviewsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5080,7 +5080,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5131,7 +5131,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                     response_payload = config.ListResourceChangesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5233,7 +5233,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5284,7 +5284,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                     response_payload = config.ListResourceDriftsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5384,7 +5384,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5433,7 +5433,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.ListResourcesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5533,7 +5533,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5582,7 +5582,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = config.ListRevisionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5682,7 +5682,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5733,7 +5733,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                     response_payload = config.ListTerraformVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5839,7 +5839,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5887,7 +5887,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5999,7 +5999,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6047,7 +6047,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6152,7 +6152,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6200,7 +6200,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6311,7 +6311,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6359,7 +6359,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6699,7 +6699,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6741,7 +6741,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6841,7 +6841,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6883,7 +6883,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6983,7 +6983,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7025,7 +7025,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7130,7 +7130,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7173,7 +7173,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7282,7 +7282,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7325,7 +7325,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7431,7 +7431,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7550,7 +7550,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7667,7 +7667,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7709,7 +7709,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7809,7 +7809,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7851,7 +7851,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

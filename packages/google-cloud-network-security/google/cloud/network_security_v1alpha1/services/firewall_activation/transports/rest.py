@@ -1128,7 +1128,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1178,7 +1178,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1287,7 +1287,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1337,7 +1337,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1436,7 +1436,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1485,7 +1485,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1589,7 +1589,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1638,7 +1638,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1734,7 +1734,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1787,7 +1787,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     response_payload = firewall_activation.FirewallEndpoint.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1886,7 +1886,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1941,7 +1941,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2045,7 +2045,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2100,7 +2100,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                     response_payload = firewall_activation.ListFirewallEndpointAssociationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2199,7 +2199,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2254,7 +2254,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2358,7 +2358,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2408,7 +2408,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2517,7 +2517,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2567,7 +2567,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2787,7 +2787,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2829,7 +2829,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2926,7 +2926,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2968,7 +2968,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3065,7 +3065,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3107,7 +3107,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3209,7 +3209,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3252,7 +3252,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3356,7 +3356,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3401,7 +3401,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3502,7 +3502,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3616,7 +3616,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3730,7 +3730,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3772,7 +3772,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3869,7 +3869,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3911,7 +3911,7 @@ class FirewallActivationRestTransport(_BaseFirewallActivationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

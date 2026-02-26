@@ -2708,7 +2708,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2756,7 +2756,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2858,7 +2858,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2910,7 +2910,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = provisioning.ProvisioningConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3011,7 +3011,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3061,7 +3061,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcb_ssh_key.SSHKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3165,7 +3165,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3219,7 +3219,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     response_payload = gcb_volume_snapshot.VolumeSnapshot.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3318,7 +3318,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3365,7 +3365,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3455,7 +3455,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3563,7 +3563,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3684,7 +3684,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3732,7 +3732,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3842,7 +3842,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3892,7 +3892,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3998,7 +3998,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4048,7 +4048,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4152,7 +4152,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4200,7 +4200,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4304,7 +4304,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4352,7 +4352,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4448,7 +4448,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4497,7 +4497,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = instance.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4599,7 +4599,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4648,7 +4648,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = lun.Lun.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4744,7 +4744,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4793,7 +4793,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = network.Network.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4889,7 +4889,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4938,7 +4938,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = nfs_share.NfsShare.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5034,7 +5034,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5085,7 +5085,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = provisioning.ProvisioningConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5181,7 +5181,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5230,7 +5230,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume.Volume.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5329,7 +5329,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5378,7 +5378,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume_snapshot.VolumeSnapshot.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5475,7 +5475,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5524,7 +5524,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = instance.ListInstancesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5622,7 +5622,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5671,7 +5671,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = lun.ListLunsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5767,7 +5767,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5816,7 +5816,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = network.ListNetworksResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5912,7 +5912,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5963,7 +5963,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     response_payload = network.ListNetworkUsageResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6060,7 +6060,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6109,7 +6109,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = nfs_share.ListNfsSharesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6205,7 +6205,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6254,7 +6254,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = osimage.ListOSImagesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6353,7 +6353,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6406,7 +6406,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     response_payload = (
                         provisioning.ListProvisioningQuotasResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6502,7 +6502,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6551,7 +6551,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = ssh_key.ListSSHKeysResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6649,7 +6649,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6698,7 +6698,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume.ListVolumesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6797,7 +6797,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6850,7 +6850,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     response_payload = (
                         volume_snapshot.ListVolumeSnapshotsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6950,7 +6950,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7000,7 +7000,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = instance.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7100,7 +7100,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7150,7 +7150,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = network.Network.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7252,7 +7252,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7302,7 +7302,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = nfs_share.NfsShare.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7401,7 +7401,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7451,7 +7451,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = volume.Volume.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7553,7 +7553,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7601,7 +7601,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7702,7 +7702,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7750,7 +7750,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7855,7 +7855,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7905,7 +7905,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8007,7 +8007,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8055,7 +8055,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8156,7 +8156,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8204,7 +8204,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8308,7 +8308,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8362,7 +8362,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                     response_payload = (
                         provisioning.SubmitProvisioningConfigResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8465,7 +8465,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8513,7 +8513,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8616,7 +8616,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8664,7 +8664,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8769,7 +8769,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8817,7 +8817,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8920,7 +8920,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8972,7 +8972,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = provisioning.ProvisioningConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9073,7 +9073,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9121,7 +9121,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9597,7 +9597,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9639,7 +9639,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9736,7 +9736,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9778,7 +9778,7 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -1273,7 +1273,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1325,7 +1325,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     response_payload = (
                         retriever_service.BatchCreateChunksResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1422,7 +1422,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1541,7 +1541,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1593,7 +1593,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     response_payload = (
                         retriever_service.BatchUpdateChunksResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1697,7 +1697,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1747,7 +1747,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Chunk.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1849,7 +1849,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1899,7 +1899,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Corpus.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1999,7 +1999,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2049,7 +2049,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Document.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2140,7 +2140,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2246,7 +2246,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2350,7 +2350,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2467,7 +2467,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2516,7 +2516,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Chunk.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2614,7 +2614,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2663,7 +2663,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Corpus.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2761,7 +2761,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2810,7 +2810,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Document.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2908,7 +2908,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2959,7 +2959,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     response_payload = retriever_service.ListChunksResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3057,7 +3057,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3108,7 +3108,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     response_payload = retriever_service.ListCorporaResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3204,7 +3204,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3255,7 +3255,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     response_payload = retriever_service.ListDocumentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3357,7 +3357,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3409,7 +3409,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     response_payload = retriever_service.QueryCorpusResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3509,7 +3509,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3561,7 +3561,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     response_payload = retriever_service.QueryDocumentResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3665,7 +3665,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3715,7 +3715,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Chunk.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3817,7 +3817,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3867,7 +3867,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Corpus.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3967,7 +3967,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4017,7 +4017,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Document.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4293,7 +4293,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4335,7 +4335,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4431,7 +4431,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4473,7 +4473,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

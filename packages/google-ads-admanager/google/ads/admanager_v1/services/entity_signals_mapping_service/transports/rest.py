@@ -650,7 +650,7 @@ class EntitySignalsMappingServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -706,7 +706,7 @@ class EntitySignalsMappingServiceRestTransport(
                     response_payload = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -815,7 +815,7 @@ class EntitySignalsMappingServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -871,7 +871,7 @@ class EntitySignalsMappingServiceRestTransport(
                     response_payload = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -976,7 +976,7 @@ class EntitySignalsMappingServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1032,7 +1032,7 @@ class EntitySignalsMappingServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1131,7 +1131,7 @@ class EntitySignalsMappingServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1184,7 +1184,7 @@ class EntitySignalsMappingServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1285,7 +1285,7 @@ class EntitySignalsMappingServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1340,7 +1340,7 @@ class EntitySignalsMappingServiceRestTransport(
                     response_payload = entity_signals_mapping_service.ListEntitySignalsMappingsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1445,7 +1445,7 @@ class EntitySignalsMappingServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1501,7 +1501,7 @@ class EntitySignalsMappingServiceRestTransport(
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1676,7 +1676,7 @@ class EntitySignalsMappingServiceRestTransport(
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1720,7 +1720,7 @@ class EntitySignalsMappingServiceRestTransport(
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -527,7 +527,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -576,7 +576,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.AggregateFleetResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -682,7 +682,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -734,7 +734,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                     response_payload = service.AggregateIssueStatsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -841,7 +841,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -897,7 +897,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                     response_payload = (
                         service.QueryDatabaseResourceGroupsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1000,7 +1000,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1050,7 +1050,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.QueryIssuesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1148,7 +1148,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1197,7 +1197,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.QueryProductsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -3109,7 +3109,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3157,7 +3157,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3261,7 +3261,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3315,7 +3315,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = (
                         migrationcenter.AggregateAssetsValuesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3412,7 +3412,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3531,7 +3531,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3583,7 +3583,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = (
                         migrationcenter.BatchUpdateAssetsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3686,7 +3686,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3734,7 +3734,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3838,7 +3838,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3886,7 +3886,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3989,7 +3989,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4037,7 +4037,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4141,7 +4141,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4189,7 +4189,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4292,7 +4292,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4340,7 +4340,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4444,7 +4444,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4492,7 +4492,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4595,7 +4595,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4643,7 +4643,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4734,7 +4734,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4847,7 +4847,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4894,7 +4894,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4993,7 +4993,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5040,7 +5040,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5138,7 +5138,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5185,7 +5185,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5284,7 +5284,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5331,7 +5331,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5429,7 +5429,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5476,7 +5476,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5575,7 +5575,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5622,7 +5622,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5720,7 +5720,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5767,7 +5767,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5869,7 +5869,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5918,7 +5918,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Asset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6015,7 +6015,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6064,7 +6064,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ErrorFrame.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6169,7 +6169,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6218,7 +6218,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Group.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6316,7 +6316,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6365,7 +6365,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ImportDataFile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6463,7 +6463,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6512,7 +6512,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ImportJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6609,7 +6609,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6658,7 +6658,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.PreferenceSet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6757,7 +6757,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6806,7 +6806,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Report.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6903,7 +6903,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6952,7 +6952,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ReportConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7049,7 +7049,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7098,7 +7098,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Settings.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7198,7 +7198,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7247,7 +7247,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Source.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7343,7 +7343,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7394,7 +7394,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = migrationcenter.ListAssetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7490,7 +7490,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7541,7 +7541,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = migrationcenter.ListErrorFramesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7636,7 +7636,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7687,7 +7687,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = migrationcenter.ListGroupsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7786,7 +7786,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7837,7 +7837,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = (
                         migrationcenter.ListImportDataFilesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7932,7 +7932,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7983,7 +7983,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = migrationcenter.ListImportJobsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8081,7 +8081,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8132,7 +8132,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = (
                         migrationcenter.ListPreferenceSetsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8230,7 +8230,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8281,7 +8281,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = (
                         migrationcenter.ListReportConfigsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8376,7 +8376,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8427,7 +8427,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = migrationcenter.ListReportsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8522,7 +8522,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8573,7 +8573,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = migrationcenter.ListSourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8678,7 +8678,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8728,7 +8728,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8830,7 +8830,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8882,7 +8882,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     response_payload = (
                         migrationcenter.ReportAssetFramesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8985,7 +8985,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9033,7 +9033,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9136,7 +9136,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9186,7 +9186,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Asset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9289,7 +9289,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9337,7 +9337,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9440,7 +9440,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9488,7 +9488,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9592,7 +9592,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9640,7 +9640,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9741,7 +9741,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9789,7 +9789,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9892,7 +9892,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9940,7 +9940,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10044,7 +10044,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10092,7 +10092,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10627,7 +10627,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10669,7 +10669,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10767,7 +10767,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10809,7 +10809,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10909,7 +10909,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11022,7 +11022,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11137,7 +11137,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11179,7 +11179,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11275,7 +11275,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11317,7 +11317,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

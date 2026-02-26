@@ -831,7 +831,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -883,7 +883,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     response_payload = (
                         storage_batch_operations.CancelJobResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -985,7 +985,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1033,7 +1033,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1123,7 +1123,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1237,7 +1237,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1290,7 +1290,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     response_payload = (
                         storage_batch_operations_types.BucketOperation.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1388,7 +1388,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1439,7 +1439,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     response_payload = storage_batch_operations_types.Job.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1538,7 +1538,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1593,7 +1593,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1687,7 +1687,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1738,7 +1738,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     response_payload = (
                         storage_batch_operations.ListJobsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1907,7 +1907,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1949,7 +1949,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2046,7 +2046,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2088,7 +2088,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2189,7 +2189,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2305,7 +2305,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2421,7 +2421,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2463,7 +2463,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2560,7 +2560,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2604,7 +2604,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

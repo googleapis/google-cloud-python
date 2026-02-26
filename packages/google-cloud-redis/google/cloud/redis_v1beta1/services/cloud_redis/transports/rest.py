@@ -946,7 +946,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -994,7 +994,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1095,7 +1095,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1142,7 +1142,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1250,7 +1250,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1298,7 +1298,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1404,7 +1404,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1452,7 +1452,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1552,7 +1552,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1601,7 +1601,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1697,7 +1697,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1746,7 +1746,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.InstanceAuthString.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1854,7 +1854,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1902,7 +1902,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2004,7 +2004,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2055,7 +2055,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     response_payload = cloud_redis.ListInstancesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2159,7 +2159,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2207,7 +2207,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2315,7 +2315,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2363,7 +2363,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2469,7 +2469,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2517,7 +2517,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

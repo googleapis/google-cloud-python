@@ -3536,7 +3536,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3586,7 +3586,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3688,7 +3688,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3736,7 +3736,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3841,7 +3841,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3889,7 +3889,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3994,7 +3994,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4042,7 +4042,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4145,7 +4145,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4193,7 +4193,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4296,7 +4296,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4344,7 +4344,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4446,7 +4446,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4494,7 +4494,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4599,7 +4599,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4649,7 +4649,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4754,7 +4754,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4804,7 +4804,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4910,7 +4910,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4958,7 +4958,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5063,7 +5063,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5111,7 +5111,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5211,7 +5211,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5258,7 +5258,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5356,7 +5356,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5403,7 +5403,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5501,7 +5501,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5548,7 +5548,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5645,7 +5645,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5692,7 +5692,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5792,7 +5792,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5841,7 +5841,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5943,7 +5943,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5990,7 +5990,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6090,7 +6090,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6137,7 +6137,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6236,7 +6236,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6287,7 +6287,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.FetchBlobResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6386,7 +6386,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6437,7 +6437,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.FetchTreeResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6536,7 +6536,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6587,7 +6587,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.BranchRule.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6685,7 +6685,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6734,7 +6734,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = secure_source_manager.Hook.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6905,7 +6905,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6954,7 +6954,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7051,7 +7051,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7100,7 +7100,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = secure_source_manager.Instance.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7195,7 +7195,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7244,7 +7244,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = secure_source_manager.Issue.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7342,7 +7342,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7393,7 +7393,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.IssueComment.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7494,7 +7494,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7545,7 +7545,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.PullRequest.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7644,7 +7644,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7697,7 +7697,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.PullRequestComment.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7794,7 +7794,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7845,7 +7845,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.Repository.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7944,7 +7944,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7995,7 +7995,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = (
                         secure_source_manager.ListBranchRulesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8094,7 +8094,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8145,7 +8145,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.ListHooksResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8240,7 +8240,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8291,7 +8291,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = (
                         secure_source_manager.ListInstancesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8387,7 +8387,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8442,7 +8442,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8536,7 +8536,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8587,7 +8587,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = secure_source_manager.ListIssuesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8687,7 +8687,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8742,7 +8742,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8844,7 +8844,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8897,7 +8897,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8996,7 +8996,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9047,7 +9047,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = (
                         secure_source_manager.ListPullRequestsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9144,7 +9144,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9195,7 +9195,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     response_payload = (
                         secure_source_manager.ListRepositoriesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9300,7 +9300,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9348,7 +9348,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9452,7 +9452,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9500,7 +9500,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9605,7 +9605,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9653,7 +9653,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9759,7 +9759,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9809,7 +9809,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9985,7 +9985,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10035,7 +10035,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10136,7 +10136,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10188,7 +10188,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10294,7 +10294,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10344,7 +10344,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10449,7 +10449,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10497,7 +10497,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10600,7 +10600,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10648,7 +10648,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10750,7 +10750,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10798,7 +10798,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10903,7 +10903,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10953,7 +10953,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11058,7 +11058,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11108,7 +11108,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11214,7 +11214,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11262,7 +11262,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11367,7 +11367,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11415,7 +11415,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12046,7 +12046,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12088,7 +12088,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12185,7 +12185,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12227,7 +12227,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12324,7 +12324,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12366,7 +12366,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12468,7 +12468,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12511,7 +12511,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12615,7 +12615,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12660,7 +12660,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12761,7 +12761,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12875,7 +12875,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12989,7 +12989,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13031,7 +13031,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13128,7 +13128,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13170,7 +13170,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

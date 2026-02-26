@@ -542,7 +542,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -594,7 +594,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                     response_payload = language_service.AnalyzeEntitiesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -697,7 +697,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -749,7 +749,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                     response_payload = (
                         language_service.AnalyzeSentimentResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -853,7 +853,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -905,7 +905,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                     response_payload = language_service.AnnotateTextResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1008,7 +1008,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1060,7 +1060,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                     response_payload = language_service.ClassifyTextResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1163,7 +1163,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1215,7 +1215,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                     response_payload = language_service.ModerateTextResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

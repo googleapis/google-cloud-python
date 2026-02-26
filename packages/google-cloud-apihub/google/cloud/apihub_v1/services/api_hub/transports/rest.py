@@ -2262,7 +2262,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2312,7 +2312,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Api.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2436,7 +2436,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2486,7 +2486,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ApiOperation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2601,7 +2601,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2651,7 +2651,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Attribute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2768,7 +2768,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2818,7 +2818,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Deployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2932,7 +2932,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2982,7 +2982,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ExternalApi.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3089,7 +3089,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3139,7 +3139,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Spec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3246,7 +3246,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3296,7 +3296,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Version.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3388,7 +3388,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3500,7 +3500,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3614,7 +3614,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3728,7 +3728,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3842,7 +3842,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3950,7 +3950,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4060,7 +4060,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4169,7 +4169,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4218,7 +4218,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Api.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4337,7 +4337,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4386,7 +4386,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ApiOperation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4492,7 +4492,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4541,7 +4541,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Attribute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4648,7 +4648,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4697,7 +4697,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Definition.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4803,7 +4803,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4852,7 +4852,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Deployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4957,7 +4957,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5006,7 +5006,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ExternalApi.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5105,7 +5105,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5154,7 +5154,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Spec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5257,7 +5257,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5306,7 +5306,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.SpecContents.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5406,7 +5406,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5455,7 +5455,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Version.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5561,7 +5561,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5612,7 +5612,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     response_payload = apihub_service.ListApiOperationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5710,7 +5710,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5759,7 +5759,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = apihub_service.ListApisResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5861,7 +5861,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5912,7 +5912,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     response_payload = apihub_service.ListAttributesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6018,7 +6018,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6069,7 +6069,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     response_payload = apihub_service.ListDeploymentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6175,7 +6175,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6226,7 +6226,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     response_payload = apihub_service.ListExternalApisResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6323,7 +6323,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6374,7 +6374,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     response_payload = apihub_service.ListSpecsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6476,7 +6476,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6527,7 +6527,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     response_payload = apihub_service.ListVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6638,7 +6638,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6690,7 +6690,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     response_payload = apihub_service.SearchResourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6791,7 +6791,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6841,7 +6841,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Api.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6965,7 +6965,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7015,7 +7015,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ApiOperation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7130,7 +7130,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7180,7 +7180,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Attribute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7297,7 +7297,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7347,7 +7347,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Deployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7461,7 +7461,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7511,7 +7511,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.ExternalApi.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7618,7 +7618,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7668,7 +7668,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Spec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7775,7 +7775,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7825,7 +7825,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common_fields.Version.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8241,7 +8241,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8283,7 +8283,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8383,7 +8383,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8425,7 +8425,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8531,7 +8531,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8650,7 +8650,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8767,7 +8767,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8809,7 +8809,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8909,7 +8909,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8951,7 +8951,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

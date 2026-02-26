@@ -1796,7 +1796,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1846,7 +1846,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Release.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1949,7 +1949,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1999,7 +1999,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Saas.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2113,7 +2113,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2163,7 +2163,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Tenant.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2271,7 +2271,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2321,7 +2321,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Unit.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2428,7 +2428,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2478,7 +2478,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.UnitKind.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2596,7 +2596,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2648,7 +2648,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = deployments_resources.UnitOperation.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2740,7 +2740,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2847,7 +2847,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2954,7 +2954,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3061,7 +3061,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3168,7 +3168,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3276,7 +3276,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3393,7 +3393,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3442,7 +3442,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Release.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3544,7 +3544,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3593,7 +3593,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Saas.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3704,7 +3704,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3753,7 +3753,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Tenant.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3860,7 +3860,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3909,7 +3909,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Unit.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4011,7 +4011,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4060,7 +4060,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.UnitKind.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4172,7 +4172,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4223,7 +4223,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = deployments_resources.UnitOperation.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4321,7 +4321,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4372,7 +4372,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = deployments_service.ListReleasesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4474,7 +4474,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4525,7 +4525,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = deployments_service.ListSaasResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4623,7 +4623,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4674,7 +4674,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = deployments_service.ListTenantsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4772,7 +4772,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4823,7 +4823,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = (
                         deployments_service.ListUnitKindsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4922,7 +4922,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4973,7 +4973,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = (
                         deployments_service.ListUnitOperationsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5073,7 +5073,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5124,7 +5124,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = deployments_service.ListUnitsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5231,7 +5231,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5281,7 +5281,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Release.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5384,7 +5384,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5434,7 +5434,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Saas.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5548,7 +5548,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5598,7 +5598,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Tenant.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5706,7 +5706,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5756,7 +5756,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Unit.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5863,7 +5863,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5913,7 +5913,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.UnitKind.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6031,7 +6031,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6083,7 +6083,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     response_payload = deployments_resources.UnitOperation.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6462,7 +6462,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6504,7 +6504,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6602,7 +6602,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6644,7 +6644,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

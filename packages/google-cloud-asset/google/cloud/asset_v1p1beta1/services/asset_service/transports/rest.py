@@ -363,7 +363,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -414,7 +414,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     response_payload = (
                         asset_service.SearchAllIamPoliciesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -509,7 +509,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -560,7 +560,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     response_payload = asset_service.SearchAllResourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

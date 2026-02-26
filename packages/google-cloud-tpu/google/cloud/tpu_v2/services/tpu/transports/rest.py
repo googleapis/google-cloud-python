@@ -1457,7 +1457,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1505,7 +1505,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1617,7 +1617,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1665,7 +1665,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1762,7 +1762,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1809,7 +1809,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1914,7 +1914,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1961,7 +1961,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2066,7 +2066,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2118,7 +2118,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     response_payload = (
                         cloud_tpu.GenerateServiceIdentityResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2222,7 +2222,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2271,7 +2271,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.AcceleratorType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2380,7 +2380,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2432,7 +2432,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     response_payload = cloud_tpu.GetGuestAttributesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2525,7 +2525,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2574,7 +2574,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.Node.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2678,7 +2678,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2727,7 +2727,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.QueuedResource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2829,7 +2829,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2878,7 +2878,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.RuntimeVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2982,7 +2982,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3033,7 +3033,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     response_payload = cloud_tpu.ListAcceleratorTypesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3129,7 +3129,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3178,7 +3178,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.ListNodesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3282,7 +3282,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3333,7 +3333,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     response_payload = cloud_tpu.ListQueuedResourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3437,7 +3437,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3488,7 +3488,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     response_payload = cloud_tpu.ListRuntimeVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3600,7 +3600,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3648,7 +3648,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3750,7 +3750,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3798,7 +3798,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3900,7 +3900,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3948,7 +3948,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4050,7 +4050,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4098,7 +4098,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4351,7 +4351,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4393,7 +4393,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4491,7 +4491,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4533,7 +4533,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4632,7 +4632,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4748,7 +4748,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4863,7 +4863,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4905,7 +4905,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5003,7 +5003,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5045,7 +5045,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

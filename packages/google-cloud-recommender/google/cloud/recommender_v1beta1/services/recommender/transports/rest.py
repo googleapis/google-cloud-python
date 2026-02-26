@@ -1081,7 +1081,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1130,7 +1130,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = insight.Insight.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1225,7 +1225,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1276,7 +1276,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     response_payload = insight_type_config.InsightTypeConfig.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1377,7 +1377,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1426,7 +1426,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1521,7 +1521,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1572,7 +1572,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     response_payload = recommender_config.RecommenderConfig.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1671,7 +1671,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1722,7 +1722,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     response_payload = recommender_service.ListInsightsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1819,7 +1819,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1870,7 +1870,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     response_payload = (
                         recommender_service.ListInsightTypesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1965,7 +1965,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2018,7 +2018,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2115,7 +2115,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2166,7 +2166,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     response_payload = (
                         recommender_service.ListRecommendersResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2270,7 +2270,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2320,7 +2320,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = insight.Insight.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2426,7 +2426,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2478,7 +2478,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2583,7 +2583,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2633,7 +2633,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2739,7 +2739,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2793,7 +2793,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2894,7 +2894,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2946,7 +2946,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     response_payload = (
                         gcr_insight_type_config.InsightTypeConfig.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3046,7 +3046,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3098,7 +3098,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     response_payload = gcr_recommender_config.RecommenderConfig.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

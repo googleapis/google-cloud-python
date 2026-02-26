@@ -2458,7 +2458,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2506,7 +2506,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2608,7 +2608,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2656,7 +2656,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2758,7 +2758,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2806,7 +2806,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2910,7 +2910,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2960,7 +2960,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3062,7 +3062,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3110,7 +3110,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3212,7 +3212,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3260,7 +3260,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3362,7 +3362,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3410,7 +3410,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3507,7 +3507,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3554,7 +3554,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3653,7 +3653,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3702,7 +3702,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3799,7 +3799,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3846,7 +3846,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3943,7 +3943,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3990,7 +3990,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4087,7 +4087,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4134,7 +4134,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4232,7 +4232,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4283,7 +4283,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.ChangeLogEntry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4377,7 +4377,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4426,7 +4426,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Comment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4522,7 +4522,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4571,7 +4571,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Hardware.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4670,7 +4670,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4721,7 +4721,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.HardwareGroup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4815,7 +4815,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4864,7 +4864,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Order.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4962,7 +4962,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5011,7 +5011,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Site.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5109,7 +5109,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5158,7 +5158,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Sku.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5254,7 +5254,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5303,7 +5303,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Zone.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5399,7 +5399,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5452,7 +5452,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     response_payload = service.ListChangeLogEntriesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5546,7 +5546,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5595,7 +5595,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListCommentsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5689,7 +5689,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5738,7 +5738,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListHardwareResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5834,7 +5834,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5887,7 +5887,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     response_payload = service.ListHardwareGroupsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5981,7 +5981,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6030,7 +6030,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListOrdersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6124,7 +6124,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6173,7 +6173,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSitesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6267,7 +6267,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6316,7 +6316,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSkusResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6410,7 +6410,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6459,7 +6459,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListZonesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6561,7 +6561,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6613,7 +6613,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Comment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6718,7 +6718,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6766,7 +6766,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6871,7 +6871,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6921,7 +6921,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7023,7 +7023,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7071,7 +7071,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7173,7 +7173,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7221,7 +7221,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7325,7 +7325,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7375,7 +7375,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7477,7 +7477,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7525,7 +7525,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7627,7 +7627,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7675,7 +7675,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7777,7 +7777,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7825,7 +7825,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8214,7 +8214,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8256,7 +8256,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8353,7 +8353,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8395,7 +8395,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8496,7 +8496,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8612,7 +8612,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8728,7 +8728,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8770,7 +8770,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8867,7 +8867,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8909,7 +8909,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

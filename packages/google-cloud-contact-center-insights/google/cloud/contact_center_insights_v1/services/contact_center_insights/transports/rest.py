@@ -4246,7 +4246,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4294,7 +4294,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4399,7 +4399,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4447,7 +4447,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4553,7 +4553,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4603,7 +4603,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4709,7 +4709,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4757,7 +4757,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4857,7 +4857,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4908,7 +4908,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     response_payload = contact_center_insights.CalculateIssueModelStatsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5005,7 +5005,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5056,7 +5056,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     response_payload = (
                         contact_center_insights.CalculateStatsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5158,7 +5158,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5206,7 +5206,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5318,7 +5318,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5370,7 +5370,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalysisRule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5471,7 +5471,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5523,7 +5523,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5627,7 +5627,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5679,7 +5679,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.FeedbackLabel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5783,7 +5783,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5833,7 +5833,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5934,7 +5934,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5986,7 +5986,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.PhraseMatcher.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6090,7 +6090,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6142,7 +6142,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaQuestion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6247,7 +6247,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6299,7 +6299,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecard.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6412,7 +6412,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6462,7 +6462,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6561,7 +6561,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6611,7 +6611,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.View.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6701,7 +6701,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6809,7 +6809,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6918,7 +6918,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7028,7 +7028,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7135,7 +7135,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7249,7 +7249,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7298,7 +7298,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7391,7 +7391,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7501,7 +7501,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7611,7 +7611,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7722,7 +7722,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7827,7 +7827,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7946,7 +7946,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7996,7 +7996,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8109,7 +8109,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8159,7 +8159,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8263,7 +8263,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8313,7 +8313,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8417,7 +8417,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8467,7 +8467,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8561,7 +8561,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8610,7 +8610,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Analysis.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8717,7 +8717,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8768,7 +8768,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalysisRule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8864,7 +8864,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8915,7 +8915,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9015,7 +9015,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9066,7 +9066,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.EncryptionSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9165,7 +9165,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9216,7 +9216,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.FeedbackLabel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9310,7 +9310,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9359,7 +9359,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Issue.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9453,7 +9453,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9502,7 +9502,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.IssueModel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9599,7 +9599,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9650,7 +9650,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.PhraseMatcher.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9746,7 +9746,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9795,7 +9795,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaQuestion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9895,7 +9895,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9944,7 +9944,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecard.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10051,7 +10051,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10100,7 +10100,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10201,7 +10201,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10250,7 +10250,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Settings.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10346,7 +10346,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10395,7 +10395,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.View.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10499,7 +10499,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10549,7 +10549,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10653,7 +10653,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10703,7 +10703,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10809,7 +10809,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10857,7 +10857,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10956,7 +10956,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11011,7 +11011,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11105,7 +11105,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11156,7 +11156,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     response_payload = (
                         contact_center_insights.ListAnalysesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11252,7 +11252,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11307,7 +11307,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11405,7 +11405,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11460,7 +11460,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11559,7 +11559,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11614,7 +11614,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11710,7 +11710,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11765,7 +11765,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11859,7 +11859,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11910,7 +11910,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     response_payload = (
                         contact_center_insights.ListIssuesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12008,7 +12008,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12063,7 +12063,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12161,7 +12161,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12216,7 +12216,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12315,7 +12315,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12366,7 +12366,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     response_payload = contact_center_insights.ListQaScorecardRevisionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12464,7 +12464,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12519,7 +12519,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12613,7 +12613,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12664,7 +12664,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     response_payload = (
                         contact_center_insights.ListViewsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12766,7 +12766,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12814,7 +12814,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12920,7 +12920,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12968,7 +12968,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13073,7 +13073,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13123,7 +13123,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13238,7 +13238,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13290,7 +13290,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13402,7 +13402,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13454,7 +13454,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalysisRule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13555,7 +13555,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13607,7 +13607,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Conversation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13711,7 +13711,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13763,7 +13763,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.FeedbackLabel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13862,7 +13862,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13912,7 +13912,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Issue.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14013,7 +14013,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14065,7 +14065,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.IssueModel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14167,7 +14167,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14219,7 +14219,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.PhraseMatcher.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14323,7 +14323,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14375,7 +14375,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaQuestion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14480,7 +14480,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14532,7 +14532,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecard.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14638,7 +14638,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14688,7 +14688,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Settings.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14787,7 +14787,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14837,7 +14837,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.View.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14941,7 +14941,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14991,7 +14991,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15843,7 +15843,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15959,7 +15959,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -16001,7 +16001,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -16098,7 +16098,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -16140,7 +16140,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

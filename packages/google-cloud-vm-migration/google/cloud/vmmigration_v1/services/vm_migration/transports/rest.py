@@ -3955,7 +3955,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4003,7 +4003,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4109,7 +4109,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4157,7 +4157,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4263,7 +4263,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4311,7 +4311,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4415,7 +4415,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4463,7 +4463,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4567,7 +4567,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4615,7 +4615,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4721,7 +4721,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4769,7 +4769,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4875,7 +4875,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4923,7 +4923,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5029,7 +5029,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5079,7 +5079,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5183,7 +5183,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5231,7 +5231,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5341,7 +5341,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5389,7 +5389,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5495,7 +5495,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5543,7 +5543,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5649,7 +5649,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5697,7 +5697,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5807,7 +5807,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5855,7 +5855,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5959,7 +5959,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6007,7 +6007,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6111,7 +6111,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6159,7 +6159,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6260,7 +6260,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6309,7 +6309,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6408,7 +6408,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6455,7 +6455,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6558,7 +6558,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6605,7 +6605,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6706,7 +6706,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6753,7 +6753,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6854,7 +6854,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6901,7 +6901,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7004,7 +7004,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7051,7 +7051,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7150,7 +7150,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7197,7 +7197,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7296,7 +7296,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7343,7 +7343,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7449,7 +7449,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7497,7 +7497,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7595,7 +7595,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7646,7 +7646,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = vmmigration.FetchInventoryResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7744,7 +7744,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7795,7 +7795,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = (
                         vmmigration.FetchStorageInventoryResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7901,7 +7901,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7949,7 +7949,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8062,7 +8062,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8111,7 +8111,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.CloneJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8215,7 +8215,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8264,7 +8264,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.CutoverJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8367,7 +8367,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8416,7 +8416,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.DatacenterConnector.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8515,7 +8515,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8564,7 +8564,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.DiskMigrationJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8665,7 +8665,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8714,7 +8714,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.Group.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8815,7 +8815,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8864,7 +8864,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ImageImport.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8964,7 +8964,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9013,7 +9013,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ImageImportJob.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9114,7 +9114,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9163,7 +9163,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.MigratingVm.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9262,7 +9262,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9311,7 +9311,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ReplicationCycle.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9413,7 +9413,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9462,7 +9462,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.Source.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9563,7 +9563,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9612,7 +9612,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.TargetProject.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9711,7 +9711,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9760,7 +9760,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.UtilizationReport.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9860,7 +9860,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9911,7 +9911,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = vmmigration.ListCloneJobsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10011,7 +10011,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10062,7 +10062,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = vmmigration.ListCutoverJobsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10161,7 +10161,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10212,7 +10212,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = (
                         vmmigration.ListDatacenterConnectorsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10310,7 +10310,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10361,7 +10361,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = (
                         vmmigration.ListDiskMigrationJobsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10463,7 +10463,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10512,7 +10512,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ListGroupsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10610,7 +10610,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10661,7 +10661,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = vmmigration.ListImageImportJobsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10761,7 +10761,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10812,7 +10812,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = vmmigration.ListImageImportsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10912,7 +10912,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10963,7 +10963,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = vmmigration.ListMigratingVmsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11061,7 +11061,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11112,7 +11112,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = (
                         vmmigration.ListReplicationCyclesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11214,7 +11214,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11263,7 +11263,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ListSourcesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11361,7 +11361,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11412,7 +11412,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = vmmigration.ListTargetProjectsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11510,7 +11510,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11561,7 +11561,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     response_payload = (
                         vmmigration.ListUtilizationReportsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11665,7 +11665,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11713,7 +11713,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11817,7 +11817,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11865,7 +11865,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11971,7 +11971,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12019,7 +12019,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12123,7 +12123,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12171,7 +12171,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12275,7 +12275,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12323,7 +12323,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12427,7 +12427,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12475,7 +12475,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12585,7 +12585,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12633,7 +12633,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12739,7 +12739,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12787,7 +12787,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12897,7 +12897,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12945,7 +12945,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13049,7 +13049,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13097,7 +13097,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13203,7 +13203,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13251,7 +13251,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13923,7 +13923,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13965,7 +13965,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14065,7 +14065,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14107,7 +14107,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14209,7 +14209,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14324,7 +14324,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14443,7 +14443,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14485,7 +14485,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14583,7 +14583,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14625,7 +14625,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

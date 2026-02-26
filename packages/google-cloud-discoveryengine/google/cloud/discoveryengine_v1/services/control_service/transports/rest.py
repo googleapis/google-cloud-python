@@ -571,7 +571,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -621,7 +621,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_control.Control.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -712,7 +712,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -829,7 +829,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -878,7 +878,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = control.Control.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -973,7 +973,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1024,7 +1024,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                     response_payload = control_service.ListControlsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1129,7 +1129,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1179,7 +1179,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_control.Control.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1321,7 +1321,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1437,7 +1437,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1479,7 +1479,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1577,7 +1577,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1619,7 +1619,7 @@ class ControlServiceRestTransport(_BaseControlServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

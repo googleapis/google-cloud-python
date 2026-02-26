@@ -3817,7 +3817,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3867,7 +3867,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3974,7 +3974,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4024,7 +4024,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4128,7 +4128,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4176,7 +4176,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4281,7 +4281,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4329,7 +4329,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4433,7 +4433,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4481,7 +4481,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4586,7 +4586,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4638,7 +4638,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4741,7 +4741,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4789,7 +4789,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4892,7 +4892,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4940,7 +4940,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5040,7 +5040,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5089,7 +5089,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5191,7 +5191,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5240,7 +5240,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5339,7 +5339,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5386,7 +5386,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5486,7 +5486,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5533,7 +5533,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5632,7 +5632,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5679,7 +5679,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5780,7 +5780,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5831,7 +5831,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5929,7 +5929,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5976,7 +5976,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6074,7 +6074,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6121,7 +6121,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6227,7 +6227,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6277,7 +6277,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6381,7 +6381,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6437,7 +6437,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6536,7 +6536,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6587,7 +6587,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = autonomous_database.AutonomousDatabase.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6687,7 +6687,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6740,7 +6740,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = exadata_infra.CloudExadataInfrastructure.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6838,7 +6838,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6887,7 +6887,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vm_cluster.CloudVmCluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6984,7 +6984,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7033,7 +7033,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = database.Database.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7131,7 +7131,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7180,7 +7180,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = db_system.DbSystem.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7279,7 +7279,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7328,7 +7328,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = exadb_vm_cluster.ExadbVmCluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7428,7 +7428,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7485,7 +7485,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7580,7 +7580,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7629,7 +7629,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = odb_network.OdbNetwork.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7724,7 +7724,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7773,7 +7773,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = odb_subnet.OdbSubnet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7871,7 +7871,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7922,7 +7922,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = pluggable_database.PluggableDatabase.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8019,7 +8019,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8074,7 +8074,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8177,7 +8177,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8232,7 +8232,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8328,7 +8328,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8381,7 +8381,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = (
                         oracledatabase.ListAutonomousDatabasesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8478,7 +8478,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8533,7 +8533,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8632,7 +8632,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8687,7 +8687,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8783,7 +8783,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8834,7 +8834,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = (
                         oracledatabase.ListCloudVmClustersResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8931,7 +8931,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8984,7 +8984,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = database_character_set.ListDatabaseCharacterSetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9079,7 +9079,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9128,7 +9128,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = database.ListDatabasesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9223,7 +9223,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9274,7 +9274,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = oracledatabase.ListDbNodesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9369,7 +9369,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9420,7 +9420,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = oracledatabase.ListDbServersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9519,7 +9519,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9576,7 +9576,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9671,7 +9671,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9720,7 +9720,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = db_system.ListDbSystemsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9815,7 +9815,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9866,7 +9866,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = (
                         oracledatabase.ListDbSystemShapesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9963,7 +9963,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10014,7 +10014,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = db_version.ListDbVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10109,7 +10109,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10160,7 +10160,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = oracledatabase.ListEntitlementsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10256,7 +10256,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10307,7 +10307,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = (
                         oracledatabase.ListExadbVmClustersResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10404,7 +10404,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10461,7 +10461,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10558,7 +10558,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10609,7 +10609,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = oracledatabase.ListGiVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10704,7 +10704,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10755,7 +10755,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = minor_version.ListMinorVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10850,7 +10850,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10901,7 +10901,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = odb_network.ListOdbNetworksResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10998,7 +10998,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11049,7 +11049,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     response_payload = odb_subnet.ListOdbSubnetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11145,7 +11145,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11200,7 +11200,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11309,7 +11309,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11359,7 +11359,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11464,7 +11464,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11514,7 +11514,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11619,7 +11619,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11669,7 +11669,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11773,7 +11773,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11823,7 +11823,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11927,7 +11927,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11977,7 +11977,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12083,7 +12083,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12135,7 +12135,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12240,7 +12240,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12290,7 +12290,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12397,7 +12397,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12445,7 +12445,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13173,7 +13173,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13215,7 +13215,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13313,7 +13313,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13355,7 +13355,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13455,7 +13455,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13568,7 +13568,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13683,7 +13683,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13725,7 +13725,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13823,7 +13823,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13865,7 +13865,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

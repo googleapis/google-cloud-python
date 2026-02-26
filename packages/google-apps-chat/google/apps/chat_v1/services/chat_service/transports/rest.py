@@ -2057,7 +2057,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2109,7 +2109,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     response_payload = space.CompleteImportSpaceResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2213,7 +2213,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2263,7 +2263,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reaction.CustomEmoji.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2370,7 +2370,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2420,7 +2420,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gc_membership.Membership.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2524,7 +2524,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2574,7 +2574,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gc_message.Message.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2674,7 +2674,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2724,7 +2724,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gc_reaction.Reaction.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2835,7 +2835,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2885,7 +2885,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gc_space.Space.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2978,7 +2978,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3095,7 +3095,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3144,7 +3144,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = membership.Membership.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3237,7 +3237,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3343,7 +3343,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3453,7 +3453,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3570,7 +3570,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3619,7 +3619,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = space.Space.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3716,7 +3716,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3765,7 +3765,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = attachment.Attachment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3865,7 +3865,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3914,7 +3914,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reaction.CustomEmoji.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4016,7 +4016,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4065,7 +4065,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = membership.Membership.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4164,7 +4164,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4213,7 +4213,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = message.Message.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4314,7 +4314,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4363,7 +4363,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = space.Space.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4465,7 +4465,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4514,7 +4514,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = space_event.SpaceEvent.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4616,7 +4616,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4673,7 +4673,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4774,7 +4774,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4823,7 +4823,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = space_read_state.SpaceReadState.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4922,7 +4922,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4973,7 +4973,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     response_payload = thread_read_state.ThreadReadState.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5071,7 +5071,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5122,7 +5122,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     response_payload = reaction.ListCustomEmojisResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5222,7 +5222,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5273,7 +5273,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     response_payload = membership.ListMembershipsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5375,7 +5375,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5424,7 +5424,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = message.ListMessagesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5521,7 +5521,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5570,7 +5570,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = reaction.ListReactionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5670,7 +5670,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5721,7 +5721,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     response_payload = space_event.ListSpaceEventsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5823,7 +5823,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5872,7 +5872,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = space.ListSpacesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5975,7 +5975,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6024,7 +6024,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = space.SearchSpacesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6133,7 +6133,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6183,7 +6183,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = space.Space.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6290,7 +6290,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6340,7 +6340,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gc_membership.Membership.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6444,7 +6444,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6494,7 +6494,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gc_message.Message.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6604,7 +6604,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6654,7 +6654,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gc_space.Space.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6761,7 +6761,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6819,7 +6819,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6923,7 +6923,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6975,7 +6975,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     response_payload = gc_space_read_state.SpaceReadState.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7077,7 +7077,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7129,7 +7129,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     response_payload = attachment.UploadAttachmentResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

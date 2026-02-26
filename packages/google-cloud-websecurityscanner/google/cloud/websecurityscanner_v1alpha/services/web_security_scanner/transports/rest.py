@@ -969,7 +969,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1019,7 +1019,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcw_scan_config.ScanConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1111,7 +1111,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1224,7 +1224,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1273,7 +1273,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = finding.Finding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1370,7 +1370,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1419,7 +1419,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = scan_config.ScanConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1516,7 +1516,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1565,7 +1565,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = scan_run.ScanRun.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1661,7 +1661,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1712,7 +1712,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     response_payload = (
                         web_security_scanner.ListCrawledUrlsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1806,7 +1806,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1857,7 +1857,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     response_payload = (
                         web_security_scanner.ListFindingsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1953,7 +1953,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2008,7 +2008,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2104,7 +2104,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2155,7 +2155,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     response_payload = (
                         web_security_scanner.ListScanConfigsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2249,7 +2249,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2300,7 +2300,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     response_payload = (
                         web_security_scanner.ListScanRunsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2401,7 +2401,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2451,7 +2451,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = scan_run.ScanRun.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2552,7 +2552,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2602,7 +2602,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = scan_run.ScanRun.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2706,7 +2706,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2756,7 +2756,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcw_scan_config.ScanConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -1338,7 +1338,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1386,7 +1386,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1513,7 +1513,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1563,7 +1563,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.Build.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1670,7 +1670,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1718,7 +1718,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1823,7 +1823,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1873,7 +1873,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.BuildTrigger.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1978,7 +1978,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2026,7 +2026,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2119,7 +2119,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2234,7 +2234,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2281,7 +2281,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2401,7 +2401,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2450,7 +2450,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.Build.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2550,7 +2550,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2599,7 +2599,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.BuildTrigger.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2696,7 +2696,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2747,7 +2747,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     response_payload = cloudbuild.DefaultServiceAccount.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2861,7 +2861,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2910,7 +2910,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.WorkerPool.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3007,7 +3007,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3056,7 +3056,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.ListBuildsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3153,7 +3153,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3204,7 +3204,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     response_payload = cloudbuild.ListBuildTriggersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3301,7 +3301,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3352,7 +3352,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     response_payload = cloudbuild.ListWorkerPoolsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3456,7 +3456,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3508,7 +3508,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     response_payload = cloudbuild.ReceiveTriggerWebhookResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3613,7 +3613,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3661,7 +3661,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3767,7 +3767,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3815,7 +3815,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3920,7 +3920,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3970,7 +3970,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.BuildTrigger.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4075,7 +4075,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4123,7 +4123,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -738,7 +738,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -785,7 +785,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -882,7 +882,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -931,7 +931,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = cmek_config_service.CmekConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1032,7 +1032,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1083,7 +1083,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                     response_payload = (
                         cmek_config_service.ListCmekConfigsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1188,7 +1188,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1236,7 +1236,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1378,7 +1378,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1492,7 +1492,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1534,7 +1534,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1631,7 +1631,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1673,7 +1673,7 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

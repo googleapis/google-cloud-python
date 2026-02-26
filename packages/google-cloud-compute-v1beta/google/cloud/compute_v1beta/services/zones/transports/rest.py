@@ -355,7 +355,7 @@ class ZonesRestTransport(_BaseZonesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -402,7 +402,7 @@ class ZonesRestTransport(_BaseZonesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Zone.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -496,7 +496,7 @@ class ZonesRestTransport(_BaseZonesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -543,7 +543,7 @@ class ZonesRestTransport(_BaseZonesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.ZoneList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

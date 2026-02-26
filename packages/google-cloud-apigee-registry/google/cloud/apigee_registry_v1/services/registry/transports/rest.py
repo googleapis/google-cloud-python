@@ -2275,7 +2275,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2325,7 +2325,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.Api.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2437,7 +2437,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2487,7 +2487,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2605,7 +2605,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2655,7 +2655,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2764,7 +2764,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2814,7 +2814,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2931,7 +2931,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2981,7 +2981,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.Artifact.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3072,7 +3072,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3181,7 +3181,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3302,7 +3302,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3353,7 +3353,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3448,7 +3448,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3573,7 +3573,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3622,7 +3622,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3717,7 +3717,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3827,7 +3827,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3940,7 +3940,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3989,7 +3989,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.Api.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4097,7 +4097,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4146,7 +4146,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4257,7 +4257,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4306,7 +4306,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4453,7 +4453,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4502,7 +4502,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4604,7 +4604,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4653,7 +4653,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4761,7 +4761,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4810,7 +4810,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.Artifact.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4957,7 +4957,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5006,7 +5006,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5105,7 +5105,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5160,7 +5160,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5260,7 +5260,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5311,7 +5311,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     response_payload = (
                         registry_service.ListApiDeploymentsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5406,7 +5406,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5457,7 +5457,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     response_payload = registry_service.ListApisResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5557,7 +5557,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5608,7 +5608,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     response_payload = (
                         registry_service.ListApiSpecRevisionsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5705,7 +5705,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5756,7 +5756,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     response_payload = registry_service.ListApiSpecsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5857,7 +5857,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5908,7 +5908,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     response_payload = registry_service.ListApiVersionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6007,7 +6007,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6058,7 +6058,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     response_payload = registry_service.ListArtifactsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6177,7 +6177,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6227,7 +6227,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.Artifact.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6337,7 +6337,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6387,7 +6387,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6509,7 +6509,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6559,7 +6559,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6670,7 +6670,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6720,7 +6720,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6837,7 +6837,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6887,7 +6887,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6990,7 +6990,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7040,7 +7040,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.Api.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7152,7 +7152,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7202,7 +7202,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7320,7 +7320,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7370,7 +7370,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiSpec.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7479,7 +7479,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7529,7 +7529,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = registry_models.ApiVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7955,7 +7955,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7997,7 +7997,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8099,7 +8099,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8141,7 +8141,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8241,7 +8241,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8283,7 +8283,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8388,7 +8388,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8431,7 +8431,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8536,7 +8536,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8579,7 +8579,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8687,7 +8687,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8806,7 +8806,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8923,7 +8923,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8965,7 +8965,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9067,7 +9067,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9109,7 +9109,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

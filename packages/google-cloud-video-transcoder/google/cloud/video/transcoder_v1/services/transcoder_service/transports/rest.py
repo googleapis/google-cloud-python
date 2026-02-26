@@ -611,7 +611,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -661,7 +661,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Job.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -763,7 +763,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -813,7 +813,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.JobTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -904,7 +904,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1012,7 +1012,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1126,7 +1126,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1175,7 +1175,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Job.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1272,7 +1272,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1321,7 +1321,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.JobTemplate.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1418,7 +1418,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1467,7 +1467,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = services.ListJobsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1566,7 +1566,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1617,7 +1617,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     response_payload = services.ListJobTemplatesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

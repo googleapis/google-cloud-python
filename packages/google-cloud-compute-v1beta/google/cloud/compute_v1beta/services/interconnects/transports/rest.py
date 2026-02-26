@@ -780,7 +780,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -829,7 +829,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -933,7 +933,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -980,7 +980,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Interconnect.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1079,7 +1079,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1130,7 +1130,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     response_payload = (
                         compute.InterconnectsGetDiagnosticsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1231,7 +1231,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1282,7 +1282,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     response_payload = (
                         compute.InterconnectsGetMacsecConfigResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1414,7 +1414,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1464,7 +1464,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1563,7 +1563,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1610,7 +1610,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.InterconnectList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1742,7 +1742,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1792,7 +1792,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1928,7 +1928,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1978,7 +1978,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2080,7 +2080,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2130,7 +2130,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

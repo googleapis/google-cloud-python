@@ -39,7 +39,7 @@ automatically determined, for example:
     for n in range(10):
         try:
             is_thing_ready_with_timeout({'example': 'data'})
-        except:
+        except Exception:
             pass
 
 In this example the first call to ``is_thing_ready`` will have a relatively

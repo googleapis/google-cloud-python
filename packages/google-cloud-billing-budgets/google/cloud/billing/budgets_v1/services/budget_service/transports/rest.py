@@ -498,7 +498,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -548,7 +548,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = budget_model.Budget.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -639,7 +639,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -762,7 +762,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -811,7 +811,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = budget_model.Budget.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -908,7 +908,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -959,7 +959,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                     response_payload = budget_service.ListBudgetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1068,7 +1068,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1118,7 +1118,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = budget_model.Budget.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

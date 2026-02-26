@@ -368,7 +368,7 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -417,7 +417,7 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = attachment.Attachment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -516,7 +516,7 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -569,7 +569,7 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
                     response_payload = (
                         attachment_service.ListAttachmentsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -2773,7 +2773,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2821,7 +2821,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2924,7 +2924,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2972,7 +2972,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3084,7 +3084,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3132,7 +3132,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3236,7 +3236,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3284,7 +3284,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3390,7 +3390,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3442,7 +3442,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3545,7 +3545,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3593,7 +3593,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3698,7 +3698,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3746,7 +3746,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3850,7 +3850,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3900,7 +3900,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4000,7 +4000,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4047,7 +4047,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4145,7 +4145,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4192,7 +4192,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4296,7 +4296,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4343,7 +4343,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4441,7 +4441,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4488,7 +4488,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4590,7 +4590,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4641,7 +4641,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4739,7 +4739,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4786,7 +4786,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4886,7 +4886,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4933,7 +4933,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5033,7 +5033,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5082,7 +5082,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5181,7 +5181,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5232,7 +5232,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     response_payload = service.GenerateConnectManifestResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5341,7 +5341,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5399,7 +5399,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5496,7 +5496,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5545,7 +5545,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = feature.Feature.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5642,7 +5642,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5691,7 +5691,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = fleet.Fleet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5790,7 +5790,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5839,7 +5839,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = membership.Membership.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5941,7 +5941,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5990,7 +5990,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = fleet.MembershipBinding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6089,7 +6089,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6140,7 +6140,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = fleet.RBACRoleBinding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6235,7 +6235,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6284,7 +6284,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = fleet.Scope.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6387,7 +6387,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6436,7 +6436,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = fleet.Namespace.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6535,7 +6535,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6584,7 +6584,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = fleet.RBACRoleBinding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6682,7 +6682,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6733,7 +6733,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     response_payload = service.ListBoundMembershipsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6830,7 +6830,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6879,7 +6879,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListFeaturesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6976,7 +6976,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7025,7 +7025,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListFleetsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7122,7 +7122,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7173,7 +7173,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     response_payload = service.ListMembershipBindingsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7272,7 +7272,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7327,7 +7327,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     response_payload = (
                         service.ListMembershipRBACRoleBindingsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7430,7 +7430,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7479,7 +7479,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListMembershipsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7576,7 +7576,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7627,7 +7627,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     response_payload = service.ListPermittedScopesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7724,7 +7724,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7775,7 +7775,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     response_payload = service.ListScopeNamespacesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7872,7 +7872,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7925,7 +7925,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     response_payload = (
                         service.ListScopeRBACRoleBindingsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8020,7 +8020,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8069,7 +8069,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListScopesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8174,7 +8174,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8222,7 +8222,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8325,7 +8325,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8373,7 +8373,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8484,7 +8484,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8532,7 +8532,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8636,7 +8636,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8684,7 +8684,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8791,7 +8791,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8843,7 +8843,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8946,7 +8946,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8994,7 +8994,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9099,7 +9099,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9147,7 +9147,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9252,7 +9252,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9302,7 +9302,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

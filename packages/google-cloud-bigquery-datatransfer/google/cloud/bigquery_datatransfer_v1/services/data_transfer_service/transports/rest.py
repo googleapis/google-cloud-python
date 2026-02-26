@@ -1080,7 +1080,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1132,7 +1132,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     response_payload = datatransfer.CheckValidCredsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1253,7 +1253,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1305,7 +1305,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1400,7 +1400,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1510,7 +1510,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1625,7 +1625,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1739,7 +1739,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1788,7 +1788,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = datatransfer.DataSource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1892,7 +1892,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1943,7 +1943,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2040,7 +2040,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2089,7 +2089,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferRun.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2189,7 +2189,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2240,7 +2240,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     response_payload = datatransfer.ListDataSourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2339,7 +2339,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2392,7 +2392,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     response_payload = datatransfer.ListTransferConfigsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2492,7 +2492,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2543,7 +2543,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     response_payload = datatransfer.ListTransferLogsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2641,7 +2641,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2692,7 +2692,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     response_payload = datatransfer.ListTransferRunsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2796,7 +2796,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2850,7 +2850,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     response_payload = (
                         datatransfer.ScheduleTransferRunsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2955,7 +2955,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3009,7 +3009,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     response_payload = (
                         datatransfer.StartManualTransferRunsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3107,7 +3107,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3241,7 +3241,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3293,7 +3293,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferConfig.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3537,7 +3537,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3579,7 +3579,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3676,7 +3676,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3718,7 +3718,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

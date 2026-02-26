@@ -2658,7 +2658,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2706,7 +2706,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2811,7 +2811,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2861,7 +2861,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2966,7 +2966,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3014,7 +3014,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3118,7 +3118,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3166,7 +3166,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3266,7 +3266,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3313,7 +3313,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3415,7 +3415,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3462,7 +3462,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3562,7 +3562,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3611,7 +3611,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3711,7 +3711,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3758,7 +3758,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3857,7 +3857,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3904,7 +3904,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4010,7 +4010,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4069,7 +4069,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4168,7 +4168,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4223,7 +4223,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4329,7 +4329,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4392,7 +4392,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4491,7 +4491,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4542,7 +4542,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = (
                         backupvault.FetchUsableBackupVaultsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4637,7 +4637,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4686,7 +4686,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.Backup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4790,7 +4790,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4839,7 +4839,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backupplan.BackupPlan.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4940,7 +4940,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4991,7 +4991,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = (
                         backupplanassociation.BackupPlanAssociation.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5089,7 +5089,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5138,7 +5138,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backupplan.BackupPlanRevision.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5242,7 +5242,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5291,7 +5291,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.BackupVault.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5395,7 +5395,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5444,7 +5444,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.DataSource.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5542,7 +5542,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5593,7 +5593,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = datasourcereference.DataSourceReference.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5693,7 +5693,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5742,7 +5742,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backupdr.ManagementServer.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5848,7 +5848,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5896,7 +5896,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5995,7 +5995,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6048,7 +6048,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = backupplanassociation.ListBackupPlanAssociationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6147,7 +6147,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6198,7 +6198,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = (
                         backupplan.ListBackupPlanRevisionsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6301,7 +6301,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6352,7 +6352,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = backupplan.ListBackupPlansResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6449,7 +6449,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6498,7 +6498,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.ListBackupsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6600,7 +6600,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6651,7 +6651,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = backupvault.ListBackupVaultsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6750,7 +6750,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6803,7 +6803,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6907,7 +6907,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6958,7 +6958,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = backupvault.ListDataSourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7056,7 +7056,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7107,7 +7107,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     response_payload = backupdr.ListManagementServersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7215,7 +7215,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7263,7 +7263,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7371,7 +7371,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7419,7 +7419,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7525,7 +7525,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7573,7 +7573,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7683,7 +7683,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7731,7 +7731,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7836,7 +7836,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7886,7 +7886,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7992,7 +7992,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8040,7 +8040,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8150,7 +8150,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8198,7 +8198,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8670,7 +8670,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8712,7 +8712,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8814,7 +8814,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8856,7 +8856,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8956,7 +8956,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8998,7 +8998,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9103,7 +9103,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9146,7 +9146,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9251,7 +9251,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9294,7 +9294,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9402,7 +9402,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9521,7 +9521,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9638,7 +9638,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9680,7 +9680,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9782,7 +9782,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9824,7 +9824,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

@@ -2256,7 +2256,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2304,7 +2304,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2407,7 +2407,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2455,7 +2455,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2559,7 +2559,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2607,7 +2607,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2712,7 +2712,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2760,7 +2760,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2865,7 +2865,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2915,7 +2915,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Event.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3019,7 +3019,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3067,7 +3067,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3166,7 +3166,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3213,7 +3213,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3311,7 +3311,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3358,7 +3358,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3457,7 +3457,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3504,7 +3504,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3604,7 +3604,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3651,7 +3651,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3743,7 +3743,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3857,7 +3857,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3904,7 +3904,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4002,7 +4002,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4051,7 +4051,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Asset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4155,7 +4155,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4204,7 +4204,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Channel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4307,7 +4307,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4356,7 +4356,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Clip.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4455,7 +4455,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4504,7 +4504,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.DvrSession.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4604,7 +4604,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4653,7 +4653,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Event.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4752,7 +4752,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4801,7 +4801,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Input.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4907,7 +4907,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4956,7 +4956,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Pool.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5054,7 +5054,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5103,7 +5103,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListAssetsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5199,7 +5199,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5248,7 +5248,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListChannelsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5346,7 +5346,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5395,7 +5395,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListClipsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5494,7 +5494,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5543,7 +5543,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListDvrSessionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5641,7 +5641,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5690,7 +5690,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListEventsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5788,7 +5788,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5837,7 +5837,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListInputsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5938,7 +5938,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5988,7 +5988,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.PreviewInputResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6090,7 +6090,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6138,7 +6138,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6243,7 +6243,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6291,7 +6291,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6395,7 +6395,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6443,7 +6443,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6548,7 +6548,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6596,7 +6596,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6699,7 +6699,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6747,7 +6747,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6852,7 +6852,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6900,7 +6900,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7004,7 +7004,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7052,7 +7052,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7156,7 +7156,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7204,7 +7204,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7558,7 +7558,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7600,7 +7600,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7697,7 +7697,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7739,7 +7739,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7840,7 +7840,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7954,7 +7954,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8067,7 +8067,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8109,7 +8109,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8206,7 +8206,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8248,7 +8248,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

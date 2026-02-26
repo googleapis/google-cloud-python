@@ -826,7 +826,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -874,7 +874,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -978,7 +978,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1028,7 +1028,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcb_job.Job.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1130,7 +1130,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1177,7 +1177,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1274,7 +1274,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1323,7 +1323,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = job.Job.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1420,7 +1420,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1469,7 +1469,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = task.Task.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1566,7 +1566,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1615,7 +1615,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = batch.ListJobsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1714,7 +1714,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1763,7 +1763,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = batch.ListTasksResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1911,7 +1911,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1953,7 +1953,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2051,7 +2051,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2093,7 +2093,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2195,7 +2195,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2310,7 +2310,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2427,7 +2427,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2469,7 +2469,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2567,7 +2567,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2609,7 +2609,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

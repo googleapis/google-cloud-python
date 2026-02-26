@@ -4751,7 +4751,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4799,7 +4799,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4905,7 +4905,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4955,7 +4955,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5059,7 +5059,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5107,7 +5107,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5211,7 +5211,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5259,7 +5259,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5363,7 +5363,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5411,7 +5411,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5519,7 +5519,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5571,7 +5571,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5675,7 +5675,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5723,7 +5723,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5827,7 +5827,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5875,7 +5875,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5979,7 +5979,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6027,7 +6027,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6132,7 +6132,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6180,7 +6180,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6286,7 +6286,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6336,7 +6336,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6435,7 +6435,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6482,7 +6482,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6583,7 +6583,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6632,7 +6632,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6731,7 +6731,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6778,7 +6778,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6877,7 +6877,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6924,7 +6924,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7027,7 +7027,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7078,7 +7078,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7177,7 +7177,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7224,7 +7224,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7323,7 +7323,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7370,7 +7370,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7469,7 +7469,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7516,7 +7516,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7616,7 +7616,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7663,7 +7663,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7764,7 +7764,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7813,7 +7813,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7915,7 +7915,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7968,7 +7968,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8068,7 +8068,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8117,7 +8117,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.Cluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8218,7 +8218,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8269,7 +8269,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.DnsBindPermission.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8372,7 +8372,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8423,7 +8423,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.DnsForwarding.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8521,7 +8521,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8572,7 +8572,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = (
                         vmwareengine_resources.ExternalAccessRule.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8671,7 +8671,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8722,7 +8722,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.ExternalAddress.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8825,7 +8825,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8876,7 +8876,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.HcxActivationKey.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8976,7 +8976,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9027,7 +9027,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.LoggingServer.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9134,7 +9134,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9191,7 +9191,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9287,7 +9287,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9338,7 +9338,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.NetworkPeering.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9447,7 +9447,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9498,7 +9498,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.NetworkPolicy.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9596,7 +9596,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9645,7 +9645,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.Node.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9745,7 +9745,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9794,7 +9794,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.NodeType.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9895,7 +9895,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9946,7 +9946,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.PrivateCloud.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10045,7 +10045,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10096,7 +10096,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.PrivateConnection.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10199,7 +10199,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10248,7 +10248,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine_resources.Subnet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10347,7 +10347,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10398,7 +10398,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = (
                         vmwareengine_resources.VmwareEngineNetwork.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10502,7 +10502,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10550,7 +10550,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10650,7 +10650,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10701,7 +10701,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListClustersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10801,7 +10801,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10852,7 +10852,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = (
                         vmwareengine.ListExternalAccessRulesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10950,7 +10950,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11001,7 +11001,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = (
                         vmwareengine.ListExternalAddressesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11099,7 +11099,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11150,7 +11150,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = (
                         vmwareengine.ListHcxActivationKeysResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11248,7 +11248,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11299,7 +11299,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListLoggingServersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11399,7 +11399,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11456,7 +11456,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11554,7 +11554,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11605,7 +11605,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListNetworkPeeringsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11703,7 +11703,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11754,7 +11754,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListNetworkPoliciesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11856,7 +11856,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11905,7 +11905,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = vmwareengine.ListNodesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12003,7 +12003,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12054,7 +12054,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListNodeTypesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12152,7 +12152,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12203,7 +12203,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListPeeringRoutesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12301,7 +12301,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12352,7 +12352,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListPrivateCloudsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12454,7 +12454,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12509,7 +12509,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12607,7 +12607,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12658,7 +12658,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = (
                         vmwareengine.ListPrivateConnectionsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12760,7 +12760,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12811,7 +12811,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine.ListSubnetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12911,7 +12911,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12964,7 +12964,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = (
                         vmwareengine.ListVmwareEngineNetworksResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13072,7 +13072,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13124,7 +13124,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13228,7 +13228,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13276,7 +13276,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13381,7 +13381,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13429,7 +13429,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13535,7 +13535,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13583,7 +13583,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13679,7 +13679,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13730,7 +13730,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.Credentials.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13826,7 +13826,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13877,7 +13877,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                     response_payload = vmwareengine_resources.Credentials.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13981,7 +13981,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14029,7 +14029,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14133,7 +14133,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14181,7 +14181,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14285,7 +14285,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14333,7 +14333,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14439,7 +14439,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14489,7 +14489,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14593,7 +14593,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14641,7 +14641,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14745,7 +14745,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14793,7 +14793,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14901,7 +14901,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14953,7 +14953,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15057,7 +15057,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15105,7 +15105,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15209,7 +15209,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15257,7 +15257,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15361,7 +15361,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15409,7 +15409,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15514,7 +15514,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15562,7 +15562,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15670,7 +15670,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15718,7 +15718,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -15824,7 +15824,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -15874,7 +15874,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -16735,7 +16735,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -16777,7 +16777,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -16875,7 +16875,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -16917,7 +16917,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -17017,7 +17017,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -17059,7 +17059,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -17166,7 +17166,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -17209,7 +17209,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -17312,7 +17312,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -17355,7 +17355,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -17452,7 +17452,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -17569,7 +17569,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -17611,7 +17611,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -17709,7 +17709,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -17751,7 +17751,7 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

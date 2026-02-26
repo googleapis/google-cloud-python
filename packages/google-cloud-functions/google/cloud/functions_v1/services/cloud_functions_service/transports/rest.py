@@ -988,7 +988,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1038,7 +1038,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = functions.CallFunctionResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1140,7 +1140,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1188,7 +1188,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1285,7 +1285,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1332,7 +1332,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1433,7 +1433,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1487,7 +1487,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                     response_payload = functions.GenerateDownloadUrlResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1588,7 +1588,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1642,7 +1642,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                     response_payload = functions.GenerateUploadUrlResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1740,7 +1740,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1789,7 +1789,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = functions.CloudFunction.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1958,7 +1958,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2007,7 +2007,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2101,7 +2101,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2150,7 +2150,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = functions.ListFunctionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2324,7 +2324,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2374,7 +2374,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2475,7 +2475,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2527,7 +2527,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2629,7 +2629,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2677,7 +2677,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2869,7 +2869,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2911,7 +2911,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3008,7 +3008,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3050,7 +3050,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3147,7 +3147,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3189,7 +3189,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

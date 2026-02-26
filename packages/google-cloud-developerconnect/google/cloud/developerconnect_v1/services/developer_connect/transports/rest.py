@@ -1963,7 +1963,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2013,7 +2013,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2117,7 +2117,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2165,7 +2165,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2271,7 +2271,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2321,7 +2321,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2421,7 +2421,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2470,7 +2470,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2569,7 +2569,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2616,7 +2616,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2717,7 +2717,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2766,7 +2766,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2865,7 +2865,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2912,7 +2912,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3010,7 +3010,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3057,7 +3057,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3161,7 +3161,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3213,7 +3213,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = (
                         developer_connect.FetchAccessTokenResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3313,7 +3313,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3368,7 +3368,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3463,7 +3463,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3514,7 +3514,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = developer_connect.FetchGitRefsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3614,7 +3614,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3669,7 +3669,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3771,7 +3771,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3823,7 +3823,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = developer_connect.FetchReadTokenResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3927,7 +3927,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3979,7 +3979,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = (
                         developer_connect.FetchReadWriteTokenResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4078,7 +4078,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4127,7 +4127,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = developer_connect.User.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4224,7 +4224,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4275,7 +4275,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = developer_connect.FinishOAuthResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4379,7 +4379,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4430,7 +4430,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = developer_connect.AccountConnector.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4523,7 +4523,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4572,7 +4572,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = developer_connect.Connection.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4671,7 +4671,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4724,7 +4724,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = developer_connect.GitRepositoryLink.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4823,7 +4823,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4878,7 +4878,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4977,7 +4977,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5028,7 +5028,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = (
                         developer_connect.ListConnectionsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5127,7 +5127,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5182,7 +5182,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5278,7 +5278,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5329,7 +5329,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = developer_connect.ListUsersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5426,7 +5426,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5477,7 +5477,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     response_payload = developer_connect.StartOAuthResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5582,7 +5582,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5632,7 +5632,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5736,7 +5736,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5784,7 +5784,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6162,7 +6162,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6204,7 +6204,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6300,7 +6300,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6342,7 +6342,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6443,7 +6443,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6557,7 +6557,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6672,7 +6672,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6714,7 +6714,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6810,7 +6810,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6852,7 +6852,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

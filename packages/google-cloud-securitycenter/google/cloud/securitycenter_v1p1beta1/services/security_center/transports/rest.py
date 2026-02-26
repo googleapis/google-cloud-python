@@ -1623,7 +1623,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1673,7 +1673,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcs_finding.Finding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1783,7 +1783,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1837,7 +1837,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         gcs_notification_config.NotificationConfig.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1944,7 +1944,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1994,7 +1994,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcs_source.Source.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2088,7 +2088,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2280,7 +2280,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2330,7 +2330,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2434,7 +2434,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2485,7 +2485,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = notification_config.NotificationConfig.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2585,7 +2585,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2638,7 +2638,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         organization_settings.OrganizationSettings.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2743,7 +2743,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2792,7 +2792,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = source.Source.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2895,7 +2895,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2947,7 +2947,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         securitycenter_service.GroupAssetsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3050,7 +3050,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3102,7 +3102,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         securitycenter_service.GroupFindingsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3199,7 +3199,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3250,7 +3250,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         securitycenter_service.ListAssetsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3347,7 +3347,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3398,7 +3398,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         securitycenter_service.ListFindingsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3497,7 +3497,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3552,7 +3552,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3647,7 +3647,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3698,7 +3698,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         securitycenter_service.ListSourcesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3802,7 +3802,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3850,7 +3850,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3961,7 +3961,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4011,7 +4011,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = finding.Finding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4186,7 +4186,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4236,7 +4236,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4336,7 +4336,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4386,7 +4386,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4497,7 +4497,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4547,7 +4547,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcs_finding.Finding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4657,7 +4657,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4711,7 +4711,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         gcs_notification_config.NotificationConfig.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4817,7 +4817,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4871,7 +4871,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = (
                         gcs_organization_settings.OrganizationSettings.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4981,7 +4981,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5033,7 +5033,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     response_payload = gcs_security_marks.SecurityMarks.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5140,7 +5140,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5190,7 +5190,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcs_source.Source.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

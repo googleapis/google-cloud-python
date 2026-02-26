@@ -834,7 +834,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -884,7 +884,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1010,7 +1010,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1059,7 +1059,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1163,7 +1163,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1210,7 +1210,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.SecurityPolicy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1310,7 +1310,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1359,7 +1359,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.SecurityPolicyRule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1490,7 +1490,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1540,7 +1540,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1638,7 +1638,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1685,7 +1685,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.SecurityPolicyList.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1816,7 +1816,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1866,7 +1866,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1995,7 +1995,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2045,7 +2045,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2169,7 +2169,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2218,7 +2218,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2347,7 +2347,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2397,7 +2397,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             ):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

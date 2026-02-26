@@ -2566,7 +2566,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2620,7 +2620,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = adaptive_mt.AdaptiveMtTranslateResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2724,7 +2724,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2774,7 +2774,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2878,7 +2878,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2928,7 +2928,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3031,7 +3031,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3083,7 +3083,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = adaptive_mt.AdaptiveMtDataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3185,7 +3185,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3233,7 +3233,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3335,7 +3335,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3383,7 +3383,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3487,7 +3487,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3539,7 +3539,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.GlossaryEntry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3641,7 +3641,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3689,7 +3689,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3783,7 +3783,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3893,7 +3893,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4007,7 +4007,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4054,7 +4054,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4151,7 +4151,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4198,7 +4198,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4291,7 +4291,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4405,7 +4405,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4452,7 +4452,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4554,7 +4554,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4606,7 +4606,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = (
                         translation_service.DetectLanguageResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4709,7 +4709,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4757,7 +4757,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4854,7 +4854,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4905,7 +4905,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = adaptive_mt.AdaptiveMtDataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5002,7 +5002,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5051,7 +5051,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = adaptive_mt.AdaptiveMtFile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5149,7 +5149,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5198,7 +5198,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = automl_translation.Dataset.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5294,7 +5294,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5343,7 +5343,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = translation_service.Glossary.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5442,7 +5442,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5491,7 +5491,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.GlossaryEntry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5586,7 +5586,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5635,7 +5635,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = automl_translation.Model.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5734,7 +5734,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5787,7 +5787,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = translation_service.SupportedLanguages.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5892,7 +5892,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5946,7 +5946,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = adaptive_mt.ImportAdaptiveMtFileResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6049,7 +6049,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6097,7 +6097,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6195,7 +6195,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6248,7 +6248,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = (
                         adaptive_mt.ListAdaptiveMtDatasetsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6347,7 +6347,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6400,7 +6400,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = adaptive_mt.ListAdaptiveMtFilesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6498,7 +6498,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6551,7 +6551,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = (
                         adaptive_mt.ListAdaptiveMtSentencesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6645,7 +6645,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6696,7 +6696,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = automl_translation.ListDatasetsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6790,7 +6790,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6841,7 +6841,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = automl_translation.ListExamplesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6935,7 +6935,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6986,7 +6986,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = (
                         translation_service.ListGlossariesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7085,7 +7085,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7140,7 +7140,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7235,7 +7235,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7286,7 +7286,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = automl_translation.ListModelsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7388,7 +7388,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7440,7 +7440,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = translation_service.RomanizeTextResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7543,7 +7543,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7595,7 +7595,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = (
                         translation_service.TranslateDocumentResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7695,7 +7695,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7747,7 +7747,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     response_payload = (
                         translation_service.TranslateTextResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7850,7 +7850,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7898,7 +7898,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8002,7 +8002,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8054,7 +8054,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.GlossaryEntry.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8529,7 +8529,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8571,7 +8571,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8668,7 +8668,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8710,7 +8710,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8811,7 +8811,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8925,7 +8925,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9039,7 +9039,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9081,7 +9081,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9178,7 +9178,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9220,7 +9220,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9322,7 +9322,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9365,7 +9365,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

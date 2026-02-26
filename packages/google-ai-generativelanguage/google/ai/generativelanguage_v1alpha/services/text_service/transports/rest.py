@@ -533,7 +533,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -585,7 +585,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                     response_payload = text_service.BatchEmbedTextResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -695,7 +695,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -747,7 +747,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                     response_payload = text_service.CountTextTokensResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -850,7 +850,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -900,7 +900,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = text_service.EmbedTextResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1009,7 +1009,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1061,7 +1061,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                     response_payload = text_service.GenerateTextResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1201,7 +1201,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1243,7 +1243,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1341,7 +1341,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1383,7 +1383,7 @@ class TextServiceRestTransport(_BaseTextServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

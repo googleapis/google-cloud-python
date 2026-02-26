@@ -403,7 +403,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -459,7 +459,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                     response_payload = prediction_apikey_registry_service.PredictionApiKeyRegistration.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -557,7 +557,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -678,7 +678,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -733,7 +733,7 @@ class PredictionApiKeyRegistryRestTransport(_BasePredictionApiKeyRegistryRestTra
                     response_payload = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

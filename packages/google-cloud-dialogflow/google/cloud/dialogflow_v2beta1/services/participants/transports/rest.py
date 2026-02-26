@@ -1014,7 +1014,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1066,7 +1066,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = gcd_participant.AnalyzeContentResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1188,7 +1188,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1240,7 +1240,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = participant.CompileSuggestionResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1343,7 +1343,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1393,7 +1393,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_participant.Participant.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1491,7 +1491,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1540,7 +1540,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = participant.Participant.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1640,7 +1640,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1691,7 +1691,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = participant.ListParticipantsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1791,7 +1791,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1842,7 +1842,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = participant.ListSuggestionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1966,7 +1966,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2018,7 +2018,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = participant.SuggestArticlesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2121,7 +2121,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2173,7 +2173,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = participant.SuggestFaqAnswersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2276,7 +2276,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2328,7 +2328,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = (
                         participant.SuggestKnowledgeAssistResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2431,7 +2431,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2483,7 +2483,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     response_payload = participant.SuggestSmartRepliesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2586,7 +2586,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2636,7 +2636,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcd_participant.Participant.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2876,7 +2876,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2918,7 +2918,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3016,7 +3016,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3058,7 +3058,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3155,7 +3155,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3272,7 +3272,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3314,7 +3314,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3412,7 +3412,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3454,7 +3454,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

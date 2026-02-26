@@ -845,7 +845,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -897,7 +897,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     response_payload = delivery_api.BatchCreateTasksResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1010,7 +1010,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1064,7 +1064,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     response_payload = delivery_vehicles.DeliveryVehicle.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1180,7 +1180,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1230,7 +1230,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1323,7 +1323,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1431,7 +1431,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1554,7 +1554,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1605,7 +1605,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     response_payload = delivery_vehicles.DeliveryVehicle.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1720,7 +1720,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1769,7 +1769,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1870,7 +1870,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1921,7 +1921,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     response_payload = task_tracking_info.TaskTrackingInfo.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2017,7 +2017,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2068,7 +2068,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     response_payload = (
                         delivery_api.ListDeliveryVehiclesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2168,7 +2168,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2217,7 +2217,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = delivery_api.ListTasksResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2330,7 +2330,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2384,7 +2384,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     response_payload = delivery_vehicles.DeliveryVehicle.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2500,7 +2500,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2550,7 +2550,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tasks.Task.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

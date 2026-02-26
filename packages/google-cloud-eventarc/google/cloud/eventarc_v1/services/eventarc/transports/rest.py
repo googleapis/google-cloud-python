@@ -2711,7 +2711,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2759,7 +2759,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2863,7 +2863,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2911,7 +2911,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3021,7 +3021,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3069,7 +3069,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3173,7 +3173,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3221,7 +3221,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3331,7 +3331,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3379,7 +3379,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3489,7 +3489,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3537,7 +3537,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3645,7 +3645,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3693,7 +3693,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3796,7 +3796,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3843,7 +3843,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3942,7 +3942,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3989,7 +3989,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4092,7 +4092,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4139,7 +4139,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4238,7 +4238,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4285,7 +4285,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4388,7 +4388,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4435,7 +4435,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4538,7 +4538,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4585,7 +4585,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4688,7 +4688,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4735,7 +4735,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4841,7 +4841,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4890,7 +4890,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = channel.Channel.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4995,7 +4995,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5046,7 +5046,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = channel_connection.ChannelConnection.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5152,7 +5152,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5201,7 +5201,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = enrollment.Enrollment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5302,7 +5302,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5353,7 +5353,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = google_api_source.GoogleApiSource.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5457,7 +5457,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5508,7 +5508,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = (
                         google_channel_config.GoogleChannelConfig.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5616,7 +5616,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5665,7 +5665,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = message_bus.MessageBus.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5765,7 +5765,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5814,7 +5814,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = pipeline.Pipeline.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5914,7 +5914,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5963,7 +5963,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = discovery.Provider.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6063,7 +6063,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6112,7 +6112,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = trigger.Trigger.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6210,7 +6210,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6261,7 +6261,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = eventarc.ListChannelConnectionsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6359,7 +6359,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6408,7 +6408,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListChannelsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6510,7 +6510,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6561,7 +6561,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = eventarc.ListEnrollmentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6661,7 +6661,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6712,7 +6712,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = eventarc.ListGoogleApiSourcesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6811,7 +6811,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6862,7 +6862,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = (
                         eventarc.ListMessageBusEnrollmentsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6964,7 +6964,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7015,7 +7015,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = eventarc.ListMessageBusesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7117,7 +7117,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7166,7 +7166,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListPipelinesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7266,7 +7266,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7315,7 +7315,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListProvidersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7413,7 +7413,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7462,7 +7462,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListTriggersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7570,7 +7570,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7618,7 +7618,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7728,7 +7728,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7776,7 +7776,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7880,7 +7880,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7928,7 +7928,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8038,7 +8038,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8090,7 +8090,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = (
                         gce_google_channel_config.GoogleChannelConfig.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8200,7 +8200,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8248,7 +8248,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8358,7 +8358,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8406,7 +8406,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8514,7 +8514,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8562,7 +8562,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9002,7 +9002,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9044,7 +9044,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9146,7 +9146,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9188,7 +9188,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9288,7 +9288,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9330,7 +9330,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9435,7 +9435,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9478,7 +9478,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9583,7 +9583,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9626,7 +9626,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9734,7 +9734,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9853,7 +9853,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9970,7 +9970,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10012,7 +10012,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10114,7 +10114,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10156,7 +10156,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

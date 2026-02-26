@@ -1339,7 +1339,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1389,7 +1389,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1494,7 +1494,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1544,7 +1544,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1648,7 +1648,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1698,7 +1698,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1797,7 +1797,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1846,7 +1846,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1946,7 +1946,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1995,7 +1995,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2094,7 +2094,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2143,7 +2143,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2251,7 +2251,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2300,7 +2300,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = data_taxonomy.DataAttribute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2401,7 +2401,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2454,7 +2454,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     response_payload = data_taxonomy.DataAttributeBinding.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2556,7 +2556,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2605,7 +2605,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = data_taxonomy.DataTaxonomy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2702,7 +2702,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2755,7 +2755,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2851,7 +2851,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2904,7 +2904,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     response_payload = data_taxonomy.ListDataAttributesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3000,7 +3000,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3053,7 +3053,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     response_payload = data_taxonomy.ListDataTaxonomiesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3157,7 +3157,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3207,7 +3207,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3312,7 +3312,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3362,7 +3362,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3466,7 +3466,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3516,7 +3516,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3765,7 +3765,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3807,7 +3807,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3904,7 +3904,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3946,7 +3946,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4047,7 +4047,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4161,7 +4161,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4275,7 +4275,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4317,7 +4317,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4414,7 +4414,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4456,7 +4456,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

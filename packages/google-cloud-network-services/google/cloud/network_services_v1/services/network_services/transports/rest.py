@@ -3818,7 +3818,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3866,7 +3866,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3970,7 +3970,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4018,7 +4018,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4122,7 +4122,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4170,7 +4170,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4273,7 +4273,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4321,7 +4321,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4425,7 +4425,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4473,7 +4473,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4578,7 +4578,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4626,7 +4626,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4731,7 +4731,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4781,7 +4781,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4884,7 +4884,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4932,7 +4932,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5035,7 +5035,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5083,7 +5083,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5186,7 +5186,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5234,7 +5234,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5339,7 +5339,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5389,7 +5389,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5489,7 +5489,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5536,7 +5536,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5635,7 +5635,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5682,7 +5682,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5781,7 +5781,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5828,7 +5828,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5927,7 +5927,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5974,7 +5974,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6073,7 +6073,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6120,7 +6120,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6220,7 +6220,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6267,7 +6267,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6367,7 +6367,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6416,7 +6416,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6515,7 +6515,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6562,7 +6562,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6661,7 +6661,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6708,7 +6708,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6806,7 +6806,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6853,7 +6853,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6953,7 +6953,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7002,7 +7002,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7105,7 +7105,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7154,7 +7154,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = endpoint_policy.EndpointPolicy.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7258,7 +7258,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7307,7 +7307,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gateway.Gateway.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7406,7 +7406,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7455,7 +7455,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = route_view.GatewayRouteView.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7554,7 +7554,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7603,7 +7603,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = grpc_route.GrpcRoute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7702,7 +7702,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7751,7 +7751,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = http_route.HttpRoute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -7856,7 +7856,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -7905,7 +7905,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = mesh.Mesh.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8003,7 +8003,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8052,7 +8052,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = route_view.MeshRouteView.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8161,7 +8161,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8210,7 +8210,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service_binding.ServiceBinding.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8311,7 +8311,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8362,7 +8362,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = service_lb_policy.ServiceLbPolicy.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8461,7 +8461,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8510,7 +8510,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tcp_route.TcpRoute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8609,7 +8609,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8658,7 +8658,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tls_route.TlsRoute.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8755,7 +8755,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8804,7 +8804,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = extensibility.WasmPlugin.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -8903,7 +8903,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -8952,7 +8952,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = extensibility.WasmPluginVersion.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9051,7 +9051,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9102,7 +9102,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = (
                         endpoint_policy.ListEndpointPoliciesResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9201,7 +9201,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9254,7 +9254,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = route_view.ListGatewayRouteViewsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9352,7 +9352,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9401,7 +9401,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gateway.ListGatewaysResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9499,7 +9499,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9550,7 +9550,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = grpc_route.ListGrpcRoutesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9648,7 +9648,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9699,7 +9699,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = http_route.ListHttpRoutesResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9797,7 +9797,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9846,7 +9846,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = mesh.ListMeshesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -9945,7 +9945,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -9996,7 +9996,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = route_view.ListMeshRouteViewsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10095,7 +10095,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10146,7 +10146,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = (
                         service_binding.ListServiceBindingsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10245,7 +10245,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10300,7 +10300,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10398,7 +10398,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10447,7 +10447,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tcp_route.ListTcpRoutesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10545,7 +10545,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10594,7 +10594,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tls_route.ListTlsRoutesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10689,7 +10689,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10740,7 +10740,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = extensibility.ListWasmPluginsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10838,7 +10838,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -10891,7 +10891,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     response_payload = (
                         extensibility.ListWasmPluginVersionsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -10996,7 +10996,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11044,7 +11044,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11148,7 +11148,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11196,7 +11196,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11300,7 +11300,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11348,7 +11348,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11452,7 +11452,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11500,7 +11500,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11604,7 +11604,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11652,7 +11652,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11757,7 +11757,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11805,7 +11805,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -11910,7 +11910,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -11960,7 +11960,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12064,7 +12064,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12112,7 +12112,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12216,7 +12216,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12264,7 +12264,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -12367,7 +12367,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -12415,7 +12415,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13032,7 +13032,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13074,7 +13074,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13172,7 +13172,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13214,7 +13214,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13312,7 +13312,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13354,7 +13354,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13457,7 +13457,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13500,7 +13500,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13604,7 +13604,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13647,7 +13647,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -13747,7 +13747,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13860,7 +13860,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -13975,7 +13975,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14017,7 +14017,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -14113,7 +14113,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -14155,7 +14155,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

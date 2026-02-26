@@ -1883,7 +1883,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1935,7 +1935,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2042,7 +2042,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2090,7 +2090,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2199,7 +2199,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2247,7 +2247,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2356,7 +2356,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2404,7 +2404,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2505,7 +2505,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2556,7 +2556,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2656,7 +2656,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2703,7 +2703,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2805,7 +2805,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2852,7 +2852,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2954,7 +2954,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3001,7 +3001,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3101,7 +3101,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3152,7 +3152,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     response_payload = service.DiagnoseInterconnectResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3253,7 +3253,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3302,7 +3302,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.DiagnoseNetworkResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3400,7 +3400,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3449,7 +3449,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.DiagnoseRouterResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3548,7 +3548,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3597,7 +3597,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Interconnect.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3697,7 +3697,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3750,7 +3750,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     response_payload = resources.InterconnectAttachment.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3849,7 +3849,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3898,7 +3898,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Network.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3995,7 +3995,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4044,7 +4044,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Router.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4141,7 +4141,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4190,7 +4190,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Subnet.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4288,7 +4288,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4337,7 +4337,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = resources.Zone.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4438,7 +4438,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4488,7 +4488,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.InitializeZoneResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4588,7 +4588,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4643,7 +4643,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     response_payload = (
                         service.ListInterconnectAttachmentsResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4743,7 +4743,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4794,7 +4794,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     response_payload = service.ListInterconnectsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4896,7 +4896,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4945,7 +4945,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListNetworksResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5047,7 +5047,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5096,7 +5096,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListRoutersResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5198,7 +5198,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5247,7 +5247,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSubnetsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5347,7 +5347,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5396,7 +5396,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = service.ListZonesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5505,7 +5505,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5553,7 +5553,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5662,7 +5662,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5710,7 +5710,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6033,7 +6033,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6075,7 +6075,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6175,7 +6175,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6217,7 +6217,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6319,7 +6319,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6434,7 +6434,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6553,7 +6553,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6595,7 +6595,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -6693,7 +6693,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -6735,7 +6735,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

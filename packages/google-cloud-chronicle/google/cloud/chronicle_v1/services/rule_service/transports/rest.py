@@ -1009,7 +1009,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1057,7 +1057,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1164,7 +1164,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1214,7 +1214,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcc_rule.Rule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1310,7 +1310,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1427,7 +1427,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1476,7 +1476,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule.Retrohunt.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1575,7 +1575,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1624,7 +1624,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule.Rule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1725,7 +1725,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1774,7 +1774,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule.RuleDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1872,7 +1872,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1921,7 +1921,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule.ListRetrohuntsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2019,7 +2019,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2070,7 +2070,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                     response_payload = rule.ListRuleDeploymentsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2170,7 +2170,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2219,7 +2219,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule.ListRuleRevisionsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2318,7 +2318,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2367,7 +2367,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule.ListRulesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2474,7 +2474,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2524,7 +2524,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = gcc_rule.Rule.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2628,7 +2628,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2678,7 +2678,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = rule.RuleDeployment.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2864,7 +2864,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2979,7 +2979,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3098,7 +3098,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3140,7 +3140,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3238,7 +3238,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3280,7 +3280,7 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

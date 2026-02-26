@@ -1500,7 +1500,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1548,7 +1548,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1652,7 +1652,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1700,7 +1700,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1804,7 +1804,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1852,7 +1852,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1951,7 +1951,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1998,7 +1998,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2097,7 +2097,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2144,7 +2144,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2243,7 +2243,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2290,7 +2290,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2390,7 +2390,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2443,7 +2443,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     response_payload = (
                         azure_service.GenerateAzureAccessTokenResponse.to_json(response)
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2547,7 +2547,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2603,7 +2603,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                             response
                         )
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2717,7 +2717,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2766,7 +2766,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = azure_resources.AzureClient.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2864,7 +2864,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2913,7 +2913,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = azure_resources.AzureCluster.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3014,7 +3014,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3065,7 +3065,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     response_payload = azure_resources.AzureJsonWebKeys.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3161,7 +3161,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3210,7 +3210,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = azure_resources.AzureNodePool.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3312,7 +3312,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3363,7 +3363,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     response_payload = azure_resources.AzureOpenIdConfig.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3463,7 +3463,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3514,7 +3514,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     response_payload = azure_resources.AzureServerConfig.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3612,7 +3612,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3663,7 +3663,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     response_payload = azure_service.ListAzureClientsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3761,7 +3761,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3812,7 +3812,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     response_payload = azure_service.ListAzureClustersResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3910,7 +3910,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3961,7 +3961,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                     response_payload = azure_service.ListAzureNodePoolsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4065,7 +4065,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4113,7 +4113,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4217,7 +4217,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4265,7 +4265,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4545,7 +4545,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4660,7 +4660,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4775,7 +4775,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4817,7 +4817,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4915,7 +4915,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4957,7 +4957,7 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

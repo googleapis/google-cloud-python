@@ -821,7 +821,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -871,7 +871,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.BatchCreateRowsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -970,7 +970,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1091,7 +1091,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1141,7 +1141,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.BatchUpdateRowsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1248,7 +1248,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1298,7 +1298,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.Row.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1394,7 +1394,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1507,7 +1507,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1556,7 +1556,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.Row.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1656,7 +1656,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1705,7 +1705,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.Table.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1801,7 +1801,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1850,7 +1850,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.Workspace.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1952,7 +1952,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2001,7 +2001,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.ListRowsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2103,7 +2103,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2152,7 +2152,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.ListTablesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2250,7 +2250,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2299,7 +2299,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.ListWorkspacesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2406,7 +2406,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2456,7 +2456,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = tables.Row.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

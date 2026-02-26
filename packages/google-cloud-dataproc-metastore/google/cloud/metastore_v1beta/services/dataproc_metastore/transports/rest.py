@@ -1597,7 +1597,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1647,7 +1647,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1749,7 +1749,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1797,7 +1797,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1902,7 +1902,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1952,7 +1952,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2055,7 +2055,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2103,7 +2103,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2200,7 +2200,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2247,7 +2247,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2345,7 +2345,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2392,7 +2392,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2495,7 +2495,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2543,7 +2543,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2639,7 +2639,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2688,7 +2688,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Backup.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2787,7 +2787,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2836,7 +2836,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.MetadataImport.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -2934,7 +2934,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -2983,7 +2983,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Service.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3081,7 +3081,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3130,7 +3130,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListBackupsResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3229,7 +3229,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3282,7 +3282,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     response_payload = metastore.ListMetadataImportsResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3378,7 +3378,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3427,7 +3427,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListServicesResponse.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3532,7 +3532,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3582,7 +3582,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3685,7 +3685,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3733,7 +3733,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3837,7 +3837,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -3889,7 +3889,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     response_payload = metastore.RemoveIamPolicyResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -3991,7 +3991,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4039,7 +4039,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4144,7 +4144,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4194,7 +4194,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4297,7 +4297,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4345,7 +4345,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4599,7 +4599,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4641,7 +4641,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4738,7 +4738,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4780,7 +4780,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -4876,7 +4876,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -4918,7 +4918,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5019,7 +5019,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5062,7 +5062,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5166,7 +5166,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5209,7 +5209,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5310,7 +5310,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5424,7 +5424,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5537,7 +5537,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5579,7 +5579,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -5676,7 +5676,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -5718,7 +5718,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,

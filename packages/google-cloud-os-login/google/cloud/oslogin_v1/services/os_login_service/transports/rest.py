@@ -571,7 +571,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -621,7 +621,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.SshPublicKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -713,7 +713,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -820,7 +820,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -934,7 +934,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -983,7 +983,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = oslogin.LoginProfile.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1081,7 +1081,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1130,7 +1130,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.SshPublicKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1233,7 +1233,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1285,7 +1285,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                     response_payload = oslogin.ImportSshPublicKeyResponse.to_json(
                         response
                     )
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
@@ -1388,7 +1388,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
-                except:
+                except Exception:
                     request_payload = None
                 http_request = {
                     "payload": request_payload,
@@ -1438,7 +1438,7 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             ):  # pragma: NO COVER
                 try:
                     response_payload = common.SshPublicKey.to_json(response)
-                except:
+                except Exception:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
