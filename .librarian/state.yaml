@@ -1340,6 +1340,58 @@ libraries:
     remove_regex:
       - packages/google-cloud-dataproc-metastore/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-datastore
+    version: 2.23.0
+    last_generated_commit: ce8678a96c8e1fc0d870d80fcf062e5be2b12877
+    apis:
+      - path: google/datastore/admin/v1
+        service_config: datastore_v1.yaml
+      - path: google/datastore/v1
+        service_config: datastore_v1.yaml
+    source_roots:
+      - packages/google-cloud-datastore
+    preserve_regex:
+      - packages/google-cloud-datastore/CHANGELOG.md
+      - docs/CHANGELOG.md
+    remove_regex:
+      - ^packages/google-cloud-datastore/.coveragerc
+      - ^packages/google-cloud-datastore/.flake8
+      - ^packages/google-cloud-datastore/.repo-metadata.json
+      - ^packages/google-cloud-datastore/LICENSE
+      - ^packages/google-cloud-datastore/MANIFEST.in
+      - ^packages/google-cloud-datastore/README.rst
+      - ^packages/google-cloud-datastore/mypy.ini
+      - ^packages/google-cloud-datastore/noxfile.py
+      - ^packages/google-cloud-datastore/setup.py
+      - ^packages/google-cloud-datastore/docs/conf.py
+      - ^packages/google-cloud-datastore/docs/index.rst
+      - ^packages/google-cloud-datastore/docs/summary_overview.md
+      - ^packages/google-cloud-datastore/docs/README.rst
+      - ^packages/google-cloud-datastore/docs/_static/custom.css
+      - ^packages/google-cloud-datastore/docs/_templates
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/__init__.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/gapic_metadata.json
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/gapic_version.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/py.typed
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/services
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/types
+      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/__init__.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/gapic_metadata.json
+      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/gapic_version.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/py.typed
+      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/services
+      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/types
+      - ^packages/google-cloud-datastore/google/cloud/datastore/__init__.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore/gapic_version.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore/py.typed
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin/__init__.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin/gapic_version.py
+      - ^packages/google-cloud-datastore/google/cloud/datastore_admin/py.typed
+      - ^packages/google-cloud-datastore/testing
+      - ^packages/google-cloud-datastore/tests/__init__.py
+      - ^packages/google-cloud-datastore/tests/unit/__init__.py
+      - ^packages/google-cloud-datastore/tests/unit/gapic
+    tag_format: '{id}-v{version}'
   - id: google-cloud-datastream
     version: 1.17.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
@@ -3757,56 +3809,4 @@ libraries:
       - packages/proto-plus
     preserve_regex: []
     remove_regex: []
-    tag_format: '{id}-v{version}'
-  - id: google-cloud-datastore
-    version: 2.23.0
-    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
-    apis:
-      - path: google/datastore/admin/v1
-        service_config: datastore_v1.yaml
-      - path: google/datastore/v1
-        service_config: datastore_v1.yaml
-    source_roots:
-      - packages/google-cloud-datastore
-    preserve_regex:
-      - packages/google-cloud-datastore/CHANGELOG.md
-      - docs/CHANGELOG.md
-    remove_regex:
-      - ^packages/google-cloud-datastore/.coveragerc
-      - ^packages/google-cloud-datastore/.flake8
-      - ^packages/google-cloud-datastore/.repo-metadata.json
-      - ^packages/google-cloud-datastore/LICENSE
-      - ^packages/google-cloud-datastore/MANIFEST.in
-      - ^packages/google-cloud-datastore/README.rst
-      - ^packages/google-cloud-datastore/mypy.ini
-      - ^packages/google-cloud-datastore/noxfile.py
-      - ^packages/google-cloud-datastore/setup.py
-      - ^packages/google-cloud-datastore/docs/conf.py
-      - ^packages/google-cloud-datastore/docs/index.rst
-      - ^packages/google-cloud-datastore/docs/summary_overview.md
-      - ^packages/google-cloud-datastore/docs/README.rst
-      - ^packages/google-cloud-datastore/docs/_static/custom.css
-      - ^packages/google-cloud-datastore/docs/_templates
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/__init__.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/gapic_metadata.json
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/gapic_version.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/py.typed
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/services
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/types
-      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/__init__.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/gapic_metadata.json
-      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/gapic_version.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/py.typed
-      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/services
-      - ^packages/google-cloud-datastore/google/cloud/datastore_v1/types
-      - ^packages/google-cloud-datastore/google/cloud/datastore/__init__.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore/gapic_version.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore/py.typed
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin/__init__.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin/gapic_version.py
-      - ^packages/google-cloud-datastore/google/cloud/datastore_admin/py.typed
-      - ^packages/google-cloud-datastore/testing
-      - ^packages/google-cloud-datastore/tests/__init__.py
-      - ^packages/google-cloud-datastore/tests/unit/__init__.py
-      - ^packages/google-cloud-datastore/tests/unit/gapic
     tag_format: '{id}-v{version}'
