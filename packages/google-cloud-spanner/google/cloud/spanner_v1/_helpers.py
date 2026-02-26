@@ -868,3 +868,65 @@ def _merge_Transaction_Options(
 
     # Convert protobuf object back into a TransactionOptions instance
     return TransactionOptions(merged_pb)
+
+
+def _create_experimental_host_transport(
+    transport_factory,
+    experimental_host,
+    use_plain_text,
+    ca_certificate,
+    client_certificate,
+    client_key,
+    interceptors=None,
+):
+    """Creates an experimental host transport for Spanner.
+
+    Args:
+        transport_factory (type): The transport class to instantiate (e.g.
+            `SpannerGrpcTransport`).
+        experimental_host (str): The endpoint for the experimental host.
+        use_plain_text (bool): Whether to use a plain text (insecure) connection.
+        ca_certificate (str): Path to the CA certificate file for TLS.
+        client_certificate (str): Path to the client certificate file for mTLS.
+        client_key (str): Path to the client key file for mTLS.
+        interceptors (list): Optional list of interceptors to add to the channel.
+
+    Returns:
+        object: An instance of the transport class created by `transport_factory`.
+
+    Raises:
+        ValueError: If TLS/mTLS configuration is invalid.
+    """
+    import grpc
+    from google.auth.credentials import AnonymousCredentials
+
+    channel = None
+    if use_plain_text:
+        channel = grpc.insecure_channel(target=experimental_host)
+    elif ca_certificate:
+        with open(ca_certificate, "rb") as f:
+            ca_cert = f.read()
+        if client_certificate and client_key:
+            with open(client_certificate, "rb") as f:
+                client_cert = f.read()
+            with open(client_key, "rb") as f:
+                private_key = f.read()
+            ssl_creds = grpc.ssl_channel_credentials(
+                root_certificates=ca_cert,
+                private_key=private_key,
+                certificate_chain=client_cert,
+            )
+        elif client_certificate or client_key:
+            raise ValueError(
+                "Both client_certificate and client_key must be provided for mTLS connection"
+            )
+        else:
+            ssl_creds = grpc.ssl_channel_credentials(root_certificates=ca_cert)
+        channel = grpc.secure_channel(experimental_host, ssl_creds)
+    else:
+        raise ValueError(
+            "TLS/mTLS connection requires ca_certificate to be set for experimental_host"
+        )
+    if interceptors is not None:
+        channel = grpc.intercept_channel(channel, *interceptors)
+    return transport_factory(channel=channel, credentials=AnonymousCredentials())

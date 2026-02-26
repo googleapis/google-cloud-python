@@ -17,6 +17,7 @@ from google.api_core import grpc_helpers
 import google.auth.credentials
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1 import SpannerClient
+from google.cloud.spanner_v1._helpers import _create_experimental_host_transport
 from google.cloud.spanner_v1.database import Database, SPANNER_DATA_SCOPE
 from google.cloud.spanner_v1.services.spanner.transports import (
     SpannerGrpcTransport,
@@ -86,12 +87,18 @@ class TestDatabase(Database):
                     transport=transport,
                 )
                 return self._spanner_api
-            if self._instance.experimental_host is not None:
-                channel = grpc.insecure_channel(self._instance.experimental_host)
+            if self._experimental_host is not None:
                 self._x_goog_request_id_interceptor = XGoogRequestIDHeaderInterceptor()
                 self._interceptors.append(self._x_goog_request_id_interceptor)
-                channel = grpc.intercept_channel(channel, *self._interceptors)
-                transport = SpannerGrpcTransport(channel=channel)
+                transport = _create_experimental_host_transport(
+                    SpannerGrpcTransport,
+                    self._experimental_host,
+                    self._instance._client._use_plain_text,
+                    self._instance._client._ca_certificate,
+                    self._instance._client._client_certificate,
+                    self._instance._client._client_key,
+                    self._interceptors,
+                )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,
                     transport=transport,

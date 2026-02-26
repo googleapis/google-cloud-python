@@ -1442,6 +1442,10 @@ class TestDbApi:
             experimental_host=_helpers.EXPERIMENTAL_HOST
             if _helpers.USE_EXPERIMENTAL_HOST
             else None,
+            use_plain_text=_helpers.USE_PLAIN_TEXT,
+            ca_certificate=_helpers.CA_CERTIFICATE,
+            client_certificate=_helpers.CLIENT_CERTIFICATE,
+            client_key=_helpers.CLIENT_KEY,
         )
         assert (
             conn.instance._client._client_info.user_agent

@@ -736,6 +736,10 @@ def connect(
     route_to_leader_enabled=True,
     database_role=None,
     experimental_host=None,
+    use_plain_text=False,
+    ca_certificate=None,
+    client_certificate=None,
+    client_key=None,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -789,6 +793,28 @@ def connect(
     :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
     :returns: Connection object associated with the given Google Cloud Spanner
               resource.
+
+    :type experimental_host: str
+    :param experimental_host: (Optional) The endpoint for a spanner experimental host deployment.
+        This is intended only for experimental host spanner endpoints.
+
+    :type use_plain_text: bool
+    :param use_plain_text: (Optional) Whether to use plain text for the connection.
+        This is intended only for experimental host spanner endpoints.
+        If not set, the default behavior is to use TLS.
+
+    :type ca_certificate: str
+    :param ca_certificate: (Optional) The path to the CA certificate file used for TLS connection.
+        This is intended only for experimental host spanner endpoints.
+        This is mandatory if the experimental_host requires a TLS connection.
+    :type client_certificate: str
+    :param client_certificate: (Optional) The path to the client certificate file used for mTLS connection.
+        This is intended only for experimental host spanner endpoints.
+        This is mandatory if the experimental_host requires an mTLS connection.
+    :type client_key: str
+    :param client_key: (Optional) The path to the client key file used for mTLS connection.
+        This is intended only for experimental host spanner endpoints.
+        This is mandatory if the experimental_host requires an mTLS connection.
     """
     if client is None:
         client_info = ClientInfo(
@@ -817,6 +843,10 @@ def connect(
                 client_info=client_info,
                 route_to_leader_enabled=route_to_leader_enabled,
                 client_options=client_options,
+                use_plain_text=use_plain_text,
+                ca_certificate=ca_certificate,
+                client_certificate=client_certificate,
+                client_key=client_key,
             )
     else:
         if project is not None and client.project != project:

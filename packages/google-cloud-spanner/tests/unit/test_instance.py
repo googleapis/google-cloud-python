@@ -1023,6 +1023,7 @@ class _Client(object):
         self.route_to_leader_enabled = True
         self.directed_read_options = None
         self.default_transaction_options = DefaultTransactionOptions()
+        self._experimental_host = None
 
     def copy(self):
         from copy import deepcopy

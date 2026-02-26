@@ -122,7 +122,6 @@ class Instance(object):
         emulator_host=None,
         labels=None,
         processing_units=None,
-        experimental_host=None,
     ):
         self.instance_id = instance_id
         self._client = client
@@ -143,7 +142,6 @@ class Instance(object):
             self._node_count = processing_units // PROCESSING_UNITS_PER_NODE
         self.display_name = display_name or instance_id
         self.emulator_host = emulator_host
-        self.experimental_host = experimental_host
         if labels is None:
             labels = {}
         self.labels = labels

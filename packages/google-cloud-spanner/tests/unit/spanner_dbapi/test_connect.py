@@ -55,6 +55,10 @@ class Test_connect(unittest.TestCase):
             client_info=mock.ANY,
             client_options=mock.ANY,
             route_to_leader_enabled=True,
+            use_plain_text=False,
+            ca_certificate=None,
+            client_certificate=None,
+            client_key=None,
         )
 
         self.assertIs(connection.database, database)
@@ -97,6 +101,10 @@ class Test_connect(unittest.TestCase):
             client_info=mock.ANY,
             client_options=mock.ANY,
             route_to_leader_enabled=False,
+            use_plain_text=False,
+            ca_certificate=None,
+            client_certificate=None,
+            client_key=None,
         )
         client_info = mock_client.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)
