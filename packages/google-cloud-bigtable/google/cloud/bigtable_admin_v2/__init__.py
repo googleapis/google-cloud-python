@@ -150,6 +150,8 @@ from .types.table import RestoreInfo
 from .types.table import SchemaBundle
 from .types.table import Snapshot
 from .types.table import Table
+from .types.table import TieredStorageConfig
+from .types.table import TieredStorageRule
 from .types.table import RestoreSourceType
 from .types.types import Type
 
@@ -353,6 +355,8 @@ __all__ = (
     "StandardReadRemoteWrites",
     "StorageType",
     "Table",
+    "TieredStorageConfig",
+    "TieredStorageRule",
     "Type",
     "UndeleteTableMetadata",
     "UndeleteTableRequest",

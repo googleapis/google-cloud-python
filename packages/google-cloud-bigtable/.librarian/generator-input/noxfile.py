@@ -59,7 +59,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.14"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.10", "3.14"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -79,7 +79,6 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",
@@ -513,6 +512,7 @@ def prerelease_deps(session, protobuf_implementation):
     # Remaining dependencies
     other_deps = [
         "requests",
+        "cryptography",
     ]
     session.install(*other_deps)
 

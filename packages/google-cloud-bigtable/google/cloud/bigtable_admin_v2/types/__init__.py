@@ -139,6 +139,8 @@ from .table import (
     SchemaBundle,
     Snapshot,
     Table,
+    TieredStorageConfig,
+    TieredStorageRule,
     RestoreSourceType,
 )
 from .types import (
@@ -263,6 +265,8 @@ __all__ = (
     "SchemaBundle",
     "Snapshot",
     "Table",
+    "TieredStorageConfig",
+    "TieredStorageRule",
     "RestoreSourceType",
     "Type",
 )

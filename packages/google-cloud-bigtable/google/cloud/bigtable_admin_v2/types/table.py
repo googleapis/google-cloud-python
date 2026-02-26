@@ -40,6 +40,8 @@ __protobuf__ = proto.module(
         "Snapshot",
         "Backup",
         "BackupInfo",
+        "TieredStorageConfig",
+        "TieredStorageRule",
         "ProtoSchema",
         "SchemaBundle",
     },
@@ -166,6 +168,17 @@ class Table(proto.Message):
             disabled.
 
             This field is a member of `oneof`_ ``automated_backup_config``.
+        tiered_storage_config (google.cloud.bigtable_admin_v2.types.TieredStorageConfig):
+            Rules to specify what data is stored in each
+            storage tier. Different tiers store data
+            differently, providing different trade-offs
+            between cost and performance. Different parts of
+            a table can be stored separately on different
+            tiers.
+            If a config is specified, tiered storage is
+            enabled for this table. Otherwise, tiered
+            storage is disabled.
+            Only SSD instances can configure tiered storage.
         row_key_schema (google.cloud.bigtable_admin_v2.types.Type.Struct):
             The row key schema for this table. The schema is used to
             decode the raw row key bytes into a structured format. The
@@ -398,6 +411,11 @@ class Table(proto.Message):
         number=13,
         oneof="automated_backup_config",
         message=AutomatedBackupPolicy,
+    )
+    tiered_storage_config: "TieredStorageConfig" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="TieredStorageConfig",
     )
     row_key_schema: types.Type.Struct = proto.Field(
         proto.MESSAGE,
@@ -1025,6 +1043,50 @@ class BackupInfo(proto.Message):
     source_backup: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+
+
+class TieredStorageConfig(proto.Message):
+    r"""Config for tiered storage.
+    A valid config must have a valid TieredStorageRule. Otherwise
+    the whole TieredStorageConfig must be unset.
+    By default all data is stored in the SSD tier (only SSD
+    instances can configure tiered storage).
+
+    Attributes:
+        infrequent_access (google.cloud.bigtable_admin_v2.types.TieredStorageRule):
+            Rule to specify what data is stored in the
+            infrequent access(IA) tier. The IA tier allows
+            storing more data per node with reduced
+            performance.
+    """
+
+    infrequent_access: "TieredStorageRule" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TieredStorageRule",
+    )
+
+
+class TieredStorageRule(proto.Message):
+    r"""Rule to specify what data is stored in a storage tier.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        include_if_older_than (google.protobuf.duration_pb2.Duration):
+            Include cells older than the given age.
+            For the infrequent access tier, this value must
+            be at least 30 days.
+
+            This field is a member of `oneof`_ ``rule``.
+    """
+
+    include_if_older_than: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="rule",
+        message=duration_pb2.Duration,
     )
 
 
