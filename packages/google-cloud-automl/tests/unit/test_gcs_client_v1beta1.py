@@ -18,11 +18,11 @@
 
 import re
 
-from google.api_core import exceptions
-from google.auth.credentials import AnonymousCredentials
 import mock
 import pandas
 import pytest
+from google.api_core import exceptions
+from google.auth.credentials import AnonymousCredentials
 
 from google.cloud import automl_v1beta1
 
