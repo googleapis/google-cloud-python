@@ -65,3 +65,6 @@ pylintrc
 pylintrc.test
 dummy.pkl
 .mypy_cache/
+
+# Gemini
+GEMINI.md
