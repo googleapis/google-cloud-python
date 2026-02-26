@@ -126,10 +126,27 @@ class DisplayOptions:
         objects can still be computed with methods that explicitly execute and
         download results.
 
+    `anywidget`
+        Display as interactive widget using `anywidget` library.
+
     **Examples:**
 
         >>> import bigframes.pandas as bpd
         >>> bpd.options.display.repr_mode = "deferred"  # doctest: +SKIP
+    """
+
+    render_mode: Literal["plaintext", "html", "anywidget"] = "html"
+    """
+    Determines how to visualize a DataFrame or Series. Default "html".
+
+    `plaintext`
+        Display as plain text.
+
+    `html`
+        Display as HTML table.
+
+    `anywidget`
+        Display as interactive widget using `anywidget` library.
     """
 
     max_colwidth: Optional[int] = 50

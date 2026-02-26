@@ -43,7 +43,7 @@ def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
     # We mock _initial_load to avoid complex setup
     with mock.patch.object(TableWidget, "_initial_load"):
         with bigframes.option_context(
-            "display.repr_mode", "anywidget", "display.max_rows", 10
+            "display.render_mode", "anywidget", "display.max_rows", 10
         ):
             widget = TableWidget(mock_df)
 
@@ -130,7 +130,7 @@ def test_sorting_single_column(mock_df):
     """Test that the widget can be sorted by a single column."""
     from bigframes.display.anywidget import TableWidget
 
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         widget = TableWidget(mock_df)
 
     # Verify initial state
@@ -149,7 +149,7 @@ def test_sorting_multi_column(mock_df):
     """Test that the widget can be sorted by multiple columns."""
     from bigframes.display.anywidget import TableWidget
 
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         widget = TableWidget(mock_df)
 
     # Apply multi-column sort
@@ -165,7 +165,7 @@ def test_page_size_change_resets_sort(mock_df):
     """Test that changing the page size resets the sorting."""
     from bigframes.display.anywidget import TableWidget
 
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         widget = TableWidget(mock_df)
 
     # Set sort state

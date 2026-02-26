@@ -70,7 +70,7 @@ def table_widget(paginated_bf_df: bigframes.dataframe.DataFrame):
     from bigframes.display import TableWidget
 
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         # Delay context manager cleanup of `max_rows` until after tests finish.
         yield TableWidget(paginated_bf_df)
@@ -100,7 +100,7 @@ def small_widget(small_bf_df):
     """Helper fixture for tests using a DataFrame smaller than the page size."""
     from bigframes.display import TableWidget
 
-    with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 5):
+    with bf.option_context("display.render_mode", "anywidget", "display.max_rows", 5):
         yield TableWidget(small_bf_df)
 
 
@@ -126,7 +126,9 @@ def unknown_row_count_widget(session):
         mock_batches.return_value = blocks.PandasBatches(
             batches_iterator, total_rows=None
         )
-        with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 2):
+        with bf.option_context(
+            "display.render_mode", "anywidget", "display.max_rows", 2
+        ):
             widget = TableWidget(bf_df)
             yield widget
 
@@ -206,7 +208,7 @@ def test_widget_initialization_should_calculate_total_row_count(
     from bigframes.display import TableWidget
 
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         widget = TableWidget(paginated_bf_df)
 
@@ -316,7 +318,7 @@ def test_widget_pagination_should_work_with_custom_page_size(
 ):
     """Test that a widget paginates correctly with a custom page size."""
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 3
+        "display.render_mode", "anywidget", "display.max_rows", 3
     ):
         from bigframes.display import TableWidget
 
@@ -370,7 +372,7 @@ def test_global_options_change_should_not_affect_existing_widget_page_size(
     then the widget's page size should remain unchanged.
     """
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         from bigframes.display import TableWidget
 
@@ -395,7 +397,7 @@ def test_widget_with_empty_dataframe_should_have_zero_row_count(
     then its row_count should be 0.
     """
 
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         from bigframes.display import TableWidget
 
         widget = TableWidget(empty_bf_df)
@@ -407,28 +409,17 @@ def test_widget_with_empty_dataframe_should_render_table_headers(
     empty_bf_df: bf.dataframe.DataFrame,
 ):
     """
-
-
     Given an empty DataFrame,
-
-
     when a widget is created from it,
-
-
     then its HTML representation should still render the table headers.
-
-
     """
 
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         from bigframes.display import TableWidget
 
         widget = TableWidget(empty_bf_df)
-
         html = widget.table_html
-
         assert "<table" in html
-
         assert "id" in html  # Check for a column header
 
 
@@ -548,7 +539,7 @@ def test_widget_row_count_should_be_immutable_after_creation(
 
     # Use a context manager to ensure the option is reset
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         widget = TableWidget(paginated_bf_df)
         initial_row_count = widget.row_count
@@ -583,7 +574,7 @@ def test_widget_should_show_error_on_batch_failure(
     )
 
     # Create the TableWidget under the error condition.
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         from bigframes.display import TableWidget
 
         # The widget should handle the faulty data from the mock without crashing.
@@ -607,7 +598,7 @@ def test_widget_row_count_reflects_actual_data_available(
 
     # Set up display options that define a page size.
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         widget = TableWidget(paginated_bf_df)
 
@@ -637,7 +628,7 @@ def test_widget_with_unknown_row_count_should_auto_navigate_to_last_page(
     bf_df = session.read_pandas(test_data)
 
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         widget = TableWidget(bf_df)
 
@@ -679,7 +670,7 @@ def test_widget_with_unknown_row_count_should_set_none_state_for_frontend(
     bf_df = session.read_pandas(test_data)
 
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         widget = TableWidget(bf_df)
 
@@ -716,7 +707,7 @@ def test_widget_with_unknown_row_count_should_allow_forward_navigation(
     bf_df = session.read_pandas(test_data)
 
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         widget = TableWidget(bf_df)
         widget.row_count = None
@@ -753,7 +744,7 @@ def test_widget_with_unknown_row_count_empty_dataframe(
     empty_data = pd.DataFrame(columns=["id", "value"])
     bf_df = session.read_pandas(empty_data)
 
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         widget = TableWidget(bf_df)
         widget.row_count = None
 
@@ -906,7 +897,7 @@ def test_repr_mimebundle_should_fallback_to_html_if_anywidget_is_unavailable(
     Test that _repr_mimebundle_ falls back to static html when anywidget is not available.
     """
     with bigframes.option_context(
-        "display.repr_mode", "anywidget", "display.max_rows", 2
+        "display.render_mode", "anywidget", "display.max_rows", 2
     ):
         # Mock the ANYWIDGET_INSTALLED flag to simulate absence of anywidget
         with mock.patch("bigframes.display.anywidget._ANYWIDGET_INSTALLED", False):
@@ -925,7 +916,7 @@ def test_repr_mimebundle_should_return_widget_view_if_anywidget_is_available(
     """
     Test that _repr_mimebundle_ returns a widget view when anywidget is available.
     """
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         bundle = paginated_bf_df._repr_mimebundle_()
         assert isinstance(bundle, tuple)
         data, metadata = bundle
@@ -941,7 +932,7 @@ def test_repr_in_anywidget_mode_should_not_be_deferred(
     Test that repr(df) is not deferred in anywidget mode.
     This is to ensure that print(df) works as expected.
     """
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         representation = repr(paginated_bf_df)
         assert "Computation deferred" not in representation
         assert "page_1_row_1" in representation
@@ -952,7 +943,7 @@ def test_dataframe_repr_mimebundle_should_return_widget_with_metadata_in_anywidg
     session: bigframes.Session,  # Add session as a fixture
 ):
     """Test that _repr_mimebundle_ returns a widget view with metadata when anywidget is available."""
-    with bigframes.option_context("display.repr_mode", "anywidget"):
+    with bigframes.option_context("display.render_mode", "anywidget"):
         # Create a real DataFrame object (or a mock that behaves like one minimally)
         # for _repr_mimebundle_ to operate on.
         test_df = bigframes.dataframe.DataFrame(
@@ -1049,7 +1040,7 @@ def test_widget_with_default_index_should_display_index_column_with_empty_header
 
     from bigframes.display.anywidget import TableWidget
 
-    with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 2):
+    with bf.option_context("display.render_mode", "anywidget", "display.max_rows", 2):
         widget = TableWidget(paginated_bf_df)
         html = widget.table_html
 
@@ -1073,7 +1064,7 @@ def test_widget_with_custom_index_should_display_index_column(
     """
     from bigframes.display.anywidget import TableWidget
 
-    with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 2):
+    with bf.option_context("display.render_mode", "anywidget", "display.max_rows", 2):
         widget = TableWidget(custom_index_bf_df)
         html = widget.table_html
 
@@ -1093,7 +1084,7 @@ def test_widget_with_custom_index_pagination_preserves_index(
     """
     from bigframes.display.anywidget import TableWidget
 
-    with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 2):
+    with bf.option_context("display.render_mode", "anywidget", "display.max_rows", 2):
         widget = TableWidget(custom_index_bf_df)
 
         widget.page = 1  # Navigate to page 2
@@ -1114,7 +1105,7 @@ def test_widget_with_custom_index_matches_pandas_output(
     """
     from bigframes.display.anywidget import TableWidget
 
-    with bf.option_context("display.repr_mode", "anywidget", "display.max_rows", 3):
+    with bf.option_context("display.render_mode", "anywidget", "display.max_rows", 3):
         widget = TableWidget(custom_index_bf_df)
         html = widget.table_html
 
@@ -1135,7 +1126,7 @@ def test_series_anywidget_integration_with_notebook_display(
     """Test Series display integration in Jupyter-like environment."""
     pytest.importorskip("anywidget")
 
-    with bf.option_context("display.repr_mode", "anywidget"):
+    with bf.option_context("display.render_mode", "anywidget"):
         series = paginated_bf_df["value"]
 
         # Test the full display pipeline
@@ -1160,7 +1151,7 @@ def test_series_different_data_types_anywidget(session: bf.Session):
     )
     bf_df = session.read_pandas(test_data)
 
-    with bf.option_context("display.repr_mode", "anywidget"):
+    with bf.option_context("display.render_mode", "anywidget"):
         for col_name in test_data.columns:
             series = bf_df[col_name]
             widget = bigframes.display.TableWidget(series.to_frame())

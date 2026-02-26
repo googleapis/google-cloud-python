@@ -151,7 +151,7 @@ def test_query_job_dry_run_series(penguins_df_default_index: bf.dataframe.DataFr
 
 def test_repr_anywidget_dataframe(penguins_df_default_index: bf.dataframe.DataFrame):
     pytest.importorskip("anywidget")
-    with bf.option_context("display.repr_mode", "anywidget"):
+    with bf.option_context("display.render_mode", "anywidget"):
         actual_repr = repr(penguins_df_default_index)
         assert "species" in actual_repr
         assert "island" in actual_repr
@@ -160,7 +160,7 @@ def test_repr_anywidget_dataframe(penguins_df_default_index: bf.dataframe.DataFr
 
 def test_repr_anywidget_index(penguins_df_default_index: bf.dataframe.DataFrame):
     pytest.importorskip("anywidget")
-    with bf.option_context("display.repr_mode", "anywidget"):
+    with bf.option_context("display.render_mode", "anywidget"):
         index = penguins_df_default_index.index
         actual_repr = repr(index)
         # In non-interactive environments, should still get a useful summary.
