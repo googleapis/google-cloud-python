@@ -4,6 +4,44 @@
 
 [1]: https://pypi.org/project/google-ads-datamanager/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.4.0...google-ads-datamanager-v0.5.0) (2026-02-26)
+
+
+### Documentation
+
+* add comments to resources and methods to clarify which are available only to data partners ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* a comment for message `PairData` is changed to clarify it is only available to data partners ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* a comment for enum `ErrorReason` is changed to clarify that it is subject to future additions ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* a comment for field `pair_data` in message `AudienceMember` is changed to clarify it is only available to data partners ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+
+
+### Features
+
+* add `RemoveUserIdDataStatus` to `RemoveAudienceMembersStatus` to report the status of user ID data removal ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `PartnerLinkService` for creating and managing links between advertiser and data partner accounts ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserListDirectLicense` resource ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `IngestPpidDataStatus` to `IngestAudienceMembersStatus` to report the status of PPID data ingestion ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `GOOGLE_AD_MANAGER_AUDIENCE_LINK` to the `AccountType` enum ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserListGlobalLicenseCustomerInfo` resource ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `RemovePpidDataStatus` to `RemoveAudienceMembersStatus` to report the status of PPID data removal ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `PpidData` to `AudienceMember` to support Publisher Provided ID (PPID) in audience member ingestion ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserListGlobalLicenseService` for creating and managing global user list licenses ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `MarketingDataInsightsService` for retrieving marketing data insights for a given user list ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `IngestUserIdDataStatus` to `IngestAudienceMembersStatus` to report the status of user ID data ingestion ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserIdData` to `AudienceMember` to support User ID in audience member ingestion ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add new `ErrorReason` values for licensing, user list operations, and permission checks ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `AgeRange` and `Gender` enums to support demographic breakdown in marketing insights ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserListGlobalLicense` resource ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserList` resource ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserListDirectLicenseService` for creating and managing direct user list licenses ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `PartnerLink` resource ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* add `UserListService` for creating and managing user lists ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+
+
+### Bug Fixes
+
+* changed `conversion_value` field to be optional in message `Event` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.3.0...google-ads-datamanager-v0.4.0) (2026-02-05)
 
 

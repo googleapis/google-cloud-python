@@ -4,6 +4,49 @@
 
 [1]: https://pypi.org/project/google-cloud-developerconnect/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.3.0...google-cloud-developerconnect-v0.4.0) (2026-02-26)
+
+
+### Documentation
+
+* Updated description for `google.cloud.location.Locations.ListLocations` in YAML ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Corrected typos in comments for `google.cloud.developerconnect.v1.insights.InsightsConfig` and `google.cloud.developerconnect.v1.insights.ArtifactConfig` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Updated comments to include regional secret patterns for SecretManager fields in `GitHubConfig`, `OAuthCredential`, `UserCredential`, `GitLabConfig`, `GitLabEnterpriseConfig`, `BitbucketDataCenterConfig`, and `BitbucketCloudConfig` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Updated comment for `CreateGitRepositoryLink` RPC in `google.cloud.developerconnect.v1.DeveloperConnect` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+
+
+### Features
+
+* Add Secure Source Manager and Generic HTTP Endpoint connection types ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.DeploymentEvent` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.GenericHTTPEndpointConfig` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.FinishOAuthRequest` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.GoogleCloudRun` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new enum value `GEMINI_CODE_ASSIST` is added to enum `google.cloud.developerconnect.v1.GitHubConfig.GitHubApp` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Add HTTP Proxy base URI field ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new field `projects` is added to message `google.cloud.developerconnect.v1.insights.InsightsConfig` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Add Cloud Run and App Hub Service runtimes to InsightsConfig ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new field `organization` is added to message `google.cloud.developerconnect.v1.GitHubEnterpriseConfig` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new field `app_hub_service` is added to message `google.cloud.developerconnect.v1.insights.RuntimeConfig` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.SecureSourceManagerInstanceConfig` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Add Deployment Events to Insights API (GetDeploymentEvent, ListDeploymentEvents) ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new field `http_proxy_base_uri` is added to message `google.cloud.developerconnect.v1.HTTPProxyConfig` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.GetDeploymentEventRequest` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.FinishOAuthResponse` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Add Gemini Code Assist GitHub App type ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new field `google_cloud_run` is added to message `google.cloud.developerconnect.v1.insights.RuntimeConfig` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new field `secure_source_manager_instance_config` is added to message `google.cloud.developerconnect.v1.Connection` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Add Projects field to InsightsConfig for project tracking ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.ListDeploymentEventsRequest` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Add OAuth flow RPCs (StartOAuth, FinishOAuth) ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.StartOAuthRequest` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.ListDeploymentEventsResponse` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.StartOAuthResponse` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.AppHubService` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.ArtifactDeployment` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new field `http_config` is added to message `google.cloud.developerconnect.v1.Connection` ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* A new message `google.cloud.developerconnect.v1.insights.Projects` is added ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.2.0...google-cloud-developerconnect-v0.3.0) (2026-01-08)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-databasecenter/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.5.0...google-cloud-databasecenter-v0.6.0) (2026-02-26)
+
+
+### Documentation
+
+* Replace &#34;GCP&#34; with &#34;Google Cloud&#34; in API comments ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+* Remove single quotes from DatabaseCenter summary. ([e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c](https://github.com/googleapis/google-cloud-python/commit/e40bfd4df5e3ddfcc9d9b187f39cfadf58aafe0c))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.4.0...google-cloud-databasecenter-v0.5.0) (2026-02-12)
 
 

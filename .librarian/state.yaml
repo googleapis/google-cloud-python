@@ -15,7 +15,7 @@ libraries:
       - packages/google-ads-admanager/
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
     apis:
       - path: google/ads/datamanager/v1
@@ -223,7 +223,7 @@ libraries:
     remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-auth-oauthlib
-    version: 1.2.4
+    version: 1.3.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -953,7 +953,7 @@ libraries:
       - packages/google-cloud-certificate-manager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: 69bf99a9d0910fa86c3c5867ea357aa004dfcc55
     apis:
       - path: google/cloud/ces/v1
@@ -1062,7 +1062,7 @@ libraries:
       - packages/google-cloud-common/
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute
-    version: 1.43.0
+    version: 1.44.0
     last_generated_commit: 69bf99a9d0910fa86c3c5867ea357aa004dfcc55
     apis:
       - path: google/cloud/compute/v1
@@ -1077,7 +1077,7 @@ libraries:
       - packages/google-cloud-compute/
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute-v1beta
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 69bf99a9d0910fa86c3c5867ea357aa004dfcc55
     apis:
       - path: google/cloud/compute/v1beta
@@ -1234,7 +1234,7 @@ libraries:
       - packages/google-cloud-data-qna/
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
     apis:
       - path: google/cloud/databasecenter/v1beta
@@ -1400,7 +1400,7 @@ libraries:
       - packages/google-cloud-deploy/
     tag_format: '{id}-v{version}'
   - id: google-cloud-developerconnect
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
     apis:
       - path: google/cloud/developerconnect/v1
@@ -2903,7 +2903,7 @@ libraries:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
-    version: 2.36.1
+    version: 2.37.0
     last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
     apis:
       - path: google/cloud/speech/v1
@@ -3349,7 +3349,7 @@ libraries:
       - packages/google-cloud-workflows/
     tag_format: '{id}-v{version}'
   - id: google-cloud-workloadmanager
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: 1499898e0aed31b9aee1a41f5997bc787f1bf4b4
     apis:
       - path: google/cloud/workloadmanager/v1

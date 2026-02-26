@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-oauthlib-v1.2.4...google-auth-oauthlib-v1.3.0) (2026-02-26)
+
+
+### Features
+
+* Log the flow.run_local_server redirect URL (#362) ([84599aa03628191a5a82cd0075b2733702c43e06](https://github.com/googleapis/google-cloud-python/commit/84599aa03628191a5a82cd0075b2733702c43e06))
+
+
+### Bug Fixes
+
+* Raise meaningful exception when oauth callback times out (#363) ([adc3ee60cfbc1d6bb26adba9e39337e9b8981f17](https://github.com/googleapis/google-cloud-python/commit/adc3ee60cfbc1d6bb26adba9e39337e9b8981f17))
+
 ## [1.2.4](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.2.3...v1.2.4) (2026-01-14)
 
 

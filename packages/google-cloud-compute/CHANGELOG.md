@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-compute/#history
 
+## [1.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.43.0...google-cloud-compute-v1.44.0) (2026-02-26)
+
+
+### Features
+
+* Update Compute Engine v1 API to revision 20260106 (#1148) ([d1ce4d35f751d9c64d1ee8bf86251c0983bf1725](https://github.com/googleapis/google-cloud-python/commit/d1ce4d35f751d9c64d1ee8bf86251c0983bf1725))
+
 ## [1.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.42.0...google-cloud-compute-v1.43.0) (2026-01-29)
 
 
