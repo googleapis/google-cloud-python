@@ -35,6 +35,10 @@ FLAKE8_VERSION = "flake8==6.1.0"
 RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
+# Add samples to the list of directories to format if the directory exists.
+if os.path.isdir("samples"):
+    LINT_PATHS.append("samples")
+
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
