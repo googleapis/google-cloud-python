@@ -18,6 +18,7 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+
 from __future__ import annotations
 
 from typing import (
@@ -26,9 +27,9 @@ from typing import (
     AsyncGenerator,
     List,
     Optional,
+    Sequence,
     Type,
     Union,
-    Sequence,
 )
 
 from google.api_core import gapic_v1
@@ -51,13 +52,14 @@ from google.cloud.firestore_v1.query_results import QueryResultsList
 if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
 
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
+
     # Types needed only for Type Hints
     from google.cloud.firestore_v1.async_transaction import AsyncTransaction
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
     from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
-    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
     from google.cloud.firestore_v1.vector import Vector
 
 
@@ -486,9 +488,9 @@ class AsyncQuery(BaseQuery):
         return AsyncStreamGenerator(inner_generator, explain_options)
 
     @staticmethod
-    def _get_collection_reference_class() -> (
-        Type["firestore_v1.async_collection.AsyncCollectionReference"]
-    ):
+    def _get_collection_reference_class() -> Type[
+        "firestore_v1.async_collection.AsyncCollectionReference"
+    ]:
         from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
         return AsyncCollectionReference

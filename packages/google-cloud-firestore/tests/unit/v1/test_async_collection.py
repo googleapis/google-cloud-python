@@ -13,11 +13,11 @@
 # limitations under the License.
 
 import types
+from datetime import datetime, timezone
 
 import mock
 import pytest
 
-from datetime import datetime, timezone
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT, make_async_client
 from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
@@ -537,13 +537,13 @@ async def test_asynccollectionreference_stream_with_transaction(query_class):
 @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
 @pytest.mark.asyncio
 async def test_asynccollectionreference_stream_w_explain_options(query_class):
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb2
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
     from google.cloud.firestore_v1.query_profile import (
         ExplainMetrics,
         ExplainOptions,
         QueryExplainError,
     )
-    import google.cloud.firestore_v1.types.query_profile as query_profile_pb2
 
     explain_options = ExplainOptions(analyze=True)
     explain_metrics = query_profile_pb2.ExplainMetrics(

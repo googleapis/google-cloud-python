@@ -275,7 +275,9 @@ class TestBundle(_CollectionQueryMixin):
         query: query_mod.Query = self._bundled_query_helper()  # type: ignore
         bundle.add_named_query("sweet query", query)
 
-        query: query_mod.Query = self._bundled_query_helper(document_ids=["doc-3", "doc-4"])  # type: ignore
+        query: query_mod.Query = self._bundled_query_helper(
+            document_ids=["doc-3", "doc-4"]
+        )  # type: ignore
         bundle.add_named_query("second query", query)
 
         docs_iter = _helpers._get_documents_from_bundle(

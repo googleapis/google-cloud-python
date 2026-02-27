@@ -17,10 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
@@ -82,6 +80,7 @@ class Backup(proto.Message):
             NOT_AVAILABLE (3):
                 The backup is not available at this moment.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

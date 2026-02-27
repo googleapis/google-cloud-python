@@ -16,8 +16,7 @@ import math
 from enum import Enum
 from typing import Any
 
-from google.cloud.firestore_v1._helpers import decode_value
-from google.cloud.firestore_v1._helpers import GeoPoint
+from google.cloud.firestore_v1._helpers import GeoPoint, decode_value
 
 
 class TypeOrder(Enum):

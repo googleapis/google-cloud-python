@@ -13,13 +13,12 @@
 # limitations under the License.
 
 import collections
+from datetime import datetime
 
 import mock
 import pytest
-
-from datetime import datetime
-
 from google.protobuf import timestamp_pb2
+
 from tests.unit.v1._test_helpers import make_async_client
 from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 

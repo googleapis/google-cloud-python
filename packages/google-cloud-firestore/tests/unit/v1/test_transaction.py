@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+
 import mock
 import pytest
 
@@ -210,10 +211,12 @@ def test_transaction__rollback_failure(database):
 
 @pytest.mark.parametrize("database", [None, "somedb"])
 def test_transaction__commit(database):
+    import datetime
+
+    from google.protobuf.timestamp_pb2 import Timestamp
+
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.types import firestore, write
-    from google.protobuf.timestamp_pb2 import Timestamp
-    import datetime
 
     # Create a minimal fake GAPIC with a dummy result.
     firestore_api = mock.create_autospec(

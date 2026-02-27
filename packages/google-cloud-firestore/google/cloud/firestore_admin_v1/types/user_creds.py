@@ -17,10 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
@@ -71,6 +69,7 @@ class UserCreds(proto.Message):
             DISABLED (2):
                 The user creds are disabled.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

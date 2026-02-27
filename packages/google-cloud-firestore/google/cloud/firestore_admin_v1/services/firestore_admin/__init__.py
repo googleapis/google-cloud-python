@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import FirestoreAdminClient
 from .async_client import FirestoreAdminAsyncClient
+from .client import FirestoreAdminClient
 
 __all__ = (
     "FirestoreAdminClient",

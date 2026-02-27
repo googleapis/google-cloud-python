@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
     manifest={
@@ -115,6 +114,7 @@ class Index(proto.Message):
                 index. Only available for Datastore Mode
                 databases.
         """
+
         QUERY_SCOPE_UNSPECIFIED = 0
         COLLECTION = 1
         COLLECTION_GROUP = 2
@@ -134,6 +134,7 @@ class Index(proto.Message):
             MONGODB_COMPATIBLE_API (2):
                 The index can only be used by the MONGODB_COMPATIBLE_API.
         """
+
         ANY_API = 0
         DATASTORE_MODE_API = 1
         MONGODB_COMPATIBLE_API = 2
@@ -170,6 +171,7 @@ class Index(proto.Message):
                 to create this index failed, then re-create the
                 index.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -247,6 +249,7 @@ class Index(proto.Message):
                 The index will store ``unset`` values for fields that are
                 not present in the document.
         """
+
         DENSITY_UNSPECIFIED = 0
         SPARSE_ALL = 1
         SPARSE_ANY = 2
@@ -299,6 +302,7 @@ class Index(proto.Message):
                     The field is ordered by descending field
                     value.
             """
+
             ORDER_UNSPECIFIED = 0
             ASCENDING = 1
             DESCENDING = 2
@@ -313,6 +317,7 @@ class Index(proto.Message):
                 CONTAINS (1):
                     The index supports array containment queries.
             """
+
             ARRAY_CONFIG_UNSPECIFIED = 0
             CONTAINS = 1
 

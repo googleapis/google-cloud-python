@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
     manifest={
@@ -44,6 +43,7 @@ class RealtimeUpdatesMode(proto.Enum):
             The Realtime Updates feature is disabled by
             default.
     """
+
     REALTIME_UPDATES_MODE_UNSPECIFIED = 0
     REALTIME_UPDATES_MODE_ENABLED = 1
     REALTIME_UPDATES_MODE_DISABLED = 2

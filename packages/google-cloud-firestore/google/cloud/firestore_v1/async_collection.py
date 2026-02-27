@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, AsyncGenerator, Optional, Tuple, cast
@@ -33,6 +34,7 @@ from google.cloud.firestore_v1.base_collection import (
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
+
     from google.cloud.firestore_v1.async_document import AsyncDocumentReference
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
     from google.cloud.firestore_v1.base_document import DocumentSnapshot

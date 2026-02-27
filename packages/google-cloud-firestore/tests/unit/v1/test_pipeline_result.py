@@ -14,19 +14,22 @@
 
 import mock
 import pytest
-
-from google.cloud.firestore_v1.types.firestore import ExecutePipelineResponse
-from google.cloud.firestore_v1.pipeline_expressions import Constant
-from google.cloud.firestore_v1.pipeline_result import PipelineResult
-from google.cloud.firestore_v1.pipeline_result import PipelineSnapshot
-from google.cloud.firestore_v1.pipeline_result import PipelineStream
-from google.cloud.firestore_v1.pipeline_result import AsyncPipelineStream
-from google.cloud.firestore_v1.query_profile import QueryExplainError
-from google.cloud.firestore_v1.query_profile import PipelineExplainOptions
-from google.cloud.firestore_v1._helpers import encode_value
-from google.cloud.firestore_v1.types.document import Document
 from google.protobuf.timestamp_pb2 import Timestamp
 
+from google.cloud.firestore_v1._helpers import encode_value
+from google.cloud.firestore_v1.pipeline_expressions import Constant
+from google.cloud.firestore_v1.pipeline_result import (
+    AsyncPipelineStream,
+    PipelineResult,
+    PipelineSnapshot,
+    PipelineStream,
+)
+from google.cloud.firestore_v1.query_profile import (
+    PipelineExplainOptions,
+    QueryExplainError,
+)
+from google.cloud.firestore_v1.types.document import Document
+from google.cloud.firestore_v1.types.firestore import ExecutePipelineResponse
 
 _mock_stream_responses = [
     ExecutePipelineResponse(
@@ -164,8 +167,8 @@ class TestPipelineResult:
         assert got == "hello world"
 
     def test_get_field_path(self):
-        from google.cloud.firestore_v1.types.document import Value
         from google.cloud.firestore_v1.field_path import FieldPath
+        from google.cloud.firestore_v1.types.document import Value
 
         client = object()
         data = {"first": {"second": Value(string_value="hello world")}}

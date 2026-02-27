@@ -18,22 +18,21 @@
 """
 
 from __future__ import annotations
+
+import datetime
+from abc import ABC, abstractmethod
+from enum import Enum
 from typing import (
     Any,
     Generic,
-    TypeVar,
     Sequence,
+    TypeVar,
 )
-from abc import ABC
-from abc import abstractmethod
-from enum import Enum
-import datetime
+
+from google.cloud.firestore_v1._helpers import GeoPoint, decode_value, encode_value
 from google.cloud.firestore_v1.types.document import Value
 from google.cloud.firestore_v1.types.query import StructuredQuery as Query_pb
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1._helpers import GeoPoint
-from google.cloud.firestore_v1._helpers import encode_value
-from google.cloud.firestore_v1._helpers import decode_value
 
 CONSTANT_TYPE = TypeVar(
     "CONSTANT_TYPE",

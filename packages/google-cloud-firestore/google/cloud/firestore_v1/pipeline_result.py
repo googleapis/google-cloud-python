@@ -18,44 +18,46 @@
 """
 
 from __future__ import annotations
+
 from typing import (
+    TYPE_CHECKING,
     Any,
     AsyncIterable,
     AsyncIterator,
+    Generic,
     Iterable,
     Iterator,
     List,
-    Generic,
     MutableMapping,
     Type,
     TypeVar,
-    TYPE_CHECKING,
 )
+
 from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1.field_path import get_nested_value
-from google.cloud.firestore_v1.field_path import FieldPath
-from google.cloud.firestore_v1.query_profile import ExplainStats
-from google.cloud.firestore_v1.query_profile import QueryExplainError
-from google.cloud.firestore_v1.types.firestore import ExecutePipelineRequest
+from google.cloud.firestore_v1.field_path import FieldPath, get_nested_value
+from google.cloud.firestore_v1.query_profile import ExplainStats, QueryExplainError
 from google.cloud.firestore_v1.types.document import Value
+from google.cloud.firestore_v1.types.firestore import ExecutePipelineRequest
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
-    from google.cloud.firestore_v1.async_client import AsyncClient
-    from google.cloud.firestore_v1.client import Client
-    from google.cloud.firestore_v1.base_client import BaseClient
-    from google.cloud.firestore_v1.async_transaction import AsyncTransaction
-    from google.cloud.firestore_v1.transaction import Transaction
-    from google.cloud.firestore_v1.base_document import BaseDocumentReference
+
     from google.protobuf.timestamp_pb2 import Timestamp
-    from google.cloud.firestore_v1.types.firestore import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types.document import Value as ValueProto
-    from google.cloud.firestore_v1.vector import Vector
+
+    from google.cloud.firestore_v1.async_client import AsyncClient
     from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
+    from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+    from google.cloud.firestore_v1.base_client import BaseClient
+    from google.cloud.firestore_v1.base_document import BaseDocumentReference
     from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+    from google.cloud.firestore_v1.client import Client
     from google.cloud.firestore_v1.pipeline import Pipeline
     from google.cloud.firestore_v1.pipeline_expressions import Constant
     from google.cloud.firestore_v1.query_profile import PipelineExplainOptions
+    from google.cloud.firestore_v1.transaction import Transaction
+    from google.cloud.firestore_v1.types.document import Value as ValueProto
+    from google.cloud.firestore_v1.types.firestore import ExecutePipelineResponse
+    from google.cloud.firestore_v1.vector import Vector
 
 
 class PipelineResult:

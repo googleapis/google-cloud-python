@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import index
 
-
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
     manifest={
@@ -162,6 +161,7 @@ class Field(proto.Message):
                     enable TTL for this ``Field`` has failed, and may have more
                     details.
             """
+
             STATE_UNSPECIFIED = 0
             CREATING = 1
             ACTIVE = 2

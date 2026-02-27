@@ -18,29 +18,29 @@
 """
 
 from __future__ import annotations
-from typing import Optional, Sequence, TYPE_CHECKING
-from abc import ABC
-from abc import abstractmethod
-from enum import Enum
 
-from google.cloud.firestore_v1.types.document import Pipeline as Pipeline_pb
-from google.cloud.firestore_v1.types.document import Value
-from google.cloud.firestore_v1.vector import Vector
+from abc import ABC, abstractmethod
+from enum import Enum
+from typing import TYPE_CHECKING, Optional, Sequence
+
+from google.cloud.firestore_v1._helpers import encode_value
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.pipeline_expressions import (
     AggregateFunction,
-    Expression,
     AliasedExpression,
-    Field,
     BooleanExpression,
-    Selectable,
+    Expression,
+    Field,
     Ordering,
+    Selectable,
 )
-from google.cloud.firestore_v1._helpers import encode_value
+from google.cloud.firestore_v1.types.document import Pipeline as Pipeline_pb
+from google.cloud.firestore_v1.types.document import Value
+from google.cloud.firestore_v1.vector import Vector
 
 if TYPE_CHECKING:  # pragma: NO COVER
-    from google.cloud.firestore_v1.base_pipeline import _BasePipeline
     from google.cloud.firestore_v1.base_document import BaseDocumentReference
+    from google.cloud.firestore_v1.base_pipeline import _BasePipeline
 
 
 class FindNearestOptions:

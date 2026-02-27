@@ -12,23 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-import mock
-import math
 import datetime
+import math
 
+import mock
+import pytest
+
+import google.cloud.firestore_v1.pipeline_expressions as expr
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1._helpers import GeoPoint
+from google.cloud.firestore_v1.pipeline_expressions import (
+    BooleanExpression,
+    Constant,
+    Expression,
+    Field,
+    Ordering,
+)
 from google.cloud.firestore_v1.types import document as document_pb
 from google.cloud.firestore_v1.types import query as query_pb
 from google.cloud.firestore_v1.types.document import Value
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1._helpers import GeoPoint
-import google.cloud.firestore_v1.pipeline_expressions as expr
-from google.cloud.firestore_v1.pipeline_expressions import BooleanExpression
-from google.cloud.firestore_v1.pipeline_expressions import Expression
-from google.cloud.firestore_v1.pipeline_expressions import Constant
-from google.cloud.firestore_v1.pipeline_expressions import Field
-from google.cloud.firestore_v1.pipeline_expressions import Ordering
 
 
 @pytest.fixture

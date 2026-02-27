@@ -17,20 +17,21 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.firestore_v1.types import aggregation_result
-from google.cloud.firestore_v1.types import common
-from google.cloud.firestore_v1.types import document as gf_document
-from google.cloud.firestore_v1.types import explain_stats as gf_explain_stats
-from google.cloud.firestore_v1.types import pipeline
-from google.cloud.firestore_v1.types import query as gf_query
-from google.cloud.firestore_v1.types import query_profile
-from google.cloud.firestore_v1.types import write
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.firestore_v1.types import (
+    aggregation_result,
+    common,
+    pipeline,
+    query_profile,
+    write,
+)
+from google.cloud.firestore_v1.types import document as gf_document
+from google.cloud.firestore_v1.types import explain_stats as gf_explain_stats
+from google.cloud.firestore_v1.types import query as gf_query
 
 __protobuf__ = proto.module(
     package="google.firestore.v1",
@@ -1735,6 +1736,7 @@ class TargetChange(proto.Message):
                 returned even if the target was previously indicated to be
                 ``CURRENT``.
         """
+
         NO_CHANGE = 0
         ADD = 1
         REMOVE = 2

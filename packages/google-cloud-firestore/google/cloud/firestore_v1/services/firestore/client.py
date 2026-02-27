@@ -13,41 +13,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
-    Dict,
     Callable,
+    Dict,
+    Iterable,
+    Iterator,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    Iterable,
-    Iterator,
     Sequence,
     Tuple,
     Type,
     Union,
     cast,
 )
-import warnings
 
-from google.cloud.firestore_v1 import gapic_version as package_version
-
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
+
+from google.cloud.firestore_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -63,21 +63,25 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.firestore_v1.services.firestore import pagers
-from google.cloud.firestore_v1.types import aggregation_result
-from google.cloud.firestore_v1.types import common
-from google.cloud.firestore_v1.types import document
-from google.cloud.firestore_v1.types import document as gf_document
-from google.cloud.firestore_v1.types import explain_stats
-from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1.types import query
-from google.cloud.firestore_v1.types import query_profile
-from google.cloud.firestore_v1.types import write as gf_write
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
-from .transports.base import FirestoreTransport, DEFAULT_CLIENT_INFO
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+
+from google.cloud.firestore_v1.services.firestore import pagers
+from google.cloud.firestore_v1.types import (
+    aggregation_result,
+    common,
+    document,
+    explain_stats,
+    firestore,
+    query,
+    query_profile,
+)
+from google.cloud.firestore_v1.types import document as gf_document
+from google.cloud.firestore_v1.types import write as gf_write
+
+from .transports.base import DEFAULT_CLIENT_INFO, FirestoreTransport
 from .transports.grpc import FirestoreGrpcTransport
 from .transports.grpc_asyncio import FirestoreGrpcAsyncIOTransport
 from .transports.rest import FirestoreRestTransport
@@ -657,8 +661,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(FirestoreTransport, transport)
             self._api_endpoint = self._transport.host

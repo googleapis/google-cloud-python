@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Classes for iterating over stream results for the Google Cloud Firestore API.
-"""
+"""Classes for iterating over stream results for the Google Cloud Firestore API."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Generator, Optional, TypeVar

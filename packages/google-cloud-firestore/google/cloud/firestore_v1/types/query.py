@@ -17,11 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import document
-import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.firestore.v1",
@@ -173,6 +172,7 @@ class StructuredQuery(proto.Message):
             DESCENDING (2):
                 Descending.
         """
+
         DIRECTION_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2
@@ -272,6 +272,7 @@ class StructuredQuery(proto.Message):
                     Documents are required to satisfy at least
                     one of the combined filters.
             """
+
             OPERATOR_UNSPECIFIED = 0
             AND = 1
             OR = 2
@@ -376,6 +377,7 @@ class StructuredQuery(proto.Message):
                       ``IS_NOT_NAN``.
                     - That ``field`` comes first in the ``order_by``.
             """
+
             OPERATOR_UNSPECIFIED = 0
             LESS_THAN = 1
             LESS_THAN_OR_EQUAL = 2
@@ -445,6 +447,7 @@ class StructuredQuery(proto.Message):
                       ``IS_NOT_NAN``.
                     - That ``field`` comes first in the ``order_by``.
             """
+
             OPERATOR_UNSPECIFIED = 0
             IS_NAN = 2
             IS_NULL = 3
@@ -589,6 +592,7 @@ class StructuredQuery(proto.Message):
                     learn more. The resulting distance increases the more
                     similar two vectors are.
             """
+
             DISTANCE_MEASURE_UNSPECIFIED = 0
             EUCLIDEAN = 1
             COSINE = 2

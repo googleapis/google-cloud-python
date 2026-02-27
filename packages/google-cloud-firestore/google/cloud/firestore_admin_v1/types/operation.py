@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import index as gfa_index
 from google.cloud.firestore_admin_v1.types import snapshot
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
@@ -69,6 +68,7 @@ class OperationState(proto.Enum):
             user called
             google.longrunning.Operations.CancelOperation.
     """
+
     OPERATION_STATE_UNSPECIFIED = 0
     INITIALIZING = 1
     PROCESSING = 2
@@ -187,6 +187,7 @@ class FieldOperationMetadata(proto.Message):
                 REMOVE (2):
                     The single field index is being removed.
             """
+
             CHANGE_TYPE_UNSPECIFIED = 0
             ADD = 1
             REMOVE = 2
@@ -222,6 +223,7 @@ class FieldOperationMetadata(proto.Message):
                 REMOVE (2):
                     The TTL config is being removed.
             """
+
             CHANGE_TYPE_UNSPECIFIED = 0
             ADD = 1
             REMOVE = 2

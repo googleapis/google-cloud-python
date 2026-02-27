@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import document
 
-
 __protobuf__ = proto.module(
     package="google.firestore.v1",
     manifest={

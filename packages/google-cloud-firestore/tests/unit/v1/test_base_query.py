@@ -17,8 +17,8 @@ import datetime
 import mock
 import pytest
 
-from tests.unit.v1._test_helpers import make_client
 from google.cloud.firestore_v1 import pipeline_stages as stages
+from tests.unit.v1._test_helpers import make_client
 
 
 def _make_base_query(*args, **kwargs):
@@ -2376,8 +2376,8 @@ def _make_snapshot(docref, values):
 
 
 def test__where_conditions_from_cursor_descending():
-    from google.cloud.firestore_v1.base_query import _where_conditions_from_cursor
     from google.cloud.firestore_v1 import pipeline_expressions
+    from google.cloud.firestore_v1.base_query import _where_conditions_from_cursor
 
     # Create ordering: field DESC
     field_expr = pipeline_expressions.Field.of("field")
@@ -2439,8 +2439,8 @@ def test__query_pipeline_end_at():
 
 
 def test__where_conditions_from_cursor_multi_field():
-    from google.cloud.firestore_v1.base_query import _where_conditions_from_cursor
     from google.cloud.firestore_v1 import pipeline_expressions as expr
+    from google.cloud.firestore_v1.base_query import _where_conditions_from_cursor
 
     # Order by: A ASC, B DESC
     field_a = expr.Field.of("A")
@@ -2492,8 +2492,8 @@ def test__where_conditions_from_cursor_multi_field():
 
 
 def test__reverse_orderings_descending():
-    from google.cloud.firestore_v1.base_query import _reverse_orderings
     from google.cloud.firestore_v1 import pipeline_expressions as expr
+    from google.cloud.firestore_v1.base_query import _reverse_orderings
 
     # Input: A ASC, B DESC
     field_a = expr.Field.of("A")

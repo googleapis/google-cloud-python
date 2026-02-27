@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import types
+from datetime import datetime, timezone
 
 import mock
 
-from datetime import datetime, timezone
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
 
 
@@ -511,9 +511,9 @@ def test_stream_w_read_time(query_class):
 
 
 def test_collectionreference_pipeline():
-    from tests.unit.v1 import _test_helpers
     from google.cloud.firestore_v1.pipeline import Pipeline
     from google.cloud.firestore_v1.pipeline_stages import Collection
+    from tests.unit.v1 import _test_helpers
 
     client = _test_helpers.make_client()
     collection = _make_collection_reference("collection", client=client)

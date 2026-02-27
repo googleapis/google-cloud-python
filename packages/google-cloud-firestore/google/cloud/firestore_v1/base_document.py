@@ -13,19 +13,19 @@
 # limitations under the License.
 
 """Classes for representing documents for the Google Cloud Firestore API."""
+
 from __future__ import annotations
 
 import copy
-
 from typing import (
     TYPE_CHECKING,
     Any,
+    Awaitable,
     Dict,
     Iterable,
     Optional,
     Tuple,
     Union,
-    Awaitable,
 )
 
 from google.api_core import retry as retries
@@ -36,9 +36,9 @@ from google.cloud.firestore_v1.types import common
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
-    from google.cloud.firestore_v1.types import Document, firestore, write
-
     import datetime
+
+    from google.cloud.firestore_v1.types import Document, firestore, write
 
 
 class BaseDocumentReference(object):

@@ -18,20 +18,25 @@
 """
 
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
+
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.base_pipeline import _BasePipeline
-from google.cloud.firestore_v1.pipeline_result import PipelineStream
-from google.cloud.firestore_v1.pipeline_result import PipelineSnapshot
-from google.cloud.firestore_v1.pipeline_result import PipelineResult
+from google.cloud.firestore_v1.pipeline_result import (
+    PipelineResult,
+    PipelineSnapshot,
+    PipelineStream,
+)
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
+
     from google.cloud.firestore_v1.client import Client
     from google.cloud.firestore_v1.pipeline_expressions import Constant
+    from google.cloud.firestore_v1.query_profile import PipelineExplainOptions
     from google.cloud.firestore_v1.transaction import Transaction
     from google.cloud.firestore_v1.types.document import Value
-    from google.cloud.firestore_v1.query_profile import PipelineExplainOptions
 
 
 class Pipeline(_BasePipeline):

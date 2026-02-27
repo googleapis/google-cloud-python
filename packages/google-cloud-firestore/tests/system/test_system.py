@@ -20,8 +20,8 @@ from time import sleep
 from typing import Callable, Dict, List, Optional
 
 import google.auth
-import pytest
 import mock
+import pytest
 from google.api_core.exceptions import (
     AlreadyExists,
     FailedPrecondition,
@@ -30,24 +30,24 @@ from google.api_core.exceptions import (
 )
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.oauth2 import service_account
+from test__helpers import (
+    EMULATOR_CREDS,
+    ENTERPRISE_MODE_ERROR,
+    FIRESTORE_CREDS,
+    FIRESTORE_EMULATOR,
+    FIRESTORE_ENTERPRISE_DB,
+    FIRESTORE_PROJECT,
+    MISSING_DOCUMENT,
+    RANDOM_ID_REGEX,
+    TEST_DATABASES,
+    TEST_DATABASES_W_ENTERPRISE,
+    UNIQUE_RESOURCE_ID,
+)
 
 from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.vector import Vector
-from test__helpers import (
-    EMULATOR_CREDS,
-    FIRESTORE_CREDS,
-    FIRESTORE_EMULATOR,
-    FIRESTORE_PROJECT,
-    MISSING_DOCUMENT,
-    RANDOM_ID_REGEX,
-    UNIQUE_RESOURCE_ID,
-    ENTERPRISE_MODE_ERROR,
-    TEST_DATABASES,
-    TEST_DATABASES_W_ENTERPRISE,
-    FIRESTORE_ENTERPRISE_DB,
-)
 
 
 def _get_credentials_and_project():
@@ -1678,8 +1678,8 @@ def test_pipeline_explain_options_explain_mode(database, method, query_docs):
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 def test_pipeline_explain_options_analyze_mode(database, method, query_docs):
     from google.cloud.firestore_v1.query_profile import (
-        PipelineExplainOptions,
         ExplainStats,
+        PipelineExplainOptions,
         QueryExplainError,
     )
     from google.cloud.firestore_v1.types.explain_stats import (
@@ -1727,8 +1727,8 @@ def test_pipeline_explain_options_using_additional_options(
 ):
     """additional_options field allows passing in arbitrary options. Test with explain_options"""
     from google.cloud.firestore_v1.query_profile import (
-        PipelineExplainOptions,
         ExplainStats,
+        PipelineExplainOptions,
     )
     from google.cloud.firestore_v1.types.explain_stats import (
         ExplainStats as ExplainStats_pb,
@@ -2556,9 +2556,9 @@ def _do_recursive_delete(client, bulk_writer, empty_philosophers=False):
     # Now they should all be missing
     for path in doc_paths:
         snapshot = collection_ref.document(f"Socrates{path}").get()
-        assert (
-            not snapshot.exists
-        ), f"Snapshot at Socrates{path} should have been deleted"
+        assert not snapshot.exists, (
+            f"Snapshot at Socrates{path} should have been deleted"
+        )
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES, indirect=True)
@@ -2628,7 +2628,7 @@ def test_recursive_query(client, cleanup, database):
 
     for index in range(len(ids)):
         error_msg = (
-            f"Expected '{expected_ids[index]}' at spot {index}, " "got '{ids[index]}'"
+            f"Expected '{expected_ids[index]}' at spot {index}, got '{{ids[index]}}'"
         )
         assert ids[index] == expected_ids[index], error_msg
 
@@ -2653,7 +2653,7 @@ def test_nested_recursive_query(client, cleanup, database):
 
     for index in range(len(ids)):
         error_msg = (
-            f"Expected '{expected_ids[index]}' at spot {index}, " "got '{ids[index]}'"
+            f"Expected '{expected_ids[index]}' at spot {index}, got '{{ids[index]}}'"
         )
         assert ids[index] == expected_ids[index], error_msg
 
@@ -2763,12 +2763,12 @@ def test_watch_query_order(client, cleanup, database):
 
             # compare the order things are returned
             for snapshot, query in zip(docs, query_ran_results):
-                assert snapshot.get("last") == query.get(
-                    "last"
-                ), "expect the sort order to match, last"
-                assert snapshot.get("born") == query.get(
-                    "born"
-                ), "expect the sort order to match, born"
+                assert snapshot.get("last") == query.get("last"), (
+                    "expect the sort order to match, last"
+                )
+                assert snapshot.get("born") == query.get("born"), (
+                    "expect the sort order to match, born"
+                )
             on_snapshot.called_count += 1
             on_snapshot.last_doc_count = len(docs)
         except Exception as e:

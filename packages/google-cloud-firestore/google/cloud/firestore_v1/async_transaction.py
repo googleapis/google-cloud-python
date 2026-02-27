@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Helpers for applying Google Cloud Firestore changes in a transaction."""
+
 from __future__ import annotations
 
 from typing import (
@@ -24,10 +25,10 @@ from typing import (
     Generic,
     Optional,
 )
-from typing_extensions import Concatenate, ParamSpec, TypeVar
 
 from google.api_core import exceptions, gapic_v1
 from google.api_core import retry_async as retries
+from typing_extensions import Concatenate, ParamSpec, TypeVar
 
 from google.cloud.firestore_v1 import _helpers, async_batch
 from google.cloud.firestore_v1.async_document import AsyncDocumentReference
@@ -355,7 +356,7 @@ class _AsyncTransactional(_BaseTransactional, Generic[T, P]):
 
 
 def async_transactional(
-    to_wrap: Callable[Concatenate[AsyncTransaction, P], Awaitable[T]]
+    to_wrap: Callable[Concatenate[AsyncTransaction, P], Awaitable[T]],
 ) -> Callable[Concatenate[AsyncTransaction, P], Awaitable[T]]:
     """Decorate a callable so that it runs in a transaction.
 

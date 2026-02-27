@@ -19,24 +19,22 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.firestore_v1.types import document
-from google.cloud.firestore_v1.types import document as gf_document
-from google.cloud.firestore_v1.types import firestore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from .base import FirestoreTransport, DEFAULT_CLIENT_INFO
+from google.protobuf.json_format import MessageToJson
+
+from google.cloud.firestore_v1.types import document, firestore
+from google.cloud.firestore_v1.types import document as gf_document
+
+from .base import DEFAULT_CLIENT_INFO, FirestoreTransport
 
 try:
     from google.api_core import client_logging  # type: ignore

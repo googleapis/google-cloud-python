@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.firestore_bundle import gapic_version as package_version
+import sys
 
 import google.api_core as api_core
-import sys
+
+from google.cloud.firestore_bundle import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -28,13 +29,14 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 
-from .types.bundle import BundledDocumentMetadata
-from .types.bundle import BundledQuery
-from .types.bundle import BundleElement
-from .types.bundle import BundleMetadata
-from .types.bundle import NamedQuery
-
 from .bundle import FirestoreBundle
+from .types.bundle import (
+    BundledDocumentMetadata,
+    BundledQuery,
+    BundleElement,
+    BundleMetadata,
+    NamedQuery,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -45,8 +47,8 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import warnings
         import sys
+        import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.bundle"

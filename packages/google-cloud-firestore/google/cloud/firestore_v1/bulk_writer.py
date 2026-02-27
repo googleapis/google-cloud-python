@@ -305,9 +305,9 @@ class BulkWriter(AsyncBulkWriterMixin):
         self._batch_callback: Callable[
             [BulkWriteBatch, BatchWriteResponse, "BulkWriter"], None
         ] = BulkWriter._default_on_batch
-        self._error_callback: Callable[
-            [BulkWriteFailure, BulkWriter], bool
-        ] = BulkWriter._default_on_error
+        self._error_callback: Callable[[BulkWriteFailure, BulkWriter], bool] = (
+            BulkWriter._default_on_error
+        )
 
         self._in_flight_documents: int = 0
         self._rate_limiter = RateLimiter(

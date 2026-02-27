@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import realtime_updates
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",
@@ -190,6 +189,7 @@ class Database(proto.Message):
             DATASTORE_MODE (2):
                 Firestore in Datastore Mode.
         """
+
         DATABASE_TYPE_UNSPECIFIED = 0
         FIRESTORE_NATIVE = 1
         DATASTORE_MODE = 2
@@ -224,6 +224,7 @@ class Database(proto.Message):
                 It is not recommended for any new databases, and
                 not supported for Firestore Native databases.
         """
+
         CONCURRENCY_MODE_UNSPECIFIED = 0
         OPTIMISTIC = 1
         PESSIMISTIC = 2
@@ -249,6 +250,7 @@ class Database(proto.Message):
                 Reads are supported on any version of the
                 data from within the past 1 hour.
         """
+
         POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED = 0
         POINT_IN_TIME_RECOVERY_ENABLED = 1
         POINT_IN_TIME_RECOVERY_DISABLED = 2
@@ -273,6 +275,7 @@ class Database(proto.Message):
                 This is the default setting for databases
                 created with the Firestore API.
         """
+
         APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -289,6 +292,7 @@ class Database(proto.Message):
             DELETE_PROTECTION_ENABLED (2):
                 Delete protection is enabled
         """
+
         DELETE_PROTECTION_STATE_UNSPECIFIED = 0
         DELETE_PROTECTION_DISABLED = 1
         DELETE_PROTECTION_ENABLED = 2
@@ -306,6 +310,7 @@ class Database(proto.Message):
             ENTERPRISE (2):
                 Enterprise edition.
         """
+
         DATABASE_EDITION_UNSPECIFIED = 0
         STANDARD = 1
         ENTERPRISE = 2
@@ -323,6 +328,7 @@ class Database(proto.Message):
                 Accessing the database through the API is
                 disallowed.
         """
+
         DATA_ACCESS_MODE_UNSPECIFIED = 0
         DATA_ACCESS_MODE_ENABLED = 1
         DATA_ACCESS_MODE_DISABLED = 2

@@ -13,15 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
-    Dict,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -32,20 +33,19 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
-from google.cloud.firestore_admin_v1 import gapic_version as package_version
-
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
+
+from google.cloud.firestore_admin_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -61,29 +61,33 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.firestore_admin_v1.services.firestore_admin import pagers
-from google.cloud.firestore_admin_v1.types import backup
-from google.cloud.firestore_admin_v1.types import database
-from google.cloud.firestore_admin_v1.types import database as gfa_database
-from google.cloud.firestore_admin_v1.types import field
-from google.cloud.firestore_admin_v1.types import field as gfa_field
-from google.cloud.firestore_admin_v1.types import firestore_admin
-from google.cloud.firestore_admin_v1.types import index
-from google.cloud.firestore_admin_v1.types import index as gfa_index
-from google.cloud.firestore_admin_v1.types import operation as gfa_operation
-from google.cloud.firestore_admin_v1.types import realtime_updates
-from google.cloud.firestore_admin_v1.types import schedule
-from google.cloud.firestore_admin_v1.types import user_creds
-from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.api_core.operation as gac_operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from .transports.base import FirestoreAdminTransport, DEFAULT_CLIENT_INFO
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+
+from google.cloud.firestore_admin_v1.services.firestore_admin import pagers
+from google.cloud.firestore_admin_v1.types import (
+    backup,
+    database,
+    field,
+    firestore_admin,
+    index,
+    realtime_updates,
+    schedule,
+    user_creds,
+)
+from google.cloud.firestore_admin_v1.types import database as gfa_database
+from google.cloud.firestore_admin_v1.types import field as gfa_field
+from google.cloud.firestore_admin_v1.types import index as gfa_index
+from google.cloud.firestore_admin_v1.types import operation as gfa_operation
+from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
+
+from .transports.base import DEFAULT_CLIENT_INFO, FirestoreAdminTransport
 from .transports.grpc import FirestoreAdminGrpcTransport
 from .transports.grpc_asyncio import FirestoreAdminGrpcAsyncIOTransport
 from .transports.rest import FirestoreAdminRestTransport
@@ -97,9 +101,7 @@ class FirestoreAdminClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[FirestoreAdminTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[FirestoreAdminTransport]]
     _transport_registry["grpc"] = FirestoreAdminGrpcTransport
     _transport_registry["grpc_asyncio"] = FirestoreAdminGrpcAsyncIOTransport
     _transport_registry["rest"] = FirestoreAdminRestTransport
@@ -879,8 +881,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(FirestoreAdminTransport, transport)
             self._api_endpoint = self._transport.host

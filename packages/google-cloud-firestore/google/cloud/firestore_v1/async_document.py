@@ -13,7 +13,9 @@
 # limitations under the License.
 
 """Classes for representing documents for the Google Cloud Firestore API."""
+
 from __future__ import annotations
+
 import datetime
 import logging
 from typing import AsyncGenerator, Iterable

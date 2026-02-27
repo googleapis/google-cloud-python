@@ -17,7 +17,6 @@ import pytest
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.pipeline_expressions import Field
-
 from tests.unit.v1._test_helpers import make_async_client
 
 
@@ -123,8 +122,10 @@ async def test_async_pipeline_stream_empty():
     """
     test stream pipeline with mocked empty response
     """
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
+    from google.cloud.firestore_v1.types import (
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -148,10 +149,12 @@ async def test_async_pipeline_stream_no_doc_ref():
     """
     test stream pipeline with no doc ref
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
     from google.cloud.firestore_v1.pipeline_result import PipelineResult
+    from google.cloud.firestore_v1.types import (
+        Document,
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -187,12 +190,14 @@ async def test_async_pipeline_stream_populated():
     """
     test stream pipeline with fully populated doc ref
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
-    from google.cloud.firestore_v1.types import Value
     from google.cloud.firestore_v1.async_document import AsyncDocumentReference
     from google.cloud.firestore_v1.pipeline_result import PipelineResult
+    from google.cloud.firestore_v1.types import (
+        Document,
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+        Value,
+    )
 
     real_client = make_async_client()
     client = mock.Mock()
@@ -243,11 +248,13 @@ async def test_async_pipeline_stream_multiple():
     """
     test stream pipeline with multiple docs and responses
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
-    from google.cloud.firestore_v1.types import Value
     from google.cloud.firestore_v1.pipeline_result import PipelineResult
+    from google.cloud.firestore_v1.types import (
+        Document,
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+        Value,
+    )
 
     real_client = make_async_client()
     client = mock.Mock()
@@ -295,9 +302,11 @@ async def test_async_pipeline_stream_with_transaction():
     """
     test stream pipeline with transaction context
     """
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
     from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+    from google.cloud.firestore_v1.types import (
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -327,8 +336,10 @@ async def test_async_pipeline_stream_with_read_time():
     """
     import datetime
 
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
+    from google.cloud.firestore_v1.types import (
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -355,9 +366,7 @@ async def test_async_pipeline_stream_stream_equivalence():
     """
     Pipeline.stream should provide same results from pipeline.stream, as a list
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import Value
+    from google.cloud.firestore_v1.types import Document, ExecutePipelineResponse, Value
 
     real_client = make_async_client()
     client = mock.Mock()

@@ -671,6 +671,7 @@ class DocChange(proto.Message):
 
     class Kind(proto.Enum):
         r""""""
+
         KIND_UNSPECIFIED = 0
         ADDED = 1
         REMOVED = 2

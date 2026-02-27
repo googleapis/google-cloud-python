@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
+
 from __future__ import annotations
 
 import datetime
@@ -36,8 +37,8 @@ from typing import (
     List,
     Optional,
     Tuple,
-    Union,
     Type,
+    Union,
 )
 
 import google.api_core.client_options
@@ -57,20 +58,18 @@ from google.cloud.firestore_v1.base_document import (
     BaseDocumentReference,
     DocumentSnapshot,
 )
+from google.cloud.firestore_v1.base_pipeline import _BasePipeline
 from google.cloud.firestore_v1.base_query import BaseQuery
 from google.cloud.firestore_v1.base_transaction import MAX_ATTEMPTS, BaseTransaction
 from google.cloud.firestore_v1.bulk_writer import BulkWriter, BulkWriterOptions
 from google.cloud.firestore_v1.field_path import render_field_path
-from google.cloud.firestore_v1.services.firestore import client as firestore_client
 from google.cloud.firestore_v1.pipeline_source import PipelineSource
-from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+from google.cloud.firestore_v1.services.firestore import client as firestore_client
 
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
 _DEFAULT_EMULATOR_PROJECT = "google-cloud-firestore-emulator"
-_BAD_OPTION_ERR = (
-    "Exactly one of ``last_update_time`` or ``exists`` " "must be provided."
-)
+_BAD_OPTION_ERR = "Exactly one of ``last_update_time`` or ``exists`` must be provided."
 _BAD_DOC_TEMPLATE: str = (
     "Document {!r} appeared in response but was not present among references"
 )

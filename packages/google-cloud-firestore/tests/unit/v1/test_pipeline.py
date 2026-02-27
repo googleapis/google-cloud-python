@@ -17,7 +17,6 @@ import pytest
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.pipeline_expressions import Field
-
 from tests.unit.v1._test_helpers import make_client
 
 
@@ -99,8 +98,8 @@ def test_pipeline__to_pb():
 
 
 def test_pipeline__to_pb_with_options():
-    from google.cloud.firestore_v1.types.pipeline import StructuredPipeline
     from google.cloud.firestore_v1.types.document import Value
+    from google.cloud.firestore_v1.types.pipeline import StructuredPipeline
 
     ppl = _make_pipeline()
     options = {"option_1": Value(integer_value=1)}
@@ -129,8 +128,10 @@ def test_pipeline_stream_empty():
     """
     test stream pipeline with mocked empty response
     """
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
+    from google.cloud.firestore_v1.types import (
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -152,10 +153,12 @@ def test_pipeline_stream_no_doc_ref():
     """
     test stream pipeline with no doc ref
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
     from google.cloud.firestore_v1.pipeline_result import PipelineResult
+    from google.cloud.firestore_v1.types import (
+        Document,
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -188,12 +191,14 @@ def test_pipeline_stream_populated():
     """
     test stream pipeline with fully populated doc ref
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
-    from google.cloud.firestore_v1.types import Value
     from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.pipeline_result import PipelineResult
+    from google.cloud.firestore_v1.types import (
+        Document,
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+        Value,
+    )
 
     real_client = make_client()
     client = mock.Mock()
@@ -241,11 +246,13 @@ def test_pipeline_stream_multiple():
     """
     test stream pipeline with multiple docs and responses
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
-    from google.cloud.firestore_v1.types import Value
     from google.cloud.firestore_v1.pipeline_result import PipelineResult
+    from google.cloud.firestore_v1.types import (
+        Document,
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+        Value,
+    )
 
     real_client = make_client()
     client = mock.Mock()
@@ -289,9 +296,11 @@ def test_pipeline_stream_with_transaction():
     """
     test stream pipeline with fully populated doc ref
     """
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
     from google.cloud.firestore_v1.transaction import Transaction
+    from google.cloud.firestore_v1.types import (
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -319,8 +328,10 @@ def test_pipeline_stream_with_read_time():
     """
     import datetime
 
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import ExecutePipelineRequest
+    from google.cloud.firestore_v1.types import (
+        ExecutePipelineRequest,
+        ExecutePipelineResponse,
+    )
 
     client = mock.Mock()
     client.project = "A"
@@ -345,9 +356,7 @@ def test_pipeline_execute_stream_equivalence():
     """
     Pipeline.execute should provide same results from pipeline.stream, as a list
     """
-    from google.cloud.firestore_v1.types import Document
-    from google.cloud.firestore_v1.types import ExecutePipelineResponse
-    from google.cloud.firestore_v1.types import Value
+    from google.cloud.firestore_v1.types import Document, ExecutePipelineResponse, Value
 
     real_client = make_client()
     client = mock.Mock()

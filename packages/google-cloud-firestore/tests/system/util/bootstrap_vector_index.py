@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """A script to bootstrap vector data and vector index for system tests."""
+
 from google.api_core.client_options import ClientOptions
 from google.cloud.client import ClientWithProject  # type: ignore
 

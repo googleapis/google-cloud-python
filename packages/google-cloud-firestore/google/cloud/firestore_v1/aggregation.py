@@ -18,6 +18,7 @@ A :class:`~google.cloud.firestore_v1.aggregation.AggregationQuery` can be create
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create an aggregation query than direct usage of the constructor.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Generator, List, Optional, Union
@@ -35,11 +36,10 @@ from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
-    from google.cloud.firestore_v1 import transaction
-    from google.cloud.firestore_v1.query_profile import ExplainMetrics
-    from google.cloud.firestore_v1.query_profile import ExplainOptions
-
     import datetime
+
+    from google.cloud.firestore_v1 import transaction
+    from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
 
 
 class AggregationQuery(BaseAggregationQuery):

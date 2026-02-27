@@ -18,6 +18,7 @@ A :class:`~google.cloud.firestore_v1.async_aggregation.AsyncAggregationQuery` ca
 a :class:`~google.cloud.firestore_v1.async_collection.AsyncCollection` and that can be
 a more common way to create an aggregation query than direct usage of the constructor.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, AsyncGenerator, List, Optional, Union
@@ -34,10 +35,11 @@ from google.cloud.firestore_v1.base_aggregation import (
 from google.cloud.firestore_v1.query_results import QueryResultsList
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
     from google.cloud.firestore_v1.base_aggregation import AggregationResult
     from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
-    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
-    import datetime
 
 
 class AsyncAggregationQuery(BaseAggregationQuery):

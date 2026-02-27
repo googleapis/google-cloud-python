@@ -13,10 +13,13 @@
 # limitations under the License.
 
 """Common helpers shared across Google Cloud Firestore modules."""
+
 from __future__ import annotations
+
 import datetime
 import json
 from typing import (
+    TYPE_CHECKING,
     Any,
     Dict,
     Generator,
@@ -27,7 +30,6 @@ from typing import (
     Tuple,
     Union,
     cast,
-    TYPE_CHECKING,
 )
 
 import grpc  # type: ignore
@@ -64,7 +66,7 @@ BAD_REFERENCE_ERROR = (
     "documents/{{document_path}}``."
 )
 WRONG_APP_REFERENCE = (
-    "Document {!r} does not correspond to the same database " "({!r}) as the client."
+    "Document {!r} does not correspond to the same database ({!r}) as the client."
 )
 REQUEST_TIME_ENUM = DocumentTransform.FieldTransform.ServerValue.REQUEST_TIME
 _GRPC_ERROR_MAPPING = {
@@ -1145,7 +1147,7 @@ def make_retry_timeout_kwargs(
 
 
 def build_timestamp(
-    dt: Optional[Union[DatetimeWithNanoseconds, datetime.datetime]] = None
+    dt: Optional[Union[DatetimeWithNanoseconds, datetime.datetime]] = None,
 ) -> Timestamp:
     """Returns the supplied datetime (or "now") as a Timestamp"""
     return _datetime_to_pb_timestamp(
@@ -1265,7 +1267,7 @@ def deserialize_bundle(
 
 
 def _parse_bundle_elements_data(
-    serialized: Union[str, bytes]
+    serialized: Union[str, bytes],
 ) -> Generator[Dict, None, None]:
     """Reads through a serialized FirestoreBundle and yields JSON chunks that
     were created via `BundleElement.to_json(bundle_element)`.

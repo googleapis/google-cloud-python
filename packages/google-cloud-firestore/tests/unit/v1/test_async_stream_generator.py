@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import pytest
-
 from google.protobuf import struct_pb2
 
 
@@ -108,8 +107,7 @@ def test_async_stream_generator_explain_options():
 
 @pytest.mark.asyncio
 async def test_async_stream_generator_explain_metrics_explain_options_analyze_true():
-    from google.protobuf import duration_pb2
-    from google.protobuf import struct_pb2
+    from google.protobuf import duration_pb2, struct_pb2
 
     import google.cloud.firestore_v1.query_profile as query_profile
     import google.cloud.firestore_v1.types.query_profile as query_profile_pb2

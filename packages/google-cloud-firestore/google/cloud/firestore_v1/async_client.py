@@ -23,6 +23,7 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.firestore_v1.client.Client` owns a
   :class:`~google.cloud.firestore_v1.async_document.AsyncDocumentReference`
 """
+
 from __future__ import annotations
 
 from typing import (
@@ -44,20 +45,24 @@ from google.cloud.firestore_v1.async_document import (
     AsyncDocumentReference,
     DocumentSnapshot,
 )
+from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
 from google.cloud.firestore_v1.async_query import AsyncCollectionGroup
 from google.cloud.firestore_v1.async_transaction import AsyncTransaction
-from google.cloud.firestore_v1.base_client import _parse_batch_get  # type: ignore
-from google.cloud.firestore_v1.base_client import _CLIENT_INFO, BaseClient, _path_helper
+from google.cloud.firestore_v1.base_client import (
+    _CLIENT_INFO,
+    BaseClient,
+    _parse_batch_get,  # type: ignore
+    _path_helper,
+)
 from google.cloud.firestore_v1.base_transaction import MAX_ATTEMPTS
 from google.cloud.firestore_v1.field_path import FieldPath
+from google.cloud.firestore_v1.pipeline_source import PipelineSource
 from google.cloud.firestore_v1.services.firestore import (
     async_client as firestore_client,
 )
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
-from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
-from google.cloud.firestore_v1.pipeline_source import PipelineSource
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
@@ -381,9 +386,11 @@ class AsyncClient(BaseClient):
 
         if isinstance(reference, AsyncCollectionReference):
             chunk: List[DocumentSnapshot]
-            async for chunk in reference.recursive().select(
-                [FieldPath.document_id()]
-            )._chunkify(chunk_size):
+            async for chunk in (
+                reference.recursive()
+                .select([FieldPath.document_id()])
+                ._chunkify(chunk_size)
+            ):
                 doc_snap: DocumentSnapshot
                 for doc_snap in chunk:
                     num_deleted += 1

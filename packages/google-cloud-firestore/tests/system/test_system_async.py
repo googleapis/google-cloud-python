@@ -20,9 +20,9 @@ import operator
 from typing import Callable, Dict, List, Optional
 
 import google.auth
+import mock
 import pytest
 import pytest_asyncio
-import mock
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry_async as retries
 from google.api_core.exceptions import (
@@ -33,6 +33,19 @@ from google.api_core.exceptions import (
 )
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.oauth2 import service_account
+from test__helpers import (
+    EMULATOR_CREDS,
+    ENTERPRISE_MODE_ERROR,
+    FIRESTORE_CREDS,
+    FIRESTORE_EMULATOR,
+    FIRESTORE_ENTERPRISE_DB,
+    FIRESTORE_PROJECT,
+    MISSING_DOCUMENT,
+    RANDOM_ID_REGEX,
+    TEST_DATABASES,
+    TEST_DATABASES_W_ENTERPRISE,
+    UNIQUE_RESOURCE_ID,
+)
 
 from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
@@ -46,19 +59,6 @@ from google.cloud.firestore_v1.query_profile import (
 )
 from google.cloud.firestore_v1.query_results import QueryResultsList
 from google.cloud.firestore_v1.vector import Vector
-from test__helpers import (
-    EMULATOR_CREDS,
-    FIRESTORE_CREDS,
-    FIRESTORE_EMULATOR,
-    FIRESTORE_PROJECT,
-    MISSING_DOCUMENT,
-    RANDOM_ID_REGEX,
-    UNIQUE_RESOURCE_ID,
-    ENTERPRISE_MODE_ERROR,
-    TEST_DATABASES,
-    TEST_DATABASES_W_ENTERPRISE,
-    FIRESTORE_ENTERPRISE_DB,
-)
 
 RETRIES = retries.AsyncRetry(
     initial=0.1,
@@ -1573,6 +1573,7 @@ async def test_query_stream_or_get_w_explain_options_analyze_false(
 async def test_pipeline_explain_options_explain_mode(database, method, query_docs):
     """Explain currently not supported by backend. Expect error"""
     from google.api_core.exceptions import InvalidArgument
+
     from google.cloud.firestore_v1.query_profile import (
         PipelineExplainOptions,
     )
@@ -1602,8 +1603,8 @@ async def test_pipeline_explain_options_explain_mode(database, method, query_doc
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 async def test_pipeline_explain_options_analyze_mode(database, method, query_docs):
     from google.cloud.firestore_v1.query_profile import (
-        PipelineExplainOptions,
         ExplainStats,
+        PipelineExplainOptions,
         QueryExplainError,
     )
     from google.cloud.firestore_v1.types.explain_stats import (
@@ -1651,8 +1652,8 @@ async def test_pipeline_explain_options_using_additional_options(
 ):
     """additional_options field allows passing in arbitrary options. Test with explain_options"""
     from google.cloud.firestore_v1.query_profile import (
-        PipelineExplainOptions,
         ExplainStats,
+        PipelineExplainOptions,
     )
     from google.cloud.firestore_v1.types.explain_stats import (
         ExplainStats as ExplainStats_pb,
@@ -2482,9 +2483,9 @@ async def _do_recursive_delete(client, bulk_writer, empty_philosophers=False):
     # Now they should all be missing
     for path in doc_paths:
         snapshot = await collection_ref.document(f"Socrates{path}").get()
-        assert (
-            not snapshot.exists
-        ), f"Snapshot at Socrates{path} should have been deleted"
+        assert not snapshot.exists, (
+            f"Snapshot at Socrates{path} should have been deleted"
+        )
 
 
 @pytest.mark.parametrize("database", TEST_DATABASES, indirect=True)
@@ -2553,7 +2554,7 @@ async def test_recursive_query(client, cleanup, database):
 
     for index in range(len(ids)):
         error_msg = (
-            f"Expected '{expected_ids[index]}' at spot {index}, " "got '{ids[index]}'"
+            f"Expected '{expected_ids[index]}' at spot {index}, got '{{ids[index]}}'"
         )
         assert ids[index] == expected_ids[index], error_msg
 
@@ -2577,7 +2578,7 @@ async def test_nested_recursive_query(client, cleanup, database):
 
     for index in range(len(ids)):
         error_msg = (
-            f"Expected '{expected_ids[index]}' at spot {index}, " "got '{ids[index]}'"
+            f"Expected '{expected_ids[index]}' at spot {index}, got '{{ids[index]}}'"
         )
         assert ids[index] == expected_ids[index], error_msg
 

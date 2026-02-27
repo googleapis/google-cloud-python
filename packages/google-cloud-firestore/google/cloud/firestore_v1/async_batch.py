@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Helpers for batch requests to the Google Cloud Firestore API."""
+
 from __future__ import annotations
 
 from google.api_core import gapic_v1

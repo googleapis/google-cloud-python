@@ -13,7 +13,9 @@
 # limitations under the License.
 
 """Helpers for batch requests to the Google Cloud Firestore API."""
+
 from __future__ import annotations
+
 import abc
 from typing import Any, Dict, Union
 
@@ -141,7 +143,7 @@ class BaseBatch(metaclass=abc.ABCMeta):
                 state of the document before applying changes.
         """
         if option.__class__.__name__ == "ExistsOption":
-            raise ValueError("you must not pass an explicit write option to " "update.")
+            raise ValueError("you must not pass an explicit write option to update.")
         write_pbs = _helpers.pbs_for_update(
             reference._document_path, field_updates, option
         )

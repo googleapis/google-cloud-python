@@ -18,6 +18,7 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+
 from __future__ import annotations
 
 from typing import (
@@ -37,7 +38,6 @@ from google.api_core import retry as retries
 
 from google.cloud import firestore_v1
 from google.cloud.firestore_v1 import aggregation, transaction
-from google.cloud.firestore_v1.query_results import QueryResultsList
 from google.cloud.firestore_v1.base_document import (
     DocumentSnapshot,
 )
@@ -49,17 +49,18 @@ from google.cloud.firestore_v1.base_query import (
     _enum_from_direction,
     _query_response_to_snapshot,
 )
+from google.cloud.firestore_v1.query_results import QueryResultsList
 from google.cloud.firestore_v1.stream_generator import StreamGenerator
 from google.cloud.firestore_v1.vector import Vector
 from google.cloud.firestore_v1.vector_query import VectorQuery
 from google.cloud.firestore_v1.watch import Watch
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
     from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
     from google.cloud.firestore_v1.field_path import FieldPath
     from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
-
-    import datetime
 
 
 class Query(BaseQuery):
@@ -553,9 +554,9 @@ class Query(BaseQuery):
         return Watch.for_query(self, callback, DocumentSnapshot)
 
     @staticmethod
-    def _get_collection_reference_class() -> (
-        Type["firestore_v1.collection.CollectionReference"]
-    ):
+    def _get_collection_reference_class() -> Type[
+        "firestore_v1.collection.CollectionReference"
+    ]:
         from google.cloud.firestore_v1.collection import CollectionReference
 
         return CollectionReference

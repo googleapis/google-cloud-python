@@ -319,7 +319,7 @@ def test_encode_dict_w_many_types():
         "baz": 981,
         "quux": 2.875,
         "quuz": dt_val,
-        "corge": "\N{snowman}",
+        "corge": "\N{SNOWMAN}",
         "grault": b"\xe2\x98\x83",
         "wibble": document,
         "garply": ["fork", 4.0],
@@ -334,7 +334,7 @@ def test_encode_dict_w_many_types():
         "quuz": _value_pb(
             timestamp_value=timestamp_pb2.Timestamp(seconds=dt_seconds, nanos=dt_nanos)
         ),
-        "corge": _value_pb(string_value="\N{snowman}"),
+        "corge": _value_pb(string_value="\N{SNOWMAN}"),
         "grault": _value_pb(bytes_value=b"\xe2\x98\x83"),
         "wibble": _value_pb(reference_value=document._document_path),
         "garply": _value_pb(
@@ -674,7 +674,7 @@ def test_decode_dict_w_many_types():
         "quuz": _value_pb(
             timestamp_value=timestamp_pb2.Timestamp(seconds=dt_seconds, nanos=dt_nanos)
         ),
-        "corge": _value_pb(string_value="\N{snowman}"),
+        "corge": _value_pb(string_value="\N{SNOWMAN}"),
         "grault": _value_pb(bytes_value=b"\xe2\x98\x83"),
         "garply": _value_pb(
             array_value=ArrayValue(
@@ -697,7 +697,7 @@ def test_decode_dict_w_many_types():
         "baz": 981,
         "quux": 2.875,
         "quuz": dt_val,
-        "corge": "\N{snowman}",
+        "corge": "\N{SNOWMAN}",
         "grault": b"\xe2\x98\x83",
         "garply": ["fork", 4.0],
         "waldo": {"fred": "zap", "thud": False},
@@ -2237,7 +2237,7 @@ def _pbs_for_update_helper(option=None, do_transform=False, **write_kwargs):
             name=document_path, fields={"bitez": _value_pb(map_value=map_pb)}
         ),
         update_mask=common.DocumentMask(field_paths=field_paths),
-        **write_kwargs
+        **write_kwargs,
     )
     if isinstance(option, _helpers.ExistsOption):
         precondition = common.Precondition(exists=False)

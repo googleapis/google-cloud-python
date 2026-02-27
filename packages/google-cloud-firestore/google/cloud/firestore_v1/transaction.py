@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Helpers for applying Google Cloud Firestore changes in a transaction."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Generator, Optional
@@ -36,11 +37,11 @@ from google.cloud.firestore_v1.query import Query
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
-
-    import datetime
 
 
 class Transaction(batch.WriteBatch, BaseTransaction):

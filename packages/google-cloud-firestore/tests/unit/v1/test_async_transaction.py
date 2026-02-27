@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+
 import mock
 import pytest
 
@@ -198,9 +199,11 @@ async def test_asynctransaction__rollback_failure():
 
 @pytest.mark.asyncio
 async def test_asynctransaction__commit():
-    from google.cloud.firestore_v1.types import firestore, write
-    from google.protobuf.timestamp_pb2 import Timestamp
     import datetime
+
+    from google.protobuf.timestamp_pb2 import Timestamp
+
+    from google.cloud.firestore_v1.types import firestore, write
 
     # Create a minimal fake GAPIC with a dummy result.
     firestore_api = AsyncMock()

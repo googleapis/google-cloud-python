@@ -17,18 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import backup as gfa_backup
 from google.cloud.firestore_admin_v1.types import database as gfa_database
 from google.cloud.firestore_admin_v1.types import field as gfa_field
 from google.cloud.firestore_admin_v1.types import index as gfa_index
-from google.cloud.firestore_admin_v1.types import schedule
-from google.cloud.firestore_admin_v1.types import snapshot
+from google.cloud.firestore_admin_v1.types import schedule, snapshot
 from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.firestore.admin.v1",

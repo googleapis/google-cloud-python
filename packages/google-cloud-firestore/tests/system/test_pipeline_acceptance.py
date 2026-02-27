@@ -16,25 +16,23 @@ This file loads and executes yaml-encoded test cases from pipeline_e2e.yaml
 """
 
 from __future__ import annotations
-import os
+
 import datetime
-import pytest
-import yaml
+import os
 import re
 from typing import Any
 
-from google.protobuf.json_format import MessageToDict
-
-from google.cloud.firestore_v1 import pipeline_stages as stages
-from google.cloud.firestore_v1 import pipeline_expressions
-from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1 import pipeline_expressions as expr
+import pytest
+import yaml
 from google.api_core.exceptions import GoogleAPIError
+from google.protobuf.json_format import MessageToDict
+from test__helpers import FIRESTORE_EMULATOR, FIRESTORE_ENTERPRISE_DB
 
-from google.cloud.firestore import Client, AsyncClient
-
-from test__helpers import FIRESTORE_ENTERPRISE_DB
-from test__helpers import FIRESTORE_EMULATOR
+from google.cloud.firestore import AsyncClient, Client
+from google.cloud.firestore_v1 import pipeline_expressions
+from google.cloud.firestore_v1 import pipeline_expressions as expr
+from google.cloud.firestore_v1 import pipeline_stages as stages
+from google.cloud.firestore_v1.vector import Vector
 
 FIRESTORE_PROJECT = os.environ.get("GCLOUD_PROJECT")
 
@@ -45,9 +43,7 @@ pytestmark = pytest.mark.skipif(
 
 test_dir_name = os.path.dirname(__file__)
 
-id_format = (
-    lambda x: f"{x.get('file_name', '')}: {x.get('description', '')}"
-)  # noqa: E731
+id_format = lambda x: f"{x.get('file_name', '')}: {x.get('description', '')}"  # noqa: E731
 
 
 def yaml_loader(field="tests", dir_name="pipeline_e2e", attach_file_name=True):
@@ -139,9 +135,9 @@ def test_pipeline_results(test_dict, client):
     if expected_results:
         assert got_results == expected_results
     if expected_approximate_results:
-        assert len(got_results) == len(
-            expected_approximate_results
-        ), "got unexpected result count"
+        assert len(got_results) == len(expected_approximate_results), (
+            "got unexpected result count"
+        )
         for idx in range(len(got_results)):
             assert got_results[idx] == pytest.approx(
                 expected_approximate_results[idx], abs=1e-4
@@ -197,9 +193,9 @@ async def test_pipeline_results_async(test_dict, async_client):
     if expected_results:
         assert got_results == expected_results
     if expected_approximate_results:
-        assert len(got_results) == len(
-            expected_approximate_results
-        ), "got unexpected result count"
+        assert len(got_results) == len(expected_approximate_results), (
+            "got unexpected result count"
+        )
         for idx in range(len(got_results)):
             assert got_results[idx] == pytest.approx(
                 expected_approximate_results[idx], abs=1e-4

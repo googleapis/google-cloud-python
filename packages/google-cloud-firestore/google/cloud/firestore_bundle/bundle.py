@@ -16,7 +16,18 @@
 
 import datetime
 import json
+from typing import (
+    Dict,
+    List,
+    Optional,
+    Union,
+)
 
+from google.cloud._helpers import UTC, _datetime_to_pb_timestamp  # type: ignore
+from google.protobuf import json_format  # type: ignore
+from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+
+from google.cloud.firestore_bundle._helpers import limit_type_of_query
 from google.cloud.firestore_bundle.types.bundle import (
     BundledDocumentMetadata,
     BundledQuery,
@@ -24,22 +35,12 @@ from google.cloud.firestore_bundle.types.bundle import (
     BundleMetadata,
     NamedQuery,
 )
-from google.cloud._helpers import _datetime_to_pb_timestamp, UTC  # type: ignore
-from google.cloud.firestore_bundle._helpers import limit_type_of_query
+from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.async_query import AsyncQuery
 from google.cloud.firestore_v1.base_client import BaseClient
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.base_query import BaseQuery
 from google.cloud.firestore_v1.document import DocumentReference
-from google.cloud.firestore_v1 import _helpers
-from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
-from google.protobuf import json_format  # type: ignore
-from typing import (
-    Dict,
-    List,
-    Optional,
-    Union,
-)
 
 
 class FirestoreBundle:
@@ -258,7 +259,9 @@ class FirestoreBundle:
         if _helpers.compare_timestamps(_ts, self.latest_read_time) == 1:
             self.latest_read_time = _ts
 
-    def _add_bundle_element(self, bundle_element: BundleElement, *, client: BaseClient, type: str):  # type: ignore
+    def _add_bundle_element(
+        self, bundle_element: BundleElement, *, client: BaseClient, type: str
+    ):  # type: ignore
         """Applies BundleElements to this FirestoreBundle instance as a part of
         deserializing a FirestoreBundle string.
         """
@@ -269,11 +272,13 @@ class FirestoreBundle:
         if type == "metadata":
             self._deserialized_metadata = bundle_element.metadata  # type: ignore
         elif type == "namedQuery":
-            self.named_queries[bundle_element.named_query.name] = bundle_element.named_query  # type: ignore
+            self.named_queries[bundle_element.named_query.name] = (
+                bundle_element.named_query
+            )  # type: ignore
         elif type == "documentMetadata":
-            self._doc_metadata_map[
-                bundle_element.document_metadata.name
-            ] = bundle_element.document_metadata
+            self._doc_metadata_map[bundle_element.document_metadata.name] = (
+                bundle_element.document_metadata
+            )
         elif type == "document":
             doc_ref_value = _helpers.DocumentReferenceValue(
                 bundle_element.document.name

@@ -13,10 +13,12 @@
 # limitations under the License.
 
 """Utilities for managing / converting field paths to / from strings."""
+
 from __future__ import annotations
+
 import re
 from collections import abc
-from typing import Any, Iterable, cast, MutableMapping
+from typing import Any, Iterable, MutableMapping, cast
 
 _FIELD_PATH_MISSING_TOP = "{!r} is not contained in the data"
 _FIELD_PATH_MISSING_KEY = "{!r} is not contained in the data for the key {!r}"

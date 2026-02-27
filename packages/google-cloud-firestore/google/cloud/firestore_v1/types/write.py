@@ -17,13 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.firestore_v1.types import bloom_filter
-from google.cloud.firestore_v1.types import common
+from google.cloud.firestore_v1.types import bloom_filter, common
 from google.cloud.firestore_v1.types import document as gf_document
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.firestore.v1",
@@ -110,12 +108,12 @@ class Write(proto.Message):
         number=3,
         message=common.DocumentMask,
     )
-    update_transforms: MutableSequence[
-        "DocumentTransform.FieldTransform"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="DocumentTransform.FieldTransform",
+    update_transforms: MutableSequence["DocumentTransform.FieldTransform"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="DocumentTransform.FieldTransform",
+        )
     )
     current_document: common.Precondition = proto.Field(
         proto.MESSAGE,
@@ -253,6 +251,7 @@ class DocumentTransform(proto.Message):
                     a transaction, all the fields will get the same
                     server timestamp.
             """
+
             SERVER_VALUE_UNSPECIFIED = 0
             REQUEST_TIME = 1
 

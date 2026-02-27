@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.firestore_v1.types import document as document_pb2  # type: ignore
 from google.cloud.firestore_v1.types import query as query_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.firestore.bundle",
@@ -62,6 +61,7 @@ class BundledQuery(proto.Message):
             LAST (1):
                 No description available.
         """
+
         FIRST = 0
         LAST = 1
 

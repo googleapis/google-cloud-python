@@ -14,57 +14,60 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 from typing import (
-    Dict,
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
     Sequence,
     Tuple,
     Type,
     Union,
 )
 
-from google.cloud.firestore_v1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
+from google.cloud.firestore_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.firestore_v1.services.firestore import pagers
-from google.cloud.firestore_v1.types import aggregation_result
-from google.cloud.firestore_v1.types import common
-from google.cloud.firestore_v1.types import document
-from google.cloud.firestore_v1.types import document as gf_document
-from google.cloud.firestore_v1.types import explain_stats
-from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1.types import query
-from google.cloud.firestore_v1.types import query_profile
-from google.cloud.firestore_v1.types import write as gf_write
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
-from .transports.base import FirestoreTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import FirestoreGrpcAsyncIOTransport
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+
+from google.cloud.firestore_v1.services.firestore import pagers
+from google.cloud.firestore_v1.types import (
+    aggregation_result,
+    common,
+    document,
+    explain_stats,
+    firestore,
+    query,
+    query_profile,
+)
+from google.cloud.firestore_v1.types import document as gf_document
+from google.cloud.firestore_v1.types import write as gf_write
+
 from .client import FirestoreClient
+from .transports.base import DEFAULT_CLIENT_INFO, FirestoreTransport
+from .transports.grpc_asyncio import FirestoreGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore

@@ -18,13 +18,13 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+
 from __future__ import annotations
 
 import abc
 import copy
 import math
 import warnings
-
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -36,17 +36,21 @@ from typing import (
     Sequence,
     Tuple,
     Type,
-    Union,
     TypeVar,
+    Union,
 )
 
 from google.api_core import retry as retries
 from google.protobuf import wrappers_pb2
 
 from google.cloud import firestore_v1
-from google.cloud.firestore_v1 import _helpers, document
+from google.cloud.firestore_v1 import (
+    _helpers,
+    document,
+    pipeline_expressions,
+    transforms,
+)
 from google.cloud.firestore_v1 import field_path as field_path_module
-from google.cloud.firestore_v1 import transforms
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
@@ -59,17 +63,16 @@ from google.cloud.firestore_v1.types import (
     query,
 )
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1 import pipeline_expressions
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
     from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.pipeline_source import PipelineSource
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.query_results import QueryResultsList
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
-    from google.cloud.firestore_v1.pipeline_source import PipelineSource
-
-    import datetime
 
 
 _BAD_DIR_STRING: str

@@ -26,8 +26,8 @@ import os
 import pathlib
 import re
 import shutil
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
@@ -304,8 +304,8 @@ def install_systemtest_dependencies(session, *constraints):
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system_emulated(session):
-    import subprocess
     import signal
+    import subprocess
 
     try:
         # https://github.com/googleapis/python-firestore/issues/472

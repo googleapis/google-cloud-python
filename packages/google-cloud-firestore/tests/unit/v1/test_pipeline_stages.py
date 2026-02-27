@@ -12,20 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License
 
-import pytest
 from unittest import mock
 
-from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+import pytest
+
 import google.cloud.firestore_v1.pipeline_stages as stages
+from google.cloud.firestore_v1._helpers import GeoPoint
+from google.cloud.firestore_v1.base_pipeline import _BasePipeline
+from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.pipeline_expressions import (
     Constant,
     Field,
     Ordering,
 )
 from google.cloud.firestore_v1.types.document import Value
-from google.cloud.firestore_v1._helpers import GeoPoint
 from google.cloud.firestore_v1.vector import Vector
-from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 
 
 class TestStage:

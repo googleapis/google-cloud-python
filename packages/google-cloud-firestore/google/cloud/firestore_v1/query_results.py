@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List, Optional, TypeVar
+
 from google.cloud.firestore_v1.query_profile import (
     ExplainMetrics,
     ExplainOptions,
     QueryExplainError,
 )
-
-from typing import List, Optional, TypeVar
 
 T = TypeVar("T")
 

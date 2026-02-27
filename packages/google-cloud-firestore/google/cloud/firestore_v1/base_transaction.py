@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Helpers for applying Google Cloud Firestore changes in a transaction."""
+
 from __future__ import annotations
 
 from typing import (
@@ -31,13 +32,13 @@ from google.cloud.firestore_v1 import types
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
     from google.cloud.firestore_v1.document import DocumentSnapshot
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
     from google.cloud.firestore_v1.types import write as write_pb
-
-    import datetime
 
 
 MAX_ATTEMPTS = 5

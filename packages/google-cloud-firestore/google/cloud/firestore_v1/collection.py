@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Generator, Optional, Tuple, Union
@@ -20,9 +21,8 @@ from typing import TYPE_CHECKING, Any, Callable, Generator, Optional, Tuple, Uni
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
-from google.cloud.firestore_v1 import aggregation, document
+from google.cloud.firestore_v1 import aggregation, document, transaction, vector_query
 from google.cloud.firestore_v1 import query as query_mod
-from google.cloud.firestore_v1 import transaction, vector_query
 from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
     _item_to_document_ref,
@@ -31,11 +31,11 @@ from google.cloud.firestore_v1.query_results import QueryResultsList
 from google.cloud.firestore_v1.watch import Watch
 
 if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
-
-    import datetime
 
 
 class CollectionReference(BaseCollectionReference[query_mod.Query]):

@@ -30,10 +30,10 @@ from google.cloud.firestore_v1.query_results import QueryResultsList
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
+    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
+    from google.cloud.firestore_v1 import transaction
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
     from google.cloud.firestore_v1.query_profile import ExplainMetrics, ExplainOptions
-    from google.cloud.firestore_v1 import transaction
-    import google.cloud.firestore_v1.types.query_profile as query_profile_pb
 
 TAsyncVectorQuery = TypeVar("TAsyncVectorQuery", bound="AsyncVectorQuery")
 

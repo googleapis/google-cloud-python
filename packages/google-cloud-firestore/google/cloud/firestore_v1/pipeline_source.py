@@ -18,18 +18,20 @@
 """
 
 from __future__ import annotations
-from typing import Generic, TypeVar, TYPE_CHECKING
+
+from typing import TYPE_CHECKING, Generic, TypeVar
+
 from google.cloud.firestore_v1 import pipeline_stages as stages
-from google.cloud.firestore_v1.base_pipeline import _BasePipeline
 from google.cloud.firestore_v1._helpers import DOCUMENT_PATH_DELIMITER
+from google.cloud.firestore_v1.base_pipeline import _BasePipeline
 
 if TYPE_CHECKING:  # pragma: NO COVER
-    from google.cloud.firestore_v1.client import Client
     from google.cloud.firestore_v1.async_client import AsyncClient
-    from google.cloud.firestore_v1.base_document import BaseDocumentReference
-    from google.cloud.firestore_v1.base_query import BaseQuery
     from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
     from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+    from google.cloud.firestore_v1.base_document import BaseDocumentReference
+    from google.cloud.firestore_v1.base_query import BaseQuery
+    from google.cloud.firestore_v1.client import Client
 
 
 PipelineType = TypeVar("PipelineType", bound=_BasePipeline)

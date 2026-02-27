@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import FirestoreTransport
 from .grpc import FirestoreGrpcTransport
 from .grpc_asyncio import FirestoreGrpcAsyncIOTransport
-from .rest import FirestoreRestTransport
-from .rest import FirestoreRestInterceptor
-
+from .rest import FirestoreRestInterceptor, FirestoreRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[FirestoreTransport]]

@@ -19,14 +19,15 @@ def test_explain_metrics__from_pb():
     """
     Test creating an instance of ExplainMetrics from a protobuf.
     """
+    from google.protobuf import duration_pb2, struct_pb2
+
     from google.cloud.firestore_v1.query_profile import (
         ExplainMetrics,
-        _ExplainAnalyzeMetrics,
-        QueryExplainError,
         PlanSummary,
+        QueryExplainError,
+        _ExplainAnalyzeMetrics,
     )
     from google.cloud.firestore_v1.types import query_profile as query_profile_pb2
-    from google.protobuf import struct_pb2, duration_pb2
 
     # test without execution_stats field
     expected_metrics = query_profile_pb2.ExplainMetrics(
@@ -65,14 +66,15 @@ def test_explain_metrics__from_pb_empty():
     """
     Test with empty ExplainMetrics protobuf.
     """
+    from google.protobuf import struct_pb2
+
     from google.cloud.firestore_v1.query_profile import (
-        ExplainMetrics,
         ExecutionStats,
-        _ExplainAnalyzeMetrics,
+        ExplainMetrics,
         PlanSummary,
+        _ExplainAnalyzeMetrics,
     )
     from google.cloud.firestore_v1.types import query_profile as query_profile_pb2
-    from google.protobuf import struct_pb2
 
     expected_metrics = query_profile_pb2.ExplainMetrics(
         plan_summary=query_profile_pb2.PlanSummary(
@@ -132,8 +134,7 @@ def test_pipeline_explain_options__to_value(mode_str):
     Should be able to create a Value protobuf representation of ExplainOptions
     """
     from google.cloud.firestore_v1.query_profile import PipelineExplainOptions
-    from google.cloud.firestore_v1.types.document import MapValue
-    from google.cloud.firestore_v1.types.document import Value
+    from google.cloud.firestore_v1.types.document import MapValue, Value
 
     options = PipelineExplainOptions(mode=mode_str)
     expected_value = Value(
@@ -157,10 +158,10 @@ def test_explain_stats_get_text():
     """
     Test ExplainStats.get_text()
     """
+    from google.protobuf import any_pb2, wrappers_pb2
+
     from google.cloud.firestore_v1.query_profile import ExplainStats
     from google.cloud.firestore_v1.types import explain_stats as explain_stats_pb2
-    from google.protobuf import any_pb2
-    from google.protobuf import wrappers_pb2
 
     expected_text = "some text"
     text_pb = any_pb2.Any()

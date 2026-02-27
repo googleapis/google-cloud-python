@@ -13,12 +13,12 @@
 # limitations under the License.
 
 
-import mock
-import pytest
-
 from datetime import datetime
 
+import mock
+import pytest
 from google.protobuf import timestamp_pb2
+
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
 
 

@@ -15,15 +15,16 @@
 """Classes for iterating over stream results async for the Google Cloud
 Firestore API.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, AsyncGenerator, Coroutine, Optional, TypeVar
 
+import google.cloud.firestore_v1.types.query_profile as query_profile_pb
 from google.cloud.firestore_v1.query_profile import (
     ExplainMetrics,
     QueryExplainError,
 )
-import google.cloud.firestore_v1.types.query_profile as query_profile_pb
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.query_profile import ExplainOptions

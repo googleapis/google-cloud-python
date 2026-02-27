@@ -18,39 +18,41 @@ A :class:`~google.cloud.firestore_v1.aggregation.AggregationQuery` can be create
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create an aggregation query than direct usage of the constructor.
 """
+
 from __future__ import annotations
 
 import abc
 import itertools
-
 from abc import ABC
-from typing import TYPE_CHECKING, Any, Coroutine, List, Optional, Tuple, Union, Iterable
+from typing import TYPE_CHECKING, Any, Coroutine, Iterable, List, Optional, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.field_path import FieldPath
+from google.cloud.firestore_v1.pipeline_expressions import (
+    AggregateFunction,
+    AliasedExpression,
+    Count,
+    Field,
+)
 from google.cloud.firestore_v1.types import (
     StructuredAggregationQuery,
 )
-from google.cloud.firestore_v1.pipeline_expressions import AggregateFunction
-from google.cloud.firestore_v1.pipeline_expressions import Count
-from google.cloud.firestore_v1.pipeline_expressions import AliasedExpression
-from google.cloud.firestore_v1.pipeline_expressions import Field
 
 # Types needed only for Type Hints
 if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
     from google.cloud.firestore_v1 import transaction
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
+    from google.cloud.firestore_v1.pipeline_source import PipelineSource
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.query_results import QueryResultsList
     from google.cloud.firestore_v1.stream_generator import (
         StreamGenerator,
     )
-    from google.cloud.firestore_v1.pipeline_source import PipelineSource
-
-    import datetime
 
 
 class AggregationResult(object):
