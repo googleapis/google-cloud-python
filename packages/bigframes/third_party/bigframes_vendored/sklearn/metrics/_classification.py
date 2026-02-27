@@ -135,10 +135,10 @@ def recall_score(
         >>> y_pred = bpd.DataFrame([0, 2, 1, 0, 0, 1])
         >>> recall_score = bigframes.ml.metrics.recall_score(y_true, y_pred, average=None)
         >>> recall_score
-        0    1
-        1    0
-        2    0
-        dtype: int64
+        0    1.0
+        1    0.0
+        2    0.0
+        dtype: float64
 
 
     Args:
