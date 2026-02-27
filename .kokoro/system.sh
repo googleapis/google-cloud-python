@@ -45,9 +45,13 @@ system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 git config --global --add safe.directory $(realpath .)
 
 packages_with_system_tests=(
+  "google-auth"
   "google-cloud-bigquery-storage"
+  "google-cloud-bigtable"
+  "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"
+  "google-cloud-firestore"
   "google-cloud-logging"
   "google-cloud-testutils"
 )
