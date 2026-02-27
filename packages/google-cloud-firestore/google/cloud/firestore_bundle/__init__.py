@@ -41,8 +41,8 @@ from .types.bundle import (
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
 ):  # pragma: NO COVER
-    api_core.check_python_version("google.cloud.bundle")  # type: ignore
-    api_core.check_dependency_versions("google.cloud.bundle")  # type: ignore
+    api_core.check_python_version("google.cloud.firestore_bundle")  # type: ignore
+    api_core.check_dependency_versions("google.cloud.firestore_bundle")  # type: ignore
 else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
@@ -51,7 +51,7 @@ else:  # pragma: NO COVER
         import warnings
 
         _py_version_str = sys.version.split()[0]
-        _package_label = "google.cloud.bundle"
+        _package_label = "google.cloud.firestore_bundle"
         if sys.version_info < (3, 9):
             warnings.warn(
                 "You are using a non-supported Python version "
@@ -133,10 +133,10 @@ else:  # pragma: NO COVER
         )
 
 __all__ = (
+    "FirestoreBundle",
     "BundleElement",
     "BundleMetadata",
     "BundledDocumentMetadata",
     "BundledQuery",
-    "FirestoreBundle",
     "NamedQuery",
 )

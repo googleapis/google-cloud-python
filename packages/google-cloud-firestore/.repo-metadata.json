@@ -1,6 +1,6 @@
 {
     "name": "firestore",
-    "name_pretty": "Cloud Firestore",
+    "name_pretty": "Cloud Firestore API",
     "product_documentation": "https://cloud.google.com/firestore",
     "client_documentation": "https://cloud.google.com/python/docs/reference/firestore/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5337669",

@@ -47,7 +47,7 @@ class BundledQuery(proto.Message):
             A structured query.
 
             This field is a member of `oneof`_ ``query_type``.
-        limit_type (google.cloud.bundle.types.BundledQuery.LimitType):
+        limit_type (google.cloud.firestore_bundle.types.BundledQuery.LimitType):
 
     """
 
@@ -93,7 +93,7 @@ class NamedQuery(proto.Message):
             the name to load this query from bundle, and
             resume from when the query results are
             materialized into this bundle.
-        bundled_query (google.cloud.bundle.types.BundledQuery):
+        bundled_query (google.cloud.firestore_bundle.types.BundledQuery):
             The query saved in the bundle.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             The read time of the query, when it is used
@@ -209,13 +209,13 @@ class BundleElement(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        metadata (google.cloud.bundle.types.BundleMetadata):
+        metadata (google.cloud.firestore_bundle.types.BundleMetadata):
 
             This field is a member of `oneof`_ ``element_type``.
-        named_query (google.cloud.bundle.types.NamedQuery):
+        named_query (google.cloud.firestore_bundle.types.NamedQuery):
 
             This field is a member of `oneof`_ ``element_type``.
-        document_metadata (google.cloud.bundle.types.BundledDocumentMetadata):
+        document_metadata (google.cloud.firestore_bundle.types.BundledDocumentMetadata):
 
             This field is a member of `oneof`_ ``element_type``.
         document (google.firestore.v1.document_pb2.Document):
