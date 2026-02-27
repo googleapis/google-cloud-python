@@ -1630,6 +1630,65 @@ libraries:
     remove_regex:
       - packages/google-cloud-financialservices/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-firestore
+    version: 2.23.0
+    last_generated_commit: d420134ab324c0cbe0f4ae06ad9697dac77f26ad
+    apis:
+      - path: google/firestore/v1
+        service_config: firestore_v1.yaml
+      - path: google/firestore/admin/v1
+        service_config: firestore_v1.yaml
+      - path: google/firestore/bundle
+        service_config: ""
+    source_roots:
+      - packages/google-cloud-firestore
+    preserve_regex:
+      - ^packages/google-cloud-firestore/CHANGELOG.md
+      - ^packages/google-cloud-firestore/docs/CHANGELOG.md
+    remove_regex:
+      - ^packages/google-cloud-firestore/google/cloud/firestore/__init__.py
+      - ^packages/google-cloud-firestore/google/cloud/firestore/gapic
+      - ^packages/google-cloud-firestore/google/cloud/firestore/py.typed
+      - ^packages/google-cloud-firestore/google/cloud/firestore_v1/__init__.py
+      - ^packages/google-cloud-firestore/google/cloud/firestore_v1/services
+      - ^packages/google-cloud-firestore/google/cloud/firestore_v1/types
+      - ^packages/google-cloud-firestore/google/cloud/firestore_v1/gapic
+      - ^packages/google-cloud-firestore/google/cloud/firestore_v1/py.typed
+      - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/__init__.py
+      - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/services
+      - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/types
+      - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/gapic
+      - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/py.typed
+      - ^packages/google-cloud-firestore/google/cloud/firestore_bundle/__init__.py
+      - ^packages/google-cloud-firestore/google/cloud/firestore_bundle/services
+      - ^packages/google-cloud-firestore/google/cloud/firestore_bundle/types
+      - ^packages/google-cloud-firestore/google/cloud/firestore_bundle/__init__.py
+      - ^packages/google-cloud-firestore/google/cloud/firestore_bundle/gapic
+      - ^packages/google-cloud-firestore/google/cloud/firestore_bundle/py.typed
+      - ^packages/google-cloud-firestore/testing
+      - ^packages/google-cloud-firestore/tests/unit/gapic
+      - ^packages/google-cloud-firestore/tests/__init__.py
+      - ^packages/google-cloud-firestore/tests/unit/__init__.py
+      - ^packages/google-cloud-firestore/.flake8
+      - ^packages/google-cloud-firestore/.repo-metadata.json
+      - ^packages/google-cloud-firestore/.coveragerc
+      - ^packages/google-cloud-firestore/mypy.ini
+      - ^packages/google-cloud-firestore/LICENSE
+      - ^packages/google-cloud-firestore/MANIFEST.in
+      - ^packages/google-cloud-firestore/noxfile.py
+      - ^packages/google-cloud-firestore/samples/generated_samples
+      - ^packages/google-cloud-firestore/setup.py
+      - ^packages/google-cloud-firestore/README.rst
+      - ^packages/google-cloud-firestore/docs/_static
+      - ^packages/google-cloud-firestore/docs/_templates
+      - ^packages/google-cloud-firestore/docs/firestore_.*/services_.rst
+      - ^packages/google-cloud-firestore/docs/firestore_.*/types_.rst
+      - ^packages/google-cloud-firestore/docs/multiprocessing.rst
+      - ^packages/google-cloud-firestore/docs/conf.py
+      - ^packages/google-cloud-firestore/docs/index.rst
+      - ^packages/google-cloud-firestore/docs/README.rst
+      - ^packages/google-cloud-firestore/docs/summary_overview.md
+    tag_format: '{id}-v{version}'
   - id: google-cloud-functions
     version: 1.22.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
