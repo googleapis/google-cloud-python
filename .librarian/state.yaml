@@ -1368,7 +1368,15 @@ libraries:
       - ^packages/google-cloud-datastore/docs/summary_overview.md
       - ^packages/google-cloud-datastore/docs/README.rst
       - ^packages/google-cloud-datastore/docs/_static/custom.css
-      - ^packages/google-cloud-datastore/docs/_templates
+      - ^packages/google-cloud-datastore/docs/datastore_admin_v1/datastore_admin.rst
+      - ^packages/google-cloud-datastore/docs/datastore_admin_v1/services_.rst
+      - ^packages/google-cloud-datastore/docs/datastore_admin_v1/types_.rst
+      - ^packages/google-cloud-datastore/docs/datastore_v1/datastore.rst
+      - ^packages/google-cloud-datastore/docs/datastore_v1/services_.rst
+      - ^packages/google-cloud-datastore/docs/datastore_v1/types_.rst
+      - ^packages/google-cloud-datastore/docs/multiprocessing.rst
+      - ^packages/google-cloud-datastore/docs/_templates/datastore_admin.rst
+      - ^packages/google-cloud-datastore/docs/_templates/layout.html
       - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/__init__.py
       - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/gapic_metadata.json
       - ^packages/google-cloud-datastore/google/cloud/datastore_admin_v1/gapic_version.py
@@ -1391,6 +1399,7 @@ libraries:
       - ^packages/google-cloud-datastore/tests/__init__.py
       - ^packages/google-cloud-datastore/tests/unit/__init__.py
       - ^packages/google-cloud-datastore/tests/unit/gapic
+      - ^packages/google-cloud-datastore/samples/generated_samples
     tag_format: '{id}-v{version}'
   - id: google-cloud-datastream
     version: 1.17.0
