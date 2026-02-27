@@ -111,6 +111,9 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = [
+    "datastore_admin_v1/**",
+    "datastore_v1/**",
+    "multiprocessing.rst",
     "_build",
     "**/.nox/**/*",
     "samples/AUTHORING_GUIDE.md",
