@@ -1654,6 +1654,7 @@ libraries:
       - ^packages/google-cloud-firestore/google/cloud/firestore_v1/types
       - ^packages/google-cloud-firestore/google/cloud/firestore_v1/gapic
       - ^packages/google-cloud-firestore/google/cloud/firestore_v1/py.typed
+      - ^packages/google-cloud-firestore/google/cloud/firestore_admin/
       - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/__init__.py
       - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/services
       - ^packages/google-cloud-firestore/google/cloud/firestore_admin_v1/types
@@ -1681,6 +1682,8 @@ libraries:
       - ^packages/google-cloud-firestore/README.rst
       - ^packages/google-cloud-firestore/docs/_static
       - ^packages/google-cloud-firestore/docs/_templates
+      - ^packages/google-cloud-firestore/docs/firestore_v1/firestore.rst
+      - ^packages/google-cloud-firestore/docs/firestore_admin_v1/firestore_admin.rst
       - ^packages/google-cloud-firestore/docs/firestore_.*/services_.rst
       - ^packages/google-cloud-firestore/docs/firestore_.*/types_.rst
       - ^packages/google-cloud-firestore/docs/multiprocessing.rst

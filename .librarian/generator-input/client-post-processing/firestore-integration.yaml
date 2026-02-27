@@ -504,11 +504,19 @@ replacements:
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List\[str\] = \[\]
     after: |
       SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
-          "pytest-asyncio==0.21.2",
+          "pytest-asyncio",
           "six",
           "pyyaml",
       ]
     count: 1
+  - paths: [
+      packages/google-cloud-firestore/noxfile.py
+    ]
+    before: |
+      "pytest-asyncio",
+    after: |
+      "pytest-asyncio==0.21.2",
+    count: 2
   - paths: [
       "packages/google-cloud-firestore/docs/conf.py",
     ]
