@@ -31,11 +31,16 @@ import warnings
 
 import nox
 
+RUFF_VERSION = "ruff==0.14.14"
 FLAKE8_VERSION = "flake8==6.1.0"
 PYTYPE_VERSION = "pytype==2020.7.24"
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+
+# Add samples to the list of directories to format if the directory exists.
+if os.path.isdir("samples"):
+    LINT_PATHS.append("samples")
 
 ALL_PYTHON = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -136,19 +141,31 @@ def blacken(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
     session.run(
-        "isort",
-        "--fss",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
+
+    # 3. Run Ruff to format code
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
