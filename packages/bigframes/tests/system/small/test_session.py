@@ -1092,7 +1092,9 @@ def test_read_pandas_w_nested_json_fails(session, write_engine):
             pa.list_(pa.struct([("json_field", bigframes.dtypes.JSON_ARROW_TYPE)]))
         ),
     )
-    with pytest.raises(NotImplementedError, match="Nested JSON types, found in column"):
+    with pytest.raises(
+        NotImplementedError, match="Nested JSON types are currently unsupported"
+    ):
         session.read_pandas(pd_s, write_engine=write_engine)
 
 
@@ -1178,7 +1180,9 @@ def test_read_pandas_w_nested_json_index_fails(session, write_engine):
             pa.list_(pa.struct([("json_field", bigframes.dtypes.JSON_ARROW_TYPE)]))
         ),
     )
-    with pytest.raises(NotImplementedError, match="Nested JSON types, found in"):
+    with pytest.raises(
+        NotImplementedError, match="Nested JSON types are currently unsupported"
+    ):
         session.read_pandas(pd_idx, write_engine=write_engine)
 
 

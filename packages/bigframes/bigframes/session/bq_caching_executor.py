@@ -604,7 +604,7 @@ class BigQueryCachingExecutor(executor.Executor):
         # Might be better as a queue and a worker thread
         with self._upload_lock:
             if local_table not in self.cache._uploaded_local_data:
-                uploaded = self.loader.load_data(
+                uploaded = self.loader.load_data_or_write_data(
                     local_table, bigframes.core.guid.generate_guid()
                 )
                 self.cache.cache_remote_replacement(local_table, uploaded)

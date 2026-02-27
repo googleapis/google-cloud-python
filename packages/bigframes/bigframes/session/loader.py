@@ -350,16 +350,38 @@ class GbqDataLoader:
             session=self._session,
         )
 
+    def load_data_or_write_data(
+        self,
+        data: local_data.ManagedArrowTable,
+        offsets_col: str,
+    ) -> bq_data.BigqueryDataSource:
+        """Write local data into BigQuery using the local API if possible,
+        otherwise use the write API."""
+        can_load = all(
+            _is_dtype_can_load(item.column, item.dtype) for item in data.schema.items
+        )
+        if can_load:
+            return self.load_data(data, offsets_col=offsets_col)
+        else:
+            return self.write_data(data, offsets_col=offsets_col)
+
     def load_data(
         self,
         data: local_data.ManagedArrowTable,
         offsets_col: str,
     ) -> bq_data.BigqueryDataSource:
         """Load managed data into bigquery"""
+        cannot_load_columns = {
+            item.column: item.dtype
+            for item in data.schema.items
+            if not _is_dtype_can_load(item.column, item.dtype)
+        }
 
-        # JSON support incomplete
-        for item in data.schema.items:
-            _validate_dtype_can_load(item.column, item.dtype)
+        if cannot_load_columns:
+            raise NotImplementedError(
+                f"Nested JSON types are currently unsupported for BigQuery Load API. "
+                f"Unsupported columns: {cannot_load_columns}. {constants.FEEDBACK_LINK}"
+            )
 
         schema_w_offsets = data.schema.append(
             schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
@@ -1474,7 +1496,7 @@ def _transform_read_gbq_configuration(configuration: Optional[dict]) -> dict:
     return configuration
 
 
-def _validate_dtype_can_load(name: str, column_type: bigframes.dtypes.Dtype):
+def _is_dtype_can_load(name: str, column_type: bigframes.dtypes.Dtype) -> bool:
     """
     Determines whether a datatype is supported by bq load jobs.
 
@@ -1482,23 +1504,19 @@ def _validate_dtype_can_load(name: str, column_type: bigframes.dtypes.Dtype):
     we're using a workaround: storing JSON as strings and then parsing them into JSON
     objects.
     TODO(b/395912450): Remove workaround solution once b/374784249 got resolved.
-
-    Raises:
-        NotImplementedError: Type is not yet supported by load jobs.
     """
     # we can handle top-level json, but not nested yet through string conversion
     if column_type == bigframes.dtypes.JSON_DTYPE:
-        return
+        return True
 
     if isinstance(
         column_type, pandas.ArrowDtype
     ) and bigframes.dtypes.contains_db_dtypes_json_arrow_type(
         column_type.pyarrow_dtype
     ):
-        raise NotImplementedError(
-            f"Nested JSON types, found in column `{name}`: `{column_type}`', "
-            f"are currently unsupported for upload. {constants.FEEDBACK_LINK}"
-        )
+        return False
+
+    return True
 
 
 # itertools.batched not available in python <3.12, so we use this instead
