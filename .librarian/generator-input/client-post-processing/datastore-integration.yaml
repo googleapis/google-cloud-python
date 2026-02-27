@@ -39,3 +39,39 @@ replacements:
           "google-cloud-core >= 1.4.0, <3.0.0",
           "grpcio >= 1.38.0, < 2.0.0",
     count: 1
+  - paths: [
+      "packages/google-cloud-datastore/mypy.ini",
+    ]
+    before: |-
+      # Performance: reuse results from previous runs to speed up 'nox'
+      incremental = True
+    after: |-
+      # Performance: reuse results from previous runs to speed up "nox"
+      incremental = True
+
+      [mypy-google.cloud.datastore._app_engine_key_pb2]
+      ignore_errors = True
+
+      # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410):
+      # Remove once this generator bug is fixed
+      [mypy-google.cloud.datastore_v1.services.datastore.async_client]
+      ignore_errors = True
+
+      # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410):
+      # Remove once this generator bug is fixed
+      [mypy-google.cloud.datastore_v1.services.datastore.client]
+      ignore_errors = True
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/mypy.ini",
+    ]
+    before: |
+      ignore_missing_imports = False
+
+      # TODO\(https://github.com/googleapis/gapic-generator-python/issues/2563\):
+      # Dependencies that historically lacks py.typed markers
+      \[mypy-google\.iam\.\*\]
+      ignore_missing_imports = True
+    after: |
+      ignore_missing_imports = True
+    count: 1
