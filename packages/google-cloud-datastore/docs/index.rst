@@ -12,27 +12,17 @@
 API Reference
 -------------
 .. toctree::
-  :maxdepth: 2
-
-  client
-  entities
-  keys
-  queries
-  aggregations
-  transactions
-  batches
-  helpers
-  admin_client
-
-Migration Guide
----------------
-
-See the guide below for instructions on migrating to the 2.x release of this library.
-
-.. toctree::
     :maxdepth: 2
 
-    UPGRADING
+    client
+    entities
+    keys
+    queries
+    aggregations
+    transactions
+    batches
+    helpers
+    admin_client
 
 Changelog
 ---------
@@ -40,9 +30,9 @@ Changelog
 For a list of all ``google-cloud-datastore`` releases:
 
 .. toctree::
-  :maxdepth: 2
+    :maxdepth: 2
 
-  changelog
+    CHANGELOG
 
 .. toctree::
   :hidden:
