@@ -32,7 +32,12 @@ replacements:
     before: |
       import google.firestore.v1.document_pb2 as document_pb2  # type: ignore
       import google.firestore.v1.query_pb2 as query_pb2  # type: ignore
+      import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+      import proto  # type: ignore
     after: |
+      import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+      import proto  # type: ignore
+
       from google.cloud.firestore_v1.types import document as document_pb2  # type: ignore
       from google.cloud.firestore_v1.types import query as query_pb2  # type: ignore
     count: 1
@@ -176,7 +181,7 @@ replacements:
           "Watch",
           "WriteBatch",
           "WriteOption",
-      ]\n
+      ]
     count: 1
   - paths: [
       "packages/google-cloud-firestore/google/cloud/firestore/__init__.py",
@@ -185,49 +190,51 @@ replacements:
       from google.cloud.firestore import gapic_version as package_version
       [\s\S]*?"WriteResult",\n\)
     after: |
-      """Python idiomatic client for Google Cloud Firestore."""\n\n
+      """Python idiomatic client for Google Cloud Firestore."""\n
       from google.cloud.firestore_v1 import gapic_version as package_version
 
       __version__ = package_version.__version__
 
-      from google.cloud.firestore_v1 import And
-      from google.cloud.firestore_v1 import ArrayRemove
-      from google.cloud.firestore_v1 import ArrayUnion
-      from google.cloud.firestore_v1 import AsyncClient
-      from google.cloud.firestore_v1 import AsyncCollectionReference
-      from google.cloud.firestore_v1 import AsyncDocumentReference
-      from google.cloud.firestore_v1 import AsyncQuery
-      from google.cloud.firestore_v1 import async_transactional
-      from google.cloud.firestore_v1 import AsyncTransaction
-      from google.cloud.firestore_v1 import AsyncWriteBatch
-      from google.cloud.firestore_v1 import Client
-      from google.cloud.firestore_v1 import CountAggregation
-      from google.cloud.firestore_v1 import CollectionGroup
-      from google.cloud.firestore_v1 import CollectionReference
-      from google.cloud.firestore_v1 import DELETE_FIELD
-      from google.cloud.firestore_v1 import DocumentReference
-      from google.cloud.firestore_v1 import DocumentSnapshot
-      from google.cloud.firestore_v1 import DocumentTransform
-      from google.cloud.firestore_v1 import ExistsOption
-      from google.cloud.firestore_v1 import ExplainOptions
-      from google.cloud.firestore_v1 import FieldFilter
-      from google.cloud.firestore_v1 import GeoPoint
-      from google.cloud.firestore_v1 import Increment
-      from google.cloud.firestore_v1 import LastUpdateOption
-      from google.cloud.firestore_v1 import Maximum
-      from google.cloud.firestore_v1 import Minimum
-      from google.cloud.firestore_v1 import Or
-      from google.cloud.firestore_v1 import Query
-      from google.cloud.firestore_v1 import ReadAfterWriteError
-      from google.cloud.firestore_v1 import SERVER_TIMESTAMP
-      from google.cloud.firestore_v1 import Transaction
-      from google.cloud.firestore_v1 import transactional
-      from google.cloud.firestore_v1 import types
-      from google.cloud.firestore_v1 import Watch
-      from google.cloud.firestore_v1 import WriteBatch
-      from google.cloud.firestore_v1 import WriteOption
       from typing import List
 
+      from google.cloud.firestore_v1 import (
+          DELETE_FIELD,
+          SERVER_TIMESTAMP,
+          And,
+          ArrayRemove,
+          ArrayUnion,
+          AsyncClient,
+          AsyncCollectionReference,
+          AsyncDocumentReference,
+          AsyncQuery,
+          AsyncTransaction,
+          AsyncWriteBatch,
+          Client,
+          CollectionGroup,
+          CollectionReference,
+          CountAggregation,
+          DocumentReference,
+          DocumentSnapshot,
+          DocumentTransform,
+          ExistsOption,
+          ExplainOptions,
+          FieldFilter,
+          GeoPoint,
+          Increment,
+          LastUpdateOption,
+          Maximum,
+          Minimum,
+          Or,
+          Query,
+          ReadAfterWriteError,
+          Transaction,
+          Watch,
+          WriteBatch,
+          WriteOption,
+          async_transactional,
+          transactional,
+          types,
+      )
 
       __all__: List[str] = [
           "__version__",
@@ -268,6 +275,7 @@ replacements:
           "WriteBatch",
           "WriteOption",
       ]
+
     count: 1
     count: 1
   - paths: [
@@ -281,27 +289,30 @@ replacements:
     after: |
       from .services.firestore_admin import FirestoreAdminClient
       from .types.field import Field
-      from .types.firestore_admin import CreateIndexRequest
-      from .types.firestore_admin import DeleteIndexRequest
-      from .types.firestore_admin import ExportDocumentsRequest
-      from .types.firestore_admin import GetFieldRequest
-      from .types.firestore_admin import GetIndexRequest
-      from .types.firestore_admin import ImportDocumentsRequest
-      from .types.firestore_admin import ListFieldsRequest
-      from .types.firestore_admin import ListFieldsResponse
-      from .types.firestore_admin import ListIndexesRequest
-      from .types.firestore_admin import ListIndexesResponse
-      from .types.firestore_admin import UpdateFieldRequest
+      from .types.firestore_admin import (
+          CreateIndexRequest,
+          DeleteIndexRequest,
+          ExportDocumentsRequest,
+          GetFieldRequest,
+          GetIndexRequest,
+          ImportDocumentsRequest,
+          ListFieldsRequest,
+          ListFieldsResponse,
+          ListIndexesRequest,
+          ListIndexesResponse,
+          UpdateFieldRequest,
+      )
       from .types.index import Index
       from .types.location import LocationMetadata
-      from .types.operation import ExportDocumentsMetadata
-      from .types.operation import ExportDocumentsResponse
-      from .types.operation import FieldOperationMetadata
-      from .types.operation import ImportDocumentsMetadata
-      from .types.operation import IndexOperationMetadata
-      from .types.operation import OperationState
-      from .types.operation import Progress
-
+      from .types.operation import (
+          ExportDocumentsMetadata,
+          ExportDocumentsResponse,
+          FieldOperationMetadata,
+          ImportDocumentsMetadata,
+          IndexOperationMetadata,
+          OperationState,
+          Progress,
+      )
 
       __all__ = (
           "CreateIndexRequest",
@@ -327,6 +338,7 @@ replacements:
           "UpdateFieldRequest",
           "FirestoreAdminClient",
       )
+
     count: 1
   - paths: [
       "packages/google-cloud-firestore/google/cloud/firestore_admin/__init__.py",
@@ -335,46 +347,34 @@ replacements:
       from google.cloud.firestore_admin import gapic_version as package_version
       [\s\S]*?"UserCreds",\n\)
     after: |
-      # -*- coding: utf-8 -*-
-
-      # Copyright 2020 Google LLC
-      #
-      # Licensed under the Apache License, Version 2.0 (the "License");
-      # you may not use this file except in compliance with the License.
-      # You may obtain a copy of the License at
-      #
-      #     http://www.apache.org/licenses/LICENSE-2.0
-      #
-      # Unless required by applicable law or agreed to in writing, software
-      # distributed under the License is distributed on an "AS IS" BASIS,
-      # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-      # See the License for the specific language governing permissions and
-      # limitations under the License.
-      #
-
-      from google.cloud.firestore_admin_v1.services.firestore_admin import FirestoreAdminClient
+      from google.cloud.firestore_admin_v1.services.firestore_admin import (
+          FirestoreAdminClient,
+      )
       from google.cloud.firestore_admin_v1.types.field import Field
-      from google.cloud.firestore_admin_v1.types.firestore_admin import CreateIndexRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import DeleteIndexRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import ExportDocumentsRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import GetFieldRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import GetIndexRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import ImportDocumentsRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import ListFieldsRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import ListFieldsResponse
-      from google.cloud.firestore_admin_v1.types.firestore_admin import ListIndexesRequest
-      from google.cloud.firestore_admin_v1.types.firestore_admin import ListIndexesResponse
-      from google.cloud.firestore_admin_v1.types.firestore_admin import UpdateFieldRequest
+      from google.cloud.firestore_admin_v1.types.firestore_admin import (
+          CreateIndexRequest,
+          DeleteIndexRequest,
+          ExportDocumentsRequest,
+          GetFieldRequest,
+          GetIndexRequest,
+          ImportDocumentsRequest,
+          ListFieldsRequest,
+          ListFieldsResponse,
+          ListIndexesRequest,
+          ListIndexesResponse,
+          UpdateFieldRequest,
+      )
       from google.cloud.firestore_admin_v1.types.index import Index
       from google.cloud.firestore_admin_v1.types.location import LocationMetadata
-      from google.cloud.firestore_admin_v1.types.operation import ExportDocumentsMetadata
-      from google.cloud.firestore_admin_v1.types.operation import ExportDocumentsResponse
-      from google.cloud.firestore_admin_v1.types.operation import FieldOperationMetadata
-      from google.cloud.firestore_admin_v1.types.operation import ImportDocumentsMetadata
-      from google.cloud.firestore_admin_v1.types.operation import IndexOperationMetadata
-      from google.cloud.firestore_admin_v1.types.operation import OperationState
-      from google.cloud.firestore_admin_v1.types.operation import Progress
-
+      from google.cloud.firestore_admin_v1.types.operation import (
+          ExportDocumentsMetadata,
+          ExportDocumentsResponse,
+          FieldOperationMetadata,
+          ImportDocumentsMetadata,
+          IndexOperationMetadata,
+          OperationState,
+          Progress,
+      )
 
       __all__ = (
           "CreateIndexRequest",
@@ -400,15 +400,16 @@ replacements:
           "UpdateFieldRequest",
           "FirestoreAdminClient",
       )
+
     count: 1
   - paths: [
       "packages/google-cloud-firestore/google/cloud/firestore_bundle/__init__.py",
     ]
     before: |
-      metadata\n
+      metadata\n\n
       from .types.bundle import \(
     after: |
-      metadata\n
+      metadata\n\n
       from .bundle import FirestoreBundle
       from .types.bundle import (
     count: 1
