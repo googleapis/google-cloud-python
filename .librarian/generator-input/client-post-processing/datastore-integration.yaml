@@ -184,3 +184,59 @@ replacements:
           "Transaction",
       ]
     count: 1
+  - paths: [
+      "packages/google-cloud-datastore/noxfile.py",
+    ]
+    before: |
+      @nox\.session\(python=SYSTEM_TEST_PYTHON_VERSIONS\)
+      def system\(session\):\s+"""Run the system test suite\."""[\s\S]*?system_test_folder_path,\s*\*session\.posargs,\s*\)
+    after: |
+      @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+      @nox.parametrize("disable_grpc", [False, True])
+      def system(session, disable_grpc):
+          """Run the system test suite."""
+          constraints_path = str(
+              CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+          )
+          system_test_path = os.path.join("tests", "system.py")
+          system_test_folder_path = os.path.join("tests", "system")
+
+          # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
+          if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
+              session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+          # Install pyopenssl for mTLS testing.
+          if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
+              session.install("pyopenssl")
+
+          system_test_exists = os.path.exists(system_test_path)
+          system_test_folder_exists = os.path.exists(system_test_folder_path)
+          # Sanity check: only run tests if found.
+          if not system_test_exists and not system_test_folder_exists:
+              session.skip("System tests were not found")
+
+          install_systemtest_dependencies(session, "-c", constraints_path)
+
+          env = {}
+          if disable_grpc:
+              env["GOOGLE_CLOUD_DISABLE_GRPC"] = "True"
+
+          # Run py.test against the system tests.
+          if system_test_exists:
+              session.run(
+                  "py.test",
+                  "--quiet",
+                  f"--junitxml=system_{session.python}_sponge_log.xml",
+                  system_test_path,
+                  env=env,
+                  *session.posargs,
+              )
+          if system_test_folder_exists:
+              session.run(
+                  "py.test",
+                  "--quiet",
+                  f"--junitxml=system_{session.python}_sponge_log.xml",
+                  system_test_folder_path,
+                  env=env,
+                  *session.posargs,
+              )
+    count: 1
