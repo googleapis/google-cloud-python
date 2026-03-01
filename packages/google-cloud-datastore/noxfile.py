@@ -538,9 +538,6 @@ def prerelease_deps(session, protobuf_implementation):
         "grpcio-status",
         "protobuf",
         "proto-plus",
-        "google-cloud-testutils",
-        # dependencies of google-cloud-testutils"
-        "click",
     ]
 
     for dep in prerel_deps:
