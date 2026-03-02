@@ -3825,6 +3825,8 @@ def test_get_rest_call_success(request_type):
             satisfies_pzi=True,
             satisfies_pzs=True,
             self_link="self_link_value",
+            snapshot_group_id="snapshot_group_id_value",
+            snapshot_group_name="snapshot_group_name_value",
             snapshot_type="snapshot_type_value",
             source_disk="source_disk_value",
             source_disk_for_recovery_checkpoint="source_disk_for_recovery_checkpoint_value",
@@ -3875,6 +3877,8 @@ def test_get_rest_call_success(request_type):
     assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
+    assert response.snapshot_group_id == "snapshot_group_id_value"
+    assert response.snapshot_group_name == "snapshot_group_name_value"
     assert response.snapshot_type == "snapshot_type_value"
     assert response.source_disk == "source_disk_value"
     assert (
@@ -4161,6 +4165,8 @@ def test_insert_rest_call_success(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "snapshot_group_id": "snapshot_group_id_value",
+        "snapshot_group_name": "snapshot_group_name_value",
         "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},

@@ -179,6 +179,52 @@ class _BaseRoutersRestTransport(RoutersTransport):
 
             return query_params
 
+    class _BaseDeleteNamedSet:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/beta/projects/{project}/regions/{region}/routers/{router}/deleteNamedSet",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = compute.DeleteNamedSetRouterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(
+                _BaseRoutersRestTransport._BaseDeleteNamedSet._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            return query_params
+
     class _BaseDeleteRoutePolicy:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -265,6 +311,52 @@ class _BaseRoutersRestTransport(RoutersTransport):
             )
             query_params.update(
                 _BaseRoutersRestTransport._BaseGet._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            return query_params
+
+    class _BaseGetNamedSet:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/beta/projects/{project}/regions/{region}/routers/{router}/getNamedSet",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = compute.GetNamedSetRouterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(
+                _BaseRoutersRestTransport._BaseGetNamedSet._get_unset_required_fields(
                     query_params
                 )
             )
@@ -603,6 +695,52 @@ class _BaseRoutersRestTransport(RoutersTransport):
 
             return query_params
 
+    class _BaseListNamedSets:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/beta/projects/{project}/regions/{region}/routers/{router}/listNamedSets",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = compute.ListNamedSetsRoutersRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(
+                _BaseRoutersRestTransport._BaseListNamedSets._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            return query_params
+
     class _BaseListRoutePolicies:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -699,6 +837,62 @@ class _BaseRoutersRestTransport(RoutersTransport):
             )
             query_params.update(
                 _BaseRoutersRestTransport._BasePatch._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            return query_params
+
+    class _BasePatchNamedSet:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/beta/projects/{project}/regions/{region}/routers/{router}/patchNamedSet",
+                    "body": "named_set_resource",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = compute.PatchNamedSetRouterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=False
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(
+                _BaseRoutersRestTransport._BasePatchNamedSet._get_unset_required_fields(
                     query_params
                 )
             )
@@ -923,6 +1117,62 @@ class _BaseRoutersRestTransport(RoutersTransport):
             )
             query_params.update(
                 _BaseRoutersRestTransport._BaseUpdate._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            return query_params
+
+    class _BaseUpdateNamedSet:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/beta/projects/{project}/regions/{region}/routers/{router}/updateNamedSet",
+                    "body": "named_set_resource",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = compute.UpdateNamedSetRouterRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=False
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
+            query_params.update(
+                _BaseRoutersRestTransport._BaseUpdateNamedSet._get_unset_required_fields(
                     query_params
                 )
             )

@@ -24406,7 +24406,11 @@ def test_bulk_insert_rest_call_success(request_type):
                 "identity_certificate_enabled": True,
             },
         },
-        "location_policy": {"locations": {}, "target_shape": "target_shape_value"},
+        "location_policy": {
+            "locations": {},
+            "target_shape": "target_shape_value",
+            "zones": [{"zone": "zone_value"}],
+        },
         "min_count": 972,
         "name_pattern": "name_pattern_value",
         "per_instance_properties": {},

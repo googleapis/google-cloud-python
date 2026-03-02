@@ -62,7 +62,6 @@ from .types.data_object_search_service import (
     SemanticSearch,
     TextSearch,
     VectorSearch,
-    VertexRanker,
 )
 from .types.data_object_service import (
     BatchCreateDataObjectsRequest,
@@ -258,5 +257,4 @@ __all__ = (
     "VectorSearch",
     "VectorSearchServiceClient",
     "VertexEmbeddingConfig",
-    "VertexRanker",
 )

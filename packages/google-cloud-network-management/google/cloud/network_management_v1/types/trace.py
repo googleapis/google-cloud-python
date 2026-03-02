@@ -45,6 +45,8 @@ __protobuf__ = proto.module(
         "GKEMasterInfo",
         "GkePodInfo",
         "IpMasqueradingSkippedInfo",
+        "GkeNetworkPolicyInfo",
+        "GkeNetworkPolicySkippedInfo",
         "CloudSQLInstanceInfo",
         "RedisInstanceInfo",
         "RedisClusterInfo",
@@ -59,6 +61,7 @@ __protobuf__ = proto.module(
         "LoadBalancerBackendInfo",
         "StorageBucketInfo",
         "ServerlessNegInfo",
+        "NgfwPacketInspectionInfo",
     },
 )
 
@@ -300,6 +303,15 @@ class Step(proto.Message):
             IP masquerading was skipped.
 
             This field is a member of `oneof`_ ``step_info``.
+        gke_network_policy (google.cloud.network_management_v1.types.GkeNetworkPolicyInfo):
+            Display information of a GKE Network Policy.
+
+            This field is a member of `oneof`_ ``step_info``.
+        gke_network_policy_skipped (google.cloud.network_management_v1.types.GkeNetworkPolicySkippedInfo):
+            Display information of the reason why GKE
+            Network Policy evaluation was skipped.
+
+            This field is a member of `oneof`_ ``step_info``.
         cloud_sql_instance (google.cloud.network_management_v1.types.CloudSQLInstanceInfo):
             Display information of a Cloud SQL instance.
 
@@ -347,6 +359,11 @@ class Step(proto.Message):
             Display information of a Serverless network
             endpoint group backend. Used only for return
             traces.
+
+            This field is a member of `oneof`_ ``step_info``.
+        ngfw_packet_inspection (google.cloud.network_management_v1.types.NgfwPacketInspectionInfo):
+            Display information of a layer 7 packet
+            inspection by the firewall.
 
             This field is a member of `oneof`_ ``step_info``.
     """
@@ -460,6 +477,8 @@ class Step(proto.Message):
             ARRIVE_AT_VPC_CONNECTOR (24):
                 Forwarding state: arriving at a VPC
                 connector.
+            ARRIVE_AT_GKE_POD (44):
+                Forwarding state: arriving at a GKE Pod.
             DIRECT_VPC_EGRESS_CONNECTION (35):
                 Forwarding state: for packets originating
                 from a serverless endpoint forwarded through
@@ -468,6 +487,10 @@ class Step(proto.Message):
                 Forwarding state: for packets originating
                 from a serverless endpoint forwarded through
                 public (external) connectivity.
+            NGFW_PACKET_INSPECTION (47):
+                Forwarding state: Layer 7 packet inspection
+                by the firewall endpoint based on the configured
+                security profile group.
             NAT (14):
                 Transition state: packet header translated. The ``nat``
                 field is populated with the translation information.
@@ -475,6 +498,20 @@ class Step(proto.Message):
                 Transition state: GKE Pod IP masquerading is skipped. The
                 ``ip_masquerading_skipped`` field is populated with the
                 reason.
+            SKIP_GKE_INGRESS_NETWORK_POLICY (41):
+                Transition state: GKE Ingress Network Policy is skipped. The
+                ``gke_network_policy_skipped`` field is populated with the
+                reason.
+            SKIP_GKE_EGRESS_NETWORK_POLICY (42):
+                Transition state: GKE Egress Network Policy is skipped. The
+                ``gke_network_policy_skipped`` field is populated with the
+                reason.
+            APPLY_INGRESS_GKE_NETWORK_POLICY (45):
+                Config checking state: verify ingress GKE
+                network policy.
+            APPLY_EGRESS_GKE_NETWORK_POLICY (46):
+                Config checking state: verify egress GKE
+                network policy.
             PROXY_CONNECTION (15):
                 Transition state: original connection is
                 terminated and a new proxied connection is
@@ -524,10 +561,16 @@ class Step(proto.Message):
         ARRIVE_AT_VPN_TUNNEL = 13
         ARRIVE_AT_INTERCONNECT_ATTACHMENT = 37
         ARRIVE_AT_VPC_CONNECTOR = 24
+        ARRIVE_AT_GKE_POD = 44
         DIRECT_VPC_EGRESS_CONNECTION = 35
         SERVERLESS_EXTERNAL_CONNECTION = 36
+        NGFW_PACKET_INSPECTION = 47
         NAT = 14
         SKIP_GKE_POD_IP_MASQUERADING = 40
+        SKIP_GKE_INGRESS_NETWORK_POLICY = 41
+        SKIP_GKE_EGRESS_NETWORK_POLICY = 42
+        APPLY_INGRESS_GKE_NETWORK_POLICY = 45
+        APPLY_EGRESS_GKE_NETWORK_POLICY = 46
         PROXY_CONNECTION = 15
         DELIVER = 16
         DROP = 17
@@ -684,6 +727,18 @@ class Step(proto.Message):
         oneof="step_info",
         message="IpMasqueradingSkippedInfo",
     )
+    gke_network_policy: "GkeNetworkPolicyInfo" = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        oneof="step_info",
+        message="GkeNetworkPolicyInfo",
+    )
+    gke_network_policy_skipped: "GkeNetworkPolicySkippedInfo" = proto.Field(
+        proto.MESSAGE,
+        number=40,
+        oneof="step_info",
+        message="GkeNetworkPolicySkippedInfo",
+    )
     cloud_sql_instance: "CloudSQLInstanceInfo" = proto.Field(
         proto.MESSAGE,
         number=19,
@@ -749,6 +804,12 @@ class Step(proto.Message):
         number=29,
         oneof="step_info",
         message="ServerlessNegInfo",
+    )
+    ngfw_packet_inspection: "NgfwPacketInspectionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        oneof="step_info",
+        message="NgfwPacketInspectionInfo",
     )
 
 
@@ -2929,6 +2990,12 @@ class DropInfo(proto.Message):
             HYBRID_SUBNET_NO_ROUTE (106):
                 Packet is dropped because no matching route
                 was found in the hybrid subnet.
+            GKE_NETWORK_POLICY (108):
+                Packet is dropped by GKE Network Policy.
+            NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION (110):
+                Packet is dropped because there is no valid
+                matching route from the network of the
+                Google-managed service to the destination.
         """
 
         CAUSE_UNSPECIFIED = 0
@@ -3034,6 +3101,8 @@ class DropInfo(proto.Message):
         NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED = 104
         HYBRID_SUBNET_REGION_MISMATCH = 105
         HYBRID_SUBNET_NO_ROUTE = 106
+        GKE_NETWORK_POLICY = 108
+        NO_VALID_ROUTE_FROM_GOOGLE_MANAGED_NETWORK_TO_DESTINATION = 110
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -3202,6 +3271,93 @@ class IpMasqueradingSkippedInfo(proto.Message):
     non_masquerade_range: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GkeNetworkPolicyInfo(proto.Message):
+    r"""For display only. Metadata associated with a GKE Network
+    Policy.
+
+    Attributes:
+        display_name (str):
+            The name of the Network Policy.
+        uri (str):
+            The URI of the Network Policy. Format for a Network Policy
+            in a zonal cluster:
+            ``projects/<project_id>/zones/<zone>/clusters/<cluster>/k8s/namespaces/<namespace>/networking.k8s.io/networkpolicies/<networkpolicy>``
+            Format for a Network Policy in a regional cluster:
+            ``projects/<project_id>/locations/<location>/clusters/<cluster>/k8s/namespaces/<namespace>/networking.k8s.io/networkpolicies/<networkpolicy>``
+        direction (str):
+            Possible values: INGRESS, EGRESS
+        action (str):
+            Possible values: ALLOW, DENY
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    direction: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    action: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class GkeNetworkPolicySkippedInfo(proto.Message):
+    r"""For display only. Contains information about why GKE Network
+    Policy evaluation was skipped.
+
+    Attributes:
+        reason (google.cloud.network_management_v1.types.GkeNetworkPolicySkippedInfo.Reason):
+            Reason why Network Policy evaluation was
+            skipped.
+    """
+
+    class Reason(proto.Enum):
+        r"""
+
+        Values:
+            REASON_UNSPECIFIED (0):
+                Unused default value.
+            NETWORK_POLICY_DISABLED (1):
+                Network Policy is disabled on the cluster.
+            INGRESS_SOURCE_ON_SAME_NODE (2):
+                Ingress traffic to a Pod from a source on the
+                same Node is always allowed.
+            EGRESS_FROM_NODE_NETWORK_NAMESPACE_POD (3):
+                Egress traffic from a Pod that uses the
+                Node's network namespace is not subject to
+                Network Policy.
+            NETWORK_POLICY_NOT_APPLIED_TO_RESPONSE_TRAFFIC (4):
+                Network Policy is not applied to response
+                traffic. This is because GKE Network Policy
+                evaluation is stateful in both GKE Dataplane V2
+                (eBPF) and legacy (iptables) implementations.
+            NETWORK_POLICY_ANALYSIS_UNSUPPORTED (100):
+                Network Policy evaluation is currently not
+                supported for clusters with FQDN Network
+                Policies enabled.
+        """
+
+        REASON_UNSPECIFIED = 0
+        NETWORK_POLICY_DISABLED = 1
+        INGRESS_SOURCE_ON_SAME_NODE = 2
+        EGRESS_FROM_NODE_NETWORK_NAMESPACE_POD = 3
+        NETWORK_POLICY_NOT_APPLIED_TO_RESPONSE_TRAFFIC = 4
+        NETWORK_POLICY_ANALYSIS_UNSUPPORTED = 100
+
+    reason: Reason = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Reason,
     )
 
 
@@ -3923,6 +4079,22 @@ class ServerlessNegInfo(proto.Message):
     """
 
     neg_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class NgfwPacketInspectionInfo(proto.Message):
+    r"""For display only. Metadata associated with a layer 7 packet
+    inspection by the firewall.
+
+    Attributes:
+        security_profile_group_uri (str):
+            URI of the security profile group associated
+            with this firewall packet inspection.
+    """
+
+    security_profile_group_uri: str = proto.Field(
         proto.STRING,
         number=1,
     )
