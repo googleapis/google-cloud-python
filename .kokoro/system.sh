@@ -66,6 +66,16 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
   # Get the path to the package by removing the suffix /tests/system
   package=$(echo $dir | cut -f -2 -d '/')
 
+  case "${package}" in
+    "google-auth")
+      export NOX_FILE_ARG="system_tests/noxfile.py"
+      ;;
+    *)
+      # Fallback/Default noxfile.py
+      export NOX_FILE_ARG="noxfile.py"
+      ;;
+  esac
+
   # Run system tests on every change to these libraries
   if [[ $package == @($packages_with_system_tests_pattern) ]]; then
     files_to_check=${package}
