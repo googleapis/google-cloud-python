@@ -3,7 +3,7 @@ Python Client for Geo Type Protos
 
 |preview| |pypi| |versions|
 
-`Geo Type Protos`_: 
+`Geo Type Protos`_: Defines common types for Google Geo APIs.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

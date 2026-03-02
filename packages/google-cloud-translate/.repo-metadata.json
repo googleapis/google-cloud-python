@@ -7,7 +7,7 @@
     "distribution_name": "google-cloud-translate",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559749",
     "language": "python",
-    "library_type": "GAPIC_COMBO",
+    "library_type": "GAPIC_AUTO",
     "name": "translate",
     "name_pretty": "Cloud Translation",
     "product_documentation": "https://cloud.google.com/translate/docs/",

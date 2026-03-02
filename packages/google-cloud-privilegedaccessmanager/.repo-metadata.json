@@ -5,7 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-privilegedaccessmanager/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-privilegedaccessmanager",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1587284\u0026template=2001118",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-privilegedaccessmanager",

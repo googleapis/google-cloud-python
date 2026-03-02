@@ -5,7 +5,7 @@
     "client_documentation": "https://googleapis.dev/python/google-ads-admanager/latest",
     "default_version": "v1",
     "distribution_name": "google-ads-admanager",
-    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1265187&template=1787490",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1265187\u0026template=1787490",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-ads-admanager",

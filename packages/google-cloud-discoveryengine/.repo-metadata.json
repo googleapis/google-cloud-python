@@ -1,10 +1,11 @@
 {
+    "api_description": "Discovery Engine API.",
     "api_id": "discoveryengine.googleapis.com",
     "api_shortname": "discoveryengine",
     "client_documentation": "https://cloud.google.com/python/docs/reference/discoveryengine/latest",
     "default_version": "v1beta",
     "distribution_name": "google-cloud-discoveryengine",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=911831\u0026template=1480251",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "discoveryengine",

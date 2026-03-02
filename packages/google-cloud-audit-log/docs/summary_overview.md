@@ -14,9 +14,9 @@ Overview of the APIs available for Audit Log API API.
 Classes, methods and properties & attributes for
 Audit Log API API.
 
-[classes](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/auditlog/latest/summary_class.html)
 
-[methods](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/auditlog/latest/summary_method.html)
 
 [properties and
-attributes](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/auditlog/latest/summary_property.html)

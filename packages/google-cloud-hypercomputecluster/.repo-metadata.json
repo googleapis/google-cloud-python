@@ -4,7 +4,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-hypercomputecluster/latest",
     "default_version": "v1beta",
     "distribution_name": "google-cloud-hypercomputecluster",
-    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1907878&template=2195617",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1907878\u0026template=2195617",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-hypercomputecluster",

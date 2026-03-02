@@ -16,7 +16,7 @@ connect first-party data across Google advertising products.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-ads-datamanager.svg
    :target: https://pypi.org/project/google-ads-datamanager/
 .. _Data Manager API: https://developers.google.com/data-manager
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-ads-datamanager/latest
+.. _Client Library Documentation: https://googleapis.dev/python/google-ads-datamanager/latest
 .. _Product Documentation:  https://developers.google.com/data-manager
 
 Quick Start

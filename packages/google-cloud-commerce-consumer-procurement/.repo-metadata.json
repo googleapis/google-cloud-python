@@ -1,7 +1,7 @@
 {
     "api_description": "Cloud Commerce Consumer Procurement API",
     "api_id": "cloudcommerceconsumerprocurement.googleapis.com",
-    "api_shortname": "procurement",
+    "api_shortname": "cloudcommerceconsumerprocurement",
     "client_documentation": "https://cloud.google.com/python/docs/reference/procurement/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-commerce-consumer-procurement",

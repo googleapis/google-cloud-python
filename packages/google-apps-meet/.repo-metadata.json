@@ -5,7 +5,7 @@
     "client_documentation": "https://googleapis.dev/python/google-apps-meet/latest",
     "default_version": "v2",
     "distribution_name": "google-apps-meet",
-    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1216362&template=1766418",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1216362\u0026template=1766418",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-apps-meet",

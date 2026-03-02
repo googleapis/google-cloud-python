@@ -1,10 +1,7 @@
 {
-    "api_id": "type.googleapis.com",
-    "api_shortname": "type",
     "client_documentation": "https://googleapis.dev/python/google-shopping-type/latest",
     "default_version": "apiVersion",
     "distribution_name": "google-shopping-type",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-shopping-type",

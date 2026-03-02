@@ -1,10 +1,12 @@
 {
     "api_description": "This package contains generated Python types for google.cloud.common",
+    "api_id": "common.googleapis.com",
+    "api_shortname": "common",
     "client_documentation": "https://cloud.google.com/python/docs/reference/common/latest",
     "default_version": "apiVersion",
     "distribution_name": "google-cloud-common",
     "language": "python",
-    "library_type": "CORE",
+    "library_type": "GAPIC_AUTO",
     "name": "common",
     "name_pretty": "Google Cloud Common",
     "product_documentation": "https://cloud.google.com",

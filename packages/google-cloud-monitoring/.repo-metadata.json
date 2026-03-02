@@ -7,7 +7,7 @@
     "distribution_name": "google-cloud-monitoring",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559785",
     "language": "python",
-    "library_type": "GAPIC_COMBO",
+    "library_type": "GAPIC_AUTO",
     "name": "monitoring",
     "name_pretty": "Stackdriver Monitoring",
     "product_documentation": "https://cloud.google.com/monitoring/docs",

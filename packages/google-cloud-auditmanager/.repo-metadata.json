@@ -4,7 +4,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-auditmanager/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-auditmanager",
-    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1335397&template=0",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1335397\u0026template=0",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-auditmanager",

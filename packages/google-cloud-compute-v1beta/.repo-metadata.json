@@ -5,7 +5,6 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-compute-v1beta/latest",
     "default_version": "v1beta",
     "distribution_name": "google-cloud-compute-v1beta",
-    "issue_tracker": "https://issuetracker.google.com/issues/new?component=187134&template=0",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-compute-v1beta",

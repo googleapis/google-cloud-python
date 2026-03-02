@@ -5,7 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-configdelivery/latest",
     "default_version": "v1alpha",
     "distribution_name": "google-cloud-configdelivery",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1400250",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-configdelivery",

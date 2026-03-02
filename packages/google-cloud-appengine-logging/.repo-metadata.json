@@ -4,7 +4,7 @@
     "distribution_name": "google-cloud-appengine-logging",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "language": "python",
-    "library_type": "OTHER",
+    "library_type": "GAPIC_AUTO",
     "name": "appenginelogging",
     "name_pretty": "App Engine Logging Protos",
     "product_documentation": "https://cloud.google.com/logging/docs/reference/v2/rpc/google.appengine.logging.v1",
