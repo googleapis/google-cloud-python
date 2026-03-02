@@ -5840,6 +5840,13 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "reason": 1,
                                 "non_masquerade_range": "non_masquerade_range_value",
                             },
+                            "gke_network_policy": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "direction": "direction_value",
+                                "action": "action_value",
+                            },
+                            "gke_network_policy_skipped": {"reason": 1},
                             "cloud_sql_instance": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -5925,6 +5932,9 @@ def test_create_connectivity_test_rest_call_success(request_type):
                             },
                             "storage_bucket": {"bucket": "bucket_value"},
                             "serverless_neg": {"neg_uri": "neg_uri_value"},
+                            "ngfw_packet_inspection": {
+                                "security_profile_group_uri": "security_profile_group_uri_value"
+                            },
                         }
                     ],
                     "forward_trace_id": 1679,
@@ -6438,6 +6448,13 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "reason": 1,
                                 "non_masquerade_range": "non_masquerade_range_value",
                             },
+                            "gke_network_policy": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "direction": "direction_value",
+                                "action": "action_value",
+                            },
+                            "gke_network_policy_skipped": {"reason": 1},
                             "cloud_sql_instance": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -6523,6 +6540,9 @@ def test_update_connectivity_test_rest_call_success(request_type):
                             },
                             "storage_bucket": {"bucket": "bucket_value"},
                             "serverless_neg": {"neg_uri": "neg_uri_value"},
+                            "ngfw_packet_inspection": {
+                                "security_profile_group_uri": "security_profile_group_uri_value"
+                            },
                         }
                     ],
                     "forward_trace_id": 1679,

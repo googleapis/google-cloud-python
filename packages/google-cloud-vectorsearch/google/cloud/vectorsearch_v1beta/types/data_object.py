@@ -56,6 +56,8 @@ class DataObject(proto.Message):
             Optional. The data of the dataObject.
         vectors (MutableMapping[str, google.cloud.vectorsearch_v1beta.types.Vector]):
             Optional. The vectors of the dataObject.
+        etag (str):
+            Optional. The etag of the dataObject.
     """
 
     name: str = proto.Field(
@@ -87,6 +89,10 @@ class DataObject(proto.Message):
         number=7,
         message="Vector",
     )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class Vector(proto.Message):
@@ -109,7 +115,7 @@ class Vector(proto.Message):
 
             This field is a member of `oneof`_ ``vector_type``.
         values (MutableSequence[float]):
-            The values of the vector.
+            Deprecated: Use ``dense`` or ``sparse`` instead.
     """
 
     dense: "DenseVector" = proto.Field(

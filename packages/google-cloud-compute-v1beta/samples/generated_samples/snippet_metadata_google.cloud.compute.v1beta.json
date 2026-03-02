@@ -17110,6 +17110,98 @@
           "fullName": "google.cloud.compute_v1beta.InstanceGroupManagersClient",
           "shortName": "InstanceGroupManagersClient"
         },
+        "fullName": "google.cloud.compute_v1beta.InstanceGroupManagersClient.configure_accelerator_topologies",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.InstanceGroupManagers.ConfigureAcceleratorTopologies",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.InstanceGroupManagers",
+            "shortName": "InstanceGroupManagers"
+          },
+          "shortName": "ConfigureAcceleratorTopologies"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "instance_group_manager",
+            "type": "str"
+          },
+          {
+            "name": "instance_group_managers_configure_accelerator_topologies_request_resource",
+            "type": "google.cloud.compute_v1beta.types.InstanceGroupManagersConfigureAcceleratorTopologiesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "configure_accelerator_topologies"
+      },
+      "description": "Sample for ConfigureAcceleratorTopologies",
+      "file": "compute_v1beta_generated_instance_group_managers_configure_accelerator_topologies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_InstanceGroupManagers_ConfigureAcceleratorTopologies_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_instance_group_managers_configure_accelerator_topologies_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.InstanceGroupManagersClient",
+          "shortName": "InstanceGroupManagersClient"
+        },
         "fullName": "google.cloud.compute_v1beta.InstanceGroupManagersClient.create_instances",
         "method": {
           "fullName": "google.cloud.compute.v1beta.InstanceGroupManagers.CreateInstances",
@@ -72466,6 +72558,94 @@
           "fullName": "google.cloud.compute_v1beta.RoutersClient",
           "shortName": "RoutersClient"
         },
+        "fullName": "google.cloud.compute_v1beta.RoutersClient.delete_named_set",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Routers.DeleteNamedSet",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "DeleteNamedSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteNamedSetRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete_named_set"
+      },
+      "description": "Sample for DeleteNamedSet",
+      "file": "compute_v1beta_generated_routers_delete_named_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Routers_DeleteNamedSet_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_routers_delete_named_set_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RoutersClient",
+          "shortName": "RoutersClient"
+        },
         "fullName": "google.cloud.compute_v1beta.RoutersClient.delete_route_policy",
         "method": {
           "fullName": "google.cloud.compute.v1beta.Routers.DeleteRoutePolicy",
@@ -72634,6 +72814,94 @@
         }
       ],
       "title": "compute_v1beta_generated_routers_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RoutersClient",
+          "shortName": "RoutersClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RoutersClient.get_named_set",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Routers.GetNamedSet",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "GetNamedSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetNamedSetRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.RoutersGetNamedSetResponse",
+        "shortName": "get_named_set"
+      },
+      "description": "Sample for GetNamedSet",
+      "file": "compute_v1beta_generated_routers_get_named_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Routers_GetNamedSet_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_routers_get_named_set_sync.py"
     },
     {
       "canonical": true,
@@ -73258,6 +73526,94 @@
           "fullName": "google.cloud.compute_v1beta.RoutersClient",
           "shortName": "RoutersClient"
         },
+        "fullName": "google.cloud.compute_v1beta.RoutersClient.list_named_sets",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Routers.ListNamedSets",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "ListNamedSets"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListNamedSetsRoutersRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.routers.pagers.ListNamedSetsPager",
+        "shortName": "list_named_sets"
+      },
+      "description": "Sample for ListNamedSets",
+      "file": "compute_v1beta_generated_routers_list_named_sets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Routers_ListNamedSets_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_routers_list_named_sets_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RoutersClient",
+          "shortName": "RoutersClient"
+        },
         "fullName": "google.cloud.compute_v1beta.RoutersClient.list_route_policies",
         "method": {
           "fullName": "google.cloud.compute.v1beta.Routers.ListRoutePolicies",
@@ -73422,6 +73778,98 @@
         }
       ],
       "title": "compute_v1beta_generated_routers_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RoutersClient",
+          "shortName": "RoutersClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RoutersClient.patch_named_set",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Routers.PatchNamedSet",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "PatchNamedSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.PatchNamedSetRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "named_set_resource",
+            "type": "google.cloud.compute_v1beta.types.NamedSet"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch_named_set"
+      },
+      "description": "Sample for PatchNamedSet",
+      "file": "compute_v1beta_generated_routers_patch_named_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Routers_PatchNamedSet_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_routers_patch_named_set_sync.py"
     },
     {
       "canonical": true,
@@ -73790,6 +74238,98 @@
         }
       ],
       "title": "compute_v1beta_generated_routers_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RoutersClient",
+          "shortName": "RoutersClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RoutersClient.update_named_set",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Routers.UpdateNamedSet",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Routers",
+            "shortName": "Routers"
+          },
+          "shortName": "UpdateNamedSet"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.UpdateNamedSetRouterRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "router",
+            "type": "str"
+          },
+          {
+            "name": "named_set_resource",
+            "type": "google.cloud.compute_v1beta.types.NamedSet"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "update_named_set"
+      },
+      "description": "Sample for UpdateNamedSet",
+      "file": "compute_v1beta_generated_routers_update_named_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Routers_UpdateNamedSet_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_routers_update_named_set_sync.py"
     },
     {
       "canonical": true,
@@ -76286,6 +76826,598 @@
         }
       ],
       "title": "compute_v1beta_generated_service_attachments_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient",
+          "shortName": "SnapshotGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.SnapshotGroups.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.SnapshotGroups",
+            "shortName": "SnapshotGroups"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteSnapshotGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "snapshot_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_snapshot_groups_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_SnapshotGroups_Delete_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_snapshot_groups_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient",
+          "shortName": "SnapshotGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient.get_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.SnapshotGroups.GetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.SnapshotGroups",
+            "shortName": "SnapshotGroups"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetIamPolicySnapshotGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "compute_v1beta_generated_snapshot_groups_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_SnapshotGroups_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_snapshot_groups_get_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient",
+          "shortName": "SnapshotGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.SnapshotGroups.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.SnapshotGroups",
+            "shortName": "SnapshotGroups"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetSnapshotGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "snapshot_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.SnapshotGroup",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_snapshot_groups_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_SnapshotGroups_Get_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_snapshot_groups_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient",
+          "shortName": "SnapshotGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.SnapshotGroups.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.SnapshotGroups",
+            "shortName": "SnapshotGroups"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.InsertSnapshotGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "snapshot_group_resource",
+            "type": "google.cloud.compute_v1beta.types.SnapshotGroup"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1beta_generated_snapshot_groups_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_SnapshotGroups_Insert_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_snapshot_groups_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient",
+          "shortName": "SnapshotGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.SnapshotGroups.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.SnapshotGroups",
+            "shortName": "SnapshotGroups"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListSnapshotGroupsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.snapshot_groups.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_snapshot_groups_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_SnapshotGroups_List_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_snapshot_groups_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient",
+          "shortName": "SnapshotGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient.set_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.SnapshotGroups.SetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.SnapshotGroups",
+            "shortName": "SnapshotGroups"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.SetIamPolicySnapshotGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "global_set_policy_request_resource",
+            "type": "google.cloud.compute_v1beta.types.GlobalSetPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "compute_v1beta_generated_snapshot_groups_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_SnapshotGroups_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_snapshot_groups_set_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient",
+          "shortName": "SnapshotGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.SnapshotGroupsClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.SnapshotGroups.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.SnapshotGroups",
+            "shortName": "SnapshotGroups"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.TestIamPermissionsSnapshotGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1beta.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1beta_generated_snapshot_groups_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_SnapshotGroups_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_snapshot_groups_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,

@@ -7994,6 +7994,7 @@ def test_insert_rest_call_success(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "orchestration_info": {"resource_uri": "resource_uri_value"},
                 "preference": "preference_value",
                 "traffic_duration": "traffic_duration_value",
             }
@@ -8116,6 +8117,7 @@ def test_insert_rest_call_success(request_type):
         "network_pass_through_lb_traffic_policy": {
             "zonal_affinity": {"spillover": "spillover_value", "spillover_ratio": 0.163}
         },
+        "orchestration_info": {"resource_uri": "resource_uri_value"},
         "outlier_detection": {
             "base_ejection_time": {},
             "consecutive_errors": 1956,
@@ -8699,6 +8701,7 @@ def test_patch_rest_call_success(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "orchestration_info": {"resource_uri": "resource_uri_value"},
                 "preference": "preference_value",
                 "traffic_duration": "traffic_duration_value",
             }
@@ -8821,6 +8824,7 @@ def test_patch_rest_call_success(request_type):
         "network_pass_through_lb_traffic_policy": {
             "zonal_affinity": {"spillover": "spillover_value", "spillover_ratio": 0.163}
         },
+        "orchestration_info": {"resource_uri": "resource_uri_value"},
         "outlier_detection": {
             "base_ejection_time": {},
             "consecutive_errors": 1956,
@@ -10089,6 +10093,7 @@ def test_update_rest_call_success(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "orchestration_info": {"resource_uri": "resource_uri_value"},
                 "preference": "preference_value",
                 "traffic_duration": "traffic_duration_value",
             }
@@ -10211,6 +10216,7 @@ def test_update_rest_call_success(request_type):
         "network_pass_through_lb_traffic_policy": {
             "zonal_affinity": {"spillover": "spillover_value", "spillover_ratio": 0.163}
         },
+        "orchestration_info": {"resource_uri": "resource_uri_value"},
         "outlier_detection": {
             "base_ejection_time": {},
             "consecutive_errors": 1956,

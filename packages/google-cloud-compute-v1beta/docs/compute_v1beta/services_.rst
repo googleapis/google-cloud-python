@@ -109,6 +109,7 @@ Services for Google Cloud Compute v1beta API
     routes
     security_policies
     service_attachments
+    snapshot_groups
     snapshots
     snapshot_settings_service
     ssl_certificates

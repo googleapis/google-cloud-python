@@ -50,17 +50,20 @@ from .types.storage_batch_operations_types import (
     BucketList,
     BucketOperation,
     Counters,
+    CustomContextUpdates,
     DeleteObject,
     ErrorLogEntry,
     ErrorSummary,
     Job,
     LoggingConfig,
     Manifest,
+    ObjectCustomContextPayload,
     ObjectRetention,
     PrefixList,
     PutMetadata,
     PutObjectHold,
     RewriteObject,
+    UpdateObjectCustomContext,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -165,6 +168,7 @@ __all__ = (
     "CancelJobResponse",
     "Counters",
     "CreateJobRequest",
+    "CustomContextUpdates",
     "DeleteJobRequest",
     "DeleteObject",
     "ErrorLogEntry",
@@ -178,6 +182,7 @@ __all__ = (
     "ListJobsResponse",
     "LoggingConfig",
     "Manifest",
+    "ObjectCustomContextPayload",
     "ObjectRetention",
     "OperationMetadata",
     "PrefixList",
@@ -185,4 +190,5 @@ __all__ = (
     "PutObjectHold",
     "RewriteObject",
     "StorageBatchOperationsClient",
+    "UpdateObjectCustomContext",
 )

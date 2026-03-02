@@ -8539,6 +8539,11 @@ def test_bulk_insert_rest_call_success(request_type):
         "instant_snapshot_group_parameters": {
             "source_instant_snapshot_group": "source_instant_snapshot_group_value"
         },
+        "snapshot_group_parameters": {
+            "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
+            "source_snapshot_group": "source_snapshot_group_value",
+            "type_": "type__value",
+        },
         "source_consistency_group_policy": "source_consistency_group_policy_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -9060,6 +9065,8 @@ def test_create_snapshot_rest_call_success(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "snapshot_group_id": "snapshot_group_id_value",
+        "snapshot_group_name": "snapshot_group_name_value",
         "snapshot_type": "snapshot_type_value",
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
