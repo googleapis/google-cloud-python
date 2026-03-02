@@ -61,7 +61,7 @@ packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_test
 packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
 
-# Run system tests for each package with directory `packages/*/tests/system` or directory `packages/*/system_tests`'
+# Run system tests for each package with directory `packages/*/tests/system` or directory `packages/*/system_tests`
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -wholename 'packages/*/system_tests'`; do
   # Get the path to the package by removing the suffix /tests/system
   package=$(echo $dir | cut -f -2 -d '/')
