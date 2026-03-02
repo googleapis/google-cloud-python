@@ -78,6 +78,13 @@ def lint(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("setuptools", "docutils", "pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """Run black.
     Format code to uniform standard.
