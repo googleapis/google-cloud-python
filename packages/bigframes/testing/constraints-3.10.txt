@@ -1,5 +1,4 @@
-# When we drop Python 3.9,
-# please keep these in sync with the minimum versions in setup.py
+# Please keep these in sync with the minimum versions in setup.py
 cloudpickle==2.0.0
 fsspec==2023.3.0
 gcsfs==2023.3.0

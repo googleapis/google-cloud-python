@@ -448,7 +448,6 @@ class Series:
 
         # rename the Series name
         if isinstance(index, typing.Hashable):
-            # Python 3.9 doesn't allow isinstance of Optional
             index = typing.cast(Optional[str], index)
             block = self._block.with_column_labels([index])
 
