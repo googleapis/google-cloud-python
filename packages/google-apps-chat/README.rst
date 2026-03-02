@@ -3,7 +3,9 @@ Python Client for Chat API
 
 |preview| |pypi| |versions|
 
-`Chat API`_: 
+`Chat API`_: The Google Chat API lets you build Chat apps to integrate your services
+with Google Chat and manage Chat resources such as spaces, members, and
+messages.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

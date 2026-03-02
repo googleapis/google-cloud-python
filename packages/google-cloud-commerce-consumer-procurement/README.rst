@@ -1,9 +1,9 @@
-Python Client for Cloud Commerce Consumer Procurement API
-=========================================================
+Python Client for Cloud Commerce Consumer Procurement
+=====================================================
 
 |preview| |pypi| |versions|
 
-`Cloud Commerce Consumer Procurement API`_: Cloud Commerce Consumer Procurement API
+`Cloud Commerce Consumer Procurement`_: Enables consumers to procure products served by Cloud Marketplace platform
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Commerce Consumer Procurement API
    :target: https://pypi.org/project/google-cloud-commerce-consumer-procurement/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-commerce-consumer-procurement.svg
    :target: https://pypi.org/project/google-cloud-commerce-consumer-procurement/
-.. _Cloud Commerce Consumer Procurement API: https://cloud.google.com/marketplace/docs/
+.. _Cloud Commerce Consumer Procurement: https://cloud.google.com/marketplace/docs/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/procurement/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/marketplace/docs/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Commerce Consumer Procurement API.`_
+3. `Enable the Cloud Commerce Consumer Procurement.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Commerce Consumer Procurement API.:  https://cloud.google.com/marketplace/docs/
+.. _Enable the Cloud Commerce Consumer Procurement.:  https://cloud.google.com/marketplace/docs/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Commerce Consumer Procurement API
+-  Read the `Client Library Documentation`_ for Cloud Commerce Consumer Procurement
    to see other available methods on the client.
--  Read the `Cloud Commerce Consumer Procurement API Product documentation`_ to learn
+-  Read the `Cloud Commerce Consumer Procurement Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Commerce Consumer Procurement API Product documentation:  https://cloud.google.com/marketplace/docs/
+.. _Cloud Commerce Consumer Procurement Product documentation:  https://cloud.google.com/marketplace/docs/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

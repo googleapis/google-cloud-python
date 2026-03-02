@@ -5,11 +5,11 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-cloudsecuritycompliance/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-cloudsecuritycompliance",
-    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1761967&template=0",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1761967\u0026template=0",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-cloudsecuritycompliance",
-    "name_pretty": "Cloud Security Compliance API",
+    "name_pretty": "Cloud Security Compliance",
     "product_documentation": "https://cloud.google.com/security-command-center/docs/compliance-manager-overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

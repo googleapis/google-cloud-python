@@ -1,9 +1,9 @@
-Python Client for Vector Search API
-===================================
+Python Client for Vector Search
+===============================
 
 |preview| |pypi| |versions|
 
-`Vector Search API`_: The Vector Search API provides a fully-managed, highly performant, and
+`Vector Search`_: The Vector Search API provides a fully-managed, highly performant, and
 scalable vector database designed to power next-generation search,
 recommendation, and generative AI applications. It allows you to store,
 index, and query your data and its corresponding vector embeddings through
@@ -22,7 +22,7 @@ items at scale.
    :target: https://pypi.org/project/google-cloud-vectorsearch/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vectorsearch.svg
    :target: https://pypi.org/project/google-cloud-vectorsearch/
-.. _Vector Search API: https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
+.. _Vector Search: https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-vectorsearch/latest/summary_overview
 .. _Product Documentation:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 
@@ -33,12 +33,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Vector Search API.`_
+3. `Enable the Vector Search.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Vector Search API.:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
+.. _Enable the Vector Search.:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -105,14 +105,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Vector Search API
+-  Read the `Client Library Documentation`_ for Vector Search
    to see other available methods on the client.
--  Read the `Vector Search API Product documentation`_ to learn
+-  Read the `Vector Search Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Vector Search API Product documentation:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
+.. _Vector Search Product documentation:  https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

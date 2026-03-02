@@ -1,9 +1,9 @@
-Python Client for Storage Batch Operations API
-==============================================
+Python Client for Storage Batch Operations
+==========================================
 
 |preview| |pypi| |versions|
 
-`Storage Batch Operations API`_: null 
+`Storage Batch Operations`_: null 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Storage Batch Operations API
    :target: https://pypi.org/project/google-cloud-storagebatchoperations/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storagebatchoperations.svg
    :target: https://pypi.org/project/google-cloud-storagebatchoperations/
-.. _Storage Batch Operations API: https://cloud.google.com/storage/docs/batch-operations/overview
+.. _Storage Batch Operations: https://cloud.google.com/storage/docs/batch-operations/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-storagebatchoperations/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/storage/docs/batch-operations/overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Storage Batch Operations API.`_
+3. `Enable the Storage Batch Operations.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Storage Batch Operations API.:  https://cloud.google.com/storage/docs/batch-operations/overview
+.. _Enable the Storage Batch Operations.:  https://cloud.google.com/storage/docs/batch-operations/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Storage Batch Operations API
+-  Read the `Client Library Documentation`_ for Storage Batch Operations
    to see other available methods on the client.
--  Read the `Storage Batch Operations API Product documentation`_ to learn
+-  Read the `Storage Batch Operations Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Storage Batch Operations API Product documentation:  https://cloud.google.com/storage/docs/batch-operations/overview
+.. _Storage Batch Operations Product documentation:  https://cloud.google.com/storage/docs/batch-operations/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

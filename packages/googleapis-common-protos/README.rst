@@ -3,7 +3,7 @@ Python Client for Google APIs Common Protos
 
 |stable| |pypi| |versions|
 
-`Google APIs Common Protos`_: 
+`Google APIs Common Protos`_: Lets you define and config your API service.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -15,7 +15,7 @@ Python Client for Google APIs Common Protos
 .. |versions| image:: https://img.shields.io/pypi/pyversions/googleapis-common-protos.svg
    :target: https://pypi.org/project/googleapis-common-protos/
 .. _Google APIs Common Protos: https://github.com/googleapis/googleapis/tree/master/google
-.. _Client Library Documentation: https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/summary_overview
+.. _Client Library Documentation: https://googleapis.dev/python/googleapis-common-protos/latest/summary_overview
 .. _Product Documentation:  https://github.com/googleapis/googleapis/tree/master/google
 
 Quick Start

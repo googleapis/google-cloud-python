@@ -1,9 +1,9 @@
-Python Client for Policy Troubleshooter API
-===========================================
+Python Client for Policy Troubleshooter
+=======================================
 
 |preview| |pypi| |versions|
 
-`Policy Troubleshooter API`_: 
+`Policy Troubleshooter`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Policy Troubleshooter API
    :target: https://pypi.org/project/google-cloud-policytroubleshooter-iam/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-policytroubleshooter-iam.svg
    :target: https://pypi.org/project/google-cloud-policytroubleshooter-iam/
-.. _Policy Troubleshooter API: https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
+.. _Policy Troubleshooter: https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policytroubleshooter-iam/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Policy Troubleshooter API.`_
+3. `Enable the Policy Troubleshooter.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Policy Troubleshooter API.:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
+.. _Enable the Policy Troubleshooter.:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Policy Troubleshooter API
+-  Read the `Client Library Documentation`_ for Policy Troubleshooter
    to see other available methods on the client.
--  Read the `Policy Troubleshooter API Product documentation`_ to learn
+-  Read the `Policy Troubleshooter Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Policy Troubleshooter API Product documentation:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
+.. _Policy Troubleshooter Product documentation:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

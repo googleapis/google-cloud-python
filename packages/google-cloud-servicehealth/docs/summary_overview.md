@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Service Health API API
+# Service Health API
 
-Overview of the APIs available for Service Health API API.
+Overview of the APIs available for Service Health API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Service Health API API.
+Service Health API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-servicehealth/latest/summary_class.html)
 

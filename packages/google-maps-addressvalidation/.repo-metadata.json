@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "addressvalidation",
-    "name_pretty": "Address Validation API",
+    "name_pretty": "Address Validation",
     "product_documentation": "https://mapsplatform.google.com/maps-products/address-validation/",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

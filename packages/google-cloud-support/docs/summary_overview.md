@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Support API API
+# Google Cloud Support API
 
-Overview of the APIs available for Google Cloud Support API API.
+Overview of the APIs available for Google Cloud Support API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Support API API.
+Google Cloud Support API.
 
 [classes](https://cloud.google.com/python/docs/reference/support/latest/summary_class.html)
 

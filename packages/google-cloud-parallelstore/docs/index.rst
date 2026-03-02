@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Parallelstore API.
+This package includes clients for multiple versions of Parallelstore.
 By default, you will get version ``parallelstore_v1beta``.
 
 

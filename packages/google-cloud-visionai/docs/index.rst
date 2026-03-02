@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Vision AI API.
+This package includes clients for multiple versions of Vision AI.
 By default, you will get version ``visionai_v1``.
 
 

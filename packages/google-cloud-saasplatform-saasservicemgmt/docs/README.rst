@@ -1,9 +1,9 @@
-Python Client for SaaS Runtime API
-==================================
+Python Client for SaaS Runtime
+==============================
 
 |preview| |pypi| |versions|
 
-`SaaS Runtime API`_: SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.
+`SaaS Runtime`_: SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for SaaS Runtime API
    :target: https://pypi.org/project/google-cloud-saasplatform-saasservicemgmt/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-saasplatform-saasservicemgmt.svg
    :target: https://pypi.org/project/google-cloud-saasplatform-saasservicemgmt/
-.. _SaaS Runtime API: https://cloud.google.com/saas-runtime/docs/overview
+.. _SaaS Runtime: https://cloud.google.com/saas-runtime/docs/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-saasplatform-saasservicemgmt/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/saas-runtime/docs/overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the SaaS Runtime API.`_
+3. `Enable the SaaS Runtime.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the SaaS Runtime API.:  https://cloud.google.com/saas-runtime/docs/overview
+.. _Enable the SaaS Runtime.:  https://cloud.google.com/saas-runtime/docs/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for SaaS Runtime API
+-  Read the `Client Library Documentation`_ for SaaS Runtime
    to see other available methods on the client.
--  Read the `SaaS Runtime API Product documentation`_ to learn
+-  Read the `SaaS Runtime Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _SaaS Runtime API Product documentation:  https://cloud.google.com/saas-runtime/docs/overview
+.. _SaaS Runtime Product documentation:  https://cloud.google.com/saas-runtime/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

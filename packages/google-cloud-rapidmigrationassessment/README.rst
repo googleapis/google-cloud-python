@@ -1,9 +1,9 @@
-Python Client for Rapid Migration Assessment API
-================================================
+Python Client for Rapid Migration Assessment
+============================================
 
 |preview| |pypi| |versions|
 
-`Rapid Migration Assessment API`_: The Rapid Migration Assessment service is our first-party migration assessment and planning tool.
+`Rapid Migration Assessment`_: The Rapid Migration Assessment service is our first-party migration assessment and planning tool.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Rapid Migration Assessment API
    :target: https://pypi.org/project/google-cloud-rapidmigrationassessment/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-rapidmigrationassessment.svg
    :target: https://pypi.org/project/google-cloud-rapidmigrationassessment/
-.. _Rapid Migration Assessment API: https://cloud.google.com/migration-center/docs
+.. _Rapid Migration Assessment: https://cloud.google.com/migration-center/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/rapidmigrationassessment/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/migration-center/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Rapid Migration Assessment API.`_
+3. `Enable the Rapid Migration Assessment.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Rapid Migration Assessment API.:  https://cloud.google.com/migration-center/docs
+.. _Enable the Rapid Migration Assessment.:  https://cloud.google.com/migration-center/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Rapid Migration Assessment API
+-  Read the `Client Library Documentation`_ for Rapid Migration Assessment
    to see other available methods on the client.
--  Read the `Rapid Migration Assessment API Product documentation`_ to learn
+-  Read the `Rapid Migration Assessment Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Rapid Migration Assessment API Product documentation:  https://cloud.google.com/migration-center/docs
+.. _Rapid Migration Assessment Product documentation:  https://cloud.google.com/migration-center/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

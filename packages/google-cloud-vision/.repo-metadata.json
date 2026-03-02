@@ -7,7 +7,7 @@
     "distribution_name": "google-cloud-vision",
     "issue_tracker": "https://issuetracker.google.com/issues?q=status:open%20componentid:187174",
     "language": "python",
-    "library_type": "GAPIC_COMBO",
+    "library_type": "GAPIC_AUTO",
     "name": "vision",
     "name_pretty": "Cloud Vision",
     "product_documentation": "https://cloud.google.com/vision/docs/",

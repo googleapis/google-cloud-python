@@ -1,9 +1,11 @@
-Python Client for BigLake API
-=============================
+Python Client for BigLake
+=========================
 
 |preview| |pypi| |versions|
 
-`BigLake API`_: BigLake API
+`BigLake`_: The BigLake API provides access to BigLake Metastore, a serverless, fully
+managed, and highly available metastore for open-source data that can be
+used for querying Apache Iceberg tables in BigQuery.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +16,7 @@ Python Client for BigLake API
    :target: https://pypi.org/project/google-cloud-bigquery-biglake/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-biglake.svg
    :target: https://pypi.org/project/google-cloud-bigquery-biglake/
-.. _BigLake API: https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+.. _BigLake: https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/biglake/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
 
@@ -25,12 +27,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the BigLake API.`_
+3. `Enable the BigLake.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BigLake API.:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+.. _Enable the BigLake.:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BigLake API
+-  Read the `Client Library Documentation`_ for BigLake
    to see other available methods on the client.
--  Read the `BigLake API Product documentation`_ to learn
+-  Read the `BigLake Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigLake API Product documentation:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+.. _BigLake Product documentation:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

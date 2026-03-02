@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-lustre",
-    "name_pretty": "Google Cloud Managed Lustre API",
+    "name_pretty": "Google Cloud Managed Lustre",
     "product_documentation": "https://cloud.google.com/managed-lustre/docs",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

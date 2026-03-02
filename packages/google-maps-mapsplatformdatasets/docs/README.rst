@@ -1,9 +1,9 @@
-Python Client for Maps Platform Datasets API
-============================================
+Python Client for Maps Platform Datasets
+========================================
 
 |preview| |pypi| |versions|
 
-`Maps Platform Datasets API`_: Maps Platform Datasets API
+`Maps Platform Datasets`_: mapsplatformdatasets.googleapis.com API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Maps Platform Datasets API
    :target: https://pypi.org/project/google-maps-mapsplatformdatasets/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-mapsplatformdatasets.svg
    :target: https://pypi.org/project/google-maps-mapsplatformdatasets/
-.. _Maps Platform Datasets API: https://developers.google.com/maps
+.. _Maps Platform Datasets: https://developers.google.com/maps
 .. _Client Library Documentation: https://googleapis.dev/python/mapsplatformdatasets/latest
 .. _Product Documentation:  https://developers.google.com/maps
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Maps Platform Datasets API.`_
+3. `Enable the Maps Platform Datasets.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Maps Platform Datasets API.:  https://developers.google.com/maps
+.. _Enable the Maps Platform Datasets.:  https://developers.google.com/maps
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Maps Platform Datasets API
+-  Read the `Client Library Documentation`_ for Maps Platform Datasets
    to see other available methods on the client.
--  Read the `Maps Platform Datasets API Product documentation`_ to learn
+-  Read the `Maps Platform Datasets Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Maps Platform Datasets API Product documentation:  https://developers.google.com/maps
+.. _Maps Platform Datasets Product documentation:  https://developers.google.com/maps
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

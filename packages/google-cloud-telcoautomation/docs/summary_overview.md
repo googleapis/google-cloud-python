@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Telco Automation API API
+# Telco Automation API
 
-Overview of the APIs available for Telco Automation API API.
+Overview of the APIs available for Telco Automation API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Telco Automation API API.
+Telco Automation API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-telcoautomation/latest/summary_class.html)
 

@@ -5,7 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-financialservices/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-financialservices",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=933093",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-financialservices",

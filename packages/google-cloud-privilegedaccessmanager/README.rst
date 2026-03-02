@@ -1,9 +1,9 @@
-Python Client for Privileged Access Manager API
-===============================================
+Python Client for Privileged Access Manager
+===========================================
 
 |preview| |pypi| |versions|
 
-`Privileged Access Manager API`_: Privileged Access Manager (PAM) helps you on your journey towards least privilege and helps mitigate risks tied to privileged access misuse or abuse. PAM allows you to shift from always-on standing privileges towards on-demand access with just-in-time, time-bound, and approval-based access elevations. PAM allows IAM administrators to create entitlements that can grant just-in-time, temporary access to any resource scope. Requesters can explore eligible entitlements and request the access needed for their task. Approvers are notified when approvals await their decision. Streamlined workflows facilitated by using PAM can support various use cases, including emergency access for incident responders, time-boxed access for developers for critical deployment or maintenance, temporary access for operators for data ingestion and audits, JIT access to service accounts for automated tasks, and more.
+`Privileged Access Manager`_: Privileged Access Manager (PAM) helps you on your journey towards least privilege and helps mitigate risks tied to privileged access misuse or abuse. PAM allows you to shift from always-on standing privileges towards on-demand access with just-in-time, time-bound, and approval-based access elevations. PAM allows IAM administrators to create entitlements that can grant just-in-time, temporary access to any resource scope. Requesters can explore eligible entitlements and request the access needed for their task. Approvers are notified when approvals await their decision. Streamlined workflows facilitated by using PAM can support various use cases, including emergency access for incident responders, time-boxed access for developers for critical deployment or maintenance, temporary access for operators for data ingestion and audits, JIT access to service accounts for automated tasks, and more.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Privileged Access Manager API
    :target: https://pypi.org/project/google-cloud-privilegedaccessmanager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-privilegedaccessmanager.svg
    :target: https://pypi.org/project/google-cloud-privilegedaccessmanager/
-.. _Privileged Access Manager API: https://cloud.google.com/iam/docs/pam-overview
+.. _Privileged Access Manager: https://cloud.google.com/iam/docs/pam-overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-privilegedaccessmanager/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/iam/docs/pam-overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Privileged Access Manager API.`_
+3. `Enable the Privileged Access Manager.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Privileged Access Manager API.:  https://cloud.google.com/iam/docs/pam-overview
+.. _Enable the Privileged Access Manager.:  https://cloud.google.com/iam/docs/pam-overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Privileged Access Manager API
+-  Read the `Client Library Documentation`_ for Privileged Access Manager
    to see other available methods on the client.
--  Read the `Privileged Access Manager API Product documentation`_ to learn
+-  Read the `Privileged Access Manager Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Privileged Access Manager API Product documentation:  https://cloud.google.com/iam/docs/pam-overview
+.. _Privileged Access Manager Product documentation:  https://cloud.google.com/iam/docs/pam-overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

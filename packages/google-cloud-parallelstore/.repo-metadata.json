@@ -5,11 +5,11 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-parallelstore/latest",
     "default_version": "v1beta",
     "distribution_name": "google-cloud-parallelstore",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1181190",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-parallelstore",
-    "name_pretty": "Parallelstore API",
+    "name_pretty": "Parallelstore",
     "product_documentation": "https://cloud.google.com/parallelstore",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

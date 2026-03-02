@@ -1,9 +1,9 @@
-Python Client for Cluster Director API
-======================================
+Python Client for Cluster Director
+==================================
 
 |preview| |pypi| |versions|
 
-`Cluster Director API`_: 
+`Cluster Director`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cluster Director API
    :target: https://pypi.org/project/google-cloud-hypercomputecluster/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-hypercomputecluster.svg
    :target: https://pypi.org/project/google-cloud-hypercomputecluster/
-.. _Cluster Director API: https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
+.. _Cluster Director: https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-hypercomputecluster/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cluster Director API.`_
+3. `Enable the Cluster Director.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cluster Director API.:  https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
+.. _Enable the Cluster Director.:  https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cluster Director API
+-  Read the `Client Library Documentation`_ for Cluster Director
    to see other available methods on the client.
--  Read the `Cluster Director API Product documentation`_ to learn
+-  Read the `Cluster Director Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cluster Director API Product documentation:  https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
+.. _Cluster Director Product documentation:  https://cloud.google.com/blog/products/compute/managed-slurm-and-other-cluster-director-enhancements
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

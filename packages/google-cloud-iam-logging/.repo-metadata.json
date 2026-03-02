@@ -4,7 +4,7 @@
     "distribution_name": "google-cloud-iam-logging",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "language": "python",
-    "library_type": "OTHER",
+    "library_type": "GAPIC_AUTO",
     "name": "iamlogging",
     "name_pretty": "IAM Logging Protos",
     "product_documentation": "https://cloud.google.com/iam/docs/audit-logging",

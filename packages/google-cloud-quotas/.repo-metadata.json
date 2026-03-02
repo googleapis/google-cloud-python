@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-cloudquotas",
-    "name_pretty": "Cloud Quotas API",
+    "name_pretty": "Cloud Quotas",
     "product_documentation": "https://cloud.google.com/docs/quota/api-overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

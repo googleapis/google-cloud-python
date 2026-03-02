@@ -5,11 +5,11 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/securesourcemanager/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-securesourcemanager",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1434461",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "securesourcemanager",
-    "name_pretty": "Secure Source Manager API",
+    "name_pretty": "Secure Source Manager",
     "product_documentation": "https://cloud.google.com/secure-source-manager/docs/overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

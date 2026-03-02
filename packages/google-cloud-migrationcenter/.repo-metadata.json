@@ -5,11 +5,11 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/migrationcenter/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-migrationcenter",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1360713",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "migrationcenter",
-    "name_pretty": "Migration Center API",
+    "name_pretty": "Migration Center",
     "product_documentation": "https://cloud.google.com/migration-center/docs/migration-center-overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

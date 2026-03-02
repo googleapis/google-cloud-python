@@ -1,9 +1,9 @@
-Python Client for Developer Connect API
-=======================================
+Python Client for Developer Connect
+===================================
 
 |preview| |pypi| |versions|
 
-`Developer Connect API`_: Developer Connect streamlines integration with third-party source code management platforms by simplifying authentication, authorization, and networking configuration.
+`Developer Connect`_: Developer Connect streamlines integration with third-party source code management platforms by simplifying authentication, authorization, and networking configuration.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Developer Connect API
    :target: https://pypi.org/project/google-cloud-developerconnect/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-developerconnect.svg
    :target: https://pypi.org/project/google-cloud-developerconnect/
-.. _Developer Connect API: https://cloud.google.com/developer-connect/docs/overview
+.. _Developer Connect: https://cloud.google.com/developer-connect/docs/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-developerconnect/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/developer-connect/docs/overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Developer Connect API.`_
+3. `Enable the Developer Connect.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Developer Connect API.:  https://cloud.google.com/developer-connect/docs/overview
+.. _Enable the Developer Connect.:  https://cloud.google.com/developer-connect/docs/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Developer Connect API
+-  Read the `Client Library Documentation`_ for Developer Connect
    to see other available methods on the client.
--  Read the `Developer Connect API Product documentation`_ to learn
+-  Read the `Developer Connect Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Developer Connect API Product documentation:  https://cloud.google.com/developer-connect/docs/overview
+.. _Developer Connect Product documentation:  https://cloud.google.com/developer-connect/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

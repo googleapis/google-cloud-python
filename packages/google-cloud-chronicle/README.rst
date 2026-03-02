@@ -1,9 +1,9 @@
-Python Client for Chronicle API
-===============================
+Python Client for Chronicle
+===========================
 
 |preview| |pypi| |versions|
 
-`Chronicle API`_: The Google Cloud Security Operations API, popularly known as the Chronicle API, serves endpoints that enable security analysts to analyze and mitigate a security threat throughout its lifecycle
+`Chronicle`_: The Google Cloud Security Operations API, popularly known as the Chronicle API, serves endpoints that enable security analysts to analyze and mitigate a security threat throughout its lifecycle
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Chronicle API
    :target: https://pypi.org/project/google-cloud-chronicle/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-chronicle.svg
    :target: https://pypi.org/project/google-cloud-chronicle/
-.. _Chronicle API: https://cloud.google.com/chronicle/docs/secops/secops-overview
+.. _Chronicle: https://cloud.google.com/chronicle/docs/secops/secops-overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-chronicle/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/chronicle/docs/secops/secops-overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Chronicle API.`_
+3. `Enable the Chronicle.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Chronicle API.:  https://cloud.google.com/chronicle/docs/secops/secops-overview
+.. _Enable the Chronicle.:  https://cloud.google.com/chronicle/docs/secops/secops-overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Chronicle API
+-  Read the `Client Library Documentation`_ for Chronicle
    to see other available methods on the client.
--  Read the `Chronicle API Product documentation`_ to learn
+-  Read the `Chronicle Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Chronicle API Product documentation:  https://cloud.google.com/chronicle/docs/secops/secops-overview
+.. _Chronicle Product documentation:  https://cloud.google.com/chronicle/docs/secops/secops-overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

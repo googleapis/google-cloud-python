@@ -5,7 +5,7 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/redis/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-redis",
-    "issue_tracker": "https://issuetracker.google.com/savedsearches/5169231",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1288776\u0026template=1161103",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "redis",

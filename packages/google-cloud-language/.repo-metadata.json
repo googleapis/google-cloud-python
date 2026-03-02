@@ -5,7 +5,6 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/language/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-language",
-    "issue_tracker": "https://issuetracker.google.com/savedsearches/559753",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "language",

@@ -15,7 +15,7 @@ Python Client for Audit Log API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-audit-log.svg
    :target: https://pypi.org/project/google-cloud-audit-log/
 .. _Audit Log API: https://cloud.google.com/logging/docs/audit
-.. _Client Library Documentation: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log/summary_overview
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/auditlog/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/logging/docs/audit
 
 Quick Start

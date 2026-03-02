@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-gkerecommender",
-    "name_pretty": "GKE Recommender API",
+    "name_pretty": "GKE Recommender",
     "product_documentation": "https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference-quickstart",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

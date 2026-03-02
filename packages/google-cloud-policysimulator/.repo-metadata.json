@@ -5,11 +5,11 @@
     "client_documentation": "https://cloud.google.com/python/docs/reference/policysimulator/latest",
     "default_version": "v1",
     "distribution_name": "google-cloud-policysimulator",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=690790\u0026template=1814512",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "policysimulator",
-    "name_pretty": "Policy Simulator API",
+    "name_pretty": "Policy Simulator",
     "product_documentation": "https://cloud.google.com/policy-intelligence/docs/iam-simulator-overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

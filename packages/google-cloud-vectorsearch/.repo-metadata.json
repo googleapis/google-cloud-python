@@ -9,7 +9,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "name": "google-cloud-vectorsearch",
-    "name_pretty": "Vector Search API",
+    "name_pretty": "Vector Search",
     "product_documentation": "https://docs.cloud.google.com/vertex-ai/docs/vector-search-2/overview",
     "release_level": "preview",
     "repo": "googleapis/google-cloud-python"

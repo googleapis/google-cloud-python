@@ -1,9 +1,9 @@
-Python Client for Error Reporting API
-=====================================
+Python Client for Error Reporting
+=================================
 
 |preview| |pypi| |versions|
 
-`Error Reporting API`_: counts, analyzes and aggregates the crashes in your running cloud services.  A centralized error management interface displays the results with sorting and filtering capabilities. A dedicated view shows the error details: time chart, occurrences, affected user count, first and last seen dates and a cleaned exception stack trace. Opt-in to receive email and mobile alerts on new errors.
+`Error Reporting`_: counts, analyzes and aggregates the crashes in your running cloud services.  A centralized error management interface displays the results with sorting and filtering capabilities. A dedicated view shows the error details: time chart, occurrences, affected user count, first and last seen dates and a cleaned exception stack trace. Opt-in to receive email and mobile alerts on new errors.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Error Reporting API
    :target: https://pypi.org/project/google-cloud-error-reporting/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-error-reporting.svg
    :target: https://pypi.org/project/google-cloud-error-reporting/
-.. _Error Reporting API: https://cloud.google.com/error-reporting
+.. _Error Reporting: https://cloud.google.com/error-reporting
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/clouderrorreporting/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/error-reporting
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Error Reporting API.`_
+3. `Enable the Error Reporting.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Error Reporting API.:  https://cloud.google.com/error-reporting
+.. _Enable the Error Reporting.:  https://cloud.google.com/error-reporting
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Error Reporting API
+-  Read the `Client Library Documentation`_ for Error Reporting
    to see other available methods on the client.
--  Read the `Error Reporting API Product documentation`_ to learn
+-  Read the `Error Reporting Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Error Reporting API Product documentation:  https://cloud.google.com/error-reporting
+.. _Error Reporting Product documentation:  https://cloud.google.com/error-reporting
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
