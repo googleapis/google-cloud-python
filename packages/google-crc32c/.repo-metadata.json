@@ -1,0 +1,14 @@
+{
+    "name": "google-crc32c",
+    "name_pretty": "A python wrapper of the C library 'Google CRC32C'",
+    "product_documentation": "",
+    "client_documentation": "https://github.com/googleapis/python-crc32c",
+    "issue_tracker": "https://github.com/googleapis/python-crc32c/issues",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "OTHER",
+    "repo": "googleapis/python-crc32c",
+    "distribution_name": "google-crc32c",
+    "default_version": "",
+    "codeowner_team": ""
+}
