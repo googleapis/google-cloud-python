@@ -173,6 +173,12 @@ def docs(session):
     )
 
 
+@nox.session(python="3.10")
+def docfx(session):
+    """Build the docfx yaml files for this library."""
+    session.skip("This package does not have documentation in cloud.google.com")
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
     """Run all tests with pre-release versions of dependencies installed
