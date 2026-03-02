@@ -1,0 +1,2 @@
+# samples/snippets should be runnable with no "extras"
+# TODO(tswast): add bigquery-magics=0.0.01 after first release.
