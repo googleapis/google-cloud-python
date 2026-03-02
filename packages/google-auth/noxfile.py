@@ -167,3 +167,24 @@ def docs(session):
         os.path.join("docs", "_build", "html", ""),
     )
 
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def prerelease_deps(session):
+    """Run all tests with pre-release versions of dependencies installed
+    rather than the standard non pre-release versions.
+    Pre-release versions can be installed using
+    `pip install --pre <package>`.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16013):
+    # Add prerelease tests
+    session.skip("Prerelease tests are not yet supported")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16013):
+    # Add prerelease tests
+    session.skip("Prerelease tests are not yet supported")
