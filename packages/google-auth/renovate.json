@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "config:base",
+    "group:all",
+    ":preserveSemverRanges",
+    ":disableDependencyDashboard"
+  ],
+  "ignorePaths": [".github/workflows/unittest.yml", ".kokoro/requirements.txt", ".pre-commit-config.yaml", "docs/requirements-docs.txt", "setup.py"],
+  "pip_requirements": {
+    "fileMatch": ["requirements-test.txt", "samples/[\\S/]*constraints.txt", "samples/[\\S/]*constraints-test.txt"]
+  }
+}
