@@ -18,8 +18,10 @@ from typing import Any, Hashable
 
 import bigframes_vendored.pandas.core.col as pd_col
 
+from bigframes.core import agg_expressions, window_spec
 import bigframes.core.expression as bf_expression
 import bigframes.operations as bf_ops
+import bigframes.operations.aggregations as agg_ops
 
 
 # Not to be confused with the Expression class in `bigframes.core.expressions`
@@ -32,6 +34,15 @@ class Expression:
 
     def _apply_unary(self, op: bf_ops.UnaryOp) -> Expression:
         return Expression(op.as_expr(self._value))
+
+    def _apply_unary_agg(self, op: agg_ops.UnaryAggregateOp) -> Expression:
+        # We probably shouldn't need to windowize here, but block apis expect pre-windowized expressions
+        # Later on, we will probably have col expressions in windowed context, so will need to defer windowization
+        # instead of automatically applying the default unbound window
+        agg_expr = op.as_expr(self._value)
+        return Expression(
+            agg_expressions.WindowExpression(agg_expr, window_spec.unbound())
+        )
 
     def _apply_binary(self, other: Any, op: bf_ops.BinaryOp, reverse: bool = False):
         if isinstance(other, Expression):
@@ -117,6 +128,24 @@ class Expression:
 
     def __invert__(self) -> Expression:
         return self._apply_unary(bf_ops.invert_op)
+
+    def sum(self) -> Expression:
+        return self._apply_unary_agg(agg_ops.sum_op)
+
+    def mean(self) -> Expression:
+        return self._apply_unary_agg(agg_ops.mean_op)
+
+    def var(self) -> Expression:
+        return self._apply_unary_agg(agg_ops.var_op)
+
+    def std(self) -> Expression:
+        return self._apply_unary_agg(agg_ops.std_op)
+
+    def min(self) -> Expression:
+        return self._apply_unary_agg(agg_ops.min_op)
+
+    def max(self) -> Expression:
+        return self._apply_unary_agg(agg_ops.max_op)
 
 
 def col(col_name: Hashable) -> Expression:
