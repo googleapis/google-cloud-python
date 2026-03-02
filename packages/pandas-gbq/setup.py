@@ -24,7 +24,7 @@ dependencies = [
     "setuptools",
     "db-dtypes >=1.0.4,<2.0.0",
     "numpy >=1.18.1",
-    "pandas >=1.1.4, <3.0.0",
+    "pandas >=1.1.4",
     "pyarrow >= 4.0.0",
     # See https://arrow.apache.org/release/22.0.0.html
     "pyarrow >= 22.0.0; python_version >= '3.14'",

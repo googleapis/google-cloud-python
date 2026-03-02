@@ -155,7 +155,7 @@ DATAFRAME_ROUND_TRIPS = [
                         dtype="boolean",
                     ),
                     "object_col": pandas.Series(
-                        [False, None, True],
+                        [False, pandas.NA, True],
                         dtype="object",
                     ),
                 }
@@ -365,7 +365,10 @@ DATAFRAME_ROUND_TRIPS = [
                     # google-cloud-bigquery versions 1.x and 2.x, but not 3.x.
                     # https://github.com/googleapis/python-bigquery-pandas/issues/365
                     "datetime_col": [
-                        datetime.datetime(1, 1, 1),
+                        # CSV loader in BigQuery currently requires leading 0s
+                        # for TIMESTAMP but not DATETIME. See internal issue
+                        # b/467399807.
+                        datetime.datetime(1000, 1, 1),
                         datetime.datetime(1970, 1, 1),
                         datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
                     ],
