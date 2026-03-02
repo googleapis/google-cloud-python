@@ -26,9 +26,10 @@ NOX_SESSION_ARG=""
 
 # IF NOX_FILE is set, it runs the specific nox file,
 # otherwise it runs noxfile.py in the package directory.
-NOX_FILE_ARG="noxfile.py"
+NOX_FILE_ARG=""
 
 [[ -z "${NOX_SESSION}" ]] || NOX_SESSION_ARG="-s ${NOX_SESSION}"
 
 [[ -z "${NOX_FILE}" ]] || NOX_FILE_ARG="-f ${NOX_FILE}"
-python3 -m nox ${NOX_SESSION_ARG} -f $NOX_FILE_ARG
+
+python3 -m nox ${NOX_SESSION_ARG} $NOX_FILE_ARG

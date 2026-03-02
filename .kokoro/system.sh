@@ -68,11 +68,12 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
 
   case "${package}" in
     "google-auth")
-      export NOX_FILE_ARG="system_tests/noxfile.py"
+      export NOX_FILE="system_tests/noxfile.py"
+      # Run all nox sessions for this file
+      export NOX_SESSION=""
       ;;
     *)
-      # Fallback/Default noxfile.py
-      export NOX_FILE_ARG="noxfile.py"
+      # Fallback/Default
       ;;
   esac
 
