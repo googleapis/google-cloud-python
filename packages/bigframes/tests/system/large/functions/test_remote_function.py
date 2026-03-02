@@ -2089,19 +2089,40 @@ def test_df_apply_axis_1_series_args(session, scalars_dfs):
 
 
 @pytest.mark.parametrize(
-    ("memory_mib_args", "expected_memory"),
+    (
+        "memory_mib_args",
+        "expected_memory",
+        "expected_cpus",
+    ),
     [
-        pytest.param({}, "1024Mi", id="no-set"),
-        pytest.param({"cloud_function_memory_mib": None}, "256M", id="set-None"),
-        pytest.param({"cloud_function_memory_mib": 128}, "128Mi", id="set-128"),
-        pytest.param({"cloud_function_memory_mib": 1024}, "1024Mi", id="set-1024"),
-        pytest.param({"cloud_function_memory_mib": 4096}, "4096Mi", id="set-4096"),
-        pytest.param({"cloud_function_memory_mib": 32768}, "32768Mi", id="set-32768"),
+        pytest.param({}, "1024Mi", None, id="no-set"),
+        pytest.param(
+            {"cloud_function_memory_mib": None}, "1024Mi", None, id="set-None"
+        ),
+        pytest.param({"cloud_function_memory_mib": 128}, "128Mi", None, id="set-128"),
+        pytest.param(
+            {"cloud_function_memory_mib": 512, "cloud_function_cpus": 0.6},
+            "512Mi",
+            "0.6",
+            id="set-512",
+        ),
+        pytest.param(
+            {"cloud_function_memory_mib": 1024}, "1024Mi", None, id="set-1024"
+        ),
+        pytest.param(
+            {"cloud_function_memory_mib": 4096, "cloud_function_cpus": 4},
+            "4096Mi",
+            "4",
+            id="set-4096",
+        ),
+        pytest.param(
+            {"cloud_function_memory_mib": 32768}, "32768Mi", None, id="set-32768"
+        ),
     ],
 )
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_gcf_memory(
-    session, scalars_dfs, memory_mib_args, expected_memory
+    session, scalars_dfs, memory_mib_args, expected_memory, expected_cpus
 ):
     try:
 
@@ -2117,6 +2138,12 @@ def test_remote_function_gcf_memory(
             name=square_remote.bigframes_cloud_function
         )
         assert gcf.service_config.available_memory == expected_memory
+        if expected_cpus is not None:
+            assert gcf.service_config.available_cpu == expected_cpus
+        if float(gcf.service_config.available_cpu) >= 1.0:
+            assert gcf.service_config.max_instance_request_concurrency >= float(
+                gcf.service_config.available_cpu
+            )
 
         scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -2138,12 +2165,8 @@ def test_remote_function_gcf_memory(
         pytest.param(32769, id="set-32769-too-high"),
     ],
 )
-@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_gcf_memory_unsupported(session, memory_mib):
-    with pytest.raises(
-        google.api_core.exceptions.InvalidArgument,
-        match="Invalid value specified for container memory",
-    ):
+    with pytest.raises(ValueError, match="Cloud run supports"):
 
         @session.remote_function(
             reuse=False,

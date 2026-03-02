@@ -65,6 +65,8 @@ _VPC_EGRESS_SETTINGS_MAP = types.MappingProxyType(
 # BQ managed functions (@udf) currently only support Python 3.11.
 _MANAGED_FUNC_PYTHON_VERSION = "python-3.11"
 
+_DEFAULT_FUNCTION_MEMORY_MIB = 1024
+
 
 class FunctionClient:
     # Wait time (in seconds) for an IAM binding to take effect after creation.
@@ -402,8 +404,12 @@ class FunctionClient:
         is_row_processor=False,
         vpc_connector=None,
         vpc_connector_egress_settings="private-ranges-only",
-        memory_mib=1024,
+        memory_mib=None,
+        cpus=None,
         ingress_settings="internal-only",
+        workers=None,
+        threads=None,
+        concurrency=None,
     ):
         """Create a cloud function from the given user defined function."""
 
@@ -486,6 +492,8 @@ class FunctionClient:
             function.service_config = functions_v2.ServiceConfig()
             if memory_mib is not None:
                 function.service_config.available_memory = f"{memory_mib}Mi"
+            if cpus is not None:
+                function.service_config.available_cpu = str(cpus)
             if timeout_seconds is not None:
                 if timeout_seconds > 1200:
                     raise bf_formatting.create_exception_with_feedback_link(
@@ -517,6 +525,20 @@ class FunctionClient:
             function.service_config.service_account_email = (
                 self._cloud_function_service_account
             )
+            if concurrency:
+                function.service_config.max_instance_request_concurrency = concurrency
+
+            # Functions framework use environment variables to pass config to gunicorn
+            # See https://github.com/GoogleCloudPlatform/functions-framework-python/issues/241
+            # Code: https://github.com/GoogleCloudPlatform/functions-framework-python/blob/v3.10.1/src/functions_framework/_http/gunicorn.py#L37-L43
+            env_vars = {}
+            if workers:
+                env_vars["WORKERS"] = str(workers)
+            if threads:
+                env_vars["THREADS"] = str(threads)
+            if env_vars:
+                function.service_config.environment_variables = env_vars
+
             if ingress_settings not in _INGRESS_SETTINGS_MAP:
                 raise bf_formatting.create_exception_with_feedback_link(
                     ValueError,
@@ -581,6 +603,7 @@ class FunctionClient:
         cloud_function_vpc_connector,
         cloud_function_vpc_connector_egress_settings,
         cloud_function_memory_mib,
+        cloud_function_cpus,
         cloud_function_ingress_settings,
         bq_metadata,
     ):
@@ -616,6 +639,21 @@ class FunctionClient:
         )
         cf_endpoint = self.get_cloud_function_endpoint(cloud_function_name)
 
+        if cloud_function_memory_mib is None:
+            cloud_function_memory_mib = _DEFAULT_FUNCTION_MEMORY_MIB
+
+        # assumption is most bigframes functions are cpu bound, single-threaded and many won't release GIL
+        # therefore, want to allocate a worker for each cpu, and allow a concurrent request per worker
+        expected_milli_cpus = (
+            int(cloud_function_cpus * 1000)
+            if (cloud_function_cpus is not None)
+            else _infer_milli_cpus_from_memory(cloud_function_memory_mib)
+        )
+        workers = -(expected_milli_cpus // -1000)  # ceil(cpus) without invoking floats
+        threads = 4  # (per worker)
+        # max concurrency==1 for vcpus < 1 hard limit from cloud run
+        concurrency = (workers * threads) if (expected_milli_cpus >= 1000) else 1
+
         # Create the cloud function if it does not exist
         if not cf_endpoint:
             cf_endpoint = self.create_cloud_function(
@@ -630,7 +668,11 @@ class FunctionClient:
                 vpc_connector=cloud_function_vpc_connector,
                 vpc_connector_egress_settings=cloud_function_vpc_connector_egress_settings,
                 memory_mib=cloud_function_memory_mib,
+                cpus=cloud_function_cpus,
                 ingress_settings=cloud_function_ingress_settings,
+                workers=workers,
+                threads=threads,
+                concurrency=concurrency,
             )
         else:
             logger.info(f"Cloud function {cloud_function_name} already exists.")
@@ -696,3 +738,27 @@ class FunctionClient:
             # Note: list_routines doesn't make an API request until we iterate on the response object.
             pass
         return (http_endpoint, bq_connection)
+
+
+def _infer_milli_cpus_from_memory(memory_mib: int) -> int:
+    # observed values, not formally documented by cloud run functions
+    if memory_mib < 128:
+        raise ValueError("Cloud run supports at minimum 128MiB per instance")
+    elif memory_mib == 128:
+        return 83
+    elif memory_mib <= 256:
+        return 167
+    elif memory_mib <= 512:
+        return 333
+    elif memory_mib <= 1024:
+        return 583
+    elif memory_mib <= 2048:
+        return 1000
+    elif memory_mib <= 8192:
+        return 2000
+    elif memory_mib <= 16384:
+        return 4000
+    elif memory_mib <= 32768:
+        return 8000
+    else:
+        raise ValueError("Cloud run supports at most 32768MiB per instance")
