@@ -63,13 +63,14 @@ packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # R
 
 # Run system tests for each package with directory `packages/*/tests/system` or directory `packages/*/system_tests`
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -wholename 'packages/*/system_tests'`; do
-  # Get the path to the package
+  # Extract the package name and define the relative package path
   # 1. Remove the 'packages/' prefix from the start
   # 2. Remove everything after the first '/' remaining
-  package_path=${dir#packages/}
-  package=${package_path%%/*}
+  package_name=${dir#packages/}
+  package_name=${package_name%%/*}
+  package_path="packages/${package_name}"
 
-  case "${package}" in
+  case "${package_name}" in
     "google-auth")
       export NOX_FILE="system_tests/noxfile.py"
       # Run all nox sessions for this file
@@ -84,10 +85,10 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
   esac
 
   # Run system tests on every change to these libraries
-  if [[ $package == @($packages_with_system_tests_pattern) ]]; then
-    files_to_check=${package}
+  if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
+    files_to_check=${package_path}
   else
-    files_to_check=${package}/CHANGELOG.md
+    files_to_check=${package_path}/CHANGELOG.md
   fi
 
   echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check}'"
@@ -98,8 +99,8 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
       echo "no change detected in ${files_to_check}, skipping"
   else
       echo "change detected in ${files_to_check}"
-      echo "Running system tests for ${package}"
-      pushd ${package}
+      echo "Running system tests for ${package_name}"
+      pushd ${package_path}
       # Temporarily allow failure.
       set +e
       ${system_test_script}
