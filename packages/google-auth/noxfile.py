@@ -111,9 +111,7 @@ def mypy(session):
 def unit(session):
     # Install all test dependencies, then install this package in-place.
 
-    if session.python in (
-        "3.7",
-    ):
+    if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
 
     constraints_path = str(
