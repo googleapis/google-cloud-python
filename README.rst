@@ -331,12 +331,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Datastore <https://github.com/googleapis/python-datastore>`_
+   * - `Datastore <https://github.com/googleapis/google-cloud-python/tree/main/packages/python-datastore>`_
      - stable
      - |PyPI-google-cloud-datastore|
      - `API Issues <https://issuetracker.google.com/savedsearches/559768>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187197>`_
-     - `Client Library Issues <https://github.com/googleapis/python-datastore/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Datastream <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datastream>`_
      - stable
      - |PyPI-google-cloud-datastream|
