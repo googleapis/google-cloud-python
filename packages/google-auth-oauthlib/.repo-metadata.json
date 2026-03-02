@@ -8,6 +8,5 @@
     "library_type": "AUTH",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-auth-oauthlib",
-    "default_version": "",
     "codeowner_team": "@googleapis/googleapis-auth"
 }

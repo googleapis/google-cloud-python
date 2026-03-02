@@ -9,9 +9,6 @@
     "library_type": "REST",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-dns",
-    "requires_billing": true,
-    "default_version": "",
-    "codeowner_team": "",
     "api_shortname": "dns",
     "api_description": "provides methods that you can use to manage DNS for your applications."
 }

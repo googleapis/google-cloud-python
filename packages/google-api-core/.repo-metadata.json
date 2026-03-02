@@ -7,6 +7,5 @@
     "library_type": "CORE",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-api-core",
-    "default_version": "",
     "codeowner_team": "@googleapis/cloud-sdk-python-team"
 }
