@@ -1,0 +1,18 @@
+{
+    "entity_object":"analyzeResult.pageResults.0.keyValuePairs",
+    "page": {
+        "height":"analyzeResult.readResults.0.height",
+        "width":"analyzeResult.readResults.0.width"
+    },
+    "entity": {
+        "type_":"key.text",
+        "mention_text":"value.text",
+        "normalized_vertices":{
+            "type":"3",
+            "unit":"inch",
+            "base":"key.boundingBox",
+            "x":"x",
+            "y":"y"
+        }
+    }
+}

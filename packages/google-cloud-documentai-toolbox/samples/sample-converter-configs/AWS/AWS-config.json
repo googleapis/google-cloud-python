@@ -1,0 +1,14 @@
+{
+    "entity_object":"Blocks",
+    "entity": {
+        "type_":"BlockType",
+        "mention_text":"Text",
+        "normalized_vertices":{
+            "type":"1",
+            "unit":"normalized",
+            "base":"Geometry.Polygon",
+            "x":"X",
+            "y":"Y"
+        }
+    }
+}
