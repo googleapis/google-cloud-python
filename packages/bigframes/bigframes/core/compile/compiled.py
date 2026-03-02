@@ -23,12 +23,12 @@ import bigframes_vendored.ibis.common.deferred as ibis_deferred  # type: ignore
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.types as ibis_types
+import bigframes_vendored.sqlglot.expressions as sge
 from google.cloud import bigquery
 import pyarrow as pa
 
 from bigframes.core import agg_expressions, rewrite
 import bigframes.core.agg_expressions as ex_types
-import bigframes.core.compile.googlesql
 import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compiler
 import bigframes.core.compile.ibis_compiler.scalar_op_compiler as op_compilers
 import bigframes.core.compile.ibis_types
@@ -82,13 +82,21 @@ class UnorderedIR:
         )
 
         if order_by or limit or not is_noop_selection:
-            sql = ibis_bigquery.Backend().compile(ibis_table)
-            sql = (
-                bigframes.core.compile.googlesql.Select()
-                .from_(sql)
-                .select(selection_strings)
-                .sql()
-            )
+            # selections are (ref.id.sql, name) where ref.id.sql is escaped identifier
+            to_select = [
+                sge.Alias(
+                    this=sge.to_identifier(src, quoted=True),
+                    alias=sge.to_identifier(alias, quoted=True),
+                )
+                if src != alias
+                else sge.to_identifier(src, quoted=True)
+                for src, alias in selection_strings
+            ]
+            # Use string formatting for FROM clause to avoid re-parsing potentially complex SQL (like ARRAY<STRUCT<...>>)
+            # that sqlglot might not handle perfectly when parsing BigQuery dialect strings.
+            select_sql = sge.Select().select(*to_select).sql(dialect="bigquery")
+            ibis_sql = ibis_bigquery.Backend().compile(ibis_table)
+            sql = f"{select_sql} FROM ({ibis_sql}) AS `t`"
 
             # Single row frames may not have any ordering columns
             if len(order_by) > 0:
@@ -99,7 +107,7 @@ class UnorderedIR:
                     raise TypeError(f"Limit param: {limit} must be an int.")
                 sql += f"\nLIMIT {limit}"
         else:
-            sql = ibis_bigquery.Backend().compile(self._to_ibis_expr())
+            sql = ibis_bigquery.Backend().compile(ibis_table)
         return typing.cast(str, sql)
 
     @property

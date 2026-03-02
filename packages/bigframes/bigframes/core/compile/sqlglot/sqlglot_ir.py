@@ -598,6 +598,34 @@ class SQLGlotIR:
         return new_select_expr, cte_name
 
 
+def identifier(id: str) -> str:
+    """Return a string representing column reference in a SQL."""
+    return sge.to_identifier(id, quoted=SQLGlotIR.quoted).sql(dialect=SQLGlotIR.dialect)
+
+
+def _escape_chars(value: str):
+    """Escapes all special characters"""
+    # TODO: Reuse _literal's escaping logic instead of re-implementing it here.
+    # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#string_and_bytes_literals
+    trans_table = str.maketrans(
+        {
+            "\a": r"\a",
+            "\b": r"\b",
+            "\f": r"\f",
+            "\n": r"\n",
+            "\r": r"\r",
+            "\t": r"\t",
+            "\v": r"\v",
+            "\\": r"\\",
+            "?": r"\?",
+            '"': r"\"",
+            "'": r"\'",
+            "`": r"\`",
+        }
+    )
+    return value.translate(trans_table)
+
+
 def _is_null_literal(expr: sge.Expression) -> bool:
     """Checks if the given expression is a NULL literal."""
     if isinstance(expr, sge.Null):

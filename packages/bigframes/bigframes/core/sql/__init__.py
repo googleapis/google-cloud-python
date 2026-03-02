@@ -23,9 +23,10 @@ import json
 import math
 from typing import cast, Collection, Iterable, Mapping, Optional, TYPE_CHECKING, Union
 
+import bigframes_vendored.sqlglot.expressions as sge
 import shapely.geometry.base  # type: ignore
 
-import bigframes.core.compile.googlesql as googlesql
+from bigframes.core.compile.sqlglot import sqlglot_ir
 
 if TYPE_CHECKING:
     import google.cloud.bigquery as bigquery
@@ -65,7 +66,7 @@ def simple_literal(value: Union[SIMPLE_LITERAL_TYPES, None]) -> str:
         return "NULL"
     elif isinstance(value, str):
         # Single quoting seems to work nicer with ibis than double quoting
-        return f"'{googlesql._escape_chars(value)}'"
+        return f"'{sqlglot_ir._escape_chars(value)}'"
     elif isinstance(value, bytes):
         return repr(value)
     elif isinstance(value, (bool, int)):
@@ -110,15 +111,15 @@ def multi_literal(*values: str):
 def cast_as_string(column_name: str) -> str:
     """Return a string representing string casting of a column."""
 
-    return googlesql.Cast(
-        googlesql.ColumnExpression(column_name), googlesql.DataType.STRING
-    ).sql()
+    return sge.Cast(this=sge.to_identifier(column_name, quoted=True), to="STRING").sql(
+        dialect="bigquery"
+    )
 
 
 def to_json_string(column_name: str) -> str:
     """Return a string representing JSON version of a column."""
 
-    return f"TO_JSON_STRING({googlesql.identifier(column_name)})"
+    return f"TO_JSON_STRING({sqlglot_ir.identifier(column_name)})"
 
 
 def csv(values: Iterable[str]) -> str:
@@ -132,11 +133,29 @@ def infix_op(opname: str, left_arg: str, right_arg: str):
 
 
 def is_distinct_sql(columns: Iterable[str], table_ref: bigquery.TableReference) -> str:
+    table_expr = sge.Table(
+        this=sge.Identifier(this=table_ref.table_id, quoted=True),
+        db=sge.Identifier(this=table_ref.dataset_id, quoted=True),
+        catalog=sge.Identifier(this=table_ref.project, quoted=True),
+    )
+    to_select = [sge.to_identifier(col, quoted=True) for col in columns]
+
+    full_table_sql = (
+        sge.Select().select(*to_select).from_(table_expr).sql(dialect="bigquery")
+    )
+    distinct_table_sql = (
+        sge.Select()
+        .select(*to_select)
+        .distinct()
+        .from_(table_expr)
+        .sql(dialect="bigquery")
+    )
+
     is_unique_sql = f"""WITH full_table AS (
-        {googlesql.Select().from_(table_ref).select(columns).sql()}
+        {full_table_sql}
     ),
     distinct_table AS (
-        {googlesql.Select().from_(table_ref).select(columns, distinct=True).sql()}
+        {distinct_table_sql}
     )
 
     SELECT (SELECT COUNT(*) FROM full_table) AS `total_count`,
@@ -183,7 +202,7 @@ def create_vector_index_ddl(
 
     if len(stored_column_names) > 0:
         escaped_stored = [
-            f"{googlesql.identifier(name)}" for name in stored_column_names
+            f"{sqlglot_ir.identifier(name)}" for name in stored_column_names
         ]
         storing = f"STORING({', '.join(escaped_stored)}) "
     else:
@@ -197,8 +216,8 @@ def create_vector_index_ddl(
     )
 
     return f"""
-    {create} {googlesql.identifier(index_name)}
-    ON {googlesql.identifier(table_name)}({googlesql.identifier(column_name)})
+    {create} {sqlglot_ir.identifier(index_name)}
+    ON {sqlglot_ir.identifier(table_name)}({sqlglot_ir.identifier(column_name)})
     {storing}
     OPTIONS({rendered_options});
     """
@@ -217,7 +236,7 @@ def create_vector_search_sql(
     """Encode the VECTOR SEARCH statement for BigQuery Vector Search."""
 
     vector_search_args = [
-        f"TABLE {googlesql.identifier(cast(str, base_table))}",
+        f"TABLE {sqlglot_ir.identifier(cast(str, base_table))}",
         f"{simple_literal(column_to_search)}",
         f"({sql_string})",
     ]

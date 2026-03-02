@@ -21,7 +21,7 @@ from typing import Iterable, Literal, Mapping, Optional, Union
 import bigframes_vendored.constants as constants
 import google.cloud.bigquery
 
-import bigframes.core.compile.googlesql as sql_utils
+import bigframes.core.compile.sqlglot.sqlglot_ir as sql_utils
 import bigframes.core.sql as sql_vals
 
 INDENT_STR = "  "

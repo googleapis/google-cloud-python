@@ -32,7 +32,7 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.table
 
-import bigframes.core.compile.googlesql as googlesql
+from bigframes.core.compile.sqlglot import sqlglot_ir
 import bigframes.core.events
 from bigframes.core.logging import log_adapter
 import bigframes.core.sql
@@ -599,7 +599,7 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
 
             operator_str = valid_operators[operator]
 
-            column_ref = googlesql.identifier(column)
+            column_ref = sqlglot_ir.identifier(column)
             if operator_str in ["IN", "NOT IN"]:
                 value_literal = bigframes.core.sql.multi_literal(*value)
             else:
