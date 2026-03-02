@@ -57,6 +57,7 @@ try:
     from secrets import SystemRandom
 except ImportError:  # pragma: NO COVER
     from random import SystemRandom
+
 from string import ascii_letters, digits
 import webbrowser
 import wsgiref.simple_server
@@ -66,7 +67,6 @@ import google.auth.transport.requests
 import google.oauth2.credentials
 
 import google_auth_oauthlib.helpers
-
 
 _LOGGER = logging.getLogger(__name__)
 
