@@ -43,6 +43,8 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
+ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS
+ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -172,13 +174,18 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
+
+    if session.python in (
+        "3.7",
+    ):
+        session.skip("Python 3.7 is no longer supported")
 
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
