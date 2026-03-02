@@ -63,8 +63,11 @@ packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # R
 
 # Run system tests for each package with directory `packages/*/tests/system` or directory `packages/*/system_tests`
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -wholename 'packages/*/system_tests'`; do
-  # Get the path to the package by removing the suffix /tests/system
-  package=$(echo $dir | cut -f -2 -d '/')
+  # Get the path to the package
+  # 1. Remove the 'packages/' prefix from the start
+  # 2. Remove everything after the first '/' remaining
+  package_path=${dir#packages/}
+  package=${package_path%%/*}
 
   case "${package}" in
     "google-auth")
@@ -74,6 +77,9 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
       ;;
     *)
       # Fallback/Default
+      export NOX_FILE="noxfile.py"
+      # Run the system nox session
+      export NOX_SESSION="system-3.12"
       ;;
   esac
 
