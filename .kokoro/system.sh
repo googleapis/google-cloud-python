@@ -72,6 +72,19 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
 
   case "${package_name}" in
     "google-auth")
+      # Decrypt google-auth system test secrets
+      # Create working directory if not exists. system_tests/data is not tracked by
+      # Git to prevent the secrets from being leaked online.
+      mkdir -p system_tests/data
+
+      gcloud kms decrypt \
+        --location=global \
+        --keyring=ci \
+        --key=kokoro-secrets \
+        --ciphertext-file=system_tests/secrets.tar.enc \
+        --plaintext-file=system_tests/secrets.tar
+      tar xvf system_tests/secrets.tar
+      rm system_tests/secrets.tar
       export NOX_FILE="system_tests/noxfile.py"
       # Run all nox sessions for this file
       export NOX_SESSION=""
