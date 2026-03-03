@@ -85,7 +85,7 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
       # Decrypt google-auth system test secrets
       # Create working directory if not exists. system_tests/data is not tracked by
       # Git to prevent the secrets from being leaked online.
-      mkdir -p ${package_path}/system_tests/data
+      mkdir -p "${package_path}/system_tests/data"
 
       gcloud kms decrypt \
         --location=global \
