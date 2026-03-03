@@ -81,8 +81,8 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
         --location=global \
         --keyring=ci \
         --key=kokoro-secrets \
-        --ciphertext-file="${package_path}system_tests/secrets.tar.enc" \
-        --plaintext-file="${package_path}system_tests/secrets.tar"
+        --ciphertext-file="${package_path}/system_tests/secrets.tar.enc" \
+        --plaintext-file="${package_path}/system_tests/secrets.tar"
       tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/"
       rm "${package_path}/system_tests/secrets.tar"
       export NOX_FILE="system_tests/noxfile.py"
