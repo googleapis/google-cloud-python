@@ -17,7 +17,6 @@
 This utilities are explicitly catered to ``requests``-like transports.
 """
 
-
 import functools
 
 from google._async_resumable_media import _helpers
@@ -114,7 +113,7 @@ async def http_request(
     data=None,
     headers=None,
     retry_strategy=_DEFAULT_RETRY_STRATEGY,
-    **transport_kwargs
+    **transport_kwargs,
 ):
     """Make an HTTP request.
 

@@ -236,7 +236,7 @@ class ChunkedDownload(DownloadBase):
     def __init__(self, media_url, chunk_size, stream, start=0, end=None, headers=None):
         if start < 0:
             raise ValueError(
-                "On a chunked download the starting " "value cannot be negative."
+                "On a chunked download the starting value cannot be negative."
             )
         super(ChunkedDownload, self).__init__(
             media_url, stream=stream, start=start, end=end, headers=headers

@@ -42,7 +42,6 @@ To install with `pip`_:
 .. _pip: https://pip.pypa.io/
 """
 
-
 from google.resumable_media.common import DataCorruption
 from google.resumable_media.common import InvalidResponse
 from google.resumable_media.common import PERMANENT_REDIRECT

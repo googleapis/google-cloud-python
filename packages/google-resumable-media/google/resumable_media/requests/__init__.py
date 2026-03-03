@@ -662,6 +662,7 @@ transmitted in chunks until completion:
    >>> json_response['name'] == blob_name
    True
 """
+
 from google.resumable_media.requests.download import ChunkedDownload
 from google.resumable_media.requests.download import Download
 from google.resumable_media.requests.upload import MultipartUpload

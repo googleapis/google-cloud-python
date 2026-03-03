@@ -53,8 +53,7 @@ _STREAM_ERROR_TEMPLATE = (
     "{:d} bytes have already been updated (they should match)."
 )
 _STREAM_READ_PAST_TEMPLATE = (
-    "{:d} bytes have been read from the stream, which exceeds "
-    "the expected total {:d}."
+    "{:d} bytes have been read from the stream, which exceeds the expected total {:d}."
 )
 _DELETE = "DELETE"
 _POST = "POST"

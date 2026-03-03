@@ -337,7 +337,6 @@ class Test__get_expected_checksum(object):
 
 
 class Test__parse_checksum_header(object):
-
     CRC32C_CHECKSUM = "3q2+7w=="
     MD5_CHECKSUM = "c2l4dGVlbmJ5dGVzbG9uZw=="
 
@@ -409,7 +408,6 @@ class Test__parse_checksum_header(object):
 
 
 class Test__parse_generation_header(object):
-
     GENERATION_VALUE = 1641590104888641
 
     def test_empty_value(self):
@@ -451,7 +449,6 @@ class Test__is_decompressive_transcoding(object):
 
 
 class Test__get_generation_from_url(object):
-
     GENERATION_VALUE = 1641590104888641
     MEDIA_URL = (
         "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object?alt=media"

@@ -311,7 +311,6 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
     async def consume_next_chunk(
         self, transport, timeout=_request_helpers._DEFAULT_TIMEOUT
     ):
-
         """
         Consume the next chunk of the resource to be downloaded.
 

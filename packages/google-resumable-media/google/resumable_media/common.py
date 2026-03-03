@@ -20,7 +20,7 @@ Includes custom exception types, useful constants and shared helpers.
 import http.client
 
 _SLEEP_RETRY_ERROR_MSG = (
-    "At most one of `max_cumulative_retry` and `max_retries` " "can be specified."
+    "At most one of `max_cumulative_retry` and `max_retries` can be specified."
 )
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024

@@ -259,13 +259,7 @@ class TestMultipartUpload(object):
             ).encode("utf8")
         else:
             metadata_payload = b'{"Some": "Stuff"}\r\n'
-        remainder = (
-            b"--==3==\r\n"
-            b"content-type: text/plain\r\n"
-            b"\r\n"
-            b"Hi\r\n"
-            b"--==3==--"
-        )
+        remainder = b"--==3==\r\ncontent-type: text/plain\r\n\r\nHi\r\n--==3==--"
         expected_payload = preamble + metadata_payload + remainder
 
         assert payload == expected_payload
@@ -1127,7 +1121,7 @@ class Test_construct_multipart_request(object):
 
     @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==2==")
     def test_unicode(self, mock_get_boundary):
-        data_unicode = "\N{snowman}"
+        data_unicode = "\N{SNOWMAN}"
         # construct_multipart_request( ASSUMES callers pass bytes.
         data = data_unicode.encode("utf-8")
         metadata = {"name": "snowman.txt"}

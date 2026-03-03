@@ -97,7 +97,7 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
             "Request failed with status code",
             status_code,
             "Expected one of",
-            *status_codes
+            *status_codes,
         )
     return status_code
 
