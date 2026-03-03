@@ -872,6 +872,7 @@ class _Client(object):
     def __init__(self, project="project_id"):
         self.project = project
         self.project_name = "projects/" + self.project
+        self._client_context = None
 
     def instance(self, instance_id="instance_id"):
         return _Instance(name=instance_id, client=self)

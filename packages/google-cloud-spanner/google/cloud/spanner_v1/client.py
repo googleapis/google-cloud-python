@@ -55,6 +55,7 @@ from google.cloud.spanner_v1._helpers import (
     _merge_query_options,
 )
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1._helpers import _validate_client_context
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.metrics.constants import (
     METRIC_EXPORT_INTERVAL_MS,
@@ -228,6 +229,10 @@ class Client(ClientWithProject):
     :param disable_builtin_metrics: (Optional) Default False. Set to True to disable
             the Spanner built-in metrics collection and exporting.
 
+    :type client_context: :class:`~google.cloud.spanner_v1.types.RequestOptions.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made by this client.
+
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
 
@@ -278,6 +283,7 @@ class Client(ClientWithProject):
         default_transaction_options: Optional[DefaultTransactionOptions] = None,
         experimental_host=None,
         disable_builtin_metrics=False,
+        client_context=None,
         use_plain_text=False,
         ca_certificate=None,
         client_certificate=None,
@@ -324,6 +330,7 @@ class Client(ClientWithProject):
 
         # Environment flag config has higher precedence than application config.
         self._query_options = _merge_query_options(query_options, env_query_options)
+        self._client_context = _validate_client_context(client_context)
 
         if self._emulator_host is not None and (
             "http://" in self._emulator_host or "https://" in self._emulator_host

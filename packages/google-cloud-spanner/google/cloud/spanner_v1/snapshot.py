@@ -41,6 +41,8 @@ from google.api_core import gapic_v1
 from google.cloud.spanner_v1._helpers import (
     _make_value_pb,
     _merge_query_options,
+    _merge_client_context,
+    _merge_request_options,
     _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
     _retry,
@@ -48,6 +50,7 @@ from google.cloud.spanner_v1._helpers import (
     _SessionWrapper,
     AtomicCounter,
     _augment_error_with_request_id,
+    _validate_client_context,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call, add_span_event
 from google.cloud.spanner_v1.streamed import StreamedResultSet
@@ -196,14 +199,20 @@ class _SnapshotBase(_SessionWrapper):
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform transaction operations.
+
+    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made
+                           by this transaction.
     """
 
     _read_only: bool = True
     _multi_use: bool = False
 
-    def __init__(self, session):
+    def __init__(self, session, client_context=None):
         super().__init__(session)
 
+        self._client_context = _validate_client_context(client_context)
         # Counts for execute SQL requests and total read requests (including
         # execute SQL requests). Used to provide sequence numbers for
         # :class:`google.cloud.spanner_v1.types.ExecuteSqlRequest` and to
@@ -348,10 +357,13 @@ class _SnapshotBase(_SessionWrapper):
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
 
+        client_context = _merge_client_context(
+            database._instance._client._client_context, self._client_context
+        )
+        request_options = _merge_request_options(request_options, client_context)
+
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
 
         if self._read_only:
             # Transaction tags are not supported for read only transactions.
@@ -543,10 +555,14 @@ class _SnapshotBase(_SessionWrapper):
         default_query_options = database._instance._client._query_options
         query_options = _merge_query_options(default_query_options, query_options)
 
+        client_context = _merge_client_context(
+            database._instance._client._client_context, self._client_context
+        )
+        request_options = _merge_request_options(request_options, client_context)
+
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
+
         if self._read_only:
             # Transaction tags are not supported for read only transactions.
             request_options.transaction_tag = None
@@ -923,10 +939,19 @@ class _SnapshotBase(_SessionWrapper):
             "mutation_key": mutation,
         }
 
+        request_options = begin_request_kwargs.get("request_options")
+        client_context = _merge_client_context(
+            database._instance._client._client_context, self._client_context
+        )
+        request_options = _merge_request_options(request_options, client_context)
+
         if transaction_tag:
-            begin_request_kwargs["request_options"] = RequestOptions(
-                transaction_tag=transaction_tag
-            )
+            if request_options is None:
+                request_options = RequestOptions()
+            request_options.transaction_tag = transaction_tag
+
+        if request_options:
+            begin_request_kwargs["request_options"] = request_options
 
         with trace_call(
             name=f"CloudSpanner.{type(self).__name__}.begin",
@@ -1099,6 +1124,11 @@ class Snapshot(_SnapshotBase):
                       context of a read-only transaction, used to ensure
                       isolation / consistency. Incompatible with
                       ``max_staleness`` and ``min_read_timestamp``.
+
+    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made
+                           by this snapshot.
     """
 
     def __init__(
@@ -1110,8 +1140,9 @@ class Snapshot(_SnapshotBase):
         exact_staleness=None,
         multi_use=False,
         transaction_id=None,
+        client_context=None,
     ):
-        super(Snapshot, self).__init__(session)
+        super(Snapshot, self).__init__(session, client_context=client_context)
         opts = [read_timestamp, min_read_timestamp, max_staleness, exact_staleness]
         flagged = [opt for opt in opts if opt is not None]
 

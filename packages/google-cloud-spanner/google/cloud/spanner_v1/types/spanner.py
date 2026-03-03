@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "ListSessionsResponse",
         "DeleteSessionRequest",
         "RequestOptions",
+        "ClientContext",
         "DirectedReadOptions",
         "ExecuteSqlRequest",
         "ExecuteBatchDmlRequest",
@@ -394,6 +395,31 @@ class RequestOptions(proto.Message):
     transaction_tag: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    client_context: ClientContext = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ClientContext",
+    )
+
+
+class ClientContext(proto.Message):
+    r"""Container for various pieces of client-owned context
+    attached to a request.
+
+    Attributes:
+        secure_context (MutableMapping[str, google.protobuf.struct_pb2.Value]):
+            Optional. Map of parameter name to value for this request.
+            These values will be returned by any SECURE_CONTEXT() calls
+            invoked by this request (e.g., by queries against
+            Parameterized Secure Views).
+    """
+
+    secure_context: MutableMapping[str, struct_pb2.Value] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Value,
     )
 
 

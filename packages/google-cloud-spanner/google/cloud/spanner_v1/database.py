@@ -950,6 +950,7 @@ class Database(object):
         :param kw:
             Passed through to
             :class:`~google.cloud.spanner_v1.snapshot.Snapshot` constructor.
+            Now includes ``client_context``.
 
         :rtype: :class:`~google.cloud.spanner_v1.database.SnapshotCheckout`
         :returns: new wrapper
@@ -963,6 +964,7 @@ class Database(object):
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
         read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
+        client_context=None,
         **kw,
     ):
         """Return an object which wraps a batch.
@@ -1000,6 +1002,11 @@ class Database(object):
         :param read_lock_mode:
                 (Optional) Sets the read lock mode for this transaction. This overrides any default read lock mode set for the client.
 
+        :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+            or :class:`dict`
+        :param client_context: (Optional) Client context to use for all requests made
+                               by this batch.
+
         :rtype: :class:`~google.cloud.spanner_v1.database.BatchCheckout`
         :returns: new wrapper
         """
@@ -1011,19 +1018,25 @@ class Database(object):
             exclude_txn_from_change_streams,
             isolation_level,
             read_lock_mode,
+            client_context=client_context,
             **kw,
         )
 
-    def mutation_groups(self):
+    def mutation_groups(self, client_context=None):
         """Return an object which wraps a mutation_group.
 
         The wrapper *must* be used as a context manager, with the mutation group
         as the value returned by the wrapper.
 
+        :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+            or :class:`dict`
+        :param client_context: (Optional) Client context to use for all requests made
+                               by this mutation group.
+
         :rtype: :class:`~google.cloud.spanner_v1.database.MutationGroupsCheckout`
         :returns: new wrapper
         """
-        return MutationGroupsCheckout(self)
+        return MutationGroupsCheckout(self, client_context=client_context)
 
     def batch_snapshot(
         self,
@@ -1031,6 +1044,7 @@ class Database(object):
         exact_staleness=None,
         session_id=None,
         transaction_id=None,
+        client_context=None,
     ):
         """Return an object which wraps a batch read / query.
 
@@ -1047,6 +1061,11 @@ class Database(object):
         :type transaction_id: str
         :param transaction_id: id of the transaction
 
+        :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+            or :class:`dict`
+        :param client_context: (Optional) Client context to use for all requests made
+                               by this batch snapshot.
+
         :rtype: :class:`~google.cloud.spanner_v1.database.BatchSnapshot`
         :returns: new wrapper
         """
@@ -1056,6 +1075,7 @@ class Database(object):
             exact_staleness=exact_staleness,
             session_id=session_id,
             transaction_id=transaction_id,
+            client_context=client_context,
         )
 
     def run_in_transaction(self, func, *args, **kw):
@@ -1084,6 +1104,8 @@ class Database(object):
                    the DDL option `allow_txn_exclusion` being false or unset.
                    "isolation_level" sets the isolation level for the transaction.
                    "read_lock_mode" sets the read lock mode for the transaction.
+                   "client_context" (Optional) Client context to use for all requests
+                   made by this transaction.
 
         :rtype: Any
         :returns: The return value of ``func``.
@@ -1395,6 +1417,11 @@ class BatchCheckout(object):
     :param max_commit_delay:
             (Optional) The amount of latency this request is willing to incur
             in order to improve throughput.
+
+    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made
+                           by this batch.
     """
 
     def __init__(
@@ -1405,6 +1432,7 @@ class BatchCheckout(object):
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
         read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
+        client_context=None,
         **kw,
     ):
         self._database: Database = database
@@ -1421,6 +1449,7 @@ class BatchCheckout(object):
         self._exclude_txn_from_change_streams = exclude_txn_from_change_streams
         self._isolation_level = isolation_level
         self._read_lock_mode = read_lock_mode
+        self._client_context = client_context
         self._kw = kw
 
     def __enter__(self):
@@ -1437,7 +1466,9 @@ class BatchCheckout(object):
             event_attributes={"id": self._session.session_id},
         )
 
-        batch = self._batch = Batch(session=self._session)
+        batch = self._batch = Batch(
+            session=self._session, client_context=self._client_context
+        )
         if self._request_options.transaction_tag:
             batch.transaction_tag = self._request_options.transaction_tag
 
@@ -1482,18 +1513,26 @@ class MutationGroupsCheckout(object):
 
     :type database: :class:`~google.cloud.spanner_v1.database.Database`
     :param database: database to use
+
+    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made
+                           by this mutation group.
     """
 
-    def __init__(self, database):
+    def __init__(self, database, client_context=None):
         self._database: Database = database
         self._session: Optional[Session] = None
+        self._client_context = client_context
 
     def __enter__(self):
         """Begin ``with`` block."""
         transaction_type = TransactionType.READ_WRITE
         self._session = self._database.sessions_manager.get_session(transaction_type)
 
-        return MutationGroups(session=self._session)
+        return MutationGroups(
+            session=self._session, client_context=self._client_context
+        )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """End ``with`` block."""
@@ -1559,6 +1598,11 @@ class BatchSnapshot(object):
     :type exact_staleness: :class:`datetime.timedelta`
     :param exact_staleness: Execute all reads at a timestamp that is
                             ``exact_staleness`` old.
+
+    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made
+                           by this batch snapshot.
     """
 
     def __init__(
@@ -1568,6 +1612,7 @@ class BatchSnapshot(object):
         exact_staleness=None,
         session_id=None,
         transaction_id=None,
+        client_context=None,
     ):
         self._database: Database = database
 
@@ -1579,6 +1624,7 @@ class BatchSnapshot(object):
 
         self._read_timestamp = read_timestamp
         self._exact_staleness = exact_staleness
+        self._client_context = client_context
 
     @classmethod
     def from_dict(cls, database, mapping):
@@ -1667,6 +1713,7 @@ class BatchSnapshot(object):
                 exact_staleness=self._exact_staleness,
                 multi_use=True,
                 transaction_id=self._transaction_id,
+                client_context=self._client_context,
             )
 
             if self._transaction_id is None:

@@ -806,6 +806,9 @@ class _Database(object):
 
     def __init__(self, enable_end_to_end_tracing=False):
         self.name = "testing"
+        self._instance = mock.Mock()
+        self._instance._client = mock.Mock()
+        self._instance._client._client_context = None
         self._route_to_leader_enabled = True
         if enable_end_to_end_tracing:
             self.observability_options = dict(enable_end_to_end_tracing=True)

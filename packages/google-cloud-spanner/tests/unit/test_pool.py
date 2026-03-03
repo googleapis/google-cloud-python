@@ -19,7 +19,21 @@ import unittest
 from datetime import datetime, timedelta
 
 import mock
+from google.cloud.spanner_v1 import pool as MUT
 from google.cloud.spanner_v1 import _opentelemetry_tracing
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import BatchCreateSessionsResponse
+from google.cloud.spanner_v1 import Session
+from google.cloud.spanner_v1 import SpannerClient
+from google.cloud.spanner_v1.database import Database
+from google.cloud.spanner_v1.pool import AbstractSessionPool
+from google.cloud.spanner_v1.pool import SessionCheckout
+from google.cloud.spanner_v1.pool import FixedSizePool
+from google.cloud.spanner_v1.pool import BurstyPool
+from google.cloud.spanner_v1.pool import PingingPool
+from google.cloud.spanner_v1.transaction import Transaction
+from google.cloud.exceptions import NotFound
+from google.cloud._testing import _Monkey
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_request_id,
     _metadata_with_request_id_and_req_id,
@@ -40,21 +54,15 @@ from tests._helpers import (
 
 
 def _make_database(name="name"):
-    from google.cloud.spanner_v1.database import Database
-
     return mock.create_autospec(Database, instance=True)
 
 
 def _make_session():
-    from google.cloud.spanner_v1.database import Session
-
     return mock.create_autospec(Session, instance=True)
 
 
 class TestAbstractSessionPool(unittest.TestCase):
     def _getTargetClass(self):
-        from google.cloud.spanner_v1.pool import AbstractSessionPool
-
         return AbstractSessionPool
 
     def _make_one(self, *args, **kwargs):
@@ -129,8 +137,6 @@ class TestAbstractSessionPool(unittest.TestCase):
         self.assertEqual(new_session.database_role, database_role)
 
     def test_session_wo_kwargs(self):
-        from google.cloud.spanner_v1.pool import SessionCheckout
-
         pool = self._make_one()
         checkout = pool.session()
         self.assertIsInstance(checkout, SessionCheckout)
@@ -139,8 +145,6 @@ class TestAbstractSessionPool(unittest.TestCase):
         self.assertEqual(checkout._kwargs, {})
 
     def test_session_w_kwargs(self):
-        from google.cloud.spanner_v1.pool import SessionCheckout
-
         pool = self._make_one()
         checkout = pool.session(foo="bar")
         self.assertIsInstance(checkout, SessionCheckout)
@@ -164,8 +168,6 @@ class TestFixedSizePool(OpenTelemetryBase):
     enrich_with_otel_scope(BASE_ATTRIBUTES)
 
     def _getTargetClass(self):
-        from google.cloud.spanner_v1.pool import FixedSizePool
-
         return FixedSizePool
 
     def _make_one(self, *args, **kwargs):
@@ -559,8 +561,6 @@ class TestBurstyPool(OpenTelemetryBase):
     enrich_with_otel_scope(BASE_ATTRIBUTES)
 
     def _getTargetClass(self):
-        from google.cloud.spanner_v1.pool import BurstyPool
-
         return BurstyPool
 
     def _make_one(self, *args, **kwargs):
@@ -850,8 +850,6 @@ class TestPingingPool(OpenTelemetryBase):
     enrich_with_otel_scope(BASE_ATTRIBUTES)
 
     def _getTargetClass(self):
-        from google.cloud.spanner_v1.pool import PingingPool
-
         return PingingPool
 
     def _make_one(self, *args, **kwargs):
@@ -946,8 +944,6 @@ class TestPingingPool(OpenTelemetryBase):
     )
     def test_get_hit_w_ping(self, mock_region):
         import datetime
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=4)
         database = _Database("name")
@@ -974,8 +970,6 @@ class TestPingingPool(OpenTelemetryBase):
     )
     def test_get_hit_w_ping_expired(self, mock_region):
         import datetime
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=4)
         database = _Database("name")
@@ -1097,8 +1091,6 @@ class TestPingingPool(OpenTelemetryBase):
     )
     def test_put_non_full(self, mock_region):
         import datetime
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=1)
         session_queue = pool._sessions = _Queue()
@@ -1172,8 +1164,6 @@ class TestPingingPool(OpenTelemetryBase):
     )
     def test_ping_oldest_stale_but_exists(self, mock_region):
         import datetime
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=1)
         database = _Database("name")
@@ -1193,8 +1183,6 @@ class TestPingingPool(OpenTelemetryBase):
     )
     def test_ping_oldest_stale_and_not_exists(self, mock_region):
         import datetime
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=1)
         database = _Database("name")
@@ -1257,8 +1245,6 @@ class TestPingingPool(OpenTelemetryBase):
 
 class TestSessionCheckout(unittest.TestCase):
     def _getTargetClass(self):
-        from google.cloud.spanner_v1.pool import SessionCheckout
-
         return SessionCheckout
 
     def _make_one(self, *args, **kwargs):
@@ -1314,8 +1300,6 @@ class TestSessionCheckout(unittest.TestCase):
 
 
 def _make_transaction(*args, **kw):
-    from google.cloud.spanner_v1.transaction import Transaction
-
     txn = mock.create_autospec(Transaction)(*args, **kw)
     txn.committed = None
     txn.rolled_back = False
@@ -1352,15 +1336,11 @@ class _Session(object):
         return self._exists
 
     def ping(self):
-        from google.cloud.exceptions import NotFound
-
         self._pinged = True
         if not self._exists:
             raise NotFound("expired session")
 
     def delete(self):
-        from google.cloud.exceptions import NotFound
-
         self._deleted = True
         if not self._exists:
             raise NotFound("unknown session")
@@ -1391,9 +1371,6 @@ class _Database(object):
             metadata=[],
             labels={},
         ):
-            from google.cloud.spanner_v1 import BatchCreateSessionsResponse
-            from google.cloud.spanner_v1 import Session
-
             database_role = request.session_template.creator_role if request else None
             if request.session_count < 2:
                 response = BatchCreateSessionsResponse(
@@ -1408,10 +1385,15 @@ class _Database(object):
                 )
             return response
 
-        from google.cloud.spanner_v1 import SpannerClient
-
         self.spanner_api = mock.create_autospec(SpannerClient, instance=True)
         self.spanner_api.batch_create_sessions.side_effect = mock_batch_create_sessions
+        self._instance = mock.Mock()
+        self._instance._client = mock.Mock()
+        self._instance._client._client_context = None
+        self._instance._client.spanner_api = self.spanner_api
+        self._instance._client._query_options = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1"
+        )
 
     @property
     def database_role(self):

@@ -38,6 +38,7 @@ from .types.spanner import BatchCreateSessionsResponse
 from .types.spanner import BatchWriteRequest
 from .types.spanner import BatchWriteResponse
 from .types.spanner import BeginTransactionRequest
+from .types.spanner import ClientContext
 from .types.spanner import CommitRequest
 from .types.spanner import CreateSessionRequest
 from .types.spanner import DeleteSessionRequest
@@ -110,6 +111,7 @@ __all__ = (
     "BatchWriteRequest",
     "BatchWriteResponse",
     "BeginTransactionRequest",
+    "ClientContext",
     "CommitRequest",
     "CommitResponse",
     "CreateSessionRequest",

@@ -472,8 +472,13 @@ class Session(object):
 
         return Batch(self)
 
-    def transaction(self) -> Transaction:
+    def transaction(self, client_context=None) -> Transaction:
         """Create a transaction to perform a set of reads with shared staleness.
+
+        :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+            or :class:`dict`
+        :param client_context: (Optional) Client context to use for all requests made
+                               by this transaction.
 
         :rtype: :class:`~google.cloud.spanner_v1.transaction.Transaction`
         :returns: a transaction bound to this session
@@ -483,7 +488,7 @@ class Session(object):
         if self._session_id is None:
             raise ValueError("Session has not been created.")
 
-        return Transaction(self)
+        return Transaction(self, client_context=client_context)
 
     def run_in_transaction(self, func, *args, **kw):
         """Perform a unit of work in a transaction, retrying on abort.
@@ -512,6 +517,8 @@ class Session(object):
                    the DDL option `allow_txn_exclusion` being false or unset.
                    "isolation_level" sets the isolation level for the transaction.
                    "read_lock_mode" sets the read lock mode for the transaction.
+                   "client_context" (Optional) Client context to use for all requests
+                   made by this transaction.
 
         :rtype: Any
         :returns: The return value of ``func``.
@@ -529,6 +536,7 @@ class Session(object):
         )
         isolation_level = kw.pop("isolation_level", None)
         read_lock_mode = kw.pop("read_lock_mode", None)
+        client_context = kw.pop("client_context", None)
 
         database = self._database
         log_commit_stats = database.log_commit_stats
@@ -554,7 +562,7 @@ class Session(object):
             previous_transaction_id: Optional[bytes] = None
 
             while True:
-                txn = self.transaction()
+                txn = self.transaction(client_context=client_context)
                 txn.transaction_tag = transaction_tag
                 txn.exclude_txn_from_change_streams = exclude_txn_from_change_streams
                 txn.isolation_level = isolation_level

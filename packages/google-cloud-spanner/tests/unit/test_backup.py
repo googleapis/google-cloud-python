@@ -679,6 +679,7 @@ class _Client(object):
     def __init__(self, project=TestBackup.PROJECT_ID):
         self.project = project
         self.project_name = "projects/" + self.project
+        self._client_context = None
 
 
 class _Instance(object):

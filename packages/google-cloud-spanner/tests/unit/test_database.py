@@ -30,6 +30,7 @@ from google.cloud.spanner_v1 import (
     RequestOptions,
     DirectedReadOptions,
     DefaultTransactionOptions,
+    ExecuteSqlRequest,
 )
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
@@ -2599,6 +2600,7 @@ class TestBatchSnapshot(_BaseTest):
             exact_staleness=None,
             multi_use=True,
             transaction_id=None,
+            client_context=None,
         )
         snapshot.begin.assert_called_once_with()
 
@@ -2614,6 +2616,7 @@ class TestBatchSnapshot(_BaseTest):
             exact_staleness=None,
             multi_use=True,
             transaction_id=None,
+            client_context=None,
         )
         snapshot.begin.assert_called_once_with()
 
@@ -2629,6 +2632,7 @@ class TestBatchSnapshot(_BaseTest):
             exact_staleness=duration,
             multi_use=True,
             transaction_id=None,
+            client_context=None,
         )
         snapshot.begin.assert_called_once_with()
 
@@ -3540,6 +3544,7 @@ class _Client(object):
         self.directed_read_options = directed_read_options
         self.default_transaction_options = default_transaction_options
         self.observability_options = observability_options
+        self._client_context = None
         self._nth_client_id = _Client.NTH_CLIENT.increment()
         self._nth_request = AtomicCounter()
 
@@ -3588,6 +3593,13 @@ class _Database(object):
     def __init__(self, name, instance=None):
         self.name = name
         self.database_id = name.rsplit("/", 1)[1]
+        if instance is None:
+            instance = mock.Mock()
+            instance._client = mock.Mock()
+            instance._client._client_context = None
+            instance._client._query_options = ExecuteSqlRequest.QueryOptions(
+                optimizer_version="1"
+            )
         self._instance = instance
         from logging import Logger
 

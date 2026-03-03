@@ -28,6 +28,9 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
     _merge_Transaction_Options,
+    _merge_client_context,
+    _merge_request_options,
+    _validate_client_context,
     AtomicCounter,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
@@ -37,6 +40,7 @@ from google.cloud.spanner_v1._helpers import _retry_on_aborted_exception
 from google.cloud.spanner_v1._helpers import _check_rst_stream_error
 from google.api_core.exceptions import InternalServerError
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+from google.cloud.spanner_v1.types import ClientContext
 import time
 
 DEFAULT_RETRY_TIMEOUT_SECS = 30
@@ -47,9 +51,14 @@ class _BatchBase(_SessionWrapper):
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
+
+    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made
+                           by this batch.
     """
 
-    def __init__(self, session):
+    def __init__(self, session, client_context=None):
         super(_BatchBase, self).__init__(session)
 
         self._mutations: List[Mutation] = []
@@ -58,6 +67,7 @@ class _BatchBase(_SessionWrapper):
         self.committed = None
         """Timestamp at which the batch was successfully committed."""
         self.commit_stats: Optional[CommitResponse.CommitStats] = None
+        self._client_context = _validate_client_context(client_context)
 
     def insert(self, table, columns, values):
         """Insert one or more new table rows.
@@ -227,10 +237,14 @@ class Batch(_BatchBase):
             txn_options,
         )
 
+        client_context = _merge_client_context(
+            database._instance._client._client_context, self._client_context
+        )
+        request_options = _merge_request_options(request_options, client_context)
+
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
+
         request_options.transaction_tag = self.transaction_tag
 
         # Request tags are not supported for commit requests.
@@ -317,12 +331,24 @@ class MutationGroups(_SessionWrapper):
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
+
+    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+        or :class:`dict`
+    :param client_context: (Optional) Client context to use for all requests made
+                           by this mutation group.
     """
 
-    def __init__(self, session):
+    def __init__(self, session, client_context=None):
         super(MutationGroups, self).__init__(session)
         self._mutation_groups: List[MutationGroup] = []
         self.committed: bool = False
+
+        if client_context is not None:
+            if isinstance(client_context, dict):
+                client_context = ClientContext(client_context)
+            elif not isinstance(client_context, ClientContext):
+                raise TypeError("client_context must be a ClientContext or a dict")
+        self._client_context = client_context
 
     def group(self):
         """Returns a new `MutationGroup` to which mutations can be added."""
@@ -365,10 +391,13 @@ class MutationGroups(_SessionWrapper):
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
 
+        client_context = _merge_client_context(
+            database._instance._client._client_context, self._client_context
+        )
+        request_options = _merge_request_options(request_options, client_context)
+
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
 
         with trace_call(
             name="CloudSpanner.batch_write",
