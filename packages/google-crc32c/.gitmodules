@@ -1,3 +1,0 @@
-[submodule "crc32c"]
-	path = google_crc32c
-	url = https://github.com/google/crc32c
