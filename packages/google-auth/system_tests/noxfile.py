@@ -271,7 +271,8 @@ def compute_engine(session):
     session.install(*TEST_DEPENDENCIES_SYNC)
     # unset Application Default Credentials so
     # credentials are detected from environment
-    del session.virtualenv.env["GOOGLE_APPLICATION_CREDENTIALS"]
+    # Handle the case where `GOOGLE_APPLICATION_CREDENTIALS` is not set
+    session.virtualenv.env.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
     session.install(LIBRARY_DIR)
     default(
         session,
