@@ -77,7 +77,7 @@ def _provision_kokoro_secrets():
 
     for src_name, dest_name in secrets_map.items():
         subprocess.run(
-            ["google", "storage", "cp", f"{gcs_base}/{src_name}", str(dest_dir)],
+            ["gcloud", "storage", "cp", f"{gcs_base}/{src_name}", str(dest_dir)],
             check=True,
             capture_output=True,
         )
