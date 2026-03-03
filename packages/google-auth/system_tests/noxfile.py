@@ -25,6 +25,7 @@ See the `nox docs`_ for details on how this file works:
 import os
 import pathlib
 import shutil
+import subprocess
 import tempfile
 
 import nox
