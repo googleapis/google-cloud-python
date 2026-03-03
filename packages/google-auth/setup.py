@@ -25,9 +25,6 @@ cryptography_base_require = [
 DEPENDENCIES = (
     "pyasn1-modules>=0.2.1",
     cryptography_base_require,
-    # TODO: remove rsa from dependencies in next release (replaced with cryptography)i
-    # https://github.com/googleapis/google-auth-library-python/issues/1810
-    "rsa>=3.1.4,<5",
 )
 
 requests_extra_require = ["requests >= 2.20.0, < 3.0.0"]
@@ -45,6 +42,8 @@ pyopenssl_extra_require = ["pyopenssl>=20.0.0"]
 
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1739): Add bounds for urllib3 and packaging dependencies.
 urllib3_extra_require = ["urllib3", "packaging"]
+
+rsa_extra_require = ["rsa>=3.1.4,<5"]
 
 # Unit test requirements.
 testing_extra_require = [
@@ -73,6 +72,8 @@ testing_extra_require = [
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1722): `test_aiohttp_requests` depend on
     # aiohttp < 3.10.0 which is a bug. Investigate and remove the pinned aiohttp version.
     "aiohttp < 3.10.0",
+    # rsa library was removed as a dependency, but we still have some code paths that support it
+    rsa_extra_require,
 ]
 
 extras = {
@@ -86,6 +87,7 @@ extras = {
     "requests": requests_extra_require,
     "testing": testing_extra_require,
     "urllib3": urllib3_extra_require,
+    "rsa": rsa_extra_require,
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1735): Add an extra for `grpcio` dependency.
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1736): Add an extra for `oauth2client` dependency.
 }

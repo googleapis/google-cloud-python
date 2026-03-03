@@ -18,7 +18,7 @@ from unittest import mock
 from cryptography.hazmat import backends
 from cryptography.hazmat.primitives import serialization
 import pytest
-import rsa as rsa_lib
+import rsa as rsa_lib  # type: ignore
 
 from google.auth.crypt import _cryptography_rsa
 from google.auth.crypt import _python_rsa
