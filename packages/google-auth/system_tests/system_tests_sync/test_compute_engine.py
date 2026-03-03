@@ -14,6 +14,7 @@
 
 from datetime import datetime
 
+import os
 import pytest
 
 import google.auth
@@ -29,10 +30,22 @@ AUDIENCE = "https://pubsub.googleapis.com"
 
 @pytest.fixture(autouse=True)
 def check_gce_environment(http_request):
+    # 1. Verify we are actually on a GCE instance
     try:
         _metadata.get_service_account_info(http_request)
     except exceptions.TransportError:
         pytest.skip("Compute Engine metadata service is not available.")
+
+    # 2. Prevent local Service Account key from overriding GCE credentials
+    original_creds = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    if "GOOGLE_APPLICATION_CREDENTIALS" in os.environ:
+        del os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+
+    yield
+
+    # 3. Restore environment after the test
+    if original_creds is not None:
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = original_creds
 
 
 def test_refresh(http_request, token_info):
