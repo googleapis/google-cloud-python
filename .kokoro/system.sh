@@ -113,7 +113,7 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
 
   # Determine if we should skip based on git diff
   files_to_check="${package_path}/CHANGELOG.md"
-  if [[ $package_name == @($pattern) ]]; then
+  if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
     files_to_check="${package_path}"
   fi
 
