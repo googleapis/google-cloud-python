@@ -73,7 +73,7 @@ testing_extra_require = [
     # aiohttp < 3.10.0 which is a bug. Investigate and remove the pinned aiohttp version.
     "aiohttp < 3.10.0",
     # rsa library was removed as a dependency, but we still have some code paths that support it
-    rsa_extra_require,
+    *rsa_extra_require,
 ]
 
 extras = {
