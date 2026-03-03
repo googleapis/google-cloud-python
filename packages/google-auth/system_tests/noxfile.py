@@ -25,7 +25,6 @@ See the `nox docs`_ for details on how this file works:
 import os
 import pathlib
 import shutil
-import subprocess
 import tempfile
 
 import nox
@@ -69,34 +68,6 @@ CLOUD_SDK_INSTALL_DIR = CLOUD_SDK_ROOT.joinpath("google-cloud-sdk")
 
 # The full path to the gcloud cli executable.
 GCLOUD = str(CLOUD_SDK_INSTALL_DIR.joinpath("bin", "gcloud"))
-
-
-def _provision_kokoro_secrets():
-    """Downloads CI secrets directly from GCS and formats them for the tests."""
-    if not os.environ.get("KOKORO_GFILE_DIR"):
-        return
-
-    os.makedirs(DATA_DIR, exist_ok=True)
-
-    # Map GCS filenames to the local filenames expected by tests
-    secrets_map = {
-        "google-auth-service-account.json": "service_account.json",
-        "google-auth-authorized-user.json": "authorized_user.json",
-        "google-auth-impersonated-service-account.json": "impersonated_service_account.json",
-    }
-
-    gcs_base = "gs://cloud-devrel-kokoro-resources/google-cloud-python"
-
-    for src_name, dest_name in secrets_map.items():
-        subprocess.run(
-            ["gcloud", "storage", "cp", f"{gcs_base}/{src_name}", str(DATA_DIR)],
-            check=True,
-        )
-        # Rename to use underscores as per test conventions
-        (pathlib.Path(DATA_DIR) / src_name).replace(pathlib.Path(DATA_DIR) / dest_name)
-
-
-_provision_kokoro_secrets()
 
 
 # Cloud SDK helpers
