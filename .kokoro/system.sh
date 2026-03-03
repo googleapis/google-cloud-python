@@ -66,7 +66,7 @@ run_package_test() {
         --location=global --keyring=ci --key=kokoro-secrets \
         --ciphertext-file="${package_path}/system_tests/secrets.tar.enc" \
         --plaintext-file="${package_path}/system_tests/secrets.tar"
-      tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/"
+      tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/data/"
       rm "${package_path}/system_tests/secrets.tar"
       ;;
     *)
