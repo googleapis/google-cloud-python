@@ -15,6 +15,7 @@
 import os
 import pathlib
 import shutil
+import subprocess
 
 import nox
 
@@ -55,6 +56,36 @@ nox.options.sessions = [
     # cover must be last to avoid error `No data to report`
     "docs",
 ]
+
+
+def _provision_kokoro_secrets():
+    """Downloads CI secrets directly from GCS and formats them for the tests."""
+    if not os.environ.get("KOKORO_GFILE_DIR"):
+        return
+
+    dest_dir = pathlib.Path(__file__).parent / "data"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+
+    # Map GCS filenames to the local filenames expected by tests
+    secrets_map = {
+        "google-auth-service-account.json": "service_account.json",
+        "google-auth-authorized-user.json": "authorized_user.json",
+        "google-auth-impersonated-service-account.json": "impersonated_service_account.json",
+    }
+
+    gcs_base = "gs://cloud-devrel-kokoro-resources/google-cloud-python"
+
+    for src_name, dest_name in secrets_map.items():
+        subprocess.run(
+            ["google", "storage", "cp", f"{gcs_base}/{src_name}", str(dest_dir)],
+            check=True,
+            capture_output=True,
+        )
+        # Rename to use underscores as per test conventions
+        (dest_dir / src_name).replace(dest_dir / dest_name)
+
+
+_provision_kokoro_secrets()
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

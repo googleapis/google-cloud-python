@@ -65,6 +65,3 @@ pylintrc.test
 
 # Ruff cache
 .ruff_cache
-
-# google-auth system test credentials
-system_tests/data

@@ -55,34 +55,17 @@ run_package_test() {
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/google-auth-service-account.json"
       NOX_FILE="system_tests/noxfile.py"
       NOX_SESSION=""
-
-      # Activate gcloud for this specific package
-      gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-      gcloud config set project "$PROJECT_ID"
-
-      # Decrypt secrets
-      gcloud kms decrypt \
-        --location=global --keyring=ci --key=kokoro-secrets \
-        --ciphertext-file="${package_path}/system_tests/secrets.tar.enc" \
-        --plaintext-file="${package_path}/system_tests/secrets.tar"
-      mkdir -p "${package_path}/system_tests/data"
-      # Extract from the package root.
-      # The tar already contains the 'system_tests/data/' path.
-      tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/"
-
-      rm "${package_path}/system_tests/secrets.tar"
       ;;
     *)
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
       NOX_FILE="noxfile.py"
       NOX_SESSION="system-3.12"
-
-      # Activate gcloud for this specific package
-      gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-      gcloud config set project "$PROJECT_ID"
       ;;
   esac
+
+  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+  gcloud config set project "$PROJECT_ID"
 
   # Export variables for the duration of this function's sub-processes
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
