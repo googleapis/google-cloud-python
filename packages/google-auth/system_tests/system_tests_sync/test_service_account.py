@@ -43,6 +43,8 @@ def test_refresh_success(http_request, credentials, token_info):
     info_scopes = _helpers.string_to_scopes(info["scope"])
     assert set(info_scopes).issubset(set(
         [
+            "email",
+            "profile",
             "https://www.googleapis.com/auth/userinfo.email",
             "https://www.googleapis.com/auth/userinfo.profile",
         ]
