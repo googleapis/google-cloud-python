@@ -53,3 +53,4 @@ async def test_refresh_success(http_request, credentials, token_info):
             "https://www.googleapis.com/auth/userinfo.profile",
         ]
     )
+    )
