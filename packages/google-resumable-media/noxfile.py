@@ -299,3 +299,21 @@ def cover(session):
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
     session.run("coverage", "erase")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def prerelease_deps(session):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Resolve the linked bug once prerelease_deps and core_deps_from_source
+    # are implemented for this package.
+    if session.python == DEFAULT_PYTHON_VERSION:
+        session.skip(f"Skipping prerelease_deps for {DEFAULT_PYTHON_VERSION} until a future release.")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    ## TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Resolve the linked bug once prerelease_deps and core_deps_from_source
+    # are implemented for this package.
+    if session.python == DEFAULT_PYTHON_VERSION:
+        session.skip(f"Skipping core_deps_from_source for {DEFAULT_PYTHON_VERSION} until a future release.")
