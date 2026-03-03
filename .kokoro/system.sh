@@ -24,12 +24,6 @@ export PYTHONUNBUFFERED=1
 # Setup firestore account credentials
 export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
 
-# Setup service account credentials.
-export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
-
-# Setup project id.
-export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
-
 RETVAL=0
 
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
@@ -72,6 +66,18 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
 
   case "${package_name}" in
     "google-auth")
+      # google-auth specific project id.
+      export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
+
+      # google-auth specific service account credentials.
+      export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/google-auth-service-account.json
+
+      # google-auth specific system test noxfile
+      export NOX_FILE="system_tests/noxfile.py"
+
+      # For google-auth, run all nox sessions for this file
+      export NOX_SESSION=""
+
       # Decrypt google-auth system test secrets
       # Create working directory if not exists. system_tests/data is not tracked by
       # Git to prevent the secrets from being leaked online.
@@ -85,14 +91,18 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
         --plaintext-file="${package_path}/system_tests/secrets.tar"
       tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/"
       rm "${package_path}/system_tests/secrets.tar"
-      export NOX_FILE="system_tests/noxfile.py"
-      # Run all nox sessions for this file
-      export NOX_SESSION=""
       ;;
     *)
-      # Fallback/Default
+      # Fallback/Default project id.
+      export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
+
+      # Fallback/Default service account credentials.
+      export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+
+      # Fallback/Default noxfile.py
       export NOX_FILE="noxfile.py"
-      # Run the system nox session
+
+      # Fallback/Default system nox session
       export NOX_SESSION="system-3.12"
       ;;
   esac
