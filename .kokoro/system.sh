@@ -61,12 +61,15 @@ run_package_test() {
       gcloud config set project "$PROJECT_ID"
 
       # Decrypt secrets
-      mkdir -p "${package_path}/system_tests/data"
       gcloud kms decrypt \
         --location=global --keyring=ci --key=kokoro-secrets \
         --ciphertext-file="${package_path}/system_tests/secrets.tar.enc" \
         --plaintext-file="${package_path}/system_tests/secrets.tar"
-      tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/data/"
+      # Extract files directly into the package directory.
+      # --strip-components=2 removes 'system_tests/data/' from the archived paths.
+      mkdir -p "${package_path}/system_tests/data"
+      tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/data/" --strip-components=2
+
       rm "${package_path}/system_tests/secrets.tar"
       ;;
     *)
