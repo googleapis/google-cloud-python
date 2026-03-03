@@ -72,6 +72,10 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
       # google-auth specific service account credentials.
       export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/google-auth-service-account.json
 
+      # Activate gcloud with service account credentials
+      gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+      gcloud config set project ${PROJECT_ID}
+
       # google-auth specific system test noxfile
       export NOX_FILE="system_tests/noxfile.py"
 
@@ -98,6 +102,10 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
 
       # Fallback/Default service account credentials.
       export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+
+      # Activate gcloud with service account credentials
+      gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+      gcloud config set project ${PROJECT_ID}
 
       # Fallback/Default noxfile.py
       export NOX_FILE="noxfile.py"
