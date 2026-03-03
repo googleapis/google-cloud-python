@@ -22,7 +22,7 @@ import nox
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
-BLACK_VERSION = "black==22.3.0"
+RUFF_VERSION = "ruff==0.14.14"
 
 DEFAULT_PYTHON_VERSION = "3.14"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.14"]
@@ -188,7 +188,7 @@ def lint(session):
     Returns a failure if flake8 finds linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", RUFF_VERSION)
     session.install("-e", ".")
     session.run(
         "flake8",
@@ -197,9 +197,14 @@ def lint(session):
         os.path.join("google", "_async_resumable_media"),
         "tests_async",
     )
+
+    # 2. Check formatting
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         os.path.join("google", "resumable_media"),
         "tests",
         os.path.join("google", "_async_resumable_media"),
@@ -216,9 +221,18 @@ def lint_setup_py(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    session.install(BLACK_VERSION)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         os.path.join("google", "resumable_media"),
         "tests",
         os.path.join("google", "_async_resumable_media"),
