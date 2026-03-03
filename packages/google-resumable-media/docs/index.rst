@@ -19,4 +19,4 @@ For a list of all ``google-resumable-media`` releases.
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
