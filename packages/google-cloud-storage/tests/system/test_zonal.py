@@ -31,6 +31,7 @@ pytestmark = pytest.mark.skipif(
 # TODO: replace this with a fixture once zonal bucket creation / deletion
 # is supported in grpc client or json client client.
 _ZONAL_BUCKET = os.getenv("ZONAL_BUCKET")
+_CROSS_REGION_BUCKET = os.getenv("CROSS_REGION_BUCKET")
 _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 
 
@@ -81,6 +82,51 @@ def _get_equal_dist(a: int, b: int) -> tuple[int, int]:
     step = (b - a) // 3
     return a + step, a + 2 * step
 
+
+@pytest.mark.parametrize(
+    "object_size",
+    [
+        256,  # less than _chunk size
+        10 * 1024 * 1024,  # less than _MAX_BUFFER_SIZE_BYTES
+        20 * 1024 * 1024,  # greater than _MAX_BUFFER_SIZE
+    ],
+)
+def test_basic_wrd_x_region(
+    storage_client,
+    blobs_to_delete,
+    object_size,
+    event_loop,
+    grpc_client,
+):
+    object_name = f"test_basic_wrd-{str(uuid.uuid4())}"
+
+    async def _run():
+        object_data = os.urandom(object_size)
+        object_checksum = google_crc32c.value(object_data)
+
+        writer = AsyncAppendableObjectWriter(grpc_client, _CROSS_REGION_BUCKET, object_name)
+        await writer.open()
+        await writer.append(object_data)
+        object_metadata = await writer.close(finalize_on_close=True)
+        assert object_metadata.size == object_size
+        assert int(object_metadata.checksums.crc32c) == object_checksum
+
+        buffer = BytesIO()
+        mrd = AsyncMultiRangeDownloader(grpc_client, _CROSS_REGION_BUCKET, object_name)
+        async with mrd:
+            assert mrd._open_retries == 1
+            # (0, 0) means read the whole object
+            await mrd.download_ranges([(0, 0, buffer)])
+            assert mrd.persisted_size == object_size
+
+        assert buffer.getvalue() == object_data
+
+        # Clean up; use json client (i.e. `storage_client` fixture) to delete.
+        blobs_to_delete.append(storage_client.bucket(_CROSS_REGION_BUCKET).blob(object_name))
+        del writer
+        gc.collect()
+
+    event_loop.run_until_complete(_run())
 
 @pytest.mark.parametrize(
     "object_size",
