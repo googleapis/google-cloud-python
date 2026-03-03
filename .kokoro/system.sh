@@ -64,11 +64,11 @@ run_package_test() {
       ;;
   esac
 
-  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-  gcloud config set project "$PROJECT_ID"
-
   # Export variables for the duration of this function's sub-processes
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
+
+  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+  gcloud config set project "$PROJECT_ID"
 
   # Run the actual test
   pushd "${package_path}" > /dev/null
@@ -93,14 +93,12 @@ packages_with_system_tests=(
   "google-cloud-testutils"
 )
 
-# Join array elements with | for the pattern match
-packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_tests[@]}")
-packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
-
-
 # A file for running system tests
 system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 
+# Join array elements with | for the pattern match
+packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_tests[@]}")
+packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
 # Run system tests for each package with directory `packages/*/tests/system` or directory `packages/*/system_tests`
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -wholename 'packages/*/system_tests'`; do
