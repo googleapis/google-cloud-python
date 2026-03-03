@@ -22,7 +22,14 @@ pwd
 
 # If NOX_SESSION is set, it only runs the specified session,
 # otherwise run all the sessions.
-SESSION_ARG=""
+NOX_SESSION_ARG=""
 
-[[ -z "${NOX_SESSION}" ]] || SESSION_ARG="-s ${NOX_SESSION}"
-python3 -m nox ${SESSION_ARG}
+# IF NOX_FILE is set, it runs the specific nox file,
+# otherwise it runs noxfile.py in the package directory.
+NOX_FILE_ARG=""
+
+[[ -z "${NOX_SESSION}" ]] || NOX_SESSION_ARG="-s ${NOX_SESSION}"
+
+[[ -z "${NOX_FILE}" ]] || NOX_FILE_ARG="-f ${NOX_FILE}"
+
+python3 -m nox ${NOX_SESSION_ARG} $NOX_FILE_ARG

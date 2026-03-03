@@ -213,6 +213,15 @@ libraries:
     remove_regex:
       - packages/google-area120-tables/
     tag_format: '{id}-v{version}'
+  - id: google-auth
+    version: 2.48.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-auth
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-auth-httplib2
     version: 0.3.0
     last_generated_commit: ""
