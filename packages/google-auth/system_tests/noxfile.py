@@ -76,8 +76,7 @@ def _provision_kokoro_secrets():
     if not os.environ.get("KOKORO_GFILE_DIR"):
         return
 
-    dest_dir = pathlib.Path(__file__).parent / "data"
-    dest_dir.mkdir(parents=True, exist_ok=True)
+    os.makedirs(DATA_DIR, exist_ok=True)
 
     # Map GCS filenames to the local filenames expected by tests
     secrets_map = {
