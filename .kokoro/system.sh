@@ -24,19 +24,72 @@ export PYTHONUNBUFFERED=1
 # Setup firestore account credentials
 export FIRESTORE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/firebase-credentials.json
 
-RETVAL=0
-
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 
 cd "$PROJECT_ROOT"
 
-pwd
-
-# A file for running system tests
-system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
-
 # This is needed in order for `git diff` to succeed
 git config --global --add safe.directory $(realpath .)
+
+RETVAL=0
+
+pwd
+
+run_package_test() {
+  local package_name=$1
+  local package_path="packages/${package_name}"
+  
+  # Declare local overrides to prevent bleeding into the next loop iteration
+  local PROJECT_ID
+  local GOOGLE_APPLICATION_CREDENTIALS
+  local NOX_FILE
+  local NOX_SESSION
+
+  echo "------------------------------------------------------------"
+  echo "Configuring environment for: ${package_name}"
+  echo "------------------------------------------------------------"
+
+  case "${package_name}" in
+    "google-auth")
+      PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
+      GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/google-auth-service-account.json"
+      NOX_FILE="system_tests/noxfile.py"
+      NOX_SESSION=""
+
+      # Decrypt secrets
+      mkdir -p "${package_path}/system_tests/data"
+      gcloud kms decrypt \
+        --location=global --keyring=ci --key=kokoro-secrets \
+        --ciphertext-file="${package_path}/system_tests/secrets.tar.enc" \
+        --plaintext-file="${package_path}/system_tests/secrets.tar"
+      tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/"
+      rm "${package_path}/system_tests/secrets.tar"
+      ;;
+    *)
+      PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
+      GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
+      NOX_FILE="noxfile.py"
+      NOX_SESSION="system-3.12"
+      ;;
+  esac
+
+  # Export variables only for the duration of this function's sub-processes
+  export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
+
+  # Activate gcloud for this specific package
+  gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+  gcloud config set project "$PROJECT_ID"
+
+  # Run the actual test
+  pushd "${package_path}" > /dev/null
+  set +e
+  "${system_test_script}"
+  local res=$?
+  set -e
+  popd > /dev/null
+  
+  return $res
+}
 
 packages_with_system_tests=(
   "google-auth"
@@ -55,6 +108,10 @@ packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_test
 packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
 
+# A file for running system tests
+system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
+
+
 # Run system tests for each package with directory `packages/*/tests/system` or directory `packages/*/system_tests`
 for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -wholename 'packages/*/system_tests'`; do
   # Extract the package name and define the relative package path
@@ -64,80 +121,22 @@ for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -who
   package_name=${package_name%%/*}
   package_path="packages/${package_name}"
 
-  case "${package_name}" in
-    "google-auth")
-      # google-auth specific project id.
-      export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
-
-      # google-auth specific service account credentials.
-      export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/google-auth-service-account.json
-
-      # google-auth specific system test noxfile
-      export NOX_FILE="system_tests/noxfile.py"
-
-      # For google-auth, run all nox sessions for this file
-      export NOX_SESSION=""
-
-      # Decrypt google-auth system test secrets
-      # Create working directory if not exists. system_tests/data is not tracked by
-      # Git to prevent the secrets from being leaked online.
-      mkdir -p "${package_path}/system_tests/data"
-
-      gcloud kms decrypt \
-        --location=global \
-        --keyring=ci \
-        --key=kokoro-secrets \
-        --ciphertext-file="${package_path}/system_tests/secrets.tar.enc" \
-        --plaintext-file="${package_path}/system_tests/secrets.tar"
-      tar xvf "${package_path}/system_tests/secrets.tar" -C "${package_path}/system_tests/"
-      rm "${package_path}/system_tests/secrets.tar"
-      ;;
-    *)
-      # Fallback/Default project id.
-      export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
-
-      # Fallback/Default service account credentials.
-      export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
-
-      # Fallback/Default noxfile.py
-      export NOX_FILE="noxfile.py"
-
-      # Fallback/Default system nox session
-      export NOX_SESSION="system-3.12"
-      ;;
-  esac
-
-  # Run system tests on every change to these libraries
-  if [[ $package_name == @($packages_with_system_tests_pattern) ]]; then
-    files_to_check=${package_path}
-  else
-    files_to_check=${package_path}/CHANGELOG.md
+  # Determine if we should skip based on git diff
+  files_to_check="${package_path}/CHANGELOG.md"
+  if [[ $package_name == @($pattern) ]]; then
+    files_to_check="${package_path}"
   fi
 
   echo "checking changes with 'git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check}'"
   set +e
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- ${files_to_check} | wc -l)
   set -e
-  if [[ "${package_modified}" -eq 0 ]]; then
-      echo "no change detected in ${files_to_check}, skipping"
+
+  if [[ "${package_modified}" -gt 0 ]]; then
+      # Call the function - its internal exports won't affect the next loop
+      run_package_test "$package_name" || RETVAL=$?
   else
-      echo "change detected in ${files_to_check}"
-      echo "Running system tests for ${package_name}"
-
-      # Activate gcloud with service account credentials
-      gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-      gcloud config set project ${PROJECT_ID}
-
-      pushd ${package_path}
-      # Temporarily allow failure.
-      set +e
-      ${system_test_script}
-      ret=$?
-      set -e
-      if [ ${ret} -ne 0 ]; then
-          RETVAL=${ret}
-      fi
-      popd
+      echo "No changes in ${package_name}, skipping."
   fi
 done
 exit ${RETVAL}
