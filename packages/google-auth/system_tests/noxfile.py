@@ -94,7 +94,7 @@ def _provision_kokoro_secrets():
             capture_output=True,
         )
         # Rename to use underscores as per test conventions
-        (DATA_DIR / src_name).replace(DATA_DIR / dest_name)
+        (pathlib.Path(DATA_DIR) / src_name).replace(pathlib.Path(DATA_DIR) / dest_name)
 
 
 _provision_kokoro_secrets()
