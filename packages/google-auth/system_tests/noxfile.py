@@ -89,12 +89,12 @@ def _provision_kokoro_secrets():
 
     for src_name, dest_name in secrets_map.items():
         subprocess.run(
-            ["gcloud", "storage", "cp", f"{gcs_base}/{src_name}", str(dest_dir)],
+            ["gcloud", "storage", "cp", f"{gcs_base}/{src_name}", str(DATA_DIR)],
             check=True,
             capture_output=True,
         )
         # Rename to use underscores as per test conventions
-        (dest_dir / src_name).replace(dest_dir / dest_name)
+        (DATA_DIR / src_name).replace(DATA_DIR / dest_name)
 
 
 _provision_kokoro_secrets()
