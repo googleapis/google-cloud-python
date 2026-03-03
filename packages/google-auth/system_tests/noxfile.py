@@ -29,55 +29,6 @@ import tempfile
 
 import nox
 
-import os
-import subprocess
-
-import os
-import subprocess
-
-def _provision_kokoro_secrets():
-    """Downloads CI secrets directly from GCS and formats them for the tests."""
-    if not os.environ.get("KOKORO_GFILE_DIR"):
-        return  # We are not running in Kokoro, skip.
-
-    dest_dir = os.path.join(os.path.dirname(__file__), "data")
-    os.makedirs(dest_dir, exist_ok=True)
-
-    print("\n--- DEBUG: Fetching secrets from GCS ---")
-    try:
-        subprocess.run(
-            ["gsutil", "cp", "gs://cloud-devrel-kokoro-resources/google-auth-library-python/*", dest_dir],
-            check=True,
-            capture_output=True,
-            text=True
-        )
-        
-        # 1. Rename the hyphen file to an underscore
-        downloaded_sa = os.path.join(dest_dir, "service-account.json")
-        expected_sa = os.path.join(dest_dir, "service_account.json")
-        if os.path.exists(downloaded_sa):
-            os.rename(downloaded_sa, expected_sa)
-
-        # 2. Fake the authorized_user file if it's missing (using the service account)
-        expected_au = os.path.join(dest_dir, "authorized_user.json")
-        if os.path.exists(expected_sa) and not os.path.exists(expected_au):
-            import shutil
-            shutil.copy(expected_sa, expected_au)
-            
-        print("--- DEBUG: Successfully downloaded and formatted secrets. ---")
-        print(f"--- DEBUG: Final files ready for testing: {os.listdir(dest_dir)} ---")
-        
-    except subprocess.CalledProcessError as e:
-        print(f"--- DEBUG: Failed to download from GCS. stderr: {e.stderr} ---")
-    except FileNotFoundError:
-        print("--- DEBUG: gsutil not found in path ---")
-        
-    print("-" * 40 + "\n")
-
-# Execute this immediately when Nox loads the file
-_provision_kokoro_secrets()
-
-
 HERE = os.path.abspath(os.path.dirname(__file__))
 LIBRARY_DIR = os.path.abspath(os.path.dirname(HERE))
 DATA_DIR = os.path.join(HERE, "data")
@@ -320,7 +271,7 @@ def compute_engine(session):
     session.install(*TEST_DEPENDENCIES_SYNC)
     # unset Application Default Credentials so
     # credentials are detected from environment
-    session.virtualenv.env.pop("GOOGLE_APPLICATION_CREDENTIALS", None)
+    del session.virtualenv.env["GOOGLE_APPLICATION_CREDENTIALS"]
     session.install(LIBRARY_DIR)
     default(
         session,
