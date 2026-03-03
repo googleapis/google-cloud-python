@@ -91,7 +91,6 @@ def _provision_kokoro_secrets():
         subprocess.run(
             ["gcloud", "storage", "cp", f"{gcs_base}/{src_name}", str(DATA_DIR)],
             check=True,
-            capture_output=True,
         )
         # Rename to use underscores as per test conventions
         (pathlib.Path(DATA_DIR) / src_name).replace(pathlib.Path(DATA_DIR) / dest_name)
