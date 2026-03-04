@@ -25,8 +25,8 @@ SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
 RUFF_VERSION = "ruff==0.14.14"
 
 DEFAULT_PYTHON_VERSION = "3.14"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.14"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
