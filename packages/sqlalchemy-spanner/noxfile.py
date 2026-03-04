@@ -190,8 +190,7 @@ def compliance_test_20(session):
     )
 
     session.install("mock")
-    session.install(".[tracing]")
-    session.run("pip", "install", "opentelemetry-api<=1.10", "--force-reinstall")
+    session.install("-e", ".", "--force-reinstall")
     session.run("python", "create_test_database.py")
 
     session.install("sqlalchemy>=2.0")

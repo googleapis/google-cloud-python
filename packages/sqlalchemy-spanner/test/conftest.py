@@ -15,10 +15,40 @@
 # limitations under the License.
 
 import pytest
+from contextlib import contextmanager
+import importlib
+import google.cloud.spanner_v1._opentelemetry_tracing as spanner_tracing
+from unittest.mock import MagicMock
 from sqlalchemy.dialects import registry
 from sqlalchemy.testing.schema import Column
 from sqlalchemy.testing.schema import Table
 from sqlalchemy.sql.elements import literal
+
+
+# Aggressively monkeypatch trace_call to avoid OpenTelemetry usage entirely.
+# This prevents warnings from OpenTelemetry, which would otherwise cause the
+# conformance tests to fail.
+@contextmanager
+def no_op_trace_call(*args, **kwargs):
+    yield MagicMock()
+
+
+# Patch the definition module
+spanner_tracing.trace_call = no_op_trace_call
+
+# Patch consumers
+modules_to_patch = [
+    "google.cloud.spanner_v1.snapshot",
+    "google.cloud.spanner_v1.transaction",
+    "google.cloud.spanner_v1.session",
+    "google.cloud.spanner_v1.database",
+]
+for module_name in modules_to_patch:
+    try:
+        module = importlib.import_module(module_name)
+        module.trace_call = no_op_trace_call
+    except ImportError:
+        pass
 
 registry.register("spanner", "google.cloud.sqlalchemy_spanner", "SpannerDialect")
 

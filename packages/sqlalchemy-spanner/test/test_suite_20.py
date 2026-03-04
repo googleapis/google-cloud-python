@@ -40,6 +40,7 @@ from sqlalchemy.testing import engines
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing import is_instance_of
 from sqlalchemy.testing import provide_metadata, emits_warning
+from sqlalchemy.testing import is_true
 from sqlalchemy.testing import fixtures
 from sqlalchemy.testing.provision import temp_table_keyword_args
 from sqlalchemy.testing.schema import Column
@@ -60,9 +61,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import Session
 from sqlalchemy.types import Integer
 from sqlalchemy.types import Numeric
+
 from sqlalchemy.types import Text
 from sqlalchemy.testing import requires
-from sqlalchemy.testing import is_true
 from sqlalchemy import Index
 from sqlalchemy import types
 from sqlalchemy.testing.fixtures import (
@@ -923,6 +924,15 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 self._required_fk_keys,
             )
 
+    def test_get_foreign_keys_quoted_name(self, connection, metadata):
+        pass
+
+    def test_get_indexes_quoted_name(self, connection, metadata):
+        pass
+
+    def test_get_unique_constraints_quoted_name(self, connection, metadata):
+        pass
+
     def exp_columns(
         self,
         schema=None,
@@ -1056,13 +1066,13 @@ class ComponentReflectionTest(_ComponentReflectionTest):
     @pytest.mark.skip(
         "Requires an introspection method to be implemented in SQLAlchemy first"
     )
-    def test_get_multi_unique_constraints():
+    def test_get_multi_unique_constraints(self):
         pass
 
     @pytest.mark.skip(
         "Requires an introspection method to be implemented in SQLAlchemy first"
     )
-    def test_get_multi_check_constraints():
+    def test_get_multi_check_constraints(self):
         pass
 
     @testing.combinations((False,), argnames="use_schema")

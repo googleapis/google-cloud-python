@@ -27,8 +27,10 @@ try:
     from opentelemetry.trace.status import Status, StatusCode
 
     HAS_OPENTELEMETRY_INSTALLED = True
+    tracer = trace.get_tracer(__name__)
 except ImportError:
     HAS_OPENTELEMETRY_INSTALLED = False
+    tracer = None
 
 
 @contextmanager
@@ -39,7 +41,6 @@ def trace_call(name, extra_attributes=None):
         yield None
         return
 
-    tracer = trace.get_tracer(__name__)
     # Set base attributes that we know for every trace created
     attributes = {
         "db.type": "spanner",
