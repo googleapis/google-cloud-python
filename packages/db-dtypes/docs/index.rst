@@ -25,4 +25,4 @@ For a list of all ``db-dtypes`` releases:
 .. toctree::
    :maxdepth: 2
 
-   changelog
+   CHANGELOG
