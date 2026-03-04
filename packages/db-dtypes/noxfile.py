@@ -294,6 +294,9 @@ def compliance_prerelease(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
+
+    if session.python in ("3.7",):
+        session.skip("Python 3.7 is no longer supported")
     default(session, os.path.join("tests", "unit"))
 
 
