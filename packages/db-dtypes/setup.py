@@ -56,7 +56,7 @@ setup(
     author="The db-dtypes Authors",
     author_email="googleapis-packages@google.com",
     packages=["db_dtypes"],
-    url="https://github.com/googleapis/python-db-dtypes-pandas",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/db-dtypes",
     keywords=["sql", "pandas"],
     classifiers=[
         release_status,
