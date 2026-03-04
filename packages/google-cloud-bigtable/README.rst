@@ -41,7 +41,7 @@ or through the Github `issue tracker`_.
         performance benefits, the codebase should be designed to be async from the ground up.
 
 
-.. _issue tracker: https://github.com/googleapis/python-bigtable/issues
+.. _issue tracker: https://github.com/googleapis/google-cloud-python/issues
 
 
 Quick Start

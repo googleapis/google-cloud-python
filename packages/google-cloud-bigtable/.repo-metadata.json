@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
-    "repo": "googleapis/python-bigtable",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-bigtable",
     "api_id": "bigtable.googleapis.com",
     "requires_billing": true,
