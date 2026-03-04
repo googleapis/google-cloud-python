@@ -1770,12 +1770,12 @@ libraries:
     version: 2.23.0
     last_generated_commit: d420134ab324c0cbe0f4ae06ad9697dac77f26ad
     apis:
-      - path: google/firestore/v1
-        service_config: firestore_v1.yaml
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
       - path: google/firestore/bundle
         service_config: ""
+      - path: google/firestore/v1
+        service_config: firestore_v1.yaml
     source_roots:
       - packages/google-cloud-firestore
     preserve_regex:
