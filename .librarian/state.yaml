@@ -876,6 +876,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-billing/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-bigtable
+    version: 0.0.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-bigtable
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-billing-budgets
     version: 1.19.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
