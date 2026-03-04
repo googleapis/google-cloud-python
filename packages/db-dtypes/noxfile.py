@@ -115,7 +115,7 @@ def lint(session):
 # and only 3.8).
 # As soon as that gets upgraded, we should be able to revert this session
 # to using the DEFAULT_PYTHON_VERSION.
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
@@ -593,6 +593,6 @@ def core_deps_from_source(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
-# TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add mypy tests
-    session.skip("mypy tests are not yet supported") 
+    session.skip("mypy tests are not yet supported")
