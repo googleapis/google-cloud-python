@@ -1,5 +1,14 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:160860d189ff1c2f7515638478823712fa5b243e27ccc33a2728669fa1e2ed0c
 libraries:
+  - id: bigquery-magics
+    version: 0.12.1
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/bigquery-magics
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-ads-admanager
     version: 0.8.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
@@ -679,15 +688,6 @@ libraries:
       - docs/CHANGELOG.md
     remove_regex:
       - packages/google-cloud-biglake
-    tag_format: '{id}-v{version}'
-  - id: google-cloud-bigquery
-    version: 3.40.1
-    last_generated_commit: ""
-    apis: []
-    source_roots:
-      - packages/google-cloud-bigquery
-    preserve_regex: []
-    remove_regex: []
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-analyticshub
     version: 0.7.0
