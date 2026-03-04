@@ -39,7 +39,7 @@ For a list of all ``google-cloud-pubsub`` releases:
 .. toctree::
   :maxdepth: 2
 
-  changelog
+  CHANGELOG
 
 
 .. toctree::
