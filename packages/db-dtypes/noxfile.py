@@ -32,11 +32,10 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "db_dtypes", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.9"
+DEFAULT_PYTHON_VERSION = "3.14"
 LINT_PYTHON_VERSION = "3.10"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.7",
     "3.8",
     "3.9",
     "3.10",
@@ -45,6 +44,9 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
+ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS
+ALL_PYTHON.extend(["3.7"])
+
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -84,6 +86,8 @@ nox.options.sessions = [
     "blacken",
     "docs",
     "format",
+    "prerelease_deps",
+    "core_deps_from_source",
 ]
 
 # Error if a python version is missing
@@ -293,7 +297,7 @@ def compliance_prerelease(session):
     prerelease(session, os.path.join("tests", "compliance"))
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
 
@@ -483,7 +487,7 @@ def docfx(session):
     )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
 
@@ -574,3 +578,13 @@ def prerelease_deps(session):
             system_test_folder_path,
             *session.posargs,
         )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16013):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
