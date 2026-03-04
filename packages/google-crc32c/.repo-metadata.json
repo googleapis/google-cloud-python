@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "OTHER",
-    "repo": "googleapis/python-crc32c",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-crc32c",
     "default_version": "",
     "codeowner_team": ""
