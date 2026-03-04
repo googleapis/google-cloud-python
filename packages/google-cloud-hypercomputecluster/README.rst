@@ -3,7 +3,7 @@ Python Client for Cluster Director API
 
 |preview| |pypi| |versions|
 
-`Cluster Director API`_: 
+`Cluster Director API`_: The Cluster Director API allows you to deploy, manage, and monitor clusters that run AI, ML, or HPC workloads.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
