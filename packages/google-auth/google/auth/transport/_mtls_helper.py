@@ -182,14 +182,18 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         return None, None
 
     data = _load_json_file(absolute_path)
+    if "cert_configs" not in data:
+        raise exceptions.ClientCertError(
+            'Certificate config file {} is in an invalid format, a "cert configs" object is expected'.format(
+                absolute_path
+            )
+        )
+    cert_configs = data["cert_configs"]
 
     # We return None, None if the expected workload fields are not present.
     # The certificate config might be present for other types of connections (e.g. gECC),
     # and we want to gracefully fallback to testing other mTLS configurations
     # like SecureConnect instead of throwing an exception.
-    if "cert_configs" not in data:
-        return None, None
-    cert_configs = data["cert_configs"]
 
     if "workload" not in cert_configs:
         return None, None
