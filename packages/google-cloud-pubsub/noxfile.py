@@ -229,13 +229,16 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=["3.7", "3.8"] + UNIT_TEST_PYTHON_VERSIONS)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
+
+    if session.python in ["3.7", "3.8"]:
+        session.skip(f"Python {session.python} is no longer supported.")
 
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
