@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.37.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.36.0...v2.37.0) (2026-03-03)
+
+
+### Documentation
+
+* Fix recall_score doc example (#2477) ([a6f499c1e225a962b53621158f9d4a19ca220ccd](https://github.com/googleapis/python-bigquery-dataframes/commit/a6f499c1e225a962b53621158f9d4a19ca220ccd))
+* add code sample and docstring for bpd.options.experiments.sql_compiler (#2474) ([867951bcabcff12e2fce88143b45d929d3237088](https://github.com/googleapis/python-bigquery-dataframes/commit/867951bcabcff12e2fce88143b45d929d3237088))
+* use direct API for image (#2465) ([8a1a82f7a0fd224f2b075c68ab116d1f580d1d82](https://github.com/googleapis/python-bigquery-dataframes/commit/8a1a82f7a0fd224f2b075c68ab116d1f580d1d82))
+* add bigframes default connection warning (#2471) ([f1bbba23667f01d3b8e7c51b18fe64641a4b135f](https://github.com/googleapis/python-bigquery-dataframes/commit/f1bbba23667f01d3b8e7c51b18fe64641a4b135f))
+* Move readme content to new User Guide section (#2464) ([61a948451baeb1caa323e721ad88b31c7cd0b3cb](https://github.com/googleapis/python-bigquery-dataframes/commit/61a948451baeb1caa323e721ad88b31c7cd0b3cb))
+* Skip inherited methods, use autosummary only for big classes (#2470) ([a9512498ef39b9d5260cad2ca0513c701a6d3592](https://github.com/googleapis/python-bigquery-dataframes/commit/a9512498ef39b9d5260cad2ca0513c701a6d3592))
+* Add code examples to configuration docstrings (#2352) ([3c21993e6fca474c32f3c2371c41ef2be146267e](https://github.com/googleapis/python-bigquery-dataframes/commit/3c21993e6fca474c32f3c2371c41ef2be146267e))
+
+
+### Features
+
+* Add cloud_function_cpus option to remote_function (#2475) ([4caf74ccaeb9608d91da864bb80eddf1148a1502](https://github.com/googleapis/python-bigquery-dataframes/commit/4caf74ccaeb9608d91da864bb80eddf1148a1502))
+* Support pd.col simple aggregates (#2480) ([cb00daabce49f067be8e16627166dda00d5d8134](https://github.com/googleapis/python-bigquery-dataframes/commit/cb00daabce49f067be8e16627166dda00d5d8134))
+* add display.render_mode to control DataFrame/Series visualization (#2413) ([7813eaa6fa2ae42943b90583e600c95beaf5d75e](https://github.com/googleapis/python-bigquery-dataframes/commit/7813eaa6fa2ae42943b90583e600c95beaf5d75e))
+* add support for Python 3.14 (#2232) ([c25a6d0151380dde74368a35e13deb7a930b494f](https://github.com/googleapis/python-bigquery-dataframes/commit/c25a6d0151380dde74368a35e13deb7a930b494f))
+* Support pd.col expressions with .loc and getitem (#2473) ([ae5c8b322765aef51eed016bfacaff5a7a917a7b](https://github.com/googleapis/python-bigquery-dataframes/commit/ae5c8b322765aef51eed016bfacaff5a7a917a7b))
+* add dt.tz_localize() (#2469) ([f70f93a1227add1627d522d7e55a37f42fc3549e](https://github.com/googleapis/python-bigquery-dataframes/commit/f70f93a1227add1627d522d7e55a37f42fc3549e))
+* Update bigquery.ai.generate_table output_schema to allow Mapping type (#2463) ([f7fd1895e64a133fe63eddeb90f57a42a35c29b2](https://github.com/googleapis/python-bigquery-dataframes/commit/f7fd1895e64a133fe63eddeb90f57a42a35c29b2))
+
+
+### Bug Fixes
+
+* upload local data through write API if nested JSONs detected (#2478) ([01dc5a34e09171351575d5cbdc9f301e505e1567](https://github.com/googleapis/python-bigquery-dataframes/commit/01dc5a34e09171351575d5cbdc9f301e505e1567))
+* allow IsInOp with same dtypes regardless nullable (#2466) ([1d81b414acbc964502ca624eae72cdb8c14e1576](https://github.com/googleapis/python-bigquery-dataframes/commit/1d81b414acbc964502ca624eae72cdb8c14e1576))
+
 ## [2.36.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.35.0...v2.36.0) (2026-02-17)
 
 
