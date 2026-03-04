@@ -342,19 +342,20 @@ def test_dt_tz_localize(scalars_dfs, col_name, tz):
     assert_series_equal(bf_result.to_pandas(), pd_result, check_index_type=False)
 
 
-@pytest.mark.parametrize(
-    ("col_name", "tz"),
-    [
-        ("timestamp_col", "UTC"),
-        ("datetime_col", "US/Eastern"),
-    ],
-)
-def test_dt_tz_localize_invalid_inputs(scalars_dfs, col_name, tz):
+def test_dt_tz_localize_already_localized(scalars_dfs):
+    pytest.importorskip("pandas", minversion="2.0.0")
+    scalars_df, _ = scalars_dfs
+
+    with pytest.raises(TypeError):
+        scalars_df["timestamp_col"].dt.tz_localize("UTC")
+
+
+def test_dt_tz_localize_invalid_timezone(scalars_dfs):
     pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, _ = scalars_dfs
 
     with pytest.raises(ValueError):
-        scalars_df[col_name].dt.tz_localize(tz)
+        scalars_df["datetime_col"].dt.tz_localize("US/Eastern")
 
 
 @pytest.mark.parametrize(

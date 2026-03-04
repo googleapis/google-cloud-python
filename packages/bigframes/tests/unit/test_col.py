@@ -227,3 +227,22 @@ def test_getitem_with_pd_col(scalars_dfs):
     pd_result = scalars_pandas_df[pd.col("float64_col") > 4]  # type: ignore
 
     assert_frame_equal(bf_result, pd_result)
+
+
+def test_col_str_accessor(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.assign(result=bpd.col("string_col").str.lower()).to_pandas()
+    pd_result = scalars_pandas_df.assign(result=pd.col("string_col").str.lower())  # type: ignore
+
+    assert_frame_equal(bf_result, pd_result)
+
+
+def test_col_dt_accessor(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.assign(result=bpd.col("date_col").dt.year).to_pandas()
+    pd_result = scalars_pandas_df.assign(result=pd.col("date_col").dt.year)  # type: ignore
+
+    # int64[pyarrow] vs Int64
+    assert_frame_equal(bf_result, pd_result, check_dtype=False)

@@ -14,7 +14,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any, Hashable
+from typing import Any, Hashable, Literal, TYPE_CHECKING
 
 import bigframes_vendored.pandas.core.col as pd_col
 
@@ -22,6 +22,10 @@ from bigframes.core import agg_expressions, window_spec
 import bigframes.core.expression as bf_expression
 import bigframes.operations as bf_ops
 import bigframes.operations.aggregations as agg_ops
+
+if TYPE_CHECKING:
+    import bigframes.operations.datetimes as datetimes
+    import bigframes.operations.strings as strings
 
 
 # Not to be confused with the Expression class in `bigframes.core.expressions`
@@ -32,7 +36,7 @@ class Expression:
 
     _value: bf_expression.Expression
 
-    def _apply_unary(self, op: bf_ops.UnaryOp) -> Expression:
+    def _apply_unary_op(self, op: bf_ops.UnaryOp) -> Expression:
         return Expression(op.as_expr(self._value))
 
     def _apply_unary_agg(self, op: agg_ops.UnaryAggregateOp) -> Expression:
@@ -44,7 +48,14 @@ class Expression:
             agg_expressions.WindowExpression(agg_expr, window_spec.unbound())
         )
 
-    def _apply_binary(self, other: Any, op: bf_ops.BinaryOp, reverse: bool = False):
+    # alignment is purely for series compatibility, and is ignored here
+    def _apply_binary_op(
+        self,
+        other: Any,
+        op: bf_ops.BinaryOp,
+        alignment: Literal["outer", "left"] = "outer",
+        reverse: bool = False,
+    ):
         if isinstance(other, Expression):
             other_value = other._value
         else:
@@ -55,79 +66,79 @@ class Expression:
             return Expression(op.as_expr(self._value, other_value))
 
     def __add__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.add_op)
+        return self._apply_binary_op(other, bf_ops.add_op)
 
     def __radd__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.add_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.add_op, reverse=True)
 
     def __sub__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.sub_op)
+        return self._apply_binary_op(other, bf_ops.sub_op)
 
     def __rsub__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.sub_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.sub_op, reverse=True)
 
     def __mul__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.mul_op)
+        return self._apply_binary_op(other, bf_ops.mul_op)
 
     def __rmul__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.mul_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.mul_op, reverse=True)
 
     def __truediv__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.div_op)
+        return self._apply_binary_op(other, bf_ops.div_op)
 
     def __rtruediv__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.div_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.div_op, reverse=True)
 
     def __floordiv__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.floordiv_op)
+        return self._apply_binary_op(other, bf_ops.floordiv_op)
 
     def __rfloordiv__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.floordiv_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.floordiv_op, reverse=True)
 
     def __ge__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.ge_op)
+        return self._apply_binary_op(other, bf_ops.ge_op)
 
     def __gt__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.gt_op)
+        return self._apply_binary_op(other, bf_ops.gt_op)
 
     def __le__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.le_op)
+        return self._apply_binary_op(other, bf_ops.le_op)
 
     def __lt__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.lt_op)
+        return self._apply_binary_op(other, bf_ops.lt_op)
 
     def __eq__(self, other: object) -> Expression:  # type: ignore
-        return self._apply_binary(other, bf_ops.eq_op)
+        return self._apply_binary_op(other, bf_ops.eq_op)
 
     def __ne__(self, other: object) -> Expression:  # type: ignore
-        return self._apply_binary(other, bf_ops.ne_op)
+        return self._apply_binary_op(other, bf_ops.ne_op)
 
     def __mod__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.mod_op)
+        return self._apply_binary_op(other, bf_ops.mod_op)
 
     def __rmod__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.mod_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.mod_op, reverse=True)
 
     def __and__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.and_op)
+        return self._apply_binary_op(other, bf_ops.and_op)
 
     def __rand__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.and_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.and_op, reverse=True)
 
     def __or__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.or_op)
+        return self._apply_binary_op(other, bf_ops.or_op)
 
     def __ror__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.or_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.or_op, reverse=True)
 
     def __xor__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.xor_op)
+        return self._apply_binary_op(other, bf_ops.xor_op)
 
     def __rxor__(self, other: Any) -> Expression:
-        return self._apply_binary(other, bf_ops.xor_op, reverse=True)
+        return self._apply_binary_op(other, bf_ops.xor_op, reverse=True)
 
     def __invert__(self) -> Expression:
-        return self._apply_unary(bf_ops.invert_op)
+        return self._apply_unary_op(bf_ops.invert_op)
 
     def sum(self) -> Expression:
         return self._apply_unary_agg(agg_ops.sum_op)
@@ -146,6 +157,18 @@ class Expression:
 
     def max(self) -> Expression:
         return self._apply_unary_agg(agg_ops.max_op)
+
+    @property
+    def dt(self) -> datetimes.DatetimeSimpleMethods:
+        import bigframes.operations.datetimes as datetimes
+
+        return datetimes.DatetimeSimpleMethods(self)
+
+    @property
+    def str(self) -> strings.StringMethods:
+        import bigframes.operations.strings as strings
+
+        return strings.StringMethods(self)
 
 
 def col(col_name: Hashable) -> Expression:

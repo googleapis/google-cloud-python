@@ -73,7 +73,6 @@ import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.blob as blob
-import bigframes.operations.datetimes as dt
 import bigframes.operations.lists as lists
 import bigframes.operations.plotting as plotting
 import bigframes.operations.python_op_maps as python_ops
@@ -82,6 +81,7 @@ import bigframes.session
 
 if typing.TYPE_CHECKING:
     import bigframes.geopandas.geoseries
+    import bigframes.operations.datetimes as datetimes
     import bigframes.operations.strings as strings
 
 
@@ -208,8 +208,10 @@ class Series:
         self._block.session._register_object(self)
 
     @property
-    def dt(self) -> dt.DatetimeMethods:
-        return dt.DatetimeMethods(self)
+    def dt(self) -> datetimes.DatetimeMethods:
+        import bigframes.operations.datetimes as datetimes
+
+        return datetimes.DatetimeMethods(self)
 
     @property
     def dtype(self):

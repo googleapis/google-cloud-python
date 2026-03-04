@@ -15,13 +15,16 @@
 from __future__ import annotations
 
 import datetime as dt
-from typing import Literal, Optional
+from typing import Generic, Literal, Optional, TypeVar
 
 import bigframes_vendored.pandas.core.arrays.datetimelike as vendored_pandas_datetimelike
 import bigframes_vendored.pandas.core.indexes.accessor as vendordt
 import pandas
 
 from bigframes import dataframe, dtypes, series
+from bigframes._tools import docs
+import bigframes.core.col
+import bigframes.core.indexes.base as indices
 from bigframes.core.logging import log_adapter
 import bigframes.operations as ops
 
@@ -31,110 +34,135 @@ _ONE_MICRO = pandas.Timedelta("1us")
 _SUPPORTED_FREQS = ("Y", "Q", "M", "W", "D", "h", "min", "s", "ms", "us")
 
 
-@log_adapter.class_logger
-class DatetimeMethods(
-    vendordt.DatetimeProperties,
-    vendored_pandas_datetimelike.DatelikeOps,
-):
-    __doc__ = vendordt.DatetimeProperties.__doc__
+T = TypeVar("T", series.Series, indices.Index, bigframes.core.col.Expression)
 
-    def __init__(self, data: series.Series):
-        self._data = data
+
+# Simpler base class for datetime properties, excludes isocalendar, unit, tz
+class DatetimeSimpleMethods(Generic[T]):
+    def __init__(self, data: T):
+        self._data: T = data
 
     # Date accessors
     @property
-    def day(self) -> series.Series:
+    def day(self) -> T:
         return self._data._apply_unary_op(ops.day_op)
 
     @property
-    def dayofweek(self) -> series.Series:
+    def dayofweek(self) -> T:
         return self._data._apply_unary_op(ops.dayofweek_op)
 
     @property
-    def day_of_week(self) -> series.Series:
+    def day_of_week(self) -> T:
         return self.dayofweek
 
     @property
-    def weekday(self) -> series.Series:
+    def weekday(self) -> T:
         return self.dayofweek
 
     @property
-    def dayofyear(self) -> series.Series:
+    def dayofyear(self) -> T:
         return self._data._apply_unary_op(ops.dayofyear_op)
 
     @property
-    def day_of_year(self) -> series.Series:
+    def day_of_year(self) -> T:
         return self.dayofyear
 
     @property
-    def date(self) -> series.Series:
+    def date(self) -> T:
         return self._data._apply_unary_op(ops.date_op)
 
     @property
-    def quarter(self) -> series.Series:
+    def quarter(self) -> T:
         return self._data._apply_unary_op(ops.quarter_op)
 
     @property
-    def year(self) -> series.Series:
+    def year(self) -> T:
         return self._data._apply_unary_op(ops.year_op)
 
     @property
-    def month(self) -> series.Series:
+    def month(self) -> T:
         return self._data._apply_unary_op(ops.month_op)
-
-    def isocalendar(self) -> dataframe.DataFrame:
-        iso_ops = [ops.iso_year_op, ops.iso_week_op, ops.iso_day_op]
-        labels = pandas.Index(["year", "week", "day"])
-        block = self._data._block.project_exprs(
-            [op.as_expr(self._data._value_column) for op in iso_ops], labels, drop=True
-        )
-        return dataframe.DataFrame(block)
 
     # Time accessors
     @property
-    def hour(self) -> series.Series:
+    def hour(self) -> T:
         return self._data._apply_unary_op(ops.hour_op)
 
     @property
-    def minute(self) -> series.Series:
+    def minute(self) -> T:
         return self._data._apply_unary_op(ops.minute_op)
 
     @property
-    def second(self) -> series.Series:
+    def second(self) -> T:
         return self._data._apply_unary_op(ops.second_op)
 
     @property
-    def time(self) -> series.Series:
+    def time(self) -> T:
         return self._data._apply_unary_op(ops.time_op)
 
     # Timedelta accessors
     @property
-    def days(self) -> series.Series:
+    def days(self) -> T:
         self._check_dtype(dtypes.TIMEDELTA_DTYPE)
 
         return self._data._apply_binary_op(_ONE_DAY, ops.floordiv_op)
 
     @property
-    def seconds(self) -> series.Series:
+    def seconds(self) -> T:
         self._check_dtype(dtypes.TIMEDELTA_DTYPE)
 
         return self._data._apply_binary_op(_ONE_DAY, ops.mod_op) // _ONE_SECOND  # type: ignore
 
     @property
-    def microseconds(self) -> series.Series:
+    def microseconds(self) -> T:
         self._check_dtype(dtypes.TIMEDELTA_DTYPE)
 
         return self._data._apply_binary_op(_ONE_SECOND, ops.mod_op) // _ONE_MICRO  # type: ignore
 
-    def total_seconds(self) -> series.Series:
+    def total_seconds(self) -> T:
         self._check_dtype(dtypes.TIMEDELTA_DTYPE)
 
         return self._data._apply_binary_op(_ONE_SECOND, ops.div_op)
 
     def _check_dtype(self, target_dtype: dtypes.Dtype):
-        if self._data._dtype == target_dtype:
-            return
-        raise TypeError(f"Expect dtype: {target_dtype}, but got {self._data._dtype}")
+        if isinstance(self._data, (indices.Index, series.Series)):
+            if self._data.dtype != target_dtype:
+                raise TypeError(
+                    f"Expect dtype: {target_dtype}, but got {self._data.dtype}"
+                )
+        return
+
+    def tz_localize(self, tz: Literal["UTC"] | None) -> T:
+        if tz == "UTC":
+            return self._data._apply_unary_op(ops.ToTimestampOp())
+
+        if tz is None:
+            return self._data._apply_unary_op(ops.ToDatetimeOp())
+
+        raise ValueError(f"Unsupported timezone {tz}")
+
+    def day_name(self) -> T:
+        return self.strftime("%A")
+
+    def strftime(self, date_format: str) -> T:
+        return self._data._apply_unary_op(ops.StrftimeOp(date_format=date_format))
+
+    def normalize(self) -> T:
+        return self._data._apply_unary_op(ops.normalize_op)
+
+    def floor(self, freq: str) -> T:
+        if freq not in _SUPPORTED_FREQS:
+            raise ValueError(f"freq must be one of {_SUPPORTED_FREQS}")
+        return self._data._apply_unary_op(ops.FloorDtOp(freq=freq))  # type: ignore
+
+
+# this is the version used by series.dt, and the one that shows up in reference docs
+@log_adapter.class_logger
+@docs.inherit_docs(vendordt.DatetimeProperties)
+@docs.inherit_docs(vendored_pandas_datetimelike.DatelikeOps)
+class DatetimeMethods(DatetimeSimpleMethods[bigframes.series.Series]):
+    def __init__(self, data: series.Series):
+        super().__init__(data)
 
     @property
     def tz(self) -> Optional[dt.timezone]:
@@ -147,36 +175,15 @@ class DatetimeMethods(
         else:
             raise ValueError(f"Unexpected timezone {tz_string}")
 
-    def tz_localize(self, tz: Literal["UTC"] | None) -> series.Series:
-        if tz == "UTC":
-            if self._data.dtype == dtypes.TIMESTAMP_DTYPE:
-                raise ValueError("Already tz-aware.")
-
-            return self._data._apply_unary_op(ops.ToTimestampOp())
-
-        if tz is None:
-            if self._data.dtype == dtypes.DATETIME_DTYPE:
-                return self._data  # no-op
-
-            return self._data._apply_unary_op(ops.ToDatetimeOp())
-
-        raise ValueError(f"Unsupported timezone {tz}")
-
     @property
     def unit(self) -> str:
         # Assumption: pyarrow dtype
         return self._data._dtype.pyarrow_dtype.unit
 
-    def day_name(self) -> series.Series:
-        return self.strftime("%A")
-
-    def strftime(self, date_format: str) -> series.Series:
-        return self._data._apply_unary_op(ops.StrftimeOp(date_format=date_format))
-
-    def normalize(self) -> series.Series:
-        return self._data._apply_unary_op(ops.normalize_op)
-
-    def floor(self, freq: str) -> series.Series:
-        if freq not in _SUPPORTED_FREQS:
-            raise ValueError(f"freq must be one of {_SUPPORTED_FREQS}")
-        return self._data._apply_unary_op(ops.FloorDtOp(freq=freq))  # type: ignore
+    def isocalendar(self) -> dataframe.DataFrame:
+        iso_ops = [ops.iso_year_op, ops.iso_week_op, ops.iso_day_op]
+        labels = pandas.Index(["year", "week", "day"])
+        block = self._data._block.project_exprs(
+            [op.as_expr(self._data._value_column) for op in iso_ops], labels, drop=True
+        )
+        return dataframe.DataFrame(block)

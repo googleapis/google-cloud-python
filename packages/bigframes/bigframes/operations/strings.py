@@ -21,6 +21,7 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.strings.accessor as vendorstr
 
 from bigframes._tools import docs
+import bigframes.core.col
 import bigframes.core.indexes.base as indices
 from bigframes.core.logging import log_adapter
 import bigframes.dataframe as df
@@ -36,7 +37,7 @@ REGEXP_FLAGS = {
     re.DOTALL: "s",
 }
 
-T = TypeVar("T", series.Series, indices.Index)
+T = TypeVar("T", series.Series, indices.Index, bigframes.core.col.Expression)
 
 
 @log_adapter.class_logger
@@ -324,7 +325,14 @@ class StringMethods(Generic[T]):
             bigframes.series.Series: Blob Series.
 
         """
-        session = self._data._block.session
+        import bigframes.core.blocks
+
+        if hasattr(self._data, "_block") and isinstance(
+            self._data._block, bigframes.core.blocks.Block
+        ):
+            session = self._data._block.session
+        else:
+            raise ValueError("to_blob is only supported via Series.str")
         connection = session._create_bq_connection(connection=connection)
         return self._data._apply_binary_op(connection, ops.obj_make_ref_op)
 
