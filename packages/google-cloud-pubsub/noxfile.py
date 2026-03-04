@@ -532,3 +532,15 @@ def prerelease_deps(session, protobuf_implementation):
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """
+    Skipping until Pub/Sub migration is complete.
+    """
+    session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
