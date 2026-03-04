@@ -877,7 +877,7 @@ libraries:
       - packages/google-cloud-billing/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigtable
-    version: 0.0.0
+    version: 2.35.0
     last_generated_commit: ""
     apis: []
     source_roots:
