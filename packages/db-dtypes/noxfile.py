@@ -44,7 +44,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
-ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 ALL_PYTHON.extend(["3.7"])
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -585,6 +585,14 @@ def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16013):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run the type checker."""
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add mypy tests
+    session.skip("mypy tests are not yet supported") 
