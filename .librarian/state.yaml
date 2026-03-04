@@ -2372,6 +2372,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-monitoring-metrics-scopes/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-ndb
+    version: 2.4.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-ndb
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
     version: 0.7.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
