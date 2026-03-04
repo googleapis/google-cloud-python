@@ -2630,12 +2630,6 @@ def test_df_apply_axis_1_array_output(session, scalars_dfs):
             id="set-none",
         ),
         pytest.param(
-            {"cloud_function_ingress_settings": "all"},
-            functions_v2.ServiceConfig.IngressSettings.ALLOW_ALL,
-            False,
-            id="set-all",
-        ),
-        pytest.param(
             {"cloud_function_ingress_settings": "internal-only"},
             functions_v2.ServiceConfig.IngressSettings.ALLOW_INTERNAL_ONLY,
             False,
@@ -2697,6 +2691,25 @@ def test_remote_function_ingress_settings(
         cleanup_function_assets(
             square_remote, session.bqclient, session.cloudfunctionsclient
         )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_ingress_settings_w_all(session):
+    ingress_settings_args = {"cloud_function_ingress_settings": "all"}
+
+    with pytest.raises(
+        google.api_core.exceptions.FailedPrecondition,
+        match="400.*allowedIngress violated",
+    ):
+
+        def square(x: int) -> int:
+            return x * x
+
+        session.remote_function(
+            reuse=False,
+            cloud_function_service_account="default",
+            **ingress_settings_args,
+        )(square)
 
 
 @pytest.mark.flaky(retries=2, delay=120)
