@@ -21,16 +21,14 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-cloud-firestore-admin"
+name = "google-cloud-firestore"
 
 
-description = "Google Cloud Firestore Admin API client library"
+description = "Google Cloud Firestore API client library"
 
 version = None
 
-with open(
-    os.path.join(package_root, "google/cloud/firestore_admin/gapic_version.py")
-) as fp:
+with open(os.path.join(package_root, "google/cloud/firestore/gapic_version.py")) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1
     version = version_candidates[0]
@@ -53,7 +51,7 @@ dependencies = [
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 extras = {}
-url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-firestore-admin"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-firestore"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
