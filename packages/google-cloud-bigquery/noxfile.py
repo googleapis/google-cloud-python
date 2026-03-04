@@ -158,11 +158,11 @@ def unit_noextras(session):
 
     # Install optional dependencies that are out-of-date to see that
     # we fail gracefully.
-    # https://github.com/googleapis/python-bigquery/issues/933
+    # https://github.com/googleapis/google-cloud-python/issues/933
     #
     # We only install this extra package on one of the two Python versions
     # so that it continues to be an optional dependency.
-    # https://github.com/googleapis/python-bigquery/issues/1877
+    # https://github.com/googleapis/google-cloud-python/issues/1877
     if session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
         session.install("pyarrow==4.0.0", "numpy==1.20.2")
     default(session, install_extras=False)
@@ -194,7 +194,7 @@ def pytype(session):
     """Run type checks with pytype."""
     # An indirect dependecy attrs==21.1.0 breaks the check, and installing a less
     # recent version avoids the error until a possibly better fix is found.
-    # https://github.com/googleapis/python-bigquery/issues/655
+    # https://github.com/googleapis/google-cloud-python/issues/655
 
     session.install("attrs==20.3.0")
     session.install("-e", ".[all]")
@@ -371,7 +371,7 @@ def cover(session):
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed.
 
-    https://github.com/googleapis/python-bigquery/issues/95
+    https://github.com/googleapis/google-cloud-python/issues/95
     """
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
