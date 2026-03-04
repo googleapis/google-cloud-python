@@ -1,5 +1,5 @@
 {
-  "api_description": "",
+  "api_description": "The Cluster Director API allows you to deploy, manage, and monitor clusters that run AI, ML, or HPC workloads.",
   "api_id": "hypercomputecluster.googleapis.com",
   "api_shortname": "hypercomputecluster",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-hypercomputecluster/latest",
