@@ -566,8 +566,9 @@ class TestGetWorkloadCertAndKey(object):
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {}
 
-        with pytest.raises(exceptions.ClientCertError):
-            _mtls_helper._get_workload_cert_and_key("")
+        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key("")
+        assert actual_cert is None
+        assert actual_key is None
 
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch(
@@ -577,8 +578,9 @@ class TestGetWorkloadCertAndKey(object):
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {"cert_configs": {}}
 
-        with pytest.raises(exceptions.ClientCertError):
-            _mtls_helper._get_workload_cert_and_key("")
+        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key("")
+        assert actual_cert is None
+        assert actual_key is None
 
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch(
@@ -590,8 +592,9 @@ class TestGetWorkloadCertAndKey(object):
             "cert_configs": {"workload": {"key_path": "path/to/key"}}
         }
 
-        with pytest.raises(exceptions.ClientCertError):
-            _mtls_helper._get_workload_cert_and_key("")
+        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key("")
+        assert actual_cert is None
+        assert actual_key is None
 
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch(
@@ -603,8 +606,9 @@ class TestGetWorkloadCertAndKey(object):
             "cert_configs": {"workload": {"cert_path": "path/to/key"}}
         }
 
-        with pytest.raises(exceptions.ClientCertError):
-            _mtls_helper._get_workload_cert_and_key("")
+        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key("")
+        assert actual_cert is None
+        assert actual_key is None
 
 
 class TestReadCertAndKeyFile(object):
