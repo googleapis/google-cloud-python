@@ -939,6 +939,9 @@ class Cluster(proto.Message):
 
                "123/environment": "production",
                "123/costCenter": "marketing".
+        dataplex_config (google.cloud.alloydb_v1.types.Cluster.DataplexConfig):
+            Optional. Configuration for Dataplex
+            integration.
     """
 
     class State(proto.Enum):
@@ -1129,6 +1132,23 @@ class Cluster(proto.Message):
             message=timestamp_pb2.Timestamp,
         )
 
+    class DataplexConfig(proto.Message):
+        r"""Configuration for Dataplex integration.
+
+        Attributes:
+            enabled (bool):
+                Dataplex is enabled by default for resources
+                such as clusters and instances. This flag
+                controls the integration of AlloyDB PG resources
+                (like databases, schemas, and tables) with
+                Dataplex.".
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     backup_source: "BackupSource" = proto.Field(
         proto.MESSAGE,
         number=15,
@@ -1294,6 +1314,11 @@ class Cluster(proto.Message):
         proto.STRING,
         proto.STRING,
         number=41,
+    )
+    dataplex_config: DataplexConfig = proto.Field(
+        proto.MESSAGE,
+        number=47,
+        message=DataplexConfig,
     )
 
 

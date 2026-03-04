@@ -51,6 +51,8 @@ __protobuf__ = proto.module(
         "ExportDataObjectsRequest",
         "ExportDataObjectsMetadata",
         "ExportDataObjectsResponse",
+        "DedicatedInfrastructure",
+        "DenseScannIndex",
     },
 )
 
@@ -446,7 +448,18 @@ class DeleteCollectionRequest(proto.Message):
 class Index(proto.Message):
     r"""Message describing Index object
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        dedicated_infrastructure (google.cloud.vectorsearch_v1beta.types.DedicatedInfrastructure):
+            Optional. Dedicated infrastructure for the
+            index.
+
+            This field is a member of `oneof`_ ``infra_type``.
+        dense_scann (google.cloud.vectorsearch_v1beta.types.DenseScannIndex):
+            Optional. Dense ScaNN index.
+
+            This field is a member of `oneof`_ ``index_type``.
         name (str):
             Identifier. name of resource
         display_name (str):
@@ -475,6 +488,18 @@ class Index(proto.Message):
             to enable inline data retrieval.
     """
 
+    dedicated_infrastructure: "DedicatedInfrastructure" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="infra_type",
+        message="DedicatedInfrastructure",
+    )
+    dense_scann: "DenseScannIndex" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="index_type",
+        message="DenseScannIndex",
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -833,15 +858,17 @@ class ImportDataObjectsMetadata(proto.Message):
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the operation was created.
+            Output only. The time the operation was
+            created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the operation was last updated.
+            Output only. The time the operation was last
+            updated.
         success_count (int):
-            Number of DataObjects that were processed
-            successfully.
+            Output only. Number of DataObjects that were
+            processed successfully.
         failure_count (int):
-            Number of DataObjects that failed during
-            processing.
+            Output only. Number of DataObjects that
+            failed during processing.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -915,7 +942,6 @@ class ExportDataObjectsRequest(proto.Message):
 
         class Format(proto.Enum):
             r"""Options for the format of the exported Data Objects.
-            New formats may be added in the future.
 
             Values:
                 FORMAT_UNSPECIFIED (0):
@@ -955,9 +981,10 @@ class ExportDataObjectsMetadata(proto.Message):
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the operation was created.
+            Output only. The time the operation was
+            created.
         finish_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the operation finished.
+            Output only. The time the operation finished.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -974,6 +1001,105 @@ class ExportDataObjectsMetadata(proto.Message):
 
 class ExportDataObjectsResponse(proto.Message):
     r"""Response for the ExportDataObjects LRO."""
+
+
+class DedicatedInfrastructure(proto.Message):
+    r"""Represents dedicated infrastructure for the index.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        mode (google.cloud.vectorsearch_v1beta.types.DedicatedInfrastructure.Mode):
+            Optional. Mode of the dedicated
+            infrastructure.
+
+            This field is a member of `oneof`_ ``_mode``.
+        autoscaling_spec (google.cloud.vectorsearch_v1beta.types.DedicatedInfrastructure.AutoscalingSpec):
+            Optional. Autoscaling specification.
+    """
+
+    class Mode(proto.Enum):
+        r"""Mode of the dedicated infrastructure.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default will use ``PERFORMANCE_OPTIMIZED``.
+            STORAGE_OPTIMIZED (1):
+                This is storage optimized variation.
+            PERFORMANCE_OPTIMIZED (2):
+                This is Performance optimized on E2 or
+                equivalent family.
+        """
+
+        MODE_UNSPECIFIED = 0
+        STORAGE_OPTIMIZED = 1
+        PERFORMANCE_OPTIMIZED = 2
+
+    class AutoscalingSpec(proto.Message):
+        r"""Specification for autoscaling.
+
+        Attributes:
+            min_replica_count (int):
+                Optional. The minimum number of replicas. If not set or set
+                to ``0``, defaults to ``2``. Must be >= ``2`` and <=
+                ``1000``.
+            max_replica_count (int):
+                Optional. The maximum number of replicas. If not set or set
+                to ``0``, defaults to the greater of ``min_replica_count``
+                and ``5``. Must be >= ``min_replica_count`` and <= ``1000``.
+        """
+
+        min_replica_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        max_replica_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=Mode,
+    )
+    autoscaling_spec: AutoscalingSpec = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=AutoscalingSpec,
+    )
+
+
+class DenseScannIndex(proto.Message):
+    r"""Dense ScaNN index configuration.
+
+    Attributes:
+        feature_norm_type (google.cloud.vectorsearch_v1beta.types.DenseScannIndex.FeatureNormType):
+            Optional. Feature norm type.
+    """
+
+    class FeatureNormType(proto.Enum):
+        r"""Feature norm type for ScaNN index.
+
+        Values:
+            FEATURE_NORM_TYPE_UNSPECIFIED (0):
+                Unspecified feature norm type.
+            NONE (1):
+                No norm applied.
+            UNIT_L2_NORM (2):
+                Unit L2 norm.
+        """
+
+        FEATURE_NORM_TYPE_UNSPECIFIED = 0
+        NONE = 1
+        UNIT_L2_NORM = 2
+
+    feature_norm_type: FeatureNormType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=FeatureNormType,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

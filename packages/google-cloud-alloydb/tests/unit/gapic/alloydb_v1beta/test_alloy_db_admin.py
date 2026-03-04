@@ -25611,6 +25611,7 @@ def test_create_cluster_rest_call_success(request_type):
         },
         "tags": {},
         "service_account_email": "service_account_email_value",
+        "dataplex_config": {"enabled": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25900,6 +25901,7 @@ def test_update_cluster_rest_call_success(request_type):
         },
         "tags": {},
         "service_account_email": "service_account_email_value",
+        "dataplex_config": {"enabled": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -27024,6 +27026,7 @@ def test_create_secondary_cluster_rest_call_success(request_type):
         },
         "tags": {},
         "service_account_email": "service_account_email_value",
+        "dataplex_config": {"enabled": True},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
