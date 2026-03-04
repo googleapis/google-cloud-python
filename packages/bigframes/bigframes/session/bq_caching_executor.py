@@ -30,6 +30,7 @@ from bigframes import exceptions as bfe
 import bigframes.constants
 import bigframes.core
 from bigframes.core import bq_data, compile, local_data, rewrite
+from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.compile.sqlglot import sqlglot_ir
 import bigframes.core.events
 import bigframes.core.guid
@@ -304,12 +305,13 @@ class BigQueryCachingExecutor(executor.Executor):
             # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
             # https://cloud.google.com/bigquery/quotas#standard_tables
             job_config = bigquery.QueryJobConfig()
-            ir = sqlglot_ir.SQLGlotIR.from_query_string(sql)
+
+            ir = sqlglot_ir.SQLGlotIR.from_unparsed_query(sql)
             if spec.if_exists == "append":
-                sql = ir.insert(spec.table)
+                sql = sg_sql.to_sql(sg_sql.insert(ir.expr, spec.table))
             else:  # for "replace"
                 assert spec.if_exists == "replace"
-                sql = ir.replace(spec.table)
+                sql = sg_sql.to_sql(sg_sql.replace(ir.expr, spec.table))
         else:
             dispositions = {
                 "fail": bigquery.WriteDisposition.WRITE_EMPTY,

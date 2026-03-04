@@ -26,7 +26,7 @@ from typing import cast, Collection, Iterable, Mapping, Optional, TYPE_CHECKING,
 import bigframes_vendored.sqlglot.expressions as sge
 import shapely.geometry.base  # type: ignore
 
-from bigframes.core.compile.sqlglot import sqlglot_ir
+from bigframes.core.compile.sqlglot import sql
 
 if TYPE_CHECKING:
     import google.cloud.bigquery as bigquery
@@ -66,7 +66,7 @@ def simple_literal(value: Union[SIMPLE_LITERAL_TYPES, None]) -> str:
         return "NULL"
     elif isinstance(value, str):
         # Single quoting seems to work nicer with ibis than double quoting
-        return f"'{sqlglot_ir._escape_chars(value)}'"
+        return f"'{sql.escape_chars(value)}'"
     elif isinstance(value, bytes):
         return repr(value)
     elif isinstance(value, (bool, int)):
@@ -119,7 +119,7 @@ def cast_as_string(column_name: str) -> str:
 def to_json_string(column_name: str) -> str:
     """Return a string representing JSON version of a column."""
 
-    return f"TO_JSON_STRING({sqlglot_ir.identifier(column_name)})"
+    return f"TO_JSON_STRING({sql.to_sql(sql.identifier(column_name))})"
 
 
 def csv(values: Iterable[str]) -> str:
@@ -202,7 +202,7 @@ def create_vector_index_ddl(
 
     if len(stored_column_names) > 0:
         escaped_stored = [
-            f"{sqlglot_ir.identifier(name)}" for name in stored_column_names
+            f"{sql.to_sql(sql.identifier(name))}" for name in stored_column_names
         ]
         storing = f"STORING({', '.join(escaped_stored)}) "
     else:
@@ -216,8 +216,8 @@ def create_vector_index_ddl(
     )
 
     return f"""
-    {create} {sqlglot_ir.identifier(index_name)}
-    ON {sqlglot_ir.identifier(table_name)}({sqlglot_ir.identifier(column_name)})
+    {create} {sql.to_sql(sql.identifier(index_name))}
+    ON {sql.to_sql(sql.identifier(table_name))}({sql.to_sql(sql.identifier(column_name))})
     {storing}
     OPTIONS({rendered_options});
     """
@@ -236,7 +236,7 @@ def create_vector_search_sql(
     """Encode the VECTOR SEARCH statement for BigQuery Vector Search."""
 
     vector_search_args = [
-        f"TABLE {sqlglot_ir.identifier(cast(str, base_table))}",
+        f"TABLE {sql.to_sql(sql.identifier(cast(str, base_table)))}",
         f"{simple_literal(column_to_search)}",
         f"({sql_string})",
     ]

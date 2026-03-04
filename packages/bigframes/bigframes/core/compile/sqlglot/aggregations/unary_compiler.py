@@ -22,11 +22,11 @@ import pandas as pd
 
 from bigframes import dtypes
 from bigframes.core import window_spec
+from bigframes.core.compile.sqlglot import sql
 import bigframes.core.compile.sqlglot.aggregations.op_registration as reg
 from bigframes.core.compile.sqlglot.aggregations.windows import apply_window_if_present
 from bigframes.core.compile.sqlglot.expressions import constants
 import bigframes.core.compile.sqlglot.expressions.typed_expr as typed_expr
-import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 from bigframes.operations import aggregations as agg_ops
 
 UNARY_OP_REGISTRATION = reg.OpRegistration()
@@ -157,9 +157,9 @@ def _cut_ops_w_int_bins(
     for this_bin in range(bins):
         value: sge.Expression
         if op.labels is False:
-            value = ir._literal(this_bin, dtypes.INT_DTYPE)
+            value = sql.literal(this_bin, dtypes.INT_DTYPE)
         elif isinstance(op.labels, typing.Iterable):
-            value = ir._literal(list(op.labels)[this_bin], dtypes.STRING_DTYPE)
+            value = sql.literal(list(op.labels)[this_bin], dtypes.STRING_DTYPE)
         else:
             left_adj: sge.Expression = (
                 adj if this_bin == 0 and op.right else sge.convert(0)
@@ -217,10 +217,10 @@ def _cut_ops_w_intervals(
 ) -> sge.Case:
     case_expr = sge.Case()
     for this_bin, interval in enumerate(bins):
-        left: sge.Expression = ir._literal(
+        left: sge.Expression = sql.literal(
             interval[0], dtypes.infer_literal_type(interval[0])
         )
-        right: sge.Expression = ir._literal(
+        right: sge.Expression = sql.literal(
             interval[1], dtypes.infer_literal_type(interval[1])
         )
         condition: sge.Expression
@@ -237,9 +237,9 @@ def _cut_ops_w_intervals(
 
         value: sge.Expression
         if op.labels is False:
-            value = ir._literal(this_bin, dtypes.INT_DTYPE)
+            value = sql.literal(this_bin, dtypes.INT_DTYPE)
         elif isinstance(op.labels, typing.Iterable):
-            value = ir._literal(list(op.labels)[this_bin], dtypes.STRING_DTYPE)
+            value = sql.literal(list(op.labels)[this_bin], dtypes.STRING_DTYPE)
         else:
             if op.right:
                 left_identifier = sge.Identifier(this="left_exclusive", quoted=True)
@@ -609,7 +609,7 @@ def _(
 
     # Will be null if all inputs are null. Pandas defaults to zero sum though.
     zero = pd.to_timedelta(0) if column.dtype == dtypes.TIMEDELTA_DTYPE else 0
-    return sge.func("IFNULL", expr, ir._literal(zero, column.dtype))
+    return sge.func("IFNULL", expr, sql.literal(zero, column.dtype))
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.VarOp)

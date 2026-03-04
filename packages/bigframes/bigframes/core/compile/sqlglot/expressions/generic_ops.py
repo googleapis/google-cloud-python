@@ -19,7 +19,7 @@ import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes import operations as ops
-from bigframes.core.compile.sqlglot import sqlglot_ir, sqlglot_types
+from bigframes.core.compile.sqlglot import sql, sqlglot_types
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
@@ -48,8 +48,8 @@ def _(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
             return result
 
     if to_type == dtypes.FLOAT_DTYPE and from_type == dtypes.BOOL_DTYPE:
-        sg_expr = _cast(sg_expr, "INT64", op.safe)
-        return _cast(sg_expr, sg_to_type, op.safe)
+        sg_expr = sql.cast(sg_expr, "INT64", op.safe)
+        return sql.cast(sg_expr, sg_to_type, op.safe)
 
     if to_type == dtypes.BOOL_DTYPE:
         if from_type == dtypes.BOOL_DTYPE:
@@ -58,16 +58,16 @@ def _(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
             return sge.NEQ(this=sg_expr, expression=sge.convert(0))
 
     if to_type == dtypes.STRING_DTYPE:
-        sg_expr = _cast(sg_expr, sg_to_type, op.safe)
+        sg_expr = sql.cast(sg_expr, sg_to_type, op.safe)
         if from_type == dtypes.BOOL_DTYPE:
             sg_expr = sge.func("INITCAP", sg_expr)
         return sg_expr
 
     if dtypes.is_time_like(to_type) and from_type == dtypes.INT_DTYPE:
         sg_expr = sge.func("TIMESTAMP_MICROS", sg_expr)
-        return _cast(sg_expr, sg_to_type, op.safe)
+        return sql.cast(sg_expr, sg_to_type, op.safe)
 
-    return _cast(sg_expr, sg_to_type, op.safe)
+    return sql.cast(sg_expr, sg_to_type, op.safe)
 
 
 @register_unary_op(ops.hash_op)
@@ -104,17 +104,19 @@ def _(expr: TypedExpr, op: ops.MapOp) -> sge.Expression:
 
     mappings = [
         (
-            sqlglot_ir._literal(key, dtypes.is_compatible(key, expr.dtype)),
-            sqlglot_ir._literal(value, dtypes.is_compatible(value, expr.dtype)),
+            sql.literal(key, dtypes.is_compatible(key, expr.dtype)),
+            sql.literal(value, dtypes.is_compatible(value, expr.dtype)),
         )
         for key, value in op.mappings
     ]
     return sge.Case(
         ifs=[
             sge.If(
-                this=sge.EQ(this=expr.expr, expression=key)
-                if not sqlglot_ir._is_null_literal(key)
-                else sge.Is(this=expr.expr, expression=sge.Null()),
+                this=(
+                    sge.EQ(this=expr.expr, expression=key)
+                    if not sql.is_null_literal(key)
+                    else sge.Is(this=expr.expr, expression=sge.Null())
+                ),
                 true=value,
             )
             for key, value in mappings
@@ -201,12 +203,14 @@ def _(*cases_and_outputs: TypedExpr) -> sge.Expression:
     )
     if do_upcast_bool:
         result_values = tuple(
-            TypedExpr(
-                sge.Cast(this=val.expr, to="INT64"),
-                dtypes.INT_DTYPE,
+            (
+                TypedExpr(
+                    sge.Cast(this=val.expr, to="INT64"),
+                    dtypes.INT_DTYPE,
+                )
+                if val.dtype == dtypes.BOOL_DTYPE
+                else val
             )
-            if val.dtype == dtypes.BOOL_DTYPE
-            else val
             for val in result_values
         )
 
@@ -286,28 +290,21 @@ def _cast_to_int(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression | None:
     sg_expr = expr.expr
     # Cannot cast DATETIME to INT directly so need to convert to TIMESTAMP first.
     if from_type == dtypes.DATETIME_DTYPE:
-        sg_expr = _cast(sg_expr, "TIMESTAMP", op.safe)
+        sg_expr = sql.cast(sg_expr, "TIMESTAMP", op.safe)
         return sge.func("UNIX_MICROS", sg_expr)
     if from_type == dtypes.TIMESTAMP_DTYPE:
         return sge.func("UNIX_MICROS", sg_expr)
     if from_type == dtypes.TIME_DTYPE:
         return sge.func(
             "TIME_DIFF",
-            _cast(sg_expr, "TIME", op.safe),
+            sql.cast(sg_expr, "TIME", op.safe),
             sge.convert("00:00:00"),
             "MICROSECOND",
         )
     if from_type == dtypes.NUMERIC_DTYPE or from_type == dtypes.FLOAT_DTYPE:
         sg_expr = sge.func("TRUNC", sg_expr)
-        return _cast(sg_expr, "INT64", op.safe)
+        return sql.cast(sg_expr, "INT64", op.safe)
     return None
-
-
-def _cast(expr: sge.Expression, to: str, safe: bool):
-    if safe:
-        return sge.TryCast(this=expr, to=to)
-    else:
-        return sge.Cast(this=expr, to=to)
 
 
 def _convert_to_nonnull_string_sqlglot(expr: TypedExpr) -> sge.Expression:

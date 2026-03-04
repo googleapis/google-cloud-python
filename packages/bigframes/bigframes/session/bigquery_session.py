@@ -24,7 +24,7 @@ import uuid
 import bigframes_vendored.ibis.backends.bigquery.datatypes as ibis_bq
 import google.cloud.bigquery as bigquery
 
-from bigframes.core.compile.sqlglot import sqlglot_ir
+from bigframes.core.compile.sqlglot import sql as sg_sql
 import bigframes.core.events
 from bigframes.session import temporary_storage
 import bigframes.session._io.bigquery as bfbqio
@@ -80,7 +80,7 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
             ibis_schema = ibis_bq.BigQuerySchema.to_ibis(list(schema))
 
             fields = [
-                f"{sqlglot_ir.identifier(name)} {ibis_bq.BigQueryType.from_ibis(ibis_type)}"
+                f"{sg_sql.to_sql(sg_sql.identifier(name))} {ibis_bq.BigQueryType.from_ibis(ibis_type)}"
                 for name, ibis_type in ibis_schema.fields.items()
             ]
             fields_string = ",".join(fields)
@@ -88,12 +88,12 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
             cluster_string = ""
             if cluster_cols:
                 cluster_cols_sql = ", ".join(
-                    f"{sqlglot_ir.identifier(cluster_col)}"
+                    f"{sg_sql.to_sql(sg_sql.identifier(cluster_col))}"
                     for cluster_col in cluster_cols
                 )
                 cluster_string = f"\nCLUSTER BY {cluster_cols_sql}"
 
-            ddl = f"CREATE TEMP TABLE `_SESSION`.{sqlglot_ir.identifier(table_ref.table_id)} ({fields_string}){cluster_string}"
+            ddl = f"CREATE TEMP TABLE `_SESSION`.{sg_sql.to_sql(sg_sql.identifier(table_ref.table_id))} ({fields_string}){cluster_string}"
 
             _, job = bfbqio.start_query_with_client(
                 self.bqclient,

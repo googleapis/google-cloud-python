@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Mapping, Optional, Union
 
-from bigframes.core.compile.sqlglot import sqlglot_ir
+from bigframes.core.compile.sqlglot import sql as sg_sql
 import bigframes.core.sql
 import bigframes.core.sql.literals
 
@@ -46,7 +46,7 @@ def create_model_ddl(
     else:
         create = "CREATE MODEL "
 
-    ddl = f"{create}{sqlglot_ir.identifier(model_name)}\n"
+    ddl = f"{create}{sg_sql.to_sql(sg_sql.identifier(model_name))}\n"
 
     # [TRANSFORM (select_list)]
     if transform:
@@ -66,7 +66,7 @@ def create_model_ddl(
         if connection_name.upper() == "DEFAULT":
             ddl += "REMOTE WITH CONNECTION DEFAULT\n"
         else:
-            ddl += f"REMOTE WITH CONNECTION {sqlglot_ir.identifier(connection_name)}\n"
+            ddl += f"REMOTE WITH CONNECTION {sg_sql.to_sql(sg_sql.identifier(connection_name))}\n"
 
     # [OPTIONS(model_option_list)]
     if options:
@@ -130,7 +130,7 @@ def evaluate(
     if confidence_level is not None:
         struct_options["confidence_level"] = confidence_level
 
-    sql = f"SELECT * FROM ML.EVALUATE(MODEL {sqlglot_ir.identifier(model_name)}"
+    sql = f"SELECT * FROM ML.EVALUATE(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))}"
     if table:
         sql += f", ({table})"
 
@@ -158,9 +158,7 @@ def predict(
     if trial_id is not None:
         struct_options["trial_id"] = trial_id
 
-    sql = (
-        f"SELECT * FROM ML.PREDICT(MODEL {sqlglot_ir.identifier(model_name)}, ({table})"
-    )
+    sql = f"SELECT * FROM ML.PREDICT(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))}, ({table})"
     sql += _build_struct_sql(struct_options)
     sql += ")\n"
     return sql
@@ -190,7 +188,7 @@ def explain_predict(
     if approx_feature_contrib is not None:
         struct_options["approx_feature_contrib"] = approx_feature_contrib
 
-    sql = f"SELECT * FROM ML.EXPLAIN_PREDICT(MODEL {sqlglot_ir.identifier(model_name)}, ({table})"
+    sql = f"SELECT * FROM ML.EXPLAIN_PREDICT(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))}, ({table})"
     sql += _build_struct_sql(struct_options)
     sql += ")\n"
     return sql
@@ -208,7 +206,7 @@ def global_explain(
     if class_level_explain is not None:
         struct_options["class_level_explain"] = class_level_explain
 
-    sql = f"SELECT * FROM ML.GLOBAL_EXPLAIN(MODEL {sqlglot_ir.identifier(model_name)}"
+    sql = f"SELECT * FROM ML.GLOBAL_EXPLAIN(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))}"
     sql += _build_struct_sql(struct_options)
     sql += ")\n"
     return sql
@@ -221,7 +219,7 @@ def transform(
     """Encode the ML.TRANSFORM statement.
     See https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-transform for reference.
     """
-    sql = f"SELECT * FROM ML.TRANSFORM(MODEL {sqlglot_ir.identifier(model_name)}, ({table}))\n"
+    sql = f"SELECT * FROM ML.TRANSFORM(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))}, ({table}))\n"
     return sql
 
 
@@ -262,7 +260,7 @@ def generate_text(
     if request_type is not None:
         struct_options["request_type"] = request_type
 
-    sql = f"SELECT * FROM ML.GENERATE_TEXT(MODEL {sqlglot_ir.identifier(model_name)}, ({table})"
+    sql = f"SELECT * FROM ML.GENERATE_TEXT(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))}, ({table})"
     sql += _build_struct_sql(struct_options)
     sql += ")\n"
     return sql
@@ -290,7 +288,7 @@ def generate_embedding(
     if output_dimensionality is not None:
         struct_options["output_dimensionality"] = output_dimensionality
 
-    sql = f"SELECT * FROM ML.GENERATE_EMBEDDING(MODEL {sqlglot_ir.identifier(model_name)}, ({table})"
+    sql = f"SELECT * FROM ML.GENERATE_EMBEDDING(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))}, ({table})"
     sql += _build_struct_sql(struct_options)
     sql += ")\n"
     return sql

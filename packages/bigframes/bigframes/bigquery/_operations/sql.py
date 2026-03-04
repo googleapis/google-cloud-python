@@ -20,7 +20,7 @@ from typing import Sequence
 
 import google.cloud.bigquery
 
-from bigframes.core.compile.sqlglot import sqlglot_ir
+from bigframes.core.compile.sqlglot import sql
 import bigframes.dtypes
 import bigframes.operations
 import bigframes.series
@@ -68,10 +68,7 @@ def sql_scalar(
     # Another benefit of this is that if there is a syntax error in the SQL
     # template, then this will fail with an error earlier in the process,
     # aiding users in debugging.
-    literals_sql = [
-        sqlglot_ir._literal(None, column.dtype).sql(dialect="bigquery")
-        for column in columns
-    ]
+    literals_sql = [sql.to_sql(sql.literal(None, column.dtype)) for column in columns]
     select_sql = sql_template.format(*literals_sql)
     dry_run_sql = f"SELECT {select_sql}"
 

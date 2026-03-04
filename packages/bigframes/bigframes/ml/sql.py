@@ -21,7 +21,7 @@ from typing import Iterable, Literal, Mapping, Optional, Union
 import bigframes_vendored.constants as constants
 import google.cloud.bigquery
 
-import bigframes.core.compile.sqlglot.sqlglot_ir as sql_utils
+from bigframes.core.compile.sqlglot import sql as sg_sql
 import bigframes.core.sql as sql_vals
 
 INDENT_STR = "  "
@@ -62,7 +62,7 @@ class BaseSqlGenerator:
             v_trans = self.build_schema(**v) if isinstance(v, Mapping) else v
 
             param_strs.append(
-                f"{sql_vals.simple_literal(v_trans)} AS {sql_utils.identifier(k)}"
+                f"{sql_vals.simple_literal(v_trans)} AS {sg_sql.to_sql(sg_sql.identifier(k))}"
             )
 
         return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)
@@ -73,7 +73,9 @@ class BaseSqlGenerator:
 
     def build_schema(self, **kwargs: str) -> str:
         """Encode a dict of values into a formatted schema type items for SQL"""
-        param_strs = [f"{sql_utils.identifier(k)} {v}" for k, v in kwargs.items()]
+        param_strs = [
+            f"{sg_sql.to_sql(sg_sql.identifier(k))} {v}" for k, v in kwargs.items()
+        ]
         return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)
 
     def options(self, **kwargs: Union[str, int, float, Iterable[str]]) -> str:
@@ -86,7 +88,9 @@ class BaseSqlGenerator:
 
     def struct_columns(self, columns: Iterable[str]) -> str:
         """Encode a BQ Table columns to a STRUCT."""
-        columns_str = ", ".join(map(sql_utils.identifier, columns))
+        columns_str = ", ".join(
+            map(lambda x: sg_sql.to_sql(sg_sql.identifier(x)), columns)
+        )
         return f"STRUCT({columns_str})"
 
     def input(self, **kwargs: str) -> str:
@@ -109,15 +113,15 @@ class BaseSqlGenerator:
 
     def ml_standard_scaler(self, numeric_expr_sql: str, name: str) -> str:
         """Encode ML.STANDARD_SCALER for BQML"""
-        return f"""ML.STANDARD_SCALER({sql_utils.identifier(numeric_expr_sql)}) OVER() AS {sql_utils.identifier(name)}"""
+        return f"""ML.STANDARD_SCALER({sg_sql.to_sql(sg_sql.identifier(numeric_expr_sql))}) OVER() AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_max_abs_scaler(self, numeric_expr_sql: str, name: str) -> str:
         """Encode ML.MAX_ABS_SCALER for BQML"""
-        return f"""ML.MAX_ABS_SCALER({sql_utils.identifier(numeric_expr_sql)}) OVER() AS {sql_utils.identifier(name)}"""
+        return f"""ML.MAX_ABS_SCALER({sg_sql.to_sql(sg_sql.identifier(numeric_expr_sql))}) OVER() AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_min_max_scaler(self, numeric_expr_sql: str, name: str) -> str:
         """Encode ML.MIN_MAX_SCALER for BQML"""
-        return f"""ML.MIN_MAX_SCALER({sql_utils.identifier(numeric_expr_sql)}) OVER() AS {sql_utils.identifier(name)}"""
+        return f"""ML.MIN_MAX_SCALER({sg_sql.to_sql(sg_sql.identifier(numeric_expr_sql))}) OVER() AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_imputer(
         self,
@@ -126,7 +130,7 @@ class BaseSqlGenerator:
         name: str,
     ) -> str:
         """Encode ML.IMPUTER for BQML"""
-        return f"""ML.IMPUTER({sql_utils.identifier(col_name)}, '{strategy}') OVER() AS {sql_utils.identifier(name)}"""
+        return f"""ML.IMPUTER({sg_sql.to_sql(sg_sql.identifier(col_name))}, '{strategy}') OVER() AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_bucketize(
         self,
@@ -140,7 +144,7 @@ class BaseSqlGenerator:
             point.item() if hasattr(point, "item") else point
             for point in array_split_points
         ]
-        return f"""ML.BUCKETIZE({sql_utils.identifier(input_id)}, {points}, FALSE) AS {sql_utils.identifier(output_id)}"""
+        return f"""ML.BUCKETIZE({sg_sql.to_sql(sg_sql.identifier(input_id))}, {points}, FALSE) AS {sg_sql.to_sql(sg_sql.identifier(output_id))}"""
 
     def ml_quantile_bucketize(
         self,
@@ -149,7 +153,7 @@ class BaseSqlGenerator:
         name: str,
     ) -> str:
         """Encode ML.QUANTILE_BUCKETIZE for BQML"""
-        return f"""ML.QUANTILE_BUCKETIZE({sql_utils.identifier(numeric_expr_sql)}, {num_bucket}) OVER() AS {sql_utils.identifier(name)}"""
+        return f"""ML.QUANTILE_BUCKETIZE({sg_sql.to_sql(sg_sql.identifier(numeric_expr_sql))}, {num_bucket}) OVER() AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_one_hot_encoder(
         self,
@@ -162,7 +166,7 @@ class BaseSqlGenerator:
         """Encode ML.ONE_HOT_ENCODER for BQML.
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder for params.
         """
-        return f"""ML.ONE_HOT_ENCODER({sql_utils.identifier(numeric_expr_sql)}, '{drop}', {top_k}, {frequency_threshold}) OVER() AS {sql_utils.identifier(name)}"""
+        return f"""ML.ONE_HOT_ENCODER({sg_sql.to_sql(sg_sql.identifier(numeric_expr_sql))}, '{drop}', {top_k}, {frequency_threshold}) OVER() AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_label_encoder(
         self,
@@ -174,7 +178,7 @@ class BaseSqlGenerator:
         """Encode ML.LABEL_ENCODER for BQML.
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-label-encoder for params.
         """
-        return f"""ML.LABEL_ENCODER({sql_utils.identifier(numeric_expr_sql)}, {top_k}, {frequency_threshold}) OVER() AS {sql_utils.identifier(name)}"""
+        return f"""ML.LABEL_ENCODER({sg_sql.to_sql(sg_sql.identifier(numeric_expr_sql))}, {top_k}, {frequency_threshold}) OVER() AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_polynomial_expand(
         self, columns: Iterable[str], degree: int, name: str
@@ -182,7 +186,7 @@ class BaseSqlGenerator:
         """Encode ML.POLYNOMIAL_EXPAND.
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-polynomial-expand
         """
-        return f"""ML.POLYNOMIAL_EXPAND({self.struct_columns(columns)}, {degree}) AS {sql_utils.identifier(name)}"""
+        return f"""ML.POLYNOMIAL_EXPAND({self.struct_columns(columns)}, {degree}) AS {sg_sql.to_sql(sg_sql.identifier(name))}"""
 
     def ml_distance(
         self,
@@ -195,7 +199,7 @@ class BaseSqlGenerator:
         """Encode ML.DISTANCE for BQML.
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance
         """
-        return f"""SELECT *, ML.DISTANCE({sql_utils.identifier(col_x)}, {sql_utils.identifier(col_y)}, '{type}') AS {sql_utils.identifier(name)} FROM ({source_sql})"""
+        return f"""SELECT *, ML.DISTANCE({sg_sql.to_sql(sg_sql.identifier(col_x))}, {sg_sql.to_sql(sg_sql.identifier(col_y))}, '{type}') AS {sg_sql.to_sql(sg_sql.identifier(name))} FROM ({source_sql})"""
 
     def ai_forecast(
         self,
@@ -217,7 +221,7 @@ class ModelCreationSqlGenerator(BaseSqlGenerator):
         self,
         model_ref: google.cloud.bigquery.ModelReference,
     ):
-        return f"{sql_utils.identifier(model_ref.project)}.{sql_utils.identifier(model_ref.dataset_id)}.{sql_utils.identifier(model_ref.model_id)}"
+        return f"{sg_sql.to_sql(sg_sql.identifier(model_ref.project))}.{sg_sql.to_sql(sg_sql.identifier(model_ref.dataset_id))}.{sg_sql.to_sql(sg_sql.identifier(model_ref.model_id))}"
 
     # Model create and alter
     def create_model(
@@ -308,7 +312,7 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
         self._model_ref = model_ref
 
     def _model_ref_sql(self) -> str:
-        return f"{sql_utils.identifier(self._model_ref.project)}.{sql_utils.identifier(self._model_ref.dataset_id)}.{sql_utils.identifier(self._model_ref.model_id)}"
+        return f"{sg_sql.to_sql(sg_sql.identifier(self._model_ref.project))}.{sg_sql.to_sql(sg_sql.identifier(self._model_ref.dataset_id))}.{sg_sql.to_sql(sg_sql.identifier(self._model_ref.model_id))}"
 
     # Alter model
     def alter_model(

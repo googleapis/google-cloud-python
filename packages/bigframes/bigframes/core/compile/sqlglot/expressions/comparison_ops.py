@@ -22,7 +22,7 @@ import pandas as pd
 
 from bigframes import dtypes
 from bigframes import operations as ops
-from bigframes.core.compile.sqlglot import sqlglot_ir
+from bigframes.core.compile.sqlglot import sql
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
@@ -59,9 +59,9 @@ def _(expr: TypedExpr, op: ops.IsInOp) -> sge.Expression:
 
 @register_binary_op(ops.eq_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    if sqlglot_ir._is_null_literal(left.expr):
+    if sql.is_null_literal(left.expr):
         return sge.Is(this=right.expr, expression=sge.Null())
-    if sqlglot_ir._is_null_literal(right.expr):
+    if sql.is_null_literal(right.expr):
         return sge.Is(this=left.expr, expression=sge.Null())
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
@@ -140,12 +140,12 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.ne_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    if sqlglot_ir._is_null_literal(left.expr):
+    if sql.is_null_literal(left.expr):
         return sge.Is(
             this=sge.paren(right.expr, copy=False),
             expression=sg.not_(sge.Null(), copy=False),
         )
-    if sqlglot_ir._is_null_literal(right.expr):
+    if sql.is_null_literal(right.expr):
         return sge.Is(
             this=sge.paren(left.expr, copy=False),
             expression=sg.not_(sge.Null(), copy=False),

@@ -27,7 +27,7 @@ from bigframes_vendored import constants
 import bigframes_vendored.sklearn.compose._column_transformer
 from google.cloud import bigquery
 
-import bigframes.core.compile.sqlglot.sqlglot_ir as sql_utils
+from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.logging import log_adapter
 import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, impute, preprocessing, utils
@@ -111,9 +111,9 @@ class SQLScalarColumnTransformer:
         columns, _ = core_utils.get_standardized_ids(columns)
         result = []
         for column in columns:
-            current_sql = self._sql.format(sql_utils.identifier(column))
-            current_target_column = sql_utils.identifier(
-                self._target_column.format(column)
+            current_sql = self._sql.format(sg_sql.to_sql(sg_sql.identifier(column)))
+            current_target_column = sg_sql.to_sql(
+                sg_sql.identifier(self._target_column.format(column))
             )
             result.append(f"{current_sql} AS {current_target_column}")
         return result

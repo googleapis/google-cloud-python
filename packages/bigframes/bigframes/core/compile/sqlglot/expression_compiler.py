@@ -19,8 +19,8 @@ import typing
 import bigframes_vendored.sqlglot.expressions as sge
 
 import bigframes.core.agg_expressions as agg_exprs
+from bigframes.core.compile.sqlglot import sql
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
-import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 import bigframes.core.expression as ex
 import bigframes.operations as ops
 
@@ -77,7 +77,7 @@ class ExpressionCompiler:
 
     @compile_expression.register
     def _(self, expr: ex.ScalarConstantExpression) -> sge.Expression:
-        return ir._literal(expr.value, expr.dtype)
+        return sql.literal(expr.value, expr.dtype)
 
     @compile_expression.register
     def _(self, expr: agg_exprs.WindowExpression) -> sge.Expression:
