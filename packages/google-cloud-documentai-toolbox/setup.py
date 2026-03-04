@@ -41,7 +41,7 @@ setuptools.setup(
     name="google-cloud-documentai-toolbox",
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    url="https://github.com/googleapis/python-documentai-toolbox",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-documentai-toolbox",
     version=version,
     license="Apache 2.0",
     long_description=readme,

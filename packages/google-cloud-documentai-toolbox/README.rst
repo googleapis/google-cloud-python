@@ -121,4 +121,4 @@ Next Steps
 .. _`Client Library Documentation`: https://cloud.google.com/python/docs/reference/documentai-toolbox/latest
 .. _`Document AI documentation`:  https://cloud.google.com/document-ai
 .. _`Document AI product documentation`: https://cloud.google.com/document-ai/docs/overview
-.. _`README`: https://github.com/googleapis/python-documentai-toolbox/blob/main/README.rst
+.. _`README`: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
