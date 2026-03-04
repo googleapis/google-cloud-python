@@ -566,9 +566,8 @@ class TestGetWorkloadCertAndKey(object):
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {}
 
-        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key("")
-        assert actual_cert is None
-        assert actual_key is None
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._get_workload_cert_and_key("")
 
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch(
