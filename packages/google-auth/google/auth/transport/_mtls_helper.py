@@ -182,6 +182,7 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         return None, None
 
     data = _load_json_file(absolute_path)
+
     if "cert_configs" not in data:
         raise exceptions.ClientCertError(
             'Certificate config file {} is in an invalid format, a "cert configs" object is expected'.format(
