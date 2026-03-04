@@ -28,7 +28,7 @@ import pyarrow
 import pyarrow.compute
 
 from db_dtypes import core
-from db_dtypes.json import JSONArray, JSONDtype, JSONArrowType  # noqa: F401
+from db_dtypes.json import JSONArray, JSONArrowType, JSONDtype  # noqa: F401
 
 from . import _versions_helpers
 
