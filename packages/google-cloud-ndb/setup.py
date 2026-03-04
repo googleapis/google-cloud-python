@@ -57,10 +57,10 @@ def main():
         author="Google LLC",
         author_email="googleapis-packages@google.com",
         license="Apache 2.0",
-        url="https://github.com/googleapis/python-ndb",
+        url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ndb",
         project_urls={
             'Documentation': 'https://googleapis.dev/python/python-ndb/latest',
-            'Issue Tracker': 'https://github.com/googleapis/python-ndb/issues'
+            'Issue Tracker': 'https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ndb/issues'
         },
         classifiers=[
             "Development Status :: 5 - Production/Stable",

@@ -6,7 +6,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_MANUAL",
-    "repo": "googleapis/python-ndb",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-ndb",
     "default_version": "",
     "codeowner_team": "@googleapis/firestore-dpe @googleapis/gcs-sdk-team",
