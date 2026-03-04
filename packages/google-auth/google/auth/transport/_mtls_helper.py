@@ -191,28 +191,21 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         )
     cert_configs = data["cert_configs"]
 
+    # We return None, None if the expected workload fields are not present.
+    # The certificate config might be present for other types of connections (e.g. gECC),
+    # and we want to gracefully fallback to testing other mTLS configurations
+    # like SecureConnect instead of throwing an exception.
+
     if "workload" not in cert_configs:
-        raise exceptions.ClientCertError(
-            'Certificate config file {} is in an invalid format, a "workload" cert config is expected'.format(
-                absolute_path
-            )
-        )
+        return None, None
     workload = cert_configs["workload"]
 
     if "cert_path" not in workload:
-        raise exceptions.ClientCertError(
-            'Certificate config file {} is in an invalid format, a "cert_path" is expected in the workload cert config'.format(
-                absolute_path
-            )
-        )
+        return None, None
     cert_path = workload["cert_path"]
 
     if "key_path" not in workload:
-        raise exceptions.ClientCertError(
-            'Certificate config file {} is in an invalid format, a "key_path" is expected in the workload cert config'.format(
-                absolute_path
-            )
-        )
+        return None, None
     key_path = workload["key_path"]
 
     # == BEGIN Temporary Cloud Run PATCH ==

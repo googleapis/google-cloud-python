@@ -99,6 +99,25 @@ class TestSessionsMtls:
                 await session.configure_mtls_channel()
 
     @pytest.mark.asyncio
+    async def test_configure_mtls_channel_invalud_fields(self):
+        """
+        If cert is missing expected keys, it should fail gracefully
+        """
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data='{"cert_configs": {}}')
+        ):
+            mock_exists.return_value = True
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+
+            await session.configure_mtls_channel()
+
+            # If the file couldn't be parsed, it shouldn't error; it just won't use mTLS
+            assert session._is_mtls is False
+
+    @pytest.mark.asyncio
     async def test_configure_mtls_channel_mock_callback(self):
         """
         Tests mTLS configuration using bytes-returning callback.
