@@ -532,6 +532,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             url_scheme (str): the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[AsyncCloudRedisRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
         """
         # Run the base constructor
         super().__init__(
