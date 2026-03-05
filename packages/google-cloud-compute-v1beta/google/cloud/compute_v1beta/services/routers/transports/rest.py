@@ -88,6 +88,14 @@ class RoutersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_named_set(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_named_set(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_route_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -101,6 +109,14 @@ class RoutersRestInterceptor:
                 return request, metadata
 
             def post_get(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_named_set(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_named_set(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -160,6 +176,14 @@ class RoutersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_named_sets(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_named_sets(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_route_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -173,6 +197,14 @@ class RoutersRestInterceptor:
                 return request, metadata
 
             def post_patch(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_patch_named_set(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_patch_named_set(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -205,6 +237,14 @@ class RoutersRestInterceptor:
                 return request, metadata
 
             def post_update(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_named_set(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_named_set(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -314,6 +354,52 @@ class RoutersRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_named_set(
+        self,
+        request: compute.DeleteNamedSetRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteNamedSetRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_named_set
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_delete_named_set(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for delete_named_set
+
+        DEPRECATED. Please use the `post_delete_named_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_delete_named_set` interceptor runs
+        before the `post_delete_named_set_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_named_set_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_named_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_delete_named_set_with_metadata`
+        interceptor in new development instead of the `post_delete_named_set` interceptor.
+        When both interceptors are used, this `post_delete_named_set_with_metadata` interceptor runs after the
+        `post_delete_named_set` interceptor. The (possibly modified) response returned by
+        `post_delete_named_set` will be passed to
+        `post_delete_named_set_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_route_policy(
         self,
         request: compute.DeleteRoutePolicyRouterRequest,
@@ -403,6 +489,56 @@ class RoutersRestInterceptor:
         `post_get` interceptor. The (possibly modified) response returned by
         `post_get` will be passed to
         `post_get_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_named_set(
+        self,
+        request: compute.GetNamedSetRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetNamedSetRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_named_set
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_get_named_set(
+        self, response: compute.RoutersGetNamedSetResponse
+    ) -> compute.RoutersGetNamedSetResponse:
+        """Post-rpc interceptor for get_named_set
+
+        DEPRECATED. Please use the `post_get_named_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_get_named_set` interceptor runs
+        before the `post_get_named_set_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_named_set_with_metadata(
+        self,
+        response: compute.RoutersGetNamedSetResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.RoutersGetNamedSetResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_named_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_get_named_set_with_metadata`
+        interceptor in new development instead of the `post_get_named_set` interceptor.
+        When both interceptors are used, this `post_get_named_set_with_metadata` interceptor runs after the
+        `post_get_named_set` interceptor. The (possibly modified) response returned by
+        `post_get_named_set` will be passed to
+        `post_get_named_set_with_metadata`.
         """
         return response, metadata
 
@@ -738,6 +874,54 @@ class RoutersRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_named_sets(
+        self,
+        request: compute.ListNamedSetsRoutersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListNamedSetsRoutersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_named_sets
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_list_named_sets(
+        self, response: compute.RoutersListNamedSets
+    ) -> compute.RoutersListNamedSets:
+        """Post-rpc interceptor for list_named_sets
+
+        DEPRECATED. Please use the `post_list_named_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_list_named_sets` interceptor runs
+        before the `post_list_named_sets_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_named_sets_with_metadata(
+        self,
+        response: compute.RoutersListNamedSets,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.RoutersListNamedSets, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_named_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_list_named_sets_with_metadata`
+        interceptor in new development instead of the `post_list_named_sets` interceptor.
+        When both interceptors are used, this `post_list_named_sets_with_metadata` interceptor runs after the
+        `post_list_named_sets` interceptor. The (possibly modified) response returned by
+        `post_list_named_sets` will be passed to
+        `post_list_named_sets_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_route_policies(
         self,
         request: compute.ListRoutePoliciesRoutersRequest,
@@ -829,6 +1013,52 @@ class RoutersRestInterceptor:
         `post_patch` interceptor. The (possibly modified) response returned by
         `post_patch` will be passed to
         `post_patch_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_patch_named_set(
+        self,
+        request: compute.PatchNamedSetRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchNamedSetRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for patch_named_set
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_patch_named_set(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for patch_named_set
+
+        DEPRECATED. Please use the `post_patch_named_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_patch_named_set` interceptor runs
+        before the `post_patch_named_set_with_metadata` interceptor.
+        """
+        return response
+
+    def post_patch_named_set_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for patch_named_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_patch_named_set_with_metadata`
+        interceptor in new development instead of the `post_patch_named_set` interceptor.
+        When both interceptors are used, this `post_patch_named_set_with_metadata` interceptor runs after the
+        `post_patch_named_set` interceptor. The (possibly modified) response returned by
+        `post_patch_named_set` will be passed to
+        `post_patch_named_set_with_metadata`.
         """
         return response, metadata
 
@@ -1015,6 +1245,52 @@ class RoutersRestInterceptor:
         `post_update` interceptor. The (possibly modified) response returned by
         `post_update` will be passed to
         `post_update_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_named_set(
+        self,
+        request: compute.UpdateNamedSetRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.UpdateNamedSetRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_named_set
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Routers server.
+        """
+        return request, metadata
+
+    def post_update_named_set(self, response: compute.Operation) -> compute.Operation:
+        """Post-rpc interceptor for update_named_set
+
+        DEPRECATED. Please use the `post_update_named_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Routers server but before
+        it is returned to user code. This `post_update_named_set` interceptor runs
+        before the `post_update_named_set_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_named_set_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_named_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Routers server but before it is returned to user code.
+
+        We recommend only using this `post_update_named_set_with_metadata`
+        interceptor in new development instead of the `post_update_named_set` interceptor.
+        When both interceptors are used, this `post_update_named_set_with_metadata` interceptor runs after the
+        `post_update_named_set` interceptor. The (possibly modified) response returned by
+        `post_update_named_set` will be passed to
+        `post_update_named_set_with_metadata`.
         """
         return response, metadata
 
@@ -1479,6 +1755,186 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                 )
             return resp
 
+    class _DeleteNamedSet(
+        _BaseRoutersRestTransport._BaseDeleteNamedSet, RoutersRestStub
+    ):
+        def __hash__(self):
+            return hash("RoutersRestTransport.DeleteNamedSet")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.DeleteNamedSetRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the delete named set method over HTTP.
+
+            Args:
+                request (~.compute.DeleteNamedSetRouterRequest):
+                    The request object. A request message for
+                Routers.DeleteNamedSet. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseDeleteNamedSet._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_named_set(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseRoutersRestTransport._BaseDeleteNamedSet._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseDeleteNamedSet._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.RoutersClient.DeleteNamedSet",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "DeleteNamedSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._DeleteNamedSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_named_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_named_set_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.RoutersClient.delete_named_set",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "DeleteNamedSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteRoutePolicy(
         _BaseRoutersRestTransport._BaseDeleteRoutePolicy, RoutersRestStub
     ):
@@ -1796,6 +2252,156 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                     extra={
                         "serviceName": "google.cloud.compute.v1beta.Routers",
                         "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetNamedSet(_BaseRoutersRestTransport._BaseGetNamedSet, RoutersRestStub):
+        def __hash__(self):
+            return hash("RoutersRestTransport.GetNamedSet")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.GetNamedSetRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.RoutersGetNamedSetResponse:
+            r"""Call the get named set method over HTTP.
+
+            Args:
+                request (~.compute.GetNamedSetRouterRequest):
+                    The request object. A request message for
+                Routers.GetNamedSet. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.RoutersGetNamedSetResponse:
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseGetNamedSet._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_named_set(request, metadata)
+            transcoded_request = (
+                _BaseRoutersRestTransport._BaseGetNamedSet._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseGetNamedSet._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.RoutersClient.GetNamedSet",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "GetNamedSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._GetNamedSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.RoutersGetNamedSetResponse()
+            pb_resp = compute.RoutersGetNamedSetResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_named_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_named_set_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RoutersGetNamedSetResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.RoutersClient.get_named_set",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "GetNamedSet",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2876,6 +3482,154 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                 )
             return resp
 
+    class _ListNamedSets(_BaseRoutersRestTransport._BaseListNamedSets, RoutersRestStub):
+        def __hash__(self):
+            return hash("RoutersRestTransport.ListNamedSets")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.ListNamedSetsRoutersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.RoutersListNamedSets:
+            r"""Call the list named sets method over HTTP.
+
+            Args:
+                request (~.compute.ListNamedSetsRoutersRequest):
+                    The request object. A request message for
+                Routers.ListNamedSets. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.RoutersListNamedSets:
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseListNamedSets._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_named_sets(request, metadata)
+            transcoded_request = (
+                _BaseRoutersRestTransport._BaseListNamedSets._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseListNamedSets._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.RoutersClient.ListNamedSets",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "ListNamedSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._ListNamedSets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.RoutersListNamedSets()
+            pb_resp = compute.RoutersListNamedSets.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_named_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_named_sets_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.RoutersListNamedSets.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.RoutersClient.list_named_sets",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "ListNamedSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListRoutePolicies(
         _BaseRoutersRestTransport._BaseListRoutePolicies, RoutersRestStub
     ):
@@ -3199,6 +3953,188 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                     extra={
                         "serviceName": "google.cloud.compute.v1beta.Routers",
                         "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _PatchNamedSet(_BaseRoutersRestTransport._BasePatchNamedSet, RoutersRestStub):
+        def __hash__(self):
+            return hash("RoutersRestTransport.PatchNamedSet")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.PatchNamedSetRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the patch named set method over HTTP.
+
+            Args:
+                request (~.compute.PatchNamedSetRouterRequest):
+                    The request object. A request message for
+                Routers.PatchNamedSet. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BasePatchNamedSet._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_patch_named_set(request, metadata)
+            transcoded_request = (
+                _BaseRoutersRestTransport._BasePatchNamedSet._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseRoutersRestTransport._BasePatchNamedSet._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BasePatchNamedSet._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.RoutersClient.PatchNamedSet",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "PatchNamedSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._PatchNamedSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_patch_named_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_patch_named_set_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.RoutersClient.patch_named_set",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "PatchNamedSet",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3876,6 +4812,192 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
                 )
             return resp
 
+    class _UpdateNamedSet(
+        _BaseRoutersRestTransport._BaseUpdateNamedSet, RoutersRestStub
+    ):
+        def __hash__(self):
+            return hash("RoutersRestTransport.UpdateNamedSet")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.UpdateNamedSetRouterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.Operation:
+            r"""Call the update named set method over HTTP.
+
+            Args:
+                request (~.compute.UpdateNamedSetRouterRequest):
+                    The request object. A request message for
+                Routers.UpdateNamedSet. See the method
+                description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
+                Note that completed Operation resources have a limited
+                retention period.
+
+            """
+
+            http_options = (
+                _BaseRoutersRestTransport._BaseUpdateNamedSet._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_named_set(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseRoutersRestTransport._BaseUpdateNamedSet._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseRoutersRestTransport._BaseUpdateNamedSet._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseRoutersRestTransport._BaseUpdateNamedSet._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.RoutersClient.UpdateNamedSet",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "UpdateNamedSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RoutersRestTransport._UpdateNamedSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.Operation()
+            pb_resp = compute.Operation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_named_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_named_set_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.RoutersClient.update_named_set",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Routers",
+                        "rpcName": "UpdateNamedSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateRoutePolicy(
         _BaseRoutersRestTransport._BaseUpdateRoutePolicy, RoutersRestStub
     ):
@@ -4077,6 +5199,14 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_named_set(
+        self,
+    ) -> Callable[[compute.DeleteNamedSetRouterRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteNamedSet(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_route_policy(
         self,
     ) -> Callable[[compute.DeleteRoutePolicyRouterRequest], compute.Operation]:
@@ -4089,6 +5219,16 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_named_set(
+        self,
+    ) -> Callable[
+        [compute.GetNamedSetRouterRequest], compute.RoutersGetNamedSetResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetNamedSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_nat_ip_info(
@@ -4147,6 +5287,14 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         return self._ListBgpRoutes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_named_sets(
+        self,
+    ) -> Callable[[compute.ListNamedSetsRoutersRequest], compute.RoutersListNamedSets]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListNamedSets(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_route_policies(
         self,
     ) -> Callable[
@@ -4161,6 +5309,14 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def patch_named_set(
+        self,
+    ) -> Callable[[compute.PatchNamedSetRouterRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PatchNamedSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch_route_policy(
@@ -4193,6 +5349,14 @@ class RoutersRestTransport(_BaseRoutersRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Update(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_named_set(
+        self,
+    ) -> Callable[[compute.UpdateNamedSetRouterRequest], compute.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateNamedSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_route_policy(
