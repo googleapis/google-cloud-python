@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.49.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.48.0...google-auth-v2.49.0) (2026-03-05)
+
+
+### Features
+
+* mTLS configuration via x.509 for asynchronous session in google-auth (#1959) ([7b70feade1d336b49f66de55d776a5e6ebcc5928](https://github.com/googleapis/google-cloud-python/commit/7b70feade1d336b49f66de55d776a5e6ebcc5928))
+* Support timeout as aiohttp.ClientTimeout and total_attempts (max retries) in AsyncAuthorizedSession (#1961) ([4d818b93a6c9a5a2526264174b368d47728b513b](https://github.com/googleapis/google-cloud-python/commit/4d818b93a6c9a5a2526264174b368d47728b513b))
+* Add helper methods for asynchronous x.509 certificate discovery (#1956) ([3368f27c3267c744ffb067f612c1202954b9b14b](https://github.com/googleapis/google-cloud-python/commit/3368f27c3267c744ffb067f612c1202954b9b14b))
+* support an alternative env to decide if mtls should be enabled (#1945) ([89fc6f2e1fd6c6fcf4b3945961b2dfde98631e72](https://github.com/googleapis/google-cloud-python/commit/89fc6f2e1fd6c6fcf4b3945961b2dfde98631e72))
+
+
+### Bug Fixes
+
+* gracefully fallback if workload fields are missing from cert config (#16022) ([3ed2d6804bcacfdfd74e223d30492d90e606ea98](https://github.com/googleapis/google-cloud-python/commit/3ed2d6804bcacfdfd74e223d30492d90e606ea98))
+
 ## [2.48.0](https://github.com/googleapis/google-auth-library-python/compare/v2.47.0...v2.48.0) (2026-01-22)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.10.0...google-cloud-documentai-v3.11.0) (2026-03-05)
+
+
+### Features
+
+* Added a field for enabling image and table annotation for layout parser processor ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
 ## [3.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.9.0...google-cloud-documentai-v3.10.0) (2026-02-12)
 
 
