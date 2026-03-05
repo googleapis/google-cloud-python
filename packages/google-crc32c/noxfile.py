@@ -153,3 +153,21 @@ def core_deps_from_source(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
+
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+def unit(session):
+    """Run all unit tests.
+    """
+    session.skip("Unit tests are not supported")
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docs(session):
+    """Run all docs tests.
+    """
+    session.skip("Docs tests are not supported")
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docfx(session):
+    """Run all docfx tests.
+    """
+    session.skip("Docfx tests are not supported")
