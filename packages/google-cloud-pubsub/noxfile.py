@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-#
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,21 +25,23 @@ import os
 import pathlib
 import re
 import shutil
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
-FLAKE8_VERSION = "flake8==6.1.0"
-BLACK_VERSION = "black[jupyter]==23.7.0"
-ISORT_VERSION = "isort==5.11.0"
+RUFF_VERSION = "ruff==0.14.14"
+
 LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
 
 MYPY_VERSION = "mypy==1.10.0"
+# Add samples to the list of directories to format if the directory exists.
+if os.path.isdir("samples"):
+    LINT_PATHS.append("samples")
 
-DEFAULT_PYTHON_VERSION = "3.14"
-
-UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+ALL_PYTHON = [
+    "3.7",
+    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -48,6 +49,19 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
+
+DEFAULT_PYTHON_VERSION = "3.14"
+
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+# Switch this to Python 3.15 alpha1
+# https://peps.python.org/pep-0790/
+PREVIEW_PYTHON_VERSION = "3.14"
+
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
+LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
+PACKAGE_NAME = "google-cloud-pubsub"
+
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -155,21 +169,35 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -177,19 +205,31 @@ def blacken(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
     session.run(
-        "isort",
-        "--fss",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
+
+    # 3. Run Ruff to format code
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
@@ -229,7 +269,7 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=["3.7", "3.8"] + UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -478,7 +518,7 @@ def prerelease_deps(session, protobuf_implementation):
     with open(
         CURRENT_DIRECTORY
         / "testing"
-        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        / f"constraints-{ALL_PYTHON[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
