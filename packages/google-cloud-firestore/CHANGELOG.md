@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.23.0...google-cloud-firestore-v2.24.0) (2026-03-05)
+
+
+### Documentation
+
+* Update documentation on several parameters, especially when relating to the new `enterprise` database edition ([5a17963a502e9af0dd36dd957c5caaa68ba8fa50](https://github.com/googleapis/google-cloud-python/commit/5a17963a502e9af0dd36dd957c5caaa68ba8fa50))
+
+
+### Features
+
+* Expose the `Database.firestore_data_access_mode` parameter ([5a17963a502e9af0dd36dd957c5caaa68ba8fa50](https://github.com/googleapis/google-cloud-python/commit/5a17963a502e9af0dd36dd957c5caaa68ba8fa50))
+* Expose the `Database.mongodb_compatible_data_access_mode` parameter ([5a17963a502e9af0dd36dd957c5caaa68ba8fa50](https://github.com/googleapis/google-cloud-python/commit/5a17963a502e9af0dd36dd957c5caaa68ba8fa50))
+* Expose the `Database.realtime_updates_mode` parameter ([5a17963a502e9af0dd36dd957c5caaa68ba8fa50](https://github.com/googleapis/google-cloud-python/commit/5a17963a502e9af0dd36dd957c5caaa68ba8fa50))
+* Expose the `Index.unique` parameter ([5a17963a502e9af0dd36dd957c5caaa68ba8fa50](https://github.com/googleapis/google-cloud-python/commit/5a17963a502e9af0dd36dd957c5caaa68ba8fa50))
+* use cryptographically secure random for new document ids (#1162) ([3619a31eb8be220ff77ee5ff3772a5530a09ae4b](https://github.com/googleapis/google-cloud-python/commit/3619a31eb8be220ff77ee5ff3772a5530a09ae4b))
+
+
+### Bug Fixes
+
+* improve pipeline create_from (#1158) ([d7717421de522212071a80d4909a67f193196364](https://github.com/googleapis/google-cloud-python/commit/d7717421de522212071a80d4909a67f193196364))
+
 ## [2.23.0](https://github.com/googleapis/python-firestore/compare/v2.22.0...v2.23.0) (2026-01-14)
 
 

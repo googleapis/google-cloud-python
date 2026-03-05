@@ -214,7 +214,7 @@ libraries:
       - packages/google-area120-tables/
     tag_format: '{id}-v{version}'
   - id: google-auth
-    version: 2.48.0
+    version: 2.49.0
     last_generated_commit: ""
     apis: []
     source_roots:
@@ -1767,7 +1767,7 @@ libraries:
       - packages/google-cloud-financialservices/
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
-    version: 2.23.0
+    version: 2.24.0
     last_generated_commit: d420134ab324c0cbe0f4ae06ad9697dac77f26ad
     apis:
       - path: google/firestore/admin/v1
@@ -1969,7 +1969,7 @@ libraries:
       - packages/google-cloud-gsuiteaddons
     tag_format: '{id}-v{version}'
   - id: google-cloud-hypercomputecluster
-    version: 0.2.0
+    version: 0.3.0
     last_generated_commit: 23ec7b6ee94a2fe364cdb5a212949f1cf37f85ad
     apis:
       - path: google/cloud/hypercomputecluster/v1beta
@@ -2142,7 +2142,7 @@ libraries:
       - packages/google-cloud-locationfinder/
     tag_format: '{id}-v{version}'
   - id: google-cloud-logging
-    version: 3.13.0
+    version: 3.14.0
     last_generated_commit: 69bf99a9d0910fa86c3c5867ea357aa004dfcc55
     apis:
       - path: google/logging/v2
