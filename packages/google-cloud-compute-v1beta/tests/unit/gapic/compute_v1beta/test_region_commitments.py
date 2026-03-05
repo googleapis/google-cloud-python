@@ -3933,6 +3933,7 @@ def test_insert_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "params": {"resource_manager_tags": {}},
                 "protection_tier": "protection_tier_value",
                 "reservation_mode": "reservation_mode_value",
                 "reservation_sharing_policy": {
@@ -4661,6 +4662,7 @@ def test_update_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "params": {"resource_manager_tags": {}},
                 "protection_tier": "protection_tier_value",
                 "reservation_mode": "reservation_mode_value",
                 "reservation_sharing_policy": {
@@ -5028,6 +5030,7 @@ def test_update_reservations_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "params": {"resource_manager_tags": {}},
                 "protection_tier": "protection_tier_value",
                 "reservation_mode": "reservation_mode_value",
                 "reservation_sharing_policy": {

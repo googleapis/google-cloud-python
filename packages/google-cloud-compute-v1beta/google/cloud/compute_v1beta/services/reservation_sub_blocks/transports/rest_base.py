@@ -106,7 +106,7 @@ class _BaseReservationSubBlocksRestTransport(ReservationSubBlocksTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}",
                 },
             ]
             return http_options
@@ -152,7 +152,7 @@ class _BaseReservationSubBlocksRestTransport(ReservationSubBlocksTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_resource}/reservationSubBlocks/{resource}/getIamPolicy",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_resource=reservations/*/reservationBlocks/*}/reservationSubBlocks/{resource}/getIamPolicy",
                 },
             ]
             return http_options
@@ -198,7 +198,7 @@ class _BaseReservationSubBlocksRestTransport(ReservationSubBlocksTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks",
                 },
             ]
             return http_options
@@ -244,7 +244,7 @@ class _BaseReservationSubBlocksRestTransport(ReservationSubBlocksTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}/performMaintenance",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}/performMaintenance",
                 },
             ]
             return http_options
@@ -292,7 +292,7 @@ class _BaseReservationSubBlocksRestTransport(ReservationSubBlocksTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}/reportFaulty",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}/reportFaulty",
                     "body": "reservation_sub_blocks_report_faulty_request_resource",
                 },
             ]
@@ -348,7 +348,7 @@ class _BaseReservationSubBlocksRestTransport(ReservationSubBlocksTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_resource}/reservationSubBlocks/{resource}/setIamPolicy",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_resource=reservations/*/reservationBlocks/*}/reservationSubBlocks/{resource}/setIamPolicy",
                     "body": "zone_set_nested_policy_request_resource",
                 },
             ]
@@ -404,7 +404,7 @@ class _BaseReservationSubBlocksRestTransport(ReservationSubBlocksTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_resource}/reservationSubBlocks/{resource}/testIamPermissions",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/{parent_resource=reservations/*/reservationBlocks/*}/reservationSubBlocks/{resource}/testIamPermissions",
                     "body": "test_permissions_request_resource",
                 },
             ]
