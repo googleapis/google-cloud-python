@@ -392,3 +392,19 @@ def system(session):
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
+
+
+@nox.session(python=DEFAULT_INTERPRETER)
+def core_deps_from_source(session):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Enable this test once this bug is fixed.
+    session.skip("Temporarily skip core_deps_from_source. See issue 16014")
+
+
+@nox.session(python=DEFAULT_INTERPRETER)
+def mypy(session):
+    """Run the type checker."""
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Enable mypy once this bug is fixed.
+    session.skip("Temporarily skip mypy. See issue 16014")
