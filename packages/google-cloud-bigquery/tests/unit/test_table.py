@@ -4092,6 +4092,7 @@ class TestRowIterator(unittest.TestCase):
 
     def test_to_dataframe_tqdm_error(self):
         pytest.importorskip("pandas")
+        pytest.importorskip("matplotlib")
         tqdm = pytest.importorskip("tqdm")
         mock.patch("tqdm.tqdm_gui", new=None)
         mock.patch("tqdm.notebook.tqdm", new=None)
