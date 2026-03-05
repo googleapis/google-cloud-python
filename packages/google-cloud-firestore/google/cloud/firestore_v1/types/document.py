@@ -199,6 +199,14 @@ class Value(proto.Message):
             - Not allowed to be used when writing documents.
 
             This field is a member of `oneof`_ ``value_type``.
+        variable_reference_value (str):
+            Pointer to a variable defined elsewhere in a pipeline.
+
+            Unlike ``field_reference_value`` which references a field
+            within a document, this refers to a variable, defined in a
+            separate namespace than the fields of a document.
+
+            This field is a member of `oneof`_ ``value_type``.
         function_value (google.cloud.firestore_v1.types.Function):
             A value that represents an unevaluated expression.
 
@@ -280,6 +288,11 @@ class Value(proto.Message):
     field_reference_value: str = proto.Field(
         proto.STRING,
         number=19,
+        oneof="value_type",
+    )
+    variable_reference_value: str = proto.Field(
+        proto.STRING,
+        number=22,
         oneof="value_type",
     )
     function_value: "Function" = proto.Field(
