@@ -294,7 +294,9 @@ def unit(session, test_type):
 
     # Compliance tests only run on the latest Python version
     if test_type == "compliance" and session.python != DEFAULT_PYTHON_VERSION:
-        session.skip(f"Compliance tests are only run on the latest Python: {DEFAULT_PYTHON_VERSION}")
+        session.skip(
+            f"Compliance tests are only run on the latest Python: {DEFAULT_PYTHON_VERSION}"
+        )
 
     default(session, os.path.join("tests", test_type))
 
