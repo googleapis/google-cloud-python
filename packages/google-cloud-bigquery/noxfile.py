@@ -505,7 +505,7 @@ def lint(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
-    session.install("docutils", "Pygments")
+    session.install("setuptools", "docutils", "Pygments")
     session.run("python", "-m", "pip", "freeze")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 

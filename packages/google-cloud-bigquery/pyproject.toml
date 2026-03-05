@@ -19,8 +19,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "google-cloud-bigquery"
 authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
-license = "Apache-2.0"
-license-files = ["LICENSE"]
+license = { text = "Apache 2.0" }
 requires-python = ">=3.8"
 description = "Google BigQuery API client library"
 readme = "README.rst"
