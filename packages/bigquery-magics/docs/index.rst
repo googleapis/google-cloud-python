@@ -39,4 +39,4 @@ For a list of all ``bigquery-magics`` releases:
 .. toctree::
   :maxdepth: 2
 
-  changelog
+  CHANGELOG
