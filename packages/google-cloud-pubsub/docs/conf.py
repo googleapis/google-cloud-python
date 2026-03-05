@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+##
 # google-cloud-pubsub documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
@@ -24,9 +24,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
+import logging
 import os
 import shlex
+import sys
+from typing import Any
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -42,7 +44,7 @@ __version__ = ""
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = "1.5.5"
+needs_sphinx = "4.5.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -81,7 +83,7 @@ root_doc = "index"
 
 # General information about the project.
 project = "google-cloud-pubsub"
-copyright = "2019, Google"
+copyright = "2025, Google, LLC"
 author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -154,9 +156,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-pubsub",
+    "description": "Google Client Libraries for google-cloud-pubsub",
     "github_user": "googleapis",
-    "github_repo": "python-pubsub",
+    "github_repo": "google-cloud-python",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -266,13 +268,13 @@ suppress_warnings = [
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #'papersize': 'letterpaper',
+    # 'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').
-    #'pointsize': '10pt',
+    # 'pointsize': '10pt',
     # Additional stuff for the LaTeX preamble.
-    #'preamble': '',
+    # 'preamble': '',
     # Latex figure (float) alignment
-    #'figure_align': 'htbp',
+    # 'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -382,3 +384,34 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+
+# Setup for sphinx behaviors such as warning filters.
+class UnexpectedUnindentFilter(logging.Filter):
+    """Filter out warnings about unexpected unindentation following bullet lists."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """Filter the log record.
+
+        Args:
+            record (logging.LogRecord): The log record.
+
+        Returns:
+            bool: False to suppress the warning, True to allow it.
+        """
+        msg = record.getMessage()
+        if "Bullet list ends without a blank line" in msg:
+            return False
+        return True
+
+
+def setup(app: Any) -> None:
+    """Setup the Sphinx application.
+
+    Args:
+        app (Any): The Sphinx application.
+    """
+    # Sphinx's logger is hierarchical. Adding a filter to the
+    # root 'sphinx' logger will catch warnings from all sub-loggers.
+    logger = logging.getLogger("sphinx")
+    logger.addFilter(UnexpectedUnindentFilter())
