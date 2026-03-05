@@ -19,7 +19,8 @@ from unittest import mock
 
 from pyasn1_modules import pem  # type: ignore
 import pytest  # type: ignore
-import rsa  # type: ignore
+
+rsa = pytest.importorskip("rsa")
 
 from google.auth import _helpers
 from google.auth.crypt import _python_rsa

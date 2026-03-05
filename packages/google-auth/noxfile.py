@@ -115,7 +115,8 @@ def mypy(session):
 
 
 @nox.session(python=ALL_PYTHON)
-def unit(session):
+@nox.parametrize(["install_deprecated_extras"], (True, False))
+def unit(session, install_deprecated_extras):
     # Install all test dependencies, then install this package in-place.
 
     if session.python in ("3.7",):
@@ -124,7 +125,13 @@ def unit(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install("-e", ".[testing]", "-c", constraints_path)
+    extras_str = "testing"
+    if install_deprecated_extras:
+        # rsa and oauth2client were both archived and support dropped,
+        # but we still  test old code paths
+        session.install("oauth2client")
+        extras_str += ",rsa"
+    session.install("-e", f".[{extras_str}]", "-c", constraints_path)
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",

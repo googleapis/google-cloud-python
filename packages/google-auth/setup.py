@@ -51,8 +51,6 @@ testing_extra_require = [
     "grpcio",
     "flask",
     "freezegun",
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1736): Remove `oauth2client` from testing requirements once an extra is added for `oauth2client` dependency.
-    "oauth2client",
     *pyjwt_extra_require,
     "pytest",
     "pytest-cov",
@@ -72,8 +70,6 @@ testing_extra_require = [
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1722): `test_aiohttp_requests` depend on
     # aiohttp < 3.10.0 which is a bug. Investigate and remove the pinned aiohttp version.
     "aiohttp < 3.10.0",
-    # rsa library was removed as a dependency, but we still have some code paths that support it
-    *rsa_extra_require,
 ]
 
 extras = {
