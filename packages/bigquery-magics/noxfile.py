@@ -185,7 +185,7 @@ def format(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
+    session.install("docutils", "pygments", "setuptools")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
@@ -308,6 +308,10 @@ def system(session):
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.skip("Credentials must be set via environment variable.")
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
@@ -530,6 +534,10 @@ def prerelease_deps(session, protobuf_implementation):
     system_test_folder_path = os.path.join("tests", "system")
 
     # Only run system tests if found.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set.")
+        return
+
     if os.path.exists(system_test_path):
         session.run(
             "py.test",
