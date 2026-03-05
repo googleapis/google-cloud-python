@@ -157,7 +157,7 @@ def core_deps_from_source(session):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run all unit tests.
     """
