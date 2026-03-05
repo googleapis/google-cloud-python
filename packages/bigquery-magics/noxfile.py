@@ -32,9 +32,13 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "bigquery_magics", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.11", "3.12", "3.13", "3.14"]
+
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+ALL_PYTHON.extend(["3.7"])
+
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -123,6 +127,9 @@ nox.options.sessions = [
     "docs",
     "docfx",
     "format",
+    "prerelease_deps",
+    "core_deps_from_source",
+    "mypy",
 ]
 
 # Error if a python version is missing
@@ -210,13 +217,16 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
+
+    if session.python in ("3.7",):
+        session.skip("Python 3.7 is no longer supported")
 
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
@@ -423,7 +433,7 @@ def docfx(session):
     )
 
 
-@nox.session(python="3.13")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -542,3 +552,21 @@ def prerelease_deps(session, protobuf_implementation):
                 "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
             },
         )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run the type checker."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add mypy tests
+    session.skip("mypy tests are not yet supported")
