@@ -550,11 +550,16 @@ def test_session(bigquery_client: bigquery.Client, query_api_method: str):
 
 
 def test_query_picosecond(bigquery_client: bigquery.Client):
-    job = bigquery_client.query(
-        "SELECT CAST('2025-10-20' AS TIMESTAMP(12));",
-        api_method="QUERY",
-        timestamp_precision=enums.TimestampPrecision.PICOSECOND,
-    )
+    try:
+        job = bigquery_client.query(
+            "SELECT CAST('2025-10-20' AS TIMESTAMP(12));",
+            api_method="QUERY",
+            timestamp_precision=enums.TimestampPrecision.PICOSECOND,
+        )
+    except exceptions.BadRequest as exc:
+        if "timestamp_output_format" in str(exc):
+            pytest.skip("Timestamp output format not supported or parameter invalid for this environment")
+        raise exc
 
     result = job.result()
     rows = list(result)

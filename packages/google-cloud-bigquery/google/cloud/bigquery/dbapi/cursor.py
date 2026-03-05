@@ -213,6 +213,7 @@ class Cursor(object):
                     formatted_operation,
                     job_config=job_config,
                     job_id=job_id,
+                    job_retry=None,
                 ).result(
                     page_size=self.arraysize,
                 )

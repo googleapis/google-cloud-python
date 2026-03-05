@@ -110,10 +110,11 @@ def test_to_dataframe_nullable_scalars(
     assert df.dtypes["float64_col"].name == "float64"
     assert df.dtypes["int64_col"].name == "Int64"
     assert df.dtypes["numeric_col"].name == "object"
-    assert df.dtypes["string_col"].name == "object"
+    assert df.dtypes["string_col"].name in {"object", "string", "str", "O"}
     assert df.dtypes["time_col"].name == "dbtime"
-    assert df.dtypes["json_col"].name == "object"
-    if pandas.__version__.startswith("2."):
+    assert df.dtypes["json_col"].name in {"object", "string", "str", "O"}
+
+    if pandas.__version__.startswith(("2.", "3.")):
         assert df.dtypes["datetime_col"].name == "datetime64[us]"
         assert df.dtypes["timestamp_col"].name == "datetime64[us, UTC]"
     else:

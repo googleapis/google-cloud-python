@@ -234,7 +234,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_close_releases_open_sockets(self):
         current_process = psutil.Process()
-        conn_count_start = len(current_process.connections())
+        conn_count_start = len(current_process.net_connections())
 
         client = Config.CLIENT
         client.query(
@@ -250,7 +250,7 @@ class TestBigQuery(unittest.TestCase):
 
         client.close()
 
-        conn_count_end = len(current_process.connections())
+        conn_count_end = len(current_process.net_connections())
         self.assertLessEqual(conn_count_end, conn_count_start)
 
     def test_create_dataset(self):
@@ -601,7 +601,7 @@ class TestBigQuery(unittest.TestCase):
         # Insert rows into the created table to verify default values are populated
         # when value is not provided
         NOW_SECONDS = 1448911495.484366
-        NOW = datetime.datetime.utcfromtimestamp(NOW_SECONDS).replace(tzinfo=UTC)
+        NOW = datetime.datetime.fromtimestamp(NOW_SECONDS, datetime.timezone.utc)
 
         # Rows to insert. Row #1 will have default `TIMESTAMP` defaultValueExpression CURRENT_TIME
         # Row #2 will have default `STRING` defaultValueExpression "'FOO"
@@ -647,7 +647,13 @@ class TestBigQuery(unittest.TestCase):
         table_arg = Table(dataset.table(table_id), schema=SCHEMA_PICOSECOND)
         self.assertFalse(_table_exists(table_arg))
 
-        table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
+        try:
+            table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
+        except BadRequest as exc:
+            if "picosecond precision" in str(exc):
+                self.skipTest("Picosecond precision not supported in this environment")
+            raise exc
+
         self.to_delete.insert(0, table)
 
         self.assertTrue(_table_exists(table))
@@ -1056,7 +1062,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
-        NOW = datetime.datetime.utcfromtimestamp(NOW_SECONDS).replace(tzinfo=UTC)
+        NOW = datetime.datetime.fromtimestamp(NOW_SECONDS, datetime.timezone.utc)
         ROWS = [
             ("Phred Phlyntstone", 32, NOW),
             ("Bharney Rhubble", 33, NOW + datetime.timedelta(seconds=10)),
@@ -1295,6 +1301,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(tuple(table.schema), table_schema)
         self.assertEqual(table.num_rows, 2)
 
+
     def test_load_table_from_csv_w_picosecond_timestamp(self):
         dataset_id = _make_dataset_id("bq_system_test")
         self.temp_dataset(dataset_id)
@@ -1304,9 +1311,14 @@ class TestBigQuery(unittest.TestCase):
 
         table_schema = Config.CLIENT.schema_from_json(DATA_PATH / "pico_schema.json")
         # create the table before loading so that the column order is predictable
-        table = helpers.retry_403(Config.CLIENT.create_table)(
-            Table(table_id, schema=table_schema)
-        )
+        try:
+            table = helpers.retry_403(Config.CLIENT.create_table)(
+                Table(table_id, schema=table_schema)
+            )
+        except BadRequest as exc:
+            if "picosecond precision" in str(exc):
+                self.skipTest("Picosecond precision not supported in this environment")
+            raise exc
         self.to_delete.insert(0, table)
 
         # do not pass an explicit job config to trigger automatic schema detection
@@ -1843,8 +1855,11 @@ class TestBigQuery(unittest.TestCase):
         job_config = bigquery.QueryJobConfig()
         job_config.query_parameters = [PARAM]
 
+
         with self.assertRaises(BadRequest):
-            Config.CLIENT.query(QUERY, job_id=JOB_ID, job_config=job_config).result()
+            Config.CLIENT.query(
+                QUERY, job_id=JOB_ID, job_config=job_config, job_retry=None
+            ).result()
 
         job = Config.CLIENT.get_job(JOB_ID)
 
@@ -2137,7 +2152,7 @@ class TestBigQuery(unittest.TestCase):
     def test_dbapi_connection_does_not_leak_sockets(self):
         pytest.importorskip("google.cloud.bigquery_storage")
         current_process = psutil.Process()
-        conn_count_start = len(current_process.connections())
+        conn_count_start = len(current_process.net_connections())
 
         # Provide no explicit clients, so that the connection will create and own them.
         connection = dbapi.connect()
@@ -2155,7 +2170,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(rows), 100000)
 
         connection.close()
-        conn_count_end = len(current_process.connections())
+        conn_count_end = len(current_process.net_connections())
         self.assertLessEqual(conn_count_end, conn_count_start)
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):

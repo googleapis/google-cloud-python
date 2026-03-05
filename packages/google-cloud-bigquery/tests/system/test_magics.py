@@ -48,7 +48,7 @@ def ipython_interactive(ipython):
 def test_bigquery_magic(ipython_interactive):
     ip = IPython.get_ipython()
     current_process = psutil.Process()
-    conn_count_start = len(current_process.connections())
+    conn_count_start = len(current_process.net_connections())
 
     # Deprecated, but should still work in google-cloud-bigquery 3.x.
     with pytest.warns(FutureWarning, match="bigquery_magics"):
@@ -68,7 +68,7 @@ def test_bigquery_magic(ipython_interactive):
     with io.capture_output() as captured:
         result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
-    conn_count_end = len(current_process.connections())
+    conn_count_end = len(current_process.net_connections())
 
     lines = re.split("\n|\r", captured.stdout)
     # Removes blanks & terminal code (result of display clearing)

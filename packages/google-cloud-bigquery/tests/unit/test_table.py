@@ -3667,7 +3667,7 @@ class TestRowIterator(unittest.TestCase):
 
         df_1 = next(dfs)
         self.assertIsInstance(df_1, pandas.DataFrame)
-        self.assertEqual(df_1.name.dtype.name, "object")
+        self.assertIn(df_1.name.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df_1.age.dtype.name, "int64")
         self.assertEqual(len(df_1), 1)  # verify the number of rows
         self.assertEqual(
@@ -3709,7 +3709,7 @@ class TestRowIterator(unittest.TestCase):
 
         df_1 = next(dfs)
         self.assertIsInstance(df_1, pandas.DataFrame)
-        self.assertEqual(df_1.name.dtype.name, "object")
+        self.assertIn(df_1.name.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df_1.age.dtype.name, "int32")
         self.assertEqual(len(df_1), 1)  # verify the number of rows
         self.assertEqual(
@@ -3893,7 +3893,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 4)  # verify the number of rows
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
-        self.assertEqual(df.name.dtype.name, "object")
+        self.assertIn(df.name.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df.age.dtype.name, "Int64")
 
     def test_to_dataframe_timestamp_out_of_pyarrow_bounds(self):
@@ -4536,14 +4536,14 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.age.dtype.name, "int64")
         self.assertEqual(df.seconds.dtype.name, "int64")
         self.assertEqual(df.miles.dtype.name, "float64")
-        self.assertEqual(df.name.dtype.name, "object")
+        self.assertIn(df.name.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df.date.dtype.name, "datetime64[ns]")
         self.assertEqual(df.datetime.dtype.name, "datetime64[ns]")
-        self.assertEqual(df.time.dtype.name, "object")
+        self.assertIn(df.time.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df.timestamp.dtype.name, "datetime64[ns, UTC]")
-        self.assertEqual(df.range_timestamp.dtype.name, "object")
-        self.assertEqual(df.range_datetime.dtype.name, "object")
-        self.assertEqual(df.range_date.dtype.name, "object")
+        self.assertIn(df.range_timestamp.dtype.name, {"object", "string", "str", "O"})
+        self.assertIn(df.range_datetime.dtype.name, {"object", "string", "str", "O"})
+        self.assertIn(df.range_date.dtype.name, {"object", "string", "str", "O"})
 
     def test_to_dataframe_w_unsupported_dtypes_mapper(self):
         pytest.importorskip("pandas")
@@ -4650,7 +4650,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.seconds.dtype.name, "Int64")
         self.assertEqual(df.miles.dtype.name, "float64")
         self.assertEqual(df.km.dtype.name, "float16")
-        self.assertEqual(df.payment_type.dtype.name, "object")
+        self.assertIn(df.payment_type.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df.complete.dtype.name, "boolean")
         self.assertEqual(df.date.dtype.name, "dbdate")
 
@@ -4678,8 +4678,8 @@ class TestRowIterator(unittest.TestCase):
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 1)  # verify the number of rows
-        self.assertEqual(df["ts"].dtype.name, "object")
-        self.assertEqual(df["date"].dtype.name, "object")
+        self.assertIn(df["ts"].dtype.name, {"object", "string", "str", "O"})
+        self.assertIn(df["date"].dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df["ts"][0].date(), datetime.date(1336, 3, 23))
         self.assertEqual(df["date"][0], datetime.date(1111, 1, 1))
 
@@ -5303,7 +5303,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 2)
         self.assertEqual(list(df), ["name"])
-        self.assertEqual(df.name.dtype.name, "object")
+        self.assertIn(df.name.dtype.name, {"object", "string", "str", "O"})
         self.assertTrue(df.index.is_unique)
 
     def test_to_dataframe_w_bqstorage_raises_auth_error(self):
@@ -5461,14 +5461,13 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(got.index), total_rows)
 
         # Are column types correct?
-        expected_dtypes = [
-            pandas.core.dtypes.dtypes.np.dtype("O"),  # the default for string data
-            pandas.core.dtypes.dtypes.CategoricalDtype(
-                categories=["low", "medium", "high"],
-                ordered=False,
-            ),
-        ]
-        self.assertEqual(list(got.dtypes), expected_dtypes)
+        # Check col_str type flexibily for pandas 3+
+        self.assertIn(got.dtypes.iloc[0].name, {"object", "string", "str", "O"})
+        expected_cat_dtype = pandas.core.dtypes.dtypes.CategoricalDtype(
+            categories=["low", "medium", "high"],
+            ordered=False,
+        )
+        self.assertEqual(got.dtypes.iloc[1], expected_cat_dtype)
 
         # And the data in the categorical column?
         self.assertEqual(
@@ -5497,8 +5496,8 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 3)  # verify the number of rows
         self.assertEqual(list(df), ["name", "geog"])  # verify the column names
-        self.assertEqual(df.name.dtype.name, "object")
-        self.assertEqual(df.geog.dtype.name, "object")
+        self.assertIn(df.name.dtype.name, {"object", "string", "str", "O"})
+        self.assertIn(df.geog.dtype.name, {"object", "string", "str", "O"})
         self.assertIsInstance(df.geog, pandas.Series)
         self.assertEqual(
             [v.__class__.__name__ for v in df.geog], ["Point", "float", "Polygon"]
@@ -5529,7 +5528,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(df, geopandas.GeoDataFrame)
         self.assertEqual(len(df), 3)  # verify the number of rows
         self.assertEqual(list(df), ["name", "geog"])  # verify the column names
-        self.assertEqual(df.name.dtype.name, "object")
+        self.assertIn(df.name.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df.geog.dtype.name, "geometry")
         self.assertIsInstance(df.geog, geopandas.GeoSeries)
 
@@ -5607,9 +5606,9 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(df, geopandas.GeoDataFrame)
         self.assertEqual(len(df), 3)  # verify the number of rows
         self.assertEqual(list(df), ["name", "geog", "geog2"])  # verify the column names
-        self.assertEqual(df.name.dtype.name, "object")
+        self.assertIn(df.name.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df.geog.dtype.name, "geometry")
-        self.assertEqual(df.geog2.dtype.name, "object")
+        self.assertIn(df.geog2.dtype.name, {"object", "string", "str", "O"})
         self.assertIsInstance(df.geog, geopandas.GeoSeries)
 
         with warnings.catch_warnings():
@@ -5690,7 +5689,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(df, geopandas.GeoDataFrame)
         self.assertEqual(len(df), 1)  # verify the number of rows
         self.assertEqual(list(df), ["name", "g"])  # verify the column names
-        self.assertEqual(df.name.dtype.name, "object")
+        self.assertIn(df.name.dtype.name, {"object", "string", "str", "O"})
         self.assertEqual(df.g.dtype.name, "geometry")
         self.assertIsInstance(df.g, geopandas.GeoSeries)
 

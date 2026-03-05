@@ -707,11 +707,11 @@ def test_to_dataframe_column_dtypes():
     assert df.seconds.dtype.name == "Int64"
     assert df.miles.dtype.name == "float64"
     assert df.km.dtype.name == "float16"
-    assert df.payment_type.dtype.name == "object"
+    assert df.payment_type.dtype.name in {"object", "string", "str", "O"}
     assert df.complete.dtype.name == "boolean"
     assert df.date.dtype.name == "dbdate"
 
-    if pandas.__version__.startswith("2."):
+    if pandas.__version__.startswith(("2.", "3.")):
         assert df.start_timestamp.dtype.name == "datetime64[us, UTC]"
     else:
         assert df.start_timestamp.dtype.name == "datetime64[ns, UTC]"

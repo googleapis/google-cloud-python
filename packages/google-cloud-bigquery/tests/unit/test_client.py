@@ -767,7 +767,7 @@ class TestClient(unittest.TestCase):
 
         for dataset_view_arg, expected_param_value in test_cases:
             with self.subTest(
-                dataset_view_arg=dataset_view_arg,
+                dataset_view_arg=str(dataset_view_arg),
                 expected_param_value=expected_param_value,
             ):
                 # Re-initialize the connection mock for each sub-test to reset side_effect
@@ -807,7 +807,7 @@ class TestClient(unittest.TestCase):
         dataset_ref = DatasetReference(self.PROJECT, self.DS_ID)
 
         for invalid_view_value in invalid_view_values:
-            with self.subTest(invalid_view_value=invalid_view_value):
+            with self.subTest(invalid_view_value=str(invalid_view_value)):
                 conn.api_request.reset_mock()  # Reset mock for each sub-test
                 with self.assertRaises(AttributeError):
                     client.get_dataset(dataset_ref, dataset_view=invalid_view_value)
@@ -2137,7 +2137,7 @@ class TestClient(unittest.TestCase):
 
         for update_mode_arg, expected_param_value in test_cases:
             with self.subTest(
-                update_mode_arg=update_mode_arg,
+                update_mode_arg=str(update_mode_arg),
                 expected_param_value=expected_param_value,
             ):
                 conn = client._connection = make_connection(RESOURCE, RESOURCE)
@@ -2189,7 +2189,7 @@ class TestClient(unittest.TestCase):
         ]
 
         for invalid_update_mode in test_cases:
-            with self.subTest(invalid_update_mode=invalid_update_mode):
+            with self.subTest(invalid_update_mode=str(invalid_update_mode)):
                 conn.api_request.reset_mock()  # Reset mock for each sub-test
                 with self.assertRaises(AttributeError):
                     client.update_dataset(

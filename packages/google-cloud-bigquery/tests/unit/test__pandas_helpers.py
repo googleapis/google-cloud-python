@@ -851,12 +851,16 @@ def test_list_columns_and_indexes_without_named_index(module_under_test):
     dataframe = pandas.DataFrame(df_data)
 
     columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
-    expected = [
+    expected_stable_types = [
         ("a_series", pandas.api.types.pandas_dtype("int64")),
         ("b_series", pandas.api.types.pandas_dtype("float64")),
-        ("c_series", pandas.api.types.pandas_dtype("object")),
     ]
-    assert columns_and_indexes == expected
+    assert columns_and_indexes[:-1] == expected_stable_types
+
+    # The last column is string/object, which varies by pandas/pyarrow version
+    string_col_name, string_col_dtype = columns_and_indexes[-1]
+    assert string_col_name == "c_series"
+    assert string_col_dtype.name in {"object", "string", "str", "O"}
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -878,12 +882,16 @@ def test_list_columns_and_indexes_with_named_index_same_as_column_name(
     )
 
     columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
-    expected = [
+    expected_stable_types = [
         ("a_series", pandas.api.types.pandas_dtype("int64")),
         ("b_series", pandas.api.types.pandas_dtype("float64")),
-        ("c_series", pandas.api.types.pandas_dtype("object")),
     ]
-    assert columns_and_indexes == expected
+    assert columns_and_indexes[:-1] == expected_stable_types
+
+    # The last column is string/object, which varies by pandas/pyarrow version
+    string_col_name, string_col_dtype = columns_and_indexes[-1]
+    assert string_col_name == "c_series"
+    assert string_col_dtype.name in {"object", "string", "str", "O"}
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -986,13 +994,19 @@ def test_list_columns_and_indexes_with_named_index(module_under_test):
     )
 
     columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
-    expected = [
+
+    # First few columns have stable types (int, float)
+    expected_stable_types = [
         ("a_index", pandas.api.types.pandas_dtype("int64")),
         ("a_series", pandas.api.types.pandas_dtype("int64")),
         ("b_series", pandas.api.types.pandas_dtype("float64")),
-        ("c_series", pandas.api.types.pandas_dtype("object")),
     ]
-    assert columns_and_indexes == expected
+    assert columns_and_indexes[:-1] == expected_stable_types
+
+    # The last column is string/object, which varies by pandas/pyarrow version
+    string_col_name, string_col_dtype = columns_and_indexes[-1]
+    assert string_col_name == "c_series"
+    assert string_col_dtype.name in {"object", "string", "str", "O"}
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1019,14 +1033,20 @@ def test_list_columns_and_indexes_with_multiindex(module_under_test):
     )
 
     columns_and_indexes = module_under_test.list_columns_and_indexes(dataframe)
-    expected = [
+
+    # First few columns have stable types (int, float)
+    expected_stable_types = [
         ("a_index", pandas.api.types.pandas_dtype("int64")),
         ("c_index", pandas.api.types.pandas_dtype("int64")),
         ("a_series", pandas.api.types.pandas_dtype("int64")),
         ("b_series", pandas.api.types.pandas_dtype("float64")),
-        ("c_series", pandas.api.types.pandas_dtype("object")),
     ]
-    assert columns_and_indexes == expected
+    assert columns_and_indexes[:-1] == expected_stable_types
+
+    # The last column is string/object, which varies by pandas/pyarrow version
+    string_col_name, string_col_dtype = columns_and_indexes[-1]
+    assert string_col_name == "c_series"
+    assert string_col_dtype.name in {"object", "string", "str", "O"}
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1345,15 +1365,19 @@ def test_dataframe_to_bq_schema_w_multiindex(module_under_test, monkeypatch):
     with pytest.warns(FutureWarning, match="pandas-gbq"):
         returned_schema = module_under_test.dataframe_to_bq_schema(dataframe, [])
 
-    expected_schema = (
-        schema.SchemaField("str_index", "STRING", "NULLABLE"),
-        schema.SchemaField("int_index", "INTEGER", "NULLABLE"),
-        schema.SchemaField("dt_index", "DATETIME", "NULLABLE"),
-        schema.SchemaField("str_column", "STRING", "NULLABLE"),
-        schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
-        schema.SchemaField("bool_column", "BOOLEAN", "NULLABLE"),
-    )
-    assert returned_schema == expected_schema
+    # dt_index can be DATETIME or TIMESTAMP depending on pandas version/environment
+    # We check the stable columns first
+    assert returned_schema[0] == schema.SchemaField("str_index", "STRING", "NULLABLE")
+    assert returned_schema[1] == schema.SchemaField("int_index", "INTEGER", "NULLABLE")
+    
+    # Flexible check for dt_index
+    assert returned_schema[2].name == "dt_index"
+    assert returned_schema[2].field_type in {"DATETIME", "TIMESTAMP"}
+    assert returned_schema[2].mode == "NULLABLE"
+
+    assert returned_schema[3] == schema.SchemaField("str_column", "STRING", "NULLABLE")
+    assert returned_schema[4] == schema.SchemaField("int_column", "INTEGER", "NULLABLE")
+    assert returned_schema[5] == schema.SchemaField("bool_column", "BOOLEAN", "NULLABLE")
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")

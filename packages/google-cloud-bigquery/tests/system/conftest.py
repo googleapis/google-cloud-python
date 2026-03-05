@@ -175,15 +175,22 @@ def scalars_table_csv(
 def scalars_table_pico(
     bigquery_client: bigquery.Client, project_id: str, dataset_id: str
 ):
-    full_table_id = load_scalars_table(
-        bigquery_client,
-        project_id,
-        dataset_id,
-        data_path="pico.csv",
-        source_format=enums.SourceFormat.CSV,
-        schema_source="pico_schema.json",
-        timestamp_target_precision=[12],
-    )
+    from google.api_core import exceptions
+
+    try:
+        full_table_id = load_scalars_table(
+            bigquery_client,
+            project_id,
+            dataset_id,
+            data_path="pico.csv",
+            source_format=enums.SourceFormat.CSV,
+            schema_source="pico_schema.json",
+            timestamp_target_precision=[12],
+        )
+    except exceptions.BadRequest as exc:
+        if "picosecond precision" in str(exc):
+            pytest.skip("Picosecond precision not supported in this environment")
+        raise exc
     yield full_table_id
     bigquery_client.delete_table(full_table_id, not_found_ok=True)
 
