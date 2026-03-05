@@ -13,18 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.hypercomputecluster import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from google.cloud.hypercomputecluster_v1.services.hypercompute_cluster.async_client import (
-    HypercomputeClusterAsyncClient,
-)
-from google.cloud.hypercomputecluster_v1.services.hypercompute_cluster.client import (
-    HypercomputeClusterClient,
-)
-from google.cloud.hypercomputecluster_v1.types.hypercompute_cluster import (
+from .hypercompute_cluster import (
     BootDisk,
     BucketReference,
     Cluster,
@@ -67,7 +56,7 @@ from google.cloud.hypercomputecluster_v1.types.hypercompute_cluster import (
     StorageResourceConfig,
     UpdateClusterRequest,
 )
-from google.cloud.hypercomputecluster_v1.types.operation_metadata import (
+from .operation_metadata import (
     CheckClusterHealth,
     CreateFilestoreInstance,
     CreateLoginNode,
@@ -97,8 +86,6 @@ from google.cloud.hypercomputecluster_v1.types.operation_metadata import (
 )
 
 __all__ = (
-    "HypercomputeClusterClient",
-    "HypercomputeClusterAsyncClient",
     "BootDisk",
     "BucketReference",
     "Cluster",
