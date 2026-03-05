@@ -24,7 +24,7 @@ from google.auth import _helpers
 from google.auth.crypt import _python_rsa
 from google.auth.crypt import base
 
-rsa = pytest.importorskip("rsa")
+rsa = pytest.importorskip("rsa")  # type: ignore
 
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
