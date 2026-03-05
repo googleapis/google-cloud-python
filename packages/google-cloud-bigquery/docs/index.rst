@@ -47,7 +47,7 @@ For a list of all ``google-cloud-bigquery`` releases:
 .. toctree::
   :maxdepth: 2
 
-  changelog
+  CHANGELOG.md
 
 .. toctree::
   :hidden:
