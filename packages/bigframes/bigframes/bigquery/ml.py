@@ -25,6 +25,7 @@ from bigframes.bigquery._operations.ml import (
     explain_predict,
     generate_embedding,
     generate_text,
+    get_insights,
     global_explain,
     predict,
     transform,
@@ -39,4 +40,5 @@ __all__ = [
     "transform",
     "generate_text",
     "generate_embedding",
+    "get_insights",
 ]

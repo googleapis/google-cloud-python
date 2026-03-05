@@ -178,6 +178,15 @@ def test_generate_text_with_pandas_dataframe(read_pandas_mock, read_gbq_query_mo
 
 
 @mock.patch("bigframes.pandas.read_gbq_query")
+def test_get_insights(read_gbq_query_mock):
+    ml_ops.get_insights(MODEL_SERIES)
+    read_gbq_query_mock.assert_called_once()
+    generated_sql = read_gbq_query_mock.call_args[0][0]
+    assert "ML.GET_INSIGHTS" in generated_sql
+    assert f"MODEL `{MODEL_NAME}`" in generated_sql
+
+
+@mock.patch("bigframes.pandas.read_gbq_query")
 @mock.patch("bigframes.pandas.read_pandas")
 def test_generate_embedding_with_pandas_dataframe(
     read_pandas_mock, read_gbq_query_mock

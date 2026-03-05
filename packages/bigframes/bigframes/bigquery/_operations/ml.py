@@ -481,6 +481,39 @@ def generate_text(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ml")
+def get_insights(
+    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+) -> dataframe.DataFrame:
+    """
+    Gets insights from a BigQuery ML model.
+
+    See the `BigQuery ML GET_INSIGHTS function syntax
+    <https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-get-insights>`_
+    for additional reference.
+
+    Args:
+        model (bigframes.ml.base.BaseEstimator, str, or pd.Series):
+            The model to get insights from.
+
+    Returns:
+        bigframes.pandas.DataFrame:
+            The insights.
+    """
+    import bigframes.pandas as bpd
+
+    model_name, session = utils.get_model_name_and_session(model)
+
+    sql = bigframes.core.sql.ml.get_insights(
+        model_name=model_name,
+    )
+
+    if session is None:
+        return bpd.read_gbq_query(sql)
+    else:
+        return session.read_gbq_query(sql)
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ml")
 def generate_embedding(
     model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
     input_: Union[pd.DataFrame, dataframe.DataFrame, str],

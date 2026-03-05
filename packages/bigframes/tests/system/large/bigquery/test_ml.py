@@ -64,6 +64,32 @@ def test_generate_embedding_with_options(embedding_model):
     assert len(embedding[0]) == 256
 
 
+def test_get_insights(dataset_id):
+    df = bpd.DataFrame(
+        {
+            "dim1": ["a", "a", "b", "b", "a", "a", "b", "b"],
+            "dim2": ["x", "y", "x", "y", "x", "y", "x", "y"],
+            "metric": [10, 20, 30, 40, 12, 25, 35, 45],
+            "is_test": [False, False, False, False, True, True, True, True],
+        }
+    )
+    model_name = f"{dataset_id}.contribution_analysis_model"
+
+    ml.create_model(
+        model_name=model_name,
+        options={
+            "model_type": "CONTRIBUTION_ANALYSIS",
+            "contribution_metric": "SUM(metric)",
+            "is_test_col": "is_test",
+        },
+        training_data=df,
+    )
+
+    result = ml.get_insights(model_name)
+    assert len(result) > 0
+    assert "contributors" in result.columns
+
+
 def test_create_model_linear_regression(dataset_id):
     df = bpd.DataFrame({"x": [1, 2, 3], "y": [2, 4, 6]})
     model_name = f"{dataset_id}.linear_regression_model"

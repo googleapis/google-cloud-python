@@ -266,6 +266,16 @@ def generate_text(
     return sql
 
 
+def get_insights(
+    model_name: str,
+) -> str:
+    """Encode the ML.GET_INSIGHTS statement.
+    See https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-get-insights for reference.
+    """
+    sql = f"SELECT * FROM ML.GET_INSIGHTS(MODEL {sg_sql.to_sql(sg_sql.identifier(model_name))})\n"
+    return sql
+
+
 def generate_embedding(
     model_name: str,
     table: str,
