@@ -408,3 +408,10 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Enable mypy once this bug is fixed.
     session.skip("Temporarily skip mypy. See issue 16014")
+
+
+@nox.session(python=DEFAULT_INTERPRETER)
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("setuptools", "docutils", "pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
