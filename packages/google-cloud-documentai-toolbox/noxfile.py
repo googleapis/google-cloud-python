@@ -504,3 +504,12 @@ def prerelease_deps(session, protobuf_implementation):
                 "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
             },
         )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run the type checker."""
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Enable mypy once this bug is fixed.
+    session.skip("Temporarily skip mypy. See issue 16014")
