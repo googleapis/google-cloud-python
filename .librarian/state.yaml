@@ -2720,14 +2720,11 @@ libraries:
       - ^packages/google-cloud-pubsub/docs/_templates
       - ^packages/google-cloud-pubsub/docs/multiprocessing.rst
       - ^packages/google-cloud-pubsub/google/pubsub
-      - ^packages/google-cloud-pubsub/google/pubsub_v1/gapic_version.py
-      - ^packages/google-cloud-pubsub/google/pubsub_v1/services
-      - ^packages/google-cloud-pubsub/google/pubsub_v1/types
-      - ^packages/google-cloud-pubsub/google/pubsub_v1/__init__.py
-      - ^packages/google-cloud-pubsub/google/pubsub_v1/py.typed
+      - ^packages/google-cloud-pubsub/google/pubsub_v1
       - ^packages/google-cloud-pubsub/testing
       - ^packages/google-cloud-pubsub/tests/__init__.py
       - ^packages/google-cloud-pubsub/tests/unit/__init__.py
+      - ^packages/google-cloud-pubsub/tests/unit/gapic
       - ^packages/google-cloud-pubsub/samples/generated_samples
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
