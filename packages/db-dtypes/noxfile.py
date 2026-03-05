@@ -229,7 +229,7 @@ def prerelease(session, tests_path):
         "--prefer-binary",
         "--pre",
         "--upgrade",
-        "pandas<3.0.0rc0",
+        "pandas",
     )
     session.install(
         "mock",
