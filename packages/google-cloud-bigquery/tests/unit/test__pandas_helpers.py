@@ -1377,7 +1377,9 @@ def test_dataframe_to_bq_schema_w_multiindex(module_under_test, monkeypatch):
 
     assert returned_schema[3] == schema.SchemaField("str_column", "STRING", "NULLABLE")
     assert returned_schema[4] == schema.SchemaField("int_column", "INTEGER", "NULLABLE")
-    assert returned_schema[5] == schema.SchemaField("bool_column", "BOOLEAN", "NULLABLE")
+    assert returned_schema[5] == schema.SchemaField(
+        "bool_column", "BOOLEAN", "NULLABLE"
+    )
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")

@@ -558,7 +558,9 @@ def test_query_picosecond(bigquery_client: bigquery.Client):
         )
     except exceptions.BadRequest as exc:
         if "timestamp_output_format" in str(exc):
-            pytest.skip("Timestamp output format not supported or parameter invalid for this environment")
+            pytest.skip(
+                "Timestamp output format not supported or parameter invalid for this environment"
+            )
         raise exc
 
     result = job.result()

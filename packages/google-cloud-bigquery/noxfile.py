@@ -480,8 +480,9 @@ def prerelease_deps(session):
             "-W default::PendingDeprecationWarning",
         )
     else:
-        session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set.")
-
+        session.log(
+            "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set."
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
