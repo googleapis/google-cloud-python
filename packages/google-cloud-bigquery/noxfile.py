@@ -465,19 +465,23 @@ def prerelease_deps(session):
         "-W default::PendingDeprecationWarning",
     )
 
-    session.run(
-        "py.test",
-        "-n=auto",
-        "tests/system",
-        "-W default::PendingDeprecationWarning",
-    )
+    if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.run(
+            "py.test",
+            "-n=auto",
+            "tests/system",
+            "-W default::PendingDeprecationWarning",
+        )
 
-    session.run(
-        "py.test",
-        "-n=auto",
-        "samples/tests",
-        "-W default::PendingDeprecationWarning",
-    )
+        session.run(
+            "py.test",
+            "-n=auto",
+            "samples/tests",
+            "-W default::PendingDeprecationWarning",
+        )
+    else:
+        session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set.")
+
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
