@@ -21,7 +21,7 @@ name = "google-cloud-bigquery"
 authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 description = "Google BigQuery API client library"
 readme = "README.rst"
 classifiers = [
@@ -33,6 +33,7 @@ classifiers = [
   "Intended Audience :: Developers",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
