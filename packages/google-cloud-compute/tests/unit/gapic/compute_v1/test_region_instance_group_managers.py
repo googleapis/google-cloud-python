@@ -12381,6 +12381,7 @@ def test_insert_rest_call_success(request_type):
         "instance_lifecycle_policy": {
             "default_action_on_failure": "default_action_on_failure_value",
             "force_update_on_repair": "force_update_on_repair_value",
+            "on_failed_health_check": "on_failed_health_check_value",
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
@@ -13293,6 +13294,7 @@ def test_patch_rest_call_success(request_type):
         "instance_lifecycle_policy": {
             "default_action_on_failure": "default_action_on_failure_value",
             "force_update_on_repair": "force_update_on_repair_value",
+            "on_failed_health_check": "on_failed_health_check_value",
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",

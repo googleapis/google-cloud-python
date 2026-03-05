@@ -63,6 +63,7 @@ Services for Google Cloud Compute v1 API
     region_commitments
     region_disks
     region_disk_types
+    region_health_aggregation_policies
     region_health_checks
     region_health_check_services
     region_instance_group_managers
@@ -85,6 +86,7 @@ Services for Google Cloud Compute v1 API
     region_zones
     reservation_blocks
     reservations
+    reservation_slots
     reservation_sub_blocks
     resource_policies
     routers

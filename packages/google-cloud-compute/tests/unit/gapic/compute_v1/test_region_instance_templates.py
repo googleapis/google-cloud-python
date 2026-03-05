@@ -3061,6 +3061,7 @@ def test_insert_rest_call_success(request_type):
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
                     ],
+                    "enable_vpc_scoped_dns": True,
                     "fingerprint": "fingerprint_value",
                     "igmp_query": "igmp_query_value",
                     "internal_ipv6_prefix_length": 2831,
@@ -3128,6 +3129,10 @@ def test_insert_rest_call_success(request_type):
             "tags": {
                 "fingerprint": "fingerprint_value",
                 "items": ["items_value1", "items_value2"],
+            },
+            "workload_identity_config": {
+                "identity": "identity_value",
+                "identity_certificate_enabled": True,
             },
         },
         "region": "region_value",
