@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 # This constraints file is required for unit tests.
 # List all library dependencies and extras in this file.
-google-api-core==1.34.1
+google-api-core
+google-auth
+grpcio
+proto-plus
+protobuf
 # cryptography is a direct dependency of google-auth
-cryptography==38.0.3
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)
-# Add the minimum supported version of grpcio to constraints files
-google-auth==2.14.1
-grpcio==1.51.3
-proto-plus==1.22.3
-protobuf==3.20.2
-grpc-google-iam-v1==0.14.0
+cryptography
+grpc-google-iam-v1
