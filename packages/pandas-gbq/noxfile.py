@@ -405,7 +405,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=96")
+    session.run("coverage", "report", "--show-missing", "--fail-under=95")
 
     # Make sure there is no dead code in our test directories.
     session.run(

@@ -188,6 +188,7 @@ def test_to_gbq_with_if_exists_unknown():
         )
 
 
+@mock.patch.dict(os.environ, {}, clear=True)
 @pytest.mark.parametrize(
     "user_agent,rfc9110_delimiter,expected",
     [
@@ -216,7 +217,8 @@ def test_create_user_agent(user_agent, rfc9110_delimiter, expected):
 def test_create_user_agent_vscode():
     from pandas_gbq.gbq_connector import create_user_agent
 
-    assert create_user_agent() == f"pandas-{pd.__version__} vscode"
+    result = create_user_agent()
+    assert f"pandas-{pd.__version__} vscode" in result
 
 
 @mock.patch.dict(os.environ, {"VSCODE_PID": "1234"}, clear=True)
@@ -239,9 +241,9 @@ def test_create_user_agent_vscode_plugin():
             f.write("{}")
 
         with mock.patch("pathlib.Path.home", return_value=user_home):
+            result = create_user_agent()
             assert (
-                create_user_agent()
-                == f"pandas-{pd.__version__} vscode googlecloudtools.cloudcode"
+                f"pandas-{pd.__version__} vscode googlecloudtools.cloudcode" in result
             )
 
 

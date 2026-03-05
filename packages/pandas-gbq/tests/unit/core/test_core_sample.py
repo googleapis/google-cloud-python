@@ -1,4 +1,4 @@
-# Copyright (c) 2025 pandas-gbq Authors All rights reserved.
+# Copyright (c) 2026 pandas-gbq Authors All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -6,6 +6,7 @@ from typing import Sequence
 from unittest import mock
 
 import google.cloud.bigquery
+import google.cloud.bigquery.table
 import pytest
 
 import pandas_gbq.constants
@@ -71,16 +72,8 @@ import pandas_gbq.core.sample
                 ),  # 0
                 google.cloud.bigquery.SchemaField("simple_int", "INT64"),  # 8
             ],
-            8,  # 0 + 8
+            9,  # 1 + 8
             id="empty-struct",
-        ),
-        pytest.param(
-            [
-                google.cloud.bigquery.SchemaField("bytes", "BYTES"),
-            ]
-            * 9_999,
-            pandas_gbq.core.sample._MAX_ROW_BYTES,
-            id="many-bytes",
         ),
         # Case 8: Complex Mix (Combining multiple cases)
         pytest.param(
@@ -127,21 +120,21 @@ def test_calculate_target_bytes_with_available_memory(mock_virtual_memory):
     available_memory = 2 * pandas_gbq.constants.BYTES_IN_GIB  # 2 GB
     mock_virtual_memory.return_value = mock.Mock(available=available_memory)
 
-    # Expected bytes is available memory / 4, as it falls between _MAX_ROW_BYTES and _MAX_AUTO_TARGET_BYTES
+    # Expected bytes is available memory / 4.
     expected_bytes = available_memory // 4
     actual_bytes = pandas_gbq.core.sample._calculate_target_bytes(None)
     assert actual_bytes == expected_bytes
 
 
 @mock.patch("psutil.virtual_memory")
-def test_calculate_target_bytes_low_memory_uses_max_row_bytes(mock_virtual_memory):
+def test_calculate_target_bytes_low_memory(mock_virtual_memory):
     # Mock psutil.virtual_memory to return a mock object with an 'available' attribute.
     # Set available memory to a low value.
     available_memory = 100  # 100 bytes
     mock_virtual_memory.return_value = mock.Mock(available=available_memory)
 
-    # Expected bytes should be _MAX_ROW_BYTES because available // 4 is less.
-    expected_bytes = pandas_gbq.core.sample._MAX_ROW_BYTES
+    # Expected bytes should be low value // 4.
+    expected_bytes = 25
     actual_bytes = pandas_gbq.core.sample._calculate_target_bytes(None)
     assert actual_bytes == expected_bytes
 
@@ -206,17 +199,52 @@ def test_estimate_limit(target_bytes, table_bytes, table_rows, fields, expected_
 
 
 @mock.patch("pandas_gbq.core.read.download_results")
-def test_sample_with_tablesample(mock_download_results, mock_bigquery_client):
-    mock_table = mock.Mock(spec=google.cloud.bigquery.Table)
-    mock_table.project = "test-project"
-    mock_table.dataset_id = "test_dataset"
-    mock_table.table_id = "test_table"
+def test_download_results_in_parallel_with_table(
+    mock_download_results, mock_bigquery_client
+):
+    rows = mock.Mock(spec=google.cloud.bigquery.table.RowIterator)
+    rows._table = "table"
+    rows._schema = "schema"
+    pandas_gbq.core.sample._download_results_in_parallel(
+        rows, bqclient=mock_bigquery_client
+    )
+    mock_bigquery_client.list_rows.assert_called_once_with(
+        "table", selected_fields="schema"
+    )
+    mock_download_results.assert_called_once()
 
+
+@mock.patch("pandas_gbq.core.read.download_results")
+def test_download_results_in_parallel_no_table(
+    mock_download_results, mock_bigquery_client
+):
+    rows = mock.Mock(spec=google.cloud.bigquery.table.RowIterator)
+    rows._table = None
+    rows._schema = None
+    pandas_gbq.core.sample._download_results_in_parallel(
+        rows, bqclient=mock_bigquery_client
+    )
+    mock_bigquery_client.list_rows.assert_not_called()
+    mock_download_results.assert_called_once_with(
+        rows,
+        bqclient=mock_bigquery_client,
+        progress_bar_type=None,
+        warn_on_large_results=False,
+        max_results=None,
+        user_dtypes=None,
+        use_bqstorage_api=True,
+    )
+
+
+@mock.patch("pandas_gbq.core.sample._download_results_in_parallel")
+def test_sample_with_tablesample(
+    mock_download_results_in_parallel, mock_bigquery_client
+):
     proportion = 0.1
     target_row_count = 100
 
     pandas_gbq.core.sample._sample_with_tablesample(
-        mock_table,
+        "test-project.test_dataset.test_table",
         bqclient=mock_bigquery_client,
         proportion=proportion,
         target_row_count=target_row_count,
@@ -224,27 +252,27 @@ def test_sample_with_tablesample(mock_download_results, mock_bigquery_client):
 
     mock_bigquery_client.query_and_wait.assert_called_once()
     query = mock_bigquery_client.query_and_wait.call_args[0][0]
-    assert "TABLESAMPLE SYSTEM (10.0 PERCENT)" in query
+    assert "TABLESAMPLE SYSTEM (10 PERCENT)" in query
     assert "LIMIT 100" in query
-    assert (
-        f"FROM `{mock_table.project}.{mock_table.dataset_id}.{mock_table.table_id}`"
-        in query
+    assert "FROM `test-project.test_dataset.test_table`" in query
+
+    # The mock for query_and_wait returns a mock RowIterator, which is then
+    # passed to _download_results_in_parallel.
+    mock_results = mock_bigquery_client.query_and_wait.return_value
+    mock_download_results_in_parallel.assert_called_with(
+        mock_results,
+        bqclient=mock_bigquery_client,
+        progress_bar_type=None,
+        use_bqstorage_api=True,
     )
 
-    mock_download_results.assert_called_once()
 
-
-@mock.patch("pandas_gbq.core.read.download_results")
-def test_sample_with_limit(mock_download_results, mock_bigquery_client):
-    mock_table = mock.Mock(spec=google.cloud.bigquery.Table)
-    mock_table.project = "test-project"
-    mock_table.dataset_id = "test_dataset"
-    mock_table.table_id = "test_table"
-
+@mock.patch("pandas_gbq.core.sample._download_results_in_parallel")
+def test_sample_with_limit(mock_download_results_in_parallel, mock_bigquery_client):
     target_row_count = 200
 
     pandas_gbq.core.sample._sample_with_limit(
-        mock_table,
+        "test-project.test_dataset.test_table",
         bqclient=mock_bigquery_client,
         target_row_count=target_row_count,
     )
@@ -253,12 +281,17 @@ def test_sample_with_limit(mock_download_results, mock_bigquery_client):
     query = mock_bigquery_client.query_and_wait.call_args[0][0]
     assert "TABLESAMPLE" not in query
     assert "LIMIT 200" in query
-    assert (
-        f"FROM `{mock_table.project}.{mock_table.dataset_id}.{mock_table.table_id}`"
-        in query
-    )
+    assert "FROM `test-project.test_dataset.test_table`" in query
 
-    mock_download_results.assert_called_once()
+    # The mock for query_and_wait returns a mock RowIterator, which is then
+    # passed to _download_results_in_parallel.
+    mock_results = mock_bigquery_client.query_and_wait.return_value
+    mock_download_results_in_parallel.assert_called_with(
+        mock_results,
+        bqclient=mock_bigquery_client,
+        progress_bar_type=None,
+        use_bqstorage_api=True,
+    )
 
 
 @pytest.fixture
@@ -270,15 +303,70 @@ def mock_gbq_connector(mock_bigquery_client):
         yield mock_connector
 
 
+@mock.patch("pandas_gbq.core.biglake.get_table_metadata")
+@mock.patch("pandas_gbq.core.sample._sample_with_tablesample")
+def test_sample_biglake_table(
+    mock_sample_with_tablesample,
+    mock_get_table_metadata,
+    mock_gbq_connector,
+    mock_bigquery_client,
+):
+    mock_metadata = mock.Mock()
+    mock_metadata.num_rows = 1000
+    mock_metadata.schema = [google.cloud.bigquery.SchemaField("col1", "INT64")]
+    mock_get_table_metadata.return_value = mock_metadata
+    table_id = "p.c.d.t"
+
+    with mock.patch(
+        "pandas_gbq.core.sample._calculate_target_bytes", return_value=1000
+    ):
+        pandas_gbq.core.sample.sample(table_id, billing_project_id="p")
+
+    mock_sample_with_tablesample.assert_called_once()
+    # 1000 target bytes / 8 bytes/row in schema = 125 target_row_count
+    # 125 / 1000 rows = 0.125 proportion.
+    # min(100, max(1, 0.125 * 100)) = 12.5 -> 12
+    # So proportion should be about 0.125
+    # Let's check the args
+    args, kwargs = mock_sample_with_tablesample.call_args
+    assert kwargs["proportion"] > 0.1
+    assert kwargs["target_row_count"] == 125
+
+
+@mock.patch("pandas_gbq.core.biglake.get_table_metadata")
+@mock.patch("pandas_gbq.core.sample._sample_with_tablesample")
+def test_sample_biglake_table_zero_rows(
+    mock_sample_with_tablesample,
+    mock_get_table_metadata,
+    mock_gbq_connector,
+    mock_bigquery_client,
+):
+    mock_metadata = mock.Mock()
+    mock_metadata.num_rows = 0
+    mock_metadata.schema = [google.cloud.bigquery.SchemaField("col1", "INT64")]
+    mock_get_table_metadata.return_value = mock_metadata
+    table_id = "p.c.d.t"
+
+    with mock.patch(
+        "pandas_gbq.core.sample._calculate_target_bytes", return_value=1000
+    ):
+        pandas_gbq.core.sample.sample(table_id, billing_project_id="p")
+
+    mock_sample_with_tablesample.assert_called_once()
+    args, kwargs = mock_sample_with_tablesample.call_args
+    # Avoid division by zero
+    assert kwargs["proportion"] > 0.0
+
+
 @mock.patch("pandas_gbq.core.read.download_results")
 def test_sample_small_table_downloads_all(
     mock_download_results, mock_gbq_connector, mock_bigquery_client
 ):
     mock_table = mock.Mock(spec=google.cloud.bigquery.Table)
-    type(mock_table).table_type = mock.PropertyMock(return_value="TABLE")
-    type(mock_table).num_bytes = mock.PropertyMock(return_value=1000)
-    type(mock_table).num_rows = mock.PropertyMock(return_value=10)
-    type(mock_table).schema = mock.PropertyMock(return_value=[])
+    type(mock_table).table_type = "TABLE"
+    type(mock_table).num_bytes = 1000
+    type(mock_table).num_rows = 10
+    type(mock_table).schema = []
     mock_bigquery_client.get_table.return_value = mock_table
 
     with mock.patch(
@@ -297,12 +385,13 @@ def test_sample_uses_tablesample(
     mock_sample_with_tablesample, mock_gbq_connector, mock_bigquery_client
 ):
     mock_table = mock.Mock(spec=google.cloud.bigquery.Table)
-    type(mock_table).table_type = mock.PropertyMock(return_value="TABLE")
-    type(mock_table).num_bytes = mock.PropertyMock(return_value=1_000_000_000_000)
-    type(mock_table).num_rows = mock.PropertyMock(return_value=1_000)
-    type(mock_table).schema = mock.PropertyMock(
-        return_value=[google.cloud.bigquery.SchemaField("col1", "INT64")]
-    )
+    type(mock_table).project = "my-project"
+    type(mock_table).dataset_id = "my_dataset"
+    type(mock_table).table_id = "my_table"
+    type(mock_table).table_type = "TABLE"
+    type(mock_table).num_bytes = 1_000_000_000_000
+    type(mock_table).num_rows = 1_000
+    type(mock_table).schema = [google.cloud.bigquery.SchemaField("col1", "INT64")]
     mock_bigquery_client.get_table.return_value = mock_table
 
     pandas_gbq.core.sample.sample("my-project.my_dataset.my_table", target_mb=1)
@@ -315,6 +404,9 @@ def test_sample_uses_limit_fallback(
     mock_sample_with_limit, mock_gbq_connector, mock_bigquery_client
 ):
     mock_table = mock.Mock(spec=google.cloud.bigquery.Table)
+    mock_table.project = "my-project"
+    mock_table.dataset_id = "my_dataset"
+    mock_table.table_id = "my_table"
     mock_table.num_bytes = 10000
     mock_table.num_rows = 100
     mock_table.table_type = "VIEW"  # Not eligible for TABLESAMPLE
@@ -334,6 +426,9 @@ def test_sample_uses_limit_fallback_no_bytes(
     mock_sample_with_limit, mock_gbq_connector, mock_bigquery_client
 ):
     mock_table = mock.Mock(spec=google.cloud.bigquery.Table)
+    mock_table.project = "my-project"
+    mock_table.dataset_id = "my_dataset"
+    mock_table.table_id = "my_table"
     mock_table.num_bytes = None  # num_bytes can be None
     mock_table.num_rows = 100
     mock_table.table_type = "TABLE"

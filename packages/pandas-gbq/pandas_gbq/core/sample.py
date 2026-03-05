@@ -1,11 +1,11 @@
-# Copyright (c) 2025 pandas-gbq Authors All rights reserved.
+# Copyright (c) 2026 pandas-gbq Authors All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
 from __future__ import annotations
 
 import typing
-from typing import Optional, Sequence, cast
+from typing import Optional, Sequence, Union
 
 import google.cloud.bigquery
 import google.cloud.bigquery.table
@@ -14,7 +14,9 @@ import psutil
 
 import pandas_gbq.constants
 import pandas_gbq.core.read
+import pandas_gbq.core.biglake
 import pandas_gbq.gbq_connector
+import pandas_gbq.core.resource_references
 
 # Only import at module-level at type checking time to avoid circular
 # dependencies in the pandas package, which has an optional dependency on
@@ -52,7 +54,6 @@ _TYPE_SIZES = {
 # TODO(tswast): Choose an estimate based on actual BigQuery stats.
 _ARRAY_LENGTH_ESTIMATE = 5
 _UNKNOWN_TYPE_SIZE_ESTIMATE = 4
-_MAX_ROW_BYTES = 100 * pandas_gbq.constants.BYTES_IN_MIB
 _MAX_AUTO_TARGET_BYTES = 1 * pandas_gbq.constants.BYTES_IN_GIB
 
 
@@ -61,15 +62,15 @@ def _calculate_target_bytes(target_mb: Optional[int]) -> int:
         return target_mb * pandas_gbq.constants.BYTES_IN_MIB
 
     mem = psutil.virtual_memory()
-    return min(_MAX_AUTO_TARGET_BYTES, max(_MAX_ROW_BYTES, mem.available // 4))
+    return min(_MAX_AUTO_TARGET_BYTES, mem.available // 4)
 
 
 def _estimate_limit(
     *,
-    target_bytes: int,
-    table_bytes: Optional[int],
-    table_rows: Optional[int],
     fields: Sequence[google.cloud.bigquery.SchemaField],
+    target_bytes: int,
+    table_bytes: Optional[int] = None,
+    table_rows: Optional[int] = None,
 ) -> int:
     if table_bytes and table_rows:
         proportion = target_bytes / table_bytes
@@ -118,8 +119,8 @@ def _estimate_row_bytes(fields: Sequence[google.cloud.bigquery.SchemaField]) -> 
     Returns:
         An integer representing the estimated total row size in logical bytes.
     """
-    total_size = min(
-        _MAX_ROW_BYTES,
+    total_size = max(
+        1,
         sum(_estimate_field_bytes(field) for field in fields),
     )
     return total_size
@@ -129,7 +130,7 @@ def _download_results_in_parallel(
     rows: google.cloud.bigquery.table.RowIterator,
     *,
     bqclient: google.cloud.bigquery.Client,
-    progress_bar_type: Optional[str] = None,
+    progress_bar_type: Union[str, None] = None,
     use_bqstorage_api: bool = True,
 ):
     table_reference = getattr(rows, "_table", None)
@@ -156,18 +157,19 @@ def _download_results_in_parallel(
 
 
 def _sample_with_tablesample(
-    table: google.cloud.bigquery.Table,
+    table_id: str,
     *,
     bqclient: google.cloud.bigquery.Client,
     proportion: float,
     target_row_count: int,
-    progress_bar_type: Optional[str] = None,
+    progress_bar_type: Union[str, None] = None,
     use_bqstorage_api: bool = True,
 ) -> Optional[pandas.DataFrame]:
+    sample_percent = min(100, max(1, int(proportion * 100)))
     query = f"""
     SELECT *
-    FROM `{table.project}.{table.dataset_id}.{table.table_id}`
-    TABLESAMPLE SYSTEM ({float(proportion) * 100.0} PERCENT)
+    FROM `{table_id}` t
+    TABLESAMPLE SYSTEM ({sample_percent} PERCENT)
     ORDER BY RAND() DESC
     LIMIT {int(target_row_count)};
     """
@@ -181,16 +183,16 @@ def _sample_with_tablesample(
 
 
 def _sample_with_limit(
-    table: google.cloud.bigquery.Table,
+    table_id: str,
     *,
     bqclient: google.cloud.bigquery.Client,
     target_row_count: int,
-    progress_bar_type: Optional[str] = None,
+    progress_bar_type: Union[str, None] = None,
     use_bqstorage_api: bool = True,
 ) -> Optional[pandas.DataFrame]:
     query = f"""
     SELECT *
-    FROM `{table.project}.{table.dataset_id}.{table.table_id}`
+    FROM `{table_id}`
     ORDER BY RAND() DESC
     LIMIT {int(target_row_count)};
     """
@@ -203,13 +205,121 @@ def _sample_with_limit(
     )
 
 
+def _sample_biglake_table(
+    *,
+    reference: pandas_gbq.core.resource_references.BigLakeTableId,
+    bqclient: google.cloud.bigquery.Client,
+    target_bytes: int,
+    progress_bar_type: Union[str, None],
+    use_bqstorage_api: bool,
+) -> Optional[pandas.DataFrame]:
+    metadata = pandas_gbq.core.biglake.get_table_metadata(
+        reference=reference,
+        bqclient=bqclient,
+    )
+    total_rows = metadata.num_rows
+
+    # Avoid divide by 0 when calculating proportions.
+    if total_rows == 0:
+        total_rows = 1
+
+    target_row_count = _estimate_limit(
+        target_bytes=target_bytes,
+        fields=metadata.schema,
+        table_rows=total_rows,
+    )
+    proportion = max(0.01, target_row_count / total_rows)
+
+    # BigLake tables should always support table sample, since they are backed
+    # by parquet files.
+    return _sample_with_tablesample(
+        f"{reference.project}.{reference.catalog}.{'.'.join(reference.namespace)}.{reference.table}",
+        bqclient=bqclient,
+        proportion=proportion,
+        target_row_count=target_row_count,
+        progress_bar_type=progress_bar_type,
+        use_bqstorage_api=use_bqstorage_api,
+    )
+
+
+def _sample_bq_table(
+    *,
+    reference: pandas_gbq.core.resource_references.BigQueryTableId,
+    bqclient: google.cloud.bigquery.Client,
+    target_bytes: int,
+    progress_bar_type: Union[str, None],
+    use_bqstorage_api: bool,
+) -> Optional[pandas.DataFrame]:
+    table = bqclient.get_table(
+        google.cloud.bigquery.TableReference(
+            google.cloud.bigquery.DatasetReference(
+                reference.project_id, reference.dataset_id
+            ),
+            reference.table_id,
+        )
+    )
+    num_rows = table.num_rows
+    num_bytes = table.num_bytes
+    table_type = table.table_type
+
+    # Some tables such as views report 0 despite actually having rows.
+    if num_bytes == 0:
+        num_bytes = None
+
+    # Table is small enough to download the whole thing.
+    if (
+        table_type in _READ_API_ELIGIBLE_TYPES
+        and num_bytes is not None
+        and num_bytes <= target_bytes
+    ):
+        rows_iter = bqclient.list_rows(table)
+        return pandas_gbq.core.read.download_results(
+            rows_iter,
+            bqclient=bqclient,
+            progress_bar_type=progress_bar_type,
+            warn_on_large_results=False,
+            max_results=None,
+            user_dtypes=None,
+            use_bqstorage_api=use_bqstorage_api,
+        )
+
+    target_row_count = _estimate_limit(
+        target_bytes=target_bytes,
+        table_bytes=num_bytes,
+        table_rows=num_rows,
+        fields=table.schema,
+    )
+
+    # Table is eligible for TABLESAMPLE.
+    if num_bytes is not None and table_type in _TABLESAMPLE_ELIGIBLE_TYPES:
+        proportion = target_bytes / num_bytes
+        return _sample_with_tablesample(
+            f"{table.project}.{table.dataset_id}.{table.table_id}",
+            bqclient=bqclient,
+            proportion=proportion,
+            target_row_count=target_row_count,
+            progress_bar_type=progress_bar_type,
+            use_bqstorage_api=use_bqstorage_api,
+        )
+
+    # Not eligible for TABLESAMPLE or reading directly, so take a random sample
+    # with a full table scan.
+    return _sample_with_limit(
+        f"{table.project}.{table.dataset_id}.{table.table_id}",
+        bqclient=bqclient,
+        target_row_count=target_row_count,
+        progress_bar_type=progress_bar_type,
+        use_bqstorage_api=use_bqstorage_api,
+    )
+
+
 def sample(
     table_id: str,
     *,
     target_mb: Optional[int] = None,
     credentials: Optional[google.oauth2.credentials.Credentials] = None,
     billing_project_id: Optional[str] = None,
-    progress_bar_type: Optional[str] = None,
+    progress_bar_type: Union[str, None] = None,
     use_bqstorage_api: bool = True,
 ) -> Optional[pandas.DataFrame]:
     """Sample a BigQuery table, attempting to limit the amount of data read.
@@ -265,59 +375,24 @@ def sample(
     connector = pandas_gbq.gbq_connector.GbqConnector(
         project_id=billing_project_id, credentials=credentials
     )
-    credentials = cast(google.oauth2.credentials.Credentials, connector.credentials)
     bqclient = connector.get_client()
-    table = bqclient.get_table(table_id)
-    num_rows = table.num_rows
-    num_bytes = table.num_bytes
-    table_type = table.table_type
 
-    # Some tables such as views report 0 despite actually having rows.
-    if num_bytes == 0:
-        num_bytes = None
-
-    # Table is small enough to download the whole thing.
-    if (
-        table_type in _READ_API_ELIGIBLE_TYPES
-        and num_bytes is not None
-        and num_bytes <= target_bytes
-    ):
-        rows_iter = bqclient.list_rows(table)
-        return pandas_gbq.core.read.download_results(
-            rows_iter,
+    # BigLake tables can't be read directly by the BQ Storage Read API, so make
+    # sure we run a query first.
+    reference = pandas_gbq.core.resource_references.parse_table_id(table_id)
+    if isinstance(reference, pandas_gbq.core.resource_references.BigLakeTableId):
+        return _sample_biglake_table(
+            reference=reference,
             bqclient=bqclient,
-            progress_bar_type=progress_bar_type,
-            warn_on_large_results=False,
-            max_results=None,
-            user_dtypes=None,
-            use_bqstorage_api=use_bqstorage_api,
-        )
-
-    target_row_count = _estimate_limit(
-        target_bytes=target_bytes,
-        table_bytes=num_bytes,
-        table_rows=num_rows,
-        fields=table.schema,
-    )
-
-    # Table is eligible for TABLESAMPLE.
-    if num_bytes is not None and table_type in _TABLESAMPLE_ELIGIBLE_TYPES:
-        proportion = target_bytes / num_bytes
-        return _sample_with_tablesample(
-            table,
-            bqclient=bqclient,
-            proportion=proportion,
-            target_row_count=target_row_count,
+            target_bytes=target_bytes,
             progress_bar_type=progress_bar_type,
             use_bqstorage_api=use_bqstorage_api,
         )
-
-    # Not eligible for TABLESAMPLE or reading directly, so take a random sample
-    # with a full table scan.
-    return _sample_with_limit(
-        table,
-        bqclient=bqclient,
-        target_row_count=target_row_count,
-        progress_bar_type=progress_bar_type,
-        use_bqstorage_api=use_bqstorage_api,
-    )
+    else:
+        return _sample_bq_table(
+            reference=reference,
+            bqclient=bqclient,
+            target_bytes=target_bytes,
+            progress_bar_type=progress_bar_type,
+            use_bqstorage_api=use_bqstorage_api,
+        )
