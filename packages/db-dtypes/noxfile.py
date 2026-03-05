@@ -285,31 +285,25 @@ def prerelease(session, tests_path):
     )
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
-def compliance(session):
-    """Run the compliance test suite."""
-    default(session, os.path.join("tests", "compliance"))
-
-
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
-def compliance_prerelease(session):
-    """Run the compliance test suite with prerelease dependencies."""
-    prerelease(session, os.path.join("tests", "compliance"))
-
-
 @nox.session(python=ALL_PYTHON)
-def unit(session):
+@nox.parametrize("test_type", ["unit", "compliance"])
+def unit(session, test_type):
     """Run the unit test suite."""
-
-    if session.python in ("3.7",):
+    if session.python == "3.7":
         session.skip("Python 3.7 is no longer supported")
-    default(session, os.path.join("tests", "unit"))
+
+    # Compliance tests only run on the latest Python version
+    if test_type == "compliance" and session.python != DEFAULT_PYTHON_VERSION:
+        session.skip(f"Compliance tests are only run on the latest Python: {DEFAULT_PYTHON_VERSION}")
+
+    default(session, os.path.join("tests", test_type))
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
-def unit_prerelease(session):
+@nox.parametrize("test_type", ["unit", "compliance"])
+def unit_prerelease(session, test_type):
     """Run the unit test suite with prerelease dependencies."""
-    prerelease(session, os.path.join("tests", "unit"))
+    prerelease(session, os.path.join("tests", test_type))
 
 
 def install_systemtest_dependencies(session, *constraints):
