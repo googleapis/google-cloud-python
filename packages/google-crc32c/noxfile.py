@@ -45,6 +45,9 @@ nox.options.sessions = [
     "mypy",
     "prerelease_deps",
     "core_deps_from_source",
+    "unit",
+    "docs",
+    "docfx",
 ]
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
