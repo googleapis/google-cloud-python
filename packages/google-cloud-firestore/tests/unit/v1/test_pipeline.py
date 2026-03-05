@@ -390,6 +390,7 @@ def test_pipeline_execute_stream_equivalence():
         ("add_fields", (Field.of("n"),), stages.AddFields),
         ("remove_fields", ("name",), stages.RemoveFields),
         ("remove_fields", (Field.of("n"),), stages.RemoveFields),
+        ("let", {"var1": Field.of("n")}, stages.Let),
         ("select", ("name",), stages.Select),
         ("select", (Field.of("n"),), stages.Select),
         ("where", (Field.of("n").exists(),), stages.Where),
@@ -422,7 +423,10 @@ def test_pipeline_execute_stream_equivalence():
 def test_pipeline_methods(method, args, result_cls):
     start_ppl = _make_pipeline()
     method_ptr = getattr(start_ppl, method)
-    result_ppl = method_ptr(*args)
+    if method == "let":
+        result_ppl = method_ptr(**args)
+    else:
+        result_ppl = method_ptr(*args)
     assert result_ppl != start_ppl
     assert len(start_ppl.stages) == 0
     assert len(result_ppl.stages) == 1
