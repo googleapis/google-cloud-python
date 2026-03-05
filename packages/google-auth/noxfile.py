@@ -124,7 +124,9 @@ def unit(session, install_deprecated_extras):
     min_py, max_py = UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]
     if not install_deprecated_extras and session.python not in (min_py, max_py):
         # only run double tests on first and last supported versions
-        session.skip(f"Extended tests only run on boundary Python versions ({min_py}, {max_py}) to reduce CI load.")
+        session.skip(
+            f"Extended tests only run on boundary Python versions ({min_py}, {max_py}) to reduce CI load."
+        )
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"

@@ -20,11 +20,11 @@ from unittest import mock
 from pyasn1_modules import pem  # type: ignore
 import pytest  # type: ignore
 
-rsa = pytest.importorskip("rsa")
-
 from google.auth import _helpers
 from google.auth.crypt import _python_rsa
 from google.auth.crypt import base
+
+rsa = pytest.importorskip("rsa")
 
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
