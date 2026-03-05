@@ -24,7 +24,30 @@ import nox
 
 HERE = os.path.dirname(__file__)
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"])
+# Constants
+DEFAULT_PYTHON_VERSION = "3.14"
+UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+ALL_PYTHON.extend(["3.7"])
+
+FLAKE8_VERSION = "flake8==6.1.0"
+BLACK_VERSION = "black[jupyter]==23.7.0"
+ISORT_VERSION = "isort==5.11.0"
+LINT_PATHS = ["src", "tests", "noxfile.py", "setup.py"]
+
+nox.options.sessions = [
+    "build_libcrc32c",
+    "check",
+    "lint",
+    "blacken",
+    "format",
+    "lint_setup_py",
+    "mypy",
+    "prerelease_deps",
+    "core_deps_from_source",
+]
+
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def build_libcrc32c(session):
     session.env["PY_BIN"] = f"python{session.python}"
     session.env["REPO_ROOT"] = HERE
@@ -39,7 +62,7 @@ def build_libcrc32c(session):
         raise Exception("Unsupported")
 
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"])
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def check(session):
     session.install("pytest")
     session.install("--no-index", f"--find-links={HERE}/wheels", "google-crc32c")
@@ -49,7 +72,7 @@ def check(session):
     session.run("python", f"{HERE}/scripts/check_crc32c_extension.py", *session.posargs)
 
 
-@nox.session(python="3.13")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install(
@@ -59,3 +82,74 @@ def mypy(session):
     )
     session.env["MYPYPATH"] = "src"
     session.run("mypy", "src/google_crc32c/", "tests/")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.run(
+        "black",
+        "--check",
+        *LINT_PATHS,
+    )
+    session.run("flake8", *LINT_PATHS)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def blacken(session):
+    """Run black. Format code to uniform standard."""
+    session.install(BLACK_VERSION)
+    session.run(
+        "black",
+        *LINT_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run isort to sort imports. Then run black
+    to format code to uniform standard.
+    """
+    session.install(BLACK_VERSION, ISORT_VERSION)
+    # Use the --fss option to sort imports using strict alphabetical order.
+    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    session.run(
+        "isort",
+        "--fss",
+        *LINT_PATHS,
+    )
+    session.run(
+        "black",
+        *LINT_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("docutils", "pygments", "setuptools")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def prerelease_deps(session):
+    """Run all tests with prerelease versions of dependencies installed."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add prerelease deps tests
+    session.skip("prerelease deps tests are not yet supported")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
