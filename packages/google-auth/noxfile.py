@@ -41,7 +41,7 @@ UNIT_TEST_PYTHON_VERSIONS = [
     "3.13",
     "3.14",
 ]
-ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS
+ALL_PYTHON = UNIT_TEST_PYTHON_VERSIONS.copy()
 ALL_PYTHON.extend(["3.7"])
 
 # Error if a python version is missing
@@ -121,6 +121,10 @@ def unit(session, install_deprecated_extras):
 
     if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
+    min_py, max_py = UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]
+    if not install_deprecated_extras and session.python not in (min_py, max_py):
+        # only run double tests on first and last supported versions
+        session.skip(f"Extended tests only run on boundary Python versions ({min_py}, {max_py}) to reduce CI load.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
