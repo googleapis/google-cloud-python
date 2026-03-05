@@ -1,2 +1,0 @@
-fastavro
-google-cloud-bigquery-storage==2.36.0

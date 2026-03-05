@@ -1,1 +1,0 @@
-System tests are configured for this package. See the the `system` nox session defined in `noxfile.py`.
