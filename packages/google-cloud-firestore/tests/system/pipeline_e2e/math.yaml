@@ -307,3 +307,48 @@ tests:
                     - integerValue: '2'
                     name: mod
           name: select
+  - description: testRand
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - And:
+              - FunctionExpression.greater_than_or_equal:
+                  - Rand: []
+                  - Constant: 0.0
+              - FunctionExpression.less_than:
+                  - Rand: []
+                  - Constant: 1.0
+            - "is_valid_rand"
+    assert_results:
+      - is_valid_rand: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                is_valid_rand:
+                  functionValue:
+                    name: and
+                    args:
+                    - functionValue:
+                        name: greater_than_or_equal
+                        args:
+                        - functionValue:
+                            name: rand
+                        - doubleValue: 0.0
+                    - functionValue:
+                        name: less_than
+                        args:
+                        - functionValue:
+                            name: rand
+                        - doubleValue: 1.0
+          name: select

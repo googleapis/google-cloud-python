@@ -1583,3 +1583,9 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.maximum()"
         infix_instance = arg1.maximum()
         assert infix_instance == instance
+
+    def test_rand(self):
+        instance = expr.Rand()
+        assert instance.name == "rand"
+        assert instance.params == []
+        assert repr(instance) == "Rand()"

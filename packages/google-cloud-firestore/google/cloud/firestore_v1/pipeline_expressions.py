@@ -2029,3 +2029,14 @@ class CurrentTimestamp(FunctionExpression):
 
     def __init__(self):
         super().__init__("current_timestamp", [], use_infix_repr=False)
+
+
+class Rand(FunctionExpression):
+    """Creates an expression that returns a pseudorandom float between 0.0 (inclusive) and 1.0 (exclusive).
+
+    Returns:
+        A new `Expression` representing the random value.
+    """
+
+    def __init__(self):
+        super().__init__("rand", [], use_infix_repr=False)
