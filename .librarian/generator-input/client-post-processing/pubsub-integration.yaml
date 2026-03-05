@@ -1,0 +1,185 @@
+replacements:
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/**/*client.py"
+    before: 'instead\.\n(?:[ \t]*\n)*([ \t]+)DEFAULT_ENDPOINT = "pubsub\.googleapis\.com"'
+    after: |-
+      instead.
+      \g<1>_DEFAULT_SCOPES = (
+      \g<1>    "https://www.googleapis.com/auth/cloud-platform",
+      \g<1>    "https://www.googleapis.com/auth/pubsub",
+      \g<1>)
+      \g<1>SERVICE_ADDRESS = "pubsub.googleapis.com:443"
+      \g<1>"""The default address of the service."""
+      \g<1>DEFAULT_ENDPOINT = "pubsub.googleapis.com"
+    count: 3
+
+  # --- FIX: Move emulator imports to the top of the file ---
+  # --- FIX: Move emulator imports to the top of the file ---
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
+    before: 'import json\n(?:[ \t]*\n)*import logging as std_logging'
+    after: |-
+      import json
+      import functools
+      import grpc
+      import logging as std_logging
+    count: 3
+
+  # --- FIX: Remove inline imports from the emulator block ---
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
+    before: 'class\n(?:[ \t]*\n)*([ \t]+)self\._transport = transport_init\('
+    after: |-
+      class
+      \g<1>emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
+      \g<1>if emulator_host:
+      \g<1>    if issubclass(transport_init, type(self)._transport_registry["grpc"]):  # type: ignore
+      \g<1>        channel = grpc.insecure_channel(target=emulator_host)
+      \g<1>    else:
+      \g<1>        channel = grpc.aio.insecure_channel(target=emulator_host)
+      \g<1>    transport_init = functools.partial(transport_init, channel=channel)
+      \g<1>self._transport = transport_init(
+    count: 3
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/transports/grpc*.py"
+      - "packages/google-cloud-pubsub/tests/unit/gapic/pubsub_v1/*.py"
+    before: '\("grpc\.max_receive_message_length", -1\),\n(?:[ \t]*\n)*([ \t]+)\]'
+    after: |-
+      ("grpc.max_receive_message_length", -1),
+      \g<1>    ("grpc.max_metadata_size", 4 * 1024 * 1024),
+      \g<1>    ("grpc.keepalive_time_ms", 30000),
+      \g<1>]
+    count: 21
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/transports/base.py"
+    before: 'deadline=60\.0,'
+    after: 'deadline=600.0,'
+    count: 9
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/**/*.py"
+    before: 'gapic_version=package_version\.__version__'
+    after: 'client_library_version=package_version.__version__'
+    count: 9
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+    before: 'import logging as std_logging\n(?:[ \t]*\n)*import os'
+    after: |-
+      import logging as std_logging
+      import re
+      import warnings
+      import os
+    count: 1
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
+    before: 'import logging as std_logging\n(?:[ \t]*\n)*import re'
+    after: |-
+      import logging as std_logging
+      import warnings
+      import re
+    count: 1
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
+    before: 'request\.max_messages = max_messages\n(?:[ \t]*\n)*([ \t]+)# Wrap the RPC method'
+    after: |-
+      request.max_messages = max_messages
+
+      \g<1>if request.return_immediately:
+      \g<1>    warnings.warn(
+      \g<1>        "The return_immediately flag is deprecated and should be set to False.",
+      \g<1>        category=DeprecationWarning,
+      \g<1>    )
+
+      \g<1># Wrap the RPC method
+    count: 2
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+    before: '"""\n(?:[ \t]*\n)*([ \t]+)# Wrap the RPC method; this adds retry and timeout information,\n(?:[ \t]*\n)*[ \t]+# and friendly error handling\.\n(?:[ \t]*\n)*[ \t]+rpc = self\._transport\._wrapped_methods\[self\._transport\.streaming_pull\]'
+    after: |-
+      """
+
+      \g<1># Wrappers in api-core should not automatically pre-fetch the first
+      \g<1># stream result, as this breaks the stream when re-opening it.
+      \g<1># https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
+      \g<1>self._transport.streaming_pull._prefetch_first_result_ = False
+
+      \g<1># Wrap the RPC method; this adds retry and timeout information,
+      \g<1># and friendly error handling.
+      \g<1>rpc = self._transport._wrapped_methods[self._transport.streaming_pull]
+    count: 1
+
+  # --- FIX: Restore TimeoutType definition to __init__.py ---
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/types/__init__.py"
+    before: '# limitations under the License\.\n#\nfrom \.pubsub import \('
+    after: |-
+      # limitations under the License.
+      #
+      from typing import Union
+
+      from .pubsub import (
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/types/__init__.py"
+    before: '__all__ = \(\n(?:[ \t]*\n)*([ \t]+)"AcknowledgeRequest",'
+    after: |-
+      TimeoutType = Union[
+          int,
+          float,
+          "google.api_core.timeout.ConstantTimeout",
+          "google.api_core.timeout.ExponentialTimeout",
+      ]
+      """The type of the timeout parameter of publisher client methods."""
+
+      __all__ = (
+      \g<1>"TimeoutType",
+      \g<1>"AcknowledgeRequest",
+    count: 1
+
+  # --- FIX: Restore TimeoutType imports to Client signatures ---
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
+    before: 'from google\.pubsub_v1\.types import pubsub'
+    after: |-
+      from google.pubsub_v1.types import TimeoutType, pubsub
+    count: 4
+
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
+    before: 'timeout: Union\[float, object\] = gapic_v1\.method\.DEFAULT'
+    after: 'timeout: TimeoutType = gapic_v1.method.DEFAULT'
+    count: 62
+  # --- FIX: Restore TimeoutType docstrings in clients ---
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
+    before: '([ \t]+)timeout \(float\): The timeout for this request\.'
+    after: |-
+      \g<1>timeout (TimeoutType):
+      \g<1>    The timeout for this request.
+    count: 62
+  # --- FIX: Restore .coveragerc omitted files ---
+  - paths:
+      - "packages/google-cloud-pubsub/.coveragerc"
+    before: 'omit =\n(?:[ \t]*\n)*([ \t]+)google/pubsub/__init__\.py'
+    after: |-
+      omit =
+      \g<1>google/cloud/__init__.py
+      \g<1>google/pubsub/__init__.py
+    count: 1
