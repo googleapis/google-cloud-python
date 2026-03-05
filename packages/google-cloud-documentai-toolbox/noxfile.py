@@ -511,3 +511,10 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Enable mypy once this bug is fixed.
     session.skip("Temporarily skip mypy. See issue 16014")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Enable this test once this bug is fixed.
+    session.skip("Temporarily skip core_deps_from_source. See issue 16014")
