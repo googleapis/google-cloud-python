@@ -34,7 +34,15 @@ LINT_PATHS = ["docs", "bigquery_magics", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+    "3.8",
+    "3.9",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+]
 
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 ALL_PYTHON.extend(["3.7"])
@@ -445,7 +453,12 @@ def docfx(session):
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
@@ -535,7 +548,9 @@ def prerelease_deps(session, protobuf_implementation):
 
     # Only run system tests if found.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set.")
+        session.log(
+            "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set."
+        )
         return
 
     if os.path.exists(system_test_path):
