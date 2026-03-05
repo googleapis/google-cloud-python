@@ -402,7 +402,7 @@ def doctest(session):
 
 
 # Run the system tests
-@nox.session(py=DEFAULT_INTERPRETER)
+@nox.session(py="3.12")
 def system(session):
     """Run the system test suite."""
     constraints_path = str(
