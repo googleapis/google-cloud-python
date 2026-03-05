@@ -43,6 +43,7 @@ from dataclasses import dataclass
 import hashlib
 import hmac
 import http.client as http_client
+import ipaddress
 import json
 import os
 import posixpath
@@ -71,6 +72,10 @@ _DEFAULT_AWS_REGIONAL_CREDENTIAL_VERIFICATION_URL = (
 )
 # IMDSV2 session token lifetime. This is set to a low value because the session token is used immediately.
 _IMDSV2_SESSION_TOKEN_TTL_SECONDS = "300"
+# Base URL for ECS container credentials endpoint (relative URI).
+_ECS_CONTAINER_CREDENTIALS_BASE_URL = "http://169.254.170.2"
+# Known ECS metadata IPs that are allowed without an authorization token.
+_ALLOWED_CONTAINER_METADATA_IPS = frozenset(["169.254.170.2", "169.254.170.23"])
 
 
 class RequestSigner(object):
@@ -433,6 +438,11 @@ class _DefaultAwsSecurityCredentialsSupplier(AwsSecurityCredentialsSupplier):
                 env_aws_access_key_id, env_aws_secret_access_key, env_aws_session_token
             )
 
+        # Check for ECS container credentials before falling back to IMDS.
+        ecs_credentials = self._get_ecs_security_credentials(request)
+        if ecs_credentials is not None:
+            return ecs_credentials
+
         imdsv2_session_token = self._get_imdsv2_session_token(request)
         role_name = self._get_metadata_role_name(request, imdsv2_session_token)
 
@@ -485,6 +495,87 @@ class _DefaultAwsSecurityCredentialsSupplier(AwsSecurityCredentialsSupplier):
         # This endpoint will return the region in format: us-east-2b.
         # Only the us-east-2 part should be used.
         return response_body[:-1]
+
+    def _get_ecs_security_credentials(self, request):
+        """Retrieves AWS security credentials from the ECS container credentials
+        endpoint if available.
+
+        Args:
+            request (google.auth.transport.Request): A callable used to make
+                HTTP requests.
+
+        Returns:
+            Optional[AwsSecurityCredentials]: The AWS security credentials from
+                ECS, or None if ECS environment variables are not set.
+
+        Raises:
+            google.auth.exceptions.RefreshError: If an error occurs while
+                retrieving credentials from the ECS endpoint.
+        """
+        # Check full URI first, then relative URI.
+        full_uri = os.environ.get(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_FULL_URI
+        )
+        relative_uri = os.environ.get(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
+        )
+
+        if full_uri:
+            url = full_uri
+            # Validate the full URI host for security.
+            parsed = urllib.parse.urlparse(url)
+            hostname = parsed.hostname
+            try:
+                addr = ipaddress.ip_address(hostname)
+                is_allowed = addr.is_loopback or str(addr) in _ALLOWED_CONTAINER_METADATA_IPS
+            except ValueError:
+                # Not an IP address (e.g., a hostname). Treat as non-loopback.
+                is_allowed = False
+
+            if not is_allowed:
+                # Non-loopback, non-ECS IP requires an authorization token.
+                auth_token = os.environ.get(
+                    environment_vars.AWS_CONTAINER_AUTHORIZATION_TOKEN
+                )
+                if not auth_token:
+                    raise exceptions.RefreshError(
+                        "AWS_CONTAINER_CREDENTIALS_FULL_URI is set to a non-loopback "
+                        "address but AWS_CONTAINER_AUTHORIZATION_TOKEN is not set."
+                    )
+        elif relative_uri:
+            url = _ECS_CONTAINER_CREDENTIALS_BASE_URL + relative_uri
+        else:
+            return None
+
+        headers = {}
+        auth_token = os.environ.get(
+            environment_vars.AWS_CONTAINER_AUTHORIZATION_TOKEN
+        )
+        if auth_token:
+            headers["Authorization"] = auth_token
+
+        response = request(url=url, method="GET", headers=headers or None)
+
+        response_body = (
+            response.data.decode("utf-8")
+            if hasattr(response.data, "decode")
+            else response.data
+        )
+
+        if response.status != http_client.OK:
+            raise exceptions.RefreshError(
+                "Unable to retrieve AWS security credentials from ECS: {}".format(
+                    response_body
+                )
+            )
+
+        credentials_response = json.loads(response_body)
+
+        return AwsSecurityCredentials(
+            credentials_response.get("AccessKeyId"),
+            credentials_response.get("SecretAccessKey"),
+            credentials_response.get("Token"),
+        )
 
     def _get_imdsv2_session_token(self, request):
         if request is not None and self._imdsv2_session_token_url is not None:

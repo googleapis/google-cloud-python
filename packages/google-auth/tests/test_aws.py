@@ -2456,3 +2456,256 @@ class TestCredentials(object):
         assert credentials.quota_project_id == QUOTA_PROJECT_ID
         assert credentials.scopes == SCOPES
         assert credentials.default_scopes == ["ignored"]
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_success_ecs_relative_uri(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI,
+            "/v2/credentials/role-id",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        # Mock the ECS credentials endpoint response.
+        ecs_response = mock.create_autospec(transport.Response, instance=True)
+        ecs_response.status = http_client.OK
+        ecs_response.data = json.dumps(
+            self.AWS_SECURITY_CREDENTIALS_RESPONSE
+        ).encode("utf-8")
+        request = mock.create_autospec(transport.Request)
+        request.side_effect = [ecs_response]
+
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+        subject_token = credentials.retrieve_subject_token(request)
+
+        assert subject_token == self.make_serialized_aws_signed_request(
+            aws.AwsSecurityCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY, TOKEN)
+        )
+        # Assert ECS credentials request.
+        assert request.call_args_list[0][1]["url"] == (
+            "http://169.254.170.2/v2/credentials/role-id"
+        )
+        assert request.call_args_list[0][1]["method"] == "GET"
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_success_ecs_full_uri_loopback(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_FULL_URI,
+            "http://127.0.0.1/v2/credentials/role-id",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        ecs_response = mock.create_autospec(transport.Response, instance=True)
+        ecs_response.status = http_client.OK
+        ecs_response.data = json.dumps(
+            self.AWS_SECURITY_CREDENTIALS_RESPONSE
+        ).encode("utf-8")
+        request = mock.create_autospec(transport.Request)
+        request.side_effect = [ecs_response]
+
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+        subject_token = credentials.retrieve_subject_token(request)
+
+        assert subject_token == self.make_serialized_aws_signed_request(
+            aws.AwsSecurityCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY, TOKEN)
+        )
+        assert request.call_args_list[0][1]["url"] == (
+            "http://127.0.0.1/v2/credentials/role-id"
+        )
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_success_ecs_full_uri_loopback_ipv6(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_FULL_URI,
+            "http://[::1]/v2/credentials/role-id",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        ecs_response = mock.create_autospec(transport.Response, instance=True)
+        ecs_response.status = http_client.OK
+        ecs_response.data = json.dumps(
+            self.AWS_SECURITY_CREDENTIALS_RESPONSE
+        ).encode("utf-8")
+        request = mock.create_autospec(transport.Request)
+        request.side_effect = [ecs_response]
+
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+        subject_token = credentials.retrieve_subject_token(request)
+
+        assert subject_token == self.make_serialized_aws_signed_request(
+            aws.AwsSecurityCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY, TOKEN)
+        )
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_success_ecs_full_uri_with_auth_token(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_FULL_URI,
+            "http://192.168.1.1/v2/credentials/role-id",
+        )
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_AUTHORIZATION_TOKEN,
+            "my-auth-token",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        ecs_response = mock.create_autospec(transport.Response, instance=True)
+        ecs_response.status = http_client.OK
+        ecs_response.data = json.dumps(
+            self.AWS_SECURITY_CREDENTIALS_RESPONSE
+        ).encode("utf-8")
+        request = mock.create_autospec(transport.Request)
+        request.side_effect = [ecs_response]
+
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+        subject_token = credentials.retrieve_subject_token(request)
+
+        assert subject_token == self.make_serialized_aws_signed_request(
+            aws.AwsSecurityCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY, TOKEN)
+        )
+        # Assert Authorization header was sent.
+        assert request.call_args_list[0][1]["headers"]["Authorization"] == "my-auth-token"
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_ecs_full_uri_non_loopback_without_token_raises(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_FULL_URI,
+            "http://192.168.1.1/v2/credentials/role-id",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+
+        with pytest.raises(exceptions.RefreshError) as exc_info:
+            credentials.retrieve_subject_token(None)
+
+        assert "AWS_CONTAINER_CREDENTIALS_FULL_URI" in str(exc_info.value)
+        assert "AWS_CONTAINER_AUTHORIZATION_TOKEN" in str(exc_info.value)
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_ecs_full_uri_takes_precedence_over_relative(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_FULL_URI,
+            "http://127.0.0.1/full-uri-path",
+        )
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI,
+            "/relative-uri-path",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        ecs_response = mock.create_autospec(transport.Response, instance=True)
+        ecs_response.status = http_client.OK
+        ecs_response.data = json.dumps(
+            self.AWS_SECURITY_CREDENTIALS_RESPONSE
+        ).encode("utf-8")
+        request = mock.create_autospec(transport.Request)
+        request.side_effect = [ecs_response]
+
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+        credentials.retrieve_subject_token(request)
+
+        # Full URI should be used, not relative URI.
+        assert request.call_args_list[0][1]["url"] == "http://127.0.0.1/full-uri-path"
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_ecs_takes_precedence_over_imds(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI,
+            "/v2/credentials/role-id",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        ecs_response = mock.create_autospec(transport.Response, instance=True)
+        ecs_response.status = http_client.OK
+        ecs_response.data = json.dumps(
+            self.AWS_SECURITY_CREDENTIALS_RESPONSE
+        ).encode("utf-8")
+        request = mock.create_autospec(transport.Request)
+        request.side_effect = [ecs_response]
+
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+        subject_token = credentials.retrieve_subject_token(request)
+
+        assert subject_token == self.make_serialized_aws_signed_request(
+            aws.AwsSecurityCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY, TOKEN)
+        )
+        # Only 1 request (ECS), no IMDS requests.
+        assert len(request.call_args_list) == 1
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_env_vars_take_precedence_over_ecs(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_ACCESS_KEY_ID, ACCESS_KEY_ID)
+        monkeypatch.setenv(environment_vars.AWS_SECRET_ACCESS_KEY, SECRET_ACCESS_KEY)
+        monkeypatch.setenv(environment_vars.AWS_SESSION_TOKEN, TOKEN)
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI,
+            "/v2/credentials/role-id",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+
+        # No request mock needed - env vars should be used directly.
+        subject_token = credentials.retrieve_subject_token(None)
+
+        assert subject_token == self.make_serialized_aws_signed_request(
+            aws.AwsSecurityCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY, TOKEN)
+        )
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_retrieve_subject_token_ecs_endpoint_error(
+        self, utcnow, monkeypatch
+    ):
+        monkeypatch.setenv(environment_vars.AWS_REGION, self.AWS_REGION)
+        monkeypatch.setenv(
+            environment_vars.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI,
+            "/v2/credentials/role-id",
+        )
+        utcnow.return_value = datetime.datetime.strptime(
+            self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
+        )
+        ecs_response = mock.create_autospec(transport.Response, instance=True)
+        ecs_response.status = http_client.UNAUTHORIZED
+        ecs_response.data = b"Unauthorized"
+        request = mock.create_autospec(transport.Request)
+        request.side_effect = [ecs_response]
+
+        credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
+
+        with pytest.raises(exceptions.RefreshError) as exc_info:
+            credentials.retrieve_subject_token(request)
+
+        assert "Unable to retrieve AWS security credentials from ECS" in str(
+            exc_info.value
+        )

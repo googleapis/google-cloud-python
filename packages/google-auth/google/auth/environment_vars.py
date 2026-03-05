@@ -105,6 +105,13 @@ AWS_SESSION_TOKEN = "AWS_SESSION_TOKEN"
 AWS_REGION = "AWS_REGION"
 AWS_DEFAULT_REGION = "AWS_DEFAULT_REGION"
 
+# AWS ECS container credentials environment variables.
+# These are used to retrieve temporary AWS credentials from the ECS container
+# credentials endpoint when running on AWS ECS.
+AWS_CONTAINER_CREDENTIALS_RELATIVE_URI = "AWS_CONTAINER_CREDENTIALS_RELATIVE_URI"
+AWS_CONTAINER_CREDENTIALS_FULL_URI = "AWS_CONTAINER_CREDENTIALS_FULL_URI"
+AWS_CONTAINER_AUTHORIZATION_TOKEN = "AWS_CONTAINER_AUTHORIZATION_TOKEN"
+
 GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED = "GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED"
 """Environment variable controlling whether to enable trust boundary feature.
 The default value is false. Users have to explicitly set this value to true."""
