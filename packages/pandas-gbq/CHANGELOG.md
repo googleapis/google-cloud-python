@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.34.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.33.0...pandas-gbq-v0.34.0) (2026-03-05)
+
+
+### Documentation
+
+* Update bigframes links to new homepage (#1028) ([72f772ec7b36ba081ed18ef4409f8262a412a1b9](https://github.com/googleapis/google-cloud-python/commit/72f772ec7b36ba081ed18ef4409f8262a412a1b9))
+
+
+### Features
+
+* support biglake tables in pandas_gbq.sample (#1014) ([16d08696f251781f5d84c509844ef05f98ec8dd0](https://github.com/googleapis/google-cloud-python/commit/16d08696f251781f5d84c509844ef05f98ec8dd0))
+
+
+### Bug Fixes
+
+* support pandas 3.0 (prerelease) (#998) ([4ea2d57f45c6685c13b8258923b4326fdd3b71d1](https://github.com/googleapis/google-cloud-python/commit/4ea2d57f45c6685c13b8258923b4326fdd3b71d1))
+
 ## [0.33.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.32.0...v0.33.0) (2026-01-05)
 
 
