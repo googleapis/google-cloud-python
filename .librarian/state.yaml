@@ -2728,7 +2728,6 @@ libraries:
       - ^packages/google-cloud-pubsub/testing
       - ^packages/google-cloud-pubsub/tests/__init__.py
       - ^packages/google-cloud-pubsub/tests/unit/__init__.py
-      - ^packages/google-cloud-pubsub/tests/unit/gapic
       - ^packages/google-cloud-pubsub/samples/generated_samples
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
