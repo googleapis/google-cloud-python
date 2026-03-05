@@ -34,7 +34,7 @@ LINT_PATHS = ["docs", "bigquery_magics", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 ALL_PYTHON.extend(["3.7"])
@@ -143,7 +143,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install("setuptools", FLAKE8_VERSION, BLACK_VERSION)
     session.run(
         "black",
         "--check",
