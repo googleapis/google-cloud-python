@@ -685,3 +685,22 @@ tests:
           - fieldReferenceValue: awards
           - stringValue: full_replace
           name: replace_with
+  - description: literals
+    pipeline:
+      - Literals:
+        - title: "The Hitchhiker's Guide to the Galaxy"
+          author: "Douglas Adams"
+    assert_results:
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - mapValue:
+              fields:
+                author:
+                  stringValue: "Douglas Adams"
+                title:
+                  stringValue: "The Hitchhiker's Guide to the Galaxy"
+          name: literals
