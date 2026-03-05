@@ -1301,7 +1301,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(tuple(table.schema), table_schema)
         self.assertEqual(table.num_rows, 2)
 
-
     def test_load_table_from_csv_w_picosecond_timestamp(self):
         dataset_id = _make_dataset_id("bq_system_test")
         self.temp_dataset(dataset_id)
@@ -1854,7 +1853,6 @@ class TestBigQuery(unittest.TestCase):
 
         job_config = bigquery.QueryJobConfig()
         job_config.query_parameters = [PARAM]
-
 
         with self.assertRaises(BadRequest):
             Config.CLIENT.query(

@@ -1369,7 +1369,7 @@ def test_dataframe_to_bq_schema_w_multiindex(module_under_test, monkeypatch):
     # We check the stable columns first
     assert returned_schema[0] == schema.SchemaField("str_index", "STRING", "NULLABLE")
     assert returned_schema[1] == schema.SchemaField("int_index", "INTEGER", "NULLABLE")
-    
+
     # Flexible check for dt_index
     assert returned_schema[2].name == "dt_index"
     assert returned_schema[2].field_type in {"DATETIME", "TIMESTAMP"}
