@@ -106,7 +106,7 @@ class BatchCreateDataObjectsResponse(proto.Message):
 
     Attributes:
         data_objects (MutableSequence[google.cloud.vectorsearch_v1beta.types.DataObject]):
-            DataObjects created.
+            Output only. DataObjects created.
     """
 
     data_objects: MutableSequence[gcv_data_object.DataObject] = proto.RepeatedField(
@@ -201,11 +201,20 @@ class DeleteDataObjectRequest(proto.Message):
             Required. The name of the DataObject resource to be deleted.
             Format:
             ``projects/{project}/locations/{location}/collections/{collection}/dataObjects/{dataObject}``
+        etag (str):
+            Optional. The current etag of the DataObject.
+            If an etag is provided and does not match the
+            current etag of the DataObject, deletion will be
+            blocked and an ABORTED error will be returned.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

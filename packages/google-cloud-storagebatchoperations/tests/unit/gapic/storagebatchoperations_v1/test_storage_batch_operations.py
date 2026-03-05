@@ -6419,6 +6419,13 @@ def test_create_job_rest_call_success(request_type):
             },
         },
         "rewrite_object": {"kms_key": "kms_key_value"},
+        "update_object_custom_context": {
+            "custom_context_updates": {
+                "updates": {},
+                "keys_to_clear": ["keys_to_clear_value1", "keys_to_clear_value2"],
+            },
+            "clear_all": True,
+        },
         "logging_config": {"log_actions": [6], "log_action_states": [1]},
         "create_time": {"seconds": 751, "nanos": 543},
         "schedule_time": {},

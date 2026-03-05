@@ -954,6 +954,9 @@ class Cluster(proto.Message):
             the per-project service account. The per-cluster
             service account naming format is subject to
             change.
+        dataplex_config (google.cloud.alloydb_v1alpha.types.Cluster.DataplexConfig):
+            Optional. Configuration for Dataplex
+            integration.
     """
 
     class State(proto.Enum):
@@ -1144,6 +1147,23 @@ class Cluster(proto.Message):
             message=timestamp_pb2.Timestamp,
         )
 
+    class DataplexConfig(proto.Message):
+        r"""Configuration for Dataplex integration.
+
+        Attributes:
+            enabled (bool):
+                Dataplex is enabled by default for resources
+                such as clusters and instances. This flag
+                controls the integration of AlloyDB PG resources
+                (like databases, schemas, and tables) with
+                Dataplex.".
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     backup_source: "BackupSource" = proto.Field(
         proto.MESSAGE,
         number=15,
@@ -1322,6 +1342,11 @@ class Cluster(proto.Message):
     service_account_email: str = proto.Field(
         proto.STRING,
         number=46,
+    )
+    dataplex_config: DataplexConfig = proto.Field(
+        proto.MESSAGE,
+        number=47,
+        message=DataplexConfig,
     )
 
 

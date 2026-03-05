@@ -288,7 +288,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.7.0
-    last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/cloud/alloydb/v1beta
         service_config: alloydb_v1beta.yaml
@@ -523,7 +523,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-auditmanager
     version: 0.1.0
-    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/cloud/auditmanager/v1
         service_config: auditmanager_v1.yaml
@@ -1041,7 +1041,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-commerce-consumer-procurement
     version: 0.4.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/cloud/commerce/consumer/procurement/v1
         service_config: cloudcommerceconsumerprocurement_v1.yaml
@@ -1587,7 +1587,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
     version: 3.10.0
-    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/cloud/documentai/v1beta3
         service_config: documentai_v1beta3.yaml
@@ -1768,7 +1768,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
     version: 2.23.0
-    last_generated_commit: d420134ab324c0cbe0f4ae06ad9697dac77f26ad
+    last_generated_commit: 572d5d51926dfa9e7509e12ec61e98ce19650f7c
     apis:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
@@ -1970,10 +1970,12 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-hypercomputecluster
     version: 0.2.0
-    last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
+    last_generated_commit: 23ec7b6ee94a2fe364cdb5a212949f1cf37f85ad
     apis:
       - path: google/cloud/hypercomputecluster/v1beta
         service_config: hypercomputecluster_v1beta.yaml
+      - path: google/cloud/hypercomputecluster/v1
+        service_config: hypercomputecluster_v1.yaml
     source_roots:
       - packages/google-cloud-hypercomputecluster
     preserve_regex:
@@ -2413,7 +2415,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
     version: 1.32.0
-    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/cloud/networkmanagement/v1
         service_config: networkmanagement_v1.yaml
@@ -3129,7 +3131,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
     version: 0.4.0
-    last_generated_commit: 1133adb136f742df62864f1d9d307df25d451880
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/cloud/storagebatchoperations/v1
         service_config: storagebatchoperations_v1.yaml
@@ -3307,7 +3309,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
     version: 0.5.0
-    last_generated_commit: 45e46bdae3874d2b92a2ced22529fc7037a1878f
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/cloud/vectorsearch/v1beta
         service_config: vectorsearch_v1beta.yaml
@@ -3952,7 +3954,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
+    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

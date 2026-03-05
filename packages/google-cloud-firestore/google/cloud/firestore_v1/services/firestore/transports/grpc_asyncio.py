@@ -916,7 +916,6 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=300.0,
@@ -982,7 +981,6 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=300.0,
@@ -999,7 +997,6 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=300.0,
@@ -1016,7 +1013,6 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=300.0,
@@ -1033,7 +1029,6 @@ class FirestoreGrpcAsyncIOTransport(FirestoreTransport):
                     predicate=retries.if_exception_type(
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
-                        core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=300.0,
