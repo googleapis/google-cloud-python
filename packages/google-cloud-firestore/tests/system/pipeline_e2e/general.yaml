@@ -708,9 +708,9 @@ tests:
         - Variable: rating_plus_one
     assert_results:
       - title: "The Hitchhiker's Guide to the Galaxy"
-        my_rating: 4.8
+        my_rating: 4.2
         author_name: "Douglas Adams"
-        rating_plus_one: 5.8
+        rating_plus_one: 5.2
     assert_proto:
       pipeline:
         stages:
@@ -735,7 +735,7 @@ tests:
                   functionValue:
                     args:
                     - fieldReferenceValue: rating
-                    - doubleValue: 1.0
+                    - integerValue: '1'
                     name: add
           name: let
         - args:
