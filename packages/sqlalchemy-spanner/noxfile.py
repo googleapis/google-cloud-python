@@ -234,9 +234,9 @@ def system(session):
 
     session.install("mock")
     session.install(".[tracing]")
-    session.install("opentelemetry-api==1.27.0")
-    session.install("opentelemetry-sdk==1.27.0")
-    session.install("opentelemetry-instrumentation==0.48b0")
+    session.install("opentelemetry-api")
+    session.install("opentelemetry-sdk")
+    session.install("opentelemetry-instrumentation")
     session.run("python", "create_test_database.py")
 
     session.install("sqlalchemy>=2.0")
@@ -254,9 +254,9 @@ def unit(session):
     session.install("pytest")
     session.install("mock")
     session.install(".")
-    session.install("opentelemetry-api==1.27.0")
-    session.install("opentelemetry-sdk==1.27.0")
-    session.install("opentelemetry-instrumentation==0.48b0")
+    session.install("opentelemetry-api")
+    session.install("opentelemetry-sdk")
+    session.install("opentelemetry-instrumentation")
     session.run(
         "python", "create_test_config.py", "my-project", "my-instance", "my-database"
     )
