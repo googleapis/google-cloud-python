@@ -14,9 +14,9 @@
 
 import copy
 
+import IPython  # type: ignore
 from google.api_core import client_info
 from google.cloud import bigquery
-import IPython  # type: ignore
 
 from bigquery_magics import environment
 import bigquery_magics.config

@@ -125,11 +125,11 @@ from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.job import QueryJobConfig
 import pandas
 
+from bigquery_magics import core
 from bigquery_magics import line_arg_parser as lap
 import bigquery_magics._versions_helpers
 import bigquery_magics.config
 import bigquery_magics.graph_server as graph_server
-from bigquery_magics import core
 import bigquery_magics.pyformat
 
 try:
