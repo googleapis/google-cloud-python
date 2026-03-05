@@ -266,7 +266,7 @@ def _summary(run: dict) -> str:
 
 def _print_results(profiles: list):
     for i, prof in enumerate(profiles):
-        print(f"{i+1}: ({prof['groupname']}:{prof['name']})")
+        print(f"{i + 1}: ({prof['groupname']}:{prof['name']})")
         print(f"SQL: {prof['SQL']}")
         print("MEASUREMENTS")
         for j, run in enumerate(prof["runs"]):
@@ -304,7 +304,7 @@ def _run_benchmarks(args: dict) -> list:
             profiles.append(profile)
 
     measure_end = datetime.now()
-    print(f"Measurement time: {str(measure_end-measure_start)}")
+    print(f"Measurement time: {str(measure_end - measure_start)}")
 
     # Stream benchmarking results to table, if required.
     if table_id:
