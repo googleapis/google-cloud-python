@@ -1412,10 +1412,21 @@ class Expression(ABC):
 
     @expose_as_static
     def array_agg(self) -> "Expression":
-        """Creates an aggregation that collects values into an array.
+        """Creates an aggregation that collects all values of an expression
+        across multiple stage inputs into an array.
+
+        If the expression resolves to an absent value, it is converted to
+        `None`. The order of elements in the output array is not stable and
+        shouldn't be relied upon.
+
+        This API is provided as a preview for developers and may change based
+        on feedback that we receive. Do not use this API in a production
+        environment.
+
         Example:
-            >>> # Collect all values of 'color' into an array
+            >>> # Collect all values of field 'color' into an array
             >>> Field.of("color").array_agg()
+
         Returns:
             A new `AggregateFunction` representing the array aggregation.
         """
@@ -1423,10 +1434,21 @@ class Expression(ABC):
 
     @expose_as_static
     def array_agg_distinct(self) -> "Expression":
-        """Creates an aggregation that collects distinct values into an array.
+        """Creates an aggregation that collects all distinct values of an
+        expression across multiple stage inputs into an array.
+
+        If the expression resolves to an absent value, it is converted to
+        `None`. The order of elements in the output array is not stable and
+        shouldn't be relied upon.
+
+        This API is provided as a preview for developers and may change based
+        on feedback that we receive. Do not use this API in a production
+        environment.
+
         Example:
-            >>> # Collect distinct values of 'color' into an array
+            >>> # Collect distinct values of field 'color' into an array
             >>> Field.of("color").array_agg_distinct()
+
         Returns:
             A new `AggregateFunction` representing the distinct array aggregation.
         """
@@ -1434,10 +1456,17 @@ class Expression(ABC):
 
     @expose_as_static
     def first(self) -> "Expression":
-        """Creates an aggregation that selects the first value.
+        """Creates an aggregation that finds the first value of an expression
+        across multiple stage inputs.
+
+        This API is provided as a preview for developers and may change based
+        on feedback that we receive. Do not use this API in a production
+        environment.
+
         Example:
-            >>> # Select the first value of 'color'
+            >>> # Select the first value of field 'color'
             >>> Field.of("color").first()
+
         Returns:
             A new `AggregateFunction` representing the first aggregation.
         """
@@ -1445,10 +1474,17 @@ class Expression(ABC):
 
     @expose_as_static
     def last(self) -> "Expression":
-        """Creates an aggregation that selects the last value.
+        """Creates an aggregation that finds the last value of an expression
+        across multiple stage inputs.
+
+        This API is provided as a preview for developers and may change based
+        on feedback that we receive. Do not use this API in a production
+        environment.
+
         Example:
-            >>> # Select the last value of 'color'
+            >>> # Select the last value of field 'color'
             >>> Field.of("color").last()
+
         Returns:
             A new `AggregateFunction` representing the last aggregation.
         """
