@@ -1445,7 +1445,7 @@ class Expression(ABC):
 
     @expose_as_static
     def last(self) -> "Expression":
-        """Creates an aggregation that selecting the last value.
+        """Creates an aggregation that selects the last value.
         Example:
             >>> # Select the last value of 'color'
             >>> Field.of("color").last()
