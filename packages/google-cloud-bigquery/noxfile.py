@@ -15,17 +15,18 @@
 from __future__ import absolute_import
 
 from functools import wraps
-import pathlib
 import os
+import pathlib
 import re
 import shutil
-import nox
 import time
 
+import nox
 
 MYPY_VERSION = "mypy==1.6.1"
 PYTYPE_VERSION = "pytype==2024.9.13"
 BLACK_VERSION = "black==23.7.0"
+ISORT_VERSION = "isort==5.10.1"
 BLACK_PATHS = (
     "benchmark",
     "docs",
@@ -37,10 +38,13 @@ BLACK_PATHS = (
     "setup.py",
 )
 
-DEFAULT_PYTHON_VERSION = "3.9"
+DEFAULT_PYTHON_VERSION = "3.14"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12", "3.13"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+ALL_PYTHON.extend(["3.7"])
 
 
 def _calculate_duration(func):
@@ -77,6 +81,8 @@ nox.options.sessions = [
     "mypy_samples",
     "pytype",
     "docs",
+    "prerelease_deps",
+    "core_deps_from_source",
 ]
 
 
@@ -143,10 +149,13 @@ def default(session, install_extras=True):
     )
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
+
+    if session.python in ("3.7",):
+        session.skip("Python 3.7 is no longer supported")
 
     default(session)
 
@@ -366,7 +375,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @_calculate_duration
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed.
@@ -597,3 +606,28 @@ def docfx(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
+
+
+@nox.session
+def format(session: nox.sessions.Session) -> None:
+    """
+    Run isort to sort imports. Then run black
+    to format code to uniform standard.
+    """
+    session.install(BLACK_VERSION, ISORT_VERSION)
+    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
+
+    # Use the --fss option to sort imports using strict alphabetical order.
+    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    session.run("isort", "--fss", *python_files)
+    session.run("black", *python_files)
