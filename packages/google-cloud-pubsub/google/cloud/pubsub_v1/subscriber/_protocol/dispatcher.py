@@ -12,34 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 import functools
 import itertools
 import logging
 import math
-import time
 import threading
+import time
 import typing
-from typing import List, Optional, Sequence, Union
 import warnings
-from google.api_core.retry import exponential_sleep_generator
+from typing import List, Optional, Sequence, Union
 
+from google.api_core.retry import exponential_sleep_generator
 from opentelemetry import trace
 
-from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
-from google.cloud.pubsub_v1.subscriber._protocol import requests
-from google.cloud.pubsub_v1.subscriber.exceptions import (
-    AcknowledgeStatus,
-)
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     start_ack_span,
     start_nack_span,
 )
+from google.cloud.pubsub_v1.subscriber._protocol import helper_threads, requests
+from google.cloud.pubsub_v1.subscriber.exceptions import (
+    AcknowledgeStatus,
+)
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import queue
+
     from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (
         StreamingPullManager,
     )
@@ -258,9 +257,9 @@ class Dispatcher(object):
             subscribe_spans: List[trace.Span] = []
             for ack_req in ack_reqs_dict.values():
                 if ack_req.opentelemetry_data:
-                    subscribe_span: Optional[
-                        trace.Span
-                    ] = ack_req.opentelemetry_data.subscribe_span
+                    subscribe_span: Optional[trace.Span] = (
+                        ack_req.opentelemetry_data.subscribe_span
+                    )
                     if (
                         subscribe_span
                         and subscribe_span.get_span_context().trace_flags.sampled
@@ -352,9 +351,9 @@ class Dispatcher(object):
                         subscription_id = req.opentelemetry_data.subscription_id
                     if project_id is None:
                         project_id = req.opentelemetry_data.project_id
-                    subscribe_span: Optional[
-                        trace.Span
-                    ] = req.opentelemetry_data.subscribe_span
+                    subscribe_span: Optional[trace.Span] = (
+                        req.opentelemetry_data.subscribe_span
+                    )
                     if (
                         subscribe_span
                         and subscribe_span.get_span_context().trace_flags.sampled
@@ -397,9 +396,9 @@ class Dispatcher(object):
                     completed_ack.opentelemetry_data.set_subscribe_span_result("acked")
                     completed_ack.opentelemetry_data.end_subscribe_span()
 
-            assert (
-                len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
-            ), "Too many requests to be retried."
+            assert len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE, (
+                "Too many requests to be retried."
+            )
             # Remove the completed messages from lease management.
             self.drop(requests_completed)
 
@@ -469,9 +468,9 @@ class Dispatcher(object):
             subscribe_spans: List[trace.Span] = []
             for ack_req in ack_reqs_dict.values():
                 if ack_req.opentelemetry_data and math.isclose(ack_req.seconds, 0):
-                    subscribe_span: Optional[
-                        trace.Span
-                    ] = ack_req.opentelemetry_data.subscribe_span
+                    subscribe_span: Optional[trace.Span] = (
+                        ack_req.opentelemetry_data.subscribe_span
+                    )
                     if (
                         subscribe_span
                         and subscribe_span.get_span_context().trace_flags.sampled
@@ -524,9 +523,9 @@ class Dispatcher(object):
                 )
             if nack_span:
                 nack_span.end()
-            assert (
-                len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE
-            ), "Too many requests to be retried."
+            assert len(requests_to_retry) <= _ACK_IDS_BATCH_SIZE, (
+                "Too many requests to be retried."
+            )
 
             for completed_modack in requests_completed:
                 if completed_modack.opentelemetry_data:

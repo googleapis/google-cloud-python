@@ -15,19 +15,18 @@
 import datetime
 import queue
 import time
-
 from unittest import mock
 
 from google.api_core import datetime_helpers
-from google.cloud.pubsub_v1.subscriber import message
-from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.protobuf import timestamp_pb2
-from google.pubsub_v1 import types as gapic_types
-from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
+
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     SubscribeOpenTelemetry,
 )
-
+from google.cloud.pubsub_v1.subscriber import message
+from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.cloud.pubsub_v1.subscriber.exceptions import AcknowledgeStatus
+from google.pubsub_v1 import types as gapic_types
 
 RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=datetime.timezone.utc)
 RECEIVED_SECONDS = datetime_helpers.to_milliseconds(RECEIVED) // 1000
@@ -42,7 +41,7 @@ def create_message(
     delivery_attempt=0,
     ordering_key="",
     exactly_once_delivery_enabled=False,
-    **attrs
+    **attrs,
 ):
     with mock.patch.object(time, "time") as time_:
         time_.return_value = RECEIVED_SECONDS

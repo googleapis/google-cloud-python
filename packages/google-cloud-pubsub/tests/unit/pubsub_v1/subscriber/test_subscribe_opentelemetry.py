@@ -13,25 +13,24 @@
 # limitations under the License.
 
 import datetime
-import time
 import queue
-import pytest
+import time
+from unittest import mock
 
-from google.protobuf import timestamp_pb2
+import pytest
 from google.api_core import datetime_helpers
+from google.protobuf import timestamp_pb2
 from opentelemetry import trace
 from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
+
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextSetter,
 )
-
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     SubscribeOpenTelemetry,
 )
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.cloud.pubsub_v1.types import PubsubMessage
-
-from unittest import mock
 
 RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=datetime.timezone.utc)
 RECEIVED_SECONDS = datetime_helpers.to_milliseconds(RECEIVED) // 1000
@@ -46,7 +45,7 @@ def create_message(
     delivery_attempt=0,
     ordering_key="",
     exactly_once_delivery_enabled=False,
-    **attrs
+    **attrs,
 ):  # pragma: NO COVER
     with mock.patch.object(time, "time") as time_:
         time_.return_value = RECEIVED_SECONDS

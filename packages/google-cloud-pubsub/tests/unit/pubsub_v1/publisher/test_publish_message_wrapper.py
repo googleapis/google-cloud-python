@@ -14,10 +14,10 @@
 
 import pytest
 
-from google.pubsub_v1 import types as gapic_types
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
+from google.pubsub_v1 import types as gapic_types
 
 
 def test_message_setter():

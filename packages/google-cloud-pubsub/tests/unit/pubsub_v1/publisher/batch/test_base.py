@@ -14,16 +14,15 @@
 
 from __future__ import absolute_import
 
-
 from google.auth import credentials
-from google.cloud.pubsub_v1 import publisher
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
-from google.cloud.pubsub_v1.publisher._batch.thread import Batch
-from google.pubsub_v1 import types as gapic_types
+
+from google.cloud.pubsub_v1 import publisher, types
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
+from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
+from google.cloud.pubsub_v1.publisher._batch.thread import Batch
+from google.pubsub_v1 import types as gapic_types
 
 
 def create_batch(status, settings=types.BatchSettings()):

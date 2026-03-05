@@ -18,10 +18,12 @@ import abc
 import typing
 
 from google.api_core import gapic_v1
+
 from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from concurrent import futures
+
     from google.pubsub_v1.services.publisher.client import OptionalRetry
 
 

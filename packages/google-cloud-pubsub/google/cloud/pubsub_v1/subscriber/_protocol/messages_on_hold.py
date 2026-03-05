@@ -77,9 +77,9 @@ class MessagesOnHold(object):
                 if pending_queue is None:
                     # Create empty queue to indicate a message with the
                     # ordering key is in flight.
-                    self._pending_ordered_messages[
-                        msg.ordering_key
-                    ] = collections.deque()
+                    self._pending_ordered_messages[msg.ordering_key] = (
+                        collections.deque()
+                    )
                     self._size = self._size - 1
                     return msg
                 else:

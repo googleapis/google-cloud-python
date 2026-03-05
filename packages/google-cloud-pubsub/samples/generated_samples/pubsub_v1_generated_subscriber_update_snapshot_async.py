@@ -39,13 +39,13 @@ async def sample_update_snapshot():
     client = pubsub_v1.SubscriberAsyncClient()
 
     # Initialize request argument(s)
-    request = pubsub_v1.UpdateSnapshotRequest(
-    )
+    request = pubsub_v1.UpdateSnapshotRequest()
 
     # Make the request
     response = await client.update_snapshot(request=request)
 
     # Handle the response
     print(response)
+
 
 # [END pubsub_v1_generated_Subscriber_UpdateSnapshot_async]

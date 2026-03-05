@@ -50,4 +50,5 @@ async def sample_pull():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Subscriber_Pull_async]

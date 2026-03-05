@@ -19,26 +19,21 @@ import datetime
 import itertools
 import operator as op
 import os
-import psutil
 import threading
 import time
-from typing import Any, Callable, cast, TypeVar
-
+from typing import Any, Callable, TypeVar, cast
 from unittest import mock
 
-from flaky import flaky
-import pytest
-
 import google.auth
+import psutil
+import pytest
+from flaky import flaky
 from google.api_core import exceptions as core_exceptions
-from google.cloud import pubsub_v1
-from google.cloud.pubsub_v1 import exceptions
-from google.cloud.pubsub_v1 import futures
-from google.cloud.pubsub_v1 import types
-from google.pubsub_v1 import types as gapic_types
-
-
 from test_utils.system import unique_resource_id
+
+from google.cloud import pubsub_v1
+from google.cloud.pubsub_v1 import exceptions, futures, types
+from google.pubsub_v1 import types as gapic_types
 
 C = TypeVar("C", bound=Callable[..., Any])
 typed_flaky = cast(Callable[[C], C], flaky(max_runs=5, min_passes=1))

@@ -49,4 +49,5 @@ async def sample_detach_subscription():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Publisher_DetachSubscription_async]

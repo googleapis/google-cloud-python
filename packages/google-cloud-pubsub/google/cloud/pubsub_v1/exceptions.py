@@ -16,5 +16,4 @@ from __future__ import absolute_import
 
 from concurrent.futures import TimeoutError
 
-
 __all__ = ("TimeoutError",)

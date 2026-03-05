@@ -20,10 +20,10 @@ from opentelemetry import trace
 from opentelemetry.trace.propagation import set_span_in_context
 from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
-from google.pubsub_v1 import types as gapic_types
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextSetter,
 )
+from google.pubsub_v1 import types as gapic_types
 
 
 class PublishMessageWrapper:

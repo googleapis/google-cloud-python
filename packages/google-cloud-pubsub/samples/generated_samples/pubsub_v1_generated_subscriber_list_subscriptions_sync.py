@@ -50,4 +50,5 @@ def sample_list_subscriptions():
     for response in page_result:
         print(response)
 
+
 # [END pubsub_v1_generated_Subscriber_ListSubscriptions_sync]

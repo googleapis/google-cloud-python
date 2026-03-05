@@ -15,8 +15,9 @@
 from __future__ import absolute_import
 
 from enum import Enum
-from google.api_core.exceptions import GoogleAPICallError
 from typing import Optional
+
+from google.api_core.exceptions import GoogleAPICallError
 
 
 class AcknowledgeStatus(Enum):

@@ -41,7 +41,7 @@ def sample_modify_ack_deadline():
     # Initialize request argument(s)
     request = pubsub_v1.ModifyAckDeadlineRequest(
         subscription="subscription_value",
-        ack_ids=['ack_ids_value1', 'ack_ids_value2'],
+        ack_ids=["ack_ids_value1", "ack_ids_value2"],
         ack_deadline_seconds=2066,
     )
 

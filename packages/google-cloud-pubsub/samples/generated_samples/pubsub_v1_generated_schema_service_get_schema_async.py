@@ -49,4 +49,5 @@ async def sample_get_schema():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_SchemaService_GetSchema_async]

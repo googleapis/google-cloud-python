@@ -49,4 +49,5 @@ def sample_get_topic():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Publisher_GetTopic_sync]

@@ -49,4 +49,5 @@ def sample_delete_schema_revision():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_SchemaService_DeleteSchemaRevision_sync]

@@ -16,17 +16,17 @@ import os
 import re
 import sys
 import time
-from typing import Any, Callable, cast, Generator, List, TypeVar
 import uuid
+from typing import Any, Callable, Generator, List, TypeVar, cast
 
-from _pytest.capture import CaptureFixture
 import backoff
+import pytest
+import subscriber
+from _pytest.capture import CaptureFixture
 from flaky import flaky
 from google.api_core.exceptions import NotFound
-from google.cloud import bigquery, pubsub_v1, storage
-import pytest
 
-import subscriber
+from google.cloud import bigquery, pubsub_v1, storage
 
 # This uuid is shared across tests which run in parallel.
 UUID = uuid.uuid4().hex

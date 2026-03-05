@@ -61,4 +61,5 @@ def sample_streaming_pull():
     for response in stream:
         print(response)
 
+
 # [END pubsub_v1_generated_Subscriber_StreamingPull_sync]

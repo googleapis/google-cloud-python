@@ -14,11 +14,11 @@
 
 from __future__ import absolute_import
 
-import sys
 import os
+import sys
 import typing
-from typing import cast, Any, Callable, Optional, Sequence, Union
 import warnings
+from typing import Any, Callable, Optional, Sequence, Union, cast
 
 from google.auth.credentials import AnonymousCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -26,8 +26,8 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
-from google.pubsub_v1.services.subscriber import client as subscriber_client
 from google.pubsub_v1 import gapic_version as package_version
+from google.pubsub_v1.services.subscriber import client as subscriber_client
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1 import subscriber
@@ -71,7 +71,7 @@ class Client(subscriber_client.SubscriberClient):
     def __init__(
         self,
         subscriber_options: Union[types.SubscriberOptions, Sequence] = (),
-        **kwargs: Any
+        **kwargs: Any,
     ):
         assert (
             isinstance(subscriber_options, types.SubscriberOptions)

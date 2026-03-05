@@ -13,15 +13,15 @@
 # limitations under the License.
 
 import os
-from typing import Generator
 import uuid
-
-from _pytest.capture import CaptureFixture
-from google.api_core.exceptions import NotFound
-from google.cloud import pubsub_v1
-import pytest
+from typing import Generator
 
 import iam
+import pytest
+from _pytest.capture import CaptureFixture
+from google.api_core.exceptions import NotFound
+
+from google.cloud import pubsub_v1
 
 UUID = uuid.uuid4().hex
 PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]

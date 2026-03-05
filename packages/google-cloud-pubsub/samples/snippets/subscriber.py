@@ -88,12 +88,12 @@ def pubsub_subscribe_otel_tracing(
     """
     # [START pubsub_subscribe_otel_tracing]
     from opentelemetry import trace
+    from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
     from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import (
         BatchSpanProcessor,
     )
-    from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
-    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased, ParentBased
+    from opentelemetry.sdk.trace.sampling import ParentBased, TraceIdRatioBased
 
     from google.cloud import pubsub_v1
     from google.cloud.pubsub_v1 import SubscriberClient
@@ -193,9 +193,11 @@ def optimistic_subscribe(
     operation calls to verify the existence of a subscription and reduces the probability
     of running out of quota for admin operations."""
     # [START pubsub_optimistic_subscribe]
-    from google.api_core.exceptions import NotFound
-    from google.cloud import pubsub_v1
     from concurrent.futures import TimeoutError
+
+    from google.api_core.exceptions import NotFound
+
+    from google.cloud import pubsub_v1
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -527,8 +529,9 @@ def create_cloudstorage_subscription(
 ) -> None:
     """Create a new CloudStorage subscription on the given topic."""
     # [START pubsub_create_cloud_storage_subscription]
-    from google.cloud import pubsub_v1
     from google.protobuf import duration_pb2
+
+    from google.cloud import pubsub_v1
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -800,6 +803,7 @@ def receive_messages(
     # [START pubsub_subscriber_async_pull]
     # [START pubsub_quickstart_subscriber]
     from concurrent.futures import TimeoutError
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -839,6 +843,7 @@ def receive_messages_with_custom_attributes(
     """Receives messages from a pull subscription."""
     # [START pubsub_subscriber_async_pull_custom_attributes]
     from concurrent.futures import TimeoutError
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -880,6 +885,7 @@ def receive_messages_with_flow_control(
     """Receives messages from a pull subscription with flow control."""
     # [START pubsub_subscriber_flow_settings]
     from concurrent.futures import TimeoutError
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -922,6 +928,7 @@ def receive_messages_with_blocking_shutdown(
     # [START pubsub_subscriber_blocking_shutdown]
     import time
     from concurrent.futures import TimeoutError
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -972,6 +979,7 @@ def receive_messages_with_exactly_once_delivery_enabled(
     """
     # [START pubsub_subscriber_exactly_once]
     from concurrent.futures import TimeoutError
+
     from google.cloud import pubsub_v1
     from google.cloud.pubsub_v1.subscriber import exceptions as sub_exceptions
 
@@ -1025,6 +1033,7 @@ def synchronous_pull(project_id: str, subscription_id: str) -> None:
     """Pulling messages synchronously."""
     # [START pubsub_subscriber_sync_pull]
     from google.api_core import retry
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -1076,6 +1085,7 @@ def synchronous_pull_with_lease_management(
     import time
 
     from google.api_core import retry
+
     from google.cloud import pubsub_v1
 
     multiprocessing.log_to_stderr()
@@ -1185,6 +1195,7 @@ def receive_messages_with_delivery_attempts(
 ) -> None:
     # [START pubsub_dead_letter_delivery_attempt]
     from concurrent.futures import TimeoutError
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -1219,6 +1230,7 @@ def receive_messages_with_concurrency_control(
 ) -> None:
     # [START pubsub_subscriber_concurrency_control]
     from concurrent import futures
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)

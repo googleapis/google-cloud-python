@@ -74,6 +74,7 @@ from .schema import (
     CreateSchemaRequest,
     DeleteSchemaRequest,
     DeleteSchemaRevisionRequest,
+    Encoding,
     GetSchemaRequest,
     ListSchemaRevisionsRequest,
     ListSchemaRevisionsResponse,
@@ -81,12 +82,11 @@ from .schema import (
     ListSchemasResponse,
     RollbackSchemaRequest,
     Schema,
+    SchemaView,
     ValidateMessageRequest,
     ValidateMessageResponse,
     ValidateSchemaRequest,
     ValidateSchemaResponse,
-    Encoding,
-    SchemaView,
 )
 
 TimeoutType = Union[

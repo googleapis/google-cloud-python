@@ -16,9 +16,7 @@ from __future__ import absolute_import
 
 import threading
 import time
-from typing import Callable
-from typing import Sequence
-from typing import Union
+from typing import Callable, Sequence, Union
 
 import pytest
 

@@ -15,18 +15,18 @@
 # limitations under the License.
 
 import os
-from typing import Any, Callable, Generator, TypeVar, cast
 import uuid
+from typing import Any, Callable, Generator, TypeVar, cast
 
+import pytest
+import schema
 from _pytest.capture import CaptureFixture
 from flaky import flaky
 from google.api_core.exceptions import InternalServerError, NotFound
+
 from google.cloud import pubsub_v1
 from google.cloud.pubsub import PublisherClient, SchemaServiceClient, SubscriberClient
 from google.pubsub_v1.types import Encoding, Schema, Topic
-import pytest
-
-import schema
 
 # This uuid is shared across tests which run in parallel.
 UUID = uuid.uuid4().hex

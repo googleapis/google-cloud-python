@@ -16,12 +16,12 @@ import queue
 
 from opentelemetry import trace
 
-from google.pubsub_v1 import types as gapic_types
-from google.cloud.pubsub_v1.subscriber import message
-from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     SubscribeOpenTelemetry,
 )
+from google.cloud.pubsub_v1.subscriber import message
+from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
+from google.pubsub_v1 import types as gapic_types
 
 
 def make_message(ack_id, ordering_key):

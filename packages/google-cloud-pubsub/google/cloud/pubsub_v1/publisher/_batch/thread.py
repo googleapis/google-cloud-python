@@ -18,21 +18,20 @@ import logging
 import threading
 import time
 import typing
-from typing import Any, Callable, List, Optional, Sequence
 from datetime import datetime
+from typing import Any, Callable, List, Optional, Sequence
 
-from opentelemetry import trace
 import google.api_core.exceptions
 from google.api_core import gapic_v1
 from google.auth import exceptions as auth_exceptions
+from opentelemetry import trace
 
-from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher import futures
-from google.cloud.pubsub_v1.publisher._batch import base
-from google.pubsub_v1 import types as gapic_types
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
+from google.cloud.pubsub_v1.publisher import exceptions, futures
+from google.cloud.pubsub_v1.publisher._batch import base
+from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import pubsub_v1
@@ -196,9 +195,9 @@ class Batch(base.Batch):
         """
 
         with self._state_lock:
-            assert (
-                self._status == base.BatchStatus.ACCEPTING_MESSAGES
-            ), "Cancel should not be called after sending has started."
+            assert self._status == base.BatchStatus.ACCEPTING_MESSAGES, (
+                "Cancel should not be called after sending has started."
+            )
 
             exc = RuntimeError(cancellation_reason.value)
             for future in self._futures:
@@ -292,8 +291,7 @@ class Batch(base.Batch):
                 # called and now, the batch started to be committed, or
                 # completed a commit, then no-op at this point.
                 _LOGGER.debug(
-                    "Batch is already in progress or has been cancelled, "
-                    "exiting commit"
+                    "Batch is already in progress or has been cancelled, exiting commit"
                 )
                 return
 
@@ -446,9 +444,9 @@ class Batch(base.Batch):
         future = None
 
         with self._state_lock:
-            assert (
-                self._status != base.BatchStatus.ERROR
-            ), "Publish after stop() or publish error."
+            assert self._status != base.BatchStatus.ERROR, (
+                "Publish after stop() or publish error."
+            )
 
             if self.status != base.BatchStatus.ACCEPTING_MESSAGES:
                 return None

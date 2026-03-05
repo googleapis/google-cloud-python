@@ -16,29 +16,28 @@ import datetime
 import sys
 import threading
 import time
-
 from unittest import mock
 
-import pytest
-
-from opentelemetry import trace
-from opentelemetry.trace import SpanContext
-
 import google.api_core.exceptions
+import pytest
 from google.api_core import gapic_v1
 from google.auth import credentials
 from google.auth import exceptions as auth_exceptions
-from google.cloud.pubsub_v1 import publisher
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher._batch.base import BatchStatus
-from google.cloud.pubsub_v1.publisher._batch.base import BatchCancellationReason
-from google.cloud.pubsub_v1.publisher._batch import thread
-from google.cloud.pubsub_v1.publisher._batch.thread import Batch
-from google.pubsub_v1 import types as gapic_types
+from opentelemetry import trace
+from opentelemetry.trace import SpanContext
+
+from google.cloud.pubsub_v1 import publisher, types
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
+from google.cloud.pubsub_v1.publisher import exceptions
+from google.cloud.pubsub_v1.publisher._batch import thread
+from google.cloud.pubsub_v1.publisher._batch.base import (
+    BatchCancellationReason,
+    BatchStatus,
+)
+from google.cloud.pubsub_v1.publisher._batch.thread import Batch
+from google.pubsub_v1 import types as gapic_types
 
 
 def create_client(enable_open_telemetry: bool = False):

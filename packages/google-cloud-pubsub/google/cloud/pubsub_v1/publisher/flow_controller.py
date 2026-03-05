@@ -12,15 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import OrderedDict
 import logging
 import threading
-from typing import Dict, Optional, Type
 import warnings
+from collections import OrderedDict
+from typing import Dict, Optional, Type
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
-
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -158,8 +157,9 @@ class FlowController(object):
                 self._has_capacity.wait()
 
                 _LOGGER.debug(
-                    "Woke up from waiting on free capacity in the flow - "
-                    "{}.".format(self._load_info())
+                    "Woke up from waiting on free capacity in the flow - {}.".format(
+                        self._load_info()
+                    )
                 )
 
             # Message accepted, increase the load and remove thread stats.

@@ -23,7 +23,6 @@ from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
 
-
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import pubsub_v1
     from google.cloud.pubsub_v1 import types

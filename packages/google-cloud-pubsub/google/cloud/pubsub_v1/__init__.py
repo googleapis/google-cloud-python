@@ -14,9 +14,7 @@
 
 from __future__ import absolute_import
 
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1 import publisher
-from google.cloud.pubsub_v1 import subscriber
+from google.cloud.pubsub_v1 import publisher, subscriber, types
 from google.pubsub_v1.services import schema_service
 
 

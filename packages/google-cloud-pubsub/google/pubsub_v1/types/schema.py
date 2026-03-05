@@ -18,9 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.pubsub.v1",
@@ -60,6 +58,7 @@ class SchemaView(proto.Enum):
         FULL (2):
             Include all Schema object fields.
     """
+
     SCHEMA_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -78,6 +77,7 @@ class Encoding(proto.Enum):
             type. For some schema types, binary encoding may
             not be available.
     """
+
     ENCODING_UNSPECIFIED = 0
     JSON = 1
     BINARY = 2
@@ -115,6 +115,7 @@ class Schema(proto.Message):
             AVRO (2):
                 An Avro schema definition.
         """
+
         TYPE_UNSPECIFIED = 0
         PROTOCOL_BUFFER = 1
         AVRO = 2

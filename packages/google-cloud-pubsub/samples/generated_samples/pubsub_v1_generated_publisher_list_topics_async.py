@@ -50,4 +50,5 @@ async def sample_list_topics():
     async for response in page_result:
         print(response)
 
+
 # [END pubsub_v1_generated_Publisher_ListTopics_async]

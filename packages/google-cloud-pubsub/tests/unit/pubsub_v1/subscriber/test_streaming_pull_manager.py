@@ -12,48 +12,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import logging
+import math
+import queue
 import sys
 import threading
 import time
 import types as stdlib_types
-import datetime
-import queue
-import math
+from unittest import mock
 
-from opentelemetry import trace
+import grpc
+import pytest
+from google.api_core import bidi, datetime_helpers, exceptions
 from google.protobuf import timestamp_pb2
-from google.api_core import datetime_helpers
+from google.rpc import code_pb2, error_details_pb2, status_pb2
+from opentelemetry import trace
 
+from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     SubscribeOpenTelemetry,
 )
+from google.cloud.pubsub_v1.subscriber import client, futures, message, scheduler
+from google.cloud.pubsub_v1.subscriber import exceptions as subscriber_exceptions
+from google.cloud.pubsub_v1.subscriber._protocol import (
+    dispatcher,
+    heartbeater,
+    leaser,
+    messages_on_hold,
+    requests,
+    streaming_pull_manager,
+)
 from google.cloud.pubsub_v1.subscriber.message import Message
 from google.cloud.pubsub_v1.types import PubsubMessage
-
-
-from unittest import mock
-import pytest
-
-from google.api_core import bidi
-from google.api_core import exceptions
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import client
-from google.cloud.pubsub_v1.subscriber import message
-from google.cloud.pubsub_v1.subscriber import scheduler
-from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
-from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
-from google.cloud.pubsub_v1.subscriber._protocol import leaser
-from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
-from google.cloud.pubsub_v1.subscriber._protocol import requests
-from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
-from google.cloud.pubsub_v1.subscriber import exceptions as subscriber_exceptions
-from google.cloud.pubsub_v1.subscriber import futures
 from google.pubsub_v1 import types as gapic_types
-import grpc
-from google.rpc import status_pb2
-from google.rpc import code_pb2
-from google.rpc import error_details_pb2
 
 
 def create_mock_message(**kwargs):

@@ -49,4 +49,5 @@ async def sample_get_subscription():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Subscriber_GetSubscription_async]

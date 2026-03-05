@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud import pubsub
-from google.cloud import pubsub_v1
+from google.cloud import pubsub, pubsub_v1
 
 
 def test_exported_things():

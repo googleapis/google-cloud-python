@@ -12,42 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 import inspect
-import sys
-
-import grpc
 import math
-
+import sys
+import time
+from typing import Any, Callable, TypeVar, cast
 from unittest import mock
 
+import grpc
 import pytest
-import time
 from flaky import flaky
-from typing import cast, Callable, Any, TypeVar
-
-from opentelemetry import trace
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
 from google.api_core.timeout import ConstantTimeout
+from opentelemetry import trace
 
-from google.cloud.pubsub_v1 import publisher
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
-from google.pubsub_v1 import types as gapic_types
-from google.pubsub_v1.services.publisher import client as publisher_client
-from google.pubsub_v1.services.publisher.transports.grpc import PublisherGrpcTransport
+from google.cloud.pubsub_v1 import publisher, types
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextSetter,
 )
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
-
+from google.cloud.pubsub_v1.publisher import exceptions
+from google.cloud.pubsub_v1.publisher._sequencer import ordered_sequencer
+from google.pubsub_v1 import types as gapic_types
+from google.pubsub_v1.services.publisher import client as publisher_client
+from google.pubsub_v1.services.publisher.transports.grpc import PublisherGrpcTransport
 
 C = TypeVar("C", bound=Callable[..., Any])
 typed_flaky = cast(Callable[[C], C], flaky(max_runs=5, min_passes=1))

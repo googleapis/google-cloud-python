@@ -15,9 +15,8 @@
 import logging
 import queue
 import time
-from typing import Any, Callable, List, Sequence, Optional
 import uuid
-
+from typing import Any, Callable, List, Optional, Sequence
 
 __all__ = ("QueueCallbackWorker", "STOP")
 

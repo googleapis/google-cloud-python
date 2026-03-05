@@ -31,6 +31,7 @@ def create_avro_schema(project_id: str, schema_id: str, avsc_file: str) -> None:
     """Create a schema resource from a JSON-formatted Avro schema file."""
     # [START pubsub_create_avro_schema]
     from google.api_core.exceptions import AlreadyExists
+
     from google.cloud.pubsub import SchemaServiceClient
     from google.pubsub_v1.types import Schema
 
@@ -64,6 +65,7 @@ def create_proto_schema(project_id: str, schema_id: str, proto_file: str) -> Non
     """Create a schema resource from a protobuf schema file."""
     # [START pubsub_create_proto_schema]
     from google.api_core.exceptions import AlreadyExists
+
     from google.cloud.pubsub import SchemaServiceClient
     from google.pubsub_v1.types import Schema
 
@@ -99,6 +101,7 @@ def commit_avro_schema(project_id: str, schema_id: str, avsc_file: str) -> None:
     """Commit a schema resource from a JSON-formatted Avro schema file."""
     # [START pubsub_commit_avro_schema]
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient
     from google.pubsub_v1.types import Schema
 
@@ -130,6 +133,7 @@ def commit_proto_schema(project_id: str, schema_id: str, proto_file: str) -> Non
     """Commit a schema revision from a protobuf schema file."""
     # [START pubsub_commit_proto_schema]
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient
     from google.pubsub_v1.types import Schema
 
@@ -163,6 +167,7 @@ def get_schema(project_id: str, schema_id: str) -> None:
     """Get a schema resource."""
     # [START pubsub_get_schema]
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient
 
     # TODO(developer): Replace these variables before running the sample.
@@ -186,6 +191,7 @@ def get_schema_revision(
     """Get a schema revision."""
     # [START pubsub_get_schema_revision]
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient
 
     # TODO(developer): Replace these variables before running the sample.
@@ -249,6 +255,7 @@ def rollback_schema_revision(
     """Roll back a schema revision."""
     # [START pubsub_rollback_schema]
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient
 
     # TODO(developer): Replace these variables before running the sample.
@@ -273,6 +280,7 @@ def delete_schema(project_id: str, schema_id: str) -> None:
     """Delete a schema resource."""
     # [START pubsub_delete_schema]
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient
 
     # TODO(developer): Replace these variables before running the sample.
@@ -294,6 +302,7 @@ def delete_schema_revision(project_id: str, schema_id: str, revision_id: str) ->
     """Delete a schema revision."""
     # [START pubsub_delete_schema_revision]
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient
 
     # TODO(developer): Replace these variables before running the sample.
@@ -318,6 +327,7 @@ def create_topic_with_schema(
     """Create a topic resource with a schema."""
     # [START pubsub_create_topic_with_schema]
     from google.api_core.exceptions import AlreadyExists, InvalidArgument
+
     from google.cloud.pubsub import PublisherClient, SchemaServiceClient
     from google.pubsub_v1.types import Encoding
 
@@ -363,6 +373,7 @@ def update_topic_schema(
     """Update a topic resource's first schema revision."""
     # [START pubsub_update_topic_schema]
     from google.api_core.exceptions import InvalidArgument, NotFound
+
     from google.cloud.pubsub import PublisherClient
 
     # TODO(developer): Replace these variables before running the sample.
@@ -407,6 +418,7 @@ def create_topic_with_schema_revisions(
     """Create a topic resource with a schema."""
     # [START pubsub_create_topic_with_schema_revisions]
     from google.api_core.exceptions import AlreadyExists, InvalidArgument
+
     from google.cloud.pubsub import PublisherClient, SchemaServiceClient
     from google.pubsub_v1.types import Encoding
 
@@ -456,11 +468,13 @@ def create_topic_with_schema_revisions(
 def publish_avro_records(project_id: str, topic_id: str, avsc_file: str) -> None:
     """Pulbish a BINARY or JSON encoded message to a topic configured with an Avro schema."""
     # [START pubsub_publish_avro_records]
-    from avro.io import BinaryEncoder, DatumWriter
-    import avro.schema as schema
     import io
     import json
+
+    import avro.schema as schema
+    from avro.io import BinaryEncoder, DatumWriter
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import PublisherClient
     from google.pubsub_v1.types import Encoding
 
@@ -512,11 +526,11 @@ def publish_proto_messages(project_id: str, topic_id: str) -> None:
     """Publish a BINARY or JSON encoded message to a topic configured with a protobuf schema."""
     # [START pubsub_publish_proto_messages]
     from google.api_core.exceptions import NotFound
-    from google.cloud.pubsub import PublisherClient
     from google.protobuf.json_format import MessageToJson
-    from google.pubsub_v1.types import Encoding
-
     from utilities import us_states_pb2  # type: ignore
+
+    from google.cloud.pubsub import PublisherClient
+    from google.pubsub_v1.types import Encoding
 
     # TODO(developer): Replace these variables before running the sample.
     # project_id = "your-project-id"
@@ -563,11 +577,13 @@ def subscribe_with_avro_schema(
 ) -> None:
     """Receive and decode messages sent to a topic with an Avro schema."""
     # [START pubsub_subscribe_avro_records]
-    import avro.schema as schema
-    from avro.io import BinaryDecoder, DatumReader
-    from concurrent.futures import TimeoutError
     import io
     import json
+    from concurrent.futures import TimeoutError
+
+    import avro.schema as schema
+    from avro.io import BinaryDecoder, DatumReader
+
     from google.cloud.pubsub import SubscriberClient
 
     # TODO(developer)
@@ -624,12 +640,14 @@ def subscribe_with_avro_schema_with_revisions(
 ) -> None:
     """Receive and decode messages sent to a topic with an Avro schema."""
     # [START pubsub_subscribe_avro_records_with_revisions]
-    import avro.schema as schema
-    from avro.io import BinaryDecoder, DatumReader
-    from concurrent.futures import TimeoutError
     import io
     import json
+    from concurrent.futures import TimeoutError
+
+    import avro.schema as schema
+    from avro.io import BinaryDecoder, DatumReader
     from google.api_core.exceptions import NotFound
+
     from google.cloud.pubsub import SchemaServiceClient, SubscriberClient
 
     schema_client = SchemaServiceClient()
@@ -707,10 +725,11 @@ def subscribe_with_proto_schema(
     """Receive and decode messages sent to a topic with a protobuf schema."""
     # [[START pubsub_subscribe_proto_messages]
     from concurrent.futures import TimeoutError
-    from google.cloud.pubsub import SubscriberClient
-    from google.protobuf.json_format import Parse
 
+    from google.protobuf.json_format import Parse
     from utilities import us_states_pb2
+
+    from google.cloud.pubsub import SubscriberClient
 
     # TODO(developer)
     # project_id = "your-project-id"

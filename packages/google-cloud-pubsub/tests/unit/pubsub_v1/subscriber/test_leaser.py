@@ -14,21 +14,22 @@
 
 import logging
 import threading
+from unittest import mock
+
+import pytest
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
-from google.cloud.pubsub_v1.subscriber._protocol import histogram
-from google.cloud.pubsub_v1.subscriber._protocol import leaser
-from google.cloud.pubsub_v1.subscriber._protocol import requests
-from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     SubscribeOpenTelemetry,
 )
 from google.cloud.pubsub_v1.subscriber import message
-
-from unittest import mock
-
-import pytest
+from google.cloud.pubsub_v1.subscriber._protocol import (
+    dispatcher,
+    histogram,
+    leaser,
+    requests,
+    streaming_pull_manager,
+)
 
 
 def test_add_and_remove():

@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, List
+from typing import List, Optional
 
-from opentelemetry.propagators.textmap import Setter, Getter
+from opentelemetry.propagators.textmap import Getter, Setter
 
 from google.pubsub_v1 import PubsubMessage
 

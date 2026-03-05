@@ -23,8 +23,8 @@ import concurrent.futures
 import queue
 import sys
 import typing
-from typing import Callable, List, Optional
 import warnings
+from typing import Callable, List, Optional
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import pubsub_v1

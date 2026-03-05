@@ -49,4 +49,5 @@ def sample_publish():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Publisher_Publish_sync]

@@ -16,25 +16,25 @@ import collections
 import queue
 import sys
 import threading
-
-from opentelemetry import trace
-
-from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
-from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
-from google.cloud.pubsub_v1.subscriber._protocol import requests
-from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
-from google.cloud.pubsub_v1.subscriber import futures
-from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
-    SubscribeOpenTelemetry,
-)
-from google.pubsub_v1.types import PubsubMessage
-
 from unittest import mock
 
 import pytest
+from opentelemetry import trace
+
+from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
+    SubscribeOpenTelemetry,
+)
+from google.cloud.pubsub_v1.subscriber import futures
+from google.cloud.pubsub_v1.subscriber._protocol import (
+    dispatcher,
+    helper_threads,
+    requests,
+    streaming_pull_manager,
+)
 from google.cloud.pubsub_v1.subscriber.exceptions import (
     AcknowledgeStatus,
 )
+from google.pubsub_v1.types import PubsubMessage
 
 
 @pytest.mark.parametrize(

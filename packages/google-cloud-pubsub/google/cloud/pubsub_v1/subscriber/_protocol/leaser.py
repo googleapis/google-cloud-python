@@ -22,10 +22,10 @@ import time
 import typing
 from typing import Dict, Iterable, Optional, Union
 
-from google.cloud.pubsub_v1.subscriber._protocol.dispatcher import _MAX_BATCH_LATENCY
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     SubscribeOpenTelemetry,
 )
+from google.cloud.pubsub_v1.subscriber._protocol.dispatcher import _MAX_BATCH_LATENCY
 
 try:
     from collections.abc import KeysView

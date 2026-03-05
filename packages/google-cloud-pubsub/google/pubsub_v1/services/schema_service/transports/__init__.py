@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import SchemaServiceTransport
 from .grpc import SchemaServiceGrpcTransport
 from .grpc_asyncio import SchemaServiceGrpcAsyncIOTransport
-from .rest import SchemaServiceRestTransport
-from .rest import SchemaServiceRestInterceptor
-
+from .rest import SchemaServiceRestInterceptor, SchemaServiceRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SchemaServiceTransport]]

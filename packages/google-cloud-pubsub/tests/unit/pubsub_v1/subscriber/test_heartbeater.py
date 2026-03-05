@@ -14,13 +14,14 @@
 
 import logging
 import threading
-
-from google.cloud.pubsub_v1.subscriber._protocol import heartbeater
-from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
-
 from unittest import mock
 
 import pytest
+
+from google.cloud.pubsub_v1.subscriber._protocol import (
+    heartbeater,
+    streaming_pull_manager,
+)
 
 
 def test_heartbeat_inactive_manager_active_rpc(

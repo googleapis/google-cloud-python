@@ -13,17 +13,17 @@
 # limitations under the License.
 
 from unittest import mock
-import pytest
 
+import pytest
 from google.auth import credentials
-from google.cloud.pubsub_v1 import publisher
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher._batch import base
-from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
-from google.pubsub_v1 import types as gapic_types
+
+from google.cloud.pubsub_v1 import publisher, types
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
+from google.cloud.pubsub_v1.publisher._batch import base
+from google.cloud.pubsub_v1.publisher._sequencer import unordered_sequencer
+from google.pubsub_v1 import types as gapic_types
 
 
 def create_message():

@@ -16,20 +16,21 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.pubsub_v1 import gapic_version as package_version
-
-import google.auth  # type: ignore
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+
+from google.pubsub_v1 import gapic_version as package_version
 from google.pubsub_v1.types import pubsub
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

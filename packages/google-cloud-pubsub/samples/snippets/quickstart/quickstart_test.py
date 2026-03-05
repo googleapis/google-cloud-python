@@ -15,15 +15,15 @@
 # limitations under the License.
 
 import os
-from typing import Any, Callable, cast, Iterator, TypeVar
 import uuid
+from typing import Any, Callable, Iterator, TypeVar, cast
 
+import pytest
 from _pytest.capture import CaptureFixture
 from flaky import flaky
 from google.api_core.exceptions import AlreadyExists
-from google.cloud import pubsub_v1
-import pytest
 
+from google.cloud import pubsub_v1
 
 UUID = uuid.uuid4().hex
 PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]

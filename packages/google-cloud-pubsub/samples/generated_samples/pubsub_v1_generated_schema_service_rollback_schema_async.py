@@ -50,4 +50,5 @@ async def sample_rollback_schema():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_SchemaService_RollbackSchema_async]

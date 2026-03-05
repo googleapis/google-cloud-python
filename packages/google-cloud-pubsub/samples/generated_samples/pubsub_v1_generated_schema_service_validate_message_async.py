@@ -50,4 +50,5 @@ async def sample_validate_message():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_SchemaService_ValidateMessage_async]

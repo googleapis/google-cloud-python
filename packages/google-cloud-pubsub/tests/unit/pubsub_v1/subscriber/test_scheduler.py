@@ -14,11 +14,11 @@
 
 import concurrent.futures
 import queue
-import pytest
 import threading
 import time
-
 from unittest import mock
+
+import pytest
 
 from google.cloud.pubsub_v1.subscriber import scheduler
 
@@ -110,8 +110,7 @@ def test_shutdown_nonblocking_by_default():
     assert dropped[0] != called_with[0]  # the dropped message was not the processed one
 
     err_msg = (
-        "Shutdown should not have waited "
-        "for the already running callbacks to complete."
+        "Shutdown should not have waited for the already running callbacks to complete."
     )
     assert not at_least_one_completed.is_set(), err_msg
 

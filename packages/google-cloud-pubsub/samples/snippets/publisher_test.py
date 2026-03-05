@@ -15,18 +15,17 @@
 import os
 import time
 import typing
-from typing import Any, Callable, cast, Iterator, TypeVar, Union
 import uuid
+from typing import Any, Callable, Iterator, TypeVar, Union, cast
 
-from _pytest.capture import CaptureFixture
 import backoff
-from google.api_core.exceptions import NotFound
-from google.cloud import pubsub_v1
 import mock
-import pytest
-
 import publisher
+import pytest
+from _pytest.capture import CaptureFixture
+from google.api_core.exceptions import NotFound
 
+from google.cloud import pubsub_v1
 
 # This uuid is shared across tests which run in parallel.
 UUID = uuid.uuid4().hex

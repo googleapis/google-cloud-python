@@ -16,12 +16,11 @@ from __future__ import print_function
 
 import glob
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 from typing import Callable, Dict, Optional
 
 import nox
-
 
 # WARNING - WARNING - WARNING - WARNING - WARNING
 # WARNING - WARNING - WARNING - WARNING - WARNING

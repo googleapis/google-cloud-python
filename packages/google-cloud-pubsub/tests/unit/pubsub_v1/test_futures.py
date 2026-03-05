@@ -16,13 +16,11 @@ import concurrent.futures
 import sys
 import threading
 import time
-
 from unittest import mock
 
 import pytest
 
-from google.cloud.pubsub_v1 import exceptions
-from google.cloud.pubsub_v1 import futures
+from google.cloud.pubsub_v1 import exceptions, futures
 
 
 def _future(*args, **kwargs):

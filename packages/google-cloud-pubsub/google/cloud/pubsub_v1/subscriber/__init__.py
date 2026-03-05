@@ -16,5 +16,4 @@ from __future__ import absolute_import
 
 from google.cloud.pubsub_v1.subscriber.client import Client
 
-
 __all__ = ("Client",)

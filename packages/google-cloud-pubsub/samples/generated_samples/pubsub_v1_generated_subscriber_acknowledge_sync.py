@@ -41,7 +41,7 @@ def sample_acknowledge():
     # Initialize request argument(s)
     request = pubsub_v1.AcknowledgeRequest(
         subscription="subscription_value",
-        ack_ids=['ack_ids_value1', 'ack_ids_value2'],
+        ack_ids=["ack_ids_value1", "ack_ids_value2"],
     )
 
     # Make the request

@@ -50,4 +50,5 @@ async def sample_list_schema_revisions():
     async for response in page_result:
         print(response)
 
+
 # [END pubsub_v1_generated_SchemaService_ListSchemaRevisions_async]

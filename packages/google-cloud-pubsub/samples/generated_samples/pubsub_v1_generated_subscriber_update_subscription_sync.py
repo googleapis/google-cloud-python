@@ -53,4 +53,5 @@ def sample_update_subscription():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Subscriber_UpdateSubscription_sync]

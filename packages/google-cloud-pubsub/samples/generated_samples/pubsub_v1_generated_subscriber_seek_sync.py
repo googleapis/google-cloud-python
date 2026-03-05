@@ -49,4 +49,5 @@ def sample_seek():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Subscriber_Seek_sync]

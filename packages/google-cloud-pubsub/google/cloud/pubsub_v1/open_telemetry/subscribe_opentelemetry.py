@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, List
 from datetime import datetime
+from typing import List, Optional
 
-from opentelemetry import trace, context
-from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
+from opentelemetry import context, trace
 from opentelemetry.trace.propagation import set_span_in_context
+from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextGetter,
@@ -168,9 +168,9 @@ class SubscribeOpenTelemetry:
             publish_create_span: trace.Span = trace.get_current_span(
                 self._publisher_create_span_context
             )
-            span_context: Optional[
-                trace.SpanContext
-            ] = publish_create_span.get_span_context()
+            span_context: Optional[trace.SpanContext] = (
+                publish_create_span.get_span_context()
+            )
             publish_create_span_link = (
                 trace.Link(span_context) if span_context else None
             )

@@ -50,4 +50,5 @@ async def sample_create_snapshot():
     # Handle the response
     print(response)
 
+
 # [END pubsub_v1_generated_Subscriber_CreateSnapshot_async]

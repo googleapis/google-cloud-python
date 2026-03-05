@@ -18,13 +18,14 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
+from google.protobuf import (
+    duration_pb2,  # type: ignore
+    field_mask_pb2,  # type: ignore
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 from google.pubsub_v1.types import schema as gp_schema
-
 
 __protobuf__ = proto.module(
     package="google.pubsub.v1",
@@ -260,6 +261,7 @@ class IngestionDataSourceSettings(proto.Message):
                 CONSUMER_NOT_FOUND (5):
                     The Kinesis consumer does not exist.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             KINESIS_PERMISSION_DENIED = 2
@@ -364,6 +366,7 @@ class IngestionDataSourceSettings(proto.Message):
                     The Cloud Storage bucket has too many
                     objects, ingestion will be paused.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             CLOUD_STORAGE_PERMISSION_DENIED = 2
@@ -508,6 +511,7 @@ class IngestionDataSourceSettings(proto.Message):
                     The provided Event Hubs resource group
                     couldn't be found.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             EVENT_HUBS_PERMISSION_DENIED = 2
@@ -599,6 +603,7 @@ class IngestionDataSourceSettings(proto.Message):
                 TOPIC_NOT_FOUND (5):
                     The provided topic wasn't found.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             MSK_PERMISSION_DENIED = 2
@@ -677,6 +682,7 @@ class IngestionDataSourceSettings(proto.Message):
                 TOPIC_NOT_FOUND (6):
                     The provided topic wasn't found.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             CONFLUENT_CLOUD_PERMISSION_DENIED = 2
@@ -778,6 +784,7 @@ class PlatformLogsSettings(proto.Message):
             ERROR (5):
                 Only error logs will be written.
         """
+
         SEVERITY_UNSPECIFIED = 0
         DISABLED = 1
         DEBUG = 2
@@ -1548,6 +1555,7 @@ class Topic(proto.Message):
                 detailed error state in the corresponding
                 ingestion source configuration.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INGESTION_RESOURCE_ERROR = 2
@@ -2165,6 +2173,7 @@ class Subscription(proto.Message):
                 it pushes messages. See the more detailed error
                 state in the corresponding configuration.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RESOURCE_ERROR = 2
@@ -2627,6 +2636,7 @@ class BigQueryConfig(proto.Message):
                 in the same location as where Vertex AI models used in
                 ``message_transform``\ s are deployed.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PERMISSION_DENIED = 2
@@ -2765,6 +2775,7 @@ class CloudStorageConfig(proto.Message):
                 is not in the same location as where Vertex AI models used
                 in ``message_transform``\ s are deployed.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PERMISSION_DENIED = 2

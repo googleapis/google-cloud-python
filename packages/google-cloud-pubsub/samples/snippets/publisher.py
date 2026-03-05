@@ -71,8 +71,7 @@ def create_topic_with_kinesis_ingestion(
     """Create a new Pub/Sub topic with AWS Kinesis Ingestion Settings."""
     # [START pubsub_create_topic_with_kinesis_ingestion]
     from google.cloud import pubsub_v1
-    from google.pubsub_v1.types import Topic
-    from google.pubsub_v1.types import IngestionDataSourceSettings
+    from google.pubsub_v1.types import IngestionDataSourceSettings, Topic
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -114,10 +113,10 @@ def create_topic_with_cloud_storage_ingestion(
 ) -> None:
     """Create a new Pub/Sub topic with Cloud Storage Ingestion Settings."""
     # [START pubsub_create_topic_with_cloud_storage_ingestion]
-    from google.cloud import pubsub_v1
     from google.protobuf import timestamp_pb2
-    from google.pubsub_v1.types import Topic
-    from google.pubsub_v1.types import IngestionDataSourceSettings
+
+    from google.cloud import pubsub_v1
+    from google.pubsub_v1.types import IngestionDataSourceSettings, Topic
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -196,8 +195,7 @@ def create_topic_with_aws_msk_ingestion(
     """Create a new Pub/Sub topic with AWS MSK Ingestion Settings."""
     # [START pubsub_create_topic_with_aws_msk_ingestion]
     from google.cloud import pubsub_v1
-    from google.pubsub_v1.types import Topic
-    from google.pubsub_v1.types import IngestionDataSourceSettings
+    from google.pubsub_v1.types import IngestionDataSourceSettings, Topic
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -242,8 +240,7 @@ def create_topic_with_azure_event_hubs_ingestion(
     """Create a new Pub/Sub topic with Azure Event Hubs Ingestion Settings."""
     # [START pubsub_create_topic_with_azure_event_hubs_ingestion]
     from google.cloud import pubsub_v1
-    from google.pubsub_v1.types import Topic
-    from google.pubsub_v1.types import IngestionDataSourceSettings
+    from google.pubsub_v1.types import IngestionDataSourceSettings, Topic
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -292,8 +289,7 @@ def create_topic_with_confluent_cloud_ingestion(
     """Create a new Pub/Sub topic with Confluent Cloud Ingestion Settings."""
     # [START pubsub_create_topic_with_confluent_cloud_ingestion]
     from google.cloud import pubsub_v1
-    from google.pubsub_v1.types import Topic
-    from google.pubsub_v1.types import IngestionDataSourceSettings
+    from google.pubsub_v1.types import IngestionDataSourceSettings, Topic
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -369,11 +365,14 @@ def update_topic_type(
 ) -> None:
     """Update Pub/Sub topic with AWS Kinesis Ingestion Settings."""
     # [START pubsub_update_topic_type]
-    from google.cloud import pubsub_v1
-    from google.pubsub_v1.types import Topic
-    from google.pubsub_v1.types import IngestionDataSourceSettings
-    from google.pubsub_v1.types import UpdateTopicRequest
     from google.protobuf import field_mask_pb2
+
+    from google.cloud import pubsub_v1
+    from google.pubsub_v1.types import (
+        IngestionDataSourceSettings,
+        Topic,
+        UpdateTopicRequest,
+    )
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -445,12 +444,12 @@ def pubsub_publish_otel_tracing(
     # [START pubsub_publish_otel_tracing]
 
     from opentelemetry import trace
+    from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
     from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import (
         BatchSpanProcessor,
     )
-    from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
-    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased, ParentBased
+    from opentelemetry.sdk.trace.sampling import ParentBased, TraceIdRatioBased
 
     from google.cloud.pubsub_v1 import PublisherClient
     from google.cloud.pubsub_v1.types import PublisherOptions
@@ -562,8 +561,9 @@ def publish_messages_with_error_handler(project_id: str, topic_id: str) -> None:
     # [START pubsub_publish_with_error_handler]
     """Publishes multiple messages to a Pub/Sub topic with an error handler."""
     from concurrent import futures
-    from google.cloud import pubsub_v1
     from typing import Callable
+
+    from google.cloud import pubsub_v1
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -604,6 +604,7 @@ def publish_messages_with_batch_settings(project_id: str, topic_id: str) -> None
     """Publishes multiple messages to a Pub/Sub topic with batch settings."""
     # [START pubsub_publisher_batch_settings]
     from concurrent import futures
+
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -645,6 +646,7 @@ def publish_messages_with_flow_control_settings(project_id: str, topic_id: str) 
     """Publishes messages to a Pub/Sub topic with flow control settings."""
     # [START pubsub_publisher_flow_control]
     from concurrent import futures
+
     from google.cloud import pubsub_v1
     from google.cloud.pubsub_v1.types import (
         LimitExceededBehavior,
@@ -815,6 +817,7 @@ def detach_subscription(project_id: str, subscription_id: str) -> None:
     """Detaches a subscription from a topic and drops all messages retained in it."""
     # [START pubsub_detach_subscription]
     from google.api_core.exceptions import GoogleAPICallError, RetryError
+
     from google.cloud import pubsub_v1
 
     # TODO(developer): Choose an existing subscription.

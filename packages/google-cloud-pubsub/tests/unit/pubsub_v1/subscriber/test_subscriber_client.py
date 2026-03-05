@@ -13,22 +13,19 @@
 # limitations under the License.
 
 import sys
-
-import grpc
-
 from unittest import mock
 
+import grpc
 import pytest
-
 from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
-from google.cloud.pubsub_v1 import subscriber
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import futures
-from google.pubsub_v1.services.subscriber import client as subscriber_client
-from google.pubsub_v1.services.subscriber.transports.grpc import SubscriberGrpcTransport
+
+from google.cloud.pubsub_v1 import subscriber, types
 from google.cloud.pubsub_v1.open_telemetry.context_propagation import (
     OpenTelemetryContextGetter,
 )
+from google.cloud.pubsub_v1.subscriber import futures
+from google.pubsub_v1.services.subscriber import client as subscriber_client
+from google.pubsub_v1.services.subscriber.transports.grpc import SubscriberGrpcTransport
 from google.pubsub_v1.types import PubsubMessage
 
 

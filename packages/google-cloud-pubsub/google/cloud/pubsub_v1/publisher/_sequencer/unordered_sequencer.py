@@ -17,18 +17,16 @@ from typing import Optional
 
 from google.api_core import gapic_v1
 
-from google.cloud.pubsub_v1.publisher._sequencer import base
 from google.cloud.pubsub_v1.open_telemetry.publish_message_wrapper import (
     PublishMessageWrapper,
 )
+from google.cloud.pubsub_v1.publisher._sequencer import base
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
-    from google.cloud.pubsub_v1.publisher import _batch
-    from google.cloud.pubsub_v1.publisher import futures
+    from google.cloud.pubsub_v1 import types
+    from google.cloud.pubsub_v1.publisher import _batch, futures
     from google.cloud.pubsub_v1.publisher.client import Client as PublisherClient
     from google.pubsub_v1.services.publisher.client import OptionalRetry
-
-    from google.cloud.pubsub_v1 import types
 
 
 class UnorderedSequencer(base.Sequencer):
