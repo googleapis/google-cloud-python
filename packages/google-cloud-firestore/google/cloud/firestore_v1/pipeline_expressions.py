@@ -406,6 +406,19 @@ class Expression(ABC):
         return FunctionExpression("sqrt", [self])
 
     @expose_as_static
+    def trunc(self) -> "Expression":
+        """Creates an expression that truncates this expression towards zero.
+
+        Example:
+            >>> # Truncate the 'value' field.
+            >>> Field.of("value").trunc()
+
+        Returns:
+            A new `Expression` representing the truncated value.
+        """
+        return FunctionExpression("trunc", [self])
+
+    @expose_as_static
     def logical_maximum(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
         """Creates an expression that returns the larger value between this expression
         and another expression or constant, based on Firestore's value type ordering.
