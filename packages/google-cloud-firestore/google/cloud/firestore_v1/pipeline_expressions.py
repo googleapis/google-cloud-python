@@ -1434,7 +1434,7 @@ class Expression(ABC):
 
     @expose_as_static
     def first(self) -> "Expression":
-        """Creates an aggregation that selecting the first value.
+        """Creates an aggregation that selects the first value.
         Example:
             >>> # Select the first value of 'color'
             >>> Field.of("color").first()
