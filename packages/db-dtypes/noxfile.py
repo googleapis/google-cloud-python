@@ -303,7 +303,7 @@ def unit(session, test_type):
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
 @nox.parametrize("test_type", ["unit", "compliance"])
-def unit_prerelease(session, test_type):
+def prerelease_deps(session, test_type):
     """Run the unit test suite with prerelease dependencies."""
     prerelease(session, os.path.join("tests", test_type))
 
@@ -481,99 +481,6 @@ def docfx(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def prerelease_deps(session):
-    """Run all tests with prerelease versions of dependencies installed."""
-
-    # Install all dependencies
-    session.install("-e", ".[all, tests, tracing]")
-    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
-    session.install(*unit_deps_all)
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-    )
-    session.install(*system_deps_all)
-
-    # Because we test minimum dependency versions on the minimum Python
-    # version, the first version we test with in the unit tests sessions has a
-    # constraints file containing all dependencies and extras.
-    with open(
-        CURRENT_DIRECTORY
-        / "testing"
-        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
-        encoding="utf-8",
-    ) as constraints_file:
-        constraints_text = constraints_file.read()
-
-    # Ignore leading whitespace and comment lines.
-    constraints_deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
-        )
-    ]
-
-    session.install(*constraints_deps)
-
-    prerel_deps = [
-        "protobuf",
-        # dependency of grpc
-        "six",
-        "googleapis-common-protos",
-        # Exclude version 1.52.0rc1 which has a known issue. See https://github.com/grpc/grpc/issues/32163
-        "grpcio!=1.52.0rc1",
-        "grpcio-status",
-        "google-api-core",
-        "google-auth",
-        "proto-plus",
-        "google-cloud-testutils",
-        # dependencies of google-cloud-testutils"
-        "click",
-    ]
-
-    for dep in prerel_deps:
-        session.install("--pre", "--no-deps", "--upgrade", dep)
-
-    # Remaining dependencies
-    other_deps = [
-        "requests",
-    ]
-    session.install(*other_deps)
-    session.run("python", "-m", "pip", "freeze")
-
-    # Print out prerelease package versions
-    session.run(
-        "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
-    )
-    session.run("python", "-c", "import grpc; print(grpc.__version__)")
-    session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
-
-    session.run("py.test", "tests/unit")
-
-    system_test_path = os.path.join("tests", "system.py")
-    system_test_folder_path = os.path.join("tests", "system")
-
-    # Only run system tests if found.
-    if os.path.exists(system_test_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            "-W default::PendingDeprecationWarning",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            *session.posargs,
-        )
-    if os.path.exists(system_test_folder_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            "-W default::PendingDeprecationWarning",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
-        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
