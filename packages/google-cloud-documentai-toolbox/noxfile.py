@@ -182,9 +182,7 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if session.python in (
-        "3.7",
-    ):
+    if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
 
     if protobuf_implementation == "cpp" and session.python in (
