@@ -3890,7 +3890,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-products
     version: 1.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 67b1168230d46351fa05aaf11a20b32872339f92
     apis:
       - path: google/shopping/merchant/products/v1
         service_config: merchantapi_v1.yaml
