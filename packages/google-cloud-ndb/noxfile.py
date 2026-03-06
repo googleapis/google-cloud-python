@@ -198,13 +198,11 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(name="old-emulator-system", python=EMULTATOR_INTERPRETERS)
 def old_emulator_system(session):
     emulator_args = ["gcloud", "beta", "emulators", "datastore", "start"]
     _run_emulator(session, emulator_args)
 
 
-@nox.session(name="emulator-system", python=EMULTATOR_INTERPRETERS)
 def emulator_system(session):
     emulator_args = [
         "gcloud",
@@ -400,9 +398,21 @@ def doctest(session):
     session.run(*run_args)
 
 
-# Run the system tests
+# Run the system/emulator tests
 @nox.session(py="3.12")
-def system(session):
+@nox.parametrize("test_type", ["system_default", "emulator_system", "old_emulator_system"])
+def system(session, test_type):
+    """Run the system/emulator tests."""
+    test_map = {
+        "system_default": system_default,
+        "emulator_system": emulator_system,
+        "old_emulator_system": old_emulator_system,
+    }
+
+    test_map[test_type](session)
+
+
+def system_default(session):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
