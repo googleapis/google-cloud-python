@@ -25,7 +25,7 @@ from google.cloud.bigtable.data.execute_query._parameters_formatting import (
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.execute_query.values import Struct
 from google.protobuf import timestamp_pb2
-from samples.testdata import singer_pb2
+from .resources import singer_pb2
 
 timestamp = int(
     datetime.datetime(2024, 5, 12, 17, 44, 12, tzinfo=datetime.timezone.utc).timestamp()

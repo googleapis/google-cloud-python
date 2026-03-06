@@ -29,7 +29,7 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 import datetime
 
 from tests.unit.data.execute_query.sql_helpers import int64_type, proto_type, enum_type
-from samples.testdata import singer_pb2
+from .resources import singer_pb2
 
 TYPE_BYTES = {"bytes_type": {}}
 TYPE_TIMESTAMP = {"timestamp_type": {}}

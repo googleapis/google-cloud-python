@@ -34,7 +34,7 @@ from tests.unit.data.execute_query.sql_helpers import (
     str_val,
     bytes_val,
 )
-from samples.testdata import singer_pb2
+from .resources import singer_pb2
 
 
 class TestQueryResultRowReader:
