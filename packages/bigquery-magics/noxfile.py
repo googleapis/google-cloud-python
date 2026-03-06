@@ -274,7 +274,7 @@ def unit(session, protobuf_implementation):
     )
 
 
-def install_systemtest_dependencies(session, *constraints, with_extras):
+def install_systemtest_dependencies(session, with_extras, *constraints):
     # Use pre-release gRPC for system tests.
     # Exclude version 1.52.0rc1 which has a known issue.
     # See https://github.com/grpc/grpc/issues/32163
@@ -328,7 +328,7 @@ def system(session, with_extras):
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
 
-    install_systemtest_dependencies(session, constraints_path, with_extras)
+    install_systemtest_dependencies(session, with_extras, constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
