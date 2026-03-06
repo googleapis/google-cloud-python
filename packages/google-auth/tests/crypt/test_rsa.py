@@ -23,8 +23,8 @@ try:
     import rsa as rsa_lib
     from google.auth.crypt import _python_rsa
 except ImportError:
-    rsa_lib = None
-    _pyrhon_rsa = None
+    rsa_lib = None   # type: ignore
+    _pyrhon_rsa = None   # type: ignore
 
 from google.auth.crypt import _cryptography_rsa
 from google.auth.crypt import rsa

@@ -100,7 +100,7 @@ def blacken(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Verify type hints are mypy compatible."""
-    session.install("-e", ".[aiohttp]")
+    session.install("-e", ".[aiohttp,rsa]")
     session.install(
         "mypy",
         "types-certifi",
