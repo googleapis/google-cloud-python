@@ -4065,3 +4065,12 @@ libraries:
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
+  - id: sqlalchemy-bigquery
+    version: 1.16.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/sqlalchemy-bigquery
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
