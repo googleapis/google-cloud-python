@@ -180,6 +180,12 @@ class TestSetitem(base.BaseSetitemTests):
         with pytest.raises((ValueError, TypeError)):
             data[:] = invalid_scalar
 
+    def test_loc_setitem_with_expansion_preserves_ea_index_dtype(self, data):
+        pytest.xfail("Failing with pandas prerelease: dtype expansion mismatch")
+
+    def test_readonly_propagates_to_numpy_array_method(self, data):
+        pytest.xfail("Failing with pandas prerelease: readonly flag propagation issue")
+
 
 # NDArrayBacked2DTests suite added in https://github.com/pandas-dev/pandas/pull/44974
 # v1.4.0rc0

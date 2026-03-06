@@ -173,3 +173,11 @@ def use_numpy(request):
     https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/conftest.py
     """
     return request.param
+
+
+@pytest.fixture(params=[True, False])
+def using_nan_is_na(request):
+    """
+    Boolean fixture to support testing whether NaN is considered NA.
+    """
+    return request.param
