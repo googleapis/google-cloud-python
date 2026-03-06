@@ -54,7 +54,6 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
-    BLACK_VERSION,
     "autoflake",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
@@ -71,7 +70,6 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
-    BLACK_VERSION,
     "pyyaml==6.0.2",
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
