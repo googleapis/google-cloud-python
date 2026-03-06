@@ -1,0 +1,18 @@
+{
+  "type":"record",
+  "name":"State",
+  "namespace":"utilities",
+  "doc":"A list of states in the United States of America.",
+  "fields":[
+    {
+      "name":"name",
+      "type":"string",
+      "doc":"The common name of the state."
+    },
+    {
+      "name":"post_abbr",
+      "type":"string",
+      "doc":"The postal code abbreviation of the state."
+    }
+  ]
+}
