@@ -69,7 +69,9 @@ class TestGetitem(base.BaseGetitemTests):
 
 class TestGroupby(base.BaseGroupbyTests):
     def test_groupby_agg_extension(self, data_for_grouping):
-        pytest.xfail("Failing with pandas prerelease: dtype mismatch (object vs dbtime)")
+        pytest.xfail(
+            "Failing with pandas prerelease: dtype mismatch (object vs dbtime)"
+        )
 
 
 class TestIndex(base.BaseIndexTests):

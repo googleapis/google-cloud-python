@@ -118,7 +118,7 @@ class TestJSONArrayGetitem(base.BaseGetitemTests):
             data.take([0, -2], fill_value=na_value, allow_fill=True)
 
     def test_getitem_propagates_readonly_property(self, data):
-         pytest.xfail("Failing with pandas prerelease: readonly propagation issue")
+        pytest.xfail("Failing with pandas prerelease: readonly propagation issue")
 
 
 class TestJSONArrayIndex(base.BaseIndexTests):
