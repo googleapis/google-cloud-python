@@ -310,8 +310,22 @@ def conformance(session, client_type):
         )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system(session):
+# Run the system/emulator tests
+@nox.session(py="3.12")
+@nox.parametrize(
+    "test_type", ["system_default", "system_emulated"]
+)
+def system(session, test_type):
+    """Run the system/emulator tests."""
+    test_map = {
+        "system_default": system_default,
+        "system_emulated": system_emulated,
+    }
+
+    test_map[test_type](session)
+
+
+def system_default(session):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
