@@ -3719,6 +3719,15 @@ libraries:
     remove_regex:
       - packages/google-maps-solar
     tag_format: '{id}-v{version}'
+  - id: google-resumable-media
+    version: 2.8.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-resumable-media
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-shopping-css
     version: 0.3.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
