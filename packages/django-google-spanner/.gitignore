@@ -1,0 +1,30 @@
+*.py[cod]
+*.sw[op]
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+.eggs
+bin
+MANIFEST
+django_tests
+__pycache__
+# The directory into which Django has been cloned to run the test suite.
+django_tests_dir
+# Unit test / coverage reports
+.coverage
+.nox
+.pytest_cache
+
+# JetBrains
+.idea
+
+# Built documentation
+docs/_build
+
+# mac hidden files.
+.DS_Store
+
