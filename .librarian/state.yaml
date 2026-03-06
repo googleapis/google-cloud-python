@@ -698,6 +698,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-biglake
     tag_format: '{id}-v{version}'
+  - id: google-cloud-bigquery
+    version: 3.40.1
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-bigquery
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-analyticshub
     version: 0.7.0
     last_generated_commit: 53f97391f3451398f7b53c7f86dabd325d205677
