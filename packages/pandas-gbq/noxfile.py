@@ -34,7 +34,11 @@ LINT_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+ALL_PYTHON.extend(["3.7"])
+
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -220,7 +224,7 @@ def default(session):
     )
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
@@ -272,6 +276,10 @@ def system(session):
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
+        session.skip("Credentials are required to run system tests")
+
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
@@ -310,7 +318,7 @@ def system(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @_calculate_duration
-def prerelease(session):
+def prerelease_deps(session):
     session.install(
         # https://arrow.apache.org/docs/developers/python.html#installing-nightly-packages
         "--extra-index-url",
@@ -388,14 +396,19 @@ def prerelease(session):
         *session.posargs,
     )
 
-    session.run(
-        "py.test",
-        "--quiet",
-        "-W default::PendingDeprecationWarning",
-        f"--junitxml=prerelease_system_{session.python}_sponge_log.xml",
-        os.path.join("tests", "system"),
-        *session.posargs,
-    )
+    if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.run(
+            "py.test",
+            "--quiet",
+            "-W default::PendingDeprecationWarning",
+            f"--junitxml=prerelease_system_{session.python}_sponge_log.xml",
+            os.path.join("tests", "system"),
+            *session.posargs,
+        )
+    else:
+        session.log(
+            "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set."
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -502,3 +515,21 @@ def docfx(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run the type checker."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add mypy tests
+    session.skip("mypy tests are not yet supported")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
