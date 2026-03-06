@@ -275,7 +275,7 @@ class _BasePipeline:
             stages.FindNearest(field, vector, distance_measure, options)
         )
 
-    def literals(self, *documents: str | Selectable) -> "_BasePipeline":
+    def literals(self, *documents: Selectable | dict) -> "_BasePipeline":
         """
         Returns documents from a fixed set of predefined document objects.
 

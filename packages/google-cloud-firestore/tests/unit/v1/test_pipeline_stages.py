@@ -523,20 +523,20 @@ class TestLiterals:
 
     def test_ctor(self):
         val1 = Constant.of({"a": 1})
-        val2 = Constant.of({"b": 2})
+        val2 = {"b": 2}
         instance = self._make_one(val1, val2)
         assert instance.documents == (val1, val2)
         assert instance.name == "literals"
 
     def test_repr(self):
         val1 = Constant.of({"a": 1})
-        instance = self._make_one(val1)
+        instance = self._make_one(val1, {"b": 2})
         repr_str = repr(instance)
-        assert repr_str == "Literals(documents=(Constant.of({'a': 1}),))"
+        assert repr_str == "Literals(documents=(Constant.of({'a': 1}), {'b': 2}))"
 
     def test_to_pb(self):
         val1 = Constant.of({"a": 1})
-        val2 = Constant.of({"b": 2})
+        val2 = {"b": 2}
         instance = self._make_one(val1, val2)
         result = instance._to_pb()
         assert result.name == "literals"
