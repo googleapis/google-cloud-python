@@ -328,7 +328,7 @@ def system(session, with_extras):
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
 
-    install_systemtest_dependencies(session, with_extras, constraints_path)
+    install_systemtest_dependencies(session, with_extras, "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
