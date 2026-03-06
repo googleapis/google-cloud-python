@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -33,8 +34,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation, gapic_v1
@@ -44,7 +45,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.compute_v1 import gapic_version as package_version
 
@@ -79,9 +79,7 @@ class NetworkEndpointGroupsClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[NetworkEndpointGroupsTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[NetworkEndpointGroupsTransport]]
     _transport_registry["rest"] = NetworkEndpointGroupsRestTransport
 
     def get_transport_class(
@@ -606,11 +604,9 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = NetworkEndpointGroupsClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            NetworkEndpointGroupsClient._read_environment_variables()
+        )
         self._client_cert_source = NetworkEndpointGroupsClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -645,8 +641,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(NetworkEndpointGroupsTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1928,6 +1923,24 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 different use cases, seeNetwork endpoint
                 groups overview.
 
+                Note: Use the following APIs to manage
+                network endpoint groups:
+
+                   -
+                   To manage NEGs with zonal scope (such
+                as zonal NEGs, hybrid connectivity
+                NEGs): zonal
+                   API
+                   -
+                   To manage NEGs with regional scope
+                (such as regional internet NEGs,
+                serverless NEGs, Private Service Connect
+                NEGs): regional    API
+                   -
+                   To manage NEGs with global scope
+                (such as global internet NEGs):global
+                API
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -2001,6 +2014,21 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         r"""Creates a network endpoint group in the specified
         project using the parameters that are included in the
         request.
+
+        Note: Use the following APIs to manage network endpoint
+        groups:
+
+           -
+           To manage NEGs with zonal scope (such as zonal NEGs,
+        hybrid connectivity    NEGs): zonal
+           API
+           -
+           To manage NEGs with regional scope (such as regional
+        internet NEGs,    serverless NEGs, Private Service
+        Connect NEGs): regional    API
+           -
+           To manage NEGs with global scope (such as global
+        internet NEGs):global    API
 
         .. code-block:: python
 
@@ -2139,6 +2167,21 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         r"""Creates a network endpoint group in the specified
         project using the parameters that are included in the
         request.
+
+        Note: Use the following APIs to manage network endpoint
+        groups:
+
+           -
+           To manage NEGs with zonal scope (such as zonal NEGs,
+        hybrid connectivity    NEGs): zonal
+           API
+           -
+           To manage NEGs with regional scope (such as regional
+        internet NEGs,    serverless NEGs, Private Service
+        Connect NEGs): regional    API
+           -
+           To manage NEGs with global scope (such as global
+        internet NEGs):global    API
 
         .. code-block:: python
 

@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,18 +43,18 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.extended_operation as extended_operation  # type: ignore
+import google.auth
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
     grpc_helpers_async,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.extended_operation as extended_operation  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
@@ -935,10 +935,9 @@ def test_reservation_sub_blocks_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -983,10 +982,9 @@ def test_reservation_sub_blocks_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1022,10 +1020,9 @@ def test_reservation_sub_blocks_client_get_mtls_endpoint_and_cert_source(client_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1347,8 +1344,8 @@ def test_get_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_name": "sample3",
-            "reservation_sub_block": "sample4",
+            "parent_name": "reservations/sample3/reservationBlocks/sample4",
+            "reservation_sub_block": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -1377,7 +1374,7 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}"
             % client.transport._host,
             args[1],
         )
@@ -1560,8 +1557,8 @@ def test_get_iam_policy_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_resource": "sample3",
-            "resource": "sample4",
+            "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+            "resource": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -1590,7 +1587,7 @@ def test_get_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_resource}/reservationSubBlocks/{resource}/getIamPolicy"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_resource=reservations/*/reservationBlocks/*}/reservationSubBlocks/{resource}/getIamPolicy"
             % client.transport._host,
             args[1],
         )
@@ -1784,7 +1781,7 @@ def test_list_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_name": "sample3",
+            "parent_name": "reservations/sample3/reservationBlocks/sample4",
         }
 
         # get truthy value for each flattened field
@@ -1812,7 +1809,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks"
             % client.transport._host,
             args[1],
         )
@@ -1888,7 +1885,7 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_name": "sample3",
+            "parent_name": "reservations/sample3/reservationBlocks/sample4",
         }
 
         pager = client.list(request=sample_request)
@@ -1925,9 +1922,9 @@ def test_perform_maintenance_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.perform_maintenance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.perform_maintenance] = (
+            mock_rpc
+        )
 
         request = {}
         client.perform_maintenance(request)
@@ -2069,8 +2066,8 @@ def test_perform_maintenance_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_name": "sample3",
-            "reservation_sub_block": "sample4",
+            "parent_name": "reservations/sample3/reservationBlocks/sample4",
+            "reservation_sub_block": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -2099,7 +2096,7 @@ def test_perform_maintenance_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}/performMaintenance"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}/performMaintenance"
             % client.transport._host,
             args[1],
         )
@@ -2146,9 +2143,9 @@ def test_perform_maintenance_unary_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.perform_maintenance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.perform_maintenance] = (
+            mock_rpc
+        )
 
         request = {}
         client.perform_maintenance_unary(request)
@@ -2290,8 +2287,8 @@ def test_perform_maintenance_unary_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_name": "sample3",
-            "reservation_sub_block": "sample4",
+            "parent_name": "reservations/sample3/reservationBlocks/sample4",
+            "reservation_sub_block": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -2320,7 +2317,7 @@ def test_perform_maintenance_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}/performMaintenance"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}/performMaintenance"
             % client.transport._host,
             args[1],
         )
@@ -2509,8 +2506,8 @@ def test_report_faulty_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_name": "sample3",
-            "reservation_sub_block": "sample4",
+            "parent_name": "reservations/sample3/reservationBlocks/sample4",
+            "reservation_sub_block": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -2542,7 +2539,7 @@ def test_report_faulty_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}/reportFaulty"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}/reportFaulty"
             % client.transport._host,
             args[1],
         )
@@ -2734,8 +2731,8 @@ def test_report_faulty_unary_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_name": "sample3",
-            "reservation_sub_block": "sample4",
+            "parent_name": "reservations/sample3/reservationBlocks/sample4",
+            "reservation_sub_block": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -2767,7 +2764,7 @@ def test_report_faulty_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name}/reservationSubBlocks/{reservation_sub_block}/reportFaulty"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_name=reservations/*/reservationBlocks/*}/reservationSubBlocks/{reservation_sub_block}/reportFaulty"
             % client.transport._host,
             args[1],
         )
@@ -2953,8 +2950,8 @@ def test_set_iam_policy_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_resource": "sample3",
-            "resource": "sample4",
+            "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+            "resource": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -2986,7 +2983,7 @@ def test_set_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_resource}/reservationSubBlocks/{resource}/setIamPolicy"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_resource=reservations/*/reservationBlocks/*}/reservationSubBlocks/{resource}/setIamPolicy"
             % client.transport._host,
             args[1],
         )
@@ -3036,9 +3033,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
 
         request = {}
         client.test_iam_permissions(request)
@@ -3176,8 +3173,8 @@ def test_test_iam_permissions_rest_flattened():
         sample_request = {
             "project": "sample1",
             "zone": "sample2",
-            "parent_resource": "sample3",
-            "resource": "sample4",
+            "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+            "resource": "sample5",
         }
 
         # get truthy value for each flattened field
@@ -3209,7 +3206,7 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_resource}/reservationSubBlocks/{resource}/testIamPermissions"
+            "%s/compute/v1/projects/{project}/zones/{zone}/{parent_resource=reservations/*/reservationBlocks/*}/reservationSubBlocks/{resource}/testIamPermissions"
             % client.transport._host,
             args[1],
         )
@@ -3326,8 +3323,8 @@ def test_get_rest_bad_request(request_type=compute.GetReservationSubBlockRequest
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_name": "sample3",
-        "reservation_sub_block": "sample4",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+        "reservation_sub_block": "sample5",
     }
     request = request_type(**request_init)
 
@@ -3362,8 +3359,8 @@ def test_get_rest_call_success(request_type):
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_name": "sample3",
-        "reservation_sub_block": "sample4",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+        "reservation_sub_block": "sample5",
     }
     request = request_type(**request_init)
 
@@ -3465,8 +3462,8 @@ def test_get_iam_policy_rest_bad_request(
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_resource": "sample3",
-        "resource": "sample4",
+        "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+        "resource": "sample5",
     }
     request = request_type(**request_init)
 
@@ -3501,8 +3498,8 @@ def test_get_iam_policy_rest_call_success(request_type):
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_resource": "sample3",
-        "resource": "sample4",
+        "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+        "resource": "sample5",
     }
     request = request_type(**request_init)
 
@@ -3602,7 +3599,11 @@ def test_list_rest_bad_request(request_type=compute.ListReservationSubBlocksRequ
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "zone": "sample2", "parent_name": "sample3"}
+    request_init = {
+        "project": "sample1",
+        "zone": "sample2",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3633,7 +3634,11 @@ def test_list_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "zone": "sample2", "parent_name": "sample3"}
+    request_init = {
+        "project": "sample1",
+        "zone": "sample2",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3743,8 +3748,8 @@ def test_perform_maintenance_rest_bad_request(
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_name": "sample3",
-        "reservation_sub_block": "sample4",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+        "reservation_sub_block": "sample5",
     }
     request = request_type(**request_init)
 
@@ -3779,8 +3784,8 @@ def test_perform_maintenance_rest_call_success(request_type):
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_name": "sample3",
-        "reservation_sub_block": "sample4",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+        "reservation_sub_block": "sample5",
     }
     request = request_type(**request_init)
 
@@ -3923,8 +3928,8 @@ def test_report_faulty_rest_bad_request(
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_name": "sample3",
-        "reservation_sub_block": "sample4",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+        "reservation_sub_block": "sample5",
     }
     request = request_type(**request_init)
 
@@ -3959,8 +3964,8 @@ def test_report_faulty_rest_call_success(request_type):
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_name": "sample3",
-        "reservation_sub_block": "sample4",
+        "parent_name": "reservations/sample3/reservationBlocks/sample4",
+        "reservation_sub_block": "sample5",
     }
     request_init["reservation_sub_blocks_report_faulty_request_resource"] = {
         "disruption_schedule": "disruption_schedule_value",
@@ -4192,8 +4197,8 @@ def test_set_iam_policy_rest_bad_request(
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_resource": "sample3",
-        "resource": "sample4",
+        "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+        "resource": "sample5",
     }
     request = request_type(**request_init)
 
@@ -4228,8 +4233,8 @@ def test_set_iam_policy_rest_call_success(request_type):
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_resource": "sample3",
-        "resource": "sample4",
+        "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+        "resource": "sample5",
     }
     request_init["zone_set_nested_policy_request_resource"] = {
         "bindings": [
@@ -4453,8 +4458,8 @@ def test_test_iam_permissions_rest_bad_request(
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_resource": "sample3",
-        "resource": "sample4",
+        "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+        "resource": "sample5",
     }
     request = request_type(**request_init)
 
@@ -4489,8 +4494,8 @@ def test_test_iam_permissions_rest_call_success(request_type):
     request_init = {
         "project": "sample1",
         "zone": "sample2",
-        "parent_resource": "sample3",
-        "resource": "sample4",
+        "parent_resource": "reservations/sample3/reservationBlocks/sample4",
+        "resource": "sample5",
     }
     request_init["test_permissions_request_resource"] = {
         "permissions": ["permissions_value1", "permissions_value2"]

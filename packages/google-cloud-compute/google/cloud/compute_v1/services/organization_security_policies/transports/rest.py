@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1156,9 +1156,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseAddAssociation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseAddAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_add_association(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
@@ -1339,9 +1337,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseAddRule._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseAddRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseAddRule._get_transcoded_request(
@@ -1519,9 +1515,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseCopyRules._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseCopyRules._get_http_options()
 
             request, metadata = self._interceptor.pre_copy_rules(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseCopyRules._get_transcoded_request(
@@ -1696,9 +1690,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseDelete._get_transcoded_request(
@@ -1849,9 +1841,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseGet._get_transcoded_request(
@@ -1994,9 +1984,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseGetAssociation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseGetAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_association(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
@@ -2149,9 +2137,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseGetRule._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseGetRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseGetRule._get_transcoded_request(
@@ -2325,9 +2311,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseInsert._get_transcoded_request(
@@ -2477,9 +2461,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseList._get_transcoded_request(
@@ -2622,9 +2604,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseListAssociations._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseListAssociations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_associations(
                 request, metadata
@@ -2778,15 +2758,12 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseListPreconfiguredExpressionSets._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseListPreconfiguredExpressionSets._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_preconfigured_expression_sets(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_preconfigured_expression_sets(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseListPreconfiguredExpressionSets._get_transcoded_request(
                 http_options, request
@@ -2849,11 +2826,10 @@ class OrganizationSecurityPoliciesRestTransport(
 
             resp = self._interceptor.post_list_preconfigured_expression_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_preconfigured_expression_sets_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_preconfigured_expression_sets_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2965,9 +2941,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseMove._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseMove._get_http_options()
 
             request, metadata = self._interceptor.pre_move(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseMove._get_transcoded_request(
@@ -3139,9 +3113,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BasePatch._get_transcoded_request(
@@ -3320,9 +3292,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BasePatchRule._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BasePatchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BasePatchRule._get_transcoded_request(
@@ -3502,9 +3472,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_association(
                 request, metadata
@@ -3679,9 +3647,7 @@ class OrganizationSecurityPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityPoliciesRestTransport._BaseRemoveRule._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityPoliciesRestTransport._BaseRemoveRule._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
             transcoded_request = _BaseOrganizationSecurityPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(
@@ -3878,7 +3844,9 @@ class OrganizationSecurityPoliciesRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPreconfiguredExpressionSets(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPreconfiguredExpressionSets(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def move(
