@@ -44,6 +44,7 @@ ALL_PYTHON.extend(["3.7"])
 
 SYSTEM_TEST_PYTHON_VERSIONS = ALL_PYTHON
 
+
 def _calculate_duration(func):
     """This decorator prints the execution time for the decorated function."""
 
