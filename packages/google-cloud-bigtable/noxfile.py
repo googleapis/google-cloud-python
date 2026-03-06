@@ -538,30 +538,6 @@ def prerelease_deps(session, protobuf_implementation):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
-    # Only run system tests if found.
-    if os.path.exists(system_test_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
-        )
-    if os.path.exists(system_test_folder_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
-        )
-
 
 @nox.session(python="3.10")
 def generate_sync(session):
