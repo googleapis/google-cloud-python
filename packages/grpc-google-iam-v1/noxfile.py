@@ -588,13 +588,3 @@ def core_deps_from_source(session, protobuf_implementation):
         },
     )
 
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
-    """Run all tests with core dependencies installed from source
-    rather than pulling the dependencies from PyPI.
-    """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add core deps from source tests
-    session.skip("Core deps from source tests are not yet supported")
-
