@@ -224,6 +224,8 @@ def default(session):
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
+    if session.python in ("3.7",):
+        session.skip("Python 3.7 is no longer supported")
     default(session)
 
 
@@ -343,7 +345,7 @@ def prerelease(session):
 
     # Install python-bigquery and python-bigquery-storage from main to detect
     # any potential breaking changes. For context, see:
-    # https://github.com/googleapis/python-bigquery-pandas/issues/854
+    # https://github.com/googleapis/google-cloud-python/issues/854
     session.install(
         "https://github.com/googleapis/python-bigquery/archive/main.zip",
         "git+https://github.com/googleapis/google-cloud-python.git@main#subdirectory=packages/google-cloud-bigquery-storage",

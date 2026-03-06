@@ -79,7 +79,7 @@ setuptools.setup(
     author="pandas-gbq authors",
     author_email="googleapis-packages@google.com",
     license="BSD-3-Clause",
-    url="https://github.com/googleapis/python-bigquery-pandas",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/pandas-gbq",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",

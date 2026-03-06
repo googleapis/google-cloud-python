@@ -32,7 +32,7 @@ Install latest development version
 
 .. code-block:: shell
 
-    $ pip install git+https://github.com/googleapis/python-bigquery-pandas.git
+    $ pip install git+https://github.com/googleapis/google-cloud-python.git
 
 
 Usage

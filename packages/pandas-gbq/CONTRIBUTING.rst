@@ -42,14 +42,14 @@ You'll have to create a development environment using a Git checkout:
 
 - Clone your fork of ``python-bigquery-pandas`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as ``hack-on-python-bigquery-pandas``.  E.g.::
+  as ``hack-on-google-cloud-python``.  E.g.::
 
    $ cd ${HOME}
-   $ git clone git@github.com:USERNAME/python-bigquery-pandas.git hack-on-python-bigquery-pandas
-   $ cd hack-on-python-bigquery-pandas
-   # Configure remotes such that you can pull changes from the googleapis/python-bigquery-pandas
+   $ git clone git@github.com:USERNAME/google-cloud-python.git hack-on-google-cloud-python
+   $ cd hack-on-google-cloud-python
+   # Configure remotes such that you can pull changes from the googleapis/google-cloud-python
    # repository into your local repository.
-   $ git remote add upstream git@github.com:googleapis/python-bigquery-pandas.git
+   $ git remote add upstream git@github.com:googleapis/google-cloud-python.git
    # fetch and merge changes from upstream into main
    $ git fetch upstream
    $ git merge upstream/main
@@ -60,7 +60,7 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/googleapis/python-bigquery-pandas
+.. _repo: https://github.com/googleapis/google-cloud-python/tree/main/packages/pandas-gbq
 
 Using ``nox``
 =============
@@ -209,7 +209,7 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/python-bigquery-pandas/blob/main/CONTRIBUTING.rst``)
+``https://github.com/googleapis/google-cloud-python/blob/main/packages/pandas-gbq/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.org/project/pandas-gbq
@@ -238,7 +238,7 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-bigquery-pandas/blob/main/noxfile.py
+.. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/pandas-gbq/noxfile.py
 
 
 We also explicitly decided to support Python 3 beginning with version 3.9.
