@@ -274,7 +274,7 @@ def unit(session, protobuf_implementation):
     )
 
 
-def install_systemtest_dependencies(session, *constraints):
+def install_systemtest_dependencies(session, *constraints, with_extras):
     # Use pre-release gRPC for system tests.
     # Exclude version 1.52.0rc1 which has a known issue.
     # See https://github.com/grpc/grpc/issues/32163
@@ -291,12 +291,9 @@ def install_systemtest_dependencies(session, *constraints):
     if SYSTEM_TEST_DEPENDENCIES:
         session.install("-e", *SYSTEM_TEST_DEPENDENCIES, *constraints)
 
-    if SYSTEM_TEST_EXTRAS_BY_PYTHON:
-        extras = SYSTEM_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
-    elif SYSTEM_TEST_EXTRAS:
-        extras = SYSTEM_TEST_EXTRAS
-    else:
-        extras = []
+    extras = []
+    if with_extras:
+        extras.extend(["bqstorage", "bigframes", "geopandas"])
 
     if extras:
         session.install("-e", f".[{','.join(extras)}]", *constraints)
@@ -305,7 +302,8 @@ def install_systemtest_dependencies(session, *constraints):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system(session):
+@nox.parametrize("with_extras", [True, False])
+def system(session, with_extras):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -330,7 +328,7 @@ def system(session):
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
 
-    install_systemtest_dependencies(session, "-c", constraints_path)
+    install_systemtest_dependencies(session, constraints_path, with_extras)
 
     # Run py.test against the system tests.
     if system_test_exists:
