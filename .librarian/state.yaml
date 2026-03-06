@@ -4056,6 +4056,15 @@ libraries:
       - README.rst
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
+  - id: pandas-gbq
+    version: 0.34.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/pandas-gbq
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: proto-plus
     version: 1.27.1
     last_generated_commit: ""
