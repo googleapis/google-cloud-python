@@ -24,7 +24,6 @@ import time
 import nox
 
 MYPY_VERSION = "mypy==1.6.1"
-PYTYPE_VERSION = "pytype==2024.9.13"
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.10.1"
 BLACK_PATHS = (
@@ -79,7 +78,6 @@ nox.options.sessions = [
     "blacken",
     "mypy",
     "mypy_samples",
-    "pytype",
     "docs",
     "prerelease_deps",
     "core_deps_from_source",
@@ -200,22 +198,6 @@ def mypy(session):
     )
     session.run("python", "-m", "pip", "freeze")
     session.run("mypy", "-p", "google", "--show-traceback")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-@_calculate_duration
-def pytype(session):
-    """Run type checks with pytype."""
-    # An indirect dependecy attrs==21.1.0 breaks the check, and installing a less
-    # recent version avoids the error until a possibly better fix is found.
-    # https://github.com/googleapis/google-cloud-python/issues/655
-
-    session.install("attrs==20.3.0")
-    session.install("-e", ".[all]")
-    session.install(PYTYPE_VERSION)
-    session.run("python", "-m", "pip", "freeze")
-    # See https://github.com/google/pytype/issues/464
-    session.run("pytype", "-P", ".", "google/cloud/bigquery")
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
