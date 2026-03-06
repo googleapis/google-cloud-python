@@ -150,31 +150,36 @@ def default(session, install_extras=True):
 
 
 @nox.session(python=ALL_PYTHON)
+@nox.parametrize("test_type", ["unit", "unit_noextras"])
 @_calculate_duration
-def unit(session):
+def unit(session, test_type):
     """Run the unit test suite."""
 
-    if session.python in ("3.7",):
+    if session.python == "3.7":
         session.skip("Python 3.7 is no longer supported")
 
-    default(session)
+    install_extras = True
+    if test_type == "unit_noextras":
+        # unit_noextras only runs on the oldest and newest Python versions
+        if session.python not in (UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]):
+            session.skip(
+                f"unit_noextras only runs on the oldest ({UNIT_TEST_PYTHON_VERSIONS[0]}) "
+                f"and newest ({UNIT_TEST_PYTHON_VERSIONS[-1]}) supported Python versions"
+            )
+        
+        install_extras = False
+        
+        # Install optional dependencies that are out-of-date to see that
+        # we fail gracefully.
+        # https://github.com/googleapis/google-cloud-python/issues/933
+        #
+        # We only install this extra package on one of the two Python versions
+        # so that it continues to be an optional dependency.
+        # https://github.com/googleapis/google-cloud-python/issues/1877
+        if session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
+            session.install("pyarrow==4.0.0", "numpy==1.20.2")
 
-
-@nox.session(python=[UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]])
-@_calculate_duration
-def unit_noextras(session):
-    """Run the unit test suite."""
-
-    # Install optional dependencies that are out-of-date to see that
-    # we fail gracefully.
-    # https://github.com/googleapis/google-cloud-python/issues/933
-    #
-    # We only install this extra package on one of the two Python versions
-    # so that it continues to be an optional dependency.
-    # https://github.com/googleapis/google-cloud-python/issues/1877
-    if session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
-        session.install("pyarrow==4.0.0", "numpy==1.20.2")
-    default(session, install_extras=False)
+    default(session, install_extras=install_extras)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
