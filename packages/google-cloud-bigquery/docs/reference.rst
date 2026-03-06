@@ -82,15 +82,6 @@ External Configuration
     format_options
 
 
-Magics
-======
-
-.. toctree::
-    :maxdepth: 2
-
-    magics
-
-
 Enums
 =====
 
