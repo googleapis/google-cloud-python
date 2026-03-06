@@ -92,7 +92,7 @@ setup(
         "sqlalchemy_bigquery_vendored": "third_party/sqlalchemy_bigquery_vendored",
     },
     packages=packages,
-    url="https://github.com/googleapis/python-bigquery-sqlalchemy",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/sqlalchemy-bigquery",
     keywords=["bigquery", "sqlalchemy"],
     classifiers=[
         release_status,
