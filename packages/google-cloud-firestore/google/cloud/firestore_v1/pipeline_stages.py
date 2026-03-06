@@ -342,6 +342,23 @@ class Limit(Stage):
         return [Value(integer_value=self.limit)]
 
 
+class Literals(Stage):
+    """Returns documents from a fixed set of predefined document objects."""
+
+    def __init__(self, *documents: Selectable | dict):
+        super().__init__("literals")
+        self.documents = documents
+
+    def _pb_args(self):
+        args = []
+        for doc in self.documents:
+            if hasattr(doc, "_to_pb"):
+                args.append(doc._to_pb())
+            else:
+                args.append(encode_value(doc))
+        return args
+
+
 class Offset(Stage):
     """Skips a specified number of documents."""
 

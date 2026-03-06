@@ -275,6 +275,71 @@ class _BasePipeline:
             stages.FindNearest(field, vector, distance_measure, options)
         )
 
+    def literals(self, *documents: Selectable | dict) -> "_BasePipeline":
+        """
+        Returns documents from a fixed set of predefined document objects.
+
+        This stage is commonly used for testing other stages in isolation,
+        though it can also be used as inputs to join conditions.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
+            >>> documents = [
+            ...     {"name": "joe", "age": 10},
+            ...     {"name": "bob", "age": 30},
+            ...     {"name": "alice", "age": 40}
+            ... ]
+            >>> pipeline = client.pipeline()
+            ...     .literals(Constant.of(documents))
+            ...     .where(field("age").lessThan(35))
+
+            Output documents:
+            ```json
+            [
+                {"name": "joe", "age": 10},
+                {"name": "bob", "age": 30}
+            ]
+            ```
+
+        Behavior:
+            The `literals(...)` stage can only be used as the first stage in a pipeline (or
+            sub-pipeline). The order of documents returned from the `literals` matches the
+            order in which they are defined.
+
+            While literal values are the most common, it is also possible to pass in
+            expressions, which will be evaluated and returned, making it possible to test
+            out different query / expression behavior without first needing to create some
+            test data.
+
+            For example, the following shows how to quickly test out the `length(...)`
+            function on some constant test sets:
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
+            >>> documents = [
+            ...     {"x": Constant.of("foo-bar-baz").char_length()},
+            ...     {"x": Constant.of("bar").char_length()}
+            ... ]
+            >>> pipeline = client.pipeline().literals(Constant.of(documents))
+
+            Output documents:
+            ```json
+            [
+                {"x": 11},
+                {"x": 3}
+            ]
+            ```
+
+        Args:
+            documents: A `str` or `Selectable` expression. If a `str`, it's
+                       treated as a field path to an array of documents.
+                       If a `Selectable`, it's usually a `Constant`
+                       containing an array of documents (as dictionaries).
+        Returns:
+            A new Pipeline object with this stage appended to the stage list.
+        """
+        return self._append(stages.Literals(*documents))
+
     def replace_with(
         self,
         field: Selectable,
