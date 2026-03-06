@@ -90,7 +90,7 @@ To install from source:
 
 .. code:: shell
 
-    git clone git@github.com:googleapis/python-spanner-django.git
+    git clone git@github.com:googleapis/google-cloud-python.git
     cd python-spanner-django
     pip3 install -e .
 
@@ -240,13 +240,13 @@ How it works
 Overall design
 ~~~~~~~~~~~~~~
 
-.. figure:: https://raw.githubusercontent.com/googleapis/python-spanner-django/main/assets/overview.png
+.. figure:: https://raw.githubusercontent.com/googleapis/google-cloud-python/main/assets/overview.png
    :alt: "Overall Design"
 
 Internals
 ~~~~~~~~~
 
-.. figure:: https://raw.githubusercontent.com/googleapis/python-spanner-django/main/assets/internals.png
+.. figure:: https://raw.githubusercontent.com/googleapis/google-cloud-python/main/assets/internals.png
    :alt: "Internals"
 
 
@@ -267,11 +267,11 @@ How to contribute
 
 Contributions to this library are always welcome and highly encouraged.
 
-See `CONTRIBUTING <https://github.com/googleapis/python-spanner-django/blob/main/CONTRIBUTING.md>`_ for more information on how to get started.
+See `CONTRIBUTING <https://github.com/googleapis/google-cloud-python/blob/main/CONTRIBUTING.md>`_ for more information on how to get started.
 
 Please note that this project is released with a Contributor Code of Conduct.
 By participating in this project you agree to abide by its terms. See the `Code 
-of Conduct <https://github.com/googleapis/python-spanner-django/blob/main/CODE_OF_CONDUCT.md>`_ for more information.
+of Conduct <https://github.com/googleapis/google-cloud-python/blob/main/CODE_OF_CONDUCT.md>`_ for more information.
 
 
 Limitations
@@ -282,7 +282,7 @@ Spanner has certain limitations of its own. The full set of limitations is docum
 It is recommended that you go through that list.
 
 Django spanner has a set of limitations as well, which you can find
-`here <https://github.com/googleapis/python-spanner-django/blob/main/docs/limitations.rst>`__.
+`here <https://github.com/googleapis/google-cloud-python/blob/main/docs/limitations.rst>`__.
 
 Features from spanner that are not supported in Django-spanner are listed 
-`here <https://github.com/googleapis/python-spanner-django/blob/main/docs/limitations-spanner.rst>`__.
+`here <https://github.com/googleapis/google-cloud-python/blob/main/docs/limitations-spanner.rst>`__.

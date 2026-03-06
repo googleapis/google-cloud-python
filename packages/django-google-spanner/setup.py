@@ -54,7 +54,7 @@ setup(
     license="BSD",
     packages=find_packages(exclude=["tests"]),
     install_requires=dependencies,
-    url="https://github.com/googleapis/python-spanner-django",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/django-google-spanner",
     classifiers=[
         release_status,
         "Environment :: Web Environment",
