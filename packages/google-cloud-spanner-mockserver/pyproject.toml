@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "google-cloud-spanner-mockserver"
+dynamic = ["version"]
+authors = [
+    { name="Google LLC", email="googleapis-packages@google.com" },
+]
+description = "A lightweight in-memory mock server for Google Cloud Spanner. This is an internal library that can make breaking changes without prior notice."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = [
+    "LICENSE",
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "grpcio>=1.67.0",
+    "google-cloud-spanner>=3.55.0",
+    "protobuf>=4.0.0",
+    "google-api-core",
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "mock",
+]
+lint = [
+    "black[jupyter]>=23.7.0,<25.11.0",
+    "isort>=5.11.0,<7.0.0",
+    "flake8>=6.1.0,<7.3.0",
+]
+dev = [
+    "google-cloud-spanner-mockserver[testing,lint]",
+    "nox",
+]
+
+[tool.setuptools]
+dynamic = {"version" = {attr = "spannermockserver.__version__"}}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["spannermockserver*"]
+
+[project.urls]
+Homepage = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner-mockserver"
+Repository = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner-mockserver"
