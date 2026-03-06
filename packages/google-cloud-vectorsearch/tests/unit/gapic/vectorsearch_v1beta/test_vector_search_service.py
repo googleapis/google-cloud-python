@@ -4432,7 +4432,11 @@ def test_create_index_flattened():
         # using the keyword arguments to the method.
         client.create_index(
             parent="parent_value",
-            index=vectorsearch_service.Index(name="name_value"),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
             index_id="index_id_value",
         )
 
@@ -4444,7 +4448,11 @@ def test_create_index_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].index
-        mock_val = vectorsearch_service.Index(name="name_value")
+        mock_val = vectorsearch_service.Index(
+            dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+            )
+        )
         assert arg == mock_val
         arg = args[0].index_id
         mock_val = "index_id_value"
@@ -4462,7 +4470,11 @@ def test_create_index_flattened_error():
         client.create_index(
             vectorsearch_service.CreateIndexRequest(),
             parent="parent_value",
-            index=vectorsearch_service.Index(name="name_value"),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
             index_id="index_id_value",
         )
 
@@ -4485,7 +4497,11 @@ async def test_create_index_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_index(
             parent="parent_value",
-            index=vectorsearch_service.Index(name="name_value"),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
             index_id="index_id_value",
         )
 
@@ -4497,7 +4513,11 @@ async def test_create_index_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].index
-        mock_val = vectorsearch_service.Index(name="name_value")
+        mock_val = vectorsearch_service.Index(
+            dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+            )
+        )
         assert arg == mock_val
         arg = args[0].index_id
         mock_val = "index_id_value"
@@ -4516,7 +4536,11 @@ async def test_create_index_flattened_error_async():
         await client.create_index(
             vectorsearch_service.CreateIndexRequest(),
             parent="parent_value",
-            index=vectorsearch_service.Index(name="name_value"),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
             index_id="index_id_value",
         )
 
@@ -7027,7 +7051,11 @@ def test_create_index_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            index=vectorsearch_service.Index(name="name_value"),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
             index_id="index_id_value",
         )
         mock_args.update(sample_request)
@@ -7065,7 +7093,11 @@ def test_create_index_rest_flattened_error(transport: str = "rest"):
         client.create_index(
             vectorsearch_service.CreateIndexRequest(),
             parent="parent_value",
-            index=vectorsearch_service.Index(name="name_value"),
+            index=vectorsearch_service.Index(
+                dedicated_infrastructure=vectorsearch_service.DedicatedInfrastructure(
+                    mode=vectorsearch_service.DedicatedInfrastructure.Mode.STORAGE_OPTIMIZED
+                )
+            ),
             index_id="index_id_value",
         )
 
@@ -9287,6 +9319,11 @@ def test_create_index_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/collections/sample3"}
     request_init["index"] = {
+        "dedicated_infrastructure": {
+            "mode": 1,
+            "autoscaling_spec": {"min_replica_count": 1803, "max_replica_count": 1805},
+        },
+        "dense_scann": {"feature_norm_type": 1},
         "name": "name_value",
         "display_name": "display_name_value",
         "description": "description_value",

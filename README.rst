@@ -157,6 +157,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Auth OAuthlib <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-auth-oauthlib>`_
+     - stable
+     - |PyPI-google-auth-oauthlib|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `AutoML <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl>`_
      - stable
      - |PyPI-google-cloud-automl|
@@ -331,7 +337,7 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Datastore <https://github.com/googleapis/google-cloud-python/tree/main/packages/python-datastore>`_
+   * - `Datastore API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datastore>`_
      - stable
      - |PyPI-google-cloud-datastore|
      - `API Issues <https://issuetracker.google.com/savedsearches/559768>`_
@@ -391,12 +397,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Firestore <https://github.com/googleapis/python-firestore>`_
+   * - `Firestore API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-firestore>`_
      - stable
      - |PyPI-google-cloud-firestore|
      - `API Issues <https://issuetracker.google.com/savedsearches/5337669>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=530136>`_
-     - `Client Library Issues <https://github.com/googleapis/python-firestore/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Functions <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-functions>`_
      - stable
      - |PyPI-google-cloud-functions|
@@ -469,12 +475,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Logging <https://github.com/googleapis/python-logging>`_
+   * - `Logging API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-logging>`_
      - stable
      - |PyPI-google-cloud-logging|
      - `API Issues <https://issuetracker.google.com/savedsearches/559764>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187203>`_
-     - `Client Library Issues <https://github.com/googleapis/python-logging/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Managed Service for Microsoft Active Directory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-managed-identities>`_
      - stable
      - |PyPI-google-cloud-managed-identities|
@@ -1273,6 +1279,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1790908>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1790908>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Gemini Enterprise for Customer Experience API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-ces>`_
+     - preview
+     - |PyPI-google-cloud-ces|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1157150>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1157150>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Generative Language API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-ai-generativelanguage>`_
      - preview
      - |PyPI-google-ai-generativelanguage|
@@ -1633,6 +1645,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187174>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187174&template=1161261>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Workload Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-workloadmanager>`_
+     - preview
+     - |PyPI-google-cloud-workloadmanager|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1631482>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1631482&template=0>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Workspace Add-ons API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gsuiteaddons>`_
      - preview
      - |PyPI-google-cloud-gsuiteaddons|
@@ -1680,6 +1698,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-asset
 .. |PyPI-google-cloud-assured-workloads| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
      :target: https://pypi.org/project/google-cloud-assured-workloads
+.. |PyPI-google-auth-oauthlib| image:: https://img.shields.io/pypi/v/google-auth-oauthlib.svg
+     :target: https://pypi.org/project/google-auth-oauthlib
 .. |PyPI-google-cloud-automl| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg
      :target: https://pypi.org/project/google-cloud-automl
 .. |PyPI-google-cloud-bare-metal-solution| image:: https://img.shields.io/pypi/v/google-cloud-bare-metal-solution.svg
@@ -2052,6 +2072,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
 .. |PyPI-google-cloud-gkerecommender| image:: https://img.shields.io/pypi/v/google-cloud-gkerecommender.svg
      :target: https://pypi.org/project/google-cloud-gkerecommender
+.. |PyPI-google-cloud-ces| image:: https://img.shields.io/pypi/v/google-cloud-ces.svg
+     :target: https://pypi.org/project/google-cloud-ces
 .. |PyPI-google-ai-generativelanguage| image:: https://img.shields.io/pypi/v/google-ai-generativelanguage.svg
      :target: https://pypi.org/project/google-ai-generativelanguage
 .. |PyPI-google-geo-type| image:: https://img.shields.io/pypi/v/google-geo-type.svg
@@ -2172,6 +2194,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-video-stitcher
 .. |PyPI-google-cloud-visionai| image:: https://img.shields.io/pypi/v/google-cloud-visionai.svg
      :target: https://pypi.org/project/google-cloud-visionai
+.. |PyPI-google-cloud-workloadmanager| image:: https://img.shields.io/pypi/v/google-cloud-workloadmanager.svg
+     :target: https://pypi.org/project/google-cloud-workloadmanager
 .. |PyPI-google-cloud-gsuiteaddons| image:: https://img.shields.io/pypi/v/google-cloud-gsuiteaddons.svg
      :target: https://pypi.org/project/google-cloud-gsuiteaddons
 .. |PyPI-google-apps-events-subscriptions| image:: https://img.shields.io/pypi/v/google-apps-events-subscriptions.svg

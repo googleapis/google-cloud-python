@@ -34,6 +34,9 @@ __protobuf__ = proto.module(
         "RewriteObject",
         "ObjectRetention",
         "PutMetadata",
+        "ObjectCustomContextPayload",
+        "CustomContextUpdates",
+        "UpdateObjectCustomContext",
         "ErrorSummary",
         "ErrorLogEntry",
         "Counters",
@@ -87,6 +90,10 @@ class Job(proto.Message):
         rewrite_object (google.cloud.storagebatchoperations_v1.types.RewriteObject):
             Rewrite the object and updates metadata like
             KMS key.
+
+            This field is a member of `oneof`_ ``transformation``.
+        update_object_custom_context (google.cloud.storagebatchoperations_v1.types.UpdateObjectCustomContext):
+            Update object custom context.
 
             This field is a member of `oneof`_ ``transformation``.
         logging_config (google.cloud.storagebatchoperations_v1.types.LoggingConfig):
@@ -184,6 +191,12 @@ class Job(proto.Message):
         oneof="transformation",
         message="RewriteObject",
     )
+    update_object_custom_context: "UpdateObjectCustomContext" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        oneof="transformation",
+        message="UpdateObjectCustomContext",
+    )
     logging_config: "LoggingConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
@@ -276,6 +289,10 @@ class BucketOperation(proto.Message):
             KMS key.
 
             This field is a member of `oneof`_ ``transformation``.
+        update_object_custom_context (google.cloud.storagebatchoperations_v1.types.UpdateObjectCustomContext):
+            Update object custom context.
+
+            This field is a member of `oneof`_ ``transformation``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that the
             BucketOperation was created.
@@ -363,6 +380,12 @@ class BucketOperation(proto.Message):
         number=14,
         oneof="transformation",
         message="RewriteObject",
+    )
+    update_object_custom_context: "UpdateObjectCustomContext" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="transformation",
+        message="UpdateObjectCustomContext",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -771,6 +794,93 @@ class PutMetadata(proto.Message):
         number=8,
         optional=True,
         message="ObjectRetention",
+    )
+
+
+class ObjectCustomContextPayload(proto.Message):
+    r"""Describes the payload of a user defined object custom
+    context.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        value (str):
+            The value of the object custom context. If set, ``value``
+            must NOT be an empty string since it is a required field in
+            custom context. If unset, ``value`` will be ignored and no
+            changes will be made to the ``value`` field of the custom
+            context payload.
+
+            This field is a member of `oneof`_ ``_value``.
+    """
+
+    value: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+
+
+class CustomContextUpdates(proto.Message):
+    r"""Describes a collection of updates to apply to custom contexts
+    identified by key.
+
+    Attributes:
+        updates (MutableMapping[str, google.cloud.storagebatchoperations_v1.types.ObjectCustomContextPayload]):
+            Optional. Insert or update the existing
+            custom contexts.
+        keys_to_clear (MutableSequence[str]):
+            Optional. Custom contexts to clear by key. A key cannot be
+            present in both ``updates`` and ``keys_to_clear``.
+    """
+
+    updates: MutableMapping[str, "ObjectCustomContextPayload"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="ObjectCustomContextPayload",
+    )
+    keys_to_clear: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateObjectCustomContext(proto.Message):
+    r"""Describes options to update object custom contexts.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        custom_context_updates (google.cloud.storagebatchoperations_v1.types.CustomContextUpdates):
+            A collection of updates to apply to specific
+            custom contexts. Use this to add, update or
+            delete individual contexts by key.
+
+            This field is a member of `oneof`_ ``action``.
+        clear_all (bool):
+            If set, must be set to true and all existing
+            object custom contexts will be deleted.
+
+            This field is a member of `oneof`_ ``action``.
+    """
+
+    custom_context_updates: "CustomContextUpdates" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="action",
+        message="CustomContextUpdates",
+    )
+    clear_all: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+        oneof="action",
     )
 
 

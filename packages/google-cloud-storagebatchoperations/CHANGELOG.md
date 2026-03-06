@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storagebatchoperations/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.4.0...google-cloud-storagebatchoperations-v0.5.0) (2026-03-05)
+
+
+### Features
+
+* add new transformation `update_object_custom_context` ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.3.0...google-cloud-storagebatchoperations-v0.4.0) (2026-02-19)
 
 

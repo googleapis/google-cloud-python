@@ -1374,6 +1374,7 @@ def test_create_data_object(request_type, transport: str = "grpc"):
         call.return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
         response = client.create_data_object(request)
 
@@ -1387,6 +1388,7 @@ def test_create_data_object(request_type, transport: str = "grpc"):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 def test_create_data_object_non_empty_request_with_auto_populated_field():
@@ -1525,6 +1527,7 @@ async def test_create_data_object_async(
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         response = await client.create_data_object(request)
@@ -1539,6 +1542,7 @@ async def test_create_data_object_async(
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -1991,6 +1995,7 @@ def test_get_data_object(request_type, transport: str = "grpc"):
         call.return_value = data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
         response = client.get_data_object(request)
 
@@ -2004,6 +2009,7 @@ def test_get_data_object(request_type, transport: str = "grpc"):
     assert isinstance(response, data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_data_object_non_empty_request_with_auto_populated_field():
@@ -2132,6 +2138,7 @@ async def test_get_data_object_async(
             data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         response = await client.get_data_object(request)
@@ -2146,6 +2153,7 @@ async def test_get_data_object_async(
     assert isinstance(response, data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -2321,6 +2329,7 @@ def test_update_data_object(request_type, transport: str = "grpc"):
         call.return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
         response = client.update_data_object(request)
 
@@ -2334,6 +2343,7 @@ def test_update_data_object(request_type, transport: str = "grpc"):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 def test_update_data_object_non_empty_request_with_auto_populated_field():
@@ -2466,6 +2476,7 @@ async def test_update_data_object_async(
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         response = await client.update_data_object(request)
@@ -2480,6 +2491,7 @@ async def test_update_data_object_async(
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -3067,6 +3079,7 @@ def test_delete_data_object_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = data_object_service.DeleteDataObjectRequest(
         name="name_value",
+        etag="etag_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3081,6 +3094,7 @@ def test_delete_data_object_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_object_service.DeleteDataObjectRequest(
             name="name_value",
+            etag="etag_value",
         )
 
 
@@ -4680,6 +4694,8 @@ def test_delete_data_object_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_data_object._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("etag",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4731,7 +4747,7 @@ def test_delete_data_object_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_data_object._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 def test_delete_data_object_rest_flattened():
@@ -5280,6 +5296,7 @@ async def test_create_data_object_empty_call_grpc_asyncio():
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         await client.create_data_object(request=None)
@@ -5335,6 +5352,7 @@ async def test_get_data_object_empty_call_grpc_asyncio():
             data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         await client.get_data_object(request=None)
@@ -5365,6 +5383,7 @@ async def test_update_data_object_empty_call_grpc_asyncio():
             gcv_data_object.DataObject(
                 name="name_value",
                 data_object_id="data_object_id_value",
+                etag="etag_value",
             )
         )
         await client.update_data_object(request=None)
@@ -5507,6 +5526,7 @@ def test_create_data_object_rest_call_success(request_type):
         "update_time": {},
         "data": {"fields": {}},
         "vectors": {},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5583,6 +5603,7 @@ def test_create_data_object_rest_call_success(request_type):
         return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5601,6 +5622,7 @@ def test_create_data_object_rest_call_success(request_type):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5849,6 +5871,7 @@ def test_get_data_object_rest_call_success(request_type):
         return_value = data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5867,6 +5890,7 @@ def test_get_data_object_rest_call_success(request_type):
     assert isinstance(response, data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5986,6 +6010,7 @@ def test_update_data_object_rest_call_success(request_type):
         "update_time": {},
         "data": {"fields": {}},
         "vectors": {},
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6062,6 +6087,7 @@ def test_update_data_object_rest_call_success(request_type):
         return_value = gcv_data_object.DataObject(
             name="name_value",
             data_object_id="data_object_id_value",
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6080,6 +6106,7 @@ def test_update_data_object_rest_call_success(request_type):
     assert isinstance(response, gcv_data_object.DataObject)
     assert response.name == "name_value"
     assert response.data_object_id == "data_object_id_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -57,7 +57,8 @@ coverage.xml
 *sponge_log.xml
 
 # System test environment variables.
-system_tests/local_test_setup
+**/system_tests/local_test_setup
+**/system_tests/data
 
 # Make sure a generated file isn't accidentally committed.
 pylintrc

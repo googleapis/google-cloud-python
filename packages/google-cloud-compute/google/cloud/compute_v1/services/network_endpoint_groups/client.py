@@ -1923,6 +1923,24 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 different use cases, seeNetwork endpoint
                 groups overview.
 
+                Note: Use the following APIs to manage
+                network endpoint groups:
+
+                   -
+                   To manage NEGs with zonal scope (such
+                as zonal NEGs, hybrid connectivity
+                NEGs): zonal
+                   API
+                   -
+                   To manage NEGs with regional scope
+                (such as regional internet NEGs,
+                serverless NEGs, Private Service Connect
+                NEGs): regional    API
+                   -
+                   To manage NEGs with global scope
+                (such as global internet NEGs):global
+                API
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1996,6 +2014,21 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         r"""Creates a network endpoint group in the specified
         project using the parameters that are included in the
         request.
+
+        Note: Use the following APIs to manage network endpoint
+        groups:
+
+           -
+           To manage NEGs with zonal scope (such as zonal NEGs,
+        hybrid connectivity    NEGs): zonal
+           API
+           -
+           To manage NEGs with regional scope (such as regional
+        internet NEGs,    serverless NEGs, Private Service
+        Connect NEGs): regional    API
+           -
+           To manage NEGs with global scope (such as global
+        internet NEGs):global    API
 
         .. code-block:: python
 
@@ -2134,6 +2167,21 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         r"""Creates a network endpoint group in the specified
         project using the parameters that are included in the
         request.
+
+        Note: Use the following APIs to manage network endpoint
+        groups:
+
+           -
+           To manage NEGs with zonal scope (such as zonal NEGs,
+        hybrid connectivity    NEGs): zonal
+           API
+           -
+           To manage NEGs with regional scope (such as regional
+        internet NEGs,    serverless NEGs, Private Service
+        Connect NEGs): regional    API
+           -
+           To manage NEGs with global scope (such as global
+        internet NEGs):global    API
 
         .. code-block:: python
 

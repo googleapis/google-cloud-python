@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-network-management/#history
 
+## [1.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.32.0...google-cloud-network-management-v1.33.0) (2026-03-05)
+
+
+### Features
+
+* Add API fields related to GKE Pods and Network Policies ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
 ## [1.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.31.0...google-cloud-network-management-v1.32.0) (2026-01-29)
 
 

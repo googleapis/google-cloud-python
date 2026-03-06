@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.13.0...google-cloud-logging-v3.14.0) (2026-03-05)
+
+
+### Features
+
+* support mTLS certificates when available (#1071) ([c73e43906298e99405830d69a8383f71b85bd75b](https://github.com/googleapis/google-cloud-python/commit/c73e43906298e99405830d69a8383f71b85bd75b))
+
 ## [3.13.0](https://github.com/googleapis/python-logging/compare/v3.12.1...v3.13.0) (2025-12-15)
 
 

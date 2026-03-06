@@ -3240,6 +3240,7 @@ def test_insert_rest_call_success(request_type):
                 "delete_at_time": "delete_at_time_value",
                 "deployment_type": "deployment_type_value",
                 "description": "description_value",
+                "early_access_maintenance": "early_access_maintenance_value",
                 "enable_emergent_maintenance": True,
                 "id": 205,
                 "kind": "kind_value",
@@ -3248,6 +3249,7 @@ def test_insert_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "params": {"resource_manager_tags": {}},
                 "protection_tier": "protection_tier_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
@@ -3749,6 +3751,7 @@ def test_update_rest_call_success(request_type):
                 "delete_at_time": "delete_at_time_value",
                 "deployment_type": "deployment_type_value",
                 "description": "description_value",
+                "early_access_maintenance": "early_access_maintenance_value",
                 "enable_emergent_maintenance": True,
                 "id": 205,
                 "kind": "kind_value",
@@ -3757,6 +3760,7 @@ def test_update_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "params": {"resource_manager_tags": {}},
                 "protection_tier": "protection_tier_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"

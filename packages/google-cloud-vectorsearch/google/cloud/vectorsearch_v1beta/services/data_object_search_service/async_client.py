@@ -90,6 +90,8 @@ class DataObjectSearchServiceAsyncClient:
     parse_data_object_path = staticmethod(
         DataObjectSearchServiceClient.parse_data_object_path
     )
+    index_path = staticmethod(DataObjectSearchServiceClient.index_path)
+    parse_index_path = staticmethod(DataObjectSearchServiceClient.parse_index_path)
     common_billing_account_path = staticmethod(
         DataObjectSearchServiceClient.common_billing_account_path
     )
