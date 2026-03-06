@@ -312,9 +312,7 @@ def conformance(session, client_type):
 
 # Run the system/emulator tests
 @nox.session(py="3.12")
-@nox.parametrize(
-    "test_type", ["system_default", "system_emulated"]
-)
+@nox.parametrize("test_type", ["system_default", "system_emulated"])
 def system(session, test_type):
     """Run the system/emulator tests."""
     test_map = {
