@@ -43,7 +43,9 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -80,7 +82,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     ],
 }
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.12", "3.13", "3.14"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -137,12 +139,14 @@ nox.options.sessions = [
     "unit",
     "system",
     "cover",
+    "prerelease_deps",
+    "blacken",
     "lint",
     "lint_setup_py",
-    "blacken",
+    "format",
+    "mypy",
     "docs",
     "docfx",
-    "format",
 ]
 
 # Error if a python version is missing
@@ -235,7 +239,7 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -332,6 +336,9 @@ def system(session):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.skip("Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS")
+
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
@@ -375,6 +382,9 @@ def system_noextras(session):
     )
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
+
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+        session.skip("Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS")
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
@@ -659,24 +669,48 @@ def prerelease_deps(session, protobuf_implementation):
 
     # Only run system tests if found.
     if os.path.exists(system_test_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
-        )
+        if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+            session.log("Skipping system tests - no credentials")
+        else:
+            session.run(
+                "py.test",
+                "--verbose",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+                system_test_path,
+                *session.posargs,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                },
+            )
     if os.path.exists(system_test_folder_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
-        )
+        if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
+            session.log("Skipping system folder tests - no credentials")
+        else:
+            session.run(
+                "py.test",
+                "--verbose",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+                system_test_folder_path,
+                *session.posargs,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                },
+            )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run the type checker."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add mypy tests
+    session.skip("mypy tests are not yet supported")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
