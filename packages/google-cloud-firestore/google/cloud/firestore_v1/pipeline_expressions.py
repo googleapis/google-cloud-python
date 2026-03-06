@@ -407,11 +407,12 @@ class Expression(ABC):
 
     @expose_as_static
     def trunc(self) -> "Expression":
-        """Creates an expression that truncates this expression towards zero.
+        """Creates an expression that truncates a numeric value to the specified
+        number of decimal places.
 
         Example:
-            >>> # Truncate the 'value' field.
-            >>> Field.of("value").trunc()
+            >>> # Truncate the 'value' field to 2 decimal places.
+            >>> Field.of("value").trunc(2)
 
         Returns:
             A new `Expression` representing the truncated value.
@@ -2045,10 +2046,10 @@ class CurrentTimestamp(FunctionExpression):
 
 
 class Rand(FunctionExpression):
-    """Creates an expression that returns a pseudorandom float between 0.0 (inclusive) and 1.0 (exclusive).
+    """Creates an expression that generates a random number between 0.0 and 1.0 but not including 1.0.
 
     Returns:
-        A new `Expression` representing the random value.
+        A new `Expression` representing the rand operation.
     """
 
     def __init__(self):
