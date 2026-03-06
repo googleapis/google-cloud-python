@@ -68,19 +68,19 @@ def _calculate_duration(func):
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
-    "unit_noextras",
     "unit",
+    "unit_noextras",
+    "mypy",
     "system",
     "snippets",
     "cover",
+    "prerelease_deps",
     "lint",
     "lint_setup_py",
     "blacken",
-    "mypy",
-    "mypy_samples",
     "docs",
-    "prerelease_deps",
     "core_deps_from_source",
+    "format",
 ]
 
 
@@ -263,42 +263,6 @@ def system(session):
         "-W default::PendingDeprecationWarning",
         os.path.join("tests", "system"),
         *session.posargs,
-    )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-@_calculate_duration
-def mypy_samples(session):
-    """Run type checks with mypy."""
-
-    session.install("pytest")
-    for requirements_path in CURRENT_DIRECTORY.glob("samples/*/requirements.txt"):
-        session.install("-r", str(requirements_path))
-    session.install(MYPY_VERSION)
-
-    # requirements.txt might include this package. Install from source so that
-    # we can author samples with unreleased features.
-    session.install("-e", ".[all]")
-
-    # Just install the dependencies' type info directly, since "mypy --install-types"
-    # might require an additional pass.
-    session.install(
-        "types-mock",
-        "types-pytz",
-        "types-protobuf!=4.24.0.20240106",  # This version causes an error: 'Module "google.oauth2" has no attribute "service_account"'
-        "types-python-dateutil",
-        "types-requests",
-        "types-setuptools",
-    )
-
-    session.run("python", "-m", "pip", "freeze")
-
-    session.run(
-        "mypy",
-        "--config-file",
-        str(CURRENT_DIRECTORY / "samples" / "mypy.ini"),
-        "--no-incremental",  # Required by warn-unused-configs from mypy.ini to work
-        "samples/",
     )
 
 
