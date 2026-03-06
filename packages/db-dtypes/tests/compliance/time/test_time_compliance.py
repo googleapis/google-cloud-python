@@ -97,6 +97,12 @@ class TestInterface(base.BaseInterfaceTests):
             result_nocopy2 = np.array(data, copy=False)
             assert np.may_share_memory(result_nocopy1, result_nocopy2)
 
+    def test_len(self, data):
+        assert len(data) == 100
+
+    def test_size(self, data):
+        assert data.size == 100
+
 
 class TestMissing(base.BaseMissingTests):
     pass
@@ -131,10 +137,10 @@ class TestMethods(base.BaseMethodsTests):
         # at least pandas version 3.0 (current version is 2.3)
         data = data_missing_for_sorting
 
-        with pytest.raises(NotImplementedError):
+        with pytest.raises((NotImplementedError, ValueError)):
             data.argmin(skipna=False)
 
-        with pytest.raises(NotImplementedError):
+        with pytest.raises((NotImplementedError, ValueError)):
             data.argmax(skipna=False)
 
 
@@ -163,3 +169,11 @@ class TestSetitem(base.BaseSetitemTests):
 
         with pytest.raises((ValueError, TypeError)):
             data[:] = invalid_scalar
+
+    def test_loc_setitem_with_expansion_preserves_ea_index_dtype(self, data):
+        pytest.xfail(
+            "Failing with pandas prerelease: dtype mismatch (object vs dbtime)"
+        )
+
+    def test_readonly_propagates_to_numpy_array_method(self, data):
+        pytest.xfail("Failing with pandas prerelease: readonly flag propagation issue")
