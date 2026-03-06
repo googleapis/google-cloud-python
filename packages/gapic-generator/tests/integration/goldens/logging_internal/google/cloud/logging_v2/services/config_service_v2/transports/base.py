@@ -127,6 +127,8 @@ class ConfigServiceV2Transport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host

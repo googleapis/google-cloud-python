@@ -123,6 +123,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert CloudRedisClient._get_default_mtls_endpoint(None) is None
     assert CloudRedisClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -130,6 +131,7 @@ def test__get_default_mtls_endpoint():
     assert CloudRedisClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
     assert CloudRedisClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert CloudRedisClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert CloudRedisClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 def test__read_environment_variables():
     assert CloudRedisClient._read_environment_variables() == (False, "auto", None)
@@ -12116,6 +12118,7 @@ def test_delete_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
@@ -12141,6 +12144,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_delete_operation_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12164,6 +12168,7 @@ def test_delete_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = CloudRedisAsyncClient(
@@ -12190,6 +12195,7 @@ async def test_delete_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_delete_operation_from_dict():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12205,6 +12211,7 @@ def test_delete_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = CloudRedisAsyncClient(
@@ -12222,6 +12229,39 @@ async def test_delete_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_delete_operation_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            None
+        )
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
 
 
 def test_cancel_operation(transport: str = "grpc"):
@@ -12245,6 +12285,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
@@ -12270,6 +12311,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_cancel_operation_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12293,6 +12335,7 @@ def test_cancel_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = CloudRedisAsyncClient(
@@ -12319,6 +12362,7 @@ async def test_cancel_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_cancel_operation_from_dict():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12334,6 +12378,7 @@ def test_cancel_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = CloudRedisAsyncClient(
@@ -12351,6 +12396,40 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            None
+        )
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
 
 def test_wait_operation(transport: str = "grpc"):
     client = CloudRedisClient(
@@ -12373,6 +12452,7 @@ def test_wait_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 @pytest.mark.asyncio
 async def test_wait_operation(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
@@ -12398,6 +12478,7 @@ async def test_wait_operation(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 
+
 def test_wait_operation_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12421,6 +12502,7 @@ def test_wait_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_wait_operation_field_headers_async():
     client = CloudRedisAsyncClient(
@@ -12447,6 +12529,7 @@ async def test_wait_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_wait_operation_from_dict():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12462,6 +12545,7 @@ def test_wait_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_wait_operation_from_dict_async():
     client = CloudRedisAsyncClient(
@@ -12479,6 +12563,39 @@ async def test_wait_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_wait_operation_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.wait_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.WaitOperationRequest()
+
+@pytest.mark.asyncio
+async def test_wait_operation_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.wait_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.WaitOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -12502,6 +12619,7 @@ def test_get_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
@@ -12527,6 +12645,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 
+
 def test_get_operation_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12550,6 +12669,7 @@ def test_get_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = CloudRedisAsyncClient(
@@ -12576,6 +12696,7 @@ async def test_get_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_get_operation_from_dict():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12591,6 +12712,7 @@ def test_get_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = CloudRedisAsyncClient(
@@ -12608,6 +12730,39 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_list_operations(transport: str = "grpc"):
@@ -12631,6 +12786,7 @@ def test_list_operations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
@@ -12656,6 +12812,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
 
+
 def test_list_operations_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12679,6 +12836,7 @@ def test_list_operations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = CloudRedisAsyncClient(
@@ -12705,6 +12863,7 @@ async def test_list_operations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_list_operations_from_dict():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12720,6 +12879,7 @@ def test_list_operations_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = CloudRedisAsyncClient(
@@ -12737,6 +12897,39 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -12760,6 +12953,7 @@ def test_list_locations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
+
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
@@ -12785,6 +12979,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
+
 def test_list_locations_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12808,6 +13003,7 @@ def test_list_locations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = CloudRedisAsyncClient(
@@ -12834,6 +13030,7 @@ async def test_list_locations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_list_locations_from_dict():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12849,6 +13046,7 @@ def test_list_locations_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = CloudRedisAsyncClient(
@@ -12866,6 +13064,39 @@ async def test_list_locations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_locations_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
 
 
 def test_get_location(transport: str = "grpc"):
@@ -12889,6 +13120,7 @@ def test_get_location(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.Location)
+
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
@@ -12914,6 +13146,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.Location)
 
+
 def test_get_location_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials())
@@ -12936,6 +13169,7 @@ def test_get_location_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = CloudRedisAsyncClient(
@@ -12962,6 +13196,7 @@ async def test_get_location_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
 
+
 def test_get_location_from_dict():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12977,6 +13212,7 @@ def test_get_location_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = CloudRedisAsyncClient(
@@ -12994,6 +13230,39 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

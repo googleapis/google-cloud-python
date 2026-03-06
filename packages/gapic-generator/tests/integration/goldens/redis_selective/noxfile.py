@@ -95,8 +95,7 @@ nox.options.error_on_missing_interpreters = True
 def mypy(session):
     """Run the type checker."""
     session.install(
-        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
-        "mypy<1.16.0",
+        "mypy",
         "types-requests",
         "types-protobuf",
     )
@@ -105,6 +104,8 @@ def mypy(session):
         "mypy",
         "-p",
         "google",
+        "--check-untyped-defs",
+        *session.posargs,
     )
 
 

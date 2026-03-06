@@ -41,6 +41,7 @@ def test_delete_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -85,6 +86,7 @@ def test_delete_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -125,6 +127,43 @@ def test_delete_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
+{% endfor %}
+
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+{% else %}
+def test_delete_operation_flattened():
+{% endif %}
+    {% if mode == "" %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    {% else %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    {% endif %}
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        {% if mode == "" %}
+        call.return_value = None
+
+        client.delete_operation()
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            None
+        )
+        await client.delete_operation()
+        {% endif %}
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
 {% endfor %}
 
 {% endif %} {# DeleteOperation #}
@@ -170,6 +209,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -214,6 +254,7 @@ def test_cancel_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -254,6 +295,43 @@ def test_cancel_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
+{% endfor %}
+
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+{% else %}
+def test_cancel_operation_flattened():
+{% endif %}
+    {% if mode == "" %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    {% else %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    {% endif %}
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        {% if mode == "" %}
+        call.return_value = None
+
+        client.cancel_operation()
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            None
+        )
+        await client.cancel_operation()
+        {% endif %}
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
 {% endfor %}
 {% endif %} {# CancelOperation #}
 
@@ -298,6 +376,7 @@ def test_wait_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -342,6 +421,7 @@ def test_wait_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -382,6 +462,43 @@ def test_wait_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
+{% endfor %}
+
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+@pytest.mark.asyncio
+async def test_wait_operation_flattened_async():
+{% else %}
+def test_wait_operation_flattened():
+{% endif %}
+    {% if mode == "" %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    {% else %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    {% endif %}
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        {% if mode == "" %}
+        call.return_value = operations_pb2.Operation()
+
+        client.wait_operation()
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.wait_operation()
+        {% endif %}
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.WaitOperationRequest()
+
 {% endfor %}
 
 {% endif %} {# WaitOperation #}
@@ -427,6 +544,7 @@ def test_get_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -471,6 +589,7 @@ def test_get_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -511,6 +630,43 @@ def test_get_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
+{% endfor %}
+
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+{% else %}
+def test_get_operation_flattened():
+{% endif %}
+    {% if mode == "" %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    {% else %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    {% endif %}
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        {% if mode == "" %}
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        {% endif %}
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
 {% endfor %}
 
 {% endif %} {# GetOperation #}
@@ -556,6 +712,7 @@ def test_list_operations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -600,6 +757,7 @@ def test_list_operations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -640,6 +798,43 @@ def test_list_operations_from_dict():
         )
         {% endif %}
         call.assert_called()
+
+{% endfor %}
+
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+{% else %}
+def test_list_operations_flattened():
+{% endif %}
+    {% if mode == "" %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    {% else %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    {% endif %}
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        {% if mode == "" %}
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        {% endif %}
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
 {% endfor %}
 
 {% endif %} {# ListOperations #}
@@ -691,6 +886,7 @@ def test_list_locations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -735,6 +931,7 @@ def test_list_locations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -775,6 +972,43 @@ def test_list_locations_from_dict():
         )
         {% endif %}
         call.assert_called()
+
+{% endfor %}
+
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+{% else %}
+def test_list_locations_flattened():
+{% endif %}
+    {% if mode == "" %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    {% else %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    {% endif %}
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        {% if mode == "" %}
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        {% endif %}
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
 {% endfor %}
 
 {% endif %} {# ListLocations #}
@@ -822,6 +1056,7 @@ def test_get_location(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.Location)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -865,6 +1100,7 @@ def test_get_location_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -905,6 +1141,43 @@ def test_get_location_from_dict():
         )
         {% endif %}
         call.assert_called()
+
+{% endfor %}
+
+{% for mode in ["", "async"] %}
+{% if mode == "async" %}
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+{% else %}
+def test_get_location_flattened():
+{% endif %}
+    {% if mode == "" %}
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    {% else %}
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    {% endif %}
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        {% if mode == "" %}
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        {% else %}
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        {% endif %}
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
 {% endfor %}
 
 {% endif %} {# GetLocation #}
@@ -959,6 +1232,7 @@ def test_set_iam_policy(transport: str = "grpc"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -1003,6 +1277,7 @@ def test_set_iam_policy_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
 {% endfor %}
 
 def test_set_iam_policy_from_dict():
@@ -1042,6 +1317,43 @@ async def test_set_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy()
+        )
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_get_iam_policy(transport: str = "grpc"):
@@ -1200,6 +1512,43 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy()
+        )
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
@@ -1367,6 +1716,43 @@ async def test_test_iam_permissions_from_dict_async():
         )
         call.assert_called()
 
+
+def test_test_iam_permissions_flattened():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
 {% endif %}
 
 {% if (not opts.add_iam_methods and api.has_iam_mixin) and ('grpc' in opts.transport or 'grpc_asyncio' in opts.transport) %}
@@ -1418,6 +1804,7 @@ def test_set_iam_policy(transport: str = "grpc"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -1462,6 +1849,7 @@ def test_set_iam_policy_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
 {% endfor %}
 
 def test_set_iam_policy_from_dict():
@@ -1501,6 +1889,43 @@ async def test_set_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy()
+        )
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 {% endif %}
 
 {% if "GetIamPolicy" in api.mixin_api_methods %}
@@ -1660,6 +2085,43 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy()
+        )
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 {% endif %}
 
 {% if "TestIamPermissions" in api.mixin_api_methods %}
@@ -1827,5 +2289,42 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 {% endif %}
 {% endif %}

@@ -105,6 +105,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert IAMCredentialsClient._get_default_mtls_endpoint(None) is None
     assert IAMCredentialsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -112,6 +113,7 @@ def test__get_default_mtls_endpoint():
     assert IAMCredentialsClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
     assert IAMCredentialsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert IAMCredentialsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert IAMCredentialsClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 def test__read_environment_variables():
     assert IAMCredentialsClient._read_environment_variables() == (False, "auto", None)
