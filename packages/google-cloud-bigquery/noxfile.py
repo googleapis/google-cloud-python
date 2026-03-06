@@ -30,21 +30,19 @@ BLACK_PATHS = (
     "benchmark",
     "docs",
     "google",
-    "samples",
-    "samples/tests",
     "tests",
     "noxfile.py",
     "setup.py",
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 ALL_PYTHON.extend(["3.7"])
 
+SYSTEM_TEST_PYTHON_VERSIONS = ALL_PYTHON
 
 def _calculate_duration(func):
     """This decorator prints the execution time for the decorated function."""
@@ -159,14 +157,17 @@ def unit(session, test_type):
     install_extras = True
     if test_type == "unit_noextras":
         # unit_noextras only runs on the oldest and newest Python versions
-        if session.python not in (UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]):
+        if session.python not in (
+            UNIT_TEST_PYTHON_VERSIONS[0],
+            UNIT_TEST_PYTHON_VERSIONS[-1],
+        ):
             session.skip(
                 f"unit_noextras only runs on the oldest ({UNIT_TEST_PYTHON_VERSIONS[0]}) "
                 f"and newest ({UNIT_TEST_PYTHON_VERSIONS[-1]}) supported Python versions"
             )
-        
+
         install_extras = False
-        
+
         # Install optional dependencies that are out-of-date to see that
         # we fail gracefully.
         # https://github.com/googleapis/google-cloud-python/issues/933
@@ -297,18 +298,6 @@ def snippets(session):
     session.run(
         "py.test", "-n=auto", os.path.join("docs", "snippets.py"), *session.posargs
     )
-    session.run(
-        "py.test",
-        "-n=auto",
-        "samples",
-        "-W default::PendingDeprecationWarning",
-        "--ignore=samples/desktopapp",
-        "--ignore=samples/magics",
-        "--ignore=samples/geography",
-        "--ignore=samples/notebooks",
-        "--ignore=samples/snippets",
-        *session.posargs,
-    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -423,13 +412,6 @@ def prerelease_deps(session):
             "tests/system",
             "-W default::PendingDeprecationWarning",
         )
-
-        session.run(
-            "py.test",
-            "-n=auto",
-            "samples/tests",
-            "-W default::PendingDeprecationWarning",
-        )
     else:
         session.log(
             "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set."
@@ -450,7 +432,6 @@ def lint(session):
     session.run("python", "-m", "pip", "freeze")
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")
-    session.run("flake8", os.path.join("docs", "samples"))
     session.run("flake8", os.path.join("docs", "snippets.py"))
     session.run("flake8", "benchmark")
     session.run("black", "--check", *BLACK_PATHS)
