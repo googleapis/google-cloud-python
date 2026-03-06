@@ -400,7 +400,9 @@ def doctest(session):
 
 # Run the system/emulator tests
 @nox.session(py="3.12")
-@nox.parametrize("test_type", ["system_default", "emulator_system", "old_emulator_system"])
+@nox.parametrize(
+    "test_type", ["system_default", "emulator_system", "old_emulator_system"]
+)
 def system(session, test_type):
     """Run the system/emulator tests."""
     test_map = {
