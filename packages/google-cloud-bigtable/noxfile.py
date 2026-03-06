@@ -36,7 +36,7 @@ BLACK_VERSION = "black[jupyter]==23.3.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.13"
+DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.7",
@@ -452,7 +452,7 @@ def docfx(session):
     session.run("python", "docs/scripts/patch_devsite_toc.py")
 
 
-@nox.session(python="3.14")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -539,7 +539,7 @@ def prerelease_deps(session, protobuf_implementation):
     system_test_folder_path = os.path.join("tests", "system")
 
 
-@nox.session(python="3.10")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def generate_sync(session):
     """
     Re-generate sync files for the library from CrossSync-annotated async source
