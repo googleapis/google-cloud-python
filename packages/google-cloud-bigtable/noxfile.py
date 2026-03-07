@@ -560,9 +560,6 @@ def prerelease_deps(session, protobuf_implementation):
         },
     )
 
-    system_test_path = os.path.join("tests", "system.py")
-    system_test_folder_path = os.path.join("tests", "system")
-
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def generate_sync(session):
