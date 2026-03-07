@@ -295,9 +295,6 @@ def system_emulated(session):
         # Stop Emulator
         os.killpg(os.getpgid(p.pid), signal.SIGKILL)
 
-
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-@nox.parametrize("client_type", ["async", "sync", "legacy"])
 def conformance(session, client_type):
     # install dependencies
     constraints_path = str(
@@ -315,17 +312,29 @@ def conformance(session, client_type):
         )
 
 
-# Run the system/emulator tests
+# Run the system/emulator/conformance tests
 @nox.session(py="3.12")
-@nox.parametrize("test_type", ["system_default", "system_emulated"])
-def system(session, test_type):
+@nox.parametrize(
+    "test_type, client_type",
+    [
+        ("system_default", None),
+        ("system_emulated", None),
+        ("conformance", "async"),
+        ("conformance", "sync"),
+        ("conformance", "legacy"),
+    ],
+)
+def system(session, test_type, client_type):
     """Run the system/emulator tests."""
-    test_map = {
-        "system_default": system_default,
-        "system_emulated": system_emulated,
-    }
-
-    test_map[test_type](session)
+    if test_type == "conformance":
+        conformance(session, client_type)
+    else:
+        # system and emulator tests
+        test_map = {
+            "system_default": system_default,
+            "system_emulated": system_emulated,
+        }
+        test_map[test_type](session)
 
 
 def system_default(session):
