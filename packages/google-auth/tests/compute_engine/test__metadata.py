@@ -961,6 +961,7 @@ def test__prepare_request_for_mds_mtls_no_session(mock_mds_mtls_adapter):
 def test__prepare_request_for_mds_mtls_attribute_error(mock_mds_mtls_adapter):
     # Regression test for https://github.com/googleapis/google-cloud-python/issues/16035
     from google.auth.transport import _http_client
+
     request = _http_client.Request()
     with mock.patch("requests.Session") as mock_session_class:
         _metadata._prepare_request_for_mds(request, use_mtls=True)
