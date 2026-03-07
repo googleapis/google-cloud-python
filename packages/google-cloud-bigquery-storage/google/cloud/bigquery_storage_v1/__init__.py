@@ -28,8 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
-
-from google.cloud.bigquery_storage_v1 import client, types
+from google.cloud.bigquery_storage_v1 import client, schema, types
 
 
 class BigQueryReadClient(client.BigQueryReadClient):
@@ -141,4 +140,6 @@ __all__ = (
     # google.cloud.bigquery_storage_v1.client
     "BigQueryReadClient",
     "BigQueryWriteClient",
+    # google.cloud.bigquery_storage_v1.schema
+    "schema",
 )
