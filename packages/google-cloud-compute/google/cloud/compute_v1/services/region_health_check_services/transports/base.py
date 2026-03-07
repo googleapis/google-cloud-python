@@ -17,13 +17,13 @@ import abc
 from typing import Any, Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.compute_v1 import gapic_version as package_version
 from google.cloud.compute_v1.services import region_operations
@@ -166,6 +166,11 @@ class RegionHealthCheckServicesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -221,6 +226,17 @@ class RegionHealthCheckServicesTransport(abc.ABC):
     ) -> Callable[
         [compute.PatchRegionHealthCheckServiceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsRegionHealthCheckServiceRequest],
+        Union[
+            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
+        ],
     ]:
         raise NotImplementedError()
 

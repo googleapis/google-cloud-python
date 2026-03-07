@@ -1,8 +1,8 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:f5426423676c75008c2135037e7b98f78cbb99f78b3c46fe043b6897be92d836
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:160860d189ff1c2f7515638478823712fa5b243e27ccc33a2728669fa1e2ed0c
 libraries:
   - id: google-cloud-compute
-    version: 1.43.0
-    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
+    version: 1.45.0
+    last_generated_commit: e8a3d84236cc27875073b1f817e49d7faee11f0d
     apis:
       - path: google/cloud/compute/v1
         service_config: compute_v1.yaml
