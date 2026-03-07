@@ -25418,7 +25418,6 @@ def test_config_http_transport_client_cert_source_for_mtls():
     "transport_name",
     [
         "grpc",
-        "grpc_asyncio",
         "rest",
     ],
 )
@@ -25441,7 +25440,6 @@ def test_config_host_no_port(transport_name):
     "transport_name",
     [
         "grpc",
-        "grpc_asyncio",
         "rest",
     ],
 )

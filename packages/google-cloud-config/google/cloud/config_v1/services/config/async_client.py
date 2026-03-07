@@ -62,7 +62,9 @@ from google.cloud.config_v1.types import config
 
 from .client import ConfigClient
 from .transports.base import DEFAULT_CLIENT_INFO, ConfigTransport
+from .transports.grpc import ConfigGrpcTransport
 from .transports.grpc_asyncio import ConfigGrpcAsyncIOTransport
+from .transports.rest import ConfigRestTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -292,11 +294,25 @@ class ConfigAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
+        transport_provided = isinstance(transport, ConfigTransport)
+
+        if (
+            transport_provided
+            and isinstance(transport, (ConfigGrpcTransport, ConfigRestTransport))
+        ) or (
+            isinstance(transport, str) and transport in ["grpc", "rest"]
+        ):
+            raise ValueError(
+                "The `ConfigAsyncClient` does not support sync transports. "
+                "Please use `ConfigClient` instead."
+            )
+
         self._client = ConfigClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+            _allow_async_transport=True,
         )
 
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
