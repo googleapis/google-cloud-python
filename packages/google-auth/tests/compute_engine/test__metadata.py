@@ -955,3 +955,17 @@ def test__prepare_request_for_mds_mtls_no_session(mock_mds_mtls_adapter):
         mock_session_class.assert_called_once()
         mock_mds_mtls_adapter.assert_called_once()
         assert request.session.mount.call_count == len(_metadata._GCE_DEFAULT_MDS_HOSTS)
+
+
+@mock.patch("google.auth.compute_engine._mtls.MdsMtlsAdapter")
+def test__prepare_request_for_mds_mtls_attribute_error(mock_mds_mtls_adapter):
+    # Regression test for https://github.com/googleapis/google-cloud-python/issues/16035
+    from google.auth.transport import _http_client
+
+    request = _http_client.Request()
+    with mock.patch("requests.Session") as mock_session_class:
+        _metadata._prepare_request_for_mds(request, use_mtls=True)
+
+        mock_session_class.assert_called_once()
+        mock_mds_mtls_adapter.assert_called_once()
+        assert request.session.mount.call_count == len(_metadata._GCE_DEFAULT_MDS_HOSTS)

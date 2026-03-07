@@ -166,18 +166,16 @@ def _prepare_request_for_mds(request, use_mtls=False) -> None:
 
     Args:
         request (google.auth.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. If mTLS is enabled, the request will have the mTLS
+            adapter mounted. Otherwise, there will be no change.
         use_mtls (bool): Whether to use mTLS for the request.
 
-    Returns:
-        google.auth.transport.Request: A request object to use.
-            If mTLS is enabled, the request will have the mTLS adapter mounted.
-            Otherwise, the original request will be returned unchanged.
+
     """
     # Only modify the request if mTLS is enabled.
     if use_mtls:
         # Ensure the request has a session to mount the adapter to.
-        if not request.session:
+        if not getattr(request, "session", None):
             request.session = requests.Session()
 
         adapter = _mtls.MdsMtlsAdapter()
