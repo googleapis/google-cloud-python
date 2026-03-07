@@ -177,7 +177,7 @@ def _prepare_request_for_mds(request, use_mtls=False) -> None:
     # Only modify the request if mTLS is enabled.
     if use_mtls:
         # Ensure the request has a session to mount the adapter to.
-        if not hasattr(request, "session") or not request.session:
+        if not getattr(request, "session", None):
             request.session = requests.Session()
 
         adapter = _mtls.MdsMtlsAdapter()
