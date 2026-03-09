@@ -1,0 +1,20 @@
+name: js-tests
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Install modules
+      working-directory: ./tests/js
+      run: npm install
+    - name: Run tests
+      working-directory: ./tests/js
+      run: npm test
