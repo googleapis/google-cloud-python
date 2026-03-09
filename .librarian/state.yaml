@@ -2748,6 +2748,42 @@ libraries:
     remove_regex:
       - packages/google-cloud-privilegedaccessmanager/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-pubsub
+    version: 2.35.0
+    last_generated_commit: ce8678a96c8e1fc0d870d80fcf062e5be2b12877
+    apis:
+      - path: google/pubsub/v1
+        service_config: pubsub_v1.yaml
+    source_roots:
+      - packages/google-cloud-pubsub
+    preserve_regex:
+      - packages/google-cloud-pubsub/CHANGELOG.md
+      - docs/CHANGELOG.md
+    remove_regex:
+      - ^packages/google-cloud-pubsub/.coveragerc
+      - ^packages/google-cloud-pubsub/.flake8
+      - ^packages/google-cloud-pubsub/.repo-metadata.json
+      - ^packages/google-cloud-pubsub/LICENSE
+      - ^packages/google-cloud-pubsub/MANIFEST.in
+      - ^packages/google-cloud-pubsub/README.rst
+      - ^packages/google-cloud-pubsub/mypy.ini
+      - ^packages/google-cloud-pubsub/noxfile.py
+      - ^packages/google-cloud-pubsub/setup.py
+      - ^packages/google-cloud-pubsub/docs/conf.py
+      - ^packages/google-cloud-pubsub/docs/index.rst
+      - ^packages/google-cloud-pubsub/docs/README.rst
+      - ^packages/google-cloud-pubsub/docs/_static
+      - ^packages/google-cloud-pubsub/docs/_templates
+      - ^packages/google-cloud-pubsub/docs/multiprocessing.rst
+      - ^packages/google-cloud-pubsub/google/pubsub
+      - ^packages/google-cloud-pubsub/google/pubsub_v1
+      - ^packages/google-cloud-pubsub/testing
+      - ^packages/google-cloud-pubsub/tests/__init__.py
+      - ^packages/google-cloud-pubsub/tests/unit/__init__.py
+      - ^packages/google-cloud-pubsub/tests/unit/gapic
+      - ^packages/google-cloud-pubsub/samples/generated_samples
+      - ^packages/google-cloud-pubsub/docs/pubsub_v1
+    tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
     version: 0.5.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2

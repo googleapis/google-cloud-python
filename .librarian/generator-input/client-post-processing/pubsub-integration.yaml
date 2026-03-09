@@ -1,0 +1,596 @@
+replacements:
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/**/*client.py"
+    before: 'instead\.\n(?:[ \t]*\n)*([ \t]+)DEFAULT_ENDPOINT = "pubsub\.googleapis\.com"'
+    after: |-
+      instead.
+      \g<1>_DEFAULT_SCOPES = (
+      \g<1>    "https://www.googleapis.com/auth/cloud-platform",
+      \g<1>    "https://www.googleapis.com/auth/pubsub",
+      \g<1>)
+      \g<1>SERVICE_ADDRESS = "pubsub.googleapis.com:443"
+      \g<1>"""The default address of the service."""
+      \g<1>DEFAULT_ENDPOINT = "pubsub.googleapis.com"
+    count: 3
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
+    before: 'import json\n(?:[ \t]*\n)*import logging as std_logging'
+    after: |-
+      import json
+      import functools
+      import grpc
+      import logging as std_logging
+    count: 3
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
+    before: 'class\n(?:[ \t]*\n)*([ \t]+)self\._transport = transport_init\('
+    after: |-
+      class
+      \g<1>emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
+      \g<1>if emulator_host:
+      \g<1>    if issubclass(transport_init, type(self)._transport_registry["grpc"]):  # type: ignore
+      \g<1>        channel = grpc.insecure_channel(target=emulator_host)
+      \g<1>    else:
+      \g<1>        channel = grpc.aio.insecure_channel(target=emulator_host)
+      \g<1>    transport_init = functools.partial(transport_init, channel=channel)
+      \g<1>self._transport = transport_init(
+    count: 3
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/transports/grpc*.py"
+      - "packages/google-cloud-pubsub/tests/unit/gapic/pubsub_v1/*.py"
+    before: '\("grpc\.max_receive_message_length", -1\),\n(?:[ \t]*\n)*([ \t]+)\]'
+    after: |-
+      ("grpc.max_receive_message_length", -1),
+      \g<1>    ("grpc.max_metadata_size", 4 * 1024 * 1024),
+      \g<1>    ("grpc.keepalive_time_ms", 30000),
+      \g<1>]
+    count: 21
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/transports/base.py"
+    before: 'deadline=60\.0,'
+    after: 'deadline=600.0,'
+    count: 9
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/**/*.py"
+    before: 'gapic_version=package_version\.__version__'
+    after: 'client_library_version=package_version.__version__'
+    count: 9
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+    before: 'import logging as std_logging\n(?:[ \t]*\n)*import os'
+    after: |-
+      import logging as std_logging
+      import re
+      import warnings
+      import os
+    count: 1
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
+    before: 'import logging as std_logging\n(?:[ \t]*\n)*import re'
+    after: |-
+      import logging as std_logging
+      import warnings
+      import re
+    count: 1
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
+    before: 'request\.max_messages = max_messages\n(?:[ \t]*\n)*([ \t]+)# Wrap the RPC method'
+    after: |-
+      request.max_messages = max_messages
+
+      \g<1>if request.return_immediately:
+      \g<1>    warnings.warn(
+      \g<1>        "The return_immediately flag is deprecated and should be set to False.",
+      \g<1>        category=DeprecationWarning,
+      \g<1>    )
+
+      \g<1># Wrap the RPC method
+    count: 2
+
+  - paths: 
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
+    before: '"""\n(?:[ \t]*\n)*([ \t]+)# Wrap the RPC method; this adds retry and timeout information,\n(?:[ \t]*\n)*[ \t]+# and friendly error handling\.\n(?:[ \t]*\n)*[ \t]+rpc = self\._transport\._wrapped_methods\[self\._transport\.streaming_pull\]'
+    after: |-
+      """
+
+      \g<1># Wrappers in api-core should not automatically pre-fetch the first
+      \g<1># stream result, as this breaks the stream when re-opening it.
+      \g<1># https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
+      \g<1>self._transport.streaming_pull._prefetch_first_result_ = False
+
+      \g<1># Wrap the RPC method; this adds retry and timeout information,
+      \g<1># and friendly error handling.
+      \g<1>rpc = self._transport._wrapped_methods[self._transport.streaming_pull]
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/types/__init__.py"
+    before: '# limitations under the License\.\n#\nfrom \.pubsub import \('
+    after: |-
+      # limitations under the License.
+      #
+      from typing import Union
+
+      from .pubsub import (
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/types/__init__.py"
+    before: '__all__ = \(\n(?:[ \t]*\n)*([ \t]+)"AcknowledgeRequest",'
+    after: |-
+      TimeoutType = Union[
+          int,
+          float,
+          "google.api_core.timeout.ConstantTimeout",
+          "google.api_core.timeout.ExponentialTimeout",
+      ]
+      """The type of the timeout parameter of publisher client methods."""
+
+      __all__ = (
+      \g<1>"TimeoutType",
+      \g<1>"AcknowledgeRequest",
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
+    before: 'from google\.pubsub_v1\.types import pubsub'
+    after: |-
+      from google.pubsub_v1.types import TimeoutType, pubsub
+    count: 2
+
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
+    before: 'timeout: Union\[float, object\] = gapic_v1\.method\.DEFAULT'
+    after: 'timeout: TimeoutType = gapic_v1.method.DEFAULT'
+    count: 24
+
+  - paths:
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
+      - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
+    before: '([ \t]+)timeout \(float\): The timeout for this request\.'
+    after: |-
+      \g<1>timeout (TimeoutType):
+      \g<1>    The timeout for this request.
+    count: 24
+
+  - paths:
+      - "packages/google-cloud-pubsub/.coveragerc"
+    before: 'omit =\n([ \t]+)google/pubsub/__init__\.py'
+    after: |-
+      omit =
+      \g<1>google/cloud/__init__.py
+      \g<1>google/pubsub/__init__.py
+    count: 1
+
+  # --- DOCUMENTATION RESTORATIONS ---
+
+  # --- FIX: Restore custom README.rst Introduction ---
+  - paths:
+      - "packages/google-cloud-pubsub/README.rst"
+    before: '`Google Cloud Pub/Sub`_: is designed to provide reliable, many-to-many, asynchronous messaging between applications\. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages\. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications\.'
+    after: |-
+      'Google Cloud Pub/Sub:' is a fully-managed real-time messaging service that
+      allows you to send and receive messages between independent applications. You
+      can leverage Cloud Pub/Sub’s flexibility to decouple systems and components
+      hosted on Google Cloud Platform or elsewhere on the Internet. By building on
+      the same technology Google uses, Cloud Pub / Sub is designed to provide “at
+      least once” delivery at low latency with on-demand scalability to 1 million
+      messages per second (and beyond).
+
+      Publisher applications can send messages to a ``topic`` and other applications
+      can subscribe to that topic to receive the messages. By decoupling senders and
+      receivers, Google Cloud Pub/Sub allows developers to communicate between
+      independently written applications.
+    count: 1
+
+  # --- FIX: Restore README.rst Example Usage & Footer sections ---
+  - paths:
+      - "packages/google-cloud-pubsub/README.rst"
+    before: '([ \t]+pip install google-cloud-pubsub)\n\nNext Steps'
+    after: |-
+      \g<1>
+
+      Example Usage
+      ~~~~~~~~~~~~~
+
+      Publishing
+      ^^^^^^^^^^
+
+      To publish data to Cloud Pub/Sub you must create a topic, and then publish
+      messages to it
+
+      .. code-block:: python
+
+          import os
+          from google.cloud import pubsub_v1
+
+          publisher = pubsub_v1.PublisherClient()
+          topic_name = 'projects/{project_id}/topics/{topic}'.format(
+              project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+              topic='MY_TOPIC_NAME',  # Set this to something appropriate.
+          )
+          publisher.create_topic(name=topic_name)
+          future = publisher.publish(topic_name, b'My first message!', spam='eggs')
+          future.result()
+
+      To learn more, consult the `publishing documentation`_.
+
+      .. _publishing documentation: https://cloud.google.com/python/docs/reference/pubsub/latest/google.cloud.pubsub_v1.publisher.client.Client
+
+
+      Subscribing
+      ^^^^^^^^^^^
+
+      To subscribe to data in Cloud Pub/Sub, you create a subscription based on
+      the topic, and subscribe to that, passing a callback function.
+
+      .. code-block:: python
+
+          import os
+          from google.cloud import pubsub_v1
+
+          topic_name = 'projects/{project_id}/topics/{topic}'.format(
+              project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+              topic='MY_TOPIC_NAME',  # Set this to something appropriate.
+          )
+
+          subscription_name = 'projects/{project_id}/subscriptions/{sub}'.format(
+              project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+              sub='MY_SUBSCRIPTION_NAME',  # Set this to something appropriate.
+          )
+
+          def callback(message):
+              print(message.data)
+              message.ack()
+
+          with pubsub_v1.SubscriberClient() as subscriber:
+              subscriber.create_subscription(
+                  name=subscription_name, topic=topic_name)
+              future = subscriber.subscribe(subscription_name, callback)
+
+      The future returned by the call to ``subscriber.subscribe`` can be used to
+      block the current thread until a given condition obtains:
+
+      .. code-block:: python
+
+          try:
+              future.result()
+          except KeyboardInterrupt:
+              future.cancel()
+
+      It is also possible to pull messages in a synchronous (blocking) fashion. To
+      learn more about subscribing, consult the `subscriber documentation`_.
+
+      .. _subscriber documentation: https://cloud.google.com/python/docs/reference/pubsub/latest/google.cloud.pubsub_v1.subscriber.client.Client
+
+
+      Authentication
+      ^^^^^^^^^^^^^^
+
+      It is possible to specify the authentication method to use with the Pub/Sub
+      clients. This can be done by providing an explicit `Credentials`_ instance. Support
+      for various authentication methods is available from the `google-auth`_ library.
+
+      For example, to use JSON Web Tokens, provide a `google.auth.jwt.Credentials`_ instance:
+
+      .. code-block:: python
+
+          import json
+          from google.auth import jwt
+
+          service_account_info = json.load(open("service-account-info.json"))
+          audience = "https://pubsub.googleapis.com/google.pubsub.v1.Subscriber"
+
+          credentials = jwt.Credentials.from_service_account_info(
+              service_account_info, audience=audience
+          )
+
+          subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
+
+          # The same for the publisher, except that the "audience" claim needs to be adjusted
+          publisher_audience = "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
+          credentials_pub = credentials.with_claims(audience=publisher_audience)
+          publisher = pubsub_v1.PublisherClient(credentials=credentials_pub)
+
+      .. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials
+      .. _google-auth: https://google-auth.readthedocs.io/en/latest/index.html
+      .. _google.auth.jwt.Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.jwt.html#google.auth.jwt.Credentials
+
+
+      Versioning
+      ----------
+
+      This library follows `Semantic Versioning`_.
+
+      It is currently in major version one (1.y.z), which means that the public API should be considered stable.
+
+      .. _Semantic Versioning: http://semver.org/
+
+      Contributing
+      ------------
+
+      Contributions to this library are always welcome and highly encouraged.
+
+      See the `CONTRIBUTING doc`_ for more information on how to get started.
+
+      .. _CONTRIBUTING doc: https://github.com/googleapis/google-cloud-python/blob/main/CONTRIBUTING.rst
+
+      Community
+      ---------
+
+      The best place to ask questions is via Stackoverflow: https://stackoverflow.com/questions/tagged/google-cloud-pubsub
+
+
+      License
+      -------
+
+      Apache 2.0 - See `the LICENSE`_ for more information.
+
+      .. _the LICENSE: https://github.com/googleapis/google-cloud-python/blob/main/LICENSE
+
+      Next Steps
+    count: 1
+
+  # --- FIX: Restore docs/index.rst API Documentation Tree ---
+  - paths:
+      - "packages/google-cloud-pubsub/docs/index.rst"
+    before: 'API Reference\n-------------\n(?:[ \t]*)\.\. toctree::\n(?:[ \t]*):maxdepth: 2\n\n(?:[ \t]*)pubsub_v1/services_\n(?:[ \t]*)pubsub_v1/types_'
+    after: |-
+      API Documentation
+      -----------------
+
+      .. note::
+
+          The client library version (currently ``2.x``) should not be confused with the
+          backend API version (currently ``v1``), hence some references to ``v1`` can be found
+          across the documentation.
+
+      .. toctree::
+          :maxdepth: 4
+
+          Publisher Client <pubsub/publisher/index>
+          Subscriber Client <pubsub/subscriber/index>
+          Types <pubsub/types>
+    count: 1
+
+  # --- FIX: Restore docs/index.rst hidden overview ---
+  - paths:
+      - "packages/google-cloud-pubsub/docs/index.rst"
+    before: '\.\. toctree::\n(?:[ \t]*):maxdepth: 2\n\n(?:[ \t]*)CHANGELOG(?!\n\n\n\.\. toctree::)'
+    after: |-
+      .. toctree::
+          :maxdepth: 2
+
+          CHANGELOG
+
+
+      .. toctree::
+          :hidden:
+
+          summary_overview.md
+    count: 1
+  # --- FIX: Restore setup.py description ---
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: 'description = "Google Cloud Pubsub API client library"'
+    after: 'description = "Google Cloud Pub/Sub API client library"'
+    count: 1
+
+  # --- FIX: Drop Py 3.7/3.8 classifiers in setup.py ---
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: '([ \t]+"Programming Language :: Python :: 3",\n)[ \t]+"Programming Language :: Python :: 3\.7",\n[ \t]+"Programming Language :: Python :: 3\.8",\n'
+    after: '\g<1>'
+    count: 1
+
+  # --- FIX: Restore setup.py python_requires to >=3.9 ---
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: 'python_requires=">=3\.7",'
+    after: 'python_requires=">=3.9",'
+    count: 1
+
+  # --- FIX: Restore comment and allow google-api-core >= 1.34.0 ---
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: '([ \t]+)"google-api-core\[grpc\] >= 1\.34\.1,([^"]+)",'
+    after: |-
+      \g<1># google-api-core >= 1.34.0 is allowed in order to support google-api-core 1.x
+      \g<1>"google-api-core[grpc] >= 1.34.0,\g<2>",
+    count: 1
+
+  # --- FIX: Restore pubsub-specific grpcio bound ---
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: '([ \t]+)"grpcio >= [0-9\.]+, < 2\.0\.0",\n'
+    after: |-
+      \g<1>"grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",  # https://github.com/googleapis/python-pubsub/issues/609
+    count: 1
+
+  # --- FIX: Restore missing dependencies, extras, and url dynamically ---
+  - paths:
+      - "packages/google-cloud-pubsub/setup.py"
+    before: '([ \t]+)("grpc-google-iam-v1.*",\n)\]\nextras = \{\}'
+    after: |-
+      \g<1>\g<2>\g<1>"grpcio-status >= 1.33.2",
+      \g<1>"opentelemetry-api >= 1.27.0",
+      \g<1>"opentelemetry-sdk >= 1.27.0",
+      ]
+      extras = {"libcst": "libcst >= 0.3.10"}
+    count: 1
+# --- FIX: Blend README Python versions ---
+  - paths:
+      - "packages/google-cloud-pubsub/README.rst"
+    before: 'Supported Python Versions\n\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^[\s\S]+?\.\. _end-of-life: https://devguide\.python\.org/devcycle/#end-of-life-branches'
+    after: |-
+      Supported Python Versions
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+      Python >= 3.9
+
+      Deprecated Python Versions
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      Python < 3.9
+
+      The last version of this library compatible with Python 3.7 and 3.8 is google-cloud-pubsub==2.34.0.
+
+      The last version of this library compatible with Python 2.7 is google-cloud-pubsub==1.7.0.
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'UNIT_TEST_DEPENDENCIES: List\[str\] = \[\]'
+    after: |-
+      UNIT_TEST_DEPENDENCIES: List[str] = [
+          "flaky",
+      ]
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List\[str\] = \[\]'
+    after: |-
+      SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
+          "psutil",
+          "flaky",
+      ]
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'nox\.options\.sessions = \[\n(?:[ \t]+)"unit",\n(?:[ \t]+)"system",\n(?:[ \t]+)"cover",\n(?:[ \t]+)"lint",\n(?:[ \t]+)"lint_setup_py",\n(?:[ \t]+)"blacken",\n(?:[ \t]+)"docs",\n\]'
+    after: |-
+      CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
+      nox.options.sessions = [
+          "unit",
+          "system",
+          "cover",
+          "lint",
+          "lint_setup_py",
+          "blacken",
+          "mypy",
+          # https://github.com/googleapis/python-pubsub/pull/552#issuecomment-1016256936
+          # "mypy_samples",  # TODO: uncomment when the check passes
+          "docs",
+          "docfx",
+          "format",
+      ]
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '@nox\.session\(python=ALL_PYTHON\)\ndef mypy\(session\):[\s\S]+?\n(@nox\.session\ndef update_lower_bounds\(session\):)'
+    after: |-
+      MYPY_VERSION = "mypy==1.10.0"
+
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def mypy(session):
+          """Run type checks with mypy."""
+          session.install("-e", ".[all]")
+          session.install(MYPY_VERSION)
+
+          # Version 2.1.1 of google-api-core version is the first type-checked release.
+          # Version 2.2.0 of google-cloud-core version is the first type-checked release.
+          session.install(
+              "google-api-core[grpc]>=2.1.1",
+              "google-cloud-core>=2.2.0",
+              "types-requests",
+          )
+
+          # Just install the type info directly, since "mypy --install-types" might
+          # require an additional pass.
+          # Exclude types-protobuf==4.24.0.20240106
+          # See https://github.com/python/typeshed/issues/11254
+          session.install("types-protobuf!=4.24.0.20240106", "types-setuptools")
+
+          # TODO: Only check the hand-written layer, the generated code does not pass
+          # mypy checks yet.
+          # https://github.com/googleapis/gapic-generator-python/issues/1092
+          # TODO: Re-enable mypy checks once we merge, since incremental checks are failing due to protobuf upgrade
+          # session.run("mypy", "-p", "google.cloud", "--exclude", "google/pubsub_v1/")
+
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def mypy_samples(session):
+          """Run type checks with mypy."""
+
+          session.install("-e", ".[all]")
+
+          session.install("pytest")
+          session.install(MYPY_VERSION)
+
+          # Just install the type info directly, since "mypy --install-types" might
+          # require an additional pass.
+          session.install(
+              "types-mock",
+              "types-protobuf",
+              "types-setuptools",
+              "types-requests",
+          )
+
+          session.run(
+              "mypy",
+              "--config-file",
+              str(CURRENT_DIRECTORY / "samples" / "snippets" / "mypy.ini"),
+              "--no-incremental",  # Required by warn-unused-configs from mypy.ini to work
+              "samples/",
+          )
+
+
+      \g<1>
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '# Install all test dependencies, then install this package in-place\.\n\n([ \t]+)# TODO\(https://github\.com/googleapis/gapic-generator-python/issues/2388\):'
+    after: |-
+      # Install all test dependencies, then install this package in-place.
+
+      \g<1>if session.python in ["3.7", "3.8"]:
+      \g<1>    session.skip(f"Python {session.python} is no longer supported.")
+
+      \g<1># TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'def core_deps_from_source\(session, protobuf_implementation\):[\s\S]+?PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,\n[ \t]+},\n[ \t]+\)'
+    after: |-
+      def core_deps_from_source(session, protobuf_implementation):
+          """Skipping until Pub/Sub migration is complete."""
+          session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'SYSTEM_TEST_PYTHON_VERSIONS: List\[str\] = ALL_PYTHON'
+    after: 'SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]'
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '"--cov=google",'
+    after: '"--cov=google/cloud",'
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '([ \t]+)session\.install\("--pre", "grpcio"\)'
+    after: |-
+      \g<1># Use pre-release gRPC for system tests.
+      \g<1># Exclude version 1.52.0rc1 which has a known issue.
+      \g<1># See https://github.com/grpc/grpc/issues/32163
+      \g<1>session.install("--pre", "grpcio!=1.52.0rc1")
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/docs/conf.py"
+    before: 'exclude_patterns = \[\n([ \t]+)"_build",'
+    after: |-
+      exclude_patterns = [
+      \g<1>"pubsub_v1/**",
+      \g<1>"_build",
+    count: 1
