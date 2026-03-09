@@ -53,6 +53,7 @@ packages_with_system_tests=(
   "google-cloud-error-reporting"
   "google-cloud-firestore"
   "google-cloud-logging"
+  "google-cloud-pubsub"
   "google-cloud-testutils"
 )
 
@@ -62,9 +63,17 @@ packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # R
 
 
 # Run system tests for each package with directory packages/*/tests/system
-for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
-  # Get the path to the package by removing the suffix /tests/system
-  package=$(echo $dir | cut -f -2 -d '/')
+for path in `find 'packages' \
+  \( -type d -wholename 'packages/*/tests/system' \) -o \
+  \( -type d -wholename 'packages/*/system_tests' \) -o \
+  \( -type f -wholename 'packages/*/tests/system.py' \)`; do
+
+  # Extract the package name and define the relative package path
+  # 1. Remove the 'packages/' prefix
+  # 2. Remove everything after the first '/'
+  package_name=${path#packages/}
+  package_name=${package_name%%/*}
+  package_path="packages/${package_name}"
 
   # Run system tests on every change to these libraries
   if [[ $package == @($packages_with_system_tests_pattern) ]]; then
