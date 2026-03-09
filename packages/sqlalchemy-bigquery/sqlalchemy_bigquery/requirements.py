@@ -22,8 +22,8 @@ This module is used by the compliance tests to control which tests are run
 based on database capabilities.
 """
 
-import sqlalchemy.testing.requirements
 import sqlalchemy.testing.exclusions
+import sqlalchemy.testing.requirements
 
 supported = sqlalchemy.testing.exclusions.open
 unsupported = sqlalchemy.testing.exclusions.closed

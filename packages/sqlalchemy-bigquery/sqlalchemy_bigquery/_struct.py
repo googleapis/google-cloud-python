@@ -17,15 +17,14 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from sqlalchemy.sql import operators
+import sqlalchemy.sql.coercions
 import sqlalchemy.sql.default_comparator
+import sqlalchemy.sql.roles
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.types
-from sqlalchemy.sql import operators
 
 from . import base
-
-import sqlalchemy.sql.coercions
-import sqlalchemy.sql.roles
 
 
 def _get_subtype_col_spec(type_):
@@ -112,7 +111,6 @@ def _field_index(self, name, operator):
         operator=operator,
         bindparam_type=sqlalchemy.types.String(),
     )
-
 
 
 class SQLCompiler:

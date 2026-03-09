@@ -21,14 +21,15 @@ import contextlib
 import re
 import traceback
 
+import google.cloud.bigquery.dbapi.connection
 from sqlalchemy.testing import config
 from sqlalchemy.testing.plugin.pytestplugin import *  # noqa
 from sqlalchemy.testing.plugin.pytestplugin import (
-    pytest_sessionstart as _pytest_sessionstart,
     pytest_sessionfinish as _pytest_sessionfinish,
 )
-
-import google.cloud.bigquery.dbapi.connection
+from sqlalchemy.testing.plugin.pytestplugin import (
+    pytest_sessionstart as _pytest_sessionstart,
+)
 import test_utils.prefixer
 
 import sqlalchemy_bigquery.base

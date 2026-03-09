@@ -19,20 +19,19 @@
 
 import contextlib
 
-import pytest
-from sqlalchemy import Column, DateTime, Integer, String, Numeric
-
 import google.api_core.exceptions
 from google.cloud.bigquery import SchemaField, TimePartitioning
+import pytest
+from sqlalchemy import Column, DateTime, Integer, Numeric, String
 
 alembic = pytest.importorskip("alembic")
 
 
 @pytest.fixture
 def alembic_table(bigquery_dataset, bigquery_client):
-    import sqlalchemy
     import alembic.migration
     import alembic.operations
+    import sqlalchemy
 
     def get_table(table_name, data="table"):
         try:
@@ -66,6 +65,7 @@ def test_alembic_scenario(alembic_table):
     table mods within a short time.
     """
     from alembic import op
+
     from sqlalchemy_bigquery.base import SqlalchemyBigqueryImpl
 
     # Register the BigQuery Implementation to test the customized methods.

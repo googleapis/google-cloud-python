@@ -409,6 +409,7 @@ def test_literal_binds_kwarg_with_an_IN_operator_252(faux_conn):
 @pytest.mark.parametrize("alias", [True, False])
 def test_unnest(faux_conn, alias):
     from sqlalchemy import String
+
     from sqlalchemy_bigquery import ARRAY
 
     table = setup_table(faux_conn, "t", sqlalchemy.Column("objects", ARRAY(String)))
@@ -426,6 +427,7 @@ def test_unnest(faux_conn, alias):
 @pytest.mark.parametrize("alias", [True, False])
 def test_table_valued_alias_w_multiple_references_to_the_same_table(faux_conn, alias):
     from sqlalchemy import String
+
     from sqlalchemy_bigquery import ARRAY
 
     table = setup_table(faux_conn, "t", sqlalchemy.Column("objects", ARRAY(String)))

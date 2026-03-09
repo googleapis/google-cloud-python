@@ -23,9 +23,9 @@ from google.cloud.bigquery import QueryJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.job import (
     CreateDisposition,
-    WriteDisposition,
     QueryPriority,
     SchemaUpdateOption,
+    WriteDisposition,
 )
 from google.cloud.bigquery.table import EncryptionConfiguration, TableReference
 

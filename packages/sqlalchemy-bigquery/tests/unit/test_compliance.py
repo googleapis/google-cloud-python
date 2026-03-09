@@ -24,7 +24,7 @@ Mainly to get better unit test coverage.
 
 import pytest
 import sqlalchemy
-from sqlalchemy import Column, Integer, literal_column, select, String, Table, union
+from sqlalchemy import Column, Integer, String, Table, literal_column, select, union
 from sqlalchemy.testing.assertions import eq_, in_
 
 from .conftest import setup_table

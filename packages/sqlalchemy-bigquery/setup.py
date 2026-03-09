@@ -22,6 +22,7 @@ import io
 import itertools
 import os
 import re
+
 import setuptools
 from setuptools import setup
 

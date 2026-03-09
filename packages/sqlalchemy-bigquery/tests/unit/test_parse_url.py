@@ -17,11 +17,11 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from google.cloud.bigquery import QueryJobConfig
+from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.table import EncryptionConfiguration, TableReference
 import pytest
 from sqlalchemy.engine.url import make_url
-from google.cloud.bigquery import QueryJobConfig
-from google.cloud.bigquery.table import EncryptionConfiguration, TableReference
-from google.cloud.bigquery.dataset import DatasetReference
 
 from sqlalchemy_bigquery.parse_url import parse_url
 

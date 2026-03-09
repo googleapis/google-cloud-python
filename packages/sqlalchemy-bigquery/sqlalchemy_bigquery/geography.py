@@ -18,8 +18,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import geoalchemy2
-from geoalchemy2.shape import to_shape
 import geoalchemy2.functions
+from geoalchemy2.shape import to_shape
 from shapely import wkb, wkt
 import sqlalchemy.ext.compiler
 from sqlalchemy.sql.elements import BindParameter

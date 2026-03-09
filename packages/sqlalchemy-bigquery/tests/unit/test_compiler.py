@@ -19,13 +19,9 @@
 
 import pytest
 import sqlalchemy.exc
+from sqlalchemy.sql.functions import cube, grouping_sets, rollup
 
-from .conftest import setup_table
-from .conftest import (
-    sqlalchemy_2_0_or_higher,
-    sqlalchemy_before_2_0,
-)
-from sqlalchemy.sql.functions import rollup, cube, grouping_sets
+from .conftest import setup_table, sqlalchemy_2_0_or_higher, sqlalchemy_before_2_0
 
 
 @pytest.fixture

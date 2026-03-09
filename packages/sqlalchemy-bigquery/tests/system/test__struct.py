@@ -134,8 +134,9 @@ def test_complex_literals_pr_67(engine, bigquery_dataset, metadata):
 def test_unnest_and_struct_access_233(engine, bigquery_dataset, metadata):
     # https://github.com/googleapis/python-bigquery-sqlalchemy/issues/233
 
-    from sqlalchemy import Table, select, Column, ARRAY, String, func
+    from sqlalchemy import ARRAY, Column, String, Table, func, select
     from sqlalchemy.orm import sessionmaker
+
     from sqlalchemy_bigquery import STRUCT
 
     conn = engine.connect()

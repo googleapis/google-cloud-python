@@ -43,7 +43,15 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+    "3.8",
+    "3.9",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -219,7 +227,7 @@ def lint_setup_py(session):
     session.install("docutils", "pygments", "setuptools")
 
     session.run("python", "-m", "pip", "freeze")
- 
+
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
@@ -351,7 +359,9 @@ def system(session):
     system_test_folder_path = os.path.join("tests", "system")
 
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS")
+        session.skip(
+            "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
+        )
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
@@ -400,7 +410,9 @@ def system_noextras(session):
     system_test_folder_path = os.path.join("tests", "system")
 
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS")
+        session.skip(
+            "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
+        )
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":

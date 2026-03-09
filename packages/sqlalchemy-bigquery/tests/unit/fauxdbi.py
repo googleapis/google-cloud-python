@@ -26,9 +26,9 @@ import re
 import sqlite3
 
 import google.api_core.exceptions
+import google.cloud.bigquery.dbapi.cursor
 import google.cloud.bigquery.schema
 import google.cloud.bigquery.table
-import google.cloud.bigquery.dbapi.cursor
 
 from sqlalchemy_bigquery._helpers import (
     substitute_re_method,

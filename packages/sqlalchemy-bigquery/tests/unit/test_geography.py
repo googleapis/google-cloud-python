@@ -31,6 +31,7 @@ def test_geoalchemy2_core(faux_conn, last_query):
     # Create the Table
 
     from sqlalchemy import Column, String
+
     from sqlalchemy_bigquery import GEOGRAPHY
 
     lake_table = setup_table(
@@ -168,7 +169,7 @@ def test_GEOGRAPHY_ElementType():
 
 
 def test_calling_st_functions_that_dont_take_geographies(faux_conn, last_query):
-    from sqlalchemy import select, func
+    from sqlalchemy import func, select
 
     try:
         faux_conn.execute(select(func.ST_GeogFromText("point(0 0)")))

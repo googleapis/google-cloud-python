@@ -40,7 +40,8 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     # Create the Table
 
-    from sqlalchemy import Table, Column, String, MetaData
+    from sqlalchemy import Column, MetaData, String, Table
+
     from sqlalchemy_bigquery import GEOGRAPHY
 
     metadata = MetaData()
@@ -152,8 +153,9 @@ def test_geoalchemy2_orm(bigquery_dataset):
 
     # Declare a Mapping
 
-    from sqlalchemy.ext.declarative import declarative_base
     from sqlalchemy import Column, Integer, String
+    from sqlalchemy.ext.declarative import declarative_base
+
     from sqlalchemy_bigquery import GEOGRAPHY
 
     Base = declarative_base()
@@ -258,9 +260,9 @@ def test_geoalchemy2_orm_w_relationship(bigquery_dataset):
     engine = create_engine(f"bigquery:///{bigquery_dataset}")
 
     from sqlalchemy import Column, Integer, String
-    from sqlalchemy_bigquery import GEOGRAPHY
-
     from sqlalchemy.ext.declarative import declarative_base
+
+    from sqlalchemy_bigquery import GEOGRAPHY
 
     Base = declarative_base()
 
@@ -271,7 +273,7 @@ def test_geoalchemy2_orm_w_relationship(bigquery_dataset):
 
     Treasure.__table__.create(engine)
 
-    from sqlalchemy.orm import relationship, backref
+    from sqlalchemy.orm import backref, relationship
 
     class Lake(Base):
         __tablename__ = "lake"

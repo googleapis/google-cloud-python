@@ -18,15 +18,15 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import contextlib
-import mock
 import sqlite3
 
+import mock
 import packaging.version
 import pytest
 import sqlalchemy
+from sqlalchemy.sql.compiler import Compiled
 
 from sqlalchemy_bigquery.base import BigQueryDDLCompiler, BigQueryDialect
-from sqlalchemy.sql.compiler import Compiled
 
 from . import fauxdbi
 

@@ -22,9 +22,7 @@ SQLAlchemy dialect for Google BigQuery
 
 import warnings
 
-from .version import __version__
-
-from .base import BigQueryDialect, dialect
+from . import _versions_helpers
 from ._types import (
     ARRAY,
     BIGNUMERIC,
@@ -44,8 +42,8 @@ from ._types import (
     TIME,
     TIMESTAMP,
 )
-
-from . import _versions_helpers
+from .base import BigQueryDialect, dialect
+from .version import __version__
 
 sys_major, sys_minor, sys_micro = _versions_helpers.extract_runtime_version()
 

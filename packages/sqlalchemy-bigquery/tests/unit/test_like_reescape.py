@@ -25,6 +25,7 @@ functions.
 
 import sqlalchemy.sql.operators
 import sqlalchemy.sql.schema
+
 import sqlalchemy_bigquery.base
 
 

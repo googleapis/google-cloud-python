@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.bigquery.schema import SchemaField
 import pytest
 
 from sqlalchemy_bigquery._types import _get_transitive_schema_fields
-from google.cloud.bigquery.schema import SchemaField
 
 
 def create_schema_field_from_dict(schema_dict):

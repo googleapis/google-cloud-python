@@ -20,9 +20,7 @@
 import datetime
 
 import pytest
-
 import sqlalchemy
-
 
 
 def _test_struct():

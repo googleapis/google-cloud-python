@@ -19,58 +19,61 @@
 
 import datetime
 import decimal
+
 import mock
 import packaging.version
 import pytest
 import pytz
 import sqlalchemy
 from sqlalchemy import and_
-
-import sqlalchemy.testing.suite.test_types
 import sqlalchemy.sql.sqltypes
-from sqlalchemy.testing import util, config
+from sqlalchemy.testing import config, util
 from sqlalchemy.testing.assertions import eq_
-from sqlalchemy.testing.suite import select, exists
-from sqlalchemy.testing.suite import *  # noqa
-from sqlalchemy.testing.suite import Integer, Table, Column, String, bindparam, testing
 from sqlalchemy.testing.suite import (
-    CTETest as _CTETest,
-    ExistsTest as _ExistsTest,
-    FetchLimitOffsetTest as _FetchLimitOffsetTest,
-    DifficultParametersTest as _DifficultParametersTest,
-    DistinctOnTest,
-    HasIndexTest,
-    IdentityAutoincrementTest,
-    InsertBehaviorTest as _InsertBehaviorTest,
+    Integer,
     LongNameBlowoutTest,
     PostCompileParamsTest,
     QuotedNameArgumentTest,
-    SimpleUpdateDeleteTest as _SimpleUpdateDeleteTest,
-    TimestampMicrosecondsTest as _TimestampMicrosecondsTest,
+)
+from sqlalchemy.testing.suite import (
     WindowFunctionTest,
+    bindparam,
+    exists,
+    select,
+    testing,
 )
-
-from sqlalchemy.testing.suite.test_types import (
-    ArrayTest,
+from sqlalchemy.testing.suite import *  # noqa
+from sqlalchemy.testing.suite import CTETest as _CTETest
+from sqlalchemy.testing.suite import Column
+from sqlalchemy.testing.suite import DistinctOnTest
+from sqlalchemy.testing.suite import ExistsTest as _ExistsTest
+from sqlalchemy.testing.suite import HasIndexTest, IdentityAutoincrementTest
+from sqlalchemy.testing.suite import InsertBehaviorTest as _InsertBehaviorTest
+from sqlalchemy.testing.suite import String, Table
+from sqlalchemy.testing.suite import DifficultParametersTest as _DifficultParametersTest
+from sqlalchemy.testing.suite import FetchLimitOffsetTest as _FetchLimitOffsetTest
+from sqlalchemy.testing.suite import SimpleUpdateDeleteTest as _SimpleUpdateDeleteTest
+from sqlalchemy.testing.suite import (
+    TimestampMicrosecondsTest as _TimestampMicrosecondsTest,
 )
-
 from sqlalchemy.testing.suite.test_reflection import (
     BizarroCharacterTest,
     ComponentReflectionTest,
     ComponentReflectionTestExtra,
     HasTableTest,
 )
+import sqlalchemy.testing.suite.test_types
+from sqlalchemy.testing.suite.test_types import ArrayTest
 
 if packaging.version.parse(sqlalchemy.__version__) >= packaging.version.parse("2.0"):
     import uuid
+
     from sqlalchemy.sql import type_coerce
-    from sqlalchemy.testing.suite import (
-        TrueDivTest as _TrueDivTest,
-        IntegerTest as _IntegerTest,
-        NumericTest as _NumericTest,
-        StringTest as _StringTest,
-        UuidTest as _UuidTest,
-    )
+    from sqlalchemy.testing.suite import IntegerTest as _IntegerTest
+    from sqlalchemy.testing.suite import NumericTest as _NumericTest
+    from sqlalchemy.testing.suite import StringTest as _StringTest
+    from sqlalchemy.testing.suite import TrueDivTest as _TrueDivTest
+    from sqlalchemy.testing.suite import UuidTest as _UuidTest
 
     class DifficultParametersTest(_DifficultParametersTest):
         """There are some parameters that don't work with bigquery that were removed from this test"""
@@ -433,9 +436,7 @@ if packaging.version.parse(sqlalchemy.__version__) >= packaging.version.parse("2
             eq_(row, (data, str_data, data, str_data))
 
 else:
-    from sqlalchemy.testing.suite import (
-        RowCountTest as _RowCountTest,
-    )
+    from sqlalchemy.testing.suite import RowCountTest as _RowCountTest
 
     del DifficultParametersTest  # exercises column names illegal in BQ
 

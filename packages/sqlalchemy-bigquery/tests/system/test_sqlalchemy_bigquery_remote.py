@@ -19,13 +19,12 @@
 
 # -*- coding: utf-8 -*-
 
-from sqlalchemy.engine import create_engine
-from sqlalchemy.exc import DatabaseError
-from sqlalchemy.schema import Table, MetaData
+import google.api_core.exceptions as core_exceptions
 import pytest
 import sqlalchemy
-import google.api_core.exceptions as core_exceptions
-
+from sqlalchemy.engine import create_engine
+from sqlalchemy.exc import DatabaseError
+from sqlalchemy.schema import MetaData, Table
 
 EXPECTED_STATES = ["AL", "CA", "FL", "KY"]
 

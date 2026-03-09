@@ -5,8 +5,8 @@
 # https://opensource.org/licenses/MIT.
 
 import base64
-import os
 import json
+import os
 
 import pytest
 

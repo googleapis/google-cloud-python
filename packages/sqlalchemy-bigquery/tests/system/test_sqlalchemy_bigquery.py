@@ -23,18 +23,17 @@ import datetime
 import decimal
 
 from google.cloud.bigquery import TimePartitioning
-
-from sqlalchemy.engine import create_engine
-from sqlalchemy.schema import Table, MetaData, Column
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import types, func, case, inspect, not_
-from sqlalchemy.sql import expression, select, literal_column
-from sqlalchemy.exc import NoSuchTableError
-from sqlalchemy.orm import sessionmaker
 import packaging.version
-from pytz import timezone
 import pytest
+from pytz import timezone
 import sqlalchemy
+from sqlalchemy import case, func, inspect, not_, types
+from sqlalchemy.engine import create_engine
+from sqlalchemy.exc import NoSuchTableError
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.schema import Column, MetaData, Table
+from sqlalchemy.sql import expression, literal_column, select
 
 import sqlalchemy_bigquery
 
@@ -758,8 +757,8 @@ def test_has_table(engine, engine_using_test_dataset, bigquery_dataset):
 
 
 def test_distinct_188(engine, bigquery_dataset):
-    from sqlalchemy.ext.declarative import declarative_base
     from sqlalchemy import Column, Integer
+    from sqlalchemy.ext.declarative import declarative_base
     from sqlalchemy.orm import sessionmaker
 
     Base = declarative_base()
@@ -817,7 +816,8 @@ def test_huge_in():
     reason="unnest (and other table-valued-function) support required version 1.4",
 )
 def test_unnest(engine, bigquery_dataset):
-    from sqlalchemy import select, func, String
+    from sqlalchemy import String, func, select
+
     from sqlalchemy_bigquery import ARRAY
 
     conn = engine.connect()
@@ -847,7 +847,8 @@ def test_unnest(engine, bigquery_dataset):
     reason="unnest (and other table-valued-function) support required version 1.4",
 )
 def test_unnest_with_cte(engine, bigquery_dataset):
-    from sqlalchemy import select, func, String
+    from sqlalchemy import String, func, select
+
     from sqlalchemy_bigquery import ARRAY
 
     conn = engine.connect()

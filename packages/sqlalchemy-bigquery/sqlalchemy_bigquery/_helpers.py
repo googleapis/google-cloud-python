@@ -4,7 +4,9 @@
 # license that can be found in the LICENSE file or at
 # https://opensource.org/licenses/MIT.
 
+import base64
 import functools
+import json
 import re
 from typing import Optional
 
@@ -13,9 +15,6 @@ import google.auth
 from google.cloud import bigquery
 from google.oauth2 import service_account
 import sqlalchemy
-import base64
-import json
-
 
 USER_AGENT_TEMPLATE = "sqlalchemy/{}"
 SCOPES = (
