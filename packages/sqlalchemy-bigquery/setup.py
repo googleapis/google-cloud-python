@@ -116,8 +116,8 @@ setup(
         # NOTE: Maintainers, please do not require google-auth>=2.x.x
         # Until this issue is closed
         # https://github.com/googleapis/google-cloud-python/issues/10566
-        "google-auth>=2.14.1,<3.0.0",  # Work around pip wack.
-        "google-cloud-bigquery>=3.3.6,<4.0.0",
+        "google-auth>=2.14.1,<3.0.0",
+        "google-cloud-bigquery>=3.20.0,<4.0.0",
         "packaging",
         "sqlalchemy>=1.4.16,<3.0.0",
     ],
