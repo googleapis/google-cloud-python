@@ -21,7 +21,7 @@ import bigframes.exceptions as bfe
 
 class ExperimentOptions:
     """
-    Encapsulates the configration for experiments
+    Encapsulates the configuration for experiments
     """
 
     def __init__(self):
