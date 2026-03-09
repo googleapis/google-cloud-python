@@ -26,7 +26,6 @@ RUFF_VERSION = "ruff==0.14.14"
 
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-MYPY_VERSION = "mypy==1.10.0"
 # Add samples to the list of directories to format if the directory exists.
 if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
@@ -105,6 +104,8 @@ nox.options.sessions = [
 nox.options.error_on_missing_interpreters = True
 
 
+MYPY_VERSION = "mypy==1.10.0"
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run type checks with mypy."""
@@ -151,6 +152,36 @@ def mypy_samples(session):
         str(CURRENT_DIRECTORY / "samples" / "snippets" / "mypy.ini"),
         "--no-incremental",  # Required by warn-unused-configs from mypy.ini to work
         "samples/",
+    )
+@nox.session
+def update_lower_bounds(session):
+    """Update lower bounds in constraints.txt to match setup.py"""
+    session.install("google-cloud-testutils")
+    session.install(".")
+
+    session.run(
+        "lower-bound-checker",
+        "update",
+        "--package-name",
+        PACKAGE_NAME,
+        "--constraints-file",
+        str(LOWER_BOUND_CONSTRAINTS_FILE),
+    )
+
+
+@nox.session
+def check_lower_bounds(session):
+    """Check lower bounds in setup.py are reflected in constraints file"""
+    session.install("google-cloud-testutils")
+    session.install(".")
+
+    session.run(
+        "lower-bound-checker",
+        "check",
+        "--package-name",
+        PACKAGE_NAME,
+        "--constraints-file",
+        str(LOWER_BOUND_CONSTRAINTS_FILE),
     )
 
 
@@ -272,6 +303,8 @@ def unit(session, protobuf_implementation):
     if session.python in ["3.7", "3.8"]:
         session.skip(f"Python {session.python} is no longer supported.")
 
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
+    # Remove this check once support for Protobuf 3.x is dropped.
     if protobuf_implementation == "cpp" and session.python in (
         "3.11",
         "3.12",
@@ -520,18 +553,20 @@ def prerelease_deps(session, protobuf_implementation):
         )
     ]
 
+    # Install dependencies specified in `testing/constraints-X.txt`.
     session.install(*constraints_deps)
 
+    # Note: If a dependency is added to the `prerel_deps` list,
+    # the `core_dependencies_from_source` list in the `core_deps_from_source`
+    # nox session should also be updated.
     prerel_deps = [
-        "protobuf",
-        # dependency of grpc
-        "six",
-        "grpc-google-iam-v1",
         "googleapis-common-protos",
-        "grpcio",
-        "grpcio-status",
         "google-api-core",
         "google-auth",
+        "grpc-google-iam-v1",
+        "grpcio",
+        "grpcio-status",
+        "protobuf",
         "proto-plus",
         "google-cloud-testutils",
         # dependencies of google-cloud-testutils"
