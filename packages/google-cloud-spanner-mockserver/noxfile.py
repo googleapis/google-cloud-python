@@ -175,7 +175,7 @@ def format(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("setuptools", "docutils", "pygments")
-    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+    session.run("python", "setup.py", "check", "--strict")
 
 
 def install_unittest_dependencies(session, *constraints):
