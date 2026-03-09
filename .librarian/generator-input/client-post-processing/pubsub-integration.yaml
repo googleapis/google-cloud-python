@@ -421,14 +421,13 @@ replacements:
   # --- FIX: Restore missing dependencies, extras, and url dynamically ---
   - paths:
       - "packages/google-cloud-pubsub/setup.py"
-    before: '([ \t]+)("grpc-google-iam-v1.*",\n)\]\nextras = \{\}\nurl = "https://github\.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-pubsub"'
+    before: '([ \t]+)("grpc-google-iam-v1.*",\n)\]\nextras = \{\}'
     after: |-
       \g<1>\g<2>\g<1>"grpcio-status >= 1.33.2",
       \g<1>"opentelemetry-api >= 1.27.0",
       \g<1>"opentelemetry-sdk >= 1.27.0",
       ]
       extras = {"libcst": "libcst >= 0.3.10"}
-      url = "https://github.com/googleapis/python-pubsub"
     count: 1
 # --- FIX: Blend README Python versions ---
   - paths:

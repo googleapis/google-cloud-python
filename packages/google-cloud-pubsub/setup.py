@@ -54,7 +54,7 @@ dependencies = [
     "opentelemetry-sdk >= 1.27.0",
 ]
 extras = {"libcst": "libcst >= 0.3.10"}
-url = "https://github.com/googleapis/python-pubsub"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-pubsub"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

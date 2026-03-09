@@ -6,7 +6,7 @@
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559741",
     "release_level": "stable",
     "language": "python",
-    "repo": "googleapis/python-pubsub",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-pubsub",
     "api_id": "pubsub.googleapis.com",
     "requires_billing": true,
