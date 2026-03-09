@@ -587,3 +587,11 @@ replacements:
       \g<1># See https://github.com/grpc/grpc/issues/32163
       \g<1>session.install("--pre", "grpcio!=1.52.0rc1")
     count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/docs/conf.py"
+    before: 'exclude_patterns = \[\n([ \t]+)"_build",'
+    after: |-
+      exclude_patterns = [
+      \g<1>"pubsub_v1/**",
+      \g<1>"_build",
+    count: 1
