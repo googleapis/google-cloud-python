@@ -14,7 +14,6 @@ from uuid import uuid4
 
 RANDOM_ID_GENERATION_ENABLED_SETTING = "RANDOM_ID_GENERATION_ENABLED"
 
-import pkg_resources
 from django.conf.global_settings import DATABASES
 from django.db import DEFAULT_DB_ALIAS
 from google.cloud.spanner_v1 import JsonObject
