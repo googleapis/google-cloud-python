@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 import logging as std_logging
-import re
 import warnings
+import re
 from collections import OrderedDict
 from typing import (
     AsyncIterable,
@@ -48,14 +48,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.iam.v1 import (
     iam_policy_pb2,  # type: ignore
     policy_pb2,  # type: ignore
-)
-from google.protobuf import (
-    duration_pb2,  # type: ignore
-    field_mask_pb2,  # type: ignore
-    timestamp_pb2,  # type: ignore
 )
 
 from google.pubsub_v1.services.subscriber import pagers
@@ -131,9 +129,10 @@ class SubscriberAsyncClient:
         Returns:
             SubscriberAsyncClient: The constructed client.
         """
-        return SubscriberClient.from_service_account_info.__func__(
-            SubscriberAsyncClient, info, *args, **kwargs
-        )  # type: ignore
+        sa_info_func = (
+            SubscriberClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(SubscriberAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -149,9 +148,10 @@ class SubscriberAsyncClient:
         Returns:
             SubscriberAsyncClient: The constructed client.
         """
-        return SubscriberClient.from_service_account_file.__func__(
-            SubscriberAsyncClient, filename, *args, **kwargs
-        )  # type: ignore
+        sa_file_func = (
+            SubscriberClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(SubscriberAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
