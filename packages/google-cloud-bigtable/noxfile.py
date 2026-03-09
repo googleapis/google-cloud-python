@@ -290,7 +290,7 @@ def system_emulated(session):
     )
 
     try:
-        system(session)
+        system_default(session)
     finally:
         # Stop Emulator
         os.killpg(os.getpgid(p.pid), signal.SIGKILL)
