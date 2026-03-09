@@ -52,6 +52,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "setuptools",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -87,6 +88,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
     "google-cloud-testutils",
+    "setuptools",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -443,6 +445,7 @@ def compliance(session):
         "pytest",
         "pytest-rerunfailures",
         "google-cloud-testutils",
+        "setuptools",
         "-c",
         constraints_path,
     )
