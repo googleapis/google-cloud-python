@@ -37,12 +37,12 @@ Changelog
 For a list of all ``google-cloud-pubsub`` releases:
 
 .. toctree::
-  :maxdepth: 2
+    :maxdepth: 2
 
-  CHANGELOG
+    CHANGELOG
 
 
 .. toctree::
-  :hidden:
+    :hidden:
 
-  summary_overview.md
+    summary_overview.md
