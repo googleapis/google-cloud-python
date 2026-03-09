@@ -1,0 +1,1486 @@
+# Copyright 2016 Google LLC All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+from functools import total_ordering
+import time
+import unittest
+from datetime import datetime, timedelta
+
+import mock
+from google.cloud.spanner_v1 import pool as MUT
+from google.cloud.spanner_v1 import _opentelemetry_tracing
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import BatchCreateSessionsResponse
+from google.cloud.spanner_v1 import Session
+from google.cloud.spanner_v1 import SpannerClient
+from google.cloud.spanner_v1.database import Database
+from google.cloud.spanner_v1.pool import AbstractSessionPool
+from google.cloud.spanner_v1.pool import SessionCheckout
+from google.cloud.spanner_v1.pool import FixedSizePool
+from google.cloud.spanner_v1.pool import BurstyPool
+from google.cloud.spanner_v1.pool import PingingPool
+from google.cloud.spanner_v1.transaction import Transaction
+from google.cloud.exceptions import NotFound
+from google.cloud._testing import _Monkey
+from google.cloud.spanner_v1._helpers import (
+    _metadata_with_request_id,
+    _metadata_with_request_id_and_req_id,
+    _augment_errors_with_request_id,
+    AtomicCounter,
+)
+from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
+
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from tests._builders import build_database
+from tests._helpers import (
+    OpenTelemetryBase,
+    LIB_VERSION,
+    StatusCode,
+    enrich_with_otel_scope,
+    HAS_OPENTELEMETRY_INSTALLED,
+)
+
+
+def _make_database(name="name"):
+    return mock.create_autospec(Database, instance=True)
+
+
+def _make_session():
+    return mock.create_autospec(Session, instance=True)
+
+
+class TestAbstractSessionPool(unittest.TestCase):
+    def _getTargetClass(self):
+        return AbstractSessionPool
+
+    def _make_one(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_ctor_defaults(self):
+        pool = self._make_one()
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.labels, {})
+        self.assertIsNone(pool.database_role)
+
+    def test_ctor_explicit(self):
+        labels = {"foo": "bar"}
+        database_role = "dummy-role"
+        pool = self._make_one(labels=labels, database_role=database_role)
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.labels, labels)
+        self.assertEqual(pool.database_role, database_role)
+
+    def test_bind_abstract(self):
+        pool = self._make_one()
+        database = _make_database("name")
+        with self.assertRaises(NotImplementedError):
+            pool.bind(database)
+
+    def test_get_abstract(self):
+        pool = self._make_one()
+        with self.assertRaises(NotImplementedError):
+            pool.get()
+
+    def test_put_abstract(self):
+        pool = self._make_one()
+        session = object()
+        with self.assertRaises(NotImplementedError):
+            pool.put(session)
+
+    def test_clear_abstract(self):
+        pool = self._make_one()
+        with self.assertRaises(NotImplementedError):
+            pool.clear()
+
+    def test__new_session_wo_labels(self):
+        pool = self._make_one()
+        database = pool._database = build_database()
+
+        new_session = pool._new_session()
+
+        self.assertEqual(new_session._database, database)
+        self.assertEqual(new_session.labels, {})
+        self.assertIsNone(new_session.database_role)
+
+    def test__new_session_w_labels(self):
+        labels = {"foo": "bar"}
+        pool = self._make_one(labels=labels)
+        database = pool._database = build_database()
+
+        new_session = pool._new_session()
+
+        self.assertEqual(new_session._database, database)
+        self.assertEqual(new_session.labels, labels)
+        self.assertIsNone(new_session.database_role)
+
+    def test__new_session_w_database_role(self):
+        database_role = "dummy-role"
+        pool = self._make_one(database_role=database_role)
+        database = pool._database = build_database()
+
+        new_session = pool._new_session()
+
+        self.assertEqual(new_session._database, database)
+        self.assertEqual(new_session.labels, {})
+        self.assertEqual(new_session.database_role, database_role)
+
+    def test_session_wo_kwargs(self):
+        pool = self._make_one()
+        checkout = pool.session()
+        self.assertIsInstance(checkout, SessionCheckout)
+        self.assertIs(checkout._pool, pool)
+        self.assertIsNone(checkout._session)
+        self.assertEqual(checkout._kwargs, {})
+
+    def test_session_w_kwargs(self):
+        pool = self._make_one()
+        checkout = pool.session(foo="bar")
+        self.assertIsInstance(checkout, SessionCheckout)
+        self.assertIs(checkout._pool, pool)
+        self.assertIsNone(checkout._session)
+        self.assertEqual(checkout._kwargs, {"foo": "bar"})
+
+
+class TestFixedSizePool(OpenTelemetryBase):
+    BASE_ATTRIBUTES = {
+        "db.type": "spanner",
+        "db.url": "spanner.googleapis.com",
+        "db.instance": "name",
+        "net.host.name": "spanner.googleapis.com",
+        "gcp.client.service": "spanner",
+        "gcp.client.version": LIB_VERSION,
+        "gcp.client.repo": "googleapis/python-spanner",
+        "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX + "name",
+        "cloud.region": "global",
+    }
+    enrich_with_otel_scope(BASE_ATTRIBUTES)
+
+    def _getTargetClass(self):
+        return FixedSizePool
+
+    def _make_one(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_ctor_defaults(self):
+        pool = self._make_one()
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.size, 10)
+        self.assertEqual(pool.default_timeout, 10)
+        self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, {})
+        self.assertIsNone(pool.database_role)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_ctor_explicit(self, mock_region):
+        labels = {"foo": "bar"}
+        database_role = "dummy-role"
+        pool = self._make_one(
+            size=4, default_timeout=30, labels=labels, database_role=database_role
+        )
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.size, 4)
+        self.assertEqual(pool.default_timeout, 30)
+        self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, labels)
+        self.assertEqual(pool.database_role, database_role)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_bind(self, mock_region):
+        database_role = "dummy-role"
+        pool = self._make_one()
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 10
+        database._database_role = database_role
+        database._sessions.extend(SESSIONS)
+
+        pool.bind(database)
+
+        self.assertIs(pool._database, database)
+        self.assertEqual(pool.size, 10)
+        self.assertEqual(pool.database_role, database_role)
+        self.assertEqual(pool.default_timeout, 10)
+        self.assertTrue(pool._sessions.full())
+
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
+        for session in SESSIONS:
+            session.create.assert_not_called()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_active(self, mock_region):
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = sorted([_Session(database) for i in range(0, 4)])
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+
+        # check if sessions returned in LIFO order
+        for i in (3, 2, 1, 0):
+            session = pool.get()
+            self.assertIs(session, SESSIONS[i])
+            self.assertFalse(session._exists_checked)
+            self.assertFalse(pool._sessions.full())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_non_expired(self, mock_region):
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        last_use_time = datetime.utcnow() - timedelta(minutes=56)
+        SESSIONS = sorted(
+            [_Session(database, last_use_time=last_use_time) for i in range(0, 4)]
+        )
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+
+        # check if sessions returned in LIFO order
+        for i in (3, 2, 1, 0):
+            session = pool.get()
+            self.assertIs(session, SESSIONS[i])
+            self.assertTrue(session._exists_checked)
+            self.assertFalse(pool._sessions.full())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_bind_get(self, mock_region):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        # This tests retrieving 1 out of 4 sessions from the session pool.
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = sorted([_Session(database) for i in range(0, 4)])
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+
+        with trace_call("pool.Get", SESSIONS[0]):
+            pool.get()
+
+        span_list = self.get_finished_spans()
+        got_span_names = [span.name for span in span_list]
+        want_span_names = ["CloudSpanner.FixedPool.BatchCreateSessions", "pool.Get"]
+        assert got_span_names == want_span_names
+
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id - 1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
+        attrs = dict(
+            TestFixedSizePool.BASE_ATTRIBUTES.copy(), x_goog_spanner_request_id=req_id
+        )
+
+        # Check for the overall spans.
+        self.assertSpanAttributes(
+            "CloudSpanner.FixedPool.BatchCreateSessions",
+            status=StatusCode.OK,
+            attributes=attrs,
+            span=span_list[0],
+        )
+
+        self.assertSpanAttributes(
+            "pool.Get",
+            status=StatusCode.OK,
+            attributes=TestFixedSizePool.BASE_ATTRIBUTES,
+            span=span_list[-1],
+        )
+        wantEventNames = [
+            "Acquiring session",
+            "Waiting for a session to become available",
+            "Acquired session",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames, span_list[-1])
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_bind_get_empty_pool(self, mock_region):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        # Tests trying to invoke pool.get() from an empty pool.
+        pool = self._make_one(size=0, default_timeout=0.1)
+        database = _Database("name")
+        session1 = _Session(database)
+        with trace_call("pool.Get", session1):
+            try:
+                pool.bind(database)
+                database._sessions = database._sessions[:0]
+                pool.get()
+            except Exception:
+                pass
+
+        wantEventNames = [
+            "Invalid session pool size(0) <= 0",
+            "Acquiring session",
+            "Waiting for a session to become available",
+            "No sessions available in the pool",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames)
+
+        # Check for the overall spans too.
+        self.assertSpanNames(["pool.Get"])
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestFixedSizePool.BASE_ATTRIBUTES,
+        )
+
+        span_list = self.get_finished_spans()
+        got_all_events = []
+        for span in span_list:
+            for event in span.events:
+                got_all_events.append((event.name, event.attributes))
+        want_all_events = [
+            ("Invalid session pool size(0) <= 0", {"kind": "FixedSizePool"}),
+            ("Acquiring session", {"kind": "FixedSizePool"}),
+            ("Waiting for a session to become available", {"kind": "FixedSizePool"}),
+            ("No sessions available in the pool", {"kind": "FixedSizePool"}),
+        ]
+        assert got_all_events == want_all_events
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_pool_bind(self, mock_region):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        # Tests the exception generated from invoking pool.bind when
+        # you have an empty pool.
+        pool = self._make_one(size=1)
+        database = _Database("name")
+        pool._new_session = mock.Mock(side_effect=Exception("test"))
+        fauxSession = mock.Mock()
+        setattr(fauxSession, "_database", database)
+        try:
+            with trace_call("testBind", fauxSession):
+                pool.bind(database)
+        except Exception:
+            pass
+
+        span_list = self.get_finished_spans()
+        got_span_names = [span.name for span in span_list]
+        want_span_names = ["testBind", "CloudSpanner.FixedPool.BatchCreateSessions"]
+        assert got_span_names == want_span_names
+
+        wantEventNames = [
+            "Requesting 1 sessions",
+            "exception",
+        ]
+        self.assertSpanEvents("testBind", wantEventNames, span_list[0])
+
+        self.assertSpanAttributes(
+            "testBind",
+            status=StatusCode.ERROR,
+            attributes=TestFixedSizePool.BASE_ATTRIBUTES,
+            span=span_list[0],
+        )
+
+        got_all_events = []
+
+        # Some event attributes are noisy/highly ephemeral
+        # and can't be directly compared against.
+        imprecise_event_attributes = ["exception.stacktrace", "delay_seconds", "cause"]
+        for span in span_list:
+            for event in span.events:
+                evt_attributes = event.attributes.copy()
+                for attr_name in imprecise_event_attributes:
+                    if attr_name in evt_attributes:
+                        evt_attributes[attr_name] = "EPHEMERAL"
+
+                got_all_events.append((event.name, evt_attributes))
+
+        want_all_events = [
+            ("Requesting 1 sessions", {"kind": "FixedSizePool"}),
+            (
+                "exception",
+                {
+                    "exception.type": "Exception",
+                    "exception.message": "test",
+                    "exception.stacktrace": "EPHEMERAL",
+                    "exception.escaped": "False",
+                },
+            ),
+            ("Creating 1 sessions", {"kind": "FixedSizePool"}),
+            ("Created sessions", {"count": 1}),
+            (
+                "exception",
+                {
+                    "exception.type": "Exception",
+                    "exception.message": "test",
+                    "exception.stacktrace": "EPHEMERAL",
+                    "exception.escaped": "False",
+                },
+            ),
+        ]
+        assert got_all_events == want_all_events
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_expired(self, mock_region):
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        last_use_time = datetime.utcnow() - timedelta(minutes=65)
+        SESSIONS = [_Session(database, last_use_time=last_use_time)] * 5
+        SESSIONS[0]._exists = False
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+
+        session = pool.get()
+
+        self.assertIs(session, SESSIONS[4])
+        session.create.assert_called()
+        self.assertTrue(SESSIONS[0]._exists_checked)
+        self.assertFalse(pool._sessions.full())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_empty_default_timeout(self, mock_region):
+        import queue
+
+        pool = self._make_one(size=1)
+        session_queue = pool._sessions = _Queue()
+
+        with self.assertRaises(queue.Empty):
+            pool.get()
+
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 10})
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_empty_explicit_timeout(self, mock_region):
+        import queue
+
+        pool = self._make_one(size=1, default_timeout=0.1)
+        session_queue = pool._sessions = _Queue()
+
+        with self.assertRaises(queue.Empty):
+            pool.get(timeout=1)
+
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 1})
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_put_full(self, mock_region):
+        import queue
+
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 4
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+        self.reset()
+
+        with self.assertRaises(queue.Full):
+            pool.put(_Session(database))
+
+        self.assertTrue(pool._sessions.full())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_put_non_full(self, mock_region):
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 4
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+        pool._sessions.get()
+
+        pool.put(_Session(database))
+
+        self.assertTrue(pool._sessions.full())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_clear(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 10
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+        self.assertTrue(pool._sessions.full())
+
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
+        for session in SESSIONS:
+            session.create.assert_not_called()
+
+        pool.clear()
+
+        for session in SESSIONS:
+            self.assertTrue(session._deleted)
+
+
+class TestBurstyPool(OpenTelemetryBase):
+    BASE_ATTRIBUTES = {
+        "db.type": "spanner",
+        "db.url": "spanner.googleapis.com",
+        "db.instance": "name",
+        "net.host.name": "spanner.googleapis.com",
+        "gcp.client.service": "spanner",
+        "gcp.client.version": LIB_VERSION,
+        "gcp.client.repo": "googleapis/python-spanner",
+        "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX + "name",
+        "cloud.region": "global",
+    }
+    enrich_with_otel_scope(BASE_ATTRIBUTES)
+
+    def _getTargetClass(self):
+        return BurstyPool
+
+    def _make_one(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_ctor_defaults(self):
+        pool = self._make_one()
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.target_size, 10)
+        self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, {})
+        self.assertIsNone(pool.database_role)
+
+    def test_ctor_explicit(self):
+        labels = {"foo": "bar"}
+        database_role = "dummy-role"
+        pool = self._make_one(target_size=4, labels=labels, database_role=database_role)
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.target_size, 4)
+        self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, labels)
+        self.assertEqual(pool.database_role, database_role)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_ctor_explicit_w_database_role_in_db(self, mock_region):
+        database_role = "dummy-role"
+        pool = self._make_one()
+        database = pool._database = _Database("name")
+        database._database_role = database_role
+        pool.bind(database)
+        self.assertEqual(pool.database_role, database_role)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_empty(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        pool._new_session = mock.Mock(return_value=_Session(database))
+        pool.bind(database)
+
+        session = pool.get()
+
+        self.assertIsInstance(session, _Session)
+        self.assertIs(session._database, database)
+        session.create.assert_called()
+        self.assertTrue(pool._sessions.empty())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_get_empty_pool(self, mock_region):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        # This scenario tests a pool that hasn't been filled up
+        # and pool.get() acquires from a pool, waiting for a session
+        # to become available.
+        pool = self._make_one()
+        database = _Database("name")
+        session1 = _Session(database)
+        pool._new_session = mock.Mock(return_value=session1)
+        pool.bind(database)
+
+        with trace_call("pool.Get", session1):
+            session = pool.get()
+            self.assertIsInstance(session, _Session)
+            self.assertIs(session._database, database)
+            session.create.assert_called()
+            self.assertTrue(pool._sessions.empty())
+
+        span_list = self.get_finished_spans()
+        got_span_names = [span.name for span in span_list]
+        want_span_names = ["pool.Get"]
+        assert got_span_names == want_span_names
+
+        create_span = span_list[-1]
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+            span=create_span,
+        )
+        wantEventNames = [
+            "Acquiring session",
+            "Waiting for a session to become available",
+            "No sessions available in pool. Creating session",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames, span=create_span)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_non_empty_session_exists(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        previous = _Session(database)
+        pool.bind(database)
+        pool.put(previous)
+
+        session = pool.get()
+
+        self.assertIs(session, previous)
+        session.create.assert_not_called()
+        self.assertTrue(session._exists_checked)
+        self.assertTrue(pool._sessions.empty())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_get_non_empty_session_exists(self, mock_region):
+        # Tests the spans produces when you invoke pool.bind
+        # and then insert a session into the pool.
+        pool = self._make_one()
+        database = _Database("name")
+        previous = _Session(database)
+        pool.bind(database)
+        with trace_call("pool.Get", previous):
+            pool.put(previous)
+            session = pool.get()
+            self.assertIs(session, previous)
+            session.create.assert_not_called()
+            self.assertTrue(session._exists_checked)
+            self.assertTrue(pool._sessions.empty())
+
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+        )
+        self.assertSpanEvents(
+            "pool.Get",
+            ["Acquiring session", "Waiting for a session to become available"],
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_non_empty_session_expired(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        previous = _Session(database, exists=False)
+        newborn = _Session(database)
+        pool._new_session = mock.Mock(return_value=newborn)
+        pool.bind(database)
+        pool.put(previous)
+
+        session = pool.get()
+
+        self.assertTrue(previous._exists_checked)
+        self.assertIs(session, newborn)
+        session.create.assert_called()
+        self.assertFalse(session._exists_checked)
+        self.assertTrue(pool._sessions.empty())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_put_empty(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        pool.bind(database)
+        session = _Session(database)
+
+        pool.put(session)
+
+        self.assertFalse(pool._sessions.empty())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_put_empty(self, mock_region):
+        # Tests the spans produced when you put sessions into an empty pool.
+        pool = self._make_one()
+        database = _Database("name")
+        pool.bind(database)
+        session = _Session(database)
+
+        with trace_call("pool.put", session):
+            pool.put(session)
+            self.assertFalse(pool._sessions.empty())
+
+        self.assertSpanAttributes(
+            "pool.put",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_put_full(self, mock_region):
+        pool = self._make_one(target_size=1)
+        database = _Database("name")
+        pool.bind(database)
+        older = _Session(database)
+        pool.put(older)
+        self.assertFalse(pool._sessions.empty())
+
+        younger = _Session(database)
+        pool.put(younger)  # discarded silently
+
+        self.assertTrue(younger._deleted)
+        self.assertIs(pool.get(), older)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_put_full(self, mock_region):
+        # This scenario tests the spans produced from putting an older
+        # session into a pool that is already full.
+        pool = self._make_one(target_size=1)
+        database = _Database("name")
+        pool.bind(database)
+        older = _Session(database)
+        with trace_call("pool.put", older):
+            pool.put(older)
+            self.assertFalse(pool._sessions.empty())
+
+            younger = _Session(database)
+            pool.put(younger)  # discarded silently
+
+            self.assertTrue(younger._deleted)
+            self.assertIs(pool.get(), older)
+
+        self.assertSpanAttributes(
+            "pool.put",
+            attributes=TestBurstyPool.BASE_ATTRIBUTES,
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_put_full_expired(self, mock_region):
+        pool = self._make_one(target_size=1)
+        database = _Database("name")
+        pool.bind(database)
+        older = _Session(database)
+        pool.put(older)
+        self.assertFalse(pool._sessions.empty())
+
+        younger = _Session(database, exists=False)
+        pool.put(younger)  # discarded silently
+
+        self.assertTrue(younger._deleted)
+        self.assertIs(pool.get(), older)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_clear(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        pool.bind(database)
+        previous = _Session(database)
+        pool.put(previous)
+
+        pool.clear()
+
+        self.assertTrue(previous._deleted)
+        self.assertNoSpans()
+
+
+class TestPingingPool(OpenTelemetryBase):
+    BASE_ATTRIBUTES = {
+        "db.type": "spanner",
+        "db.url": "spanner.googleapis.com",
+        "db.instance": "name",
+        "net.host.name": "spanner.googleapis.com",
+        "gcp.client.service": "spanner",
+        "gcp.client.version": LIB_VERSION,
+        "gcp.client.repo": "googleapis/python-spanner",
+        "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX + "name",
+        "cloud.region": "global",
+    }
+    enrich_with_otel_scope(BASE_ATTRIBUTES)
+
+    def _getTargetClass(self):
+        return PingingPool
+
+    def _make_one(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_ctor_defaults(self):
+        pool = self._make_one()
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.size, 10)
+        self.assertEqual(pool.default_timeout, 10)
+        self.assertEqual(pool._delta.seconds, 3000)
+        self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, {})
+        self.assertIsNone(pool.database_role)
+
+    def test_ctor_explicit(self):
+        labels = {"foo": "bar"}
+        database_role = "dummy-role"
+        pool = self._make_one(
+            size=4,
+            default_timeout=30,
+            ping_interval=1800,
+            labels=labels,
+            database_role=database_role,
+        )
+        self.assertIsNone(pool._database)
+        self.assertEqual(pool.size, 4)
+        self.assertEqual(pool.default_timeout, 30)
+        self.assertEqual(pool._delta.seconds, 1800)
+        self.assertTrue(pool._sessions.empty())
+        self.assertEqual(pool.labels, labels)
+        self.assertEqual(pool.database_role, database_role)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_ctor_explicit_w_database_role_in_db(self, mock_region):
+        database_role = "dummy-role"
+        pool = self._make_one()
+        database = pool._database = _Database("name")
+        SESSIONS = [_Session(database)] * 10
+        database._sessions.extend(SESSIONS)
+        database._database_role = database_role
+        pool.bind(database)
+        self.assertEqual(pool.database_role, database_role)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_bind(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 10
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+
+        self.assertIs(pool._database, database)
+        self.assertEqual(pool.size, 10)
+        self.assertEqual(pool.default_timeout, 10)
+        self.assertEqual(pool._delta.seconds, 3000)
+        self.assertTrue(pool._sessions.full())
+
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
+        for session in SESSIONS:
+            session.create.assert_not_called()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_hit_no_ping(self, mock_region):
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 4
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+        self.reset()
+
+        session = pool.get()
+
+        self.assertIs(session, SESSIONS[0])
+        self.assertFalse(session._exists_checked)
+        self.assertFalse(pool._sessions.full())
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_hit_w_ping(self, mock_region):
+        import datetime
+
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 4
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+
+        sessions_created = datetime.datetime.utcnow() - datetime.timedelta(seconds=4000)
+
+        with _Monkey(MUT, _NOW=lambda: sessions_created):
+            pool.bind(database)
+
+        self.reset()
+
+        session = pool.get()
+
+        self.assertIs(session, SESSIONS[0])
+        self.assertTrue(session._exists_checked)
+        self.assertFalse(pool._sessions.full())
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_hit_w_ping_expired(self, mock_region):
+        import datetime
+
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 5
+        SESSIONS[0]._exists = False
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+
+        sessions_created = datetime.datetime.utcnow() - datetime.timedelta(seconds=4000)
+
+        with _Monkey(MUT, _NOW=lambda: sessions_created):
+            pool.bind(database)
+        self.reset()
+
+        session = pool.get()
+
+        self.assertIs(session, SESSIONS[4])
+        session.create.assert_called()
+        self.assertTrue(SESSIONS[0]._exists_checked)
+        self.assertFalse(pool._sessions.full())
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_empty_default_timeout(self, mock_region):
+        import queue
+
+        pool = self._make_one(size=1)
+        session_queue = pool._sessions = _Queue()
+
+        with self.assertRaises(queue.Empty):
+            pool.get()
+
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 10})
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_get_empty_explicit_timeout(self, mock_region):
+        import queue
+
+        pool = self._make_one(size=1, default_timeout=0.1)
+        session_queue = pool._sessions = _Queue()
+
+        with self.assertRaises(queue.Empty):
+            pool.get(timeout=1)
+
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 1})
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_put_full(self, mock_region):
+        import queue
+
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 4
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+
+        with self.assertRaises(queue.Full):
+            pool.put(_Session(database))
+
+        self.assertTrue(pool._sessions.full())
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_put_full(self, mock_region):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        import queue
+
+        pool = self._make_one(size=4)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 4
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+
+        with self.assertRaises(queue.Full):
+            pool.put(_Session(database))
+
+        self.assertTrue(pool._sessions.full())
+
+        span_list = self.get_finished_spans()
+        got_span_names = [span.name for span in span_list]
+        want_span_names = ["CloudSpanner.PingingPool.BatchCreateSessions"]
+        assert got_span_names == want_span_names
+
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id - 1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
+        attrs = dict(
+            TestPingingPool.BASE_ATTRIBUTES.copy(), x_goog_spanner_request_id=req_id
+        )
+        self.assertSpanAttributes(
+            "CloudSpanner.PingingPool.BatchCreateSessions",
+            attributes=attrs,
+            span=span_list[-1],
+        )
+        wantEventNames = [
+            "Created 2 sessions",
+            "Created 2 sessions",
+            "Requested for 4 sessions, returned 4",
+        ]
+        self.assertSpanEvents(
+            "CloudSpanner.PingingPool.BatchCreateSessions", wantEventNames
+        )
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_put_non_full(self, mock_region):
+        import datetime
+
+        pool = self._make_one(size=1)
+        session_queue = pool._sessions = _Queue()
+
+        now = datetime.datetime.utcnow()
+        database = _Database("name")
+        session = _Session(database)
+
+        with _Monkey(MUT, _NOW=lambda: now):
+            pool.put(session)
+
+        self.assertEqual(len(session_queue._items), 1)
+        ping_after, queued = session_queue._items[0]
+        self.assertEqual(ping_after, now + datetime.timedelta(seconds=3000))
+        self.assertIs(queued, session)
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_clear(self, mock_region):
+        pool = self._make_one()
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 10
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+        self.reset()
+        self.assertTrue(pool._sessions.full())
+
+        api = database.spanner_api
+        self.assertEqual(api.batch_create_sessions.call_count, 5)
+        for session in SESSIONS:
+            session.create.assert_not_called()
+
+        pool.clear()
+
+        for session in SESSIONS:
+            self.assertTrue(session._deleted)
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_ping_empty(self, mock_region):
+        pool = self._make_one(size=1)
+        pool.ping()  # Does not raise 'Empty'
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_ping_oldest_fresh(self, mock_region):
+        pool = self._make_one(size=1)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 1
+        database._sessions.extend(SESSIONS)
+        pool.bind(database)
+        self.reset()
+
+        pool.ping()
+
+        self.assertFalse(SESSIONS[0]._pinged)
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_ping_oldest_stale_but_exists(self, mock_region):
+        import datetime
+
+        pool = self._make_one(size=1)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 1
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+
+        later = datetime.datetime.utcnow() + datetime.timedelta(seconds=4000)
+        with _Monkey(MUT, _NOW=lambda: later):
+            pool.ping()
+
+        self.assertTrue(SESSIONS[0]._pinged)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_ping_oldest_stale_and_not_exists(self, mock_region):
+        import datetime
+
+        pool = self._make_one(size=1)
+        database = _Database("name")
+        SESSIONS = [_Session(database)] * 2
+        SESSIONS[0]._exists = False
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
+        pool.bind(database)
+        self.reset()
+
+        later = datetime.datetime.utcnow() + datetime.timedelta(seconds=4000)
+        with _Monkey(MUT, _NOW=lambda: later):
+            pool.ping()
+
+        self.assertTrue(SESSIONS[0]._pinged)
+        SESSIONS[1].create.assert_called()
+        self.assertNoSpans()
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_spans_get_and_leave_empty_pool(self, mock_region):
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        # This scenario tests the spans generated from pulling a span
+        # out the pool and leaving it empty.
+        pool = self._make_one()
+        database = _Database("name")
+        session1 = _Session(database)
+        pool._new_session = mock.Mock(side_effect=[session1, Exception])
+        try:
+            pool.bind(database)
+        except Exception:
+            pass
+
+        with trace_call("pool.Get", session1):
+            session = pool.get()
+            self.assertIsInstance(session, _Session)
+            self.assertIs(session._database, database)
+            # session.create.assert_called()
+            self.assertTrue(pool._sessions.empty())
+
+        span_list = self.get_finished_spans()
+        got_span_names = [span.name for span in span_list]
+        want_span_names = ["CloudSpanner.PingingPool.BatchCreateSessions", "pool.Get"]
+        assert got_span_names == want_span_names
+
+        self.assertSpanAttributes(
+            "pool.Get",
+            attributes=TestPingingPool.BASE_ATTRIBUTES,
+            span=span_list[-1],
+        )
+        wantEventNames = [
+            "Waiting for a session to become available",
+            "Acquired session",
+        ]
+        self.assertSpanEvents("pool.Get", wantEventNames, span_list[-1])
+
+
+class TestSessionCheckout(unittest.TestCase):
+    def _getTargetClass(self):
+        return SessionCheckout
+
+    def _make_one(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_ctor_wo_kwargs(self):
+        pool = _Pool()
+        checkout = self._make_one(pool)
+        self.assertIs(checkout._pool, pool)
+        self.assertIsNone(checkout._session)
+        self.assertEqual(checkout._kwargs, {})
+
+    def test_ctor_w_kwargs(self):
+        pool = _Pool()
+        checkout = self._make_one(pool, foo="bar", database_role="dummy-role")
+        self.assertIs(checkout._pool, pool)
+        self.assertIsNone(checkout._session)
+        self.assertEqual(
+            checkout._kwargs, {"foo": "bar", "database_role": "dummy-role"}
+        )
+
+    def test_context_manager_wo_kwargs(self):
+        session = object()
+        pool = _Pool(session)
+        checkout = self._make_one(pool)
+
+        self.assertEqual(len(pool._items), 1)
+        self.assertIs(pool._items[0], session)
+
+        with checkout as borrowed:
+            self.assertIs(borrowed, session)
+            self.assertEqual(len(pool._items), 0)
+
+        self.assertEqual(len(pool._items), 1)
+        self.assertIs(pool._items[0], session)
+        self.assertEqual(pool._got, {})
+
+    def test_context_manager_w_kwargs(self):
+        session = object()
+        pool = _Pool(session)
+        checkout = self._make_one(pool, foo="bar")
+
+        self.assertEqual(len(pool._items), 1)
+        self.assertIs(pool._items[0], session)
+
+        with checkout as borrowed:
+            self.assertIs(borrowed, session)
+            self.assertEqual(len(pool._items), 0)
+
+        self.assertEqual(len(pool._items), 1)
+        self.assertIs(pool._items[0], session)
+        self.assertEqual(pool._got, {"foo": "bar"})
+
+
+def _make_transaction(*args, **kw):
+    txn = mock.create_autospec(Transaction)(*args, **kw)
+    txn.committed = None
+    txn.rolled_back = False
+    return txn
+
+
+@total_ordering
+class _Session(object):
+    _transaction = None
+
+    def __init__(
+        self, database, exists=True, transaction=None, last_use_time=datetime.utcnow()
+    ):
+        self._database = database
+        self._exists = exists
+        self._exists_checked = False
+        self._pinged = False
+        self.create = mock.Mock()
+        self._deleted = False
+        self._transaction = transaction
+        self._last_use_time = last_use_time
+        # Generate a faux id.
+        self._session_id = f"{time.time()}"
+
+    def __lt__(self, other):
+        return id(self) < id(other)
+
+    @property
+    def last_use_time(self):
+        return self._last_use_time
+
+    def exists(self):
+        self._exists_checked = True
+        return self._exists
+
+    def ping(self):
+        self._pinged = True
+        if not self._exists:
+            raise NotFound("expired session")
+
+    def delete(self):
+        self._deleted = True
+        if not self._exists:
+            raise NotFound("unknown session")
+
+    def transaction(self):
+        txn = self._transaction = _make_transaction(self)
+        return txn
+
+    @property
+    def session_id(self):
+        return self._session_id
+
+
+class _Database(object):
+    NTH_REQUEST = AtomicCounter()
+    NTH_CLIENT_ID = AtomicCounter()
+
+    def __init__(self, name):
+        self.name = name
+        self._sessions = []
+        self._database_role = None
+        self.database_id = name
+        self._route_to_leader_enabled = True
+
+        def mock_batch_create_sessions(
+            request=None,
+            timeout=10,
+            metadata=[],
+            labels={},
+        ):
+            database_role = request.session_template.creator_role if request else None
+            if request.session_count < 2:
+                response = BatchCreateSessionsResponse(
+                    session=[Session(creator_role=database_role, labels=labels)]
+                )
+            else:
+                response = BatchCreateSessionsResponse(
+                    session=[
+                        Session(creator_role=database_role, labels=labels),
+                        Session(creator_role=database_role, labels=labels),
+                    ]
+                )
+            return response
+
+        self.spanner_api = mock.create_autospec(SpannerClient, instance=True)
+        self.spanner_api.batch_create_sessions.side_effect = mock_batch_create_sessions
+        self._instance = mock.Mock()
+        self._instance._client = mock.Mock()
+        self._instance._client._client_context = None
+        self._instance._client.spanner_api = self.spanner_api
+        self._instance._client._query_options = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1"
+        )
+
+    @property
+    def database_role(self):
+        """Database role used in sessions to connect to this database.
+
+        :rtype: str
+        :returns: an str with the name of the database role.
+        """
+        return self._database_role
+
+    def session(self, **kwargs):
+        # always return first session in the list
+        # to avoid reversing the order of putting
+        # sessions into pool (important for order tests)
+        return self._sessions.pop(0)
+
+    @property
+    def observability_options(self):
+        return dict(db_name=self.name)
+
+    @property
+    def _next_nth_request(self):
+        return self.NTH_REQUEST.increment()
+
+    @property
+    def _nth_client_id(self):
+        return self.NTH_CLIENT_ID.increment()
+
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        return _metadata_with_request_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+
+    @property
+    def _channel_id(self):
+        return 1
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+        return metadata, _augment_errors_with_request_id(request_id)
+
+
+class _Queue(object):
+    _size = 1
+
+    def __init__(self, *items):
+        self._items = list(items)
+
+    def empty(self):
+        return len(self._items) == 0
+
+    def full(self):
+        return len(self._items) >= self._size
+
+    def get(self, **kwargs):
+        import queue
+
+        self._got = kwargs
+        try:
+            return self._items.pop()
+        except IndexError:
+            raise queue.Empty()
+
+    def put(self, item, **kwargs):
+        self._put = kwargs
+        self._items.append(item)
+
+    def put_nowait(self, item, **kwargs):
+        self._put_nowait = kwargs
+        self._items.append(item)
+
+
+class _Pool(_Queue):
+    _database = None
