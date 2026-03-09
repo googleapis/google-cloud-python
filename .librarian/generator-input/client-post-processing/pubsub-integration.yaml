@@ -499,9 +499,10 @@ replacements:
     count: 1
   - paths:
       - "packages/google-cloud-pubsub/noxfile.py"
-    before: '@nox\.session\(python=ALL_PYTHON\)\ndef mypy\(session\):[\s\S]+?(?=\n@nox\.session\ndef update_lower_bounds\(session\):)'
+    before: '@nox\.session\(python=ALL_PYTHON\)\ndef mypy\(session\):[\s\S]+?\n(@nox\.session\ndef update_lower_bounds\(session\):)'
     after: |-
       MYPY_VERSION = "mypy==1.10.0"
+
 
       @nox.session(python=DEFAULT_PYTHON_VERSION)
       def mypy(session):
@@ -512,7 +513,9 @@ replacements:
           # Version 2.1.1 of google-api-core version is the first type-checked release.
           # Version 2.2.0 of google-cloud-core version is the first type-checked release.
           session.install(
-              "google-api-core[grpc]>=2.1.1", "google-cloud-core>=2.2.0", "types-requests"
+              "google-api-core[grpc]>=2.1.1",
+              "google-cloud-core>=2.2.0",
+              "types-requests",
           )
 
           # Just install the type info directly, since "mypy --install-types" might
@@ -540,7 +543,10 @@ replacements:
           # Just install the type info directly, since "mypy --install-types" might
           # require an additional pass.
           session.install(
-              "types-mock", "types-protobuf", "types-setuptools", "types-requests"
+              "types-mock",
+              "types-protobuf",
+              "types-setuptools",
+              "types-requests",
           )
 
           session.run(
@@ -551,6 +557,8 @@ replacements:
               "samples/",
           )
 
+
+      \g<1>
     count: 1
   - paths:
       - "packages/google-cloud-pubsub/noxfile.py"
@@ -568,9 +576,7 @@ replacements:
     before: 'def core_deps_from_source\(session, protobuf_implementation\):[\s\S]+?PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,\n[ \t]+},\n[ \t]+\)'
     after: |-
       def core_deps_from_source(session, protobuf_implementation):
-          """
-          Skipping until Pub/Sub migration is complete.
-          """
+          """Skipping until Pub/Sub migration is complete."""
           session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
     count: 1
   - paths:

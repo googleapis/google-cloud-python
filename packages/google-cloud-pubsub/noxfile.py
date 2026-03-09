@@ -106,6 +106,7 @@ nox.options.error_on_missing_interpreters = True
 
 MYPY_VERSION = "mypy==1.10.0"
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run type checks with mypy."""
@@ -115,7 +116,9 @@ def mypy(session):
     # Version 2.1.1 of google-api-core version is the first type-checked release.
     # Version 2.2.0 of google-cloud-core version is the first type-checked release.
     session.install(
-        "google-api-core[grpc]>=2.1.1", "google-cloud-core>=2.2.0", "types-requests"
+        "google-api-core[grpc]>=2.1.1",
+        "google-cloud-core>=2.2.0",
+        "types-requests",
     )
 
     # Just install the type info directly, since "mypy --install-types" might
@@ -143,7 +146,10 @@ def mypy_samples(session):
     # Just install the type info directly, since "mypy --install-types" might
     # require an additional pass.
     session.install(
-        "types-mock", "types-protobuf", "types-setuptools", "types-requests"
+        "types-mock",
+        "types-protobuf",
+        "types-setuptools",
+        "types-requests",
     )
 
     session.run(
@@ -153,6 +159,8 @@ def mypy_samples(session):
         "--no-incremental",  # Required by warn-unused-configs from mypy.ini to work
         "samples/",
     )
+
+
 @nox.session
 def update_lower_bounds(session):
     """Update lower bounds in constraints.txt to match setup.py"""
@@ -623,7 +631,5 @@ def prerelease_deps(session, protobuf_implementation):
     ["python", "upb"],
 )
 def core_deps_from_source(session, protobuf_implementation):
-    """
-    Skipping until Pub/Sub migration is complete.
-    """
+    """Skipping until Pub/Sub migration is complete."""
     session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
