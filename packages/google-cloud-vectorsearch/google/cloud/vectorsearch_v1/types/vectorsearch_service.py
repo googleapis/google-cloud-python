@@ -934,12 +934,15 @@ class DedicatedInfrastructure(proto.Message):
         Attributes:
             min_replica_count (int):
                 Optional. The minimum number of replicas. If not set or set
-                to ``0``, defaults to ``2``. Must be >= ``2`` and <=
+                to ``0``, defaults to ``2``. Must be >= ``1`` and <=
                 ``1000``.
             max_replica_count (int):
-                Optional. The maximum number of replicas. If not set or set
-                to ``0``, defaults to the greater of ``min_replica_count``
-                and ``5``. Must be >= ``min_replica_count`` and <= ``1000``.
+                Optional. The maximum number of replicas. Must be >=
+                ``min_replica_count`` and <= ``1000``. For the v1beta
+                version, if not set or set to ``0``, defaults to the greater
+                of ``min_replica_count`` and ``5``. For all other versions,
+                if not set or set to ``0``, defaults to the greater of
+                ``min_replica_count`` and ``2``.
         """
 
         min_replica_count: int = proto.Field(
