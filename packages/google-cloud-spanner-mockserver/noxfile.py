@@ -51,6 +51,11 @@ MODE = "--verbose" if VERBOSE else "--quiet"
 
 DEFAULT_PYTHON_VERSION = "3.11"
 
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
+# Switch this to Python 3.15 alpha1
+# https://peps.python.org/pep-0790/
+PREVIEW_PYTHON_VERSION = "3.14"
+
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 PACKAGE_NAME = "google-cloud-spanner-mockserver"
@@ -59,11 +64,8 @@ GRPC_GENERATED_VERSION = "1.67.0"
 DIST_DIR = "dist"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
-    "mock",
-    "asyncmock",
     "pytest",
     "pytest-cov",
-    "pytest-asyncio",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -74,8 +76,6 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 INTEGRATION_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 INTEGRATION_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
-    "pytest-asyncio",
-    "mock",
 ]
 INTEGRATION_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 INTEGRATION_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -552,3 +552,83 @@ def install(session):
     """
     build(session)
     session.install("-e", ".")
+
+
+@nox.session(python=PREVIEW_PYTHON_VERSION)
+def prerelease_deps(session):
+    """
+    Run all tests with pre-release versions of dependencies installed
+    rather than the standard non pre-release versions.
+    Pre-release versions can be installed using
+    `pip install --pre <package>`.
+    """
+
+    # Install all dependencies
+    session.install("-e", ".")
+
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.log(f"unit_deps_all: {unit_deps_all}")
+    session.install(*unit_deps_all)
+
+    # Install dependencies for the integration test environment
+    integration_deps_all = (
+        INTEGRATION_TEST_STANDARD_DEPENDENCIES
+        + INTEGRATION_TEST_EXTERNAL_DEPENDENCIES
+        + INTEGRATION_TEST_EXTRAS
+    )
+    session.log(f"integration_deps_all: {integration_deps_all}")
+    session.install(*integration_deps_all)
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*([^#\s=]+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+    session.log(f"constraints_deps: {constraints_deps}")
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    # Note: If a dependency is added to the `prerel_deps` list,
+    # the `core_dependencies_from_source` list in the `core_deps_from_source`
+    # nox session should also be updated.
+    prerel_deps = [
+        "grpcio",
+    ]
+
+    for dep in prerel_deps:
+        session.install("--pre", "--no-deps", "--ignore-installed", dep)
+        # TODO(https://github.com/grpc/grpc/issues/38965): Add `grpcio-status``
+        # to the dictionary below once this bug is fixed.
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13643): Add
+        # `googleapis-common-protos` to the dictionary below once this bug is fixed.
+        package_namespaces = {
+            "grpcio": "grpc",
+        }
+
+        version_namespace = package_namespaces.get(dep)
+
+        print(f"Installed {dep}")
+        if version_namespace:
+            session.run(
+                "python",
+                "-c",
+                f"import {version_namespace}; print({version_namespace}.__version__)",
+            )
+
+    session.run(
+        "py.test",
+        "tests/unit",
+        env={},
+    )
