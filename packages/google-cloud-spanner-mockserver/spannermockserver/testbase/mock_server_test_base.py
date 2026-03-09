@@ -15,9 +15,13 @@
 """
 Base class for tests using the mock Spanner server.
 """
+
 import logging
 import unittest
 
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
+import grpc
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
@@ -31,9 +35,6 @@ from google.cloud.spanner_v1 import (
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.types import StructType
-import google.cloud.spanner_v1.types.result_set as result_set
-import google.cloud.spanner_v1.types.type as spanner_type
-import grpc
 
 from spannermockserver.mock_database_admin import DatabaseAdminServicer
 from spannermockserver.mock_spanner import SpannerServicer, start_mock_server
@@ -131,7 +132,6 @@ def add_result(sql: str, result: result_set.ResultSet):
 def set_database_dialect(
     dialect: DatabaseDialect = DatabaseDialect.GOOGLE_STANDARD_SQL,
 ):
-
     sql = (
         "select option_value from information_schema.database_options"
         " where option_name='database_dialect'"

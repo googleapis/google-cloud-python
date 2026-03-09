@@ -17,20 +17,20 @@ Mock Spanner Server for testing.
 """
 
 import base64
-from concurrent import futures
 import inspect
+from concurrent import futures
 
+import google.cloud.spanner_v1.types.commit_response as commit
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.spanner as spanner
+import google.cloud.spanner_v1.types.transaction as transaction
+import grpc
 from google.cloud.spanner_v1 import (
     ExecuteSqlRequest,
     ResultSetMetadata,
     TransactionOptions,
 )
-import google.cloud.spanner_v1.types.commit_response as commit
-import google.cloud.spanner_v1.types.result_set as result_set
-import google.cloud.spanner_v1.types.spanner as spanner
-import google.cloud.spanner_v1.types.transaction as transaction
 from google.protobuf import empty_pb2
-import grpc
 from grpc_status.rpc_status import _Status
 
 from .generated import spanner_database_admin_pb2_grpc as database_admin_grpc
@@ -57,9 +57,7 @@ class MockSpanner:
         self, sql: str, partial_result_sets: list[result_set.PartialResultSet]
     ):
         """Adds streaming SQL results for a specific SQL query."""
-        self.execute_streaming_sql_results[sql.lower().strip()] = (
-            partial_result_sets
-        )
+        self.execute_streaming_sql_results[sql.lower().strip()] = partial_result_sets
 
     def get_result(self, sql: str) -> result_set.ResultSet:
         """Retrieves the result for a specific SQL query."""
@@ -88,9 +86,7 @@ class MockSpanner:
         if self.execute_streaming_sql_results.get(sql.lower().strip()):
             partials = self.execute_streaming_sql_results[sql.lower().strip()]
         else:
-            partials = self.get_result_as_partial_result_sets(
-                sql, started_transaction
-            )
+            partials = self.get_result_as_partial_result_sets(sql, started_transaction)
         if started_transaction:
             partials[0].metadata.transaction = started_transaction
         return partials
@@ -160,15 +156,11 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         sessions = []
         for i in range(request.session_count):
             sessions.append(
-                self.__create_session(
-                    request.database, request.session_template
-                )
+                self.__create_session(request.database, request.session_template)
             )
         return spanner.BatchCreateSessionsResponse(dict(session=sessions))
 
-    def __create_session(
-        self, database: str, session_template: spanner.Session
-    ):
+    def __create_session(self, database: str, session_template: spanner.Session):
         """Helper method to create a session."""
         self.session_counter += 1
         session = spanner.Session()
@@ -285,9 +277,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         if not request.transaction_id == b"":
             tx = self.transactions.get(request.transaction_id)
             if tx is None:
-                raise ValueError(
-                    f"Transaction not found: {request.transaction_id}"
-                )
+                raise ValueError(f"Transaction not found: {request.transaction_id}")
             tx_id = request.transaction_id
         elif not request.single_use_transaction == TransactionOptions():
             tx = self.__create_transaction(

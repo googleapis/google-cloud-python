@@ -29,9 +29,7 @@ class TestMockSpanner(MockServerTestBase):
             metadata=result_set.ResultSetMetadata(
                 row_type=StructType(
                     fields=[
-                        StructType.Field(
-                            name="col1", type=Type(code=TypeCode.INT64)
-                        )
+                        StructType.Field(name="col1", type=Type(code=TypeCode.INT64))
                     ]
                 )
             ),
@@ -67,9 +65,7 @@ class TestMockSpanner(MockServerTestBase):
                         StructType.Field(
                             name="SingerId", type=Type(code=TypeCode.INT64)
                         ),
-                        StructType.Field(
-                            name="Name", type=Type(code=TypeCode.STRING)
-                        ),
+                        StructType.Field(name="Name", type=Type(code=TypeCode.STRING)),
                     ]
                 )
             ),
@@ -100,9 +96,7 @@ class TestMockSpanner(MockServerTestBase):
         sql = "UPDATE Singers SET Name='Test' WHERE SingerId=1"
         self.spanner_service.mock_spanner.add_result(
             sql,
-            result_set.ResultSet(
-                stats=result_set.ResultSetStats(row_count_exact=1)
-            ),
+            result_set.ResultSet(stats=result_set.ResultSetStats(row_count_exact=1)),
         )
 
         def unit_of_work(transaction):
@@ -114,9 +108,7 @@ class TestMockSpanner(MockServerTestBase):
         sql = "UPDATE Singers SET Name='Test' WHERE SingerId=1"
         self.spanner_service.mock_spanner.add_result(
             sql,
-            result_set.ResultSet(
-                stats=result_set.ResultSetStats(row_count_exact=1)
-            ),
+            result_set.ResultSet(stats=result_set.ResultSetStats(row_count_exact=1)),
         )
         status = status_pb2.Status(
             code=code_pb2.PERMISSION_DENIED, message="Permission denied"
@@ -136,9 +128,7 @@ class TestMockSpanner(MockServerTestBase):
         sql = "UPDATE Singers SET Name='Test' WHERE SingerId=1"
         self.spanner_service.mock_spanner.add_result(
             sql,
-            result_set.ResultSet(
-                stats=result_set.ResultSetStats(row_count_exact=1)
-            ),
+            result_set.ResultSet(stats=result_set.ResultSetStats(row_count_exact=1)),
         )
 
         def unit_of_work(transaction):

@@ -60,9 +60,7 @@ class TestMockSpannerUnit(unittest.TestCase):
         context = mock.MagicMock()
 
         session = self.servicer.CreateSession(request, context)
-        self.assertIn(
-            "projects/p/instances/i/databases/d/sessions/1", session.name
-        )
+        self.assertIn("projects/p/instances/i/databases/d/sessions/1", session.name)
         self.assertEqual(self.servicer.session_counter, 1)
 
     def test_servicer_get_session(self):

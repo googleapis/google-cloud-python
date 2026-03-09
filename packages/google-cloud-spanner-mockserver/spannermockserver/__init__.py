@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 """Python wrapper for the Spanner MockServer."""
+
 import logging
 from typing import Final
 
