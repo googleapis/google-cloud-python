@@ -64,26 +64,59 @@ class TestMockSpannerUnit(unittest.TestCase):
         self.assertEqual(self.servicer.session_counter, 1)
 
     def test_servicer_get_session(self):
-        request = mock.MagicMock()
+        create_request = mock.MagicMock()
+        create_request.database = "projects/p/instances/i/databases/d"
+        create_request.session = spanner.Session()
         context = mock.MagicMock()
+
+        created_session = self.servicer.CreateSession(create_request, context)
+
+        request = mock.MagicMock()
+        request.name = created_session.name
 
         session = self.servicer.GetSession(request, context)
         self.assertIsInstance(session, spanner.Session)
+        self.assertEqual(session.name, created_session.name)
+
+        # Test not found
+        request_not_found = mock.MagicMock()
+        request_not_found.name = "not_found"
+        context_not_found = mock.MagicMock()
+
+        # It calls context.abort and returns None because context is mocked
+        result = self.servicer.GetSession(request_not_found, context_not_found)
+        context_not_found.abort.assert_called_once()
+        self.assertIsNone(result)
 
     def test_servicer_list_sessions(self):
-        request = mock.MagicMock()
+        create_request = mock.MagicMock()
+        create_request.database = "projects/p/instances/i/databases/d"
+        create_request.session = spanner.Session()
         context = mock.MagicMock()
 
-        sessions = self.servicer.ListSessions(request, context)
-        self.assertEqual(len(sessions), 1)
-        self.assertIsInstance(sessions[0], spanner.Session)
+        self.servicer.CreateSession(create_request, context)
+
+        request = mock.MagicMock()
+
+        response = self.servicer.ListSessions(request, context)
+        self.assertEqual(len(response.sessions), 1)
+        self.assertIsInstance(response.sessions[0], spanner.Session)
 
     def test_servicer_delete_session(self):
-        request = mock.MagicMock()
+        create_request = mock.MagicMock()
+        create_request.database = "projects/p/instances/i/databases/d"
+        create_request.session = spanner.Session()
         context = mock.MagicMock()
+
+        created_session = self.servicer.CreateSession(create_request, context)
+        self.assertIn(created_session.name, self.servicer.sessions)
+
+        request = mock.MagicMock()
+        request.name = created_session.name
 
         response = self.servicer.DeleteSession(request, context)
         self.assertIsNotNone(response)
+        self.assertNotIn(created_session.name, self.servicer.sessions)
 
     def test_servicer_execute_sql(self):
         sql = "SELECT 1"
@@ -107,3 +140,20 @@ class TestMockSpannerUnit(unittest.TestCase):
 
         response = self.servicer.Read(request, context)
         self.assertIsInstance(response, result_set.ResultSet)
+
+    def test_servicer_rollback(self):
+        request = mock.MagicMock()
+        request.transaction_id = b"test_transaction"
+        context = mock.MagicMock()
+
+        # Test rollback with non-existent transaction
+        response = self.servicer.Rollback(request, context)
+        self.assertIsNotNone(response)
+
+        # Add transaction and rollback
+        self.servicer.transactions[request.transaction_id] = "mock_transaction"
+        self.assertIn(request.transaction_id, self.servicer.transactions)
+
+        response = self.servicer.Rollback(request, context)
+        self.assertIsNotNone(response)
+        self.assertNotIn(request.transaction_id, self.servicer.transactions)

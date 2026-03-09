@@ -174,16 +174,23 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
     def GetSession(self, request, context):
         """Retrieves a session."""
         self._requests.append(request)
-        return spanner.Session()
+        session = self.sessions.get(request.name)
+        if session is None:
+            context.abort(
+                grpc.StatusCode.NOT_FOUND, f"Session not found: {request.name}"
+            )
+        return session
 
     def ListSessions(self, request, context):
         """Lists sessions."""
         self._requests.append(request)
-        return [spanner.Session()]
+        return spanner.ListSessionsResponse(sessions=list(self.sessions.values()))
 
     def DeleteSession(self, request, context):
         """Deletes a session."""
         self._requests.append(request)
+        if request.name in self.sessions:
+            del self.sessions[request.name]
         return empty_pb2.Empty()
 
     def ExecuteSql(self, request, context):
@@ -292,6 +299,8 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
     def Rollback(self, request, context):
         """Rolls back a transaction."""
         self._requests.append(request)
+        if request.transaction_id in self.transactions:
+            del self.transactions[request.transaction_id]
         return empty_pb2.Empty()
 
     def PartitionQuery(self, request, context):
