@@ -332,10 +332,6 @@ tests:
   - description: testArrayAggDistinct
     pipeline:
       - Collection: books
-      - Where:
-          - FunctionExpression.equal:
-              - Field: genre
-              - Constant: Science Fiction
       - Aggregate:
         - AliasedExpression:
             - FunctionExpression.array_agg_distinct:
@@ -343,20 +339,20 @@ tests:
             - "distinct_genres"
     assert_results:
       - distinct_genres:
-        - "Science Fiction"
+        - 'Dystopian'
+        - 'Romance'
+        - 'Magical Realism'
+        - 'Fantasy'
+        - 'Southern Gothic'
+        - 'Science Fiction'
+        - 'Psychological Thriller'
+        - 'Modernist'
     assert_proto:
       pipeline:
         stages:
         - args:
           - referenceValue: /books
           name: collection
-        - args:
-          - functionValue:
-              args:
-              - fieldReferenceValue: genre
-              - stringValue: Science Fiction
-              name: equal
-          name: where
         - args:
           - mapValue:
               fields:
