@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package utilities;
-
-message StateProto {
-  string name = 1;
-  string post_abbr = 2;
-}
