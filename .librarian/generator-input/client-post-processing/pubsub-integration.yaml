@@ -175,6 +175,7 @@ replacements:
 
   # --- DOCUMENTATION RESTORATIONS ---
 
+  # --- FIX: Restore custom README.rst Introduction ---
   - paths:
       - "packages/google-cloud-pubsub/README.rst"
     before: '`Google Cloud Pub/Sub`_: is designed to provide reliable, many-to-many, asynchronous messaging between applications\. Publisher applications can send messages to a topic and other applications can subscribe to that topic to receive the messages\. By decoupling senders and receivers, Google Cloud Pub/Sub allows developers to communicate between independently written applications\.'
@@ -193,11 +194,14 @@ replacements:
       independently written applications.
     count: 1
 
+  # --- FIX: Restore README.rst Example Usage & Footer sections ---
   - paths:
       - "packages/google-cloud-pubsub/README.rst"
-    before: '(    pip install google-cloud-pubsub\n\n)Next Steps\n~~~~~~~~~~'
+    before: '([ \t]+pip install google-cloud-pubsub)\n\nNext Steps'
     after: |-
-      \g<1>Example Usage
+      \g<1>
+
+      Example Usage
       ~~~~~~~~~~~~~
 
       Publishing
@@ -336,12 +340,12 @@ replacements:
       .. _the LICENSE: https://github.com/googleapis/google-cloud-python/blob/main/LICENSE
 
       Next Steps
-      ~~~~~~~~~~
     count: 1
 
+  # --- FIX: Restore docs/index.rst API Documentation Tree ---
   - paths:
       - "packages/google-cloud-pubsub/docs/index.rst"
-    before: 'API Reference\n-------------\n\.\. toctree::\n[ \t]*:maxdepth: 2\n\n[ \t]*pubsub_v1/services_\n[ \t]*pubsub_v1/types_'
+    before: 'API Reference\n-------------\n(?:[ \t]*)\.\. toctree::\n(?:[ \t]*):maxdepth: 2\n\n(?:[ \t]*)pubsub_v1/services_\n(?:[ \t]*)pubsub_v1/types_'
     after: |-
       API Documentation
       -----------------
@@ -371,9 +375,10 @@ replacements:
           UPGRADING
     count: 1
 
+  # --- FIX: Restore docs/index.rst hidden overview ---
   - paths:
       - "packages/google-cloud-pubsub/docs/index.rst"
-    before: '\.\. toctree::\n[ \t]*:maxdepth: 2\n\n[ \t]*CHANGELOG(?!\n\n\n\.\. toctree::)'
+    before: '\.\. toctree::\n(?:[ \t]*):maxdepth: 2\n\n(?:[ \t]*)CHANGELOG(?!\n\n\n\.\. toctree::)'
     after: |-
       .. toctree::
           :maxdepth: 2
