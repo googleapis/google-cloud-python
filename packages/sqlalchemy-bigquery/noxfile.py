@@ -168,6 +168,9 @@ def lint(session):
         "--check",
         *LINT_PATHS,
     )
+
+    session.run("python", "-m", "pip", "freeze")
+
     session.run("flake8", "sqlalchemy_bigquery", "tests")
 
 
@@ -176,6 +179,9 @@ def lint(session):
 def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
+
+    session.run("python", "-m", "pip", "freeze")
+
     session.run(
         "black",
         *LINT_PATHS,
@@ -190,6 +196,9 @@ def format(session):
     to format code to uniform standard.
     """
     session.install(BLACK_VERSION, ISORT_VERSION)
+
+    session.run("python", "-m", "pip", "freeze")
+
     # Use the --fss option to sort imports using strict alphabetical order.
     # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
     session.run(
@@ -208,6 +217,9 @@ def format(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments", "setuptools")
+
+    session.run("python", "-m", "pip", "freeze")
+ 
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
@@ -276,6 +288,8 @@ def unit(session, protobuf_implementation, install_extras=True):
     # The 'cpp' implementation requires Protobuf<4.
     if protobuf_implementation == "cpp":
         session.install("protobuf<4")
+
+    session.run("python", "-m", "pip", "freeze")
 
     # Run py.test against the unit tests.
     session.run(
@@ -354,6 +368,8 @@ def system(session):
 
     install_systemtest_dependencies(session, "-c", constraints_path)
 
+    session.run("python", "-m", "pip", "freeze")
+
     # Run py.test against the system tests.
     if system_test_exists:
         session.run(
@@ -402,6 +418,8 @@ def system_noextras(session):
     global SYSTEM_TEST_EXTRAS_BY_PYTHON
     SYSTEM_TEST_EXTRAS_BY_PYTHON = False
     install_systemtest_dependencies(session, "-c", constraints_path)
+
+    session.run("python", "-m", "pip", "freeze")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -648,6 +666,8 @@ def prerelease_deps(session, protobuf_implementation):
         "requests",
     ]
     session.install(*other_deps)
+
+    session.run("python", "-m", "pip", "freeze")
 
     # Print out prerelease package versions
     session.run(
