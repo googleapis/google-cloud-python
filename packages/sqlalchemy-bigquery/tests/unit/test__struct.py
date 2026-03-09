@@ -16,11 +16,17 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 import datetime
 
+import packaging.version
 import pytest
 
 import sqlalchemy
+
+
+sqlalchemy_version = packaging.version.parse(sqlalchemy.__version__)
+SQL_2_0 = sqlalchemy_version >= packaging.version.parse("2.0")
 
 
 def _test_struct():
@@ -90,9 +96,24 @@ def test_struct_traversal_project(faux_conn, expr, sql):
 @pytest.mark.parametrize(
     "expr,sql",
     [
-        (_col()["name"] == "x", "(`t`.`person`.name) = %(param_1:STRING)s"),
-        (_col()["Name"] == "x", "(`t`.`person`.Name) = %(param_1:STRING)s"),
-        (_col().NAME == "x", "(`t`.`person`.NAME) = %(param_1:STRING)s"),
+        (
+            _col()["name"] == "bob",
+            "(`t`.`person`.name) = %(param_1:STRING)s"
+            if not SQL_2_0
+            else "`t`.`person`.name = %(param_1:STRING)s",
+        ),
+        (
+            _col()["Name"] == "bob",
+            "(`t`.`person`.Name) = %(param_1:STRING)s"
+            if not SQL_2_0
+            else "`t`.`person`.Name = %(param_1:STRING)s",
+        ),
+        (
+            _col()["NAME"] == "bob",
+            "(`t`.`person`.NAME) = %(param_1:STRING)s"
+            if not SQL_2_0
+            else "`t`.`person`.NAME = %(param_1:STRING)s",
+        ),
         (
             _col().children[0] == dict(name="foo", bdate=datetime.date(2020, 1, 1)),
             "(`t`.`person`.children)[OFFSET(%(param_1:INT64)s)]"
@@ -106,11 +127,17 @@ def test_struct_traversal_project(faux_conn, expr, sql):
         (
             _col().children[0]["bdate"] == datetime.date(2021, 8, 30),
             "(((`t`.`person`.children)[OFFSET(%(param_1:INT64)s)]).bdate)"
+            " = %(param_2:DATE)s"
+            if not SQL_2_0
+            else "((`t`.`person`.children)[OFFSET(%(param_1:INT64)s)]).bdate"
             " = %(param_2:DATE)s",
         ),
         (
             _col().children[0].bdate == datetime.date(2021, 8, 30),
             "(((`t`.`person`.children)[OFFSET(%(param_1:INT64)s)]).bdate)"
+            " = %(param_2:DATE)s"
+            if not SQL_2_0
+            else "((`t`.`person`.children)[OFFSET(%(param_1:INT64)s)]).bdate"
             " = %(param_2:DATE)s",
         ),
     ],

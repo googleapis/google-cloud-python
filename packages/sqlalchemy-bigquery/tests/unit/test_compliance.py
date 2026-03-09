@@ -56,7 +56,9 @@ def test_distinct_selectable_in_unions(faux_conn):
     s2 = select(table).where(table.c.id == 3).distinct()
 
     u1 = union(s1, s2).limit(2)
-    assert_result(faux_conn, u1.order_by(u1.c.id), [(2, 2, 3), (3, 3, 4)])
+    assert_result(
+        faux_conn, u1.order_by(u1.selected_columns.id), [(2, 2, 3), (3, 3, 4)]
+    )
 
 
 def test_limit_offset_aliased_selectable_in_unions(faux_conn):
@@ -79,7 +81,9 @@ def test_limit_offset_aliased_selectable_in_unions(faux_conn):
     )
 
     u1 = union(s1, s2).limit(2)
-    assert_result(faux_conn, u1.order_by(u1.c.id), [(2, 2, 3), (3, 3, 4)])
+    assert_result(
+        faux_conn, u1.order_by(u1.selected_columns.id), [(2, 2, 3), (3, 3, 4)]
+    )
 
 
 def test_percent_sign_round_trip(faux_conn, metadata):
