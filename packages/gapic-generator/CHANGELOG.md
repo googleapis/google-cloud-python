@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.10](https://github.com/googleapis/gapic-generator-python/compare/v1.30.9...v1.30.10) (2026-03-09)
+
+
+### Bug Fixes
+
+* improve type checking (#2530) ([bc3836becb7d0a4e06a1e30128370b525c0762f5](https://github.com/googleapis/gapic-generator-python/commit/bc3836becb7d0a4e06a1e30128370b525c0762f5))
+* Allow protobuf 7.x (#2575) ([98137d07f6cbb1aec87826638924c6e0eba78c3d](https://github.com/googleapis/gapic-generator-python/commit/98137d07f6cbb1aec87826638924c6e0eba78c3d))
+
 ## [1.30.9](https://github.com/googleapis/gapic-generator-python/compare/v1.30.8...v1.30.9) (2026-02-19)
 
 ## [1.30.8](https://github.com/googleapis/gapic-generator-python/compare/v1.30.7...v1.30.8) (2026-02-09)
