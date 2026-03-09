@@ -275,7 +275,7 @@ class _BasePipeline:
             stages.FindNearest(field, vector, distance_measure, options)
         )
 
-    def literals(self, *documents: Selectable | dict) -> "_BasePipeline":
+    def literals(self, *documents: Expression | dict) -> "_BasePipeline":
         """
         Returns documents from a fixed set of predefined document objects.
 
@@ -290,7 +290,7 @@ class _BasePipeline:
             ...     {"name": "alice", "age": 40}
             ... ]
             >>> pipeline = client.pipeline()
-            ...     .literals(Constant.of(documents))
+            ...     .literals(documents)
             ...     .where(field("age").lessThan(35))
 
             Output documents:
@@ -320,7 +320,7 @@ class _BasePipeline:
             ...     {"x": Constant.of("foo-bar-baz").char_length()},
             ...     {"x": Constant.of("bar").char_length()}
             ... ]
-            >>> pipeline = client.pipeline().literals(Constant.of(documents))
+            >>> pipeline = client.pipeline().literals(documents)
 
             Output documents:
             ```json
@@ -331,10 +331,8 @@ class _BasePipeline:
             ```
 
         Args:
-            documents: A `str` or `Selectable` expression. If a `str`, it's
-                       treated as a field path to an array of documents.
-                       If a `Selectable`, it's usually a `Constant`
-                       containing an array of documents (as dictionaries).
+            documents: One or more documents to be returned by this stage. Each can be a `dict`
+                       or an `Expression`.
         Returns:
             A new Pipeline object with this stage appended to the stage list.
         """
