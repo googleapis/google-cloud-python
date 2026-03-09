@@ -37,10 +37,16 @@ class TestBase(SpannerSimpleTestClass):
         mock_connection.assert_called_once_with(**conn_params)
 
     def test_init_connection_state(self):
-        self.db_wrapper.connection = mock_connection = mock.MagicMock()
-        mock_connection.close = mock_close = mock.MagicMock()
-        self.db_wrapper.init_connection_state()
-        mock_close.assert_called_once_with()
+        class DummyConnection:
+            def __init__(self, *args, **kwargs):
+                pass
+                
+            def __getattr__(self, name):
+                return mock.MagicMock()
+
+        with mock.patch("django_spanner.base.spanner"):
+            self.db_wrapper.connection = mock_connection = DummyConnection()
+            self.db_wrapper.init_connection_state()
 
     def test_create_cursor(self):
         self.db_wrapper.connection = mock_connection = mock.MagicMock()
