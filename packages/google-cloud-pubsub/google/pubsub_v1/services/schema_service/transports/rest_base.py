@@ -17,15 +17,13 @@ import json  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
 from google.iam.v1 import (
     iam_policy_pb2,  # type: ignore
     policy_pb2,  # type: ignore
 )
-from google.protobuf import (
-    empty_pb2,  # type: ignore
-    json_format,
-)
+from google.protobuf import json_format
 
 from google.pubsub_v1.types import schema
 from google.pubsub_v1.types import schema as gp_schema

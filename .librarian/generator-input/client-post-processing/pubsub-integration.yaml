@@ -13,8 +13,6 @@ replacements:
       \g<1>DEFAULT_ENDPOINT = "pubsub.googleapis.com"
     count: 3
 
-  # --- FIX: Move emulator imports to the top of the file ---
-  # --- FIX: Move emulator imports to the top of the file ---
   - paths: 
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
     before: 'import json\n(?:[ \t]*\n)*import logging as std_logging'
@@ -25,7 +23,6 @@ replacements:
       import logging as std_logging
     count: 3
 
-  # --- FIX: Remove inline imports from the emulator block ---
   - paths: 
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/*/client.py"
     before: 'class\n(?:[ \t]*\n)*([ \t]+)self\._transport = transport_init\('
@@ -115,7 +112,6 @@ replacements:
       \g<1>rpc = self._transport._wrapped_methods[self._transport.streaming_pull]
     count: 1
 
-  # --- FIX: Restore TimeoutType definition to __init__.py ---
   - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/types/__init__.py"
     before: '# limitations under the License\.\n#\nfrom \.pubsub import \('
@@ -144,37 +140,30 @@ replacements:
       \g<1>"AcknowledgeRequest",
     count: 1
 
-  # --- FIX: Restore TimeoutType imports to Client signatures ---
   - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
-      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
-      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
     before: 'from google\.pubsub_v1\.types import pubsub'
     after: |-
       from google.pubsub_v1.types import TimeoutType, pubsub
-    count: 4
+    count: 2
 
   - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
-      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
-      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
     before: 'timeout: Union\[float, object\] = gapic_v1\.method\.DEFAULT'
     after: 'timeout: TimeoutType = gapic_v1.method.DEFAULT'
-    count: 62
-  # --- FIX: Restore TimeoutType docstrings in clients ---
+    count: 24
+
   - paths:
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/client.py"
       - "packages/google-cloud-pubsub/google/pubsub_v1/services/publisher/async_client.py"
-      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/client.py"
-      - "packages/google-cloud-pubsub/google/pubsub_v1/services/subscriber/async_client.py"
     before: '([ \t]+)timeout \(float\): The timeout for this request\.'
     after: |-
       \g<1>timeout (TimeoutType):
       \g<1>    The timeout for this request.
-    count: 62
-  # --- FIX: Restore .coveragerc omitted files ---
+    count: 24
+
   - paths:
       - "packages/google-cloud-pubsub/.coveragerc"
     before: 'omit =\n(?:[ \t]*\n)*([ \t]+)google/pubsub/__init__\.py'
@@ -182,4 +171,41 @@ replacements:
       omit =
       \g<1>google/cloud/__init__.py
       \g<1>google/pubsub/__init__.py
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/tests/unit/gapic/pubsub_v1/test_subscriber.py"
+    before: 'import json\n(?:[ \t]*\n)*import math'
+    after: |-
+      import json
+      import warnings
+      import math
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/tests/unit/gapic/pubsub_v1/test_subscriber.py"
+    before: '# using the keyword arguments to the method\.\n(?:[ \t]*\n)*([ \t]+)client\.pull\(\n(?:[ \t]+)subscription="subscription_value",\n(?:[ \t]+)return_immediately=True,\n(?:[ \t]+)max_messages=1277,\n(?:[ \t]+)\)'
+    after: |-
+      # using the keyword arguments to the method.
+      \g<1>with warnings.catch_warnings():
+      \g<1>    warnings.simplefilter("ignore", category=DeprecationWarning)
+      \g<1>    client.pull(
+      \g<1>        subscription="subscription_value",
+      \g<1>        return_immediately=True,
+      \g<1>        max_messages=1277,
+      \g<1>    )
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/tests/unit/gapic/pubsub_v1/test_subscriber.py"
+    before: '# using the keyword arguments to the method\.\n(?:[ \t]*\n)*([ \t]+)response = await client\.pull\(\n(?:[ \t]+)subscription="subscription_value",\n(?:[ \t]+)return_immediately=True,\n(?:[ \t]+)max_messages=1277,\n(?:[ \t]+)\)'
+    after: |-
+      # using the keyword arguments to the method.
+      \g<1>with warnings.catch_warnings():
+      \g<1>    warnings.simplefilter("ignore", category=DeprecationWarning)
+      \g<1>    response = await client.pull(
+      \g<1>        subscription="subscription_value",
+      \g<1>        return_immediately=True,
+      \g<1>        max_messages=1277,
+      \g<1>    )
     count: 1

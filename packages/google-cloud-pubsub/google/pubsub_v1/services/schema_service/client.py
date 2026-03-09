@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import functools
 import json
+import functools
+import grpc
 import logging as std_logging
 import os
 import re
@@ -62,12 +63,11 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-import grpc
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.iam.v1 import (
     iam_policy_pb2,  # type: ignore
     policy_pb2,  # type: ignore
 )
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.pubsub_v1.services.schema_service import pagers
 from google.pubsub_v1.types import schema
@@ -148,6 +148,12 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
+    _DEFAULT_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/pubsub",
+    )
+    SERVICE_ADDRESS = "pubsub.googleapis.com:443"
+    """The default address of the service."""
     DEFAULT_ENDPOINT = "pubsub.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
@@ -622,11 +628,9 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SchemaServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SchemaServiceClient._read_environment_variables()
+        )
         self._client_cert_source = SchemaServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -694,7 +698,6 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 else cast(Callable[..., SchemaServiceTransport], transport)
             )
             # initialize with the provided callable or the passed in class
-
             emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
             if emulator_host:
                 if issubclass(transport_init, type(self)._transport_registry["grpc"]):  # type: ignore
@@ -702,7 +705,6 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
                 else:
                     channel = grpc.aio.insecure_channel(target=emulator_host)
                 transport_init = functools.partial(transport_init, channel=channel)
-
             self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,

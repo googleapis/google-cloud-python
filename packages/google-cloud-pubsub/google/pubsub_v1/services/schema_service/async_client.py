@@ -44,11 +44,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.iam.v1 import (
     iam_policy_pb2,  # type: ignore
     policy_pb2,  # type: ignore
 )
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.pubsub_v1.services.schema_service import pagers
 from google.pubsub_v1.types import schema
@@ -120,9 +120,10 @@ class SchemaServiceAsyncClient:
         Returns:
             SchemaServiceAsyncClient: The constructed client.
         """
-        return SchemaServiceClient.from_service_account_info.__func__(
-            SchemaServiceAsyncClient, info, *args, **kwargs
-        )  # type: ignore
+        sa_info_func = (
+            SchemaServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(SchemaServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -138,9 +139,10 @@ class SchemaServiceAsyncClient:
         Returns:
             SchemaServiceAsyncClient: The constructed client.
         """
-        return SchemaServiceClient.from_service_account_file.__func__(
-            SchemaServiceAsyncClient, filename, *args, **kwargs
-        )  # type: ignore
+        sa_file_func = (
+            SchemaServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(SchemaServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

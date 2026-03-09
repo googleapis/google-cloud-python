@@ -20,6 +20,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
@@ -30,7 +31,6 @@ from google.iam.v1 import (
     iam_policy_pb2,  # type: ignore
     policy_pb2,  # type: ignore
 )
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 
 from google.pubsub_v1.types import pubsub

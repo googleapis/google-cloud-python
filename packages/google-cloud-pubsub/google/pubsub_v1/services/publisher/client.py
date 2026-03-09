@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import functools
 import json
+import functools
+import grpc
 import logging as std_logging
 import os
 import re
@@ -40,7 +41,6 @@ from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.api_core import timeout as timeouts  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
@@ -63,14 +63,11 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-import grpc
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.iam.v1 import (
     iam_policy_pb2,  # type: ignore
     policy_pb2,  # type: ignore
-)
-from google.protobuf import (
-    duration_pb2,  # type: ignore
-    field_mask_pb2,  # type: ignore
 )
 
 from google.pubsub_v1.services.publisher import pagers
@@ -153,17 +150,12 @@ class PublisherClient(metaclass=PublisherClientMeta):
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-
-    # The scopes needed to make gRPC calls to all of the methods defined in
-    # this service
     _DEFAULT_SCOPES = (
         "https://www.googleapis.com/auth/cloud-platform",
         "https://www.googleapis.com/auth/pubsub",
     )
-
     SERVICE_ADDRESS = "pubsub.googleapis.com:443"
     """The default address of the service."""
-
     DEFAULT_ENDPOINT = "pubsub.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
@@ -715,11 +707,9 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = PublisherClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            PublisherClient._read_environment_variables()
+        )
         self._client_cert_source = PublisherClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -784,7 +774,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 else cast(Callable[..., PublisherTransport], transport)
             )
             # initialize with the provided callable or the passed in class
-
             emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
             if emulator_host:
                 if issubclass(transport_init, type(self)._transport_registry["grpc"]):  # type: ignore
@@ -792,7 +781,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 else:
                     channel = grpc.aio.insecure_channel(target=emulator_host)
                 transport_init = functools.partial(transport_init, channel=channel)
-
             self._transport = transport_init(
                 credentials=credentials,
                 credentials_file=self._client_options.credentials_file,
