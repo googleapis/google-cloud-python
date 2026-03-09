@@ -15,8 +15,8 @@
 # attempt download golang if not found
 if [[ ! -x "$(command -v go)" ]]; then
   echo "Downloading golang..."
-  wget  https://go.dev/dl/go1.20.2.linux-amd64.tar.gz
-  tar -xzf go1.20.2.linux-amd64.tar.gz
+  wget  https://go.dev/dl/go1.20.4.linux-amd64.tar.gz
+  tar -xzf go1.20.4.linux-amd64.tar.gz
   export GOROOT=$(pwd)/go
   export PATH=$GOROOT/bin:$PATH
   export GOPATH=$HOME/go
