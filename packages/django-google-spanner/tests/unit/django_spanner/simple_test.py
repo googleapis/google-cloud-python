@@ -17,7 +17,7 @@ class SpannerSimpleTestClass(OpenTelemetryBase):
     @classmethod
     def setUpClass(cls):
         super(SpannerSimpleTestClass, cls).setUpClass()
-        cls.PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
+        cls.PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project")
 
         cls.INSTANCE_ID = "instance_id"
         cls.DATABASE_ID = "database_id"

@@ -123,7 +123,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         if "client" in self.settings_dict["OPTIONS"]:
             client = self.settings_dict["OPTIONS"]["client"]
         else:
-            client = spanner.Client(project=os.environ["GOOGLE_CLOUD_PROJECT"])
+            client = spanner.Client(project=os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project"))
         return client.instance(self.settings_dict["INSTANCE"])
 
     @property
@@ -149,7 +149,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
                   in Django Spanner format.
         """
         return {
-            "project": os.environ["GOOGLE_CLOUD_PROJECT"],
+            "project": os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project"),
             "instance_id": self.settings_dict["INSTANCE"],
             "database_id": self.settings_dict["NAME"],
             "user_agent": "django_spanner/2.2.0a1",

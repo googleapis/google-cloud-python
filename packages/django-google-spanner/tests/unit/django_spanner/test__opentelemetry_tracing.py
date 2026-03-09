@@ -21,7 +21,7 @@ from django_spanner import _opentelemetry_tracing
 
 from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
 
-PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
+PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project")
 INSTANCE_ID = "instance_id"
 DATABASE_ID = "database_id"
 OPTIONS = {"option": "dummy"}
@@ -105,7 +105,7 @@ if HAS_OPENTELEMETRY_INSTALLED:
             expected_attributes = {
                 "db.type": "spanner",
                 "db.engine": "django_spanner",
-                "db.project": os.environ["GOOGLE_CLOUD_PROJECT"],
+                "db.project": os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project"),
                 "db.instance": "instance_id",
                 "db.name": "database_id",
             }
