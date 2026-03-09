@@ -3354,7 +3354,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
     version: 0.6.0
-    last_generated_commit: 5c9602dbb5ac6856c07daf83be1fbd001a972ef3
+    last_generated_commit: 8f70147e819ed25cc75c73c4037ce64f9cbb68db
     apis:
       - path: google/cloud/vectorsearch/v1beta
         service_config: vectorsearch_v1beta.yaml
