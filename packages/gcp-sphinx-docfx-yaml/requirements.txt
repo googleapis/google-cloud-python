@@ -1,0 +1,11 @@
+# Install Sphinx plugin
+-e .
+
+# Tox specific dependencies
+tox
+mock
+pytest
+
+# Other dependencies
+black==25.9.0
+parameterized==0.8.1
