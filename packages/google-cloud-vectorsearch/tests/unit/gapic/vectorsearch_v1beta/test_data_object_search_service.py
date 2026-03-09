@@ -5311,8 +5311,39 @@ def test_parse_data_object_path():
     assert expected == actual
 
 
+def test_index_path():
+    project = "whelk"
+    location = "octopus"
+    collection = "oyster"
+    index = "nudibranch"
+    expected = "projects/{project}/locations/{location}/collections/{collection}/indexes/{index}".format(
+        project=project,
+        location=location,
+        collection=collection,
+        index=index,
+    )
+    actual = DataObjectSearchServiceClient.index_path(
+        project, location, collection, index
+    )
+    assert expected == actual
+
+
+def test_parse_index_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "collection": "winkle",
+        "index": "nautilus",
+    }
+    path = DataObjectSearchServiceClient.index_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataObjectSearchServiceClient.parse_index_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5322,7 +5353,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "abalone",
     }
     path = DataObjectSearchServiceClient.common_billing_account_path(**expected)
 
@@ -5332,7 +5363,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5342,7 +5373,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "clam",
     }
     path = DataObjectSearchServiceClient.common_folder_path(**expected)
 
@@ -5352,7 +5383,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5362,7 +5393,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = DataObjectSearchServiceClient.common_organization_path(**expected)
 
@@ -5372,7 +5403,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5382,7 +5413,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "nudibranch",
     }
     path = DataObjectSearchServiceClient.common_project_path(**expected)
 
@@ -5392,8 +5423,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5404,8 +5435,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = DataObjectSearchServiceClient.common_location_path(**expected)
 

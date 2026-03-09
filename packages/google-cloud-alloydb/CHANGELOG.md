@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-alloydb/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.7.0...google-cloud-alloydb-v0.8.0) (2026-03-05)
+
+
+### Features
+
+* Add a new field to support Dataplex integration configuration ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.6.0...google-cloud-alloydb-v0.7.0) (2026-01-08)
 
 

@@ -4544,6 +4544,7 @@ def test_insert_rest_call_success(request_type):
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "resource_status": {"storage_size_bytes": 1941},
         "satisfies_pzi": True,

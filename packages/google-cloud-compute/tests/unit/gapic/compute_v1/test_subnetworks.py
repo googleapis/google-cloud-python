@@ -5640,6 +5640,7 @@ def test_get_rest_call_success(request_type):
             purpose="purpose_value",
             region="region_value",
             reserved_internal_range="reserved_internal_range_value",
+            resolve_subnet_mask="resolve_subnet_mask_value",
             role="role_value",
             self_link="self_link_value",
             stack_type="stack_type_value",
@@ -5688,6 +5689,7 @@ def test_get_rest_call_success(request_type):
     assert response.purpose == "purpose_value"
     assert response.region == "region_value"
     assert response.reserved_internal_range == "reserved_internal_range_value"
+    assert response.resolve_subnet_mask == "resolve_subnet_mask_value"
     assert response.role == "role_value"
     assert response.self_link == "self_link_value"
     assert response.stack_type == "stack_type_value"
@@ -5960,6 +5962,7 @@ def test_insert_rest_call_success(request_type):
         "purpose": "purpose_value",
         "region": "region_value",
         "reserved_internal_range": "reserved_internal_range_value",
+        "resolve_subnet_mask": "resolve_subnet_mask_value",
         "role": "role_value",
         "secondary_ip_ranges": [
             {
@@ -6530,6 +6533,7 @@ def test_patch_rest_call_success(request_type):
         "purpose": "purpose_value",
         "region": "region_value",
         "reserved_internal_range": "reserved_internal_range_value",
+        "resolve_subnet_mask": "resolve_subnet_mask_value",
         "role": "role_value",
         "secondary_ip_ranges": [
             {

@@ -21469,6 +21469,7 @@ def test_add_network_interface_rest_call_success(request_type):
                 "subnetwork_range_name": "subnetwork_range_name_value",
             }
         ],
+        "enable_vpc_scoped_dns": True,
         "fingerprint": "fingerprint_value",
         "igmp_query": "igmp_query_value",
         "internal_ipv6_prefix_length": 2831,
@@ -22516,6 +22517,7 @@ def test_bulk_insert_rest_call_success(request_type):
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
                     ],
+                    "enable_vpc_scoped_dns": True,
                     "fingerprint": "fingerprint_value",
                     "igmp_query": "igmp_query_value",
                     "internal_ipv6_prefix_length": 2831,
@@ -22584,8 +22586,16 @@ def test_bulk_insert_rest_call_success(request_type):
                 "fingerprint": "fingerprint_value",
                 "items": ["items_value1", "items_value2"],
             },
+            "workload_identity_config": {
+                "identity": "identity_value",
+                "identity_certificate_enabled": True,
+            },
         },
-        "location_policy": {"locations": {}, "target_shape": "target_shape_value"},
+        "location_policy": {
+            "locations": {},
+            "target_shape": "target_shape_value",
+            "zones": [{"zone": "zone_value"}],
+        },
         "min_count": 972,
         "name_pattern": "name_pattern_value",
         "per_instance_properties": {},
@@ -24569,6 +24579,7 @@ def test_insert_rest_call_success(request_type):
                         "subnetwork_range_name": "subnetwork_range_name_value",
                     }
                 ],
+                "enable_vpc_scoped_dns": True,
                 "fingerprint": "fingerprint_value",
                 "igmp_query": "igmp_query_value",
                 "internal_ipv6_prefix_length": 2831,
@@ -24609,6 +24620,7 @@ def test_insert_rest_call_success(request_type):
                 "enable_os_inventory_metadata_value": True,
                 "enable_osconfig_metadata_value": True,
                 "enable_oslogin_metadata_value": True,
+                "gce_container_declaration_metadata_value": True,
                 "serial_port_enable_metadata_value": True,
                 "serial_port_logging_enable_metadata_value": True,
                 "vm_dns_setting_metadata_value": "vm_dns_setting_metadata_value_value",
@@ -24681,6 +24693,10 @@ def test_insert_rest_call_success(request_type):
         "tags": {
             "fingerprint": "fingerprint_value",
             "items": ["items_value1", "items_value2"],
+        },
+        "workload_identity_config": {
+            "identity": "identity_value",
+            "identity_certificate_enabled": True,
         },
         "zone": "zone_value",
     }
@@ -30868,6 +30884,7 @@ def test_update_rest_call_success(request_type):
                         "subnetwork_range_name": "subnetwork_range_name_value",
                     }
                 ],
+                "enable_vpc_scoped_dns": True,
                 "fingerprint": "fingerprint_value",
                 "igmp_query": "igmp_query_value",
                 "internal_ipv6_prefix_length": 2831,
@@ -30908,6 +30925,7 @@ def test_update_rest_call_success(request_type):
                 "enable_os_inventory_metadata_value": True,
                 "enable_osconfig_metadata_value": True,
                 "enable_oslogin_metadata_value": True,
+                "gce_container_declaration_metadata_value": True,
                 "serial_port_enable_metadata_value": True,
                 "serial_port_logging_enable_metadata_value": True,
                 "vm_dns_setting_metadata_value": "vm_dns_setting_metadata_value_value",
@@ -30980,6 +30998,10 @@ def test_update_rest_call_success(request_type):
         "tags": {
             "fingerprint": "fingerprint_value",
             "items": ["items_value1", "items_value2"],
+        },
+        "workload_identity_config": {
+            "identity": "identity_value",
+            "identity_certificate_enabled": True,
         },
         "zone": "zone_value",
     }
@@ -31725,6 +31747,7 @@ def test_update_network_interface_rest_call_success(request_type):
                 "subnetwork_range_name": "subnetwork_range_name_value",
             }
         ],
+        "enable_vpc_scoped_dns": True,
         "fingerprint": "fingerprint_value",
         "igmp_query": "igmp_query_value",
         "internal_ipv6_prefix_length": 2831,

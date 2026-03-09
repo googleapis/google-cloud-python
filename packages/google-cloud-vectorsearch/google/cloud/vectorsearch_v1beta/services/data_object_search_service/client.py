@@ -278,6 +278,30 @@ class DataObjectSearchServiceClient(metaclass=DataObjectSearchServiceClientMeta)
         return m.groupdict() if m else {}
 
     @staticmethod
+    def index_path(
+        project: str,
+        location: str,
+        collection: str,
+        index: str,
+    ) -> str:
+        """Returns a fully-qualified index string."""
+        return "projects/{project}/locations/{location}/collections/{collection}/indexes/{index}".format(
+            project=project,
+            location=location,
+            collection=collection,
+            index=index,
+        )
+
+    @staticmethod
+    def parse_index_path(path: str) -> Dict[str, str]:
+        """Parses a index path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/collections/(?P<collection>.+?)/indexes/(?P<index>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:

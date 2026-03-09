@@ -44,7 +44,6 @@ __protobuf__ = proto.module(
         "BatchSearchDataObjectsRequest",
         "Ranker",
         "ReciprocalRankFusion",
-        "VertexRanker",
         "BatchSearchDataObjectsResponse",
     },
 )
@@ -106,14 +105,25 @@ class SearchHint(proto.Message):
 
     Attributes:
         use_index (google.cloud.vectorsearch_v1beta.types.SearchHint.IndexHint):
-            Optional. Specifies that the search should
-            use a particular index.
+            Optional. Deprecated: Use ``index_hint`` instead. Specifies
+            that the search should use a particular index.
 
             This field is a member of `oneof`_ ``index_type``.
         use_knn (bool):
-            Optional. If set to true, the search will use
-            the system's default K-Nearest Neighbor (KNN)
-            index engine.
+            Optional. Deprecated: Use ``knn_hint`` instead. If set to
+            true, the search will use the system's default K-Nearest
+            Neighbor (KNN) index engine.
+
+            This field is a member of `oneof`_ ``index_type``.
+        knn_hint (google.cloud.vectorsearch_v1beta.types.SearchHint.KnnHint):
+            Optional. If set, the search will use the
+            system's default K-Nearest Neighbor (KNN) index
+            engine.
+
+            This field is a member of `oneof`_ ``index_type``.
+        index_hint (google.cloud.vectorsearch_v1beta.types.SearchHint.IndexHint):
+            Optional. Specifies that the search should
+            use a particular index.
 
             This field is a member of `oneof`_ ``index_type``.
     """
@@ -121,7 +131,13 @@ class SearchHint(proto.Message):
     class IndexHint(proto.Message):
         r"""Message to specify the index to use for the search.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
+            dense_scann_params (google.cloud.vectorsearch_v1beta.types.SearchHint.IndexHint.DenseScannParams):
+                Optional. Dense ScaNN parameters.
+
+                This field is a member of `oneof`_ ``params``.
             name (str):
                 Required. The resource name of the index to use for the
                 search. The index must be in the same project, location, and
@@ -129,10 +145,44 @@ class SearchHint(proto.Message):
                 ``projects/{project}/locations/{location}/collections/{collection}/indexes/{index}``
         """
 
+        class DenseScannParams(proto.Message):
+            r"""Parameters for dense ScaNN.
+
+            Attributes:
+                search_leaves_pct (int):
+                    Optional. Dense ANN param overrides to control recall and
+                    latency. The percentage of leaves to search, in the range
+                    [0, 100].
+                initial_candidate_count (int):
+                    Optional. The number of initial candidates.
+                    Must be a positive integer (> 0).
+            """
+
+            search_leaves_pct: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            initial_candidate_count: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        dense_scann_params: "SearchHint.IndexHint.DenseScannParams" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="params",
+            message="SearchHint.IndexHint.DenseScannParams",
+        )
         name: str = proto.Field(
             proto.STRING,
             number=1,
         )
+
+    class KnnHint(proto.Message):
+        r"""KnnHint will be used if search should be explicitly done on
+        system's default K-Nearest Neighbor (KNN) index engine.
+
+        """
 
     use_index: IndexHint = proto.Field(
         proto.MESSAGE,
@@ -144,6 +194,18 @@ class SearchHint(proto.Message):
         proto.BOOL,
         number=2,
         oneof="index_type",
+    )
+    knn_hint: KnnHint = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="index_type",
+        message=KnnHint,
+    )
+    index_hint: IndexHint = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="index_type",
+        message=IndexHint,
     )
 
 
@@ -291,7 +353,7 @@ class SemanticSearch(proto.Message):
         search_field (str):
             Required. The vector field to search.
         task_type (google.cloud.vectorsearch_v1beta.types.EmbeddingTaskType):
-            Optional. The task type of the query
+            Required. The task type of the query
             embedding.
         output_fields (google.cloud.vectorsearch_v1beta.types.OutputFields):
             Optional. The fields to return in the search
@@ -423,7 +485,10 @@ class SearchDataObjectsRequest(proto.Message):
             search. Format:
             ``projects/{project}/locations/{location}/collections/{collection}``
         page_size (int):
-            Optional. The standard list page size.
+            Optional. The standard list page size. Only supported for
+            KNN. If not set, up to search_type.top_k results will be
+            returned. The maximum value is 1000; values above 1000 will
+            be coerced to 1000.
         page_token (str):
             Optional. The standard list page token. Typically obtained
             via
@@ -474,7 +539,8 @@ class SearchResult(proto.Message):
         data_object (google.cloud.vectorsearch_v1beta.types.DataObject):
             Output only. The matching data object.
         distance (float):
-            Output only. The similarity distance.
+            Output only. Similarity distance or ranker
+            score returned by BatchSearchDataObjects.
 
             This field is a member of `oneof`_ ``_distance``.
     """
@@ -620,7 +686,8 @@ class AggregateDataObjectsResponse(proto.Message):
 
     Attributes:
         aggregate_results (MutableSequence[google.protobuf.struct_pb2.Struct]):
-            The aggregated results of the query.
+            Output only. The aggregated results of the
+            query.
     """
 
     aggregate_results: MutableSequence[struct_pb2.Struct] = proto.RepeatedField(
@@ -648,6 +715,8 @@ class QueryDataObjectsRequest(proto.Message):
             return.
         page_size (int):
             Optional. The standard list page size.
+            Default is 100. The maximum value is 1000;
+            values above 1000 will be coerced to 1000.
         page_token (str):
             Optional. The standard list page token. Typically obtained
             via
@@ -687,9 +756,11 @@ class QueryDataObjectsResponse(proto.Message):
 
     Attributes:
         data_objects (MutableSequence[google.cloud.vectorsearch_v1beta.types.DataObject]):
-            The list of dataObjects that match the query.
+            Output only. The list of dataObjects that
+            match the query.
         next_page_token (str):
-            A token to retrieve next page of results. Pass to
+            Output only. A token to retrieve next page of results. Pass
+            to
             [DataObjectSearchService.QueryDataObjectsRequest.page_token][]
             to obtain that page.
     """
@@ -775,20 +846,11 @@ class BatchSearchDataObjectsRequest(proto.Message):
 class Ranker(proto.Message):
     r"""Defines a ranker to combine results from multiple searches.
 
-    This message has `oneof`_ fields (mutually exclusive fields).
-    For each oneof, at most one member field can be set at the same time.
-    Setting any member of the oneof automatically clears all other
-    members.
-
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         rrf (google.cloud.vectorsearch_v1beta.types.ReciprocalRankFusion):
             Reciprocal Rank Fusion ranking.
-
-            This field is a member of `oneof`_ ``ranker``.
-        vertex (google.cloud.vectorsearch_v1beta.types.VertexRanker):
-            Vertex AI ranking.
 
             This field is a member of `oneof`_ ``ranker``.
     """
@@ -798,12 +860,6 @@ class Ranker(proto.Message):
         number=1,
         oneof="ranker",
         message="ReciprocalRankFusion",
-    )
-    vertex: "VertexRanker" = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        oneof="ranker",
-        message="VertexRanker",
     )
 
 
@@ -820,46 +876,6 @@ class ReciprocalRankFusion(proto.Message):
     weights: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=1,
-    )
-
-
-class VertexRanker(proto.Message):
-    r"""Defines a ranker using the Vertex AI ranking service.
-    See
-    https://cloud.google.com/generative-ai-app-builder/docs/ranking
-    for details.
-
-    Attributes:
-        query (str):
-            Required. The query against which the records
-            are ranked and scored.
-        title_template (str):
-            Optional. The template used to generate the
-            record's title.
-        content_template (str):
-            Optional. The template used to generate the
-            record's content.
-        model (str):
-            Required. The model used for ranking
-            documents. If no model is specified, then
-            semantic-ranker-default@latest is used.
-    """
-
-    query: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    title_template: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    content_template: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    model: str = proto.Field(
-        proto.STRING,
-        number=4,
     )
 
 

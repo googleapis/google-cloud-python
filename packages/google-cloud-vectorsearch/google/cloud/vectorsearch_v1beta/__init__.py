@@ -63,7 +63,6 @@ from .types.data_object_search_service import (
     SemanticSearch,
     TextSearch,
     VectorSearch,
-    VertexRanker,
 )
 from .types.data_object_service import (
     BatchCreateDataObjectsRequest,
@@ -81,8 +80,10 @@ from .types.vectorsearch_service import (
     Collection,
     CreateCollectionRequest,
     CreateIndexRequest,
+    DedicatedInfrastructure,
     DeleteCollectionRequest,
     DeleteIndexRequest,
+    DenseScannIndex,
     DenseVectorField,
     ExportDataObjectsMetadata,
     ExportDataObjectsRequest,
@@ -218,9 +219,11 @@ __all__ = (
     "DataObject",
     "DataObjectSearchServiceClient",
     "DataObjectServiceClient",
+    "DedicatedInfrastructure",
     "DeleteCollectionRequest",
     "DeleteDataObjectRequest",
     "DeleteIndexRequest",
+    "DenseScannIndex",
     "DenseVector",
     "DenseVectorField",
     "DistanceMetric",
@@ -262,5 +265,4 @@ __all__ = (
     "VectorSearch",
     "VectorSearchServiceClient",
     "VertexEmbeddingConfig",
-    "VertexRanker",
 )
