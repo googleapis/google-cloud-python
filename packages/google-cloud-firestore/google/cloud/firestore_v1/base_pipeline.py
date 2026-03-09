@@ -331,7 +331,7 @@ class _BasePipeline:
             ```
 
         Args:
-            documents: One or more documents to be returned by this stage. Each can be a `dict`
+            *documents: One or more documents to be returned by this stage. Each can be a `dict`
                        or an `Expression`.
         Returns:
             A new Pipeline object with this stage appended to the stage list.
