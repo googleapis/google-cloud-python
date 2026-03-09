@@ -458,3 +458,118 @@ replacements:
 
       The last version of this library compatible with Python 2.7 is google-cloud-pubsub==1.7.0.
     count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'UNIT_TEST_DEPENDENCIES: List\[str\] = \[\]'
+    after: |-
+      UNIT_TEST_DEPENDENCIES: List[str] = [
+          "flaky",
+      ]
+    count: 1
+
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List\[str\] = \[\]'
+    after: |-
+      SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
+          "psutil",
+          "flaky",
+      ]
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'nox\.options\.sessions = \[\n(?:[ \t]+)"unit",\n(?:[ \t]+)"system",\n(?:[ \t]+)"cover",\n(?:[ \t]+)"lint",\n(?:[ \t]+)"lint_setup_py",\n(?:[ \t]+)"blacken",\n(?:[ \t]+)"docs",\n\]'
+    after: |-
+      CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
+      nox.options.sessions = [
+          "unit",
+          "system",
+          "cover",
+          "lint",
+          "lint_setup_py",
+          "blacken",
+          "mypy",
+          # https://github.com/googleapis/python-pubsub/pull/552#issuecomment-1016256936
+          # "mypy_samples",  # TODO: uncomment when the check passes
+          "docs",
+          "docfx",
+          "format",
+      ]
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '@nox\.session\(python=ALL_PYTHON\)\ndef mypy\(session\):[\s\S]+?(?=\n@nox\.session\ndef update_lower_bounds\(session\):)'
+    after: |-
+      MYPY_VERSION = "mypy==1.10.0"
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def mypy(session):
+          """Run type checks with mypy."""
+          session.install("-e", ".[all]")
+          session.install(MYPY_VERSION)
+
+          # Version 2.1.1 of google-api-core version is the first type-checked release.
+          # Version 2.2.0 of google-cloud-core version is the first type-checked release.
+          session.install(
+              "google-api-core[grpc]>=2.1.1", "google-cloud-core>=2.2.0", "types-requests"
+          )
+
+          # Just install the type info directly, since "mypy --install-types" might
+          # require an additional pass.
+          # Exclude types-protobuf==4.24.0.20240106
+          # See https://github.com/python/typeshed/issues/11254
+          session.install("types-protobuf!=4.24.0.20240106", "types-setuptools")
+
+          # TODO: Only check the hand-written layer, the generated code does not pass
+          # mypy checks yet.
+          # https://github.com/googleapis/gapic-generator-python/issues/1092
+          # TODO: Re-enable mypy checks once we merge, since incremental checks are failing due to protobuf upgrade
+          # session.run("mypy", "-p", "google.cloud", "--exclude", "google/pubsub_v1/")
+
+
+      @nox.session(python=DEFAULT_PYTHON_VERSION)
+      def mypy_samples(session):
+          """Run type checks with mypy."""
+
+          session.install("-e", ".[all]")
+
+          session.install("pytest")
+          session.install(MYPY_VERSION)
+
+          # Just install the type info directly, since "mypy --install-types" might
+          # require an additional pass.
+          session.install(
+              "types-mock", "types-protobuf", "types-setuptools", "types-requests"
+          )
+
+          session.run(
+              "mypy",
+              "--config-file",
+              str(CURRENT_DIRECTORY / "samples" / "snippets" / "mypy.ini"),
+              "--no-incremental",  # Required by warn-unused-configs from mypy.ini to work
+              "samples/",
+          )
+
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '# Install all test dependencies, then install this package in-place\.\n\n([ \t]+)# TODO\(https://github\.com/googleapis/gapic-generator-python/issues/2388\):'
+    after: |-
+      # Install all test dependencies, then install this package in-place.
+
+      \g<1>if session.python in ["3.7", "3.8"]:
+      \g<1>    session.skip(f"Python {session.python} is no longer supported.")
+
+      \g<1># TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'def core_deps_from_source\(session, protobuf_implementation\):[\s\S]+?PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,\n[ \t]+},\n[ \t]+\)'
+    after: |-
+      def core_deps_from_source(session, protobuf_implementation):
+          """
+          Skipping until Pub/Sub migration is complete.
+          """
+          session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
+    count: 1
