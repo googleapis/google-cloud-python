@@ -7,7 +7,7 @@
 sqlalchemy==1.4.16
 google-auth==1.25.0
 google-cloud-bigquery==3.3.6
-google-cloud-bigquery-storage==2.0.0
-google-api-core==1.31.5
+google-cloud-bigquery-storage==2.14.0
+google-api-core==1.34.0
 grpcio==1.47.0
 numpy==1.24.4
