@@ -573,3 +573,22 @@ replacements:
           """
           session.skip("Skipping core_deps_from_source for google-cloud-pubsub.")
     count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: 'SYSTEM_TEST_PYTHON_VERSIONS: List\[str\] = ALL_PYTHON'
+    after: 'SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]'
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '"--cov=google",'
+    after: '"--cov=google/cloud",'
+    count: 1
+  - paths:
+      - "packages/google-cloud-pubsub/noxfile.py"
+    before: '([ \t]+)session\.install\("--pre", "grpcio"\)'
+    after: |-
+      \g<1># Use pre-release gRPC for system tests.
+      \g<1># Exclude version 1.52.0rc1 which has a known issue.
+      \g<1># See https://github.com/grpc/grpc/issues/32163
+      \g<1>session.install("--pre", "grpcio!=1.52.0rc1")
+    count: 1
