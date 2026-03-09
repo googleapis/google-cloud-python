@@ -1,0 +1,14 @@
+# https://github.com/googleapis/repo-automation-bots/tree/main/packages/sync-repo-settings
+# Rules for main branch protection
+branchProtectionRules:
+# Identifies the protection rule pattern. Name of the branch to be protected.
+# Defaults to `main`
+- pattern: main
+  requiresCodeOwnerReviews: true
+  requiresStrictStatusChecks: true
+  requiredStatusCheckContexts:
+    - 'Kokoro'
+    - 'cla/google'
+    - 'Kokoro system-3.14'
+    - 'Kokoro system-3.10'
+    - 'OwlBot Post Processor'
