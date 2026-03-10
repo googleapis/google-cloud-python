@@ -354,7 +354,7 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
         # TODO(https://github.com/googleapis/google-cloud-python/issues/15538):
         # Investigate if a `target_version needs to be maintained
         # or can be eliminated.
-        target_version = "py37"
+        target_version = "py39"
         common_args = [
             f"--target-version={target_version}",
             "--line-length=88",
