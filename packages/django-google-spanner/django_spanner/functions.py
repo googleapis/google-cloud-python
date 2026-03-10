@@ -61,9 +61,7 @@ def cast(self, compiler, connection, **extra_context):
         template = "SUBSTR(" + self.template + ", 0, %s)" % max_length
     else:
         template = self.template
-    return self.as_sql(
-        compiler, connection, template=template, **extra_context
-    )
+    return self.as_sql(compiler, connection, template=template, **extra_context)
 
 
 def chr_(self, compiler, connection, **extra_context):
@@ -92,7 +90,7 @@ def chr_(self, compiler, connection, **extra_context):
         compiler,
         connection,
         template="CODE_POINTS_TO_STRING([%(expressions)s])",
-        **extra_context
+        **extra_context,
     )
 
 
@@ -150,10 +148,7 @@ def cot(self, compiler, connection, **extra_context):
               to be replaced with the elements of the `list`.
     """
     return self.as_sql(
-        compiler,
-        connection,
-        template="(1 / TAN(%(expressions)s))",
-        **extra_context
+        compiler, connection, template="(1 / TAN(%(expressions)s))", **extra_context
     )
 
 
@@ -183,7 +178,7 @@ def degrees(self, compiler, connection, **extra_context):
         compiler,
         connection,
         template="((%%(expressions)s) * 180 / %s)" % math.pi,
-        **extra_context
+        **extra_context,
     )
 
 
@@ -266,7 +261,7 @@ def ord_(self, compiler, connection, **extra_context):
         compiler,
         connection,
         template="TO_CODE_POINTS(%(expressions)s)[OFFSET(0)]",
-        **extra_context
+        **extra_context,
     )
 
 
@@ -292,9 +287,7 @@ def pi(self, compiler, connection, **extra_context):
     :returns: A tuple where `str` is a string containing ordered SQL parameters
               to be replaced with the elements of the `list`.
     """
-    return self.as_sql(
-        compiler, connection, template=str(math.pi), **extra_context
-    )
+    return self.as_sql(compiler, connection, template=str(math.pi), **extra_context)
 
 
 def radians(self, compiler, connection, **extra_context):
@@ -323,7 +316,7 @@ def radians(self, compiler, connection, **extra_context):
         compiler,
         connection,
         template="((%%(expressions)s) * %s / 180)" % math.pi,
-        **extra_context
+        **extra_context,
     )
 
 
@@ -349,9 +342,7 @@ def strindex(self, compiler, connection, **extra_context):
     :returns: A tuple where `str` is a string containing ordered SQL parameters
               to be replaced with the elements of the `list`.
     """
-    return self.as_sql(
-        compiler, connection, function="STRPOS", **extra_context
-    )
+    return self.as_sql(compiler, connection, function="STRPOS", **extra_context)
 
 
 def substr(self, compiler, connection, **extra_context):
@@ -376,9 +367,7 @@ def substr(self, compiler, connection, **extra_context):
     :returns: A tuple where `str` is a string containing ordered SQL parameters
               to be replaced with the elements of the `list`.
     """
-    return self.as_sql(
-        compiler, connection, function="SUBSTR", **extra_context
-    )
+    return self.as_sql(compiler, connection, function="SUBSTR", **extra_context)
 
 
 def register_functions():

@@ -11,6 +11,7 @@ from django.db.backends.base.introspection import (
 )
 from django.db.models import Index
 from google.cloud.spanner_v1 import TypeCode
+
 from django_spanner import USE_EMULATOR
 
 
@@ -91,8 +92,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
                   cursor.description interface.
         """
         cursor.execute(
-            "SELECT * FROM %s LIMIT 1"
-            % self.connection.ops.quote_name(table_name)
+            "SELECT * FROM %s LIMIT 1" % self.connection.ops.quote_name(table_name)
         )
         column_details = cursor.get_table_column_schema(table_name)
         descriptions = []

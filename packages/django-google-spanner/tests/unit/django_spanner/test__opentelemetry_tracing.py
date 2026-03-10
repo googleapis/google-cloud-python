@@ -5,10 +5,11 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import importlib
-import mock
-import unittest
-import sys
 import os
+import sys
+import unittest
+
+import mock
 
 try:
     from opentelemetry import trace as trace_api
@@ -17,9 +18,9 @@ except ImportError:
     pass
 
 from google.api_core.exceptions import GoogleAPICallError
-from django_spanner import _opentelemetry_tracing
 
-from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
+from django_spanner import _opentelemetry_tracing
+from tests._helpers import HAS_OPENTELEMETRY_INSTALLED, OpenTelemetryBase
 
 PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project")
 INSTANCE_ID = "instance_id"

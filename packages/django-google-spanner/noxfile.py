@@ -15,7 +15,6 @@ import shutil
 
 import nox
 
-
 RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = [
     "docs",
@@ -53,7 +52,7 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", RUFF_VERSION)
-    
+
     # 2. Check formatting
     session.run(
         "ruff",
@@ -87,9 +86,7 @@ def blacken(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments", "setuptools")
-    session.run(
-        "python", "setup.py", "check", "--restructuredtext", "--strict"
-    )
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
 def default(session, django_version="3.2"):
@@ -179,9 +176,9 @@ def system_test(session, django_version="3.2"):
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
     # Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get(
-        "GOOGLE_APPLICATION_CREDENTIALS", ""
-    ) and not os.environ.get("SPANNER_EMULATOR_HOST", ""):
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
         session.skip(
             "Credentials or emulator host must be set via environment variable"
         )
@@ -210,9 +207,7 @@ def system_test(session, django_version="3.2"):
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
-        session.run(
-            "py.test", "--quiet", system_test_folder_path, *session.posargs
-        )
+        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -359,7 +354,6 @@ def format(session: nox.sessions.Session) -> None:
     """
     # 1. Install ruff (skipped automatically if you run with --no-venv)
     session.install(RUFF_VERSION)
-    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
 
     # 2. Run Ruff to fix imports
     # check --select I: Enables strict import sorting
@@ -372,14 +366,14 @@ def format(session: nox.sessions.Session) -> None:
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
-        *python_files,
+        *LINT_PATHS,
     )
-    
+
     # 3. Run Ruff to format code
     session.run(
         "ruff",
         "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
-        *python_files,
+        *LINT_PATHS,
     )

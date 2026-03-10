@@ -6,6 +6,7 @@
 
 
 from google.cloud.spanner_dbapi.exceptions import NotSupportedError
+
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
 

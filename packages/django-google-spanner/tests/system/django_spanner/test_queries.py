@@ -4,15 +4,17 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from .models import Author
-from django.test import TransactionTestCase
-from django.db import connection
 from decimal import Decimal
+
+from django.db import connection
+from django.test import TransactionTestCase
+
+from .models import Author
 from .utils import (
-    setup_instance,
-    teardown_instance,
     setup_database,
+    setup_instance,
     teardown_database,
+    teardown_instance,
 )
 
 

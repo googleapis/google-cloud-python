@@ -5,21 +5,23 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 
-from .models import Author
+from unittest import mock
+
 from django.db import NotSupportedError, connection, connections
 from django.db.models import Index
 from django.db.models.fields import AutoField, IntegerField
+
 from django_spanner import gen_rand_int64
 from django_spanner.schema import DatabaseSchemaEditor
 from tests._helpers import HAS_OPENTELEMETRY_INSTALLED
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
-from unittest import mock
 from tests.unit.django_spanner.test__opentelemetry_tracing import (
-    PROJECT,
-    INSTANCE_ID,
     DATABASE_ID,
+    INSTANCE_ID,
+    PROJECT,
 )
 
+from .models import Author
 
 BASE_ATTRIBUTES = {
     "db.type": "spanner",
@@ -326,16 +328,12 @@ class TestUtils(SpannerSimpleTestClass):
 
             calls = [
                 mock.call("DROP INDEX num_unique"),
-                mock.call(
-                    "ALTER TABLE tests_author RENAME COLUMN num TO author_num"
-                ),
+                mock.call("ALTER TABLE tests_author RENAME COLUMN num TO author_num"),
                 mock.call(
                     "ALTER TABLE tests_author ALTER COLUMN author_num INT64 NOT NULL",
                     [],
                 ),
-                mock.call(
-                    "CREATE INDEX tests_author ON tests_author (author_num)"
-                ),
+                mock.call("CREATE INDEX tests_author ON tests_author (author_num)"),
             ]
             schema_editor.execute.assert_has_calls(calls)
         if HAS_OPENTELEMETRY_INSTALLED:
@@ -440,9 +438,7 @@ class TestUtils(SpannerSimpleTestClass):
         """Not Spanner as the default db, default for field not provided."""
         connections.settings["default"]["ENGINE"] = "another_db"
         connections.settings["secondary"]["ENGINE"] = "django_spanner"
-        connections.settings["secondary"][
-            "RANDOM_ID_GENERATION_ENABLED"
-        ] = "true"
+        connections.settings["secondary"]["RANDOM_ID_GENERATION_ENABLED"] = "true"
         field = AutoField(name="field_name")
         assert gen_rand_int64 == field.default
         connections.settings["default"]["ENGINE"] = "django_spanner"
@@ -451,9 +447,7 @@ class TestUtils(SpannerSimpleTestClass):
 
     def test_autofield_random_generation_disabled(self):
         """Spanner, default is not provided."""
-        connections.settings["default"][
-            "RANDOM_ID_GENERATION_ENABLED"
-        ] = "false"
+        connections.settings["default"]["RANDOM_ID_GENERATION_ENABLED"] = "false"
         field = AutoField(name="field_name")
         assert gen_rand_int64 != field.default
         del connections.settings["default"]["RANDOM_ID_GENERATION_ENABLED"]

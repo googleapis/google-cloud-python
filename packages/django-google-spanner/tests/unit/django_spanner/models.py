@@ -6,6 +6,7 @@
 """
 Different models used for testing django-spanner code.
 """
+
 from django.db import models
 
 

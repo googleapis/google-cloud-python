@@ -7,12 +7,21 @@
 from django.core.exceptions import EmptyResultSet
 from django.db.models.sql.compiler import (
     SQLAggregateCompiler as BaseSQLAggregateCompiler,
+)
+from django.db.models.sql.compiler import (
     SQLCompiler as BaseSQLCompiler,
+)
+from django.db.models.sql.compiler import (
     SQLDeleteCompiler as BaseSQLDeleteCompiler,
+)
+from django.db.models.sql.compiler import (
     SQLInsertCompiler as BaseSQLInsertCompiler,
+)
+from django.db.models.sql.compiler import (
     SQLUpdateCompiler as BaseSQLUpdateCompiler,
 )
 from django.db.utils import DatabaseError
+
 from django_spanner import USING_DJANGO_3
 
 
@@ -49,9 +58,7 @@ class SQLCompiler(BaseSQLCompiler):
                 if not query.is_empty()
             ]
             if not features.supports_slicing_ordering_in_compound:
-                for query, compiler in zip(
-                    self.query.combined_queries, compilers
-                ):
+                for query, compiler in zip(self.query.combined_queries, compilers):
                     if query.low_mark or query.high_mark:
                         raise DatabaseError(
                             "LIMIT/OFFSET not allowed in subqueries of compound "
@@ -59,8 +66,7 @@ class SQLCompiler(BaseSQLCompiler):
                         )
                     if compiler.get_order_by():
                         raise DatabaseError(
-                            "ORDER BY not allowed in subqueries of compound "
-                            "statements."
+                            "ORDER BY not allowed in subqueries of compound statements."
                         )
             parts = ()
             for compiler in compilers:
@@ -68,10 +74,7 @@ class SQLCompiler(BaseSQLCompiler):
                     # If the columns list is limited, then all combined queries
                     # must have the same columns list. Set the selects defined on
                     # the query on all combined queries, if not already set.
-                    if (
-                        not compiler.query.values_select
-                        and self.query.values_select
-                    ):
+                    if not compiler.query.values_select and self.query.values_select:
                         compiler.query.set_values(
                             (
                                 *self.query.extra_select,
@@ -87,17 +90,13 @@ class SQLCompiler(BaseSQLCompiler):
                             part_sql = "SELECT * FROM ({})".format(part_sql)
                         # Add parentheses when combining with compound query if not
                         # already added for all compound queries.
-                        elif (
-                            not features.supports_slicing_ordering_in_compound
-                        ):
+                        elif not features.supports_slicing_ordering_in_compound:
                             part_sql = "({})".format(part_sql)
                     parts += ((part_sql, part_args),)
                 except EmptyResultSet:
                     # Omit the empty queryset with UNION and with DIFFERENCE if the
                     # first queryset is nonempty.
-                    if combinator == "union" or (
-                        combinator == "difference" and parts
-                    ):
+                    if combinator == "union" or (combinator == "difference" and parts):
                         continue
                     raise
             if not parts:
@@ -106,11 +105,7 @@ class SQLCompiler(BaseSQLCompiler):
             # This is the only line that is changed from the Django core
             # implementation of this method
             combinator_sql += " ALL" if all else " DISTINCT"
-            braces = (
-                "({})"
-                if features.supports_slicing_ordering_in_compound
-                else "{}"
-            )
+            braces = "({})" if features.supports_slicing_ordering_in_compound else "{}"
             sql_parts, args_parts = zip(
                 *((braces.format(sql), args) for sql, args in parts)
             )
@@ -126,9 +121,7 @@ class SQLCompiler(BaseSQLCompiler):
         else:
             features = self.connection.features
             compilers = [
-                query.get_compiler(
-                    self.using, self.connection, self.elide_empty
-                )
+                query.get_compiler(self.using, self.connection, self.elide_empty)
                 for query in self.query.combined_queries
             ]
             if not features.supports_slicing_ordering_in_compound:
@@ -154,10 +147,7 @@ class SQLCompiler(BaseSQLCompiler):
                     # If the columns list is limited, then all combined queries
                     # must have the same columns list. Set the selects defined on
                     # the query on all combined queries, if not already set.
-                    if (
-                        not compiler.query.values_select
-                        and self.query.values_select
-                    ):
+                    if not compiler.query.values_select and self.query.values_select:
                         compiler.query = compiler.query.clone()
                         compiler.query.set_values(
                             (
@@ -166,9 +156,7 @@ class SQLCompiler(BaseSQLCompiler):
                                 *self.query.annotation_select,
                             )
                         )
-                    part_sql, part_args = compiler.as_sql(
-                        with_col_aliases=True
-                    )
+                    part_sql, part_args = compiler.as_sql(with_col_aliases=True)
                     if compiler.query.combinator:
                         # Wrap in a subquery if wrapping in parentheses isn't
                         # supported.
@@ -190,9 +178,7 @@ class SQLCompiler(BaseSQLCompiler):
                 except EmptyResultSet:
                     # Omit the empty queryset with UNION and with DIFFERENCE if the
                     # first queryset is nonempty.
-                    if combinator == "union" or (
-                        combinator == "difference" and parts
-                    ):
+                    if combinator == "union" or (combinator == "difference" and parts):
                         continue
                     raise
             if not parts:

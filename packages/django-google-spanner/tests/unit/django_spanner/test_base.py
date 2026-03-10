@@ -5,6 +5,7 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from unittest import mock
+
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
 
@@ -40,7 +41,7 @@ class TestBase(SpannerSimpleTestClass):
         class DummyConnection:
             def __init__(self, *args, **kwargs):
                 pass
-                
+
             def __getattr__(self, name):
                 return mock.MagicMock()
 

@@ -11,19 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from django.db import connection, models
 from google.cloud.spanner_v1 import (
     BatchCreateSessionsRequest,
-    ExecuteSqlRequest,
     CommitRequest,
+    ExecuteSqlRequest,
 )
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_select1_result,
     add_singer_query_result,
     add_update_count,
 )
-from django.db import connection, models
-
 from tests.mockserver_tests.models import Singer
 from tests.settings import DATABASES
 

@@ -12,22 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+from concurrent import futures
+
+import google.cloud.spanner_v1.types.commit_response as commit
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.spanner as spanner
+import google.cloud.spanner_v1.types.transaction as transaction
+import grpc
 from google.cloud.spanner_v1 import (
-    TransactionOptions,
-    ResultSetMetadata,
     ExecuteSqlRequest,
+    ResultSetMetadata,
+    TransactionOptions,
 )
 from google.protobuf import empty_pb2
-import tests.mockserver_tests.spanner_pb2_grpc as spanner_grpc
+
 import tests.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
+import tests.mockserver_tests.spanner_pb2_grpc as spanner_grpc
 from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
-import google.cloud.spanner_v1.types.result_set as result_set
-import google.cloud.spanner_v1.types.transaction as transaction
-import google.cloud.spanner_v1.types.commit_response as commit
-import google.cloud.spanner_v1.types.spanner as spanner
-from concurrent import futures
-import grpc
-import base64
 
 
 class MockSpanner:
@@ -96,15 +98,11 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         sessions = []
         for i in range(request.session_count):
             sessions.append(
-                self.__create_session(
-                    request.database, request.session_template
-                )
+                self.__create_session(request.database, request.session_template)
             )
         return spanner.BatchCreateSessionsResponse(dict(session=sessions))
 
-    def __create_session(
-        self, database: str, session_template: spanner.Session
-    ):
+    def __create_session(self, database: str, session_template: spanner.Session):
         self.session_counter += 1
         session = spanner.Session()
         session.name = database + "/sessions/" + str(self.session_counter)
@@ -197,9 +195,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         self._requests.append(request)
         tx = self.transactions[request.transaction_id]
         if tx is None:
-            raise ValueError(
-                f"Transaction not found: {request.transaction_id}"
-            )
+            raise ValueError(f"Transaction not found: {request.transaction_id}")
         del self.transactions[request.transaction_id]
         return commit.CommitResponse()
 
@@ -235,9 +231,7 @@ def start_mock_server() -> (
 
     # Add the Spanner services to the gRPC server.
     spanner_servicer = SpannerServicer()
-    spanner_grpc.add_SpannerServicer_to_server(
-        spanner_servicer, spanner_server
-    )
+    spanner_grpc.add_SpannerServicer_to_server(spanner_servicer, spanner_server)
     database_admin_servicer = DatabaseAdminServicer()
     database_admin_grpc.add_DatabaseAdminServicer_to_server(
         database_admin_servicer, spanner_server

@@ -6,32 +6,32 @@
 
 import datetime
 import os
-import django
 
 # Monkey-patch AutoField to generate a random value since Cloud Spanner can't
 # do that.
 from uuid import uuid4
 
+import django
+
 RANDOM_ID_GENERATION_ENABLED_SETTING = "RANDOM_ID_GENERATION_ENABLED"
 
 from django.conf.global_settings import DATABASES
 from django.db import DEFAULT_DB_ALIAS
-from google.cloud.spanner_v1 import JsonObject
 from django.db.models.fields import (
     NOT_PROVIDED,
     AutoField,
     Field,
 )
 
+# Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against
+# datetime.datetime.
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud.spanner_v1 import JsonObject
+
 from .functions import register_functions
 from .lookups import register_lookups
 from .utils import check_django_compatability
 from .version import __version__
-
-# Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against
-# datetime.datetime.
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-
 
 USING_DJANGO_3 = False
 if django.VERSION[:2] == (3, 2):
@@ -41,11 +41,11 @@ USING_DJANGO_4 = False
 if django.VERSION[:2] == (4, 2):
     USING_DJANGO_4 = True
 
-from django.db.models.fields import (
-    SmallAutoField,
-    BigAutoField,
-)
 from django.db.models import JSONField
+from django.db.models.fields import (
+    BigAutoField,
+    SmallAutoField,
+)
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
@@ -109,9 +109,7 @@ def get_prep_value(self, value):
 
 JSONField.get_prep_value = get_prep_value
 
-old_datetimewithnanoseconds_eq = getattr(
-    DatetimeWithNanoseconds, "__eq__", None
-)
+old_datetimewithnanoseconds_eq = getattr(DatetimeWithNanoseconds, "__eq__", None)
 
 
 def datetimewithnanoseconds_eq(self, other):

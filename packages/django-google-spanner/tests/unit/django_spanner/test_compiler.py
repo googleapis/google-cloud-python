@@ -5,11 +5,13 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 from django.core.exceptions import EmptyResultSet
-from django.db.utils import DatabaseError
-from django_spanner.compiler import SQLCompiler
 from django.db.models.query import QuerySet
+from django.db.utils import DatabaseError
+
 from django_spanner import USING_DJANGO_3
+from django_spanner.compiler import SQLCompiler
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
+
 from .models import Number
 
 

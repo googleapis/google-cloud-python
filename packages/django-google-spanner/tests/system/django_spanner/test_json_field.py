@@ -5,15 +5,16 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import unittest
-from django.test import TransactionTestCase
+
 from django.db import connection
-from django_spanner import USE_EMULATOR
-from django_spanner import USING_DJANGO_3
+from django.test import TransactionTestCase
+
+from django_spanner import USE_EMULATOR, USING_DJANGO_3
 from tests.system.django_spanner.utils import (
-    setup_instance,
-    teardown_instance,
     setup_database,
+    setup_instance,
     teardown_database,
+    teardown_instance,
 )
 
 if USING_DJANGO_3:

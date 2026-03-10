@@ -11,15 +11,13 @@ from django.core.management import call_command
 from django.db import connection
 from google.api_core import exceptions
 from google.cloud.spanner_v1 import Client
-from google.cloud.spanner_v1.instance import Instance, Backup
+from google.cloud.spanner_v1.instance import Backup, Instance
 from test_utils.retry import RetryErrors
 
-from django_spanner.creation import DatabaseCreation
 from django_spanner import USE_EMULATOR
+from django_spanner.creation import DatabaseCreation
 
-CREATE_INSTANCE = (
-    os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
-)
+CREATE_INSTANCE = os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
 
 SPANNER_OPERATION_TIMEOUT_IN_SECONDS = int(
     os.getenv("SPANNER_OPERATION_TIMEOUT_IN_SECONDS", 60)
@@ -53,9 +51,7 @@ def setup_instance():
     if USE_EMULATOR:
         from google.auth.credentials import AnonymousCredentials
 
-        Config.CLIENT = Client(
-            project=PROJECT_ID, credentials=AnonymousCredentials()
-        )
+        Config.CLIENT = Client(project=PROJECT_ID, credentials=AnonymousCredentials())
     else:
         Config.CLIENT = Client()
 
@@ -68,9 +64,7 @@ def setup_instance():
 
     # Delete test instances that are older than an hour.
     cutoff = int(time.time()) - 1 * 60 * 60
-    instance_pbs = Config.CLIENT.list_instances(
-        "labels.python-spanner-systests:true"
-    )
+    instance_pbs = Config.CLIENT.list_instances("labels.python-spanner-systests:true")
     for instance_pb in instance_pbs:
         instance = Instance.from_pb(instance_pb, Config.CLIENT)
         if "created" not in instance.labels:

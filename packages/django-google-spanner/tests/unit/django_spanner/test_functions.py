@@ -4,24 +4,26 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
-from django_spanner.compiler import SQLCompiler
-from django_spanner import USING_DJANGO_3
 from django.db.models import CharField, FloatField, Value
 from django.db.models.functions import (
     Cast,
     Concat,
     Cot,
     Degrees,
+    Left,
     Log,
     Ord,
     Pi,
     Radians,
+    Right,
     StrIndex,
     Substr,
-    Left,
-    Right,
 )
+
+from django_spanner import USING_DJANGO_3
+from django_spanner.compiler import SQLCompiler
+from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
+
 from .models import Author
 
 
@@ -63,9 +65,7 @@ class TestUtils(SpannerSimpleTestClass):
         Tests concatinating pair of columns.
         """
         q1 = Author.objects.values("name").annotate(
-            full_name=Concat(
-                "name", Value(" "), "last_name", output_field=CharField()
-            ),
+            full_name=Concat("name", Value(" "), "last_name", output_field=CharField()),
         )
         compiler = SQLCompiler(q1.query, self.connection, "default")
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
@@ -160,9 +160,7 @@ class TestUtils(SpannerSimpleTestClass):
         """
         Tests ord function applied to a column.
         """
-        q1 = Author.objects.values("name").annotate(
-            name_code_point=Ord("name")
-        )
+        q1 = Author.objects.values("name").annotate(name_code_point=Ord("name"))
 
         compiler = SQLCompiler(q1.query, self.connection, "default")
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
@@ -233,9 +231,7 @@ class TestUtils(SpannerSimpleTestClass):
         """
         Tests substr function applied to a column.
         """
-        q1 = Author.objects.values("name").annotate(
-            name_prefix=Substr("name", 1, 5)
-        )
+        q1 = Author.objects.values("name").annotate(name_prefix=Substr("name", 1, 5))
 
         compiler = SQLCompiler(q1.query, self.connection, "default")
         sql_query, params = compiler.query.as_sql(compiler, self.connection)

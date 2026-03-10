@@ -43,8 +43,9 @@ def insert_one_row(transaction, one_row):
     Inserts a single row into a database and then fetches it back.
     """
     transaction.execute_update(
-        "INSERT Author (id, first_name, last_name, rating) "
-        " VALUES {}".format(str(one_row))
+        "INSERT Author (id, first_name, last_name, rating)  VALUES {}".format(
+            str(one_row)
+        )
     )
     last_name = transaction.execute_sql(
         "SELECT last_name FROM Author WHERE id=1"
@@ -60,8 +61,9 @@ def insert_many_rows(transaction, many_rows):
     statements = []
     for row in many_rows:
         statements.append(
-            "INSERT Author (id, first_name, last_name, rating) "
-            " VALUES {}".format(str(row))
+            "INSERT Author (id, first_name, last_name, rating)  VALUES {}".format(
+                str(row)
+            )
         )
     _, count = transaction.batch_update(statements)
     if sum(count) != 99:
@@ -214,9 +216,7 @@ CREATE TABLE Author (
     @measure_execution_time
     def select_many_rows(self):
         with self._database.snapshot() as snapshot:
-            rows = list(
-                snapshot.execute_sql("SELECT * FROM Author ORDER BY last_name")
-            )
+            rows = list(snapshot.execute_sql("SELECT * FROM Author ORDER BY last_name"))
             if len(rows) != 100:
                 raise ValueError("Wrong number of rows read")
 
@@ -275,17 +275,11 @@ class BenchmarkTest(unittest.TestCase):
                 SpannerBenchmarkTest().run(), ignore_index=True
             )
 
-        avg = pd.concat(
-            [django_obj.mean(axis=0), spanner_obj.mean(axis=0)], axis=1
-        )
+        avg = pd.concat([django_obj.mean(axis=0), spanner_obj.mean(axis=0)], axis=1)
         avg.columns = ["Django", "Spanner"]
-        std = pd.concat(
-            [django_obj.std(axis=0), spanner_obj.std(axis=0)], axis=1
-        )
+        std = pd.concat([django_obj.std(axis=0), spanner_obj.std(axis=0)], axis=1)
         std.columns = ["Django", "Spanner"]
-        err = pd.concat(
-            [django_obj.sem(axis=0), spanner_obj.sem(axis=0)], axis=1
-        )
+        err = pd.concat([django_obj.sem(axis=0), spanner_obj.sem(axis=0)], axis=1)
         err.columns = ["Django", "Spanner"]
 
         print(

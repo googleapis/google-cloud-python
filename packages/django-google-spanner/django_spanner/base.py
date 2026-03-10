@@ -6,10 +6,10 @@
 
 import os
 
-from google.cloud import spanner
-
 from django.db.backends.base.base import BaseDatabaseWrapper
-from google.cloud import spanner_dbapi
+from google.cloud import spanner, spanner_dbapi
+
+from django_spanner import USING_DJANGO_3
 
 from .client import DatabaseClient
 from .creation import DatabaseCreation
@@ -17,7 +17,6 @@ from .features import DatabaseFeatures
 from .introspection import DatabaseIntrospection
 from .operations import DatabaseOperations
 from .schema import DatabaseSchemaEditor
-from django_spanner import USING_DJANGO_3
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
@@ -86,7 +85,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     # expression or the result of a bilateral transformation). In those cases,
     # special characters for REGEXP_CONTAINS operators (e.g. \, *, _) must be
     # escaped on database side.
-    pattern_esc = r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
+    pattern_esc = (
+        r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
+    )
 
     # These are all no-ops in favor of using REGEXP_CONTAINS in the customized
     # lookups.
@@ -123,7 +124,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         if "client" in self.settings_dict["OPTIONS"]:
             client = self.settings_dict["OPTIONS"]["client"]
         else:
-            client = spanner.Client(project=os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project"))
+            client = spanner.Client(
+                project=os.environ.get("GOOGLE_CLOUD_PROJECT", "test-project")
+            )
         return client.instance(self.settings_dict["INSTANCE"])
 
     @property
@@ -137,9 +140,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
     @property
     def _nodb_connection(self):
-        raise NotImplementedError(
-            'Spanner does not have a "no db" connection.'
-        )
+        raise NotImplementedError('Spanner does not have a "no db" connection.')
 
     def get_connection_params(self):
         """Retrieve the connection parameters.

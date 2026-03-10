@@ -15,28 +15,29 @@
 import os
 import unittest
 
-from django.db import connection, connections
-from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
-import google.cloud.spanner_v1.types.type as spanner_type
 import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
+import grpc
+from django.db import connection, connections
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
+from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_v1 import (
     Client,
-    ResultSet,
     PingingPool,
+    ResultSet,
     TypeCode,
 )
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
-import grpc
+
+from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
 
 # TODO: Replace this with the mock server in the Spanner client lib
 from tests.mockserver_tests.mock_spanner import (
     SpannerServicer,
     start_mock_server,
 )
-from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
 from tests.settings import DATABASES
 
 
@@ -74,9 +75,7 @@ def add_single_result(
                                 spanner_type.StructType.Field(
                                     dict(
                                         name=column_name,
-                                        type=spanner_type.Type(
-                                            dict(code=type_code)
-                                        ),
+                                        type=spanner_type.Type(dict(code=type_code)),
                                     )
                                 )
                             ]
@@ -102,9 +101,7 @@ def add_singer_query_result(sql: str):
                                     dict(
                                         name="id",
                                         type=spanner_type.Type(
-                                            dict(
-                                                code=spanner_type.TypeCode.INT64
-                                            )
+                                            dict(code=spanner_type.TypeCode.INT64)
                                         ),
                                     )
                                 ),
@@ -112,9 +109,7 @@ def add_singer_query_result(sql: str):
                                     dict(
                                         name="first_name",
                                         type=spanner_type.Type(
-                                            dict(
-                                                code=spanner_type.TypeCode.STRING
-                                            )
+                                            dict(code=spanner_type.TypeCode.STRING)
                                         ),
                                     )
                                 ),
@@ -122,9 +117,7 @@ def add_singer_query_result(sql: str):
                                     dict(
                                         name="last_name",
                                         type=spanner_type.Type(
-                                            dict(
-                                                code=spanner_type.TypeCode.STRING
-                                            )
+                                            dict(code=spanner_type.TypeCode.STRING)
                                         ),
                                     )
                                 ),
@@ -181,9 +174,7 @@ class MockServerTestBase(unittest.TestCase):
     def setup_method(self, test_method):
         for db, config in DATABASES.items():
             if config["ENGINE"] == "django_spanner":
-                connections[db].settings_dict["OPTIONS"][
-                    "client"
-                ] = self.client
+                connections[db].settings_dict["OPTIONS"]["client"] = self.client
                 connections[db].settings_dict["OPTIONS"]["pool"] = self.pool
 
     def teardown_method(self, test_method):

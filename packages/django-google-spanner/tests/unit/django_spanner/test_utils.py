@@ -4,11 +4,11 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from django_spanner.utils import check_django_compatability
-from django.core.exceptions import ImproperlyConfigured
-from django_spanner.utils import add_dummy_where
 import django
+from django.core.exceptions import ImproperlyConfigured
+
 import django_spanner
+from django_spanner.utils import add_dummy_where, check_django_compatability
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
 

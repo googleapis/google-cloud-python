@@ -4,13 +4,14 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from django_spanner.client import DatabaseClient
+import os
+
 from django_spanner.base import DatabaseWrapper
+from django_spanner.client import DatabaseClient
 from django_spanner.operations import DatabaseOperations
 
 # from unittest import TestCase
 from tests._helpers import OpenTelemetryBase
-import os
 
 
 class SpannerSimpleTestClass(OpenTelemetryBase):

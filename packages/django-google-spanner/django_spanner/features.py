@@ -8,6 +8,7 @@ import os
 
 from django.db.backends.base.features import BaseDatabaseFeatures
 from django.db.utils import InterfaceError
+
 from django_spanner import USE_EMULATOR, USING_DJANGO_3, USING_DJANGO_4
 
 

@@ -14,13 +14,14 @@ from django.conf import settings
 from django.db.backends.base.operations import BaseDatabaseOperations
 from django.db.utils import DatabaseError
 from django.utils import timezone
-from django_spanner import USING_DJANGO_3
 from django.utils.duration import duration_microseconds
 from google.cloud.spanner_dbapi.parse_utils import (
     DateStr,
     TimestampStr,
     escape_name,
 )
+
+from django_spanner import USING_DJANGO_3
 
 
 class DatabaseOperations(BaseDatabaseOperations):
@@ -109,9 +110,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         values_sql = ", ".join("(%s)" % sql for sql in placeholder_rows_sql)
         return "VALUES " + values_sql
 
-    def sql_flush(
-        self, style, tables, reset_sequences=False, allow_cascade=False
-    ):
+    def sql_flush(self, style, tables, reset_sequences=False, allow_cascade=False):
         """
         Override the base class method. Returns a list of SQL statements
         required to remove all data from the given database tables (without
@@ -142,8 +141,7 @@ class DatabaseOperations(BaseDatabaseOperations):
                 style.SQL_KEYWORD("FROM"),
             )
             return [
-                delete_sql % style.SQL_FIELD(self.quote_name(table))
-                for table in tables
+                delete_sql % style.SQL_FIELD(self.quote_name(table)) for table in tables
             ]
         else:
             return []
@@ -186,9 +184,7 @@ class DatabaseOperations(BaseDatabaseOperations):
                 )
         return TimestampStr(value.isoformat(timespec="microseconds") + "Z")
 
-    def adapt_decimalfield_value(
-        self, value, max_digits=None, decimal_places=None
-    ):
+    def adapt_decimalfield_value(self, value, max_digits=None, decimal_places=None):
         """
         Convert value from decimal.Decimal to spanner compatible value.
         Since spanner supports Numeric storage of decimal and python spanner
@@ -303,9 +299,7 @@ class DatabaseOperations(BaseDatabaseOperations):
             value.microsecond,
         )
         return (
-            timezone.make_aware(dt, self.connection.timezone)
-            if settings.USE_TZ
-            else dt
+            timezone.make_aware(dt, self.connection.timezone) if settings.USE_TZ else dt
         )
 
     def convert_timefield_value(self, value, expression, connection):
@@ -396,9 +390,7 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     else:
 
-        def datetime_extract_sql(
-            self, lookup_type, field_name, params, tzname
-        ):
+        def datetime_extract_sql(self, lookup_type, field_name, params, tzname):
             """Extract datetime from the lookup.
 
             :type lookup_type: str
@@ -474,9 +466,7 @@ class DatabaseOperations(BaseDatabaseOperations):
                 # subtract a day so that a Sunday will be truncated to the previous
                 # week...
                 field_name = (
-                    "DATE_SUB(CAST("
-                    + field_name
-                    + " AS DATE), INTERVAL 1 DAY)"
+                    "DATE_SUB(CAST(" + field_name + " AS DATE), INTERVAL 1 DAY)"
                 )
             sql = "DATE_TRUNC(CAST(%s AS DATE), %s)" % (
                 field_name,
@@ -514,9 +504,7 @@ class DatabaseOperations(BaseDatabaseOperations):
                 # subtract a day so that a Sunday will be truncated to the previous
                 # week...
                 field_name = (
-                    "DATE_SUB(CAST("
-                    + field_name
-                    + " AS DATE), INTERVAL 1 DAY)"
+                    "DATE_SUB(CAST(" + field_name + " AS DATE), INTERVAL 1 DAY)"
                 )
             sql = "DATE_TRUNC(CAST(%s AS DATE), %s)" % (
                 field_name,
@@ -550,9 +538,7 @@ class DatabaseOperations(BaseDatabaseOperations):
                 # Spanner truncates to Sunday but Django expects Monday. First,
                 # subtract a day so that a Sunday will be truncated to the previous
                 # week...
-                field_name = (
-                    "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
-                )
+                field_name = "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
             sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
                 field_name,
                 lookup_type,
@@ -565,9 +551,7 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     else:
 
-        def datetime_trunc_sql(
-            self, lookup_type, field_name, params, tzname="UTC"
-        ):
+        def datetime_trunc_sql(self, lookup_type, field_name, params, tzname="UTC"):
             """Truncate datetime in the lookup.
 
             :type lookup_type: str
@@ -591,9 +575,7 @@ class DatabaseOperations(BaseDatabaseOperations):
                 # Spanner truncates to Sunday but Django expects Monday. First,
                 # subtract a day so that a Sunday will be truncated to the previous
                 # week...
-                field_name = (
-                    "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
-                )
+                field_name = "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
             sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
                 field_name,
                 lookup_type,
@@ -631,9 +613,7 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     else:
 
-        def time_trunc_sql(
-            self, lookup_type, field_name, params, tzname="UTC"
-        ):
+        def time_trunc_sql(self, lookup_type, field_name, params, tzname="UTC"):
             """Truncate time in the lookup.
 
             :type lookup_type: str
@@ -724,8 +704,7 @@ class DatabaseOperations(BaseDatabaseOperations):
             # TIMESTAMP to another time zone.
             return (
                 "TIMESTAMP(FORMAT_TIMESTAMP("
-                "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))"
-                % (field_name, tzname)
+                "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
             )
 
     else:
@@ -751,8 +730,7 @@ class DatabaseOperations(BaseDatabaseOperations):
             # TIMESTAMP to another time zone.
             return (
                 "TIMESTAMP(FORMAT_TIMESTAMP("
-                "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))"
-                % (field_name, tzname)
+                "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
             ), params
 
     def date_interval_sql(self, timedelta):
@@ -830,9 +808,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         elif connector == "-":
             return "TIMESTAMP_SUB(" + ", ".join(sub_expressions) + ")"
         else:
-            raise DatabaseError(
-                "Invalid connector for timedelta: %s." % connector
-            )
+            raise DatabaseError("Invalid connector for timedelta: %s." % connector)
 
     def lookup_cast(self, lookup_type, internal_type=None):
         """

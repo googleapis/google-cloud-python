@@ -7,7 +7,9 @@
 """
 Different models used by system tests in django-spanner code.
 """
+
 from django.db import models
+
 from django_spanner import USING_DJANGO_3
 
 

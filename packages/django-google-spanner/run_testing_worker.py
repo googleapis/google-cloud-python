@@ -29,9 +29,7 @@ class TestInstance:
 
         config = f"{client.project_name}/instanceConfigs/{REGION}"
 
-        name = "sp-dj-test-{}-{}".format(
-            str(WORKER_INDEX), str(int(time.time()))
-        )
+        name = "sp-dj-test-{}-{}".format(str(WORKER_INDEX), str(int(time.time())))
 
         self._instance = client.instance(name, config)
         created_op = self._instance.create()

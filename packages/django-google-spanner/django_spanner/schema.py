@@ -8,8 +8,9 @@ import uuid
 
 from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
-from django_spanner._opentelemetry_tracing import trace_call
+
 from django_spanner import USE_EMULATOR, USING_DJANGO_3
+from django_spanner._opentelemetry_tracing import trace_call
 
 
 class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
@@ -111,9 +112,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                         )
                     )
             # Add the SQL to our big list
-            column_sqls.append(
-                "%s %s" % (self.quote_name(field.column), definition)
-            )
+            column_sqls.append("%s %s" % (self.quote_name(field.column), definition))
             # Create a unique constraint separately because Spanner doesn't
             # allow them inline on a column.
             if field.unique and not field.primary_key:
@@ -122,17 +121,13 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                         self._create_unique_sql(model, [field.column])
                     )
                 else:
-                    self.deferred_sql.append(
-                        self._create_unique_sql(model, [field])
-                    )
+                    self.deferred_sql.append(self._create_unique_sql(model, [field]))
 
         # Add any unique_togethers (always deferred, as some fields might be
         # created afterwards, like geometry fields with some backends)
         for fields in model._meta.unique_together:
             if USING_DJANGO_3:
-                columns = [
-                    model._meta.get_field(field).column for field in fields
-                ]
+                columns = [model._meta.get_field(field).column for field in fields]
             else:
                 columns = [model._meta.get_field(field) for field in fields]
             self.deferred_sql.append(self._create_unique_sql(model, columns))
@@ -144,9 +139,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         sql = self.sql_create_table % {
             "table": self.quote_name(model._meta.db_table),
             "definition": ", ".join(
-                constraint
-                for constraint in (*column_sqls, *constraints)
-                if constraint
+                constraint for constraint in (*column_sqls, *constraints) if constraint
             ),
             "primary_key": self.quote_name(model._meta.pk.column),
         }
@@ -158,9 +151,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 sql += " " + tablespace_sql
         # Prevent using [] as params, in the case a literal '%' is used in the
         # definition
-        trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table)
-        }
+        trace_attributes = {"model_name": self.quote_name(model._meta.db_table)}
 
         with trace_call(
             "CloudSpannerDjango.create_model",
@@ -188,9 +179,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         """
         # Spanner requires dropping all of a table's indexes before dropping
         # the table.
-        index_names = self._constraint_names(
-            model, index=True, primary_key=False
-        )
+        index_names = self._constraint_names(model, index=True, primary_key=False)
         for index_name in index_names:
             trace_attributes = {
                 "model_name": self.quote_name(model._meta.db_table),
@@ -202,9 +191,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 trace_attributes,
             ):
                 self.execute(self._delete_index_sql(model, index_name))
-        trace_attributes = {
-            "model_name": self.quote_name(model._meta.db_table)
-        }
+        trace_attributes = {"model_name": self.quote_name(model._meta.db_table)}
         with trace_call(
             "CloudSpannerDjango.delete_model",
             self.connection,
@@ -229,15 +216,10 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         :param field: The field of the table.
         """
         # Special-case implicit M2M tables
-        if (
-            field.many_to_many
-            and field.remote_field.through._meta.auto_created
-        ):
+        if field.many_to_many and field.remote_field.through._meta.auto_created:
             return self.create_model(field.remote_field.through)
         # Get the column's definition
-        definition, params = self.column_sql(
-            model, field, exclude_not_null=True
-        )
+        definition, params = self.column_sql(model, field, exclude_not_null=True)
         # It might not actually have a column behind it
         if definition is None:
             return
@@ -291,13 +273,9 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # them inline on a column.
         if field.unique and not field.primary_key:
             if USING_DJANGO_3:
-                self.deferred_sql.append(
-                    self._create_unique_sql(model, [field.column])
-                )
+                self.deferred_sql.append(self._create_unique_sql(model, [field.column]))
             else:
-                self.deferred_sql.append(
-                    self._create_unique_sql(model, [field])
-                )
+                self.deferred_sql.append(self._create_unique_sql(model, [field]))
         # Add any FK constraints later
         if (
             field.remote_field
@@ -305,9 +283,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             and field.db_constraint
         ):
             self.deferred_sql.append(
-                self._create_fk_sql(
-                    model, field, "_fk_%(to_table)s_%(to_column)s"
-                )
+                self._create_fk_sql(model, field, "_fk_%(to_table)s_%(to_column)s")
             )
 
     def remove_field(self, model, field):
@@ -351,9 +327,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         ):
             super().remove_field(model, field)
 
-    def column_sql(
-        self, model, field, include_default=False, exclude_not_null=False
-    ):
+    def column_sql(self, model, field, include_default=False, exclude_not_null=False):
         """
         Take a field and return its column definition.
         The field must already have had set_attributes_from_name() called.
@@ -396,9 +370,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             and self.connection.features.supports_tablespaces
             and field.unique
         ):
-            sql += " %s" % self.connection.ops.tablespace_sql(
-                tablespace, inline=True
-            )
+            sql += " %s" % self.connection.ops.tablespace_sql(tablespace, inline=True)
         # Return the sql
         return sql, params
 
@@ -450,9 +422,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # of a column.
         nullability_changed = old_field.null != new_field.null
         if nullability_changed:
-            index_names = self._constraint_names(
-                model, [old_field.column], index=True
-            )
+            index_names = self._constraint_names(model, [old_field.column], index=True)
             if index_names and not old_field.db_index:
                 raise NotSupportedError(
                     "Changing nullability of a field with an index other than "

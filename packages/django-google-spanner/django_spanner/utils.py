@@ -37,9 +37,6 @@ def add_dummy_where(sql):
     :rtype: str
     :returns: A SQL statement with dummy WHERE clause.
     """
-    if any(
-        isinstance(token, sqlparse.sql.Where)
-        for token in sqlparse.parse(sql)[0]
-    ):
+    if any(isinstance(token, sqlparse.sql.Where) for token in sqlparse.parse(sql)[0]):
         return sql
     return sql + " WHERE 1=1"

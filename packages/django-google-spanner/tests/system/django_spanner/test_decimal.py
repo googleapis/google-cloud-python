@@ -4,16 +4,19 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from .models import Author, Number
-from django.test import TransactionTestCase
-from django.db import connection
 from decimal import Decimal
+
+from django.db import connection
+from django.test import TransactionTestCase
+
 from tests.system.django_spanner.utils import (
-    setup_instance,
-    teardown_instance,
     setup_database,
+    setup_instance,
     teardown_database,
+    teardown_instance,
 )
+
+from .models import Author, Number
 
 
 class TestDecimal(TransactionTestCase):
@@ -41,12 +44,8 @@ class TestDecimal(TransactionTestCase):
     def values_transform(self, value):
         return value.num
 
-    def assertValuesEqual(
-        self, queryset, expected_values, transformer, ordered=True
-    ):
-        self.assertQuerysetEqual(
-            queryset, expected_values, transformer, ordered
-        )
+    def assertValuesEqual(self, queryset, expected_values, transformer, ordered=True):
+        self.assertQuerysetEqual(queryset, expected_values, transformer, ordered)
 
     def test_insert_and_search_decimal_value(self):
         """
@@ -105,9 +104,7 @@ class TestDecimal(TransactionTestCase):
         author_kent.save()
         author_kent.rating = Decimal("4.2")
         author_kent.save()
-        qs1 = Author.objects.filter(rating__gte=Decimal("4.2")).values(
-            "rating"
-        )
+        qs1 = Author.objects.filter(rating__gte=Decimal("4.2")).values("rating")
         self.assertValuesEqual(
             qs1,
             [Decimal("4.2")],

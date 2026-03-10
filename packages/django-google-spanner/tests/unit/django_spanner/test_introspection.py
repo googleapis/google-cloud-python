@@ -4,14 +4,16 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from django.db.backends.base.introspection import TableInfo, FieldInfo
-from django_spanner.introspection import DatabaseIntrospection
+from unittest import mock
+
+from django.db.backends.base.introspection import FieldInfo, TableInfo
 from google.cloud.spanner_dbapi._helpers import ColumnInfo
 from google.cloud.spanner_dbapi.cursor import ColumnDetails
 from google.cloud.spanner_v1 import TypeCode
-from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
-from unittest import mock
+
 from django_spanner import USING_DJANGO_3
+from django_spanner.introspection import DatabaseIntrospection
+from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 
 
 class TestUtils(SpannerSimpleTestClass):
@@ -77,9 +79,7 @@ class TestUtils(SpannerSimpleTestClass):
             column_details["name"] = ColumnDetails(
                 null_ok=False, spanner_type="STRING(10)"
             )
-            column_details["age"] = ColumnDetails(
-                null_ok=True, spanner_type="INT64"
-            )
+            column_details["age"] = ColumnDetails(null_ok=True, spanner_type="INT64")
             return column_details
 
         cursor.get_table_column_schema = get_table_column_schema
