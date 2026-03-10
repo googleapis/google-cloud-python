@@ -134,6 +134,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert VmwareEngineClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -152,6 +153,10 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert VmwareEngineClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        VmwareEngineClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -1272,11 +1277,13 @@ def test_vmware_engine_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -50829,8 +50836,9 @@ def test_list_private_clouds_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50895,17 +50903,20 @@ def test_list_private_clouds_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_private_clouds"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_private_clouds_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_private_clouds"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_private_clouds"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_private_clouds_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_private_clouds"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50963,8 +50974,9 @@ def test_get_private_cloud_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51035,17 +51047,20 @@ def test_get_private_cloud_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_private_cloud"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_private_cloud_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_private_cloud"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_private_cloud"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_private_cloud_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_private_cloud"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51103,8 +51118,9 @@ def test_create_private_cloud_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51272,20 +51288,21 @@ def test_create_private_cloud_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_private_cloud"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_private_cloud_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_private_cloud"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_private_cloud"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_private_cloud_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_private_cloud"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51342,8 +51359,9 @@ def test_update_private_cloud_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51515,20 +51533,21 @@ def test_update_private_cloud_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_private_cloud"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_private_cloud_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_private_cloud"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_private_cloud"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_private_cloud_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_private_cloud"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51581,8 +51600,9 @@ def test_delete_private_cloud_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51639,20 +51659,21 @@ def test_delete_private_cloud_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_private_cloud"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_private_cloud_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_private_cloud"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_private_cloud"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_private_cloud_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_private_cloud"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51705,8 +51726,9 @@ def test_undelete_private_cloud_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51763,20 +51785,21 @@ def test_undelete_private_cloud_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_undelete_private_cloud"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_undelete_private_cloud_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_undelete_private_cloud"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_undelete_private_cloud"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_undelete_private_cloud_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_undelete_private_cloud"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51829,8 +51852,9 @@ def test_list_clusters_rest_bad_request(request_type=vmwareengine.ListClustersRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51897,17 +51921,19 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_clusters"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_clusters_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_clusters_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51962,8 +51988,9 @@ def test_get_cluster_rest_bad_request(request_type=vmwareengine.GetClusterReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52034,17 +52061,19 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_cluster"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52099,8 +52128,9 @@ def test_create_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52245,19 +52275,20 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_cluster"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52314,8 +52345,9 @@ def test_update_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52462,19 +52494,20 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_cluster"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52529,8 +52562,9 @@ def test_delete_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52589,19 +52623,20 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_cluster"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52654,8 +52689,9 @@ def test_list_nodes_rest_bad_request(request_type=vmwareengine.ListNodesRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52720,17 +52756,19 @@ def test_list_nodes_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_nodes"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_nodes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_nodes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_nodes"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_nodes_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_nodes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52783,8 +52821,9 @@ def test_get_node_rest_bad_request(request_type=vmwareengine.GetNodeRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52861,17 +52900,19 @@ def test_get_node_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_node"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_node_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_node"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_node"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_node_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_node"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52926,8 +52967,9 @@ def test_list_external_addresses_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52994,18 +53036,20 @@ def test_list_external_addresses_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_external_addresses"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_external_addresses_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_external_addresses"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_external_addresses"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_external_addresses_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_external_addresses"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53065,8 +53109,9 @@ def test_fetch_network_policy_external_addresses_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53133,20 +53178,22 @@ def test_fetch_network_policy_external_addresses_rest_interceptors(null_intercep
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_fetch_network_policy_external_addresses",
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_fetch_network_policy_external_addresses_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "pre_fetch_network_policy_external_addresses",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_fetch_network_policy_external_addresses",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_fetch_network_policy_external_addresses_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_fetch_network_policy_external_addresses",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53206,8 +53253,9 @@ def test_get_external_address_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53282,18 +53330,20 @@ def test_get_external_address_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_external_address"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_get_external_address_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_external_address"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_external_address"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_external_address_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_external_address"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53353,8 +53403,9 @@ def test_create_external_address_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53492,20 +53543,21 @@ def test_create_external_address_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_external_address"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_external_address_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_external_address"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_external_address"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_external_address_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_external_address"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53562,8 +53614,9 @@ def test_update_external_address_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53703,20 +53756,21 @@ def test_update_external_address_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_external_address"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_external_address_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_external_address"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_external_address"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_external_address_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_external_address"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53771,8 +53825,9 @@ def test_delete_external_address_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53831,20 +53886,21 @@ def test_delete_external_address_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_external_address"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_external_address_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_external_address"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_external_address"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_external_address_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_external_address"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53897,8 +53953,9 @@ def test_list_subnets_rest_bad_request(request_type=vmwareengine.ListSubnetsRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53965,17 +54022,19 @@ def test_list_subnets_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_subnets"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_subnets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_subnets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_subnets"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_subnets_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_subnets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -54030,8 +54089,9 @@ def test_get_subnet_rest_bad_request(request_type=vmwareengine.GetSubnetRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -54106,17 +54166,19 @@ def test_get_subnet_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_subnet"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_subnet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_subnet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_subnet"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_subnet_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_subnet"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -54171,8 +54233,9 @@ def test_update_subnet_rest_bad_request(request_type=vmwareengine.UpdateSubnetRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -54308,19 +54371,20 @@ def test_update_subnet_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_subnet"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_subnet_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_subnet"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_subnet"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_subnet_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_subnet"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -54375,8 +54439,9 @@ def test_list_external_access_rules_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -54443,18 +54508,20 @@ def test_list_external_access_rules_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_external_access_rules"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_external_access_rules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_external_access_rules"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_external_access_rules"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_external_access_rules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_external_access_rules"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -54514,8 +54581,9 @@ def test_get_external_access_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -54596,18 +54664,20 @@ def test_get_external_access_rule_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_external_access_rule"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_get_external_access_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_external_access_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_external_access_rule"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_external_access_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_external_access_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -54667,8 +54737,9 @@ def test_create_external_access_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -54819,20 +54890,21 @@ def test_create_external_access_rule_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_external_access_rule"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_external_access_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_external_access_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_external_access_rule"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_external_access_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_external_access_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -54889,8 +54961,9 @@ def test_update_external_access_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -55043,20 +55116,21 @@ def test_update_external_access_rule_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_external_access_rule"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_external_access_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_external_access_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_external_access_rule"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_external_access_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_external_access_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -55111,8 +55185,9 @@ def test_delete_external_access_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -55171,20 +55246,21 @@ def test_delete_external_access_rule_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_external_access_rule"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_external_access_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_external_access_rule"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_external_access_rule"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_external_access_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_external_access_rule"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -55239,8 +55315,9 @@ def test_list_logging_servers_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -55307,18 +55384,20 @@ def test_list_logging_servers_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_logging_servers"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_logging_servers_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_logging_servers"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_logging_servers"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_logging_servers_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_logging_servers"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -55378,8 +55457,9 @@ def test_get_logging_server_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -55454,17 +55534,20 @@ def test_get_logging_server_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_logging_server"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_logging_server_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_logging_server"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_logging_server"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_logging_server_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_logging_server"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -55524,8 +55607,9 @@ def test_create_logging_server_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -55661,20 +55745,21 @@ def test_create_logging_server_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_logging_server"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_logging_server_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_logging_server"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_logging_server"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_logging_server_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_logging_server"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -55731,8 +55816,9 @@ def test_update_logging_server_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -55870,20 +55956,21 @@ def test_update_logging_server_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_logging_server"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_logging_server_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_logging_server"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_logging_server"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_logging_server_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_logging_server"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -55938,8 +56025,9 @@ def test_delete_logging_server_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -55998,20 +56086,21 @@ def test_delete_logging_server_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_logging_server"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_logging_server_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_logging_server"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_logging_server"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_logging_server_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_logging_server"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -56064,8 +56153,9 @@ def test_list_node_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -56130,17 +56220,19 @@ def test_list_node_types_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_node_types"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_node_types_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_node_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_node_types"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_node_types_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_node_types"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -56193,8 +56285,9 @@ def test_get_node_type_rest_bad_request(request_type=vmwareengine.GetNodeTypeReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -56281,17 +56374,19 @@ def test_get_node_type_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_node_type"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_node_type_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_node_type"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_node_type"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_node_type_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_node_type"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -56348,8 +56443,9 @@ def test_show_nsx_credentials_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -56416,18 +56512,20 @@ def test_show_nsx_credentials_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_show_nsx_credentials"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_show_nsx_credentials_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_show_nsx_credentials"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_show_nsx_credentials"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_show_nsx_credentials_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_show_nsx_credentials"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -56484,8 +56582,9 @@ def test_show_vcenter_credentials_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -56552,18 +56651,20 @@ def test_show_vcenter_credentials_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_show_vcenter_credentials"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_show_vcenter_credentials_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_show_vcenter_credentials"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_show_vcenter_credentials"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_show_vcenter_credentials_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_show_vcenter_credentials"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -56620,8 +56721,9 @@ def test_reset_nsx_credentials_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -56680,20 +56782,21 @@ def test_reset_nsx_credentials_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_reset_nsx_credentials"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_reset_nsx_credentials_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_reset_nsx_credentials"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_reset_nsx_credentials"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_reset_nsx_credentials_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_reset_nsx_credentials"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -56748,8 +56851,9 @@ def test_reset_vcenter_credentials_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -56808,20 +56912,21 @@ def test_reset_vcenter_credentials_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_reset_vcenter_credentials"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_reset_vcenter_credentials_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_reset_vcenter_credentials"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_reset_vcenter_credentials"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_reset_vcenter_credentials_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_reset_vcenter_credentials"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -56876,8 +56981,9 @@ def test_get_dns_forwarding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -56942,17 +57048,20 @@ def test_get_dns_forwarding_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_dns_forwarding"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_dns_forwarding_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_dns_forwarding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_dns_forwarding"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_dns_forwarding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_dns_forwarding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -57014,8 +57123,9 @@ def test_update_dns_forwarding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -57154,20 +57264,21 @@ def test_update_dns_forwarding_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_dns_forwarding"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_dns_forwarding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_dns_forwarding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_dns_forwarding"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_dns_forwarding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_dns_forwarding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -57222,8 +57333,9 @@ def test_get_network_peering_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -57317,17 +57429,20 @@ def test_get_network_peering_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_network_peering"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_network_peering_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_network_peering"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_network_peering"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_network_peering_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_network_peering"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -57385,8 +57500,9 @@ def test_list_network_peerings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -57451,18 +57567,20 @@ def test_list_network_peerings_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_network_peerings"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_network_peerings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_network_peerings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_network_peerings"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_network_peerings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_network_peerings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -57520,8 +57638,9 @@ def test_create_network_peering_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -57663,20 +57782,21 @@ def test_create_network_peering_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_network_peering"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_network_peering_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_network_peering"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_network_peering"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_network_peering_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_network_peering"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -57731,8 +57851,9 @@ def test_delete_network_peering_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -57791,20 +57912,21 @@ def test_delete_network_peering_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_network_peering"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_network_peering_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_network_peering"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_network_peering"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_network_peering_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_network_peering"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -57861,8 +57983,9 @@ def test_update_network_peering_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -58008,20 +58131,21 @@ def test_update_network_peering_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_network_peering"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_network_peering_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_network_peering"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_network_peering"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_network_peering_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_network_peering"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -58076,8 +58200,9 @@ def test_list_peering_routes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -58142,17 +58267,20 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_peering_routes"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_peering_routes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_peering_routes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_peering_routes"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_peering_routes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_peering_routes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -58212,8 +58340,9 @@ def test_create_hcx_activation_key_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -58348,20 +58477,21 @@ def test_create_hcx_activation_key_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_hcx_activation_key"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_hcx_activation_key_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_hcx_activation_key"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_hcx_activation_key"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_hcx_activation_key_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_hcx_activation_key"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -58416,8 +58546,9 @@ def test_list_hcx_activation_keys_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -58484,18 +58615,20 @@ def test_list_hcx_activation_keys_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_hcx_activation_keys"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_hcx_activation_keys_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_hcx_activation_keys"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_hcx_activation_keys"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_hcx_activation_keys_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_hcx_activation_keys"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -58555,8 +58688,9 @@ def test_get_hcx_activation_key_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -58627,18 +58761,20 @@ def test_get_hcx_activation_key_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_hcx_activation_key"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_get_hcx_activation_key_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_hcx_activation_key"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_hcx_activation_key"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_hcx_activation_key_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_hcx_activation_key"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -58698,8 +58834,9 @@ def test_get_network_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -58777,17 +58914,20 @@ def test_get_network_policy_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_network_policy"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_network_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_network_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_network_policy"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_network_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_network_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -58845,8 +58985,9 @@ def test_list_network_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -58911,18 +59052,20 @@ def test_list_network_policies_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_network_policies"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_network_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_network_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_network_policies"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_network_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_network_policies"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -58980,8 +59123,9 @@ def test_create_network_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -59117,20 +59261,21 @@ def test_create_network_policy_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_network_policy"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_network_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_network_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_network_policy"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_network_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_network_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -59187,8 +59332,9 @@ def test_update_network_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -59328,20 +59474,21 @@ def test_update_network_policy_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_network_policy"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_network_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_network_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_network_policy"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_network_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_network_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -59396,8 +59543,9 @@ def test_delete_network_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -59456,20 +59604,21 @@ def test_delete_network_policy_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_network_policy"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_network_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_network_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_network_policy"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_network_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_network_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -59524,8 +59673,9 @@ def test_list_management_dns_zone_bindings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -59594,18 +59744,22 @@ def test_list_management_dns_zone_bindings_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_management_dns_zone_bindings"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_management_dns_zone_bindings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_management_dns_zone_bindings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_management_dns_zone_bindings",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_management_dns_zone_bindings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_list_management_dns_zone_bindings",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -59665,8 +59819,9 @@ def test_get_management_dns_zone_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -59740,18 +59895,22 @@ def test_get_management_dns_zone_binding_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_management_dns_zone_binding"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_get_management_dns_zone_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_management_dns_zone_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_management_dns_zone_binding",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_management_dns_zone_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_get_management_dns_zone_binding",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -59811,8 +59970,9 @@ def test_create_management_dns_zone_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -59954,21 +60114,23 @@ def test_create_management_dns_zone_binding_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_management_dns_zone_binding",
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_management_dns_zone_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_management_dns_zone_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_management_dns_zone_binding",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_management_dns_zone_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_create_management_dns_zone_binding",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -60025,8 +60187,9 @@ def test_update_management_dns_zone_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -60170,21 +60333,23 @@ def test_update_management_dns_zone_binding_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_management_dns_zone_binding",
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_management_dns_zone_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_management_dns_zone_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_management_dns_zone_binding",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_management_dns_zone_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_update_management_dns_zone_binding",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -60239,8 +60404,9 @@ def test_delete_management_dns_zone_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -60299,21 +60465,23 @@ def test_delete_management_dns_zone_binding_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_management_dns_zone_binding",
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_management_dns_zone_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_management_dns_zone_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_management_dns_zone_binding",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_management_dns_zone_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_delete_management_dns_zone_binding",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -60368,8 +60536,9 @@ def test_repair_management_dns_zone_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -60428,21 +60597,23 @@ def test_repair_management_dns_zone_binding_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_repair_management_dns_zone_binding",
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_repair_management_dns_zone_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_repair_management_dns_zone_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_repair_management_dns_zone_binding",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_repair_management_dns_zone_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_repair_management_dns_zone_binding",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -60495,8 +60666,9 @@ def test_create_vmware_engine_network_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -60635,20 +60807,21 @@ def test_create_vmware_engine_network_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_vmware_engine_network"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_vmware_engine_network_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_vmware_engine_network"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_vmware_engine_network"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_vmware_engine_network_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_vmware_engine_network"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -60705,8 +60878,9 @@ def test_update_vmware_engine_network_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -60849,20 +61023,21 @@ def test_update_vmware_engine_network_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_vmware_engine_network"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_vmware_engine_network_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_vmware_engine_network"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_vmware_engine_network"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_vmware_engine_network_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_vmware_engine_network"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -60917,8 +61092,9 @@ def test_delete_vmware_engine_network_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -60977,20 +61153,21 @@ def test_delete_vmware_engine_network_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_vmware_engine_network"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_vmware_engine_network_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_vmware_engine_network"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_vmware_engine_network"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_vmware_engine_network_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_vmware_engine_network"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -61045,8 +61222,9 @@ def test_get_vmware_engine_network_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -61121,18 +61299,20 @@ def test_get_vmware_engine_network_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_vmware_engine_network"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_get_vmware_engine_network_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_vmware_engine_network"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_vmware_engine_network"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_vmware_engine_network_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_vmware_engine_network"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -61190,8 +61370,9 @@ def test_list_vmware_engine_networks_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -61256,18 +61437,20 @@ def test_list_vmware_engine_networks_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_vmware_engine_networks"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_vmware_engine_networks_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_vmware_engine_networks"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_vmware_engine_networks"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_vmware_engine_networks_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_vmware_engine_networks"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -61325,8 +61508,9 @@ def test_create_private_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -61467,20 +61651,21 @@ def test_create_private_connection_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_create_private_connection"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_create_private_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_create_private_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_create_private_connection"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_create_private_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_create_private_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -61535,8 +61720,9 @@ def test_get_private_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -61633,18 +61819,20 @@ def test_get_private_connection_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_private_connection"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_get_private_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_private_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_private_connection"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_private_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_private_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -61702,8 +61890,9 @@ def test_list_private_connections_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -61768,18 +61957,20 @@ def test_list_private_connections_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_list_private_connections"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_private_connections_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_list_private_connections"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_list_private_connections"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_private_connections_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_list_private_connections"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -61841,8 +62032,9 @@ def test_update_private_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -61987,20 +62179,21 @@ def test_update_private_connection_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_update_private_connection"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_update_private_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_update_private_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_update_private_connection"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_update_private_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_update_private_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -62055,8 +62248,9 @@ def test_delete_private_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -62115,20 +62309,21 @@ def test_delete_private_connection_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_delete_private_connection"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_delete_private_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_delete_private_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_delete_private_connection"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_delete_private_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_delete_private_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -62183,8 +62378,9 @@ def test_list_private_connection_peering_routes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -62251,20 +62447,22 @@ def test_list_private_connection_peering_routes_rest_interceptors(null_intercept
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_private_connection_peering_routes",
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_list_private_connection_peering_routes_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "pre_list_private_connection_peering_routes",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_private_connection_peering_routes",
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_list_private_connection_peering_routes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "pre_list_private_connection_peering_routes",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -62322,8 +62520,9 @@ def test_grant_dns_bind_permission_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -62380,20 +62579,21 @@ def test_grant_dns_bind_permission_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_grant_dns_bind_permission"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_grant_dns_bind_permission_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_grant_dns_bind_permission"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_grant_dns_bind_permission"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_grant_dns_bind_permission_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_grant_dns_bind_permission"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -62446,8 +62646,9 @@ def test_get_dns_bind_permission_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -62510,18 +62711,20 @@ def test_get_dns_bind_permission_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_get_dns_bind_permission"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_get_dns_bind_permission_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_get_dns_bind_permission"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_get_dns_bind_permission"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_get_dns_bind_permission_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_get_dns_bind_permission"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -62579,8 +62782,9 @@ def test_revoke_dns_bind_permission_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -62637,20 +62841,21 @@ def test_revoke_dns_bind_permission_rest_interceptors(null_interceptor):
     )
     client = VmwareEngineClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "post_revoke_dns_bind_permission"
-    ) as post, mock.patch.object(
-        transports.VmwareEngineRestInterceptor,
-        "post_revoke_dns_bind_permission_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmwareEngineRestInterceptor, "pre_revoke_dns_bind_permission"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "post_revoke_dns_bind_permission"
+        ) as post,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor,
+            "post_revoke_dns_bind_permission_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmwareEngineRestInterceptor, "pre_revoke_dns_bind_permission"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -62703,8 +62908,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -62763,8 +62969,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -62826,8 +63033,9 @@ def test_get_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -62891,8 +63099,9 @@ def test_set_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -62956,8 +63165,9 @@ def test_test_iam_permissions_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -63020,8 +63230,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -63082,8 +63293,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -63144,8 +63356,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -64960,11 +65173,14 @@ def test_vmware_engine_base_transport():
 
 def test_vmware_engine_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.vmwareengine_v1.services.vmware_engine.transports.VmwareEngineTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.vmwareengine_v1.services.vmware_engine.transports.VmwareEngineTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VmwareEngineTransport(
@@ -64981,9 +65197,12 @@ def test_vmware_engine_base_transport_with_credentials_file():
 
 def test_vmware_engine_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.vmwareengine_v1.services.vmware_engine.transports.VmwareEngineTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.vmwareengine_v1.services.vmware_engine.transports.VmwareEngineTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VmwareEngineTransport()
@@ -65055,11 +65274,12 @@ def test_vmware_engine_transport_auth_gdch_credentials(transport_class):
 def test_vmware_engine_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -66319,6 +66539,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_get_operation(transport: str = "grpc"):
     client = VmwareEngineClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -66462,6 +66714,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_list_operations(transport: str = "grpc"):
@@ -66609,6 +66895,40 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
+def test_list_operations_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
 def test_list_locations(transport: str = "grpc"):
     client = VmwareEngineClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -66754,6 +67074,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = VmwareEngineClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -66893,6 +67247,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_set_iam_policy(transport: str = "grpc"):
@@ -67057,6 +67445,41 @@ async def test_set_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_get_iam_policy(transport: str = "grpc"):
@@ -67224,6 +67647,41 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
@@ -67401,6 +67859,47 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():
