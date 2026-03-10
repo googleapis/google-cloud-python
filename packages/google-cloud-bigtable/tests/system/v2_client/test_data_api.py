@@ -722,6 +722,27 @@ def _assert_data_table_read_rows_retry_correct(rows_data):
             )
 
 
+def test_table_read_rows_multiple_reads(
+    data_table_read_rows_retry_tests,
+):
+    from types import SimpleNamespace
+
+    rows_data = data_table_read_rows_retry_tests.read_rows()
+    first_iteration = SimpleNamespace()
+    first_iteration.rows = {}
+
+    second_iteration = SimpleNamespace()
+    second_iteration.rows = {}
+    for item in rows_data:
+        first_iteration.rows[item.row_key] = item
+
+    for item in rows_data:
+        second_iteration.rows[item.row_key] = item
+
+    _assert_data_table_read_rows_retry_correct(first_iteration)
+    assert second_iteration.rows == {}
+
+
 def test_table_read_rows_retry_unretriable_error_establishing_stream(
     data_table_read_rows_retry_tests,
 ):
@@ -729,11 +750,12 @@ def test_table_read_rows_retry_unretriable_error_establishing_stream(
 
     error_injector = data_table_read_rows_retry_tests.error_injector
     error_injector.errors_to_inject = [
-        error_injector.make_exception(StatusCode.ABORTED, fail_mid_stream=False)
+        error_injector.make_exception(StatusCode.DATA_LOSS, fail_mid_stream=False)
     ]
 
-    with pytest.raises(exceptions.Aborted):
-        data_table_read_rows_retry_tests.read_rows()
+    rows_data = data_table_read_rows_retry_tests.read_rows()
+    with pytest.raises(exceptions.DataLoss):
+        rows_data.consume_all()
 
 
 def test_table_read_rows_retry_retriable_error_establishing_stream(
@@ -794,25 +816,25 @@ def test_table_read_rows_retry_retriable_errors_mid_stream(
 def test_table_read_rows_retry_retriable_internal_errors_mid_stream(
     data_table_read_rows_retry_tests,
 ):
-    from google.cloud.bigtable.row_data import RETRYABLE_INTERNAL_ERROR_MESSAGES
+    from google.cloud.bigtable.data._helpers import _RETRYABLE_INTERNAL_ERROR_MESSAGES
 
     error_injector = data_table_read_rows_retry_tests.error_injector
     error_injector.errors_to_inject = [
         error_injector.make_exception(
             StatusCode.INTERNAL,
-            message=RETRYABLE_INTERNAL_ERROR_MESSAGES[0],
+            message=_RETRYABLE_INTERNAL_ERROR_MESSAGES[0],
             fail_mid_stream=True,
             successes_before_fail=2,
         ),
         error_injector.make_exception(
             StatusCode.INTERNAL,
-            message=RETRYABLE_INTERNAL_ERROR_MESSAGES[1],
+            message=_RETRYABLE_INTERNAL_ERROR_MESSAGES[1],
             fail_mid_stream=True,
             successes_before_fail=1,
         ),
         error_injector.make_exception(
             StatusCode.INTERNAL,
-            message=RETRYABLE_INTERNAL_ERROR_MESSAGES[2],
+            message=_RETRYABLE_INTERNAL_ERROR_MESSAGES[2],
             fail_mid_stream=True,
             successes_before_fail=0,
         ),
@@ -855,12 +877,12 @@ def test_table_read_rows_retry_retriable_error_mid_stream_unretriable_error_rees
         error_injector.make_exception(
             StatusCode.UNAVAILABLE, fail_mid_stream=True, successes_before_fail=5
         ),
-        error_injector.make_exception(StatusCode.ABORTED, fail_mid_stream=False),
+        error_injector.make_exception(StatusCode.DATA_LOSS, fail_mid_stream=False),
     ]
 
     rows_data = data_table_read_rows_retry_tests.read_rows()
 
-    with pytest.raises(exceptions.Aborted):
+    with pytest.raises(exceptions.DataLoss):
         rows_data.consume_all()
 
 
@@ -893,27 +915,30 @@ def test_table_read_rows_retry_timeout_mid_stream(
 
     from google.cloud.bigtable.row_data import (
         DEFAULT_RETRY_READ_ROWS,
-        RETRYABLE_INTERNAL_ERROR_MESSAGES,
     )
+    from google.cloud.bigtable.data._helpers import _RETRYABLE_INTERNAL_ERROR_MESSAGES
 
     error_injector = data_table_read_rows_retry_tests.error_injector
     error_injector.errors_to_inject = [
         error_injector.make_exception(
             StatusCode.INTERNAL,
-            message=RETRYABLE_INTERNAL_ERROR_MESSAGES[0],
+            message=_RETRYABLE_INTERNAL_ERROR_MESSAGES[0],
             fail_mid_stream=True,
             successes_before_fail=5,
         ),
     ] + [
         error_injector.make_exception(
             StatusCode.INTERNAL,
-            message=RETRYABLE_INTERNAL_ERROR_MESSAGES[0],
+            message=_RETRYABLE_INTERNAL_ERROR_MESSAGES[0],
             fail_mid_stream=True,
             successes_before_fail=0,
         ),
     ] * 20
 
     # Shorten the deadline so the timeout test is shorter.
+    data_table_read_rows_retry_tests._table_impl.default_read_rows_operation_timeout = (
+        10.0
+    )
     rows_data = data_table_read_rows_retry_tests.read_rows(
         retry=DEFAULT_RETRY_READ_ROWS.with_deadline(10.0)
     )
@@ -942,10 +967,14 @@ def test_table_read_rows_retry_timeout_establishing_stream(
     ] * 20
 
     # Shorten the deadline so the timeout test is shorter.
+    data_table_read_rows_retry_tests._table_impl.default_read_rows_operation_timeout = (
+        10.0
+    )
+    rows_data = data_table_read_rows_retry_tests.read_rows(
+        retry=DEFAULT_RETRY_READ_ROWS.with_deadline(10.0)
+    )
     with pytest.raises(exceptions.RetryError):
-        data_table_read_rows_retry_tests.read_rows(
-            retry=DEFAULT_RETRY_READ_ROWS.with_deadline(10.0)
-        )
+        rows_data.consume_all()
 
 
 def test_table_check_and_mutate_rows(data_table, rows_to_delete):
