@@ -452,7 +452,7 @@ class TestLet:
         assert result.args[0].map_value.fields == expected_map_value
         assert len(result.options) == 0
 
-        
+
 class TestRawStage:
     def _make_one(self, *args, **kwargs):
         return stages.RawStage(*args, **kwargs)
