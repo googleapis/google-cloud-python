@@ -443,9 +443,14 @@ class SqlScalarOp(base_ops.NaryOp):
     name: typing.ClassVar[str] = "sql_scalar"
     _output_type: dtypes.ExpressionType
     sql_template: str
+    is_deterministic: bool = True
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return self._output_type
+
+    @property
+    def deterministic(self) -> bool:
+        return self.is_deterministic
 
 
 @dataclasses.dataclass(frozen=True)
