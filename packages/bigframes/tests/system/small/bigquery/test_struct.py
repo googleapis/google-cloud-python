@@ -16,7 +16,7 @@ import pytest
 
 import bigframes.bigquery as bbq
 import bigframes.series as series
-import bigframes.testing
+import bigframes.testing.utils
 
 
 @pytest.mark.parametrize(
@@ -53,7 +53,7 @@ def test_struct_from_dataframe(columns_arg):
     srs = series.Series(
         columns_arg,
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         srs.to_pandas(),
         bbq.struct(srs.struct.explode()).to_pandas(),
         check_index_type=False,

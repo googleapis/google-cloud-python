@@ -17,10 +17,5 @@
 These modules are provided for testing the BigQuery DataFrames package. The
 interface is not considered stable.
 """
-from bigframes.testing.utils import (
-    assert_frame_equal,
-    assert_index_equal,
-    assert_series_equal,
-)
 
-__all__ = ["assert_frame_equal", "assert_series_equal", "assert_index_equal"]
+# Do not import modules contains pytest. (b/490160312)

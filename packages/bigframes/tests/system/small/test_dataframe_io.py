@@ -63,7 +63,7 @@ def test_sql_executes(scalars_df_default_index, bigquery_client):
         .reset_index(drop=True)
     )
     bq_result["bytes_col"] = bq_result["bytes_col"].astype(dtypes.BYTES_DTYPE)
-    bigframes.testing.assert_frame_equal(bf_result, bq_result, check_dtype=False)
+    bigframes.testing.utils.assert_frame_equal(bf_result, bq_result, check_dtype=False)
 
 
 def test_sql_executes_and_includes_named_index(
@@ -95,7 +95,7 @@ def test_sql_executes_and_includes_named_index(
         .sort_values("rowindex")
     )
     bq_result["bytes_col"] = bq_result["bytes_col"].astype(dtypes.BYTES_DTYPE)
-    bigframes.testing.assert_frame_equal(
+    bigframes.testing.utils.assert_frame_equal(
         bf_result, bq_result, check_dtype=False, check_index_type=False
     )
 
@@ -129,7 +129,7 @@ def test_sql_executes_and_includes_named_multiindex(
         .sort_values("rowindex")
     )
     bq_result["bytes_col"] = bq_result["bytes_col"].astype(dtypes.BYTES_DTYPE)
-    bigframes.testing.assert_frame_equal(
+    bigframes.testing.utils.assert_frame_equal(
         bf_result, bq_result, check_dtype=False, check_index_type=False
     )
 
@@ -367,7 +367,7 @@ def test_to_pandas_batches_w_empty_dataframe(session):
     assert len(results) == 1
     assert list(results[0].index.names) == ["idx1", "idx2"]
     assert list(results[0].columns) == ["col1", "col2"]
-    bigframes.testing.assert_series_equal(results[0].dtypes, empty.dtypes)
+    bigframes.testing.utils.assert_series_equal(results[0].dtypes, empty.dtypes)
 
 
 @pytest.mark.skipif(

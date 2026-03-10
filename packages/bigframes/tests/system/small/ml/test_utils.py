@@ -16,7 +16,7 @@ import pandas as pd
 import pytest
 
 import bigframes.ml.utils as utils
-import bigframes.testing
+import bigframes.testing.utils
 
 _DATA_FRAME = pd.DataFrame({"column": [1, 2, 3]})
 _SERIES = pd.Series([1, 2, 3], name="column")
@@ -31,7 +31,7 @@ def test_convert_to_dataframe(session, data):
 
     (actual_result,) = utils.batch_convert_to_dataframe(bf_data)
 
-    bigframes.testing.assert_frame_equal(
+    bigframes.testing.utils.assert_frame_equal(
         actual_result.to_pandas(),
         _DATA_FRAME,
         check_index_type=False,
@@ -46,7 +46,7 @@ def test_convert_to_dataframe(session, data):
 def test_convert_pandas_to_dataframe(data, session):
     (actual_result,) = utils.batch_convert_to_dataframe(data, session=session)
 
-    bigframes.testing.assert_frame_equal(
+    bigframes.testing.utils.assert_frame_equal(
         actual_result.to_pandas(),
         _DATA_FRAME,
         check_index_type=False,
@@ -63,7 +63,7 @@ def test_convert_to_series(session, data):
 
     (actual_result,) = utils.batch_convert_to_series(bf_data)
 
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         actual_result.to_pandas(), _SERIES, check_index_type=False, check_dtype=False
     )
 
@@ -75,6 +75,6 @@ def test_convert_to_series(session, data):
 def test_convert_pandas_to_series(data, session):
     (actual_result,) = utils.batch_convert_to_series(data, session=session)
 
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         actual_result.to_pandas(), _SERIES, check_index_type=False, check_dtype=False
     )

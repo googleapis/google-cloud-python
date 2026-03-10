@@ -32,7 +32,7 @@ from bigframes.bigquery import st_length
 import bigframes.bigquery as bbq
 import bigframes.geopandas
 import bigframes.session
-import bigframes.testing
+import bigframes.testing.utils
 
 
 def test_geo_st_area(session: bigframes.session.Session):
@@ -57,7 +57,7 @@ def test_geo_st_area(session: bigframes.session.Session):
     geobf_s_result = bbq.st_area(geobf_s).to_pandas().round(-3)
     assert geobf_s_result.iloc[0] >= 1000
 
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         geopd_s_result,
         check_dtype=False,
@@ -110,7 +110,7 @@ def test_st_length_various_geometries(session):
 
     # Test default use_spheroid
     result_default = st_length(geoseries).to_pandas()
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         result_default,
         expected_lengths,
         rtol=1e-3,
@@ -119,7 +119,7 @@ def test_st_length_various_geometries(session):
 
     # Test explicit use_spheroid=False
     result_explicit_false = st_length(geoseries, use_spheroid=False).to_pandas()
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         result_explicit_false,
         expected_lengths,
         rtol=1e-3,
@@ -153,7 +153,7 @@ def test_geo_st_difference_with_geometry_objects(session: bigframes.session.Sess
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -192,7 +192,7 @@ def test_geo_st_difference_with_single_geometry_object(
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -218,7 +218,7 @@ def test_geo_st_difference_with_similar_geometry_objects(
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -274,7 +274,7 @@ def test_geo_st_distance_with_geometry_objects(session: bigframes.session.Sessio
         index=[0, 1, 2, 3],
         dtype="Float64",
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -321,7 +321,7 @@ def test_geo_st_distance_with_single_geometry_object(
         ],
         dtype="Float64",
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -356,7 +356,7 @@ def test_geo_st_intersection_with_geometry_objects(session: bigframes.session.Se
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -395,7 +395,7 @@ def test_geo_st_intersection_with_single_geometry_object(
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -425,7 +425,7 @@ def test_geo_st_intersection_with_similar_geometry_objects(
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
     )
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         geobf_s_result,
         expected,
         check_index_type=False,
@@ -466,7 +466,7 @@ def test_geo_st_isclosed(session: bigframes.session.Session):
     ]
     expected_series = pd.Series(data=expected_data, dtype="boolean")
 
-    bigframes.testing.assert_series_equal(
+    bigframes.testing.utils.assert_series_equal(
         bf_result,
         expected_series,
         # We default to Int64 (nullable) dtype, but pandas defaults to int64 index.
