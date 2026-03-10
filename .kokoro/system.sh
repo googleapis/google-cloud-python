@@ -72,6 +72,7 @@ run_package_test() {
 
   # Export variables for the duration of this function's sub-processes
   export PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS NOX_FILE NOX_SESSION
+  export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
 
   gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
   gcloud config set project "$PROJECT_ID"
