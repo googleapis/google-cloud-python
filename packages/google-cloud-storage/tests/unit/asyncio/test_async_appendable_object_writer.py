@@ -218,6 +218,48 @@ class TestAsyncAppendableObjectWriter:
         assert writer.write_handle.handle == b"h1"
         assert writer.generation == 777
 
+    @pytest.mark.asyncio
+    async def test_open_closes_existing_stream(self, mock_appendable_writer):
+        """Verify proper cleanup of existing stream on re-open."""
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        # We simulate a state where write_obj_stream exists but we are opening (e.g. retry or stale)
+        writer._is_stream_open = False
+        # Set an existing stream
+        old_stream = mock.AsyncMock()
+        old_stream.is_stream_open = True
+        writer.write_obj_stream = old_stream
+
+        # Mock the creation of NEW stream to avoid overwriting our old_stream reference too early if we needed it,
+        # but here we just want to verify old_stream.close() is called.
+
+        # Act
+        await writer.open()
+
+        # Assert
+        old_stream.close.assert_awaited_once()
+        assert writer.write_obj_stream != old_stream
+        assert writer._is_stream_open
+
+    @pytest.mark.asyncio
+    async def test_open_logs_warning_on_close_error(self, mock_appendable_writer):
+        """Verify logging when closing existing stream fails."""
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        old_stream = mock.AsyncMock()
+        old_stream.is_stream_open = True
+        old_stream.close.side_effect = ValueError("close failed")
+        writer.write_obj_stream = old_stream
+        writer._is_stream_open = False
+
+        with mock.patch(
+            "google.cloud.storage.asyncio.async_appendable_object_writer.logger"
+        ) as mock_logger:
+            await writer.open()
+
+            mock_logger.warning.assert_called_once()
+            args, _ = mock_logger.warning.call_args
+            assert "Error closing previous write stream" in args[0]
+            assert "close failed" in args[0]
+
     # -------------------------------------------------------------------------
     # Append Tests
     # -------------------------------------------------------------------------
@@ -246,9 +288,7 @@ class TestAsyncAppendableObjectWriter:
         ],
     )
     @pytest.mark.asyncio
-    async def test_append(
-        self, data_len, mock_appendable_writer
-    ):
+    async def test_append(self, data_len, mock_appendable_writer):
         """Verify append orchestrates manager and drives the internal generator."""
         # Arrange
         writer = self._make_one(mock_appendable_writer["mock_client"])
@@ -272,10 +312,19 @@ class TestAsyncAppendableObjectWriter:
         # Assert
         expected_recv_count = data_len // _DEFAULT_FLUSH_INTERVAL_BYTES
         assert writer.offset == data_len
-        assert writer.bytes_appended_since_last_flush == data_len % _DEFAULT_FLUSH_INTERVAL_BYTES
-        assert writer.persisted_size == expected_recv_count*_DEFAULT_FLUSH_INTERVAL_BYTES
-        assert writer.write_obj_stream.send.await_count == -(-data_len // _MAX_CHUNK_SIZE_BYTES)  # Ceiling division for number of chunks
-        assert writer.write_obj_stream.recv.await_count == expected_recv_count  # Expect 1 recv per flush interval
+        assert (
+            writer.bytes_appended_since_last_flush
+            == data_len % _DEFAULT_FLUSH_INTERVAL_BYTES
+        )
+        assert (
+            writer.persisted_size == expected_recv_count * _DEFAULT_FLUSH_INTERVAL_BYTES
+        )
+        assert writer.write_obj_stream.send.await_count == -(
+            -data_len // _MAX_CHUNK_SIZE_BYTES
+        )  # Ceiling division for number of chunks
+        assert (
+            writer.write_obj_stream.recv.await_count == expected_recv_count
+        )  # Expect 1 recv per flush interval
 
     @pytest.mark.asyncio
     async def test_append_recovery_reopens_stream(self, mock_appendable_writer):
@@ -318,7 +367,7 @@ class TestAsyncAppendableObjectWriter:
                 MockManager.return_value.execute.side_effect = mock_execute
                 await writer.append(b"0123456789")
 
-                mock_appendable_writer["mock_stream"].close.assert_awaited()
+                # mock_appendable_writer["mock_stream"].close.assert_awaited() # Removed because open() is mocked
                 mock_writer_open.assert_awaited()
                 assert writer.persisted_size == 5
 

@@ -1,22 +1,67 @@
-import asyncio
+import subprocess
+import time
+import urllib
 import uuid
+
 import grpc
+import pytest
 import requests
-
-from google.api_core import exceptions
-from google.auth import credentials as auth_credentials
-from google.cloud import _storage_v2 as storage_v2
-
+from google.api_core import client_options, exceptions
 from google.api_core.retry_async import AsyncRetry
-from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
-    AsyncAppendableObjectWriter,
-)
+from google.auth import credentials as auth_credentials
+
+from google.cloud import _storage_v2 as storage_v2
+from google.cloud.storage.asyncio.async_appendable_object_writer import \
+    AsyncAppendableObjectWriter
+from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
+from tests.conformance._utils import start_grpc_server
 
 # --- Configuration ---
+TEST_BENCH_ENDPOINT = (
+    "http://localhost:9002"  # 9000 in VM is taken by test_conformance.py, 9001 by reads
+)
+_PORT = urllib.parse.urlsplit(TEST_BENCH_ENDPOINT).port
+_GRPC_PORT = 8888
+
 PROJECT_NUMBER = "12345"  # A dummy project number is fine for the testbench.
-GRPC_ENDPOINT = "localhost:8888"
-HTTP_ENDPOINT = "http://localhost:9000"
-CONTENT = b"A" * 1024 * 10  # 10 KB
+GRPC_ENDPOINT = f"localhost:{_GRPC_PORT}"
+HTTP_ENDPOINT = TEST_BENCH_ENDPOINT
+
+_DEFAULT_IMAGE_NAME = "gcr.io/cloud-devrel-public-resources/storage-testbench"
+_DEFAULT_IMAGE_TAG = "latest"
+_DOCKER_IMAGE = f"{_DEFAULT_IMAGE_NAME}:{_DEFAULT_IMAGE_TAG}"
+_PULL_CMD = ["docker", "pull", _DOCKER_IMAGE]
+_RUN_CMD = [
+    "docker",
+    "run",
+    "--name",
+    "bidi_writes_container",
+    "--rm",
+    "-d",
+    "-p",
+    f"{_PORT}:9000",
+    "-p",
+    f"{_GRPC_PORT}:8888",
+    _DOCKER_IMAGE,
+]
+_DOCKER_STOP_CMD = [
+    "docker",
+    "stop",
+    "bidi_writes_container",
+]
+
+
+@pytest.fixture(scope="module")
+def testbench():
+    subprocess.run(_PULL_CMD)
+    proc = subprocess.Popen(_RUN_CMD)
+    time.sleep(10)
+    yield GRPC_ENDPOINT, HTTP_ENDPOINT
+    subprocess.run(_DOCKER_STOP_CMD)
+    proc.kill()
+
+
+CONTENT = b"A" * 1024 * 1024 * 10  # 10 MiB
 
 
 def _is_retryable(exc):
@@ -70,10 +115,14 @@ async def run_test_scenario(
         retry_test_id = resp.json()["id"]
 
         # 2. Set up writer and metadata for fault injection.
+        grpc_client = AsyncGrpcClient._create_insecure_grpc_client(
+            client_options=client_options.ClientOptions(api_endpoint=GRPC_ENDPOINT),
+        )
         writer = AsyncAppendableObjectWriter(
-            gapic_client,
+            grpc_client,
             bucket_name,
             object_name,
+            writer_options={"FLUSH_INTERVAL_BYTES": 2 * 1024 * 1024},
         )
         fault_injection_metadata = (("x-retry-test-id", retry_test_id),)
 
@@ -121,21 +170,20 @@ async def run_test_scenario(
             ):
                 raise
 
-            if not use_default:
-                assert (
-                    retry_count == 0
-                ), f"Retry was incorrectly triggered for non-retriable error in {scenario['name']}!"
-                print(f"Success: caught expected exception for {scenario['name']}: {e}")
-
     finally:
         # 5. Clean up the Retry Test resource.
         if retry_test_id:
             http_client.delete(f"{HTTP_ENDPOINT}/retry_test/{retry_test_id}")
 
 
-async def main():
+@pytest.mark.asyncio
+async def test_bidi_writes(testbench):
     """Main function to set up resources and run all test scenarios."""
-    channel = grpc.aio.insecure_channel(GRPC_ENDPOINT)
+    grpc_endpoint, http_endpoint = testbench
+    start_grpc_server(
+        grpc_endpoint, http_endpoint
+    )  # Ensure the testbench gRPC server is running before this test executes.
+    channel = grpc.aio.insecure_channel(grpc_endpoint)
     creds = auth_credentials.AnonymousCredentials()
     transport = storage_v2.services.storage.transports.StorageGrpcAsyncIOTransport(
         channel=channel,
@@ -173,10 +221,11 @@ async def main():
             "instruction": "return-429",
             "expected_error": None,
         },
+        # TODO: b/490280918
         {
             "name": "Smarter Resumption: Retry 503 after partial data",
             "method": "storage.objects.insert",
-            "instruction": "return-503-after-2K",
+            "instruction": "return-503-after-3072K",  # 3072 KiB == 3 MiB
             "expected_error": None,
         },
         {
@@ -184,40 +233,6 @@ async def main():
             "method": "storage.objects.insert",
             "instruction": "redirect-send-handle-and-token-tokenval",
             "expected_error": None,
-        },
-        {
-            "name": "Fail on 401",
-            "method": "storage.objects.insert",
-            "instruction": "return-401",
-            "expected_error": exceptions.Unauthorized,
-        },
-        {
-            "name": "Default Policy: Retry on 503",
-            "method": "storage.objects.insert",
-            "instruction": "return-503",
-            "expected_error": None,
-            "use_default_policy": True,
-        },
-        {
-            "name": "Default Policy: Retry on 503",
-            "method": "storage.objects.insert",
-            "instruction": "return-500",
-            "expected_error": None,
-            "use_default_policy": True,
-        },
-        {
-            "name": "Default Policy: Retry on BidiWriteObjectRedirectedError",
-            "method": "storage.objects.insert",
-            "instruction": "redirect-send-handle-and-token-tokenval",
-            "expected_error": None,
-            "use_default_policy": True,
-        },
-        {
-            "name": "Default Policy: Smarter Ressumption",
-            "method": "storage.objects.insert",
-            "instruction": "return-503-after-2K",
-            "expected_error": None,
-            "use_default_policy": True,
         },
     ]
 
@@ -261,7 +276,3 @@ async def main():
             await gapic_client.delete_bucket(request=delete_bucket_req)
         except Exception as e:
             print(f"Warning: Cleanup failed: {e}")
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

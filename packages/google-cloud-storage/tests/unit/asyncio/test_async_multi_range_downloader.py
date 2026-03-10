@@ -27,7 +27,6 @@ from google.cloud.storage.asyncio import async_read_object_stream
 from io import BytesIO
 from google.cloud.storage.exceptions import DataCorruption
 
-
 _TEST_BUCKET_NAME = "test-bucket"
 _TEST_OBJECT_NAME = "test-object"
 _TEST_OBJECT_SIZE = 1024 * 1024  # 1 MiB
@@ -93,6 +92,7 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.read_handle == _TEST_READ_HANDLE
         assert mrd.persisted_size == _TEST_OBJECT_SIZE
         assert mrd.is_stream_open
+        assert mrd._open_retries == 0
 
     @mock.patch(
         "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
@@ -446,3 +446,133 @@ class TestAsyncMultiRangeDownloader:
                 generation=_TEST_GENERATION_NUMBER,
                 generation_number=_TEST_GENERATION_NUMBER,
             )
+
+    @mock.patch("google.cloud.storage.asyncio.async_multi_range_downloader.AsyncRetry")
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_open_retries_increment(
+        self, mock_cls_async_read_object_stream, mock_async_retry
+    ):
+        # Arrange
+        # Configure AsyncRetry mock to return a pass-through decorator so we can await the result
+        mock_policy = mock.MagicMock()
+        mock_policy.side_effect = lambda f: f
+        mock_async_retry.return_value = mock_policy
+
+        mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+        # _make_mock_mrd calls create_mrd -> open.
+        # We need to test logic where retry happens.
+
+        # Create fresh MRD
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mrd = AsyncMultiRangeDownloader(
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+        # Mock stream
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+
+        # Action: We want to capture the on_error passed to AsyncRetry
+        await mrd.open()
+
+        # Assert
+        # Check that AsyncRetry was initialized with a wrapper
+        call_args = mock_async_retry.call_args
+        assert call_args is not None
+        _, kwargs = call_args
+        on_error = kwargs.get("on_error")
+        assert on_error is not None
+
+        # Simulate error to trigger increment
+        assert mrd._open_retries == 0
+        on_error(ValueError("test"))
+        assert mrd._open_retries == 1
+
+    @mock.patch("google.cloud.storage.asyncio.async_multi_range_downloader.logger")
+    @pytest.mark.asyncio
+    async def test_on_open_error_logs_warning(self, mock_logger):
+        # Arrange
+        mock_client = mock.MagicMock()
+        mrd = AsyncMultiRangeDownloader(
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+        exc = ValueError("test error")
+
+        # Act
+        mrd._on_open_error(exc)
+
+        # Assert
+        mock_logger.warning.assert_called_once_with(
+            f"Error occurred while opening MRD: {exc}"
+        )
+
+    @mock.patch("google.cloud.storage.asyncio.async_multi_range_downloader.logger")
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_resumption_logging(
+        self, mock_cls_async_read_object_stream, mock_random_int, mock_logger
+    ):
+        # Arrange
+        mock_mrd, _ = await self._make_mock_mrd(mock_cls_async_read_object_stream)
+
+        mock_mrd.read_obj_str.send = AsyncMock()
+        mock_mrd.read_obj_str.recv = AsyncMock()
+
+        from google.api_core import exceptions as core_exceptions
+
+        retryable_exc = core_exceptions.ServiceUnavailable("Retry me")
+
+        # mock send to raise exception ONCE then succeed
+        mock_mrd.read_obj_str.send.side_effect = [
+            retryable_exc,
+            None,  # Success on second try
+        ]
+
+        # mock recv for second try
+        mock_mrd.read_obj_str.recv.side_effect = [
+            _storage_v2.BidiReadObjectResponse(
+                object_data_ranges=[
+                    _storage_v2.ObjectRangeData(
+                        checksummed_data=_storage_v2.ChecksummedData(
+                            content=b"data", crc32c=123
+                        ),
+                        range_end=True,
+                        read_range=_storage_v2.ReadRange(
+                            read_offset=0, read_length=4, read_id=123
+                        ),
+                    )
+                ]
+            ),
+            None,
+        ]
+
+        mock_random_int.return_value = 123
+
+        # Act
+        buffer = BytesIO()
+        # Patch Checksum where it is likely used (reads_resumption_strategy or similar),
+        # but actually if we use google_crc32c directly, we should patch that or provide valid CRC.
+        # Since we can't reliably predict where Checksum is imported/used without more digging,
+        # let's provide a valid CRC for b"data".
+        # Checksum(b"data").digest() -> needs to match crc32c=123.
+        # But we can't force b"data" to have crc=123.
+        # So we MUST patch Checksum.
+        # It is used in google.cloud.storage.asyncio.retry.reads_resumption_strategy
+
+        with mock.patch(
+            "google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum"
+        ) as mock_chk:
+            mock_chk.return_value.digest.return_value = (123).to_bytes(4, "big")
+
+            await mock_mrd.download_ranges([(0, 4, buffer)])
+
+        # Assert
+        mock_logger.info.assert_any_call("Resuming download (attempt 2) for 1 ranges.")

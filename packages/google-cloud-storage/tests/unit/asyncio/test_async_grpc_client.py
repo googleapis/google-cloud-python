@@ -19,6 +19,7 @@ from google.auth.credentials import AnonymousCredentials
 from google.api_core import client_info as client_info_lib
 from google.cloud.storage.asyncio import async_grpc_client
 from google.cloud.storage import __version__
+from google.api_core import client_options
 
 
 def _make_credentials(spec=None):
@@ -157,36 +158,31 @@ class TestAsyncGrpcClient:
         assert retrieved_client is mock_grpc_gapic_client.return_value
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
-    def test_grpc_client_with_anon_creds(self, mock_grpc_gapic_client):
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_grpc_client.grpc.aio.insecure_channel"
+    )
+    def test_grpc_client_with_anon_creds(
+        self, mock_insecure_channel, mock_async_storage_client
+    ):
         # Arrange
-        mock_transport_cls = mock.MagicMock()
-        mock_grpc_gapic_client.get_transport_class.return_value = mock_transport_cls
-        channel_sentinel = mock.sentinel.channel
-
-        mock_transport_cls.create_channel.return_value = channel_sentinel
-        mock_transport_cls.return_value = mock.sentinel.transport
+        mock_channel = mock.MagicMock()
+        mock_insecure_channel.return_value = mock_channel
 
         # Act
-        anonymous_creds = AnonymousCredentials()
-        client = async_grpc_client.AsyncGrpcClient(credentials=anonymous_creds)
-        retrieved_client = client.grpc_client
+        client = async_grpc_client.AsyncGrpcClient(
+            client_options=client_options.ClientOptions(
+                api_endpoint="my-grpc-endpoint"
+            ),
+            credentials=AnonymousCredentials(),
+        )
 
         # Assert
-        assert retrieved_client is mock_grpc_gapic_client.return_value
+        assert client.grpc_client is mock_async_storage_client.return_value
+        mock_insecure_channel.assert_called_once_with("my-grpc-endpoint")
 
-        kwargs = mock_grpc_gapic_client.call_args.kwargs
-        client_info = kwargs["client_info"]
-        agent_version = f"gcloud-python/{__version__}"
-        assert agent_version in client_info.user_agent
-        primary_user_agent = client_info.to_user_agent()
-        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
-
-        mock_transport_cls.create_channel.assert_called_once_with(
-            attempt_direct_path=True,
-            credentials=anonymous_creds,
-            options=expected_options,
-        )
-        mock_transport_cls.assert_called_once_with(channel=channel_sentinel)
+        kwargs = mock_async_storage_client.call_args.kwargs
+        transport = kwargs["transport"]
+        assert isinstance(transport._credentials, AnonymousCredentials)
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_user_agent_with_custom_client_info(self, mock_async_storage_client):
@@ -221,9 +217,7 @@ class TestAsyncGrpcClient:
         mock_gapic_client = mock.AsyncMock()
         mock_async_storage_client.return_value = mock_gapic_client
 
-        client = async_grpc_client.AsyncGrpcClient(
-            credentials=_make_credentials(spec=AnonymousCredentials)
-        )
+        client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
 
         bucket_name = "bucket"
         object_name = "object"
@@ -264,9 +258,7 @@ class TestAsyncGrpcClient:
         mock_gapic_client = mock.AsyncMock()
         mock_async_storage_client.return_value = mock_gapic_client
 
-        client = async_grpc_client.AsyncGrpcClient(
-            credentials=_make_credentials(spec=AnonymousCredentials)
-        )
+        client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
 
         bucket_name = "bucket"
         object_name = "object"
@@ -293,9 +285,7 @@ class TestAsyncGrpcClient:
         mock_gapic_client = mock.AsyncMock()
         mock_async_storage_client.return_value = mock_gapic_client
 
-        client = async_grpc_client.AsyncGrpcClient(
-            credentials=_make_credentials(spec=AnonymousCredentials)
-        )
+        client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
 
         bucket_name = "bucket"
         object_name = "object"

@@ -236,6 +236,7 @@ def conftest_retry(session):
     session.install(
         "pytest",
         "pytest-xdist",
+        "pytest-asyncio",
         "grpcio",
         "grpcio-status",
         "grpc-google-iam-v1",
@@ -247,13 +248,15 @@ def conftest_retry(session):
     # Run #CPU processes in parallel if no test session arguments are passed in.
     if session.posargs:
         test_cmd = [
-            "py.test",
-            "--quiet",
+            "pytest",
+            "-vv",
+            "-s",
+            # "--quiet",
             conformance_test_folder_path,
             *session.posargs,
         ]
     else:
-        test_cmd = ["py.test", "-n", "auto", "--quiet", conformance_test_folder_path]
+        test_cmd = ["pytest", "-vv", "-s", "-n", "auto", conformance_test_folder_path]
 
     # Run py.test against the conformance tests.
     session.run(*test_cmd, env={"DOCKER_API_VERSION": "1.39"})
