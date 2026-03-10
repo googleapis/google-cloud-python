@@ -22,6 +22,11 @@ from grpc import StatusCode
 
 from google.cloud.bigtable.row import DirectRow
 
+<<<<<<< HEAD
+=======
+from google.api_core.exceptions import DeadlineExceeded
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+>>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
 from ._testing import _make_credentials
 
 PROJECT_ID = "project-id"
@@ -587,6 +592,7 @@ def _make_gapic_api(client):
     return gapic_client_mock
 
 
+<<<<<<< HEAD
 def _table_read_row_helper(chunks, expected_result, app_profile_id=None):
     from google.cloud._testing import _Monkey
 
@@ -716,8 +722,9 @@ def test_table_read_row_still_partial():
         _table_read_row_helper(chunks, None)
 
 
+=======
+>>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
 _DEFAULT_SENTINEL = object()
-
 
 def _table_mutate_rows_helper(
     mutation_timeout=None,
@@ -963,38 +970,68 @@ def test_table_mutate_rows_w_mutation_timeout_and_timeout_arg():
 
 
 def test_table_read_rows():
+<<<<<<< HEAD
     from google.cloud._testing import _Monkey
 
     from google.cloud.bigtable import table as MUT
     from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS, PartialRowsData
+=======
+    from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
+    from google.cloud.bigtable.data.row import Row, Cell
+    from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+    from google.cloud.bigtable.row import PartialRowData
+    from google.cloud.bigtable.row import Cell as PartialRowDataCell
+    from google.cloud.bigtable.row_data import PartialRowsData
+    from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
+    from google.cloud.bigtable.row_set import RowRange
+>>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
-    gapic_api = _make_gapic_api(client)
     instance = client.instance(instance_id=INSTANCE_ID)
     app_profile_id = "app-profile-id"
     table = _make_table(TABLE_ID, instance, app_profile_id=app_profile_id)
 
-    # Create request_pb
-    request_pb = object()  # Returned by our mock.
-    retry = DEFAULT_RETRY_READ_ROWS
-    mock_created = []
+    # Create read_rows return value
+    rows = [
+        Row(
+            key=ROW_KEY,
+            cells=[
+                Cell(
+                    value=VALUE,
+                    row_key=ROW_KEY,
+                    family=FAMILY_NAME,
+                    qualifier=QUALIFIER,
+                    timestamp_micros=TIMESTAMP_MICROS,
+                )
+            ],
+        ),
+        Row(
+            key=ROW_KEY_1,
+            cells=[
+                Cell(
+                    value=VALUE,
+                    row_key=ROW_KEY_1,
+                    family=FAMILY_NAME,
+                    qualifier=QUALIFIER,
+                    timestamp_micros=TIMESTAMP_MICROS,
+                )
+            ],
+        ),
+    ]
+    generator = (r for r in rows)
 
-    def mock_create_row_request(table_name, **kwargs):
-        mock_created.append((table_name, kwargs))
-        return request_pb
-
-    # Create expected_result.
-    expected_result = PartialRowsData(
-        client._table_data_client._gapic_client.transport.read_rows, request_pb, retry
-    )
+    # Create expected result.
+    expected_result = PartialRowsData(generator)
 
     # Perform the method and check the result.
-    start_key = b"start-key"
+    start_key = b"begin-key"
     end_key = b"end-key"
     filter_obj = object()
     limit = 22
-    with _Monkey(MUT, _create_row_request=mock_create_row_request):
+    retry = DEFAULT_RETRY_READ_ROWS
+    with mock.patch.object(table._table_impl, "read_rows_stream") as read_rows_mock:
+        read_rows_mock.return_value = generator
         result = table.read_rows(
             start_key=start_key,
             end_key=end_key,
@@ -1004,18 +1041,41 @@ def test_table_read_rows():
         )
 
     assert result.rows == expected_result.rows
-    assert result.retry == expected_result.retry
-    created_kwargs = {
-        "start_key": start_key,
-        "end_key": end_key,
-        "filter_": filter_obj,
-        "limit": limit,
-        "end_inclusive": False,
-        "app_profile_id": app_profile_id,
-        "row_set": None,
-    }
-    assert mock_created == [(table.name, created_kwargs)]
+    assert result._generator == expected_result._generator
 
+    expected_read_rows_query = ReadRowsQuery(
+        row_ranges=RowRange(start_key=start_key, end_key=end_key),
+        row_filter=filter_obj,
+        limit=limit,
+    )
+
+    read_rows_mock.assert_called_once_with(
+        expected_read_rows_query,
+        operation_timeout=TABLE_DEFAULT.READ_ROWS,
+        attempt_timeout=retry.deadline,
+        retryable_errors=TABLE_DEFAULT.READ_ROWS,
+    )
+
+    # Test that the correct rows get returned.
+    partial_row_data = PartialRowData(ROW_KEY)
+    partial_row_data._cells = {
+        FAMILY_NAME: {
+            QUALIFIER: [
+                PartialRowDataCell(value=VALUE, timestamp_micros=TIMESTAMP_MICROS),
+            ],
+        },
+    }
+    partial_row_data_1 = PartialRowData(ROW_KEY_1)
+    partial_row_data_1._cells = {
+        FAMILY_NAME: {
+            QUALIFIER: [
+                PartialRowDataCell(value=VALUE, timestamp_micros=TIMESTAMP_MICROS),
+            ],
+        },
+    }
+    expected_row_data = [partial_row_data, partial_row_data_1]
+
+<<<<<<< HEAD
     gapic_api.read_rows.assert_called_once_with(request_pb, timeout=61.0, retry=retry)
 
 
@@ -1262,6 +1322,10 @@ def test_table_yield_rows_with_row_set():
     gapic_api.read_rows.assert_called_once_with(
         expected_request, timeout=61.0, retry=DEFAULT_RETRY_READ_ROWS
     )
+=======
+    row_data = list(result)
+    assert row_data == expected_row_data
+>>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
 
 
 def test_table_sample_row_keys():
@@ -1619,15 +1683,6 @@ def test_table_restore_table_w_backup_name():
     _table_restore_helper(backup_name=BACKUP_NAME)
 
 
-def test__create_row_request_table_name_only():
-    from google.cloud.bigtable.table import _create_row_request
-
-    table_name = "table_name"
-    result = _create_row_request(table_name)
-    expected_result = _ReadRowsRequestPB(table_name=table_name)
-    assert result == expected_result
-
-
 def test__create_row_request_row_range_row_set_conflict():
     from google.cloud.bigtable.table import _create_row_request
 
@@ -1639,12 +1694,9 @@ def test__create_row_request_row_range_start_key():
     from google.cloud.bigtable.table import _create_row_request
     from google.cloud.bigtable_v2.types import RowRange
 
-    table_name = "table_name"
     start_key = b"begin_key"
-    result = _create_row_request(table_name, start_key=start_key)
-    expected_result = _ReadRowsRequestPB(table_name=table_name)
-    row_range = RowRange(start_key_closed=start_key)
-    expected_result.rows.row_ranges.append(row_range)
+    result = _create_row_request(start_key=start_key)
+    expected_result = ReadRowsQuery(row_ranges=RowRange(start_key_closed=start_key))
     assert result == expected_result
 
 
@@ -1652,12 +1704,9 @@ def test__create_row_request_row_range_end_key():
     from google.cloud.bigtable.table import _create_row_request
     from google.cloud.bigtable_v2.types import RowRange
 
-    table_name = "table_name"
-    end_key = b"end_key"
-    result = _create_row_request(table_name, end_key=end_key)
-    expected_result = _ReadRowsRequestPB(table_name=table_name)
-    row_range = RowRange(end_key_open=end_key)
-    expected_result.rows.row_ranges.append(row_range)
+    end_key = b"begin_key"
+    result = _create_row_request(end_key=end_key)
+    expected_result = ReadRowsQuery(row_ranges=RowRange(end_key_open=end_key))
     assert result == expected_result
 
 
@@ -1665,13 +1714,12 @@ def test__create_row_request_row_range_both_keys():
     from google.cloud.bigtable.table import _create_row_request
     from google.cloud.bigtable_v2.types import RowRange
 
-    table_name = "table_name"
     start_key = b"begin_key"
     end_key = b"end_key"
-    result = _create_row_request(table_name, start_key=start_key, end_key=end_key)
-    row_range = RowRange(start_key_closed=start_key, end_key_open=end_key)
-    expected_result = _ReadRowsRequestPB(table_name=table_name)
-    expected_result.rows.row_ranges.append(row_range)
+    result = _create_row_request(start_key=start_key, end_key=end_key)
+    expected_result = ReadRowsQuery(
+        row_ranges=RowRange(start_key_closed=start_key, end_key_open=end_key)
+    )
     assert result == expected_result
 
 
@@ -1679,15 +1727,14 @@ def test__create_row_request_row_range_both_keys_inclusive():
     from google.cloud.bigtable.table import _create_row_request
     from google.cloud.bigtable_v2.types import RowRange
 
-    table_name = "table_name"
     start_key = b"begin_key"
     end_key = b"end_key"
     result = _create_row_request(
-        table_name, start_key=start_key, end_key=end_key, end_inclusive=True
+        start_key=start_key, end_key=end_key, end_inclusive=True
     )
-    expected_result = _ReadRowsRequestPB(table_name=table_name)
-    row_range = RowRange(start_key_closed=start_key, end_key_closed=end_key)
-    expected_result.rows.row_ranges.append(row_range)
+    expected_result = ReadRowsQuery(
+        row_ranges=RowRange(start_key_closed=start_key, end_key_closed=end_key)
+    )
     assert result == expected_result
 
 
@@ -1695,22 +1742,18 @@ def test__create_row_request_with_filter():
     from google.cloud.bigtable.row_filters import RowSampleFilter
     from google.cloud.bigtable.table import _create_row_request
 
-    table_name = "table_name"
     row_filter = RowSampleFilter(0.33)
-    result = _create_row_request(table_name, filter_=row_filter)
-    expected_result = _ReadRowsRequestPB(
-        table_name=table_name, filter=row_filter._to_pb()
-    )
+    result = _create_row_request(filter_=row_filter)
+    expected_result = ReadRowsQuery(row_filter=row_filter)
     assert result == expected_result
 
 
 def test__create_row_request_with_limit():
     from google.cloud.bigtable.table import _create_row_request
 
-    table_name = "table_name"
     limit = 1337
-    result = _create_row_request(table_name, limit=limit)
-    expected_result = _ReadRowsRequestPB(table_name=table_name, rows_limit=limit)
+    result = _create_row_request(limit=limit)
+    expected_result = ReadRowsQuery(limit=limit)
     assert result == expected_result
 
 
@@ -1718,30 +1761,10 @@ def test__create_row_request_with_row_set():
     from google.cloud.bigtable.row_set import RowSet
     from google.cloud.bigtable.table import _create_row_request
 
-    table_name = "table_name"
     row_set = RowSet()
-    result = _create_row_request(table_name, row_set=row_set)
-    expected_result = _ReadRowsRequestPB(table_name=table_name)
+    result = _create_row_request(row_set=row_set)
+    expected_result = ReadRowsQuery()
     assert result == expected_result
-
-
-def test__create_row_request_with_app_profile_id():
-    from google.cloud.bigtable.table import _create_row_request
-
-    table_name = "table_name"
-    limit = 1337
-    app_profile_id = "app-profile-id"
-    result = _create_row_request(table_name, limit=limit, app_profile_id=app_profile_id)
-    expected_result = _ReadRowsRequestPB(
-        table_name=table_name, rows_limit=limit, app_profile_id=app_profile_id
-    )
-    assert result == expected_result
-
-
-def _ReadRowsRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
-
-    return messages_v2_pb2.ReadRowsRequest(*args, **kw)
 
 
 def test_cluster_state___eq__():

@@ -163,6 +163,7 @@ def test_row_set_add_row_range_with_prefix():
     assert row_set.row_ranges[0].end_key == b"rox"
 
 
+<<<<<<< HEAD
 def test_row_set__update_message_request():
     from google.cloud._helpers import _to_bytes
 
@@ -185,6 +186,8 @@ def test_row_set__update_message_request():
     assert request == expected_request
 
 
+=======
+>>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
 def test_row_range_constructor():
     from google.cloud.bigtable.row_set import RowRange
 
