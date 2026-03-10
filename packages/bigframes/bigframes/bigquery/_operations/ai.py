@@ -28,8 +28,9 @@ from bigframes import pandas as bpd
 from bigframes import series, session
 from bigframes.bigquery._operations import utils as bq_utils
 from bigframes.core import convert
+from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.logging import log_adapter
-import bigframes.core.sql.literals
+from bigframes.ml import base as ml_base
 from bigframes.ml import core as ml_core
 from bigframes.operations import ai_ops, output_schemas
 
@@ -392,7 +393,7 @@ def generate_double(
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
 def generate_embedding(
-    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    model: Union[ml_base.BaseEstimator, str, pd.Series],
     data: Union[dataframe.DataFrame, series.Series, pd.DataFrame, pd.Series],
     *,
     output_dimensionality: Optional[int] = None,
@@ -416,7 +417,7 @@ def generate_embedding(
         ... ) # doctest: +SKIP
 
     Args:
-        model (bigframes.ml.base.BaseEstimator or str):
+        model (ml_base.BaseEstimator or str):
             The model to use for text embedding.
         data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
             The data to generate embeddings for. If a Series is provided, it is
@@ -458,7 +459,7 @@ def generate_embedding(
     model_name, session = bq_utils.get_model_name_and_session(model, data)
     table_sql = bq_utils.to_sql(data)
 
-    struct_fields: Dict[str, bigframes.core.sql.literals.STRUCT_VALUES] = {}
+    struct_fields: Dict[str, Any] = {}
     if output_dimensionality is not None:
         struct_fields["OUTPUT_DIMENSIONALITY"] = output_dimensionality
     if task_type is not None:
@@ -478,7 +479,7 @@ def generate_embedding(
         FROM AI.GENERATE_EMBEDDING(
             MODEL `{model_name}`,
             ({table_sql}),
-            {bigframes.core.sql.literals.struct_literal(struct_fields)}
+            {sg_sql.to_sql(sg_sql.literal(struct_fields))}
         )
     """
 
@@ -490,7 +491,7 @@ def generate_embedding(
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
 def generate_text(
-    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    model: Union[ml_base.BaseEstimator, str, pd.Series],
     data: Union[dataframe.DataFrame, series.Series, pd.DataFrame, pd.Series],
     *,
     temperature: Optional[float] = None,
@@ -519,7 +520,7 @@ def generate_text(
         ... ) # doctest: +SKIP
 
     Args:
-        model (bigframes.ml.base.BaseEstimator or str):
+        model (ml_base.BaseEstimator or str):
             The model to use for text generation.
         data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
             The data to generate text for. If a Series is provided, it is
@@ -591,7 +592,7 @@ def generate_text(
         FROM AI.GENERATE_TEXT(
             MODEL `{model_name}`,
             ({table_sql}),
-            {bigframes.core.sql.literals.struct_literal(struct_fields)}
+            {sg_sql.to_sql(sg_sql.literal(struct_fields))}
         )
     """
 
@@ -603,7 +604,7 @@ def generate_text(
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
 def generate_table(
-    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    model: Union[ml_base.BaseEstimator, str, pd.Series],
     data: Union[dataframe.DataFrame, series.Series, pd.DataFrame, pd.Series],
     *,
     output_schema: Union[str, Mapping[str, str]],
@@ -635,7 +636,7 @@ def generate_table(
         ... ) # doctest: +SKIP
 
     Args:
-        model (bigframes.ml.base.BaseEstimator or str):
+        model (ml_base.BaseEstimator or str):
             The model to use for table generation.
         data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
             The data to generate table for. If a Series is provided, it is
@@ -677,9 +678,7 @@ def generate_table(
     else:
         output_schema_str = output_schema
 
-    struct_fields_bq: Dict[str, bigframes.core.sql.literals.STRUCT_VALUES] = {
-        "output_schema": output_schema_str
-    }
+    struct_fields_bq: Dict[str, Any] = {"output_schema": output_schema_str}
     if temperature is not None:
         struct_fields_bq["temperature"] = temperature
     if top_p is not None:
@@ -691,7 +690,7 @@ def generate_table(
     if request_type is not None:
         struct_fields_bq["request_type"] = request_type
 
-    struct_sql = bigframes.core.sql.literals.struct_literal(struct_fields_bq)
+    struct_sql = sg_sql.to_sql(sg_sql.literal(struct_fields_bq))
     query = f"""
         SELECT *
         FROM AI.GENERATE_TABLE(

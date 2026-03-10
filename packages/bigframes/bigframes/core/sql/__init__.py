@@ -17,14 +17,19 @@ from __future__ import annotations
 Utility functions for SQL construction.
 """
 
-import datetime
-import decimal
 import json
-import math
-from typing import cast, Collection, Iterable, Mapping, Optional, TYPE_CHECKING, Union
+from typing import (
+    Any,
+    cast,
+    Collection,
+    Iterable,
+    Mapping,
+    Optional,
+    TYPE_CHECKING,
+    Union,
+)
 
 import bigframes_vendored.sqlglot.expressions as sge
-import shapely.geometry.base  # type: ignore
 
 from bigframes.core.compile.sqlglot import sql
 
@@ -43,68 +48,8 @@ except ImportError:
     to_wkt = dumps
 
 
-SIMPLE_LITERAL_TYPES = Union[
-    bytes,
-    str,
-    int,
-    bool,
-    float,
-    datetime.datetime,
-    datetime.date,
-    datetime.time,
-    decimal.Decimal,
-    list,
-]
-
-
-### Writing SQL Values (literals, column references, table references, etc.)
-def simple_literal(value: Union[SIMPLE_LITERAL_TYPES, None]) -> str:
-    """Return quoted input string."""
-
-    # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#literals
-    if value is None:
-        return "NULL"
-    elif isinstance(value, str):
-        # Single quoting seems to work nicer with ibis than double quoting
-        return f"'{sql.escape_chars(value)}'"
-    elif isinstance(value, bytes):
-        return repr(value)
-    elif isinstance(value, (bool, int)):
-        return str(value)
-    elif isinstance(value, float):
-        # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#floating_point_literals
-        if math.isnan(value):
-            return 'CAST("nan" as FLOAT)'
-        if value == math.inf:
-            return 'CAST("+inf" as FLOAT)'
-        if value == -math.inf:
-            return 'CAST("-inf" as FLOAT)'
-        return str(value)
-    # Check datetime first as it is a subclass of date
-    elif isinstance(value, datetime.datetime):
-        if value.tzinfo is None:
-            return f"DATETIME('{value.isoformat()}')"
-        else:
-            return f"TIMESTAMP('{value.isoformat()}')"
-    elif isinstance(value, datetime.date):
-        return f"DATE('{value.isoformat()}')"
-    elif isinstance(value, datetime.time):
-        return f"TIME(DATETIME('1970-01-01 {value.isoformat()}'))"
-    elif isinstance(value, shapely.geometry.base.BaseGeometry):
-        return f"ST_GEOGFROMTEXT({simple_literal(to_wkt(value))})"
-    elif isinstance(value, decimal.Decimal):
-        # TODO: disambiguate BIGNUMERIC based on scale and/or precision
-        return f"CAST('{str(value)}' AS NUMERIC)"
-    elif isinstance(value, list):
-        simple_literals = [simple_literal(i) for i in value]
-        return f"[{', '.join(simple_literals)}]"
-
-    else:
-        raise ValueError(f"Cannot produce literal for {value}")
-
-
-def multi_literal(*values: str):
-    literal_strings = [simple_literal(i) for i in values]
+def multi_literal(*values: Any):
+    literal_strings = [sql.to_sql(sql.literal(i)) for i in values]
     return "(" + ", ".join(literal_strings) + ")"
 
 
@@ -210,7 +155,7 @@ def create_vector_index_ddl(
 
     rendered_options = ", ".join(
         [
-            f"{option_name} = {simple_literal(option_value)}"
+            f"{option_name} = {sql.to_sql(sql.literal(option_value))}"
             for option_name, option_value in options.items()
         ]
     )
@@ -237,24 +182,26 @@ def create_vector_search_sql(
 
     vector_search_args = [
         f"TABLE {sql.to_sql(sql.identifier(cast(str, base_table)))}",
-        f"{simple_literal(column_to_search)}",
+        f"{sql.to_sql(sql.literal(column_to_search))}",
         f"({sql_string})",
     ]
 
     if query_column_to_search is not None:
         vector_search_args.append(
-            f"query_column_to_search => {simple_literal(query_column_to_search)}"
+            f"query_column_to_search => {sql.to_sql(sql.literal(query_column_to_search))}"
         )
 
     if top_k is not None:
-        vector_search_args.append(f"top_k=> {simple_literal(top_k)}")
+        vector_search_args.append(f"top_k=> {sql.to_sql(sql.literal(top_k))}")
 
     if distance_type is not None:
-        vector_search_args.append(f"distance_type => {simple_literal(distance_type)}")
+        vector_search_args.append(
+            f"distance_type => {sql.to_sql(sql.literal(distance_type))}"
+        )
 
     if options is not None:
         vector_search_args.append(
-            f"options => {simple_literal(json.dumps(options, indent=None))}"
+            f"options => {sql.to_sql(sql.literal(json.dumps(options, indent=None)))}"
         )
 
     args_str = ",\n".join(vector_search_args)

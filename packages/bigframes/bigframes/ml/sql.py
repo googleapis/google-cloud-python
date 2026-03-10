@@ -22,7 +22,6 @@ import bigframes_vendored.constants as constants
 import google.cloud.bigquery
 
 from bigframes.core.compile.sqlglot import sql as sg_sql
-import bigframes.core.sql as sql_vals
 
 INDENT_STR = "  "
 
@@ -35,7 +34,7 @@ class BaseSqlGenerator:
     def encode_value(self, v: Union[str, int, float, Iterable[str]]) -> str:
         """Encode a parameter value for SQL"""
         if isinstance(v, (str, int, float)):
-            return sql_vals.simple_literal(v)
+            return sg_sql.to_sql(sg_sql.literal(v))
         elif isinstance(v, Iterable):
             inner = ", ".join([self.encode_value(x) for x in v])
             return f"[{inner}]"
@@ -62,7 +61,7 @@ class BaseSqlGenerator:
             v_trans = self.build_schema(**v) if isinstance(v, Mapping) else v
 
             param_strs.append(
-                f"{sql_vals.simple_literal(v_trans)} AS {sg_sql.to_sql(sg_sql.identifier(k))}"
+                f"{sg_sql.to_sql(sg_sql.literal(v_trans))} AS {sg_sql.to_sql(sg_sql.identifier(k))}"
             )
 
         return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)

@@ -91,7 +91,7 @@ def test_generate_embedding_with_dataframe(mock_dataframe, mock_session):
     expected_part_1 = "SELECT * FROM AI.GENERATE_EMBEDDING("
     expected_part_2 = f"MODEL `{model_name}`,"
     expected_part_3 = "(SELECT * FROM my_table),"
-    expected_part_4 = "STRUCT(256 AS OUTPUT_DIMENSIONALITY)"
+    expected_part_4 = "STRUCT(256 AS `OUTPUT_DIMENSIONALITY`)"
 
     assert expected_part_1 in query
     assert expected_part_2 in query
@@ -117,7 +117,7 @@ def test_generate_embedding_with_series(mock_embedding_series, mock_session):
     assert f"MODEL `{model_name}`" in query
     assert "(SELECT my_col AS content FROM my_table)" in query
     assert (
-        "STRUCT(0.0 AS START_SECOND, 10.0 AS END_SECOND, 5.0 AS INTERVAL_SECONDS)"
+        "STRUCT(0.0 AS `START_SECOND`, 10.0 AS `END_SECOND`, 5.0 AS `INTERVAL_SECONDS`)"
         in query
     )
 
@@ -180,7 +180,7 @@ def test_generate_text_with_dataframe(mock_dataframe, mock_session):
     expected_part_1 = "SELECT * FROM AI.GENERATE_TEXT("
     expected_part_2 = f"MODEL `{model_name}`,"
     expected_part_3 = "(SELECT * FROM my_table),"
-    expected_part_4 = "STRUCT(256 AS MAX_OUTPUT_TOKENS)"
+    expected_part_4 = "STRUCT(256 AS `MAX_OUTPUT_TOKENS`)"
 
     assert expected_part_1 in query
     assert expected_part_2 in query
@@ -238,7 +238,7 @@ def test_generate_table_with_dataframe(mock_dataframe, mock_session):
     expected_part_1 = "SELECT * FROM AI.GENERATE_TABLE("
     expected_part_2 = f"MODEL `{model_name}`,"
     expected_part_3 = "(SELECT * FROM my_table),"
-    expected_part_4 = "STRUCT('col1 STRING, col2 INT64' AS output_schema)"
+    expected_part_4 = "STRUCT('col1 STRING, col2 INT64' AS `output_schema`)"
 
     assert expected_part_1 in query
     assert expected_part_2 in query
@@ -264,7 +264,7 @@ def test_generate_table_with_options(mock_dataframe, mock_session):
     assert f"MODEL `{model_name}`" in query
     assert "(SELECT * FROM my_table)" in query
     assert (
-        "STRUCT('col1 STRING' AS output_schema, 0.5 AS temperature, 100 AS max_output_tokens)"
+        "STRUCT('col1 STRING' AS `output_schema`, 0.5 AS `temperature`, 100 AS `max_output_tokens`)"
         in query
     )
 
@@ -287,7 +287,7 @@ def test_generate_table_with_mapping_schema(mock_dataframe, mock_session):
     expected_part_1 = "SELECT * FROM AI.GENERATE_TABLE("
     expected_part_2 = f"MODEL `{model_name}`,"
     expected_part_3 = "(SELECT * FROM my_table),"
-    expected_part_4 = "STRUCT('col1 STRING, col2 INT64' AS output_schema)"
+    expected_part_4 = "STRUCT('col1 STRING, col2 INT64' AS `output_schema`)"
 
     assert expected_part_1 in query
     assert expected_part_2 in query

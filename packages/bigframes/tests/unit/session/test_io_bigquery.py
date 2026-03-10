@@ -345,7 +345,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
             ),
             (
                 "SELECT `row_index`, `string_col` FROM `test_table` "
-                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125+00:00') "
+                "FOR SYSTEM_TIME AS OF CAST('2024-05-14T12:42:36.125125+00:00' AS TIMESTAMP) "
                 "WHERE `rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
                 "'こんにちは') LIMIT 123"
             ),
@@ -374,7 +374,7 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
                     string_col,
                 FROM `test_table` AS t
                 ) """
-                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125+00:00') "
+                "FOR SYSTEM_TIME AS OF CAST('2024-05-14T12:42:36.125125+00:00' AS TIMESTAMP) "
                 "WHERE `rowindex` < 4 AND `string_col` = 'Hello, World!' "
                 "LIMIT 123"
             ),

@@ -534,12 +534,12 @@ def to_query(
 
     time_travel_clause = ""
     if time_travel_timestamp is not None:
-        time_travel_literal = bigframes.core.sql.simple_literal(time_travel_timestamp)
+        time_travel_literal = sg_sql.to_sql(sg_sql.literal(time_travel_timestamp))
         time_travel_clause = f" FOR SYSTEM_TIME AS OF {time_travel_literal}"
 
     limit_clause = ""
     if max_results is not None:
-        limit_clause = f" LIMIT {bigframes.core.sql.simple_literal(max_results)}"
+        limit_clause = f" LIMIT {sg_sql.to_sql(sg_sql.literal(max_results))}"
 
     where_clause = f" WHERE {sql_predicate}" if sql_predicate else ""
 
@@ -603,7 +603,7 @@ def compile_filters(filters: third_party_pandas_gbq.FiltersType) -> str:
             if operator_str in ["IN", "NOT IN"]:
                 value_literal = bigframes.core.sql.multi_literal(*value)
             else:
-                value_literal = bigframes.core.sql.simple_literal(value)
+                value_literal = sg_sql.to_sql(sg_sql.literal(value))
             expression = bigframes.core.sql.infix_op(
                 operator_str, column_ref, value_literal
             )

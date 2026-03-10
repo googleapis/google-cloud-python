@@ -57,8 +57,11 @@ def identifier(id: str) -> sge.Identifier:
     return sge.to_identifier(id, quoted=QUOTED)
 
 
-def literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
+def literal(value: typing.Any, dtype: dtypes.Dtype | None = None) -> sge.Expression:
     """Return a string representing column reference in a SQL."""
+    if dtype is None:
+        dtype = dtypes.infer_literal_type(value)
+
     sqlglot_type = sgt.from_bigframes_dtype(dtype) if dtype else None
     if sqlglot_type is None:
         if not pd.isna(value):
@@ -81,6 +84,14 @@ def literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
             expressions=[literal(value=v, dtype=value_type) for v in value]
         )
         return values if len(value) > 0 else cast(values, sqlglot_type)
+    elif dtype == dtypes.FLOAT_DTYPE:
+        if pd.isna(value):
+            if isinstance(value, (float, np.floating)) and np.isnan(value):
+                return constants._NAN
+            return cast(sge.Null(), sqlglot_type)
+        if np.isinf(value):
+            return constants._INF if value > 0 else constants._NEG_INF
+        return sge.convert(value)
     elif pd.isna(value) or (isinstance(value, pa.Scalar) and not value.is_valid):
         return cast(sge.Null(), sqlglot_type)
     elif dtype == dtypes.JSON_DTYPE:
@@ -100,13 +111,11 @@ def literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
         return sge.func("ST_GEOGFROMTEXT", sge.convert(wkt))
     elif dtype == dtypes.TIMEDELTA_DTYPE:
         return sge.convert(utils.timedelta_to_micros(value))
-    elif dtype == dtypes.FLOAT_DTYPE:
-        if np.isinf(value):
-            return constants._INF if value > 0 else constants._NEG_INF
-        return sge.convert(value)
     else:
         if isinstance(value, np.generic):
             value = value.item()
+        if isinstance(value, pa.Scalar):
+            value = value.as_py()
         return sge.convert(value)
 
 

@@ -89,7 +89,7 @@ def _field_to_template_value(
     dry_run: bool = False,
 ) -> str:
     """Convert value to something embeddable in a SQL string."""
-    import bigframes.core.sql  # Avoid circular imports
+    import bigframes.core.compile.sqlglot.sql as sql  # Avoid circular imports
     import bigframes.dataframe  # Avoid circular imports
 
     _validate_type(name, value)
@@ -107,20 +107,20 @@ def _field_to_template_value(
     if isinstance(value, str):
         return value
 
-    return bigframes.core.sql.simple_literal(value)
+    return sql.to_sql(sql.literal(value))
 
 
 def _validate_type(name: str, value: Any):
     """Raises TypeError if value is unsupported."""
-    import bigframes.core.sql  # Avoid circular imports
     import bigframes.dataframe  # Avoid circular imports
+    import bigframes.dtypes  # Avoid circular imports
 
     if value is None:
         return  # None can't be used in isinstance, but is a valid literal.
 
     supported_types = (
         typing.get_args(_BQ_TABLE_TYPES)
-        + typing.get_args(bigframes.core.sql.SIMPLE_LITERAL_TYPES)
+        + bigframes.dtypes.SUPPORTED_LITERAL_TYPES
         + (bigframes.dataframe.DataFrame,)
         + (pandas.DataFrame,)
     )

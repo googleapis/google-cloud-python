@@ -167,14 +167,14 @@ def test_generate_text_with_pandas_dataframe(read_pandas_mock, read_gbq_query_mo
     assert "ML.GENERATE_TEXT" in generated_sql
     assert f"MODEL `{MODEL_NAME}`" in generated_sql
     assert "(SELECT * FROM `pandas_df`)" in generated_sql
-    assert "STRUCT(0.5 AS temperature" in generated_sql
-    assert "128 AS max_output_tokens" in generated_sql
-    assert "20 AS top_k" in generated_sql
-    assert "0.9 AS top_p" in generated_sql
-    assert "true AS flatten_json_output" in generated_sql
-    assert "['a', 'b'] AS stop_sequences" in generated_sql
-    assert "true AS ground_with_google_search" in generated_sql
-    assert "'TYPE' AS request_type" in generated_sql
+    assert "STRUCT(\n  0.5 AS `temperature`" in generated_sql
+    assert "128 AS `max_output_tokens`" in generated_sql
+    assert "20 AS `top_k`" in generated_sql
+    assert "0.9 AS `top_p`" in generated_sql
+    assert "TRUE AS `flatten_json_output`" in generated_sql
+    assert "['a', 'b'] AS `stop_sequences`" in generated_sql
+    assert "TRUE AS `ground_with_google_search`" in generated_sql
+    assert "'TYPE' AS `request_type`" in generated_sql
 
 
 @mock.patch("bigframes.pandas.read_gbq_query")
@@ -210,6 +210,6 @@ def test_generate_embedding_with_pandas_dataframe(
     assert "ML.GENERATE_EMBEDDING" in generated_sql
     assert f"MODEL `{MODEL_NAME}`" in generated_sql
     assert "(SELECT * FROM `pandas_df`)" in generated_sql
-    assert "true AS flatten_json_output" in generated_sql
-    assert "'RETRIEVAL_DOCUMENT' AS task_type" in generated_sql
-    assert "256 AS output_dimensionality" in generated_sql
+    assert "STRUCT(\n  TRUE AS `flatten_json_output`" in generated_sql
+    assert "'RETRIEVAL_DOCUMENT' AS `task_type`" in generated_sql
+    assert "256 AS `output_dimensionality`" in generated_sql

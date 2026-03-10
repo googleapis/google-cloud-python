@@ -17,8 +17,6 @@ from __future__ import annotations
 from typing import Any, Dict, List, Mapping, Optional, Union
 
 from bigframes.core.compile.sqlglot import sql as sg_sql
-import bigframes.core.sql
-import bigframes.core.sql.literals
 
 
 def create_model_ddl(
@@ -76,9 +74,9 @@ def create_model_ddl(
                 # Handle list options like model_registry="vertex_ai"
                 # wait, usually options are key=value.
                 # if value is list, it is [val1, val2]
-                rendered_val = bigframes.core.sql.simple_literal(list(option_value))
+                rendered_val = sg_sql.to_sql(sg_sql.literal(list(option_value)))
             else:
-                rendered_val = bigframes.core.sql.simple_literal(option_value)
+                rendered_val = sg_sql.to_sql(sg_sql.literal(option_value))
 
             rendered_options.append(f"{option_name} = {rendered_val}")
 
@@ -108,7 +106,7 @@ def _build_struct_sql(
 ) -> str:
     if not struct_options:
         return ""
-    return f", {bigframes.core.sql.literals.struct_literal(struct_options)}"
+    return f", {sg_sql.to_sql(sg_sql.literal(struct_options))}"
 
 
 def evaluate(
