@@ -24,11 +24,12 @@ import sqlalchemy.sql.roles
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.types
 
-from . import base
+# from . import base  # Moved to _get_subtype_col_spec to break circular import
 
 
 def _get_subtype_col_spec(type_):
     global _get_subtype_col_spec
+    from . import base
 
     type_compiler = base.dialect.type_compiler(base.dialect())
     _get_subtype_col_spec = type_compiler.process
@@ -113,7 +114,7 @@ def _field_index(self, name, operator):
     )
 
 
-class SQLCompiler:
-    def visit_json_getitem_op_binary(self, binary, operator_, **kw):
-        left = self.process(binary.left, **kw)
-        return f"{left}.{binary.right.value}"
+# class SQLCompiler:
+#     def visit_json_getitem_op_binary(self, binary, operator_, **kw):
+#         left = self.process(binary.left, **kw)
+#         return f"{left}.{binary.right.value}"

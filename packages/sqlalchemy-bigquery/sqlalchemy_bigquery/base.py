@@ -58,7 +58,7 @@ from sqlalchemy.sql.sqltypes import Integer, NullType, Numeric, String
 import sqlalchemy.sql.type_api
 import sqlalchemy_bigquery_vendored.sqlalchemy.postgresql.base as vendored_postgresql
 
-from . import _helpers, _struct, _types
+from . import _helpers, _types
 from .parse_url import parse_url
 
 # Illegal characters is intended to be all characters that are not explicitly
@@ -189,7 +189,7 @@ class BigQueryExecutionContext(DefaultExecutionContext):
         )
 
 
-class BigQueryCompiler(_struct.SQLCompiler, vendored_postgresql.PGCompiler):
+class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
     compound_keywords = SQLCompiler.compound_keywords.copy()
     compound_keywords[selectable.CompoundSelect.UNION] = "UNION DISTINCT"
     compound_keywords[selectable.CompoundSelect.UNION_ALL] = "UNION ALL"
@@ -214,6 +214,10 @@ class BigQueryCompiler(_struct.SQLCompiler, vendored_postgresql.PGCompiler):
         return super(BigQueryCompiler, self).visit_insert(
             insert_stmt, asfrom=False, **kw
         )
+
+    def visit_json_getitem_op_binary(self, binary, operator_, **kw):
+        left = self.process(binary.left, **kw)
+        return f"{left}.{binary.right.value}"
 
     def visit_table_valued_alias(self, element, **kw):
         # When using table-valued functions, like UNNEST, BigQuery requires a

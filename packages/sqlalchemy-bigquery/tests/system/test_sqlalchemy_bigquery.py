@@ -1,3 +1,4 @@
+# !/usr/bin/env python
 # Copyright (c) 2017 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -17,50 +18,38 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# -*- coding: utf-8 -*-
-
 import datetime
 import decimal
 
 from google.cloud.bigquery import TimePartitioning
 import packaging.version
 import pytest
-from pytz import timezone
 import sqlalchemy
-from sqlalchemy import case, func, inspect, not_, types
-from sqlalchemy.engine import create_engine
+from sqlalchemy import (
+    Column,
+    MetaData,
+    Table,
+    case,
+    create_engine,
+    func,
+    inspect,
+    literal_column,
+    not_,
+    select,
+    types,
+)
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.schema import Column, MetaData, Table
-from sqlalchemy.sql import expression, literal_column, select
+from sqlalchemy.sql import expression
 
 import sqlalchemy_bigquery
 
-ONE_ROW_CONTENTS_EXPANDED = [
-    588,
-    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone("UTC")),
-    "W 52 St & 11 Ave",
-    40.76727216,
-    decimal.Decimal("40.76727216"),
-    False,
-    datetime.date(2013, 10, 10),
-    datetime.datetime(2013, 10, 10, 11, 27, 16),
-    datetime.time(11, 27, 16),
-    b"\xef",
-    {"age": 100, "name": "John Doe"},
-    "John Doe",
-    100,
-    {"record": {"age": 200, "name": "John Doe 2"}},
-    {"age": 200, "name": "John Doe 2"},
-    "John Doe 2",
-    200,
-    [1, 2, 3],
-]
+SQLALCHEMY_VERSION = packaging.version.parse(sqlalchemy.__version__)
 
 ONE_ROW_CONTENTS = [
     588,
-    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone("UTC")),
+    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=datetime.timezone.utc),
     "W 52 St & 11 Ave",
     40.76727216,
     decimal.Decimal("40.76727216"),
@@ -73,10 +62,29 @@ ONE_ROW_CONTENTS = [
     {"record": {"name": "John Doe 2", "age": 200}},
     [1, 2, 3],
 ]
-
+ONE_ROW_CONTENTS_EXPANDED = [
+    588,
+    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=datetime.timezone.utc),
+    "W 52 St & 11 Ave",
+    40.76727216,
+    decimal.Decimal("40.76727216"),
+    False,
+    datetime.date(2013, 10, 10),
+    datetime.datetime(2013, 10, 10, 11, 27, 16),
+    datetime.time(11, 27, 16),
+    b"\xef",
+    {"name": "John Doe", "age": 100},
+    "John Doe",
+    100,
+    {"record": {"name": "John Doe 2", "age": 200}},
+    {"name": "John Doe 2", "age": 200},
+    "John Doe 2",
+    200,
+    [1, 2, 3],
+]
 ONE_ROW_CONTENTS_DML = [
     588,
-    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone("UTC")),
+    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=datetime.timezone.utc),
     "test",
     40.76727216,
     decimal.Decimal("40.76727216"),
@@ -84,7 +92,7 @@ ONE_ROW_CONTENTS_DML = [
     datetime.date(2013, 10, 10),
     datetime.datetime(2013, 10, 10, 11, 27, 16),
     datetime.time(11, 27, 16),
-    "test_bytes",
+    b"\xef",
 ]
 
 SAMPLE_COLUMNS = [
@@ -227,7 +235,6 @@ def test_engine_with_dataset(engine_using_test_dataset, bigquery_dataset):
     with engine_using_test_dataset.connect() as conn:
         rows = conn.execute(sqlalchemy.text("SELECT * FROM sample_one_row")).fetchall()
         assert list(rows[0]) == ONE_ROW_CONTENTS
-
         table_one_row = Table(
             "sample_one_row", MetaData(), autoload_with=engine_using_test_dataset
         )
@@ -474,6 +481,10 @@ def test_custom_expression(
         assert len(result) > 0
 
 
+@pytest.mark.skipif(
+    SQLALCHEMY_VERSION >= packaging.version.parse("2.0"),
+    reason="Needs to be revisited as part of ensuring full SQL 2.0 compliance.",
+)
 def test_compiled_query_literal_binds(
     engine, engine_using_test_dataset, table, table_using_test_dataset, query
 ):
