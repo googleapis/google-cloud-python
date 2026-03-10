@@ -8,6 +8,7 @@ import datetime
 import unittest
 
 from django.db import connection
+from django.db.utils import IntegrityError
 from django.test import TransactionTestCase
 from django.utils import timezone
 from google.api_core.exceptions import OutOfRange
@@ -61,5 +62,5 @@ class TestCheckConstraint(TransactionTestCase):
         now = timezone.now()
         now_minus_1_day = now - timezone.timedelta(days=1)
         event_invalid = Event(start_date=now, end_date=now_minus_1_day)
-        with self.assertRaises(OutOfRange):
+        with self.assertRaises(IntegrityError):
             event_invalid.save()
