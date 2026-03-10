@@ -22,6 +22,7 @@ import concurrent.futures
 import time
 import warnings
 from collections import deque
+<<<<<<< ours
 from typing import TYPE_CHECKING, Sequence, cast
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
@@ -39,6 +40,22 @@ from google.cloud.bigtable.data.mutations import (
     _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
     Mutation,
 )
+=======
+import concurrent.futures
+from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
+from google.cloud.bigtable.data._helpers import _get_retryable_errors
+from google.cloud.bigtable.data._helpers import _get_timeouts
+from google.cloud.bigtable.data._helpers import (
+    _get_statuses_from_mutations_exception_group,
+)
+from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
+from google.cloud.bigtable.data.mutations import _MUTATE_ROWS_REQUEST_MUTATION_LIMIT
+from google.cloud.bigtable.data.mutations import Mutation
+from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.rpc import code_pb2
+from google.rpc import status_pb2
+>>>>>>> theirs
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
@@ -259,6 +276,7 @@ class MutationsBatcher:
         self._newest_exceptions: deque[Exception] = deque(
             maxlen=self._exception_list_limit
         )
+        self._user_batch_completed_callback = None
         atexit.register(self._on_exit)
 
     def _timer_routine(self, interval: float | None) -> None:
@@ -355,6 +373,7 @@ class MutationsBatcher:
             list[FailedMutationEntryError]:
                 list of FailedMutationEntryError objects for mutations that failed.
                 FailedMutationEntryError objects will not contain index information"""
+        statuses = [status_pb2.Status(code=code_pb2.Code.UNKNOWN)] * len(batch)
         try:
             operation = CrossSync._Sync_Impl._MutateRowsOperation(
                 self._target.client._gapic_client,
@@ -367,11 +386,16 @@ class MutationsBatcher:
             )
             operation.start()
         except MutationsExceptionGroup as e:
+            statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
             for subexc in e.exceptions:
                 subexc.index = None
             return list(e.exceptions)
+        else:
+            statuses = [status_pb2.Status(code=code_pb2.Code.OK)] * len(batch)
         finally:
             self._flow_control.remove_from_flow(batch)
+            if self._user_batch_completed_callback:
+                self._user_batch_completed_callback(statuses)
         return []
 
     def _add_exceptions(self, excs: list[Exception]):
