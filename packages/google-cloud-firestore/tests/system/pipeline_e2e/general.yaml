@@ -697,6 +697,8 @@ tests:
     assert_results:
       - title: "The Hitchhiker's Guide to the Galaxy"
         author: "Douglas Adams"
+      - genre: "Science Fiction"
+        year: 1979
     assert_proto:
       pipeline:
         stages:
