@@ -302,6 +302,12 @@ def conformance(session, client_type):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
+    # None of the clients currently support reverse scans, execute query plan refresh, retry info, or routing cookie
+    # See https://github.com/googleapis/python-bigtable/blob/c3ea54ee958a79959a649dce2553a84ec808b4d7/.github/workflows/conformance.yaml#L30-L35
+    if client_type == "async":
+        test_args = '-skip "PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie"'
+    else:
+        test_args = '-skip "PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie|_Generic_MultiStream"'
     with session.chdir("test_proxy"):
         # download the conformance test suite
         session.run(
@@ -309,7 +315,12 @@ def conformance(session, client_type):
             "-e",
             "run_tests.sh",
             external=True,
-            env={"CLIENT_TYPE": client_type},
+            env={
+                "CLIENT_TYPE": client_type,
+                "PYTHONUNBUFFERED": 1,
+                "TEST_ARGS": test_args,
+                "PROXY_PORT": 9999,
+            },
         )
 
 
