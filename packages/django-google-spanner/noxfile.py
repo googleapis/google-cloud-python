@@ -118,8 +118,11 @@ def unit(session):
     """Run the unit test suite."""
     if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
+    # TODO: Remove this check once support for Python 3.14 is added to Protobuf.
+    if session.python == "3.14":
+        session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
     # Django 3.2 is End-Of-Life and fundamentally incompatible with Python 3.13+
-    if session.python not in ("3.13", "3.14"):
+    if session.python != "3.13":
         print("Unit tests with django 3.2")
         default(session)
     print("Unit tests with django 4.2")
@@ -202,7 +205,12 @@ def system_test(session, django_version="3.2"):
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
-    if session.python not in ("3.13", "3.14"):
+    if session.python == "3.7":
+        session.skip("Python 3.7 is no longer supported")
+    # TODO: Remove this check once support for Python 3.14 is added to Protobuf.
+    if session.python == "3.14":
+        session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
+    if session.python != "3.13":
         print("System tests with django 3.2")
         system_test(session)
     print("System tests with django 4.2")
