@@ -44,8 +44,8 @@ LINT_PATHS = [
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.8",
-    "3.9",
+    # "3.8",
+    # "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -53,7 +53,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.14",
 ]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
+ALL_PYTHON.extend(["3.9"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -318,7 +318,7 @@ def unit(session, protobuf_implementation, install_extras=True):
     )
 
 
-def install_systemtest_dependencies(session, *constraints):
+def install_systemtest_dependencies(session, use_extras=True, *constraints):
     # Use pre-release gRPC for system tests.
     # Exclude version 1.52.0rc1 which has a known issue.
     # See https://github.com/grpc/grpc/issues/32163
@@ -335,10 +335,13 @@ def install_systemtest_dependencies(session, *constraints):
     if SYSTEM_TEST_DEPENDENCIES:
         session.install("-e", *SYSTEM_TEST_DEPENDENCIES, *constraints)
 
-    if SYSTEM_TEST_EXTRAS_BY_PYTHON:
-        extras = SYSTEM_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
-    elif SYSTEM_TEST_EXTRAS:
-        extras = SYSTEM_TEST_EXTRAS
+    if use_extras:
+        if SYSTEM_TEST_EXTRAS_BY_PYTHON:
+            extras = SYSTEM_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
+        elif SYSTEM_TEST_EXTRAS:
+            extras = SYSTEM_TEST_EXTRAS
+        else:
+            extras = []
     else:
         extras = []
 
@@ -348,161 +351,123 @@ def install_systemtest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-@_calculate_duration
-def system(session):
-    """Run the system test suite."""
+def _run_system_test_logic(session, test_type):
+    """Shared logic for system, system_noextras, and compliance tests."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    system_test_path = os.path.join("tests", "system.py")
-    system_test_folder_path = os.path.join("tests", "system")
+
+    if test_type == "compliance":
+        test_path = os.path.join("tests", "sqlalchemy_dialect_compliance")
+    else:
+        test_path = os.path.join("tests", "system")
+        if not os.path.exists(test_path):
+            test_path = os.path.join("tests", "system.py")
 
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip(
             "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
         )
 
-    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
-    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
-        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+    # Check for specific test type skip logic
+    if test_type == "compliance":
+        if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
+            session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
+    else:
+        if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
+            session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
 
-    system_test_exists = os.path.exists(system_test_path)
-    system_test_folder_exists = os.path.exists(system_test_folder_path)
-    # Sanity check: only run tests if found.
-    if not system_test_exists and not system_test_folder_exists:
-        session.skip("System tests were not found")
+    if not os.path.exists(test_path):
+        session.skip(f"Test path {test_path} not found")
 
-    install_systemtest_dependencies(session, "-c", constraints_path)
+    # Installation logic
+    if test_type == "compliance":
+        session.install(
+            "mock",
+            "pytest",
+            "pytest-rerunfailures",
+            "google-cloud-testutils",
+            "-c",
+            constraints_path,
+        )
+        if session.python in ["3.12", "3.13", "3.14"]:
+            extras = "[tests,geography,alembic]"
+        else:
+            extras = "[tests]"
+        session.install("-e", f".{extras}", "-c", constraints_path)
+    else:
+        install_systemtest_dependencies(
+            session, (test_type == "system"), "-c", constraints_path
+        )
 
     session.run("python", "-m", "pip", "freeze")
 
-    # Run py.test against the system tests.
-    if system_test_exists:
+    # Execution logic
+    if test_type == "compliance":
+        session.run(
+            "py.test",
+            "-vv",
+            f"--junitxml=compliance_{session.python}_sponge_log.xml",
+            "--reruns=3",
+            "--reruns-delay=60",
+            "--only-rerun=Exceeded rate limits",
+            "--only-rerun=Already Exists",
+            "--only-rerun=Not found",
+            "--only-rerun=Cannot execute DML over a non-existent table",
+            "--only-rerun=Job exceeded rate limits",
+            test_path,
+            *session.posargs,
+            env={"SQLALCHEMY_SILENCE_UBER_WARNING": "1"},
+        )
+    else:
         session.run(
             "py.test",
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
+            test_path,
             *session.posargs,
         )
-    if system_test_folder_exists:
-        session.run(
-            "py.test",
-            "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
-        )
+
+
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.parametrize("test_type", ["system", "system_noextras", "compliance"])
+@_calculate_duration
+def system(session, test_type):
+    """Run the system test suite."""
+    if test_type == "compliance":
+        if session.python != DEFAULT_PYTHON_VERSION:
+            session.skip(
+                f"Compliance tests only run on latest Python: {DEFAULT_PYTHON_VERSION}"
+            )
+    elif test_type == "system_noextras":
+        if session.python not in (
+            SYSTEM_TEST_PYTHON_VERSIONS[0],
+            SYSTEM_TEST_PYTHON_VERSIONS[-1],
+        ):
+            session.skip(
+                f"system_noextras only runs on oldest ({SYSTEM_TEST_PYTHON_VERSIONS[0]}) "
+                f"and newest ({SYSTEM_TEST_PYTHON_VERSIONS[-1]}) supported Python versions"
+            )
+
+    _run_system_test_logic(session, test_type)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 @_calculate_duration
 def system_noextras(session):
-    """Run the system test suite."""
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    system_test_path = os.path.join("tests", "system.py")
-    system_test_folder_path = os.path.join("tests", "system")
-
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip(
-            "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
-        )
-
-    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
-    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
-        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
-    # Install pyopenssl for mTLS testing.
-    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
-        session.install("pyopenssl")
-
-    system_test_exists = os.path.exists(system_test_path)
-    system_test_folder_exists = os.path.exists(system_test_folder_path)
-    # Sanity check: only run tests if found.
-    if not system_test_exists and not system_test_folder_exists:
-        session.skip("System tests were not found")
-
-    global SYSTEM_TEST_EXTRAS_BY_PYTHON
-    SYSTEM_TEST_EXTRAS_BY_PYTHON = False
-    install_systemtest_dependencies(session, "-c", constraints_path)
-
-    session.run("python", "-m", "pip", "freeze")
-
-    # Run py.test against the system tests.
-    if system_test_exists:
-        session.run(
-            "py.test",
-            "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            *session.posargs,
-        )
-    if system_test_folder_exists:
-        session.run(
-            "py.test",
-            "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
-        )
+    """Run the system test suite without extras."""
+    _run_system_test_logic(session, "system_noextras")
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
 @_calculate_duration
 def compliance(session):
     """Run the SQLAlchemy dialect-compliance system tests"""
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    system_test_folder_path = os.path.join("tests", "sqlalchemy_dialect_compliance")
-
-    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
-        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
-    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
-        session.install("pyopenssl")
-    if not os.path.exists(system_test_folder_path):
-        session.skip("Compliance tests were not found")
-
-    session.install(
-        "mock",
-        "pytest",
-        "pytest-rerunfailures",
-        "google-cloud-testutils",
-        "-c",
-        constraints_path,
-    )
-    if session.python in ["3.12", "3.13", "3.14"]:
-        extras = "[tests,geography,alembic]"
-    else:
-        extras = "[tests]"
-    session.install("-e", f".{extras}", "-c", constraints_path)
-
-    session.run("python", "-m", "pip", "freeze")
-
-    session.run(
-        "py.test",
-        "-vv",
-        f"--junitxml=compliance_{session.python}_sponge_log.xml",
-        "--reruns=3",
-        "--reruns-delay=60",
-        "--only-rerun=Exceeded rate limits",
-        "--only-rerun=Already Exists",
-        "--only-rerun=Not found",
-        "--only-rerun=Cannot execute DML over a non-existent table",
-        "--only-rerun=Job exceeded rate limits",
-        system_test_folder_path,
-        *session.posargs,
-        # To suppress the "Deprecated API features detected!" warning when
-        # features not compatible with 2.0 are detected, use a value of "1"
-        env={
-            "SQLALCHEMY_SILENCE_UBER_WARNING": "1",
-        },
-    )
+    _run_system_test_logic(session, "compliance")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
