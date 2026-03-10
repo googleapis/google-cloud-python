@@ -308,10 +308,10 @@ class BigQueryCachingExecutor(executor.Executor):
 
             ir = sqlglot_ir.SQLGlotIR.from_unparsed_query(sql)
             if spec.if_exists == "append":
-                sql = sg_sql.to_sql(sg_sql.insert(ir.expr, spec.table))
+                sql = sg_sql.to_sql(sg_sql.insert(ir.expr.as_select_all(), spec.table))
             else:  # for "replace"
                 assert spec.if_exists == "replace"
-                sql = sg_sql.to_sql(sg_sql.replace(ir.expr, spec.table))
+                sql = sg_sql.to_sql(sg_sql.replace(ir.expr.as_select_all(), spec.table))
         else:
             dispositions = {
                 "fail": bigquery.WriteDisposition.WRITE_EMPTY,

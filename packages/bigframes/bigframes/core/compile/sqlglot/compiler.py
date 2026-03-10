@@ -62,6 +62,8 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
     if request.sort_rows:
         result_node = typing.cast(nodes.ResultNode, rewrite.column_pruning(result_node))
         encoded_type_refs = data_type_logger.encode_type_refs(result_node)
+        # TODO: Extract CTEs earlier
+        result_node = typing.cast(nodes.ResultNode, rewrite.extract_ctes(result_node))
         sql = _compile_result_node(result_node)
         return configs.CompileResult(
             sql,
@@ -74,6 +76,8 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
     result_node = dataclasses.replace(result_node, order_by=None)
     result_node = typing.cast(nodes.ResultNode, rewrite.column_pruning(result_node))
     encoded_type_refs = data_type_logger.encode_type_refs(result_node)
+    # TODO: Extract CTEs earlier
+    result_node = typing.cast(nodes.ResultNode, rewrite.extract_ctes(result_node))
     sql = _compile_result_node(result_node)
     # Return the ordering iff no extra columns are needed to define the row order
     if ordering is not None:
@@ -94,6 +98,7 @@ def _remap_variables(
     result_node, _ = rewrite.remap_variables(
         node, map(identifiers.ColumnId, uid_gen.get_uid_stream("bfcol_"))
     )
+    result_node.validate_tree()
     return typing.cast(nodes.ResultNode, result_node)
 
 
@@ -102,13 +107,16 @@ def _compile_result_node(root: nodes.ResultNode) -> str:
     # of nodes using the same generator.
     uid_gen = guid.SequentialUIDGenerator()
     root = _remap_variables(root, uid_gen)
+    # Remap variables creates too mayn new
+    # root = rewrite.select_pullup(root, prefer_source_names=False)
     root = typing.cast(nodes.ResultNode, rewrite.defer_selection(root))
 
     # Have to bind schema as the final step before compilation.
     # Probably, should defer even further
     root = typing.cast(nodes.ResultNode, schema_binding.bind_schema_to_tree(root))
 
-    sqlglot_ir_obj = compile_node(rewrite.as_sql_nodes(root), uid_gen)
+    # TODO: Bake all IDs in tree, stop passing uid_gen to emitters
+    sqlglot_ir_obj = compile_node(rewrite.as_sql_nodes(root, uid_gen), uid_gen)
     return sqlglot_ir_obj.sql
 
 
@@ -121,7 +129,7 @@ def compile_node(
     for current_node in list(node.iter_nodes_topo()):
         if current_node.child_nodes == ():
             # For leaf node, generates a dumpy child to pass the UID generator.
-            child_results = tuple([sqlglot_ir.SQLGlotIR(uid_gen=uid_gen)])
+            child_results = tuple([sqlglot_ir.SQLGlotIR.empty(uid_gen=uid_gen)])
         else:
             # Child nodes should have been compiled in the reverse topological order.
             child_results = tuple(
@@ -257,6 +265,23 @@ def compile_isin_join(
 
 
 @_compile_node.register
+def compile_cte_ref_node(node: sql_nodes.SqlCteRefNode, child: sqlglot_ir.SQLGlotIR):
+    return sqlglot_ir.SQLGlotIR.from_cte_ref(
+        node.cte_name,
+        uid_gen=child.uid_gen,
+    )
+
+
+@_compile_node.register
+def compile_with_ctes_node(
+    node: sql_nodes.SqlWithCtesNode,
+    child: sqlglot_ir.SQLGlotIR,
+    *ctes: sqlglot_ir.SQLGlotIR,
+):
+    return child.with_ctes(tuple(zip(node.cte_names, ctes)))
+
+
+@_compile_node.register
 def compile_concat(
     node: nodes.ConcatNode, *children: sqlglot_ir.SQLGlotIR
 ) -> sqlglot_ir.SQLGlotIR:
@@ -271,7 +296,7 @@ def compile_concat(
     ]
 
     return sqlglot_ir.SQLGlotIR.from_union(
-        [child._as_select() for child in children],
+        [child.expr.as_select_all() for child in children],
         output_aliases=output_aliases,
         uid_gen=uid_gen,
     )

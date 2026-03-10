@@ -1,55 +1,63 @@
 WITH `bfcte_0` AS (
   SELECT
-    `bfcol_6` AS `bfcol_42`,
-    `bfcol_7` AS `bfcol_43`,
-    `bfcol_8` AS `bfcol_44`,
-    `bfcol_9` AS `bfcol_45`
+    `float64_col` AS `bfcol_7`,
+    `int64_too` AS `bfcol_8`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
+  WHERE
+    `bool_col`
+), `bfcte_1` AS (
+  SELECT
+    `float64_col` AS `bfcol_5`,
+    `int64_col` AS `bfcol_6`
+  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
+), `bfcte_2` AS (
+  SELECT
+    `bfcol_21` AS `bfcol_33`,
+    `bfcol_22` AS `bfcol_34`,
+    `bfcol_23` AS `bfcol_35`,
+    `bfcol_24` AS `bfcol_36`
   FROM (
     (
       SELECT
-        `float64_col` AS `bfcol_6`,
-        `int64_col` AS `bfcol_7`,
-        0 AS `bfcol_8`,
-        ROW_NUMBER() OVER (ORDER BY `int64_col` ASC NULLS LAST) - 1 AS `bfcol_9`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
+        `bfcol_5` AS `bfcol_21`,
+        `bfcol_6` AS `bfcol_22`,
+        0 AS `bfcol_23`,
+        ROW_NUMBER() OVER (ORDER BY `bfcol_6` ASC NULLS LAST) - 1 AS `bfcol_24`
+      FROM `bfcte_1`
     )
     UNION ALL
     (
       SELECT
-        `float64_col` AS `bfcol_17`,
-        `int64_too` AS `bfcol_18`,
-        1 AS `bfcol_19`,
-        ROW_NUMBER() OVER () - 1 AS `bfcol_20`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
-      WHERE
-        `bool_col`
+        `bfcol_7` AS `bfcol_29`,
+        `bfcol_8` AS `bfcol_30`,
+        1 AS `bfcol_31`,
+        ROW_NUMBER() OVER () - 1 AS `bfcol_32`
+      FROM `bfcte_0`
     )
     UNION ALL
     (
       SELECT
-        `float64_col` AS `bfcol_27`,
-        `int64_col` AS `bfcol_28`,
-        2 AS `bfcol_29`,
-        ROW_NUMBER() OVER (ORDER BY `int64_col` ASC NULLS LAST) - 1 AS `bfcol_30`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
+        `bfcol_5` AS `bfcol_17`,
+        `bfcol_6` AS `bfcol_18`,
+        2 AS `bfcol_19`,
+        ROW_NUMBER() OVER (ORDER BY `bfcol_6` ASC NULLS LAST) - 1 AS `bfcol_20`
+      FROM `bfcte_1`
     )
     UNION ALL
     (
       SELECT
-        `float64_col` AS `bfcol_38`,
-        `int64_too` AS `bfcol_39`,
-        3 AS `bfcol_40`,
-        ROW_NUMBER() OVER () - 1 AS `bfcol_41`
-      FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`
-      WHERE
-        `bool_col`
+        `bfcol_7` AS `bfcol_25`,
+        `bfcol_8` AS `bfcol_26`,
+        3 AS `bfcol_27`,
+        ROW_NUMBER() OVER () - 1 AS `bfcol_28`
+      FROM `bfcte_0`
     )
   )
 )
 SELECT
-  `bfcol_42` AS `float64_col`,
-  `bfcol_43` AS `int64_col`
-FROM `bfcte_0`
+  `bfcol_33` AS `float64_col`,
+  `bfcol_34` AS `int64_col`
+FROM `bfcte_2`
 ORDER BY
-  `bfcol_44` ASC NULLS LAST,
-  `bfcol_45` ASC NULLS LAST
+  `bfcol_35` ASC NULLS LAST,
+  `bfcol_36` ASC NULLS LAST

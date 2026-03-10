@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from bigframes.core.rewrite.as_sql import as_sql_nodes
+from bigframes.core.rewrite.ctes import extract_ctes
 from bigframes.core.rewrite.fold_row_count import fold_row_counts
 from bigframes.core.rewrite.identifiers import remap_variables
 from bigframes.core.rewrite.implicit_align import try_row_join
@@ -34,6 +35,7 @@ from bigframes.core.rewrite.windows import (
 
 __all__ = [
     "as_sql_nodes",
+    "extract_ctes",
     "legacy_join_as_projection",
     "try_row_join",
     "rewrite_slice",

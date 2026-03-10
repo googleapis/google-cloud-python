@@ -13,13 +13,42 @@
 # limitations under the License.
 from __future__ import annotations
 
-import dataclasses
 import typing
 
 from bigframes.core import identifiers, nodes
 
 
-# TODO: May as well just outright remove selection nodes in this process.
+def _create_mapping_operator(
+    id_def_remapping_by_node: dict[
+        nodes.BigFrameNode, dict[identifiers.ColumnId, identifiers.ColumnId]
+    ],
+    id_ref_remapping_by_node: dict[
+        nodes.BigFrameNode, dict[identifiers.ColumnId, identifiers.ColumnId]
+    ],
+):
+    """
+    Builds a remapping operator that uses predefined local remappings for ids.
+
+    Args:
+        id_remapping_by_node: A mapping from nodes to their local remappings.
+
+    Returns:
+        A remapping operator.
+    """
+
+    def _mapping_operator(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
+        # Step 1: Get the local remapping for the current node.
+        local_def_remaps = id_def_remapping_by_node[node]
+        local_ref_remaps = id_ref_remapping_by_node[node]
+
+        result = node.remap_vars(local_def_remaps)
+        result = result.remap_refs(local_ref_remaps)
+
+        return result
+
+    return _mapping_operator
+
+
 def remap_variables(
     root: nodes.BigFrameNode,
     id_generator: typing.Iterator[identifiers.ColumnId],
@@ -42,46 +71,47 @@ def remap_variables(
         A tuple of the new root node and a mapping from old to new column IDs
         visible to the parent node.
     """
-    # Step 1: Recursively remap children to get their new nodes and ID mappings.
-    new_child_nodes: list[nodes.BigFrameNode] = []
-    new_child_mappings: list[dict[identifiers.ColumnId, identifiers.ColumnId]] = []
-    for child in root.child_nodes:
-        new_child, child_mappings = remap_variables(child, id_generator=id_generator)
-        new_child_nodes.append(new_child)
-        new_child_mappings.append(child_mappings)
+    # step 1: defined remappings for each individual unique node
+    # step 2: top down traversal to apply remappings (mappings are value-based, so bottom-up doesn't work)
 
-    # Step 2: Transform children to use their new nodes.
-    remapped_children: dict[nodes.BigFrameNode, nodes.BigFrameNode] = {
-        child: new_child for child, new_child in zip(root.child_nodes, new_child_nodes)
-    }
-    new_root = root.transform_children(lambda node: remapped_children[node])
-
-    # Step 3: Transform the current node using the mappings from its children.
-    if isinstance(new_root, nodes.InNode):
-        new_root = typing.cast(nodes.InNode, new_root)
-        new_root = dataclasses.replace(
-            new_root,
-            left_col=new_root.left_col.remap_column_refs(
-                new_child_mappings[0], allow_partial_bindings=True
-            ),
-        )
-    else:
-        downstream_mappings: dict[identifiers.ColumnId, identifiers.ColumnId] = {
-            k: v for mapping in new_child_mappings for k, v in mapping.items()
+    id_def_remaps: dict[
+        nodes.BigFrameNode, dict[identifiers.ColumnId, identifiers.ColumnId]
+    ] = {}
+    id_ref_remaps: dict[
+        nodes.BigFrameNode, dict[identifiers.ColumnId, identifiers.ColumnId]
+    ] = {}
+    for node in root.iter_nodes_topo():  # bottom up
+        local_def_remaps = {
+            col_id: next(id_generator) for col_id in node.node_defined_ids
         }
-        new_root = new_root.remap_refs(downstream_mappings)
+        id_def_remaps[node] = local_def_remaps
 
-    # Step 4: Create new IDs for columns defined by the current node.
-    node_defined_mappings = {
-        old_id: next(id_generator) for old_id in root.node_defined_ids
-    }
-    new_root = new_root.remap_vars(node_defined_mappings)
+        local_ref_remaps = {}
 
-    new_root._validate()
+        # InNode is special case as ID scope inherited purely from left side
+        inheriting_nodes = (
+            [node.child_nodes[0]]
+            if isinstance(node, nodes.InNode)
+            else node.child_nodes
+        )
+        for child in inheriting_nodes:  # inherit ref and def mappings from children
+            if not child.defines_namespace:  # these nodes represent new id spaces
+                local_ref_remaps.update(
+                    {
+                        old_id: new_id
+                        for old_id, new_id in id_ref_remaps[child].items()
+                        if old_id in child.ids
+                    }
+                )
+            local_ref_remaps.update(id_def_remaps[child])
+        id_ref_remaps[node] = local_ref_remaps
 
-    # Step 5: Determine which mappings to propagate up to the parent.
-    propagated_mappings = {
-        old_id: new_id for old_id, new_id in zip(root.ids, new_root.ids)
-    }
-
-    return new_root, propagated_mappings
+    # have to do top down to preserve node identities
+    return (
+        root.top_down(_create_mapping_operator(id_def_remaps, id_ref_remaps)),
+        # Only used by unit tests
+        {
+            old_id: (id_def_remaps[root] | id_ref_remaps[root])[old_id]
+            for old_id in root.ids
+        },
+    )

@@ -14,11 +14,13 @@
 from __future__ import annotations
 
 import dataclasses
+import itertools
 from typing import Optional, Sequence, Union
 
 from bigframes.core import (
     agg_expressions,
     expression,
+    guid,
     identifiers,
     nodes,
     ordering,
@@ -222,6 +224,83 @@ def _as_sql_node(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
         return node
 
 
-def as_sql_nodes(root: nodes.BigFrameNode) -> nodes.BigFrameNode:
-    # TODO: Aggregations, Unions, Joins, raw data sources
-    return nodes.bottom_up(root, _as_sql_node)
+# In the future, we will have sql nodes for each of these node types.
+_LOGICAL_NODE_TYPES_TO_WRAP = (
+    nodes.ReadLocalNode,
+    nodes.ExplodeNode,
+    nodes.InNode,
+    nodes.AggregateNode,
+    nodes.FromRangeNode,
+    nodes.ConcatNode,
+    sql_nodes.SqlSelectNode,
+)
+
+
+def _insert_cte_markers(root: nodes.BigFrameNode) -> nodes.BigFrameNode:
+    # important not to wrap nodes that are already wrapped
+    wrapped_nodes = set(
+        node.child for node in root.unique_nodes() if isinstance(node, nodes.CteNode)
+    )
+    # don't wrap child nodes of ConcatNode
+    union_child_nodes = set(
+        itertools.chain.from_iterable(
+            node.child_nodes
+            for node in root.unique_nodes()
+            if isinstance(node, nodes.ConcatNode)
+        )
+    )
+
+    def maybe_insert_cte_marker(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
+        if node == root:
+            return node
+        if (
+            isinstance(node, _LOGICAL_NODE_TYPES_TO_WRAP)
+            and node not in wrapped_nodes
+            and node not in union_child_nodes
+        ):
+            wrapped_nodes.add(node)
+            return nodes.CteNode(node)
+        return node
+
+    return root.top_down(maybe_insert_cte_marker)
+
+
+def _extract_ctes_to_with_expr(
+    root: nodes.BigFrameNode, uid_gen: guid.SequentialUIDGenerator
+) -> nodes.BigFrameNode:
+    topological_ctes = list(
+        filter(
+            lambda n: isinstance(n, nodes.CteNode),
+            root.iter_nodes_topo(),
+        )
+    )
+    cte_names = tuple(
+        next(uid_gen.get_uid_stream("bfcte_")) for _ in range(len(topological_ctes))
+    )
+
+    if len(topological_ctes) == 0:
+        return root
+
+    mapping = {
+        cte_node: sql_nodes.SqlCteRefNode(cte_name, tuple(cte_node.fields))
+        for cte_node, cte_name in zip(topological_ctes, cte_names)
+    }
+
+    # Replace all CTEs with CTE references and wrap the new root in a WITH clause
+    return sql_nodes.SqlWithCtesNode(
+        root.top_down(lambda x: mapping.get(x, x)),
+        cte_names,
+        tuple(
+            cte_node.child.top_down(lambda x: mapping.get(x, x)) for cte_node in topological_ctes  # type: ignore
+        ),
+    )
+
+
+def as_sql_nodes(
+    root: nodes.BigFrameNode, uid_gen: guid.SequentialUIDGenerator
+) -> nodes.BigFrameNode:
+    root = nodes.bottom_up(root, _as_sql_node)
+    # Insert CTE markers to indicate where we want to split the query.
+    root = _insert_cte_markers(root)
+    root = _extract_ctes_to_with_expr(root, uid_gen)
+    return root

@@ -67,7 +67,7 @@ def prune_selection_child(
 
     # Important to check this first
     if list(selection.ids) == list(child.ids):
-        if (ref.ref.id == ref.id for ref in selection.input_output_pairs):
+        if all(ref.ref.id == ref.id for ref in selection.input_output_pairs):
             # selection is no-op so just remove it entirely
             return child
 
@@ -75,6 +75,7 @@ def prune_selection_child(
         return selection.remap_refs(
             {id: ref.id for ref, id in child.input_output_pairs}
         ).replace_child(child.child)
+
     elif isinstance(child, nodes.AdditiveNode):
         if not set(field.id for field in child.added_fields) & selection.consumed_ids:
             return selection.replace_child(child.additive_base)

@@ -155,12 +155,6 @@ WITH `bfcte_0` AS (
     432000000000,
     8
   )])
-), `bfcte_1` AS (
-  SELECT
-    *
-  FROM `bfcte_0`
-  WHERE
-    RAND() < 0.1
 )
 SELECT
   `bfcol_0` AS `bool_col`,
@@ -178,6 +172,12 @@ SELECT
   `bfcol_12` AS `time_col`,
   `bfcol_13` AS `timestamp_col`,
   `bfcol_14` AS `duration_col`
-FROM `bfcte_1`
+FROM (
+  SELECT
+    *
+  FROM `bfcte_0`
+  WHERE
+    RAND() < 0.1
+)
 ORDER BY
   `bfcol_15` ASC NULLS LAST

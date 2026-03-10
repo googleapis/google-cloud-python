@@ -330,22 +330,12 @@ class BigFrameNode:
         """
         Perform a top-down transformation of the BigFrameNode tree.
         """
-        to_process = [self]
-        results: Dict[BigFrameNode, BigFrameNode] = {}
 
-        while to_process:
-            item = to_process.pop()
-            if item not in results.keys():
-                item_result = transform(item)
-                results[item] = item_result
-                to_process.extend(item_result.child_nodes)
+        @functools.cache
+        def recursive_transform(node: BigFrameNode) -> BigFrameNode:
+            return transform(node).transform_children(recursive_transform)
 
-        to_process = [self]
-        # for each processed item, replace its children
-        for item in reversed(list(results.keys())):
-            results[item] = results[item].transform_children(lambda x: results[x])
-
-        return results[self]
+        return recursive_transform(self)
 
     def bottom_up(
         self: BigFrameNode,
