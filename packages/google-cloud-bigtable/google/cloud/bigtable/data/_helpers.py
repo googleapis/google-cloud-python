@@ -17,6 +17,11 @@ Helper functions used in various places in the library.
 
 from __future__ import annotations
 
+<<<<<<< ours
+=======
+from typing import Callable, Sequence, List, Optional, Tuple, TYPE_CHECKING, Union
+import time
+>>>>>>> theirs
 import enum
 import time
 from collections import namedtuple
@@ -34,7 +39,14 @@ from google.api_core import retry as retries
 from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
 
 from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
+<<<<<<< ours
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+=======
+from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+from google.rpc import code_pb2
+from google.rpc import status_pb2
+
+>>>>>>> theirs
 
 if TYPE_CHECKING:
     import grpc
@@ -235,6 +247,66 @@ def _align_timeouts(operation: float, attempt: float | None) -> tuple[float, flo
 
     _validate_timeouts(operation, final_attempt, allow_none=False)
     return operation, final_attempt
+
+
+def _get_statuses_from_mutations_exception_group(
+    exc_group: MutationsExceptionGroup, batch_size: int
+) -> list[status_pb2.Status]:
+    """
+    Helper function that populates a list of Status objects with exception information from
+    the exception group.
+
+    Args:
+        exc_group: The exception group from a mutate rows operation
+        batch_size: How many RowMutationGroups were provided to the batch
+    Returns:
+        list[status_pb2.Status]: A list of Status proto objects
+    """
+    # We exception handle as follows:
+    #
+    # 1. Each exception in the error group is a FailedMutationEntryError, and its
+    #    cause is either a singular exception or a RetryExceptionGroup consisting of
+    #    multiple exceptions.
+    #
+    # 2. In the case of a singular exception, if the error does not have a gRPC status
+    #    code, we return a status code of UNKNOWN.
+    #
+    # 3. In the case of a RetryExceptionGroup, we use terminal exception in the exception
+    #    group and process that.
+    statuses = [status_pb2.Status(code=code_pb2.OK)] * batch_size
+    for error in exc_group.exceptions:
+        if isinstance(error.index, int) and 0 <= error.index < len(statuses):
+            cause = error.__cause__
+            if isinstance(cause, RetryExceptionGroup):
+                statuses[error.index] = _get_status(cause.exceptions[-1])
+            else:
+                statuses[error.index] = _get_status(cause)
+    return statuses
+
+
+def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
+    """
+    Helper function that returns a Status object corresponding to the given exception.
+
+    Args:
+        exc: An exception to be converted into a Status.
+    Returns:
+        status_pb2.Status: A Status proto object.
+    """
+    if (
+        isinstance(exc, core_exceptions.GoogleAPICallError)
+        and exc.grpc_status_code is not None
+    ):
+        return status_pb2.Status(  # type: ignore[unreachable]
+            code=exc.grpc_status_code.value[0],
+            message=exc.message,
+            details=exc.details,
+        )
+
+    return status_pb2.Status(
+        code=code_pb2.Code.UNKNOWN,
+        message=str(exc) if exc else "An unknown error has occurred",
+    )
 
 
 def _validate_timeouts(
