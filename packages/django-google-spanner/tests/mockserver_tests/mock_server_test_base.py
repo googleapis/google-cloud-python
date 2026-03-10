@@ -18,7 +18,7 @@ import unittest
 import google.cloud.spanner_v1.types.result_set as result_set
 import google.cloud.spanner_v1.types.type as spanner_type
 import grpc
-from django.db import connection, connections
+from django.db import connections
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode

@@ -11,7 +11,6 @@ from google.cloud.spanner_dbapi._helpers import ColumnInfo
 from google.cloud.spanner_dbapi.cursor import ColumnDetails
 from google.cloud.spanner_v1 import TypeCode
 
-from django_spanner import USING_DJANGO_3
 from django_spanner.introspection import DatabaseIntrospection
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 

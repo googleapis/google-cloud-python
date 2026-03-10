@@ -12,8 +12,6 @@ from django.db.backends.base.introspection import (
 from django.db.models import Index
 from google.cloud.spanner_v1 import TypeCode
 
-from django_spanner import USE_EMULATOR
-
 
 class DatabaseIntrospection(BaseDatabaseIntrospection):
     """A Spanner-specific version of Django introspection utilities."""

@@ -46,7 +46,7 @@ class TestBase(SpannerSimpleTestClass):
                 return mock.MagicMock()
 
         with mock.patch("django_spanner.base.spanner"):
-            self.db_wrapper.connection = mock_connection = DummyConnection()
+            self.db_wrapper.connection = DummyConnection()
             self.db_wrapper.init_connection_state()
 
     def test_create_cursor(self):
