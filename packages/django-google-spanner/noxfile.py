@@ -118,8 +118,10 @@ def unit(session):
     """Run the unit test suite."""
     if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
-    print("Unit tests with django 3.2")
-    default(session)
+    # Django 3.2 is End-Of-Life and fundamentally incompatible with Python 3.13+
+    if session.python not in ("3.13", "3.14"):
+        print("Unit tests with django 3.2")
+        default(session)
     print("Unit tests with django 4.2")
     default(session, django_version="4.2")
 
@@ -200,8 +202,9 @@ def system_test(session, django_version="3.2"):
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
-    print("System tests with django 3.2")
-    system_test(session)
+    if session.python not in ("3.13", "3.14"):
+        print("System tests with django 3.2")
+        system_test(session)
     print("System tests with django 4.2")
     system_test(session, django_version="4.2")
 
