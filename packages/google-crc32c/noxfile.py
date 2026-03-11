@@ -21,7 +21,6 @@ import sys
 
 import nox
 
-
 HERE = os.path.dirname(__file__)
 
 # Constants
@@ -49,6 +48,7 @@ nox.options.sessions = [
     "docs",
     "docfx",
 ]
+
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def build_libcrc32c(session):
@@ -157,20 +157,20 @@ def core_deps_from_source(session):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
 
+
 @nox.session(python=ALL_PYTHON)
 def unit(session):
-    """Run all unit tests.
-    """
+    """Run all unit tests."""
     session.skip("Unit tests are not supported")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
-    """Run all docs tests.
-    """
+    """Run all docs tests."""
     session.skip("Docs tests are not supported")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docfx(session):
-    """Run all docfx tests.
-    """
+    """Run all docfx tests."""
     session.skip("Docfx tests are not supported")

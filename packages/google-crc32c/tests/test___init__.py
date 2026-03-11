@@ -198,13 +198,16 @@ def pytest_generate_tests(metafunc):
     if "_crc32c" in metafunc.fixturenames:
         metafunc.parametrize("_crc32c", ["python", "cext"], indirect=True)
 
+
 @pytest.fixture
 def _crc32c(request):
     if request.param == "python":
         from google_crc32c import python
+
         return python
     elif request.param == "cext":
         from google_crc32c import cext
+
         return cext
     else:
         raise ValueError("invalid internal test config")
