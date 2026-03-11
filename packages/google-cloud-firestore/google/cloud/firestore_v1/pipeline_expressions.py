@@ -2046,7 +2046,8 @@ class CurrentTimestamp(FunctionExpression):
 
 
 class Rand(FunctionExpression):
-    """Creates an expression that generates a random number between 0.0 and 1.0 but not including 1.0.
+    """Creates an expression that generates a random number between 0.0 and 1.0 but not
+    including 1.0.
 
     Returns:
         A new `Expression` representing the rand operation.
