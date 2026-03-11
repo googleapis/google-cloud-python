@@ -18807,6 +18807,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateInstanceRequest)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "discard_local_ssd",
             "minimal_action",
             "most_disruptive_allowed_action",
             "request_id",
@@ -18874,6 +18875,7 @@ def test_update_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "discardLocalSsd",
                 "minimalAction",
                 "mostDisruptiveAllowedAction",
                 "requestId",
@@ -19038,6 +19040,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateInstanceRe
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "discard_local_ssd",
             "minimal_action",
             "most_disruptive_allowed_action",
             "request_id",
@@ -19105,6 +19108,7 @@ def test_update_unary_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "discardLocalSsd",
                 "minimalAction",
                 "mostDisruptiveAllowedAction",
                 "requestId",

@@ -151,6 +151,11 @@ class ReservationSubBlocksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_version: gapic_v1.method.wrap_method(
+                self.get_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
                 default_timeout=None,
@@ -205,6 +210,15 @@ class ReservationSubBlocksTransport(abc.ABC):
     ) -> Callable[
         [compute.GetIamPolicyReservationSubBlockRequest],
         Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_version(
+        self,
+    ) -> Callable[
+        [compute.GetVersionReservationSubBlockRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 
