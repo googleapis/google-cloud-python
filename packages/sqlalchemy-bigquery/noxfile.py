@@ -44,8 +44,8 @@ LINT_PATHS = [
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    # "3.8",
-    # "3.9",
+    "3.8",
+    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -53,7 +53,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.14",
 ]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.9"])
+ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
