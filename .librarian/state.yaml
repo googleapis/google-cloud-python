@@ -2750,7 +2750,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-pubsub
     version: 2.35.0
-    last_generated_commit: ce8678a96c8e1fc0d870d80fcf062e5be2b12877
+    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
     apis:
       - path: google/pubsub/v1
         service_config: pubsub_v1.yaml
