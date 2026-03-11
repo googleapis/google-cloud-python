@@ -149,6 +149,11 @@ tests:
             - FunctionExpression.trunc:
                 - Field: rating
             - "trunc_rating"
+        - AliasedExpression:
+            - FunctionExpression.trunc:
+                - Field: rating
+                - Constant: 1
+            - "trunc_rating_with_places"
       - Sort:
         - Ordering:
           - Field: title
@@ -156,10 +161,13 @@ tests:
     assert_results:
       - title: "Pride and Prejudice"
         trunc_rating: 4.0
+        trunc_rating_with_places: 4.5
       - title: "The Lord of the Rings"
         trunc_rating: 4.0
+        trunc_rating_with_places: 4.7
       - title: "To Kill a Mockingbird"
         trunc_rating: 4.0
+        trunc_rating_with_places: 4.2
     assert_proto:
       pipeline:
         stages:
@@ -187,6 +195,12 @@ tests:
                   functionValue:
                     args:
                     - fieldReferenceValue: rating
+                    name: trunc
+                trunc_rating_with_places:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: rating
+                    - integerValue: '1'
                     name: trunc
           name: select
         - args:

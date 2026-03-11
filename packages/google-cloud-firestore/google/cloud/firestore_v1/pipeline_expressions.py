@@ -406,17 +406,18 @@ class Expression(ABC):
         return FunctionExpression("sqrt", [self])
 
     @expose_as_static
-    def trunc(self) -> "Expression":
+    def trunc(self, places: "Expression" | None = None) -> "Expression":
         """Function to truncate a numeric expression to the nearest whole number towards zero.
 
         Example:
             >>> # Truncate the 'value' field to 2 decimal places.
-            >>> Field.of("value").trunc(2)
+            >>> Field.of("value").trunc(PipelineSource.literals(2))
 
         Returns:
             A new `Expression` representing the truncated value.
         """
-        return FunctionExpression("trunc", [self])
+        params = [self, places] if places is not None else [self]
+        return FunctionExpression("trunc", params)
 
     @expose_as_static
     def logical_maximum(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
