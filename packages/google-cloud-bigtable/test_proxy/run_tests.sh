@@ -35,10 +35,8 @@ if [ ! -d "cloud-bigtable-clients-test" ]; then
 fi
 
 # Build and start the proxy in a separate process
-pushd test_proxy
 nohup python3 test_proxy.py --port $PROXY_PORT --client_type=$CLIENT_TYPE &
 proxyPID=$!
-popd
 
 # Kill proxy on exit
 function cleanup() {
