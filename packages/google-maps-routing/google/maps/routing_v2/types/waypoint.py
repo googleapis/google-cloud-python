@@ -57,6 +57,13 @@ class Waypoint(proto.Message):
             See https://plus.codes for details.
 
             This field is a member of `oneof`_ ``location_type``.
+        navigation_point_token (str):
+            A token that identifies a
+            ```NavigationPoint`` <https://developers.google.com/maps/documentation/geocoding/reference/rest/v4alpha/geocode.destinations/searchDestinations#navigationpoint>`__,
+            obtained from the ``SearchDestinations`` method of the
+            Geocoding API.
+
+            This field is a member of `oneof`_ ``location_type``.
         via (bool):
             Marks this waypoint as a milestone rather a stopping point.
             For each non-via waypoint in the request, the response
@@ -106,6 +113,11 @@ class Waypoint(proto.Message):
     address: str = proto.Field(
         proto.STRING,
         number=7,
+        oneof="location_type",
+    )
+    navigation_point_token: str = proto.Field(
+        proto.STRING,
+        number=8,
         oneof="location_type",
     )
     via: bool = proto.Field(

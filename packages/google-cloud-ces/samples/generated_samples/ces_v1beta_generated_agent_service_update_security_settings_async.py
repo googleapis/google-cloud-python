@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UploadEvaluationAudio
+# Snippet for UpdateSecuritySettings
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-ces
 
 
-# [START ces_v1beta_generated_EvaluationService_UploadEvaluationAudio_sync]
+# [START ces_v1beta_generated_AgentService_UpdateSecuritySettings_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,21 +34,18 @@
 from google.cloud import ces_v1beta
 
 
-def sample_upload_evaluation_audio():
+async def sample_update_security_settings():
     # Create a client
-    client = ces_v1beta.EvaluationServiceClient()
+    client = ces_v1beta.AgentServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = ces_v1beta.UploadEvaluationAudioRequest(
-        name="name_value",
-        audio_content=b"audio_content_blob",
-    )
+    request = ces_v1beta.UpdateSecuritySettingsRequest()
 
     # Make the request
-    response = client.upload_evaluation_audio(request=request)
+    response = await client.update_security_settings(request=request)
 
     # Handle the response
     print(response)
 
 
-# [END ces_v1beta_generated_EvaluationService_UploadEvaluationAudio_sync]
+# [END ces_v1beta_generated_AgentService_UpdateSecuritySettings_async]
