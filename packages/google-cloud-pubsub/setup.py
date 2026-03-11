@@ -39,15 +39,14 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    # google-api-core >= 1.34.0 is allowed in order to support google-api-core 1.x
-    "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "google-api-core[grpc] >= 2.11.0, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
     "grpcio >= 1.51.3, < 2.0.0; python_version < '3.14'",  # https://github.com/googleapis/python-pubsub/issues/609    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf >= 4.25.8, < 8.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
     "grpcio-status >= 1.33.2",
     "opentelemetry-api >= 1.27.0",

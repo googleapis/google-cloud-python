@@ -131,6 +131,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert PrivilegedAccessManagerClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -152,6 +153,10 @@ def test__get_default_mtls_endpoint():
     assert (
         PrivilegedAccessManagerClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        PrivilegedAccessManagerClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1358,11 +1363,13 @@ def test_privileged_access_manager_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -9938,8 +9945,9 @@ def test_check_onboarding_status_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10004,19 +10012,22 @@ def test_check_onboarding_status_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_check_onboarding_status",
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_check_onboarding_status_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_check_onboarding_status"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_check_onboarding_status",
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_check_onboarding_status_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "pre_check_onboarding_status",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10074,8 +10085,9 @@ def test_list_entitlements_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10140,18 +10152,20 @@ def test_list_entitlements_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_list_entitlements"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_list_entitlements_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_list_entitlements"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_list_entitlements"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_list_entitlements_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_list_entitlements"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10209,8 +10223,9 @@ def test_search_entitlements_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10275,18 +10290,21 @@ def test_search_entitlements_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_search_entitlements"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_search_entitlements_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_search_entitlements"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_search_entitlements",
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_search_entitlements_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_search_entitlements"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10344,8 +10362,9 @@ def test_get_entitlement_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10412,18 +10431,20 @@ def test_get_entitlement_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_get_entitlement"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_get_entitlement_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_get_entitlement"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_get_entitlement"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_get_entitlement_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_get_entitlement"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10481,8 +10502,9 @@ def test_create_entitlement_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10655,20 +10677,21 @@ def test_create_entitlement_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_create_entitlement"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_create_entitlement_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_create_entitlement"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_create_entitlement"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_create_entitlement_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_create_entitlement"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10721,8 +10744,9 @@ def test_delete_entitlement_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10779,20 +10803,21 @@ def test_delete_entitlement_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_delete_entitlement"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_delete_entitlement_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_delete_entitlement"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_delete_entitlement"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_delete_entitlement_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_delete_entitlement"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10849,8 +10874,9 @@ def test_update_entitlement_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11027,20 +11053,21 @@ def test_update_entitlement_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_update_entitlement"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_update_entitlement_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_update_entitlement"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_update_entitlement"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_update_entitlement_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_update_entitlement"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11093,8 +11120,9 @@ def test_list_grants_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11159,18 +11187,20 @@ def test_list_grants_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_list_grants"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_list_grants_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_list_grants"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_list_grants"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_list_grants_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_list_grants"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11228,8 +11258,9 @@ def test_search_grants_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11292,18 +11323,20 @@ def test_search_grants_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_search_grants"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_search_grants_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_search_grants"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_search_grants"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_search_grants_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_search_grants"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11363,8 +11396,9 @@ def test_get_grant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11437,18 +11471,20 @@ def test_get_grant_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_get_grant"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_get_grant_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_get_grant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_get_grant"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_get_grant_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_get_grant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11503,8 +11539,9 @@ def test_create_grant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11700,18 +11737,20 @@ def test_create_grant_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_create_grant"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_create_grant_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_create_grant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_create_grant"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_create_grant_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_create_grant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11768,8 +11807,9 @@ def test_approve_grant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11842,18 +11882,20 @@ def test_approve_grant_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_approve_grant"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_approve_grant_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_approve_grant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_approve_grant"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_approve_grant_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_approve_grant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11910,8 +11952,9 @@ def test_deny_grant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11984,18 +12027,20 @@ def test_deny_grant_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_deny_grant"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_deny_grant_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_deny_grant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_deny_grant"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_deny_grant_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_deny_grant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12052,8 +12097,9 @@ def test_revoke_grant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12112,20 +12158,21 @@ def test_revoke_grant_rest_interceptors(null_interceptor):
     )
     client = PrivilegedAccessManagerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "post_revoke_grant"
-    ) as post, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor,
-        "post_revoke_grant_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.PrivilegedAccessManagerRestInterceptor, "pre_revoke_grant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "post_revoke_grant"
+        ) as post,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor,
+            "post_revoke_grant_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.PrivilegedAccessManagerRestInterceptor, "pre_revoke_grant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12178,8 +12225,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12238,8 +12286,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12300,8 +12349,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12362,8 +12412,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12424,8 +12475,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12865,11 +12917,14 @@ def test_privileged_access_manager_base_transport():
 
 def test_privileged_access_manager_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.transports.PrivilegedAccessManagerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.transports.PrivilegedAccessManagerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.PrivilegedAccessManagerTransport(
@@ -12886,9 +12941,12 @@ def test_privileged_access_manager_base_transport_with_credentials_file():
 
 def test_privileged_access_manager_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.transports.PrivilegedAccessManagerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.privilegedaccessmanager_v1.services.privileged_access_manager.transports.PrivilegedAccessManagerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.PrivilegedAccessManagerTransport()
@@ -12962,11 +13020,12 @@ def test_privileged_access_manager_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -13639,6 +13698,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = PrivilegedAccessManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = PrivilegedAccessManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_get_operation(transport: str = "grpc"):
     client = PrivilegedAccessManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13782,6 +13873,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = PrivilegedAccessManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = PrivilegedAccessManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_list_operations(transport: str = "grpc"):
@@ -13929,6 +14054,40 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
+def test_list_operations_flattened():
+    client = PrivilegedAccessManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = PrivilegedAccessManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
 def test_list_locations(transport: str = "grpc"):
     client = PrivilegedAccessManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14074,6 +14233,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = PrivilegedAccessManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = PrivilegedAccessManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = PrivilegedAccessManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14217,6 +14410,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = PrivilegedAccessManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = PrivilegedAccessManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

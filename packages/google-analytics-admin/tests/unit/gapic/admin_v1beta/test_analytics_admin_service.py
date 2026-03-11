@@ -126,6 +126,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert AnalyticsAdminServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -147,6 +148,10 @@ def test__get_default_mtls_endpoint():
     assert (
         AnalyticsAdminServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        AnalyticsAdminServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1349,11 +1354,13 @@ def test_analytics_admin_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -34803,8 +34810,9 @@ def test_get_account_rest_bad_request(request_type=analytics_admin.GetAccountReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34875,18 +34883,20 @@ def test_get_account_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_account"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_account_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_account"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_get_account"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_account_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_get_account"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34939,8 +34949,9 @@ def test_list_accounts_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35003,18 +35014,20 @@ def test_list_accounts_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_accounts"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_accounts_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_accounts"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_list_accounts"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_accounts_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_list_accounts"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35072,8 +35085,9 @@ def test_delete_account_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35130,13 +35144,13 @@ def test_delete_account_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_account"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_account"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.DeleteAccountRequest.pb(
             analytics_admin.DeleteAccountRequest()
@@ -35181,8 +35195,9 @@ def test_update_account_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35329,18 +35344,20 @@ def test_update_account_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_account"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_account_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_account"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_update_account"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_account_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_update_account"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35393,8 +35410,9 @@ def test_provision_account_ticket_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35457,18 +35475,22 @@ def test_provision_account_ticket_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_provision_account_ticket"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_provision_account_ticket_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_provision_account_ticket"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_provision_account_ticket",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_provision_account_ticket_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_provision_account_ticket",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35526,8 +35548,9 @@ def test_list_account_summaries_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35590,18 +35613,22 @@ def test_list_account_summaries_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_account_summaries"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_account_summaries_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_account_summaries"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_account_summaries",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_account_summaries_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_list_account_summaries",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35657,8 +35684,9 @@ def test_get_property_rest_bad_request(request_type=analytics_admin.GetPropertyR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35737,18 +35765,20 @@ def test_get_property_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_property"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_property_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_property"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_get_property"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_property_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_get_property"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35801,8 +35831,9 @@ def test_list_properties_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35865,18 +35896,20 @@ def test_list_properties_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_properties"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_properties_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_properties"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_list_properties"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_properties_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_list_properties"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35934,8 +35967,9 @@ def test_create_property_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36096,18 +36130,20 @@ def test_create_property_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_property"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_property_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_property"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_create_property"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_property_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_create_property"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36160,8 +36196,9 @@ def test_delete_property_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36240,18 +36277,20 @@ def test_delete_property_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_delete_property"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_delete_property_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_property"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_delete_property"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_delete_property_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_property"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36304,8 +36343,9 @@ def test_update_property_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36466,18 +36506,20 @@ def test_update_property_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_property"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_property_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_property"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_update_property"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_property_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_update_property"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36530,8 +36572,9 @@ def test_create_firebase_link_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36668,18 +36711,20 @@ def test_create_firebase_link_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_firebase_link"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_firebase_link_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_firebase_link"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_create_firebase_link"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_firebase_link_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_create_firebase_link"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36732,8 +36777,9 @@ def test_delete_firebase_link_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36790,13 +36836,13 @@ def test_delete_firebase_link_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_firebase_link"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_firebase_link"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.DeleteFirebaseLinkRequest.pb(
             analytics_admin.DeleteFirebaseLinkRequest()
@@ -36841,8 +36887,9 @@ def test_list_firebase_links_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36905,18 +36952,20 @@ def test_list_firebase_links_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_firebase_links"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_firebase_links_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_firebase_links"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_list_firebase_links"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_firebase_links_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_list_firebase_links"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36974,8 +37023,9 @@ def test_create_google_ads_link_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37122,18 +37172,22 @@ def test_create_google_ads_link_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_google_ads_link"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_google_ads_link_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_google_ads_link"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_google_ads_link",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_google_ads_link_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_create_google_ads_link",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37188,8 +37242,9 @@ def test_update_google_ads_link_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37338,18 +37393,22 @@ def test_update_google_ads_link_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_google_ads_link"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_google_ads_link_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_google_ads_link"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_google_ads_link",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_google_ads_link_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_update_google_ads_link",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37402,8 +37461,9 @@ def test_delete_google_ads_link_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37460,13 +37520,14 @@ def test_delete_google_ads_link_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_google_ads_link"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_delete_google_ads_link",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.DeleteGoogleAdsLinkRequest.pb(
             analytics_admin.DeleteGoogleAdsLinkRequest()
@@ -37511,8 +37572,9 @@ def test_list_google_ads_links_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37575,18 +37637,21 @@ def test_list_google_ads_links_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_google_ads_links"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_google_ads_links_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_google_ads_links"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_google_ads_links",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_google_ads_links_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_list_google_ads_links"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37644,8 +37709,9 @@ def test_get_data_sharing_settings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37718,19 +37784,22 @@ def test_get_data_sharing_settings_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_data_sharing_settings",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_data_sharing_settings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_data_sharing_settings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_data_sharing_settings",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_data_sharing_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_get_data_sharing_settings",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37787,8 +37856,9 @@ def test_get_measurement_protocol_secret_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37857,20 +37927,22 @@ def test_get_measurement_protocol_secret_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_measurement_protocol_secret",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_measurement_protocol_secret_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_get_measurement_protocol_secret",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_measurement_protocol_secret",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_measurement_protocol_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_get_measurement_protocol_secret",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37928,8 +38000,9 @@ def test_list_measurement_protocol_secrets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37994,20 +38067,22 @@ def test_list_measurement_protocol_secrets_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_measurement_protocol_secrets",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_measurement_protocol_secrets_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_list_measurement_protocol_secrets",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_measurement_protocol_secrets",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_measurement_protocol_secrets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_list_measurement_protocol_secrets",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38065,8 +38140,9 @@ def test_create_measurement_protocol_secret_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38211,20 +38287,22 @@ def test_create_measurement_protocol_secret_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_measurement_protocol_secret",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_measurement_protocol_secret_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_create_measurement_protocol_secret",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_measurement_protocol_secret",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_measurement_protocol_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_create_measurement_protocol_secret",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38284,8 +38362,9 @@ def test_delete_measurement_protocol_secret_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38344,14 +38423,14 @@ def test_delete_measurement_protocol_secret_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_delete_measurement_protocol_secret",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_delete_measurement_protocol_secret",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.DeleteMeasurementProtocolSecretRequest.pb(
             analytics_admin.DeleteMeasurementProtocolSecretRequest()
@@ -38400,8 +38479,9 @@ def test_update_measurement_protocol_secret_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38550,20 +38630,22 @@ def test_update_measurement_protocol_secret_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_measurement_protocol_secret",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_measurement_protocol_secret_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_update_measurement_protocol_secret",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_measurement_protocol_secret",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_measurement_protocol_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_update_measurement_protocol_secret",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38621,8 +38703,9 @@ def test_acknowledge_user_data_collection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38684,20 +38767,22 @@ def test_acknowledge_user_data_collection_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_acknowledge_user_data_collection",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_acknowledge_user_data_collection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_acknowledge_user_data_collection",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_acknowledge_user_data_collection",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_acknowledge_user_data_collection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_acknowledge_user_data_collection",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38755,8 +38840,9 @@ def test_search_change_history_events_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38821,20 +38907,22 @@ def test_search_change_history_events_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_search_change_history_events",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_search_change_history_events_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_search_change_history_events",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_search_change_history_events",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_search_change_history_events_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_search_change_history_events",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38892,8 +38980,9 @@ def test_create_conversion_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39048,18 +39137,22 @@ def test_create_conversion_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_conversion_event"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_conversion_event_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_conversion_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_conversion_event",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_conversion_event_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_create_conversion_event",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39114,8 +39207,9 @@ def test_update_conversion_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39272,18 +39366,22 @@ def test_update_conversion_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_conversion_event"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_conversion_event_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_conversion_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_conversion_event",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_conversion_event_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_update_conversion_event",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39336,8 +39434,9 @@ def test_get_conversion_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39411,18 +39510,20 @@ def test_get_conversion_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_conversion_event"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_conversion_event_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_conversion_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_get_conversion_event"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_conversion_event_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_get_conversion_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39475,8 +39576,9 @@ def test_delete_conversion_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39533,13 +39635,14 @@ def test_delete_conversion_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_conversion_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_delete_conversion_event",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.DeleteConversionEventRequest.pb(
             analytics_admin.DeleteConversionEventRequest()
@@ -39584,8 +39687,9 @@ def test_list_conversion_events_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39648,18 +39752,22 @@ def test_list_conversion_events_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_conversion_events"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_conversion_events_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_conversion_events"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_conversion_events",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_conversion_events_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_list_conversion_events",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39717,8 +39825,9 @@ def test_create_key_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -39868,18 +39977,20 @@ def test_create_key_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_key_event"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_key_event_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_key_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_create_key_event"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_key_event_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_create_key_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -39932,8 +40043,9 @@ def test_update_key_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40083,18 +40195,20 @@ def test_update_key_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_key_event"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_key_event_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_key_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_update_key_event"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_key_event_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_update_key_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40147,8 +40261,9 @@ def test_get_key_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40219,18 +40334,20 @@ def test_get_key_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_key_event"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_key_event_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_key_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_get_key_event"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_key_event_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_get_key_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40283,8 +40400,9 @@ def test_delete_key_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40341,13 +40459,13 @@ def test_delete_key_event_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_key_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_key_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.DeleteKeyEventRequest.pb(
             analytics_admin.DeleteKeyEventRequest()
@@ -40392,8 +40510,9 @@ def test_list_key_events_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40456,18 +40575,20 @@ def test_list_key_events_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_key_events"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_key_events_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_key_events"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_list_key_events"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_key_events_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_list_key_events"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40525,8 +40646,9 @@ def test_create_custom_dimension_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40676,18 +40798,22 @@ def test_create_custom_dimension_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_custom_dimension"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_custom_dimension_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_custom_dimension"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_custom_dimension",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_custom_dimension_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_create_custom_dimension",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40742,8 +40868,9 @@ def test_update_custom_dimension_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -40895,18 +41022,22 @@ def test_update_custom_dimension_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_custom_dimension"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_custom_dimension_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_custom_dimension"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_custom_dimension",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_custom_dimension_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_update_custom_dimension",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -40959,8 +41090,9 @@ def test_list_custom_dimensions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41023,18 +41155,22 @@ def test_list_custom_dimensions_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_custom_dimensions"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_custom_dimensions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_custom_dimensions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_custom_dimensions",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_custom_dimensions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_list_custom_dimensions",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41092,8 +41228,9 @@ def test_archive_custom_dimension_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41150,13 +41287,14 @@ def test_archive_custom_dimension_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_archive_custom_dimension"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_archive_custom_dimension",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.ArchiveCustomDimensionRequest.pb(
             analytics_admin.ArchiveCustomDimensionRequest()
@@ -41201,8 +41339,9 @@ def test_get_custom_dimension_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41275,18 +41414,20 @@ def test_get_custom_dimension_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_dimension"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_custom_dimension_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_dimension"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_dimension"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_custom_dimension_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_dimension"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41339,8 +41480,9 @@ def test_create_custom_metric_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41495,18 +41637,20 @@ def test_create_custom_metric_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_custom_metric"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_custom_metric_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_custom_metric"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_create_custom_metric"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_custom_metric_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_create_custom_metric"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41561,8 +41705,9 @@ def test_update_custom_metric_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41719,18 +41864,20 @@ def test_update_custom_metric_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_custom_metric"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_custom_metric_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_custom_metric"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_update_custom_metric"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_custom_metric_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_update_custom_metric"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41783,8 +41930,9 @@ def test_list_custom_metrics_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41847,18 +41995,20 @@ def test_list_custom_metrics_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_custom_metrics"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_custom_metrics_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_custom_metrics"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_list_custom_metrics"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_custom_metrics_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_list_custom_metrics"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41916,8 +42066,9 @@ def test_archive_custom_metric_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41974,13 +42125,13 @@ def test_archive_custom_metric_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_archive_custom_metric"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_archive_custom_metric"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.ArchiveCustomMetricRequest.pb(
             analytics_admin.ArchiveCustomMetricRequest()
@@ -42025,8 +42176,9 @@ def test_get_custom_metric_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42105,18 +42257,20 @@ def test_get_custom_metric_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_metric"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_custom_metric_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_metric"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_get_custom_metric"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_custom_metric_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_get_custom_metric"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42169,8 +42323,9 @@ def test_get_data_retention_settings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42245,20 +42400,22 @@ def test_get_data_retention_settings_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_data_retention_settings",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_data_retention_settings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_get_data_retention_settings",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_data_retention_settings",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_data_retention_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_get_data_retention_settings",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42315,8 +42472,9 @@ def test_update_data_retention_settings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42470,20 +42628,22 @@ def test_update_data_retention_settings_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_data_retention_settings",
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_data_retention_settings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "pre_update_data_retention_settings",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_data_retention_settings",
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_data_retention_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "pre_update_data_retention_settings",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42538,8 +42698,9 @@ def test_create_data_stream_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42693,18 +42854,20 @@ def test_create_data_stream_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_create_data_stream"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_create_data_stream_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_create_data_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_create_data_stream"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_create_data_stream_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_create_data_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42757,8 +42920,9 @@ def test_delete_data_stream_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42815,13 +42979,13 @@ def test_delete_data_stream_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_data_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_delete_data_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = analytics_admin.DeleteDataStreamRequest.pb(
             analytics_admin.DeleteDataStreamRequest()
@@ -42866,8 +43030,9 @@ def test_update_data_stream_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43021,18 +43186,20 @@ def test_update_data_stream_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_update_data_stream"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_update_data_stream_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_update_data_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_update_data_stream"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_update_data_stream_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_update_data_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43085,8 +43252,9 @@ def test_list_data_streams_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43149,18 +43317,20 @@ def test_list_data_streams_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_list_data_streams"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_list_data_streams_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_list_data_streams"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_list_data_streams"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_list_data_streams_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_list_data_streams"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43218,8 +43388,9 @@ def test_get_data_stream_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43286,18 +43457,20 @@ def test_get_data_stream_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_get_data_stream"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_get_data_stream_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_get_data_stream"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_get_data_stream"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_get_data_stream_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_get_data_stream"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43350,8 +43523,9 @@ def test_run_access_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43414,18 +43588,20 @@ def test_run_access_report_rest_interceptors(null_interceptor):
     )
     client = AnalyticsAdminServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "post_run_access_report"
-    ) as post, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor,
-        "post_run_access_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AnalyticsAdminServiceRestInterceptor, "pre_run_access_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "post_run_access_report"
+        ) as post,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor,
+            "post_run_access_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AnalyticsAdminServiceRestInterceptor, "pre_run_access_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44743,11 +44919,14 @@ def test_analytics_admin_service_base_transport():
 
 def test_analytics_admin_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.analytics.admin_v1beta.services.analytics_admin_service.transports.AnalyticsAdminServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.analytics.admin_v1beta.services.analytics_admin_service.transports.AnalyticsAdminServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AnalyticsAdminServiceTransport(
@@ -44767,9 +44946,12 @@ def test_analytics_admin_service_base_transport_with_credentials_file():
 
 def test_analytics_admin_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.analytics.admin_v1beta.services.analytics_admin_service.transports.AnalyticsAdminServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.analytics.admin_v1beta.services.analytics_admin_service.transports.AnalyticsAdminServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AnalyticsAdminServiceTransport()
@@ -44849,11 +45031,12 @@ def test_analytics_admin_service_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
