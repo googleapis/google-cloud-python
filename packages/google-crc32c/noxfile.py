@@ -164,13 +164,13 @@ def unit(session):
     session.skip("Unit tests are not supported")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.10")
 def docs(session):
     """Run all docs tests."""
     session.skip("Docs tests are not supported")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python="3.10")
 def docfx(session):
     """Run all docfx tests."""
     session.skip("Docfx tests are not supported")
