@@ -121,6 +121,151 @@ def test_upload_many_from_filenames_with_attributes(
     assert blob.cache_control == "no-cache"
 
 
+@pytest.mark.parametrize(
+    "blobname",
+    [
+        "../../local/target",  # skips download
+        "../escape.txt",  # skips download
+        "go/four/levels/deep/../../../../../somefile1",  # skips download
+        "go/four/levels/deep/../some_dir/../../../../../invalid/path1",  # skips download
+    ],
+)
+def test_download_many_to_path_skips_download(
+    shared_bucket, file_data, blobs_to_delete, blobname
+):
+    """
+    Test downloading blobs with traversal skipped
+    """
+    # Setup
+    BLOBNAMES = [blobname]
+
+    FILE_BLOB_PAIRS = [
+        (
+            file_data["simple"]["path"],
+            shared_bucket.blob("folder_traversal/" + blob_name),
+        )
+        for blob_name in BLOBNAMES
+    ]
+
+    results = transfer_manager.upload_many(
+        FILE_BLOB_PAIRS,
+        skip_if_exists=True,
+        deadline=DEADLINE,
+    )
+    for result in results:
+        assert result is None
+
+    blobs = list(shared_bucket.list_blobs(prefix="folder_traversal/"))
+    blobs_to_delete.extend(blobs)
+
+    # We expect 1 blob uploaded for this test parametrization
+    assert len(list(b for b in blobs if b.name == "folder_traversal/" + blobname)) == 1
+
+    # Actual Test
+    with tempfile.TemporaryDirectory() as tempdir:
+        import warnings
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            results = transfer_manager.download_many_to_path(
+                shared_bucket,
+                BLOBNAMES,
+                destination_directory=tempdir,
+                blob_name_prefix="folder_traversal/",
+                deadline=DEADLINE,
+                create_directories=True,
+            )
+
+        path_traversal_warnings = [
+            warning
+            for warning in w
+            if str(warning.message).startswith("The blob ")
+            and "will **NOT** be downloaded. The resolved destination_directory"
+            in str(warning.message)
+        ]
+        assert len(path_traversal_warnings) == 1, "---".join(
+            [str(warning.message) for warning in w]
+        )
+
+        # 1 total - 1 skipped = 0 results
+        assert len(results) == 0
+
+
+@pytest.mark.parametrize(
+    "blobname",
+    [
+        "simple_blob",
+        "data/file.txt",
+        "data/../sibling.txt",
+        "/etc/passwd",
+        "/local/usr/a.txt",
+        "dir/./file.txt",
+        "go/four/levels/deep/../somefile2",
+        "go/four/levels/deep/../some_dir/valid/path1",
+        "go/four/levels/deep/../some_dir/../../../../valid/path2",
+    ],
+)
+def test_download_many_to_path_downloads_within_dest_dir(
+    shared_bucket, file_data, blobs_to_delete, blobname
+):
+    """
+    Test downloading blobs with valid traversal
+    """
+    # Setup
+    BLOBNAMES = [blobname]
+
+    FILE_BLOB_PAIRS = [
+        (
+            file_data["simple"]["path"],
+            shared_bucket.blob("folder_traversal/" + blob_name),
+        )
+        for blob_name in BLOBNAMES
+    ]
+
+    results = transfer_manager.upload_many(
+        FILE_BLOB_PAIRS,
+        skip_if_exists=True,
+        deadline=DEADLINE,
+    )
+    for result in results:
+        assert result is None
+
+    blobs = list(shared_bucket.list_blobs(prefix="folder_traversal/"))
+    blobs_to_delete.extend(blobs)
+
+    assert len(list(b for b in blobs if b.name == "folder_traversal/" + blobname)) == 1
+
+    # Actual Test
+    with tempfile.TemporaryDirectory() as tempdir:
+        results = transfer_manager.download_many_to_path(
+            shared_bucket,
+            BLOBNAMES,
+            destination_directory=tempdir,
+            blob_name_prefix="folder_traversal/",
+            deadline=DEADLINE,
+            create_directories=True,
+        )
+
+        assert len(results) == 1
+        for result in results:
+            assert result is None
+
+        # Verify the file exists and contents match
+        from google.cloud.storage.transfer_manager import _resolve_path
+        from pathlib import Path
+
+        expected_file_path = Path(_resolve_path(tempdir, blobname))
+        assert expected_file_path.is_file()
+
+        with open(file_data["simple"]["path"], "rb") as source_file:
+            source_contents = source_file.read()
+
+        with expected_file_path.open("rb") as downloaded_file:
+            downloaded_contents = downloaded_file.read()
+
+        assert downloaded_contents == source_contents
+
+
 def test_download_many(listable_bucket):
     blobs = list(listable_bucket.list_blobs())
     with tempfile.TemporaryDirectory() as tempdir:

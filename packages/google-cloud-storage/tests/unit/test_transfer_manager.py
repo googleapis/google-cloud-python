@@ -525,7 +525,8 @@ def test_download_many_to_path():
     WORKER_TYPE = transfer_manager.THREAD
 
     EXPECTED_BLOB_FILE_PAIRS = [
-        (mock.ANY, os.path.join(PATH_ROOT, blobname)) for blobname in BLOBNAMES
+        (mock.ANY, os.path.join(os.getcwd(), PATH_ROOT, blobname))
+        for blobname in BLOBNAMES
     ]
 
     with mock.patch(
@@ -556,6 +557,124 @@ def test_download_many_to_path():
     )
     for blobname in BLOBNAMES:
         bucket.blob.assert_any_call(BLOB_NAME_PREFIX + blobname)
+
+
+@pytest.mark.parametrize(
+    "blobname",
+    [
+        "../../local/target",
+        "../mypath",
+        "../escape.txt",
+        "go/four/levels/deep/../../../../../somefile1",
+        "go/four/levels/deep/../some_dir/../../../../../invalid/path1",
+    ],
+)
+def test_download_many_to_path_skips_download(blobname):
+    bucket = mock.Mock()
+    BLOBNAMES = [blobname]
+
+    PATH_ROOT = "mypath/"
+    BLOB_NAME_PREFIX = "myprefix/"
+    DOWNLOAD_KWARGS = {"accept-encoding": "fake-gzip"}
+    MAX_WORKERS = 7
+    DEADLINE = 10
+    WORKER_TYPE = transfer_manager.THREAD
+
+    import warnings
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        with mock.patch(
+            "google.cloud.storage.transfer_manager.download_many"
+        ) as mock_download_many:
+            transfer_manager.download_many_to_path(
+                bucket,
+                BLOBNAMES,
+                destination_directory=PATH_ROOT,
+                blob_name_prefix=BLOB_NAME_PREFIX,
+                download_kwargs=DOWNLOAD_KWARGS,
+                deadline=DEADLINE,
+                create_directories=False,
+                raise_exception=True,
+                max_workers=MAX_WORKERS,
+                worker_type=WORKER_TYPE,
+                skip_if_exists=True,
+            )
+
+    path_traversal_warnings = [
+        warning for warning in w
+        if str(warning.message).startswith("The blob ")
+        and "will **NOT** be downloaded. The resolved destination_directory" in str(warning.message)
+    ]
+    assert len(path_traversal_warnings) == 1, "---".join([str(warning.message) for warning in w])
+
+    mock_download_many.assert_called_once_with(
+        [],
+        download_kwargs=DOWNLOAD_KWARGS,
+        deadline=DEADLINE,
+        raise_exception=True,
+        max_workers=MAX_WORKERS,
+        worker_type=WORKER_TYPE,
+        skip_if_exists=True,
+    )
+
+
+@pytest.mark.parametrize(
+    "blobname",
+    [
+        "simple_blob",
+        "data/file.txt",
+        "data/../sibling.txt",
+        "/etc/passwd",
+        "/local/usr/a.txt",
+        "dir/./file.txt",
+        "go/four/levels/deep/../somefile2",
+        "go/four/levels/deep/../some_dir/valid/path1",
+        "go/four/levels/deep/../some_dir/../../../../valid/path2",
+    ],
+)
+def test_download_many_to_path_downloads_within_dest_dir(blobname):
+    bucket = mock.Mock()
+    BLOBNAMES = [blobname]
+
+    PATH_ROOT = "mypath/"
+    BLOB_NAME_PREFIX = "myprefix/"
+    DOWNLOAD_KWARGS = {"accept-encoding": "fake-gzip"}
+    MAX_WORKERS = 7
+    DEADLINE = 10
+    WORKER_TYPE = transfer_manager.THREAD
+
+    from google.cloud.storage.transfer_manager import _resolve_path
+    EXPECTED_BLOB_FILE_PAIRS = [
+        (mock.ANY, str(_resolve_path(PATH_ROOT, blobname)))
+    ]
+
+    with mock.patch(
+        "google.cloud.storage.transfer_manager.download_many"
+    ) as mock_download_many:
+        transfer_manager.download_many_to_path(
+            bucket,
+            BLOBNAMES,
+            destination_directory=PATH_ROOT,
+            blob_name_prefix=BLOB_NAME_PREFIX,
+            download_kwargs=DOWNLOAD_KWARGS,
+            deadline=DEADLINE,
+            create_directories=False,
+            raise_exception=True,
+            max_workers=MAX_WORKERS,
+            worker_type=WORKER_TYPE,
+            skip_if_exists=True,
+        )
+
+    mock_download_many.assert_called_once_with(
+        EXPECTED_BLOB_FILE_PAIRS,
+        download_kwargs=DOWNLOAD_KWARGS,
+        deadline=DEADLINE,
+        raise_exception=True,
+        max_workers=MAX_WORKERS,
+        worker_type=WORKER_TYPE,
+        skip_if_exists=True,
+    )
+    bucket.blob.assert_any_call(BLOB_NAME_PREFIX + blobname)
 
 
 def test_download_many_to_path_creates_directories():
