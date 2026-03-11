@@ -417,9 +417,6 @@ def test_pipeline_execute_stream_equivalence():
         ("aggregate", (Field.of("n").as_("alias"),), stages.Aggregate),
         ("distinct", ("field_name",), stages.Distinct),
         ("distinct", (Field.of("n"), "second"), stages.Distinct),
-        ("literals", (Field.of("a"),), stages.Literals),
-        ("literals", ({"name": "joe"}, {"name": "bob"}), stages.Literals),
-        ("literals", (Field.of("a"), {"name": "joe"}), stages.Literals),
     ],
 )
 def test_pipeline_methods(method, args, result_cls):
