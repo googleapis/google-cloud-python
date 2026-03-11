@@ -236,7 +236,7 @@ replacements:
     # Use backslashes to preserve leading spaces
     before: |
       \    @property
-      \    def api_endpoint\(self\):
+      \    def api_endpoint\(self\) -> str:
       [\s\S]*?return self\._client\._universe_domain\n
     after: ""
     count: 1
