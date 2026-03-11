@@ -2906,7 +2906,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-retail
     version: 2.9.0
-    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
+    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
     apis:
       - path: google/cloud/retail/v2
         service_config: retail_v2.yaml
