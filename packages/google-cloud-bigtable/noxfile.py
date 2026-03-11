@@ -317,9 +317,9 @@ def conformance(session, client_type):
             external=True,
             env={
                 "CLIENT_TYPE": client_type,
-                "PYTHONUNBUFFERED": 1,
+                "PYTHONUNBUFFERED": "1",
                 "TEST_ARGS": test_args,
-                "PROXY_PORT": 9999,
+                "PROXY_PORT": "9999",
             },
         )
 
