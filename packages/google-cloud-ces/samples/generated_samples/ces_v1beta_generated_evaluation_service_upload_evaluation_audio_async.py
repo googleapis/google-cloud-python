@@ -40,7 +40,7 @@ async def sample_upload_evaluation_audio():
 
     # Initialize request argument(s)
     request = ces_v1beta.UploadEvaluationAudioRequest(
-        app="app_value",
+        name="name_value",
         audio_content=b"audio_content_blob",
     )
 

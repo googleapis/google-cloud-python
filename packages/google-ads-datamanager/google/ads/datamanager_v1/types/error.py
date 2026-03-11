@@ -61,7 +61,8 @@ class ErrorReason(proto.Enum):
         INVALID_POSTAL_CODE (12):
             Postal code is not valid.
         INVALID_COUNTRY_CODE (13):
-            Country code is not valid.
+            Deprecated: Enum is unused in the Data
+            Manager API.
         INVALID_ENUM_VALUE (14):
             Enum value cannot be used.
         INVALID_USER_LIST_TYPE (15):
@@ -292,6 +293,9 @@ class ErrorReason(proto.Enum):
         UNSUPPORTED_ACCOUNT_TYPE_FOR_PARTNER_LINK (98):
             The account types are not supported for the
             partner link.
+        MEMBERSHIP_DURATION_TOO_LONG (99):
+            The user list membership duration is too
+            long.
     """
 
     ERROR_REASON_UNSPECIFIED = 0
@@ -393,6 +397,7 @@ class ErrorReason(proto.Enum):
     UNSUPPORTED_INGESTED_USER_LIST_INFO_CONFIG = 96
     UNSUPPORTED_ACCOUNT_TYPES_FOR_USER_LIST_TYPE = 97
     UNSUPPORTED_ACCOUNT_TYPE_FOR_PARTNER_LINK = 98
+    MEMBERSHIP_DURATION_TOO_LONG = 99
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

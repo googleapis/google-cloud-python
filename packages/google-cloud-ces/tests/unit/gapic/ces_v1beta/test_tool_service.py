@@ -3898,10 +3898,41 @@ def test_tool_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_app_path():
+def test_agent_path():
     project = "squid"
     location = "clam"
     app = "whelk"
+    agent = "octopus"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/agents/{agent}".format(
+            project=project,
+            location=location,
+            app=app,
+            agent=agent,
+        )
+    )
+    actual = ToolServiceClient.agent_path(project, location, app, agent)
+    assert expected == actual
+
+
+def test_parse_agent_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "app": "cuttlefish",
+        "agent": "mussel",
+    }
+    path = ToolServiceClient.agent_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ToolServiceClient.parse_agent_path(path)
+    assert expected == actual
+
+
+def test_app_path():
+    project = "winkle"
+    location = "nautilus"
+    app = "scallop"
     expected = "projects/{project}/locations/{location}/apps/{app}".format(
         project=project,
         location=location,
@@ -3913,9 +3944,9 @@ def test_app_path():
 
 def test_parse_app_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "app": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "app": "clam",
     }
     path = ToolServiceClient.app_path(**expected)
 
@@ -3925,9 +3956,9 @@ def test_parse_app_path():
 
 
 def test_secret_version_path():
-    project = "cuttlefish"
-    secret = "mussel"
-    secret_version = "winkle"
+    project = "whelk"
+    secret = "octopus"
+    secret_version = "oyster"
     expected = "projects/{project}/secrets/{secret}/versions/{secret_version}".format(
         project=project,
         secret=secret,
@@ -3939,9 +3970,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "nautilus",
-        "secret": "scallop",
-        "secret_version": "abalone",
+        "project": "nudibranch",
+        "secret": "cuttlefish",
+        "secret_version": "mussel",
     }
     path = ToolServiceClient.secret_version_path(**expected)
 
@@ -3951,10 +3982,10 @@ def test_parse_secret_version_path():
 
 
 def test_service_path():
-    project = "squid"
-    location = "clam"
-    namespace = "whelk"
-    service = "octopus"
+    project = "winkle"
+    location = "nautilus"
+    namespace = "scallop"
+    service = "abalone"
     expected = "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
         project=project,
         location=location,
@@ -3967,10 +3998,10 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "namespace": "cuttlefish",
-        "service": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "namespace": "whelk",
+        "service": "octopus",
     }
     path = ToolServiceClient.service_path(**expected)
 
@@ -3980,10 +4011,10 @@ def test_parse_service_path():
 
 
 def test_tool_path():
-    project = "winkle"
-    location = "nautilus"
-    app = "scallop"
-    tool = "abalone"
+    project = "oyster"
+    location = "nudibranch"
+    app = "cuttlefish"
+    tool = "mussel"
     expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
         project=project,
         location=location,
@@ -3996,10 +4027,10 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "app": "whelk",
-        "tool": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "app": "scallop",
+        "tool": "abalone",
     }
     path = ToolServiceClient.tool_path(**expected)
 
@@ -4009,10 +4040,10 @@ def test_parse_tool_path():
 
 
 def test_toolset_path():
-    project = "oyster"
-    location = "nudibranch"
-    app = "cuttlefish"
-    toolset = "mussel"
+    project = "squid"
+    location = "clam"
+    app = "whelk"
+    toolset = "octopus"
     expected = (
         "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
             project=project,
@@ -4027,10 +4058,10 @@ def test_toolset_path():
 
 def test_parse_toolset_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "app": "scallop",
-        "toolset": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "app": "cuttlefish",
+        "toolset": "mussel",
     }
     path = ToolServiceClient.toolset_path(**expected)
 
@@ -4040,7 +4071,7 @@ def test_parse_toolset_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4050,7 +4081,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = ToolServiceClient.common_billing_account_path(**expected)
 
@@ -4060,7 +4091,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4070,7 +4101,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = ToolServiceClient.common_folder_path(**expected)
 
@@ -4080,7 +4111,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -4090,7 +4121,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = ToolServiceClient.common_organization_path(**expected)
 
@@ -4100,7 +4131,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -4110,7 +4141,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = ToolServiceClient.common_project_path(**expected)
 
@@ -4120,8 +4151,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4132,8 +4163,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ToolServiceClient.common_location_path(**expected)
 
