@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import array
-import struct
 
 from google_crc32c._checksum import CommonChecksum
 
@@ -71,7 +70,7 @@ class Checksum(CommonChecksum):
             chunk (Optional[bytes]): a chunk of data used to extend
                 the CRC32C checksum.
         """
-        if type(data) != array.array or data.itemsize != 1:
+        if not isinstance(data, array.array) or data.itemsize != 1:
             buffer = array.array("B", data)
         else:
             buffer = data
