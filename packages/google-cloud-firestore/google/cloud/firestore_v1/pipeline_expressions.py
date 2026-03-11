@@ -407,8 +407,7 @@ class Expression(ABC):
 
     @expose_as_static
     def trunc(self) -> "Expression":
-        """Creates an expression that truncates a numeric value to the specified
-        number of decimal places.
+        """Function to truncate a numeric expression to the nearest whole number towards zero.
 
         Example:
             >>> # Truncate the 'value' field to 2 decimal places.
