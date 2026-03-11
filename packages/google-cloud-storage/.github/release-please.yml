@@ -1,6 +1,0 @@
-branches:
-- branch: python2
-  handleGHRelease: true
-  releaseType: python
-releaseType: python
-handleGHRelease: true
