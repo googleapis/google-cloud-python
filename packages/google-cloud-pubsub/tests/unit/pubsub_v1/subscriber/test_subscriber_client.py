@@ -287,10 +287,13 @@ def test_sync_pull_warning_if_return_immediately(creds):
     client = subscriber.Client(credentials=creds)
     subscription_path = "projects/foo/subscriptions/bar"
 
-    with mock.patch.object(client._transport, "_wrapped_methods"), pytest.warns(
-        DeprecationWarning,
-        match="The return_immediately flag is deprecated and should be set to False",
-    ) as warned:
+    with (
+        mock.patch.object(client._transport, "_wrapped_methods"),
+        pytest.warns(
+            DeprecationWarning,
+            match="The return_immediately flag is deprecated and should be set to False",
+        ) as warned,
+    ):
         client.pull(subscription=subscription_path, return_immediately=True)
 
     # Setting the deprecated return_immediately flag to True should emit a warning.
@@ -314,10 +317,13 @@ async def test_sync_pull_warning_if_return_immediately_async(creds):
         new_callable=mock.AsyncMock,
     )
 
-    with patcher, pytest.warns(
-        DeprecationWarning,
-        match="The return_immediately flag is deprecated and should be set to False",
-    ) as warned:
+    with (
+        patcher,
+        pytest.warns(
+            DeprecationWarning,
+            match="The return_immediately flag is deprecated and should be set to False",
+        ) as warned,
+    ):
         await client.pull(subscription=subscription_path, return_immediately=True)
 
     # Setting the deprecated return_immediately flag to True should emit a warning.
