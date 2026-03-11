@@ -53,5 +53,11 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         )
     ]
 
-    revenue = (filtered["L_EXTENDEDPRICE"] * (1 - filtered["L_DISCOUNT"])).sum()
-    _ = round(revenue, 2)
+    result_df = (
+        (filtered["L_EXTENDEDPRICE"] * (1 - filtered["L_DISCOUNT"]))
+        .agg(["sum"])
+        .rename("REVENUE")
+        .to_frame()
+    )
+
+    next(result_df.to_pandas_batches(max_results=1500))
