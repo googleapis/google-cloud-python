@@ -11,7 +11,6 @@ from django.db import connection
 from django.db.utils import IntegrityError
 from django.test import TransactionTestCase
 from django.utils import timezone
-from google.api_core.exceptions import OutOfRange
 
 from django_spanner import USE_EMULATOR
 from tests.system.django_spanner.utils import (
