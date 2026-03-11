@@ -16,6 +16,7 @@ import logging
 import os
 import platform
 import shutil
+
 import setuptools
 import setuptools.command.build_ext
 
@@ -65,7 +66,7 @@ def build_c_extension():
     if install_prefix is not None:
         install_prefix = os.path.normcase(install_prefix)
         print(f"#### using local install of 'crc32c': {install_prefix!r}")
-        #assert os.path.isdir(install_prefix)
+        # assert os.path.isdir(install_prefix)
         install_prefix = os.path.realpath(install_prefix)
         include_dirs = [os.path.join(install_prefix, "include")]
         library_dirs = [os.path.join(install_prefix, "lib")]
@@ -91,14 +92,11 @@ def build_c_extension():
         kwargs = {}
 
     module_path = os.path.join("src", "google_crc32c", "_crc32c.c")
-    sources=[os.path.normcase(module_path)]
+    sources = [os.path.normcase(module_path)]
     print(f"##### sources: {sources}")
     print(f"##### module kwargs: {kwargs}")
     module = setuptools.Extension(
-        "google_crc32c._crc32c",
-        sources=sources,
-        libraries=["crc32c"],
-        **kwargs
+        "google_crc32c._crc32c", sources=sources, libraries=["crc32c"], **kwargs
     )
 
     setuptools.setup(
@@ -106,7 +104,9 @@ def build_c_extension():
         package_dir={"": "src"},
         ext_modules=[module],
         cmdclass={"build_ext": BuildExtWithDLL},
-        install_requires=["importlib_resources>=1.3 ; python_version < '3.9' and os_name == 'nt'"],
+        install_requires=[
+            "importlib_resources>=1.3 ; python_version < '3.9' and os_name == 'nt'"
+        ],
     )
 
 

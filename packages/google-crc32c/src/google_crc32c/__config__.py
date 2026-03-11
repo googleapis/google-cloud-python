@@ -35,4 +35,5 @@ def modify_path():
     except ImportError:
         pass
 
+
 modify_path()

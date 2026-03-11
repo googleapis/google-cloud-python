@@ -15,7 +15,7 @@
 import warnings
 
 _SLOW_CRC32C_WARNING = (
-    "As the c extension couldn't be imported, `google-crc32c` is using a " 
+    "As the c extension couldn't be imported, `google-crc32c` is using a "
     "pure python implementation that is significantly slower. If possible, "
     "please configure a c build environment and compile the extension"
 )
@@ -23,9 +23,11 @@ _SLOW_CRC32C_WARNING = (
 # Default to C exstension Implementation, falling back to pure python.
 try:
     from google_crc32c import cext as impl
+
     implementation = "c"
 except ImportError as exc:
     from google_crc32c import python as impl  # type: ignore
+
     warnings.warn(_SLOW_CRC32C_WARNING, RuntimeWarning)
     implementation = "python"
 
