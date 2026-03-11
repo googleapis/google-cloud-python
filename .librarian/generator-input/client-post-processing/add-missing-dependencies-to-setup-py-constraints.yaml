@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-description: setup.py and testing/constraints-3.7.txt are missing necessary dependencies
+description: setup.py and testing/constraints-3.9.txt are missing necessary dependencies
 url: https://github.com/googleapis/gapic-generator-python/issues/1831
 replacements:
   - paths: [
@@ -19,14 +19,14 @@ replacements:
     ]
     before: |
       dependencies = \[
-          "google-api-core\[grpc\] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core\[grpc\] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "grpcio >= 1.33.2, < 2.0.0",
     after:  |
       dependencies = [
-          "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core[grpc] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -34,29 +34,29 @@ replacements:
           "grpcio >= 1.33.2, < 2.0.0",
     count: 1
   - paths: [
-      packages/google-cloud-gke-hub/testing/constraints-3.7.txt
+      packages/google-cloud-gke-hub/testing/constraints-3.9.txt
     ]
     before: |
-      google-api-core==1.34.1
-      google-auth==2.14.1
+      google-api-core==2.21.0
+      google-auth==2.35.0
     after: |
-      google-api-core==1.34.1
+      google-api-core==2.21.0
       grpc-google-iam-v1==0.12.4
-      google-auth==2.14.1
+      google-auth==2.35.0
     count: 1
   - paths: [
       packages/google-cloud-build/setup.py
     ]
     before: |
       dependencies = \[
-          "google-api-core\[grpc\] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core\[grpc\] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "grpcio >= 1.33.2, < 2.0.0",
     after:  |
       dependencies = [
-          "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core[grpc] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -64,29 +64,29 @@ replacements:
           "grpcio >= 1.33.2, < 2.0.0",
     count: 1
   - paths: [
-      packages/google-cloud-build/testing/constraints-3.7.txt
+      packages/google-cloud-build/testing/constraints-3.9.txt
     ]
     before: |
-      google-api-core==1.34.1
-      google-auth==2.14.1
+      google-api-core==2.21.0
+      google-auth==2.35.0
     after: |
-      google-api-core==1.34.1
+      google-api-core==2.21.0
       grpc-google-iam-v1==0.12.4
-      google-auth==2.14.1
+      google-auth==2.35.0
     count: 1
   - paths: [
       packages/google-cloud-binary-authorization/setup.py
     ]
     before: |
       dependencies = \[
-          "google-api-core\[grpc\] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core\[grpc\] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "grpcio >= 1.33.2, < 2.0.0",
     after:  |
       dependencies = [
-          "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core[grpc] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -94,40 +94,40 @@ replacements:
           "grpcio >= 1.33.2, < 2.0.0",
     count: 1
   - paths: [
-      packages/google-cloud-binary-authorization/testing/constraints-3.7.txt
+      packages/google-cloud-binary-authorization/testing/constraints-3.9.txt
     ]
     before: |
-      google-api-core==1.34.1
-      google-auth==2.14.1
+      google-api-core==2.21.0
+      google-auth==2.35.0
     after: |
-      google-api-core==1.34.1
+      google-api-core==2.21.0
       grafeas==1.1.2
-      google-auth==2.14.1
+      google-auth==2.35.0
     count: 1
   - paths: [
-      packages/google-cloud-iam/testing/constraints-3.7.txt
+      packages/google-cloud-iam/testing/constraints-3.9.txt
     ]
     before: |
-      google-api-core==1.34.1
-      google-auth==2.14.1
+      google-api-core==2.21.0
+      google-auth==2.35.0
     after: |
-      google-api-core==1.34.1
+      google-api-core==2.21.0
       grpc-google-iam-v1==0.12.4
-      google-auth==2.14.1
+      google-auth==2.35.0
     count: 1
   - paths: [
       packages/google-cloud-iam/setup.py
     ]
     before: |
       dependencies = \[
-          "google-api-core\[grpc\] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core\[grpc\] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "grpcio >= 1.33.2, < 2.0.0",
     after:  |
       dependencies = [
-          "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core[grpc] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -139,14 +139,14 @@ replacements:
     ]
     before: |
       dependencies = \[
-          "google-api-core\[grpc\] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core\[grpc\] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "grpcio >= 1.33.2, < 2.0.0",
     after:  |
       dependencies = [
-          "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core[grpc] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -158,14 +158,14 @@ replacements:
     ]
     before: |
       dependencies = \[
-          "google-api-core\[grpc\] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core\[grpc\] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
           "grpcio >= 1.33.2, < 2.0.0",
     after:  |
       dependencies = [
-          "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+          "google-api-core[grpc] >= 2.11.0, <3.0.0",
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -173,13 +173,13 @@ replacements:
           "grpcio >= 1.33.2, < 2.0.0",
     count: 1
   - paths: [
-      packages/google-shopping-merchant-notifications/testing/constraints-3.7.txt
+      packages/google-shopping-merchant-notifications/testing/constraints-3.9.txt
     ]
     before: |
-      google-api-core==1.34.1
-      google-auth==2.14.1
+      google-api-core==2.21.0
+      google-auth==2.35.0
     after:  |
-      google-api-core==1.34.1
+      google-api-core==2.21.0
       google-shopping-type==1.0.0
-      google-auth==2.14.1
+      google-auth==2.35.0
     count: 1
