@@ -305,9 +305,9 @@ def conformance(session, client_type):
     # None of the clients currently support reverse scans, execute query plan refresh, retry info, or routing cookie
     # See https://github.com/googleapis/python-bigtable/blob/c3ea54ee958a79959a649dce2553a84ec808b4d7/.github/workflows/conformance.yaml#L30-L35
     if client_type == "async":
-        test_args = '-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie\"'
+        test_args = '-skip "PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie"'
     else:
-        test_args = '-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie|_Generic_MultiStream\"'
+        test_args = '-skip "PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie|_Generic_MultiStream"'
     with session.chdir("test_proxy"):
         # download the conformance test suite
         session.run(
