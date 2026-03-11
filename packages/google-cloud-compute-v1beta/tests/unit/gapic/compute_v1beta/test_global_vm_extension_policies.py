@@ -3862,6 +3862,7 @@ def test_insert_rest_call_success(request_type):
             "rollout_status": {
                 "current_rollouts": [
                     {
+                        "location_rollout_status": {},
                         "rollout": "rollout_value",
                         "rollout_plan": "rollout_plan_value",
                         "state": "state_value",
@@ -4280,6 +4281,7 @@ def test_update_rest_call_success(request_type):
             "rollout_status": {
                 "current_rollouts": [
                     {
+                        "location_rollout_status": {},
                         "rollout": "rollout_value",
                         "rollout_plan": "rollout_plan_value",
                         "state": "state_value",
