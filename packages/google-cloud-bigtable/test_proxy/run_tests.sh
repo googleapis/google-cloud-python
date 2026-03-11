@@ -27,35 +27,32 @@ fi
 SCRIPT_DIR=$(realpath $(dirname "$0"))
 cd $SCRIPT_DIR
 
-export PROXY_SERVER_PORT=$(shuf -i 50000-60000 -n 1)
+export PROXY_PORT=$(shuf -i 50000-60000 -n 1)
 
 # download test suite
 if [ ! -d "cloud-bigtable-clients-test" ]; then
   git clone https://github.com/googleapis/cloud-bigtable-clients-test.git
 fi
 
-# start proxy
-echo "starting with client type: $CLIENT_TYPE"
-python test_proxy.py --port $PROXY_SERVER_PORT --client_type $CLIENT_TYPE &
-PROXY_PID=$!
-function finish {
-  kill $PROXY_PID 
+# Build and start the proxy in a separate process
+pushd test_proxy
+nohup python3 test_proxy.py --port $PROXY_PORT --client_type=$CLIENT_TYPE &
+proxyPID=$!
+popd
+
+# Kill proxy on exit
+function cleanup() {
+    echo "Cleanup testbench";
+    kill $proxyPID
 }
-trap finish EXIT
+trap cleanup EXIT
 
-if [[ $CLIENT_TYPE == "legacy" ]]; then
-  echo "Using legacy client"
-  # legacy client does not expose mutate_row. Disable those tests
-  TEST_ARGS="-skip TestMutateRow_"
-fi
-
-if [[ $CLIENT_TYPE != "async" ]]; then
-  echo "Using legacy client"
-  # sync and legacy client do not support concurrent streams
-  TEST_ARGS="$TEST_ARGS -skip _Generic_MultiStream "
-fi
-
-# run tests
+# Run the conformance test
+echo "running tests with args: $TEST_ARGS"
 pushd cloud-bigtable-clients-test/tests
-echo "Running with $TEST_ARGS"
-go test -v -proxy_addr=:$PROXY_SERVER_PORT $TEST_ARGS
+eval "go test -v -proxy_addr=:$PROXY_PORT $TEST_ARGS"
+RETURN_CODE=$?
+popd
+
+echo "exiting with ${RETURN_CODE}"
+exit ${RETURN_CODE}
