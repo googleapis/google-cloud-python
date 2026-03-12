@@ -355,7 +355,7 @@ def prerelease_deps(session):
     # any potential breaking changes. For context, see:
     # https://github.com/googleapis/google-cloud-python/issues/854
     session.install(
-        "https://github.com/googleapis/python-bigquery/archive/main.zip",
+        "git+https://github.com/googleapis/google-cloud-python.git@main#subdirectory=packages/google-cloud-bigquery",
         "git+https://github.com/googleapis/google-cloud-python.git@main#subdirectory=packages/google-cloud-bigquery-storage",
     )
 
