@@ -97,6 +97,7 @@ packages_with_system_tests=(
   "google-cloud-firestore"
   "google-cloud-logging"
   "google-cloud-testutils"
+  "sqlalchemy-bigquery"
 )
 
 # A file for running system tests
