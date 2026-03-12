@@ -71,7 +71,7 @@ replacements:
           # Exclude incompatible versions of `google-auth`
           # See https://github.com/googleapis/google-cloud-python/issues/12364
           "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
-          "google-cloud-core >= 1.4.4, <3.0.0",
+          "google-cloud-core >= 2.0.0, <3.0.0",
           "grpcio >= 1.33.2, < 2.0.0",
     count: 1
   - paths: [
@@ -82,7 +82,7 @@ replacements:
       protobuf==4.25.8
     after: |
       proto-plus==1.22.3
-      google-cloud-core==1.4.4
+      google-cloud-core==2.0.0
       protobuf==4.25.8
     count: 1
   - paths: [
@@ -164,7 +164,7 @@ replacements:
     ]
     before: extras = \{\}
     after: |
-      extras = {"pandas": "pandas >= 0.23.2"}
+      extras = {"pandas": "pandas >= 1.1.3"}
     count: 1
   - paths: [
       packages/google-cloud-monitoring/testing/constraints-3.9.txt,
@@ -174,7 +174,9 @@ replacements:
       google-auth==2.35.0
     after: |
       google-api-core==2.21.0
-      pandas==0.23.2
+      pandas==1.1.3
+      # numpy is a dependency of pandas
+      numpy==1.19.3
       google-auth==2.35.0
     count: 1
   - paths: [
@@ -213,7 +215,7 @@ replacements:
     after: |
       extras = {
           "libcst": "libcst >= 0.2.5",
-          "pandas": ["pandas>=1.0.5"],
+          "pandas": ["pandas>=1.1.3"],
           "storage": ["google-cloud-storage >=1.18.0, <4.0.0"],
       }
     count: 1
@@ -227,7 +229,9 @@ replacements:
       google-api-core==2.21.0
       google-cloud-storage==1.18.0
       libcst==0.2.5
-      pandas==1.0.5
+      pandas==1.1.3
+      # numpy is a dependency of pandas
+      numpy==1.19.3
       google-auth==2.35.0
     count: 1
   - paths: [
@@ -340,7 +344,7 @@ replacements:
           "grpcio >= 1.33.2, < 2.0.0",
     after: |
       "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
-          "google-cloud-logging>=1.14.0, <4.0.0",
+          "google-cloud-logging>=3.9.0, <4.0.0",
           "grpcio >= 1.33.2, < 2.0.0",
     count: 1
   - paths: [
@@ -351,7 +355,7 @@ replacements:
       google-auth==2.35.0
     after: |
       google-api-core==2.21.0
-      google-cloud-logging==1.14.0
+      google-cloud-logging==3.9.0
       google-auth==2.35.0
     count: 1
   - paths: [
@@ -392,3 +396,45 @@ replacements:
 
       Changelog
     count: 1 
+  - paths: [
+      "packages/google-cloud-bigquery-storage/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-error-reporting/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-monitoring-dashboards/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-monitoring/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-speech/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-vision/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)\n        # "--check-untyped-defs",'
+    count: 1
