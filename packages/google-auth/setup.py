@@ -25,11 +25,12 @@ cryptography_base_require = [
 DEPENDENCIES = (
     "pyasn1-modules>=0.2.1",
     cryptography_base_require,
+    requests_base_require,
 )
 
-requests_extra_require = ["requests >= 2.20.0, < 3.0.0"]
+requests_base_require = ["requests >= 2.20.0, < 3.0.0"]
 
-aiohttp_extra_require = ["aiohttp >= 3.6.2, < 4.0.0", *requests_extra_require]
+aiohttp_extra_require = ["aiohttp >= 3.6.2, < 4.0.0"]
 
 pyjwt_extra_require = ["pyjwt>=2.0"]
 
@@ -73,14 +74,14 @@ testing_extra_require = [
 ]
 
 extras = {
-    # Note: cryptography was made into a required dependency. Extra is kept for backwards compatibility
+    # Note: cryptography and requests were made into required dependencies. Extra is kept for backwards compatibility
     "cryptography": cryptography_base_require,
     "aiohttp": aiohttp_extra_require,
     "enterprise_cert": enterprise_cert_extra_require,
     "pyopenssl": pyopenssl_extra_require,
     "pyjwt": pyjwt_extra_require,
     "reauth": reauth_extra_require,
-    "requests": requests_extra_require,
+    "requests": requests_base_require,
     "testing": testing_extra_require,
     "urllib3": urllib3_extra_require,
     "rsa": rsa_extra_require,
