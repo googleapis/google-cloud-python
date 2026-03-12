@@ -27,11 +27,20 @@ Reading data from BigQuery
 Use the :func:`pandas_gbq.read_gbq` function to run a BigQuery query and
 download the results as a :class:`pandas.DataFrame` object.
 
-.. literalinclude:: ../samples/snippets/read_gbq_simple.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_pandas_gbq_read_gbq_simple]
-   :end-before: [END bigquery_pandas_gbq_read_gbq_simple]
+.. code-block:: python
+
+    import pandas_gbq
+
+    # TODO: Set project_id to your Google Cloud Platform project ID.
+    # project_id = "my-project"
+
+    sql = """
+    SELECT country_name, alpha_2_code
+    FROM `bigquery-public-data.utility_us.country_code_iso`
+    WHERE alpha_2_code LIKE 'A%'
+    """
+    df = pandas_gbq.read_gbq(sql, project_id=project_id)
+    print(df)
 
 By default, queries use standard SQL syntax. Visit the :doc:`reading tables
 guide <reading>` to learn about the available options.
@@ -57,11 +66,29 @@ Writing data to BigQuery
 Use the :func:`pandas_gbq.to_gbq` function to write a
 :class:`pandas.DataFrame` object to a BigQuery table.
 
-.. literalinclude:: ../samples/snippets/to_gbq_simple.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_pandas_gbq_to_gbq_simple]
-   :end-before: [END bigquery_pandas_gbq_to_gbq_simple]
+.. code-block:: python
+
+    import pandas
+    import pandas_gbq
+
+    # TODO: Set project_id to your Google Cloud Platform project ID.
+    # project_id = "my-project"
+    # TODO: Set table_id to the full destination table ID (including the
+    #       dataset ID).
+    # table_id = 'my_dataset.my_table'
+
+    df = pandas.DataFrame(
+        {
+            "my_string": ["a", "b", "c"],
+            "my_int64": [1, 2, 3],
+            "my_float64": [4.0, 5.0, 6.0],
+            "my_bool1": [True, False, True],
+            "my_bool2": [False, True, False],
+            "my_dates": pandas.date_range("now", periods=3),
+        }
+    )
+
+    pandas_gbq.to_gbq(df, table_id, project_id=project_id)
 
 The destination table and destination dataset will automatically be created.
 By default, writes to BigQuery fail if the table already exists. Visit the

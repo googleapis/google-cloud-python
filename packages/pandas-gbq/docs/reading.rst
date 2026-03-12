@@ -6,11 +6,20 @@ Reading Tables
 Use the :func:`pandas_gbq.read_gbq` function to run a BigQuery query and
 download the results as a :class:`pandas.DataFrame` object.
 
-.. literalinclude:: ../samples/snippets/read_gbq_simple.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_pandas_gbq_read_gbq_simple]
-   :end-before: [END bigquery_pandas_gbq_read_gbq_simple]
+.. code-block:: python
+
+    import pandas_gbq
+
+    # TODO: Set project_id to your Google Cloud Platform project ID.
+    # project_id = "my-project"
+
+    sql = """
+    SELECT country_name, alpha_2_code
+    FROM `bigquery-public-data.utility_us.country_code_iso`
+    WHERE alpha_2_code LIKE 'A%'
+    """
+    df = pandas_gbq.read_gbq(sql, project_id=project_id)
+    print(df)
 
 .. note::
 
@@ -37,11 +46,21 @@ The ``dialect`` argument can be used to indicate whether to use
 BigQuery's ``'legacy'`` SQL or BigQuery's ``'standard'`` SQL. The
 default value is ``'standard'``.
 
-.. literalinclude:: ../samples/snippets/read_gbq_legacy.py
-   :language: python
-   :dedent: 4
-   :start-after: [START bigquery_pandas_gbq_read_gbq_legacy]
-   :end-before: [END bigquery_pandas_gbq_read_gbq_legacy]
+.. code-block:: python
+
+    sql = """
+    SELECT country_name, alpha_2_code
+    FROM [bigquery-public-data:utility_us.country_code_iso]
+    WHERE alpha_2_code LIKE 'Z%'
+    """
+    df = pandas_gbq.read_gbq(
+        sql,
+        project_id=project_id,
+        # Set the dialect to "legacy" to use legacy SQL syntax. As of
+        # pandas-gbq version 0.10.0, the default dialect is "standard".
+        dialect="legacy",
+    )
+    print(df)
 
 * `Standard SQL reference
   <https://cloud.google.com/bigquery/docs/reference/standard-sql/>`__
