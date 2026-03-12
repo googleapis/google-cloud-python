@@ -64,13 +64,13 @@ testing_extra_require = [
     *testing_minimal_require,
     *pyjwt_extra_require,
     *pyopenssl_extra_require,
-    *reauth_extra_require
+    *reauth_extra_require,
     *urllib3_extra_require,
     # Async Dependencies
     *aiohttp_extra_require,
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1722): `test_aiohttp_requests` depend on
     # aiohttp < 3.10.0 which is a bug. Investigate and remove the pinned aiohttp version.
-    "aiohttp < 3.10.0"
+    "aiohttp < 3.10.0",
     *pyopenssl_extra_require,
     "aioresponses",
     "oauth2client",
