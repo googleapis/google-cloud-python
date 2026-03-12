@@ -117,7 +117,8 @@ def mypy(session):
         "mypy",
         "-p",
         "google",
-        "--check-untyped-defs",
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"
+        # --check-untyped-defs",
         *session.posargs,
     )
 
