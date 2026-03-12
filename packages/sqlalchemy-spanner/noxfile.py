@@ -299,28 +299,6 @@ def _migration_test(session):
         os.remove("test.cfg")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def snippets(session):
-    """Run the documentation example snippets."""
-    # Sanity check: Only run snippets system tests if the environment variable
-    # is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable.")
-
-    session.install("pytest")
-    session.install("sqlalchemy>=1.4,<2.0")
-    session.install(
-        "git+https://github.com/googleapis/python-spanner.git#egg=google-cloud-spanner"
-    )
-    session.install(".")
-    session.run("python", "create_test_database.py")
-    session.run(
-        "py.test",
-        "--quiet",
-        os.path.join("samples", "snippets_test.py"),
-        *session.posargs,
-    )
-
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize("test_type", ["unit", "mockserver"])
 def unit(session, test_type):
