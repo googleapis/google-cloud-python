@@ -325,13 +325,6 @@ def unit(session, test_type):
         session.install("opentelemetry-api")
         session.install("opentelemetry-sdk")
         session.install("opentelemetry-instrumentation")
-        session.run(
-            "python",
-            "create_test_config.py",
-            "my-project",
-            "my-instance",
-            "my-database",
-        )
         session.run("py.test", "--quiet", os.path.join("test/unit"), *session.posargs)
         return
 
