@@ -13,14 +13,12 @@
 # limitations under the License.
 import base64
 import datetime
-import os
 from unittest import mock
 
 import pytest  # type: ignore
 import responses  # type: ignore
 
 from google.auth import _helpers
-from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import jwt
 from google.auth import transport
@@ -292,7 +290,6 @@ class TestCredentials(object):
         # Since user provided universe_domain, we will not call the universe
         # domain endpoint.
         get_universe_domain.assert_not_called()
-
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True

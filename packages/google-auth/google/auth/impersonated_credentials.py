@@ -31,6 +31,7 @@ from datetime import datetime
 import http.client as http_client
 import json
 import logging
+import warnings
 
 from google.auth import _constants
 from google.auth import _exponential_backoff

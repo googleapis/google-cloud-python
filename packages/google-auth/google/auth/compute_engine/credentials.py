@@ -21,6 +21,7 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 import logging
+import warnings
 
 from google.auth import _constants
 from google.auth import _helpers

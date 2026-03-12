@@ -36,6 +36,7 @@ import io
 import json
 import logging
 import re
+import warnings
 
 from google.auth import _constants
 from google.auth import _helpers

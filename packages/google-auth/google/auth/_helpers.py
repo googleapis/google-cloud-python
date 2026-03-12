@@ -21,7 +21,6 @@ from email.message import Message
 import hashlib
 import json
 import logging
-import os
 import sys
 from typing import Any, Dict, Mapping, Optional, Union
 import urllib

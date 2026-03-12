@@ -13,16 +13,12 @@
 # limitations under the License.
 
 import datetime
-import os
 from unittest import mock
-
 
 import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth import credentials
-from google.auth import environment_vars
-from google.auth import exceptions
 
 
 class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
@@ -152,8 +148,8 @@ def test_before_request_with_regional_access_boundary():
 
     # Second call shouldn't call refresh.
     creds.before_request(request, "http://example.com", "GET", headers)
-    assert credentials.valid
-    assert credentials.token == "refreshed-token"
+    assert creds.valid
+    assert creds.token == "refreshed-token"
     assert headers["authorization"] == "Bearer refreshed-token"
     assert headers["x-allowed-locations"] == DUMMY_BOUNDARY
 
@@ -378,5 +374,3 @@ def test_token_state_no_expiry():
     assert c.token_state == credentials.TokenState.FRESH
 
     c.before_request(request, "http://example.com", "GET", {})
-
-

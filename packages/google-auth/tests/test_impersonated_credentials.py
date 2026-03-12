@@ -23,7 +23,6 @@ import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth import crypt
-from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import impersonated_credentials
 from google.auth import transport

@@ -19,7 +19,7 @@ import functools
 import logging
 import os
 import threading
-from typing import NamedTuple, Optional, Mapping, Any, MutableMapping
+from typing import NamedTuple, Optional
 
 from google.auth import _helpers
 from google.auth import environment_vars

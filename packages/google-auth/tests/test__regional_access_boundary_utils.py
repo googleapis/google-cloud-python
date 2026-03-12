@@ -22,7 +22,6 @@ from google.auth import _helpers
 from google.auth import _regional_access_boundary_utils
 from google.auth import credentials
 from google.auth import environment_vars
-from google.auth import exceptions
 
 
 class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):
@@ -61,20 +60,25 @@ def clear_rab_cache():
 class TestCredentialsWithRegionalAccessBoundary(object):
     def test_is_regional_access_boundary_enabled_cached(self, monkeypatch):
         # Set to true
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED, "true"
+        monkeypatch.setenv(environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED, "true")
+        assert (
+            _regional_access_boundary_utils.is_regional_access_boundary_enabled()
+            is True
         )
-        assert _regional_access_boundary_utils.is_regional_access_boundary_enabled() is True
 
         # Change env var to false, but it should still return True due to caching
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED, "false"
+        monkeypatch.setenv(environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED, "false")
+        assert (
+            _regional_access_boundary_utils.is_regional_access_boundary_enabled()
+            is True
         )
-        assert _regional_access_boundary_utils.is_regional_access_boundary_enabled() is True
 
         # Clear cache and it should now reflect the new value
         _regional_access_boundary_utils.is_regional_access_boundary_enabled.cache_clear()
-        assert _regional_access_boundary_utils.is_regional_access_boundary_enabled() is False
+        assert (
+            _regional_access_boundary_utils.is_regional_access_boundary_enabled()
+            is False
+        )
 
     @mock.patch(
         "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager.start_refresh"
@@ -248,7 +252,6 @@ class TestCredentialsWithRegionalAccessBoundary(object):
     def test_maybe_start_refresh_handles_url_parse_errors(
         self, mock_urlparse, mock_start_refresh
     ):
-        from urllib.parse import urlparse
         mock_urlparse.side_effect = ValueError("Malformed URL")
         creds = CredentialsImpl()
         request = mock.Mock()
