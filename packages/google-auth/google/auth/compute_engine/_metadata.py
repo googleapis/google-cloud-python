@@ -27,7 +27,7 @@ from urllib.parse import urljoin
 try:
     import requests as requests_lib
 except ImportError:  # pragma: NO COVER
-    requests_lib = None
+    requests_lib = None  # type: ignore[assignment]
 
 from google.auth import _helpers
 from google.auth import environment_vars
