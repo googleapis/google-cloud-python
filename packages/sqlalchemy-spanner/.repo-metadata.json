@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "INTEGRATION",
-    "repo": "googleapis/python-spanner-sqlalchemy",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "sqlalchemy-spanner",
     "requires_billing": true,
     "api_shortname": "sqlalchemy-spanner"

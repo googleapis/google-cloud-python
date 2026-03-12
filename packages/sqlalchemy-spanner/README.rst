@@ -14,7 +14,7 @@ configurations. There may be configurations and/or data model variations
 that have not yet been covered by the tests and that show unexpected
 behavior. Please report any problems that you might encounter by
 `creating a new
-issue <https://github.com/googleapis/python-spanner-sqlalchemy/issues/new>`__.
+issue <https://github.com/googleapis/google-cloud-python/issues/new>`__.
 
 -  `Cloud Spanner product
    documentation <https://cloud.google.com/spanner/docs>`__
@@ -48,7 +48,7 @@ Git-repository:
 
 ::
 
-   git clone https://github.com/googleapis/python-spanner-sqlalchemy.git
+   git clone https://github.com/googleapis/google-cloud-python.git
 
 Next install the package from the package ``setup.py`` file:
 
@@ -61,7 +61,7 @@ During setup the dialect will be registered with entry points.
 Samples
 -------------
 
-The `samples directory <https://github.com/googleapis/python-spanner-sqlalchemy/blob/-/samples/README.md>`__
+The `samples directory <https://github.com/googleapis/google-cloud-python/blob/-/samples/README.md>`__
 contains multiple examples for how to configure and use common Spanner features.
 
 
@@ -380,7 +380,7 @@ into ReadOnly mode:
        connection.execute(select(["*"], from_obj=table)).fetchall()
 
 See the `Read-only transaction sample
-<https://github.com/googleapis/python-spanner-sqlalchemy/blob/-/samples/read_only_transaction_sample.py>`__
+<https://github.com/googleapis/google-cloud-python/blob/-/samples/read_only_transaction_sample.py>`__
 for a concrete example.
 
 ReadOnly/ReadWrite mode of a connection can't be changed while a
@@ -551,7 +551,7 @@ Contributing
 
 Contributions to this library are welcome and encouraged. Please report
 issues, file feature requests, and send pull requests. See
-`CONTRIBUTING <https://github.com/googleapis/python-spanner-sqlalchemy/blob/main/contributing.md>`__
+`CONTRIBUTING <https://github.com/googleapis/google-cloud-python/blob/main/contributing.md>`__
 for more information on how to get started.
 
 **Note that this project is not officially supported by Google as part
@@ -560,5 +560,5 @@ of the Cloud Spanner product.**
 Please note that this project is released with a Contributor Code of
 Conduct. By participating in this project you agree to abide by its
 terms. See the `Code of
-Conduct <https://github.com/googleapis/python-spanner-sqlalchemy/blob/main/code-of-conduct.md>`__
+Conduct <https://github.com/googleapis/google-cloud-python/blob/main/code-of-conduct.md>`__
 for more information.

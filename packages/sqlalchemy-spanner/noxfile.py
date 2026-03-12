@@ -249,6 +249,8 @@ def system(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run unit tests."""
+    if session.python in ("3.7",):
+        session.skip("Python 3.7 is no longer supported")
     # Run SQLAlchemy dialect compliance test suite with OpenTelemetry.
     session.install("setuptools")
     session.install("pytest")
