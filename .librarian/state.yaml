@@ -1697,7 +1697,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-error-reporting
     version: 1.14.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
     apis:
       - path: google/devtools/clouderrorreporting/v1beta1
         service_config: clouderrorreporting_v1beta1.yaml
