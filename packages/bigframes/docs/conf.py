@@ -59,8 +59,11 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx_sitemap",
-    "myst_parser",
+    "myst_nb",
 ]
+
+# myst-nb configuration
+nb_execution_mode = "off"
 
 # autodoc/autosummary flags
 autoclass_content = "both"
@@ -269,12 +272,14 @@ sitemap_url_scheme = "{link}"
 
 
 suppress_warnings = [
+    # Allow unknown mimetype so we can use widgets in tutorial notebooks.
+    "mystnb.unknown_mime_type",
     # Temporarily suppress this to avoid "more than one target found for
     # cross-reference" warning, which are intractable for us to avoid while in
     # a mono-repo.
     # See https://github.com/sphinx-doc/sphinx/blob
     # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
-    "ref.python"
+    "ref.python",
 ]
 
 # -- Options for LaTeX output ---------------------------------------------
