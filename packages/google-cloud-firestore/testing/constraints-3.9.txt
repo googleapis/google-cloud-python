@@ -10,5 +10,5 @@ google-auth==2.35.0
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)
 # Add the minimum supported version of grpcio to constraints files
 proto-plus==1.22.3
-google-cloud-core==1.4.1
+google-cloud-core==1.7.3
 protobuf==4.25.8
