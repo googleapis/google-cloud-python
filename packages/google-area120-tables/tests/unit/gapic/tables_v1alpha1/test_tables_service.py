@@ -121,6 +121,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert TablesServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -141,6 +142,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         TablesServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        TablesServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1278,11 +1283,13 @@ def test_tables_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -7852,8 +7859,9 @@ def test_get_table_rest_bad_request(request_type=tables.GetTableRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7918,17 +7926,19 @@ def test_get_table_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_get_table"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_get_table_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_get_table"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_get_table"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_get_table_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_get_table"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7977,8 +7987,9 @@ def test_list_tables_rest_bad_request(request_type=tables.ListTablesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8041,17 +8052,19 @@ def test_list_tables_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_list_tables"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_list_tables_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_list_tables"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_list_tables"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_list_tables_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_list_tables"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8100,8 +8113,9 @@ def test_get_workspace_rest_bad_request(request_type=tables.GetWorkspaceRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8166,17 +8180,19 @@ def test_get_workspace_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_get_workspace"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_get_workspace_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_get_workspace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_get_workspace"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_get_workspace_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_get_workspace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8225,8 +8241,9 @@ def test_list_workspaces_rest_bad_request(request_type=tables.ListWorkspacesRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8289,17 +8306,20 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_list_workspaces"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_list_workspaces_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_list_workspaces"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_list_workspaces"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor,
+            "post_list_workspaces_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_list_workspaces"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8350,8 +8370,9 @@ def test_get_row_rest_bad_request(request_type=tables.GetRowRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8414,17 +8435,19 @@ def test_get_row_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_get_row"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_get_row_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_get_row"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_get_row"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_get_row_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_get_row"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8473,8 +8496,9 @@ def test_list_rows_rest_bad_request(request_type=tables.ListRowsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8537,17 +8561,19 @@ def test_list_rows_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_list_rows"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_list_rows_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_list_rows"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_list_rows"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_list_rows_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_list_rows"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8596,8 +8622,9 @@ def test_create_row_rest_bad_request(request_type=tables.CreateRowRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8728,17 +8755,19 @@ def test_create_row_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_create_row"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_create_row_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_create_row"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_create_row"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_create_row_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_create_row"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8787,8 +8816,9 @@ def test_batch_create_rows_rest_bad_request(request_type=tables.BatchCreateRowsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8848,17 +8878,20 @@ def test_batch_create_rows_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_batch_create_rows"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_batch_create_rows_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_batch_create_rows"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_batch_create_rows"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor,
+            "post_batch_create_rows_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_batch_create_rows"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8909,8 +8942,9 @@ def test_update_row_rest_bad_request(request_type=tables.UpdateRowRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9041,17 +9075,19 @@ def test_update_row_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_update_row"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_update_row_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_update_row"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_update_row"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_update_row_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_update_row"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9100,8 +9136,9 @@ def test_batch_update_rows_rest_bad_request(request_type=tables.BatchUpdateRowsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9161,17 +9198,20 @@ def test_batch_update_rows_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_batch_update_rows"
-    ) as post, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "post_batch_update_rows_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_batch_update_rows"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "post_batch_update_rows"
+        ) as post,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor,
+            "post_batch_update_rows_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_batch_update_rows"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9222,8 +9262,9 @@ def test_delete_row_rest_bad_request(request_type=tables.DeleteRowRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9280,13 +9321,13 @@ def test_delete_row_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_delete_row"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_delete_row"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = tables.DeleteRowRequest.pb(tables.DeleteRowRequest())
         transcode.return_value = {
@@ -9327,8 +9368,9 @@ def test_batch_delete_rows_rest_bad_request(request_type=tables.BatchDeleteRowsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9385,13 +9427,13 @@ def test_batch_delete_rows_rest_interceptors(null_interceptor):
     )
     client = TablesServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TablesServiceRestInterceptor, "pre_batch_delete_rows"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TablesServiceRestInterceptor, "pre_batch_delete_rows"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = tables.BatchDeleteRowsRequest.pb(tables.BatchDeleteRowsRequest())
         transcode.return_value = {
@@ -9740,11 +9782,14 @@ def test_tables_service_base_transport():
 
 def test_tables_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.area120.tables_v1alpha1.services.tables_service.transports.TablesServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.area120.tables_v1alpha1.services.tables_service.transports.TablesServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TablesServiceTransport(
@@ -9768,9 +9813,12 @@ def test_tables_service_base_transport_with_credentials_file():
 
 def test_tables_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.area120.tables_v1alpha1.services.tables_service.transports.TablesServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.area120.tables_v1alpha1.services.tables_service.transports.TablesServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TablesServiceTransport()
@@ -9856,11 +9904,12 @@ def test_tables_service_transport_auth_gdch_credentials(transport_class):
 def test_tables_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

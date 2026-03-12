@@ -116,6 +116,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ProjectsClient._get_default_mtls_endpoint(None) is None
     assert ProjectsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -132,6 +133,7 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert ProjectsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert ProjectsClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 
 def test__read_environment_variables():
@@ -6050,8 +6052,9 @@ def test_disable_xpn_host_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6154,17 +6157,19 @@ def test_disable_xpn_host_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_disable_xpn_host"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_disable_xpn_host_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_disable_xpn_host"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_disable_xpn_host"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_disable_xpn_host_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_disable_xpn_host"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6217,8 +6222,9 @@ def test_disable_xpn_resource_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6406,17 +6412,20 @@ def test_disable_xpn_resource_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_disable_xpn_resource"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_disable_xpn_resource_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_disable_xpn_resource"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_disable_xpn_resource"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor,
+            "post_disable_xpn_resource_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_disable_xpn_resource"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6469,8 +6478,9 @@ def test_enable_xpn_host_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6573,17 +6583,19 @@ def test_enable_xpn_host_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_enable_xpn_host"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_enable_xpn_host_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_enable_xpn_host"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_enable_xpn_host"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_enable_xpn_host_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_enable_xpn_host"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6636,8 +6648,9 @@ def test_enable_xpn_resource_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6825,17 +6838,19 @@ def test_enable_xpn_resource_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_enable_xpn_resource"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_enable_xpn_resource_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_enable_xpn_resource"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_enable_xpn_resource"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_enable_xpn_resource_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_enable_xpn_resource"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6886,8 +6901,9 @@ def test_get_rest_bad_request(request_type=compute.GetProjectRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6970,17 +6986,15 @@ def test_get_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_get_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_get"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.ProjectsRestInterceptor, "post_get") as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_get_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.ProjectsRestInterceptor, "pre_get") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7029,8 +7043,9 @@ def test_get_xpn_host_rest_bad_request(request_type=compute.GetXpnHostProjectReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7113,17 +7128,19 @@ def test_get_xpn_host_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_get_xpn_host"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_get_xpn_host_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_get_xpn_host"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_get_xpn_host"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_get_xpn_host_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_get_xpn_host"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7176,8 +7193,9 @@ def test_get_xpn_resources_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7240,17 +7258,19 @@ def test_get_xpn_resources_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_get_xpn_resources"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_get_xpn_resources_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_get_xpn_resources"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_get_xpn_resources"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_get_xpn_resources_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_get_xpn_resources"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7305,8 +7325,9 @@ def test_list_xpn_hosts_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7456,17 +7477,19 @@ def test_list_xpn_hosts_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_list_xpn_hosts"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_list_xpn_hosts_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_list_xpn_hosts"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_list_xpn_hosts"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_list_xpn_hosts_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_list_xpn_hosts"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7517,8 +7540,9 @@ def test_move_disk_rest_bad_request(request_type=compute.MoveDiskProjectRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7698,17 +7722,15 @@ def test_move_disk_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_move_disk"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_move_disk_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_move_disk"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.ProjectsRestInterceptor, "post_move_disk") as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_move_disk_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.ProjectsRestInterceptor, "pre_move_disk") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7759,8 +7781,9 @@ def test_move_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7942,17 +7965,19 @@ def test_move_instance_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_move_instance"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_move_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_move_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_move_instance"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_move_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_move_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8005,8 +8030,9 @@ def test_set_cloud_armor_tier_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8194,17 +8220,20 @@ def test_set_cloud_armor_tier_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_set_cloud_armor_tier"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_set_cloud_armor_tier_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_set_cloud_armor_tier"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_set_cloud_armor_tier"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor,
+            "post_set_cloud_armor_tier_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_set_cloud_armor_tier"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8257,8 +8286,9 @@ def test_set_common_instance_metadata_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8435,18 +8465,20 @@ def test_set_common_instance_metadata_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_set_common_instance_metadata"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor,
-        "post_set_common_instance_metadata_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_set_common_instance_metadata"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_set_common_instance_metadata"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor,
+            "post_set_common_instance_metadata_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_set_common_instance_metadata"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8499,8 +8531,9 @@ def test_set_default_network_tier_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8688,18 +8721,20 @@ def test_set_default_network_tier_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_set_default_network_tier"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor,
-        "post_set_default_network_tier_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_set_default_network_tier"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_set_default_network_tier"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor,
+            "post_set_default_network_tier_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_set_default_network_tier"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8752,8 +8787,9 @@ def test_set_usage_export_bucket_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8935,17 +8971,20 @@ def test_set_usage_export_bucket_rest_interceptors(null_interceptor):
     )
     client = ProjectsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_set_usage_export_bucket"
-    ) as post, mock.patch.object(
-        transports.ProjectsRestInterceptor, "post_set_usage_export_bucket_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProjectsRestInterceptor, "pre_set_usage_export_bucket"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "post_set_usage_export_bucket"
+        ) as post,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor,
+            "post_set_usage_export_bucket_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProjectsRestInterceptor, "pre_set_usage_export_bucket"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9343,11 +9382,14 @@ def test_projects_base_transport():
 
 def test_projects_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1.services.projects.transports.ProjectsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.compute_v1.services.projects.transports.ProjectsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProjectsTransport(
@@ -9367,9 +9409,12 @@ def test_projects_base_transport_with_credentials_file():
 
 def test_projects_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1.services.projects.transports.ProjectsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.compute_v1.services.projects.transports.ProjectsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProjectsTransport()

@@ -129,6 +129,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ManagedKafkaConnectClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -150,6 +151,10 @@ def test__get_default_mtls_endpoint():
     assert (
         ManagedKafkaConnectClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        ManagedKafkaConnectClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1350,11 +1355,13 @@ def test_managed_kafka_connect_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -10341,8 +10348,9 @@ def test_list_connect_clusters_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10409,18 +10417,20 @@ def test_list_connect_clusters_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_list_connect_clusters"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_list_connect_clusters_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_list_connect_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_list_connect_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_list_connect_clusters_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_list_connect_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10480,8 +10490,9 @@ def test_get_connect_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10550,18 +10561,20 @@ def test_get_connect_cluster_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_get_connect_cluster"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_get_connect_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_get_connect_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_get_connect_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_get_connect_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_get_connect_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10614,8 +10627,9 @@ def test_create_connect_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10769,20 +10783,21 @@ def test_create_connect_cluster_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_create_connect_cluster"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_create_connect_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_create_connect_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_create_connect_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_create_connect_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_create_connect_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10839,8 +10854,9 @@ def test_update_connect_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10998,20 +11014,21 @@ def test_update_connect_cluster_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_update_connect_cluster"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_update_connect_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_update_connect_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_update_connect_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_update_connect_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_update_connect_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11066,8 +11083,9 @@ def test_delete_connect_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11126,20 +11144,21 @@ def test_delete_connect_cluster_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_delete_connect_cluster"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_delete_connect_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_delete_connect_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_delete_connect_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_delete_connect_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_delete_connect_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11194,8 +11213,9 @@ def test_list_connectors_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11260,18 +11280,20 @@ def test_list_connectors_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_list_connectors"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_list_connectors_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_list_connectors"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_list_connectors"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_list_connectors_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_list_connectors"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11331,8 +11353,9 @@ def test_get_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11399,18 +11422,20 @@ def test_get_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_get_connector"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_get_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_get_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_get_connector"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_get_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_get_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11465,8 +11490,9 @@ def test_create_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11609,18 +11635,20 @@ def test_create_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_create_connector"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_create_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_create_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_create_connector"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_create_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_create_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11677,8 +11705,9 @@ def test_update_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11823,18 +11852,20 @@ def test_update_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_update_connector"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_update_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_update_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_update_connector"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_update_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_update_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11889,8 +11920,9 @@ def test_delete_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11949,13 +11981,13 @@ def test_delete_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_delete_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_delete_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = managed_kafka_connect.DeleteConnectorRequest.pb(
             managed_kafka_connect.DeleteConnectorRequest()
@@ -12002,8 +12034,9 @@ def test_pause_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12065,18 +12098,20 @@ def test_pause_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_pause_connector"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_pause_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_pause_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_pause_connector"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_pause_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_pause_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12136,8 +12171,9 @@ def test_resume_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12199,18 +12235,20 @@ def test_resume_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_resume_connector"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_resume_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_resume_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_resume_connector"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_resume_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_resume_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12270,8 +12308,9 @@ def test_restart_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12333,18 +12372,20 @@ def test_restart_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_restart_connector"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_restart_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_restart_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_restart_connector"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_restart_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_restart_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12404,8 +12445,9 @@ def test_stop_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12467,18 +12509,20 @@ def test_stop_connector_rest_interceptors(null_interceptor):
     )
     client = ManagedKafkaConnectClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "post_stop_connector"
-    ) as post, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor,
-        "post_stop_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedKafkaConnectRestInterceptor, "pre_stop_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "post_stop_connector"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor,
+            "post_stop_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedKafkaConnectRestInterceptor, "pre_stop_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12536,8 +12580,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12596,8 +12641,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12658,8 +12704,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12720,8 +12767,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12782,8 +12830,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12844,8 +12893,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -13286,11 +13336,14 @@ def test_managed_kafka_connect_base_transport():
 
 def test_managed_kafka_connect_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.managedkafka_v1.services.managed_kafka_connect.transports.ManagedKafkaConnectTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.managedkafka_v1.services.managed_kafka_connect.transports.ManagedKafkaConnectTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ManagedKafkaConnectTransport(
@@ -13307,9 +13360,12 @@ def test_managed_kafka_connect_base_transport_with_credentials_file():
 
 def test_managed_kafka_connect_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.managedkafka_v1.services.managed_kafka_connect.transports.ManagedKafkaConnectTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.managedkafka_v1.services.managed_kafka_connect.transports.ManagedKafkaConnectTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ManagedKafkaConnectTransport()
@@ -13381,11 +13437,12 @@ def test_managed_kafka_connect_transport_auth_gdch_credentials(transport_class):
 def test_managed_kafka_connect_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -14084,6 +14141,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = ManagedKafkaConnectClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = ManagedKafkaConnectAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = ManagedKafkaConnectClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14221,6 +14310,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = ManagedKafkaConnectClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = ManagedKafkaConnectAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -14368,6 +14489,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = ManagedKafkaConnectClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = ManagedKafkaConnectAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = ManagedKafkaConnectClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14511,6 +14666,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = ManagedKafkaConnectClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = ManagedKafkaConnectAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -14658,6 +14847,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = ManagedKafkaConnectClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = ManagedKafkaConnectAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = ManagedKafkaConnectClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14799,6 +15022,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = ManagedKafkaConnectClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = ManagedKafkaConnectAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():
