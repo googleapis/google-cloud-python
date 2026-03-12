@@ -7,11 +7,13 @@
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.21.0
 libcst==0.2.5
-fastavro==0.21.2
+fastavro==1.1.0
 # pytz is required by pandas
 pytz
 pandas==1.1.3
-pyarrow==0.15.0
+# numpy is a dependency of pandas
+numpy==1.19.3
+pyarrow==3.0.0
 google-auth==2.35.0
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)
 # Add the minimum supported version of grpcio to constraints files
