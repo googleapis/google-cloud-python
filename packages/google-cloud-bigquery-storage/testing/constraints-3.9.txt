@@ -10,7 +10,7 @@ libcst==0.2.5
 fastavro==0.21.2
 # pytz is required by pandas
 pytz
-pandas==1.0.5
+pandas==1.1.3
 pyarrow==0.15.0
 google-auth==2.35.0
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)

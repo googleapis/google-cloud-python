@@ -121,8 +121,7 @@ replacements:
       extras = \{\}
     after: |
       extras = {
-          # 'importlib-metadata' is required for Python 3.7 compatibility
-          "pandas": ["pandas>=0.21.1", "importlib-metadata>=1.0.0; python_version<'3.8'"],
+          "pandas": ["pandas>=1.1.3"],
           "fastavro": ["fastavro>=0.21.2"],
           "pyarrow": ["pyarrow>=0.15.0"],
       }
@@ -463,7 +462,7 @@ replacements:
       fastavro==0.21.2
       # pytz is required by pandas
       pytz
-      pandas==1.0.5
+      pandas==1.1.3
       pyarrow==0.15.0
       google-auth==2.35.0
     count: 1

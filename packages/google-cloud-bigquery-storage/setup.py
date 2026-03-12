@@ -52,8 +52,7 @@ dependencies = [
     "protobuf >= 4.25.8, < 8.0.0",
 ]
 extras = {
-    # 'importlib-metadata' is required for Python 3.7 compatibility
-    "pandas": ["pandas>=0.21.1", "importlib-metadata>=1.0.0; python_version<'3.8'"],
+    "pandas": ["pandas>=1.1.3"],
     "fastavro": ["fastavro>=0.21.2"],
     "pyarrow": ["pyarrow>=0.15.0"],
 }

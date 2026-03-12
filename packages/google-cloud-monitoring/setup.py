@@ -49,7 +49,7 @@ dependencies = [
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
     "protobuf >= 4.25.8, < 8.0.0",
 ]
-extras = {"pandas": "pandas >= 0.23.2"}
+extras = {"pandas": "pandas >= 1.1.3"}
 
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-monitoring"
 

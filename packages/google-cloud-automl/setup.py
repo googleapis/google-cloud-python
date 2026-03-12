@@ -51,7 +51,7 @@ dependencies = [
 ]
 extras = {
     "libcst": "libcst >= 0.2.5",
-    "pandas": ["pandas>=1.0.5"],
+    "pandas": ["pandas>=1.1.3"],
     "storage": ["google-cloud-storage >=1.18.0, <4.0.0"],
 }
 
