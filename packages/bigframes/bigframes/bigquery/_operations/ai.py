@@ -745,7 +745,7 @@ def if_(
             or pandas Series.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
-            If not provided, the connection from the current session will be used.
+            If not provided, the query uses your end-user credential.
 
     Returns:
         bigframes.series.Series: A new series of bools.
@@ -756,7 +756,7 @@ def if_(
 
     operator = ai_ops.AIIf(
         prompt_context=tuple(prompt_context),
-        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        connection_id=connection_id,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
@@ -800,7 +800,7 @@ def classify(
             Categories to classify the input into.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
-            If not provided, the connection from the current session will be used.
+            If not provided, the query uses your end-user credential.
 
     Returns:
         bigframes.series.Series: A new series of strings.
@@ -812,7 +812,7 @@ def classify(
     operator = ai_ops.AIClassify(
         prompt_context=tuple(prompt_context),
         categories=tuple(categories),
-        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        connection_id=connection_id,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])
@@ -853,7 +853,7 @@ def score(
             or pandas Series.
         connection_id (str, optional):
             Specifies the connection to use to communicate with the model. For example, `myproject.us.myconnection`.
-            If not provided, the connection from the current session will be used.
+            If not provided, the query uses your end-user credential.
 
     Returns:
         bigframes.series.Series: A new series of double (float) values.
@@ -864,7 +864,7 @@ def score(
 
     operator = ai_ops.AIScore(
         prompt_context=tuple(prompt_context),
-        connection_id=_resolve_connection_id(series_list[0], connection_id),
+        connection_id=connection_id,
     )
 
     return series_list[0]._apply_nary_op(operator, series_list[1:])

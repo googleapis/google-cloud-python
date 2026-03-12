@@ -113,9 +113,9 @@ def _construct_named_args(op: ops.NaryOp) -> list[sge.Kwarg]:
             )
         )
 
-    endpoit = op_args.get("endpoint", None)
-    if endpoit is not None:
-        args.append(sge.Kwarg(this="endpoint", expression=sge.Literal.string(endpoit)))
+    endpoint = op_args.get("endpoint", None)
+    if endpoint is not None:
+        args.append(sge.Kwarg(this="endpoint", expression=sge.Literal.string(endpoint)))
 
     request_type = op_args.get("request_type", None)
     if request_type is not None:

@@ -113,7 +113,7 @@ class AIIf(Value):
     """Generate True/False based on the prompt"""
 
     prompt: Value
-    connection_id: Value[dt.String]
+    connection_id: Optional[Value[dt.String]]
 
     shape = rlz.shape_like("prompt")
 
@@ -128,7 +128,7 @@ class AIClassify(Value):
 
     input: Value
     categories: Value[dt.Array[dt.String]]
-    connection_id: Value[dt.String]
+    connection_id: Optional[Value[dt.String]]
 
     shape = rlz.shape_like("input")
 
@@ -142,7 +142,7 @@ class AIScore(Value):
     """Generate doubles based on the prompt"""
 
     prompt: Value
-    connection_id: Value[dt.String]
+    connection_id: Optional[Value[dt.String]]
 
     shape = rlz.shape_like("prompt")
 

@@ -123,7 +123,7 @@ class AIIf(base_ops.NaryOp):
     name: ClassVar[str] = "ai_if"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str
+    connection_id: str | None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.BOOL_DTYPE
@@ -135,7 +135,7 @@ class AIClassify(base_ops.NaryOp):
 
     prompt_context: Tuple[str | None, ...]
     categories: tuple[str, ...]
-    connection_id: str
+    connection_id: str | None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.STRING_DTYPE
@@ -146,7 +146,7 @@ class AIScore(base_ops.NaryOp):
     name: ClassVar[str] = "ai_score"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str
+    connection_id: str | None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.FLOAT_DTYPE
