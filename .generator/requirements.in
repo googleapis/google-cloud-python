@@ -1,5 +1,5 @@
 click
-gapic-generator==1.30.11 # Downgrade mypy https://github.com/googleapis/gapic-generator-python/pull/2580
+gapic-generator==1.30.12 # https://github.com/googleapis/gapic-generator-python/releases/tag/v1.30.12
 nox
 starlark-pyo3>=2025.1
 build
