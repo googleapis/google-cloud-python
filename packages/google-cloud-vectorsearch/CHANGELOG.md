@@ -7,9 +7,14 @@
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.6.0...google-cloud-vectorsearch-v0.7.0) (2026-03-09)
 
 
-### Features
+### Documentation
 
-* generate libraries ([064889391a726217c43009280e765f7883a610b6](https://github.com/googleapis/google-cloud-python/commit/064889391a726217c43009280e765f7883a610b6))
+* Changed default values for max_replica_count for AutoScaling ([1b21f1285f0f4349e9521e6dbaa96e6524cc378a](https://github.com/googleapis/google-cloud-python/commit/1b21f1285f0f4349e9521e6dbaa96e6524cc378a))
+
+
+### Bug Fixes
+
+* Removed field DenseScannParams from SearchHint ([1b21f1285f0f4349e9521e6dbaa96e6524cc378a](https://github.com/googleapis/google-cloud-python/commit/1b21f1285f0f4349e9521e6dbaa96e6524cc378a))
 
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.5.0...google-cloud-vectorsearch-v0.6.0) (2026-03-05)
 
