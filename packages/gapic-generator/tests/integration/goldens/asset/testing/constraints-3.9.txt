@@ -11,6 +11,6 @@ google-auth==2.35.0
 # Add the minimum supported version of grpcio to constraints files
 proto-plus==1.22.3
 protobuf==4.25.8
-google-cloud-access-context-manager==0.1.2
+google-cloud-access-context-manager==0.1.8
 google-cloud-os-config==1.0.0
 grpc-google-iam-v1==0.14.0
