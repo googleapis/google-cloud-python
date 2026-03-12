@@ -145,11 +145,6 @@
                 "get_guardrail"
               ]
             },
-            "GetSecuritySettings": {
-              "methods": [
-                "get_security_settings"
-              ]
-            },
             "GetTool": {
               "methods": [
                 "get_tool"
@@ -243,11 +238,6 @@
             "UpdateGuardrail": {
               "methods": [
                 "update_guardrail"
-              ]
-            },
-            "UpdateSecuritySettings": {
-              "methods": [
-                "update_security_settings"
               ]
             },
             "UpdateTool": {
@@ -400,11 +390,6 @@
                 "get_guardrail"
               ]
             },
-            "GetSecuritySettings": {
-              "methods": [
-                "get_security_settings"
-              ]
-            },
             "GetTool": {
               "methods": [
                 "get_tool"
@@ -498,11 +483,6 @@
             "UpdateGuardrail": {
               "methods": [
                 "update_guardrail"
-              ]
-            },
-            "UpdateSecuritySettings": {
-              "methods": [
-                "update_security_settings"
               ]
             },
             "UpdateTool": {
@@ -655,11 +635,6 @@
                 "get_guardrail"
               ]
             },
-            "GetSecuritySettings": {
-              "methods": [
-                "get_security_settings"
-              ]
-            },
             "GetTool": {
               "methods": [
                 "get_tool"
@@ -753,11 +728,6 @@
             "UpdateGuardrail": {
               "methods": [
                 "update_guardrail"
-              ]
-            },
-            "UpdateSecuritySettings": {
-              "methods": [
-                "update_security_settings"
               ]
             },
             "UpdateTool": {

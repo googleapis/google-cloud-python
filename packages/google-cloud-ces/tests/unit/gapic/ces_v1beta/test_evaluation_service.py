@@ -1731,7 +1731,7 @@ def test_upload_evaluation_audio(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = evaluation_service.UploadEvaluationAudioResponse(
             audio_gcs_uri="audio_gcs_uri_value",
-            transcript="transcript_value",
+            audio_transcript="audio_transcript_value",
         )
         response = client.upload_evaluation_audio(request)
 
@@ -1744,7 +1744,7 @@ def test_upload_evaluation_audio(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_service.UploadEvaluationAudioResponse)
     assert response.audio_gcs_uri == "audio_gcs_uri_value"
-    assert response.transcript == "transcript_value"
+    assert response.audio_transcript == "audio_transcript_value"
 
 
 def test_upload_evaluation_audio_non_empty_request_with_auto_populated_field():
@@ -1759,8 +1759,7 @@ def test_upload_evaluation_audio_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = evaluation_service.UploadEvaluationAudioRequest(
-        name="name_value",
-        previous_audio_gcs_uri="previous_audio_gcs_uri_value",
+        app="app_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1774,8 +1773,7 @@ def test_upload_evaluation_audio_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == evaluation_service.UploadEvaluationAudioRequest(
-            name="name_value",
-            previous_audio_gcs_uri="previous_audio_gcs_uri_value",
+            app="app_value",
         )
 
 
@@ -1883,7 +1881,7 @@ async def test_upload_evaluation_audio_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             evaluation_service.UploadEvaluationAudioResponse(
                 audio_gcs_uri="audio_gcs_uri_value",
-                transcript="transcript_value",
+                audio_transcript="audio_transcript_value",
             )
         )
         response = await client.upload_evaluation_audio(request)
@@ -1897,7 +1895,7 @@ async def test_upload_evaluation_audio_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_service.UploadEvaluationAudioResponse)
     assert response.audio_gcs_uri == "audio_gcs_uri_value"
-    assert response.transcript == "transcript_value"
+    assert response.audio_transcript == "audio_transcript_value"
 
 
 @pytest.mark.asyncio
@@ -1914,7 +1912,7 @@ def test_upload_evaluation_audio_field_headers():
     # a field header. Set these to a non-empty value.
     request = evaluation_service.UploadEvaluationAudioRequest()
 
-    request.name = "name_value"
+    request.app = "app_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1932,7 +1930,7 @@ def test_upload_evaluation_audio_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name_value",
+        "app=app_value",
     ) in kw["metadata"]
 
 
@@ -1946,7 +1944,7 @@ async def test_upload_evaluation_audio_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = evaluation_service.UploadEvaluationAudioRequest()
 
-    request.name = "name_value"
+    request.app = "app_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1966,7 +1964,7 @@ async def test_upload_evaluation_audio_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name_value",
+        "app=app_value",
     ) in kw["metadata"]
 
 
@@ -1984,7 +1982,7 @@ def test_upload_evaluation_audio_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.upload_evaluation_audio(
-            name="name_value",
+            app="app_value",
             audio_content=b"audio_content_blob",
         )
 
@@ -1992,8 +1990,8 @@ def test_upload_evaluation_audio_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
+        arg = args[0].app
+        mock_val = "app_value"
         assert arg == mock_val
         arg = args[0].audio_content
         mock_val = b"audio_content_blob"
@@ -2010,7 +2008,7 @@ def test_upload_evaluation_audio_flattened_error():
     with pytest.raises(ValueError):
         client.upload_evaluation_audio(
             evaluation_service.UploadEvaluationAudioRequest(),
-            name="name_value",
+            app="app_value",
             audio_content=b"audio_content_blob",
         )
 
@@ -2034,7 +2032,7 @@ async def test_upload_evaluation_audio_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.upload_evaluation_audio(
-            name="name_value",
+            app="app_value",
             audio_content=b"audio_content_blob",
         )
 
@@ -2042,8 +2040,8 @@ async def test_upload_evaluation_audio_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
+        arg = args[0].app
+        mock_val = "app_value"
         assert arg == mock_val
         arg = args[0].audio_content
         mock_val = b"audio_content_blob"
@@ -2061,7 +2059,7 @@ async def test_upload_evaluation_audio_flattened_error_async():
     with pytest.raises(ValueError):
         await client.upload_evaluation_audio(
             evaluation_service.UploadEvaluationAudioRequest(),
-            name="name_value",
+            app="app_value",
             audio_content=b"audio_content_blob",
         )
 
@@ -14140,7 +14138,7 @@ def test_upload_evaluation_audio_rest_required_fields(
     transport_class = transports.EvaluationServiceRestTransport
 
     request_init = {}
-    request_init["name"] = ""
+    request_init["app"] = ""
     request_init["audio_content"] = b""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
@@ -14157,7 +14155,7 @@ def test_upload_evaluation_audio_rest_required_fields(
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = "name_value"
+    jsonified_request["app"] = "app_value"
     jsonified_request["audioContent"] = b"audio_content_blob"
 
     unset_fields = transport_class(
@@ -14166,8 +14164,8 @@ def test_upload_evaluation_audio_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
+    assert "app" in jsonified_request
+    assert jsonified_request["app"] == "app_value"
     assert "audioContent" in jsonified_request
     assert jsonified_request["audioContent"] == b"audio_content_blob"
 
@@ -14226,7 +14224,7 @@ def test_upload_evaluation_audio_rest_unset_required_fields():
         set(())
         & set(
             (
-                "name",
+                "app",
                 "audioContent",
             )
         )
@@ -14245,13 +14243,11 @@ def test_upload_evaluation_audio_rest_flattened():
         return_value = evaluation_service.UploadEvaluationAudioResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4"
-        }
+        sample_request = {"app": "projects/sample1/locations/sample2/apps/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name="name_value",
+            app="app_value",
             audio_content=b"audio_content_blob",
         )
         mock_args.update(sample_request)
@@ -14273,7 +14269,7 @@ def test_upload_evaluation_audio_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1beta/{name=projects/*/locations/*/apps/*/evaluations/*}:uploadEvaluationAudio"
+            "%s/v1beta/{app=projects/*/locations/*/apps/*}:uploadEvaluationAudio"
             % client.transport._host,
             args[1],
         )
@@ -14290,7 +14286,7 @@ def test_upload_evaluation_audio_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.upload_evaluation_audio(
             evaluation_service.UploadEvaluationAudioRequest(),
-            name="name_value",
+            app="app_value",
             audio_content=b"audio_content_blob",
         )
 
@@ -21184,7 +21180,7 @@ async def test_upload_evaluation_audio_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             evaluation_service.UploadEvaluationAudioResponse(
                 audio_gcs_uri="audio_gcs_uri_value",
-                transcript="transcript_value",
+                audio_transcript="audio_transcript_value",
             )
         )
         await client.upload_evaluation_audio(request=None)
@@ -22240,9 +22236,7 @@ def test_upload_evaluation_audio_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4"
-    }
+    request_init = {"app": "projects/sample1/locations/sample2/apps/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -22273,9 +22267,7 @@ def test_upload_evaluation_audio_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apps/sample3/evaluations/sample4"
-    }
+    request_init = {"app": "projects/sample1/locations/sample2/apps/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -22283,7 +22275,7 @@ def test_upload_evaluation_audio_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = evaluation_service.UploadEvaluationAudioResponse(
             audio_gcs_uri="audio_gcs_uri_value",
-            transcript="transcript_value",
+            audio_transcript="audio_transcript_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -22301,7 +22293,7 @@ def test_upload_evaluation_audio_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_service.UploadEvaluationAudioResponse)
     assert response.audio_gcs_uri == "audio_gcs_uri_value"
-    assert response.transcript == "transcript_value"
+    assert response.audio_transcript == "audio_transcript_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -123,14 +123,9 @@ class ListUserListGlobalLicensesRequest(proto.Message):
             Should be in the format
             accountTypes/{ACCOUNT_TYPE}/accounts/{ACCOUNT_ID}
         filter (str):
-            Optional. A `filter string <https://google.aip.dev/160>`__
-            to apply to the list request. All fields need to be on the
-            left hand side of each condition (for example:
-            ``user_list_id = 123``). Fields must be specified using
-            either all `camel
-            case <https://en.wikipedia.org/wiki/Camel_case>`__ or all
-            `snake case <https://en.wikipedia.org/wiki/Snake_case>`__.
-            Don't use a combination of camel case and snake case.
+            Optional. Filters to apply to the list request. All fields
+            need to be on the left hand side of each condition (for
+            example: user_list_id = 123).
 
             **Supported Operations:**
 
@@ -228,14 +223,9 @@ class ListUserListGlobalLicenseCustomerInfosRequest(proto.Message):
             example,
             ``accountTypes/DATA_PARTNER/accounts/123/userListGlobalLicenses/-``)
         filter (str):
-            Optional. A `filter string <https://google.aip.dev/160>`__
-            to apply to the list request. All fields need to be on the
-            left hand side of each condition (for example:
-            ``user_list_id = 123``). Fields must be specified using
-            either all `camel
-            case <https://en.wikipedia.org/wiki/Camel_case>`__ or all
-            `snake case <https://en.wikipedia.org/wiki/Snake_case>`__.
-            Don't use a combination of camel case and snake case.
+            Optional. Filters to apply to the list request. All fields
+            need to be on the left hand side of each condition (for
+            example: user_list_id = 123).
 
             **Supported Operations:**
 

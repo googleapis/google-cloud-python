@@ -41,7 +41,6 @@ from google.cloud.ces_v1beta.types import (
     deployment,
     example,
     guardrail,
-    security_settings,
     tool,
     toolset,
 )
@@ -51,7 +50,6 @@ from google.cloud.ces_v1beta.types import app_version as gcc_app_version
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
-from google.cloud.ces_v1beta.types import security_settings as gcc_security_settings
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 
@@ -281,14 +279,6 @@ class AgentServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_security_settings(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_security_settings(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_get_tool(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -438,14 +428,6 @@ class AgentServiceRestInterceptor:
                 return request, metadata
 
             def post_update_guardrail(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_security_settings(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_security_settings(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1462,57 +1444,6 @@ class AgentServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_security_settings(
-        self,
-        request: agent_service.GetSecuritySettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        agent_service.GetSecuritySettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for get_security_settings
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AgentService server.
-        """
-        return request, metadata
-
-    def post_get_security_settings(
-        self, response: security_settings.SecuritySettings
-    ) -> security_settings.SecuritySettings:
-        """Post-rpc interceptor for get_security_settings
-
-        DEPRECATED. Please use the `post_get_security_settings_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the AgentService server but before
-        it is returned to user code. This `post_get_security_settings` interceptor runs
-        before the `post_get_security_settings_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_security_settings_with_metadata(
-        self,
-        response: security_settings.SecuritySettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_settings.SecuritySettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Post-rpc interceptor for get_security_settings
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the AgentService server but before it is returned to user code.
-
-        We recommend only using this `post_get_security_settings_with_metadata`
-        interceptor in new development instead of the `post_get_security_settings` interceptor.
-        When both interceptors are used, this `post_get_security_settings_with_metadata` interceptor runs after the
-        `post_get_security_settings` interceptor. The (possibly modified) response returned by
-        `post_get_security_settings` will be passed to
-        `post_get_security_settings_with_metadata`.
-        """
-        return response, metadata
-
     def pre_get_tool(
         self,
         request: agent_service.GetToolRequest,
@@ -2416,57 +2347,6 @@ class AgentServiceRestInterceptor:
         `post_update_guardrail` interceptor. The (possibly modified) response returned by
         `post_update_guardrail` will be passed to
         `post_update_guardrail_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_update_security_settings(
-        self,
-        request: agent_service.UpdateSecuritySettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        agent_service.UpdateSecuritySettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
-        """Pre-rpc interceptor for update_security_settings
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the AgentService server.
-        """
-        return request, metadata
-
-    def post_update_security_settings(
-        self, response: gcc_security_settings.SecuritySettings
-    ) -> gcc_security_settings.SecuritySettings:
-        """Post-rpc interceptor for update_security_settings
-
-        DEPRECATED. Please use the `post_update_security_settings_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the AgentService server but before
-        it is returned to user code. This `post_update_security_settings` interceptor runs
-        before the `post_update_security_settings_with_metadata` interceptor.
-        """
-        return response
-
-    def post_update_security_settings_with_metadata(
-        self,
-        response: gcc_security_settings.SecuritySettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcc_security_settings.SecuritySettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Post-rpc interceptor for update_security_settings
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the AgentService server but before it is returned to user code.
-
-        We recommend only using this `post_update_security_settings_with_metadata`
-        interceptor in new development instead of the `post_update_security_settings` interceptor.
-        When both interceptors are used, this `post_update_security_settings_with_metadata` interceptor runs after the
-        `post_update_security_settings` interceptor. The (possibly modified) response returned by
-        `post_update_security_settings` will be passed to
-        `post_update_security_settings_with_metadata`.
         """
         return response, metadata
 
@@ -6643,155 +6523,6 @@ class AgentServiceRestTransport(_BaseAgentServiceRestTransport):
                 )
             return resp
 
-    class _GetSecuritySettings(
-        _BaseAgentServiceRestTransport._BaseGetSecuritySettings, AgentServiceRestStub
-    ):
-        def __hash__(self):
-            return hash("AgentServiceRestTransport.GetSecuritySettings")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: agent_service.GetSecuritySettingsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> security_settings.SecuritySettings:
-            r"""Call the get security settings method over HTTP.
-
-            Args:
-                request (~.agent_service.GetSecuritySettingsRequest):
-                    The request object. Request message for
-                [AgentService.GetSecuritySettings][google.cloud.ces.v1beta.AgentService.GetSecuritySettings].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.security_settings.SecuritySettings:
-                    Project/Location level security
-                settings for CES.
-
-            """
-
-            http_options = _BaseAgentServiceRestTransport._BaseGetSecuritySettings._get_http_options()
-
-            request, metadata = self._interceptor.pre_get_security_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseAgentServiceRestTransport._BaseGetSecuritySettings._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAgentServiceRestTransport._BaseGetSecuritySettings._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.ces_v1beta.AgentServiceClient.GetSecuritySettings",
-                    extra={
-                        "serviceName": "google.cloud.ces.v1beta.AgentService",
-                        "rpcName": "GetSecuritySettings",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = AgentServiceRestTransport._GetSecuritySettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = security_settings.SecuritySettings()
-            pb_resp = security_settings.SecuritySettings.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_security_settings(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_security_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = security_settings.SecuritySettings.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.ces_v1beta.AgentServiceClient.get_security_settings",
-                    extra={
-                        "serviceName": "google.cloud.ces.v1beta.AgentService",
-                        "rpcName": "GetSecuritySettings",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _GetTool(_BaseAgentServiceRestTransport._BaseGetTool, AgentServiceRestStub):
         def __hash__(self):
             return hash("AgentServiceRestTransport.GetTool")
@@ -9696,161 +9427,6 @@ class AgentServiceRestTransport(_BaseAgentServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSecuritySettings(
-        _BaseAgentServiceRestTransport._BaseUpdateSecuritySettings, AgentServiceRestStub
-    ):
-        def __hash__(self):
-            return hash("AgentServiceRestTransport.UpdateSecuritySettings")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: agent_service.UpdateSecuritySettingsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> gcc_security_settings.SecuritySettings:
-            r"""Call the update security settings method over HTTP.
-
-            Args:
-                request (~.agent_service.UpdateSecuritySettingsRequest):
-                    The request object. Request message for
-                [AgentService.UpdateSecuritySettings][google.cloud.ces.v1beta.AgentService.UpdateSecuritySettings].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.gcc_security_settings.SecuritySettings:
-                    Project/Location level security
-                settings for CES.
-
-            """
-
-            http_options = _BaseAgentServiceRestTransport._BaseUpdateSecuritySettings._get_http_options()
-
-            request, metadata = self._interceptor.pre_update_security_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseAgentServiceRestTransport._BaseUpdateSecuritySettings._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAgentServiceRestTransport._BaseUpdateSecuritySettings._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAgentServiceRestTransport._BaseUpdateSecuritySettings._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.ces_v1beta.AgentServiceClient.UpdateSecuritySettings",
-                    extra={
-                        "serviceName": "google.cloud.ces.v1beta.AgentService",
-                        "rpcName": "UpdateSecuritySettings",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = AgentServiceRestTransport._UpdateSecuritySettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = gcc_security_settings.SecuritySettings()
-            pb_resp = gcc_security_settings.SecuritySettings.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_update_security_settings(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_security_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = gcc_security_settings.SecuritySettings.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.ces_v1beta.AgentServiceClient.update_security_settings",
-                    extra={
-                        "serviceName": "google.cloud.ces.v1beta.AgentService",
-                        "rpcName": "UpdateSecuritySettings",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _UpdateTool(
         _BaseAgentServiceRestTransport._BaseUpdateTool, AgentServiceRestStub
     ):
@@ -10380,16 +9956,6 @@ class AgentServiceRestTransport(_BaseAgentServiceRestTransport):
         return self._GetGuardrail(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_security_settings(
-        self,
-    ) -> Callable[
-        [agent_service.GetSecuritySettingsRequest], security_settings.SecuritySettings
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetSecuritySettings(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def get_tool(self) -> Callable[[agent_service.GetToolRequest], tool.Tool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -10551,19 +10117,6 @@ class AgentServiceRestTransport(_BaseAgentServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGuardrail(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def update_security_settings(
-        self,
-    ) -> Callable[
-        [agent_service.UpdateSecuritySettingsRequest],
-        gcc_security_settings.SecuritySettings,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpdateSecuritySettings(
-            self._session, self._host, self._interceptor
-        )  # type: ignore
 
     @property
     def update_tool(self) -> Callable[[agent_service.UpdateToolRequest], gcc_tool.Tool]:

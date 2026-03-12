@@ -69,7 +69,6 @@ from .types.agent_service import (
     GetDeploymentRequest,
     GetExampleRequest,
     GetGuardrailRequest,
-    GetSecuritySettingsRequest,
     GetToolRequest,
     GetToolsetRequest,
     ImportAppRequest,
@@ -102,11 +101,9 @@ from .types.agent_service import (
     UpdateDeploymentRequest,
     UpdateExampleRequest,
     UpdateGuardrailRequest,
-    UpdateSecuritySettingsRequest,
     UpdateToolRequest,
     UpdateToolsetRequest,
 )
-from .types.agent_tool import AgentTool
 from .types.agent_transfers import (
     ExpressionCondition,
     PythonCodeCondition,
@@ -247,7 +244,6 @@ from .types.open_api_toolset import OpenApiToolset
 from .types.python_function import PythonFunction
 from .types.schema import Schema
 from .types.search_suggestions import GoogleSearchSuggestions, WebSearchQuery
-from .types.security_settings import EndpointControlPolicy, SecuritySettings
 from .types.session_service import (
     AudioEncoding,
     BidiSessionClientMessage,
@@ -386,7 +382,6 @@ __all__ = (
     "Action",
     "Agent",
     "AgentServiceClient",
-    "AgentTool",
     "AgentTransfer",
     "AggregatedMetrics",
     "AmbientSoundConfig",
@@ -453,7 +448,6 @@ __all__ = (
     "Deployment",
     "EndSession",
     "EndUserAuthConfig",
-    "EndpointControlPolicy",
     "ErrorHandlingSettings",
     "Evaluation",
     "EvaluationConfig",
@@ -495,7 +489,6 @@ __all__ = (
     "GetExampleRequest",
     "GetGuardrailRequest",
     "GetScheduledEvaluationRunRequest",
-    "GetSecuritySettingsRequest",
     "GetToolRequest",
     "GetToolsetRequest",
     "GoAway",
@@ -578,7 +571,6 @@ __all__ = (
     "RunSessionResponse",
     "ScheduledEvaluationRun",
     "Schema",
-    "SecuritySettings",
     "ServiceAccountAuthConfig",
     "ServiceAgentIdTokenAuthConfig",
     "ServiceDirectoryConfig",
@@ -613,7 +605,6 @@ __all__ = (
     "UpdateExampleRequest",
     "UpdateGuardrailRequest",
     "UpdateScheduledEvaluationRunRequest",
-    "UpdateSecuritySettingsRequest",
     "UpdateToolRequest",
     "UpdateToolsetRequest",
     "UploadEvaluationAudioRequest",

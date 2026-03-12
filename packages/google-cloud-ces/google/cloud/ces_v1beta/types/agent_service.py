@@ -28,7 +28,6 @@ from google.cloud.ces_v1beta.types import changelog, conversation, evaluation
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
-from google.cloud.ces_v1beta.types import security_settings as gcc_security_settings
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 
@@ -99,8 +98,6 @@ __protobuf__ = proto.module(
         "ListChangelogsRequest",
         "ListChangelogsResponse",
         "GetChangelogRequest",
-        "GetSecuritySettingsRequest",
-        "UpdateSecuritySettingsRequest",
     },
 )
 
@@ -2350,48 +2347,6 @@ class GetChangelogRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
-    )
-
-
-class GetSecuritySettingsRequest(proto.Message):
-    r"""Request message for
-    [AgentService.GetSecuritySettings][google.cloud.ces.v1beta.AgentService.GetSecuritySettings].
-
-    Attributes:
-        name (str):
-            Required. The resource name of the security settings to
-            retrieve. Format:
-            ``projects/{project}/locations/{location}/securitySettings``
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class UpdateSecuritySettingsRequest(proto.Message):
-    r"""Request message for
-    [AgentService.UpdateSecuritySettings][google.cloud.ces.v1beta.AgentService.UpdateSecuritySettings].
-
-    Attributes:
-        security_settings (google.cloud.ces_v1beta.types.SecuritySettings):
-            Required. The security settings to update.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to control which
-            fields get updated. If the mask is not present,
-            all fields will be updated.
-    """
-
-    security_settings: gcc_security_settings.SecuritySettings = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=gcc_security_settings.SecuritySettings,
-    )
-    update_mask: field_mask_pb2.FieldMask = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=field_mask_pb2.FieldMask,
     )
 
 

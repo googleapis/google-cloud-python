@@ -62,17 +62,6 @@ class ExecuteToolRequest(proto.Message):
             toolset. Otherwise, an error will be returned.
 
             This field is a member of `oneof`_ ``tool_identifier``.
-        variables (google.protobuf.struct_pb2.Struct):
-            Optional. The variables that are available
-            for the tool execution.
-
-            This field is a member of `oneof`_ ``tool_execution_context``.
-        context (google.protobuf.struct_pb2.Struct):
-            Optional. The
-            [ToolCallContext](https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/python#environment
-            for details) to be passed to the Python tool.
-
-            This field is a member of `oneof`_ ``tool_execution_context``.
         parent (str):
             Required. The resource name of the app which the
             tool/toolset belongs to. Format:
@@ -80,6 +69,9 @@ class ExecuteToolRequest(proto.Message):
         args (google.protobuf.struct_pb2.Struct):
             Optional. The input parameters and values for
             the tool in JSON object format.
+        variables (google.protobuf.struct_pb2.Struct):
+            Optional. The variables that are available
+            for the tool execution.
     """
 
     tool: str = proto.Field(
@@ -93,18 +85,6 @@ class ExecuteToolRequest(proto.Message):
         oneof="tool_identifier",
         message=gcc_toolset_tool.ToolsetTool,
     )
-    variables: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        oneof="tool_execution_context",
-        message=struct_pb2.Struct,
-    )
-    context: struct_pb2.Struct = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        oneof="tool_execution_context",
-        message=struct_pb2.Struct,
-    )
     parent: str = proto.Field(
         proto.STRING,
         number=4,
@@ -112,6 +92,11 @@ class ExecuteToolRequest(proto.Message):
     args: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=2,
+        message=struct_pb2.Struct,
+    )
+    variables: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
         message=struct_pb2.Struct,
     )
 

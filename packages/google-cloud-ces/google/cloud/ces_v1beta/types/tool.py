@@ -20,7 +20,6 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.ces_v1beta.types import agent_tool as gcc_agent_tool
 from google.cloud.ces_v1beta.types import client_function as gcc_client_function
 from google.cloud.ces_v1beta.types import common, fakes
 from google.cloud.ces_v1beta.types import connector_tool as gcc_connector_tool
@@ -91,24 +90,23 @@ class Tool(proto.Message):
             Optional. The system tool.
 
             This field is a member of `oneof`_ ``tool_type``.
-        agent_tool (google.cloud.ces_v1beta.types.AgentTool):
-            Optional. The agent tool.
-
-            This field is a member of `oneof`_ ``tool_type``.
         widget_tool (google.cloud.ces_v1beta.types.WidgetTool):
             Optional. The widget tool.
 
             This field is a member of `oneof`_ ``tool_type``.
         name (str):
-            Identifier. The resource name of the tool. Format:
+            Identifier. The unique identifier of the tool. Format:
 
             - ``projects/{project}/locations/{location}/apps/{app}/tools/{tool}``
-              for standalone tools.
-            - ``projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}/tools/{tool}``
-              for tools retrieved from a toolset.
+              for
 
-            These tools are dynamic and output-only; they cannot be
-            referenced directly where a tool is expected.
+            standalone tools.
+            -----------------
+
+            ``projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}/tools/{tool}``
+            for tools retrieved from a toolset. These tools are dynamic
+            and output-only, they cannot be referenced directly where a
+            tool is expected.
         display_name (str):
             Output only. The display name of the tool, derived based on
             the tool's type. For example, display name of a
@@ -189,12 +187,6 @@ class Tool(proto.Message):
         number=18,
         oneof="tool_type",
         message=gcc_system_tool.SystemTool,
-    )
-    agent_tool: gcc_agent_tool.AgentTool = proto.Field(
-        proto.MESSAGE,
-        number=23,
-        oneof="tool_type",
-        message=gcc_agent_tool.AgentTool,
     )
     widget_tool: gcc_widget_tool.WidgetTool = proto.Field(
         proto.MESSAGE,

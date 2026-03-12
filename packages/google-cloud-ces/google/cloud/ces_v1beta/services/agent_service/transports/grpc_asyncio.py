@@ -44,7 +44,6 @@ from google.cloud.ces_v1beta.types import (
     deployment,
     example,
     guardrail,
-    security_settings,
     tool,
     toolset,
 )
@@ -54,7 +53,6 @@ from google.cloud.ces_v1beta.types import app_version as gcc_app_version
 from google.cloud.ces_v1beta.types import deployment as gcc_deployment
 from google.cloud.ces_v1beta.types import example as gcc_example
 from google.cloud.ces_v1beta.types import guardrail as gcc_guardrail
-from google.cloud.ces_v1beta.types import security_settings as gcc_security_settings
 from google.cloud.ces_v1beta.types import tool as gcc_tool
 from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 
@@ -561,66 +559,6 @@ class AgentServiceGrpcAsyncIOTransport(AgentServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_app"]
-
-    @property
-    def get_security_settings(
-        self,
-    ) -> Callable[
-        [agent_service.GetSecuritySettingsRequest],
-        Awaitable[security_settings.SecuritySettings],
-    ]:
-        r"""Return a callable for the get security settings method over gRPC.
-
-        Retrieves the security settings for the project and
-        location.
-
-        Returns:
-            Callable[[~.GetSecuritySettingsRequest],
-                    Awaitable[~.SecuritySettings]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_security_settings" not in self._stubs:
-            self._stubs["get_security_settings"] = self._logged_channel.unary_unary(
-                "/google.cloud.ces.v1beta.AgentService/GetSecuritySettings",
-                request_serializer=agent_service.GetSecuritySettingsRequest.serialize,
-                response_deserializer=security_settings.SecuritySettings.deserialize,
-            )
-        return self._stubs["get_security_settings"]
-
-    @property
-    def update_security_settings(
-        self,
-    ) -> Callable[
-        [agent_service.UpdateSecuritySettingsRequest],
-        Awaitable[gcc_security_settings.SecuritySettings],
-    ]:
-        r"""Return a callable for the update security settings method over gRPC.
-
-        Updates the security settings for the project and
-        location.
-
-        Returns:
-            Callable[[~.UpdateSecuritySettingsRequest],
-                    Awaitable[~.SecuritySettings]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_security_settings" not in self._stubs:
-            self._stubs["update_security_settings"] = self._logged_channel.unary_unary(
-                "/google.cloud.ces.v1beta.AgentService/UpdateSecuritySettings",
-                request_serializer=agent_service.UpdateSecuritySettingsRequest.serialize,
-                response_deserializer=gcc_security_settings.SecuritySettings.deserialize,
-            )
-        return self._stubs["update_security_settings"]
 
     @property
     def list_agents(
@@ -1776,16 +1714,6 @@ class AgentServiceGrpcAsyncIOTransport(AgentServiceTransport):
             ),
             self.import_app: self._wrap_method(
                 self.import_app,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.get_security_settings: self._wrap_method(
-                self.get_security_settings,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_security_settings: self._wrap_method(
-                self.update_security_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),

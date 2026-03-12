@@ -40,7 +40,7 @@ def sample_upload_evaluation_audio():
 
     # Initialize request argument(s)
     request = ces_v1beta.UploadEvaluationAudioRequest(
-        name="name_value",
+        app="app_value",
         audio_content=b"audio_content_blob",
     )
 

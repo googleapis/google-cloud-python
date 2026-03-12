@@ -60,11 +60,11 @@ class SpeedReadingInterval(proto.Message):
             SPEED_UNSPECIFIED (0):
                 Default value. This value is unused.
             NORMAL (1):
-                Normal speed, no traffic delays.
+                Normal speed, no slowdown is detected.
             SLOW (2):
-                Slowdown detected, medium amount of traffic.
+                Slowdown detected, but no traffic jam formed.
             TRAFFIC_JAM (3):
-                Traffic delays.
+                Traffic jam detected.
         """
 
         SPEED_UNSPECIFIED = 0
