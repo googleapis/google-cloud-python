@@ -3163,7 +3163,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
     version: 2.37.0
-    last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
+    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
     apis:
       - path: google/cloud/speech/v1
         service_config: speech_v1.yaml
