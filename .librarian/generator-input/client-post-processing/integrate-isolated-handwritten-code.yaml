@@ -392,3 +392,45 @@ replacements:
 
       Changelog
     count: 1 
+  - paths: [
+      "packages/google-cloud-bigquery-storage/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"\n        # --check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-datastore/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"\n        # --check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-error-reporting/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"\n        # --check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-monitoring-dashboards/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"\n        # --check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-monitoring/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"\n        # --check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-speech/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"\n        # --check-untyped-defs",'
+    count: 1
+  - paths: [
+      "packages/google-cloud-vision/noxfile.py",
+    ]
+    before: '\n        "--check-untyped-defs",'
+    after: '\n        # TODO(https://github.com/googleapis/google-cloud-python/issues/16083)"\n        # --check-untyped-defs",'
+    count: 1
