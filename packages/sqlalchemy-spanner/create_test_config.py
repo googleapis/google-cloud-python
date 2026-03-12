@@ -18,9 +18,16 @@ import configparser
 import sys
 
 
-def set_test_config(project, instance, database, user=None, password=None, host=None, port=None):
+def set_test_config(
+    project, instance, database, user=None, password=None, host=None, port=None
+):
     config = configparser.ConfigParser()
-    if user is not None and password is not None and host is not None and port is not None:
+    if (
+        user is not None
+        and password is not None
+        and host is not None
+        and port is not None
+    ):
         url = (
             f"spanner+spanner://{user}:{password}@{host}:{port}"
             f"/projects/{project}/instances/{instance}/"

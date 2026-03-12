@@ -21,18 +21,20 @@ from google.cloud import spanner
 
 
 def main(argv):
-  db_url = argv[0]
+    db_url = argv[0]
 
-  project = re.findall(r"projects(.*?)instances", db_url)
-  instance_id = re.findall(r"instances(.*?)databases", db_url)
-  database_id = re.findall(r"databases(.*?)$", db_url)
+    project = re.findall(r"projects(.*?)instances", db_url)
+    instance_id = re.findall(r"instances(.*?)databases", db_url)
+    database_id = re.findall(r"databases(.*?)$", db_url)
 
-  client = spanner.Client(project="".join(project).replace("/", ""))
-  instance = client.instance(instance_id="".join(instance_id).replace("/", ""))
-  database = instance.database("".join(database_id).replace("/", ""))
+    client = spanner.Client(project="".join(project).replace("/", ""))
+    instance = client.instance(instance_id="".join(instance_id).replace("/", ""))
+    database = instance.database("".join(database_id).replace("/", ""))
 
-  database.update_ddl(["DROP TABLE IF EXISTS account", "DROP TABLE IF EXISTS alembic_version"]).result(120)
+    database.update_ddl(
+        ["DROP TABLE IF EXISTS account", "DROP TABLE IF EXISTS alembic_version"]
+    ).result(120)
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])

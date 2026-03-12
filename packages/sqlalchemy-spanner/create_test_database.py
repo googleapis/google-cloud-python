@@ -17,13 +17,13 @@
 import os
 import time
 
-from create_test_config import set_test_config
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import AlreadyExists, ResourceExhausted
 from google.cloud.spanner_v1 import Client
-from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.database import Database
+from google.cloud.spanner_v1.instance import Instance
 
+from create_test_config import set_test_config
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
