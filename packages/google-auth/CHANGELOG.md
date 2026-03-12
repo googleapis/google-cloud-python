@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.49.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.49.0...google-auth-v2.49.1) (2026-03-12)
+
+
+### Bug Fixes
+
+* fix request session error  (#16050) ([bfd93225b07497b9d44b7be42aaaf084a7ffb7aa](https://github.com/googleapis/google-cloud-python/commit/bfd93225b07497b9d44b7be42aaaf084a7ffb7aa))
+* remove deprecated rsa dependency (#16020) ([e8927b9c0257912dc3eca42307bde10c505e3975](https://github.com/googleapis/google-cloud-python/commit/e8927b9c0257912dc3eca42307bde10c505e3975))
+
 ## [2.49.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.48.0...google-auth-v2.49.0) (2026-03-05)
 
 
