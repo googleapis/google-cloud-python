@@ -286,3 +286,25 @@ def test_mds_mtls_adapter_send_no_fallback_strict_mode(
         request = requests.Request(method="GET", url="https://fake-mds.com").prepare()
         with pytest.raises(requests.exceptions.SSLError):
             adapter.send(request)
+
+
+@mock.patch("google.auth.compute_engine._mtls._HAS_REQUESTS", False)
+@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
+def test_should_use_mds_mtls_without_requests_strict(mock_parse_mds_mode):
+    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.STRICT
+    with pytest.raises(exceptions.MutualTLSChannelError, match="requests library"):
+        _mtls.should_use_mds_mtls()
+
+
+@mock.patch("google.auth.compute_engine._mtls._HAS_REQUESTS", False)
+@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
+def test_should_use_mds_mtls_without_requests_default(mock_parse_mds_mode):
+    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.DEFAULT
+    assert _mtls.should_use_mds_mtls() is False
+
+
+@mock.patch("google.auth.compute_engine._mtls._HAS_REQUESTS", False)
+@mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
+def test_should_use_mds_mtls_without_requests_none(mock_parse_mds_mode):
+    mock_parse_mds_mode.return_value = _mtls.MdsMtlsMode.NONE
+    assert _mtls.should_use_mds_mtls() is False

@@ -115,14 +115,14 @@ def mypy(session):
 
 
 @nox.session(python=ALL_PYTHON)
-@nox.parametrize(["install_deprecated_extras"], (True, False))
-def unit(session, install_deprecated_extras):
+@nox.parametrize(["install_extras"], (True, False))
+def unit(session, install_extras):
     # Install all test dependencies, then install this package in-place.
 
     if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
     min_py, max_py = UNIT_TEST_PYTHON_VERSIONS[0], UNIT_TEST_PYTHON_VERSIONS[-1]
-    if not install_deprecated_extras and session.python not in (min_py, max_py):
+    if not install_extras and session.python not in (min_py, max_py):
         # only run double tests on first and last supported versions
         session.skip(
             f"Extended tests only run on boundary Python versions ({min_py}, {max_py}) to reduce CI load."
@@ -131,13 +131,22 @@ def unit(session, install_deprecated_extras):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    extras_str = "testing"
-    if install_deprecated_extras:
+
+    if install_extras:
+        extras_str = "testing"
         # rsa and oauth2client were both archived and support dropped,
         # but we still  test old code paths
         session.install("oauth2client")
         extras_str += ",rsa"
+    else:
+        # Install testing dependencies explicitly without requests
+        extras_str = "testing_minimal"
+
     session.install("-e", f".[{extras_str}]", "-c", constraints_path)
+
+    if not install_extras:
+        # Verify requests is actually not installed
+        session.run("python", "-c", "import requests", success_codes=[1])
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",

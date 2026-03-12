@@ -24,7 +24,10 @@ import logging
 import os
 from urllib.parse import urljoin
 
-import requests
+try:
+    import requests as requests_lib
+except ImportError:  # pragma: NO COVER
+    requests_lib = None  # type: ignore[assignment]
 
 from google.auth import _helpers
 from google.auth import environment_vars
@@ -174,10 +177,10 @@ def _prepare_request_for_mds(request, use_mtls=False) -> None:
 
     """
     # Only modify the request if mTLS is enabled, and request supports sessions.
-    if use_mtls and hasattr(request, "session"):
+    if use_mtls and requests_lib and hasattr(request, "session"):
         # Ensure the request has a session to mount the adapter to.
         if not request.session:
-            request.session = requests.Session()
+            request.session = requests_lib.Session()
 
         adapter = _mtls.MdsMtlsAdapter()
         # Mount the adapter for all default GCE metadata hosts.
