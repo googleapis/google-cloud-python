@@ -240,14 +240,14 @@ def mockserver(session):
     )
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0])
 def migration_test(session):
     """Test migrations with SQLAlchemy v1.4 and Alembic"""
     session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
     _migration_test(session)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[-1])
 def _migration_test(session):
     """Migrate with SQLAlchemy and Alembic and check the result."""
     import glob
