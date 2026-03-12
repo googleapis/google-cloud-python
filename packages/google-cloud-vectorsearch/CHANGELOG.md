@@ -16,7 +16,6 @@
 
 * Removed field DenseScannParams from SearchHint ([1b21f1285f0f4349e9521e6dbaa96e6524cc378a](https://github.com/googleapis/google-cloud-python/commit/1b21f1285f0f4349e9521e6dbaa96e6524cc378a))
 
-
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.5.0...google-cloud-vectorsearch-v0.6.0) (2026-03-05)
 
 
