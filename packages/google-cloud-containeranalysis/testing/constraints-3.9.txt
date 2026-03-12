@@ -6,7 +6,7 @@
 # For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.21.0
-grafeas==1.4.1
+grafeas==1.7.0
 google-auth==2.35.0
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)
 # Add the minimum supported version of grpcio to constraints files
