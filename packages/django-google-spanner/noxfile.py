@@ -212,14 +212,15 @@ def system_test(session, django_version="3.2"):
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16099):
+    # System tests were disabled in the split repo to speed up the build process.
+    # See: https://github.com/googleapis/python-spanner-django/pull/929.
+    session.skip("System tests are temporarily disabled.")
+
     if session.python == "3.7":
         session.skip("Python 3.7 is no longer supported")
-    # TODO: Remove this check once support for Python 3.14 is added to Protobuf.
-    if session.python == "3.14":
-        session.skip("Protobuf upb implementation is not supported in Python 3.14 yet")
-    if session.python != "3.13":
-        print("System tests with django 3.2")
-        system_test(session)
+    print("System tests with django 3.2")
+    system_test(session)
     print("System tests with django 4.2")
     system_test(session, django_version="4.2")
 
