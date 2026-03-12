@@ -4074,3 +4074,12 @@ libraries:
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
+  - id: sqlalchemy-spanner
+    version: 1.17.2
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/sqlalchemy-spanner
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
