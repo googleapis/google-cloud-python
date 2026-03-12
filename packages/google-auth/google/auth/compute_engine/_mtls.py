@@ -24,8 +24,13 @@ from pathlib import Path
 import ssl
 from urllib.parse import urlparse, urlunparse
 
-import requests
-from requests.adapters import HTTPAdapter
+try:
+    import requests
+    from requests.adapters import HTTPAdapter
+
+    _HAS_REQUESTS = True
+except ImportError:  # pragma: NO COVER
+    _HAS_REQUESTS = False
 
 from google.auth import environment_vars, exceptions
 
@@ -102,6 +107,10 @@ def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig()):
     """Determines if mTLS should be used for the metadata server."""
     mode = _parse_mds_mode()
     if mode == MdsMtlsMode.STRICT:
+        if not _HAS_REQUESTS:
+            raise exceptions.MutualTLSChannelError(
+                "The requests library is required for mTLS. Install it with `google-auth[requests]`"
+            )
         if not _certs_exist(mds_mtls_config):
             raise exceptions.MutualTLSChannelError(
                 "mTLS certificates not found in strict mode."
@@ -110,55 +119,60 @@ def should_use_mds_mtls(mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig()):
     elif mode == MdsMtlsMode.NONE:
         return False
     else:  # Default mode
+        if not _HAS_REQUESTS:
+            return False
         return _certs_exist(mds_mtls_config)
 
 
-class MdsMtlsAdapter(HTTPAdapter):
-    """An HTTP adapter that uses mTLS for the metadata server."""
+if _HAS_REQUESTS:
 
-    def __init__(
-        self, mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig(), *args, **kwargs
-    ):
-        self.ssl_context = ssl.create_default_context()
-        self.ssl_context.load_verify_locations(cafile=mds_mtls_config.ca_cert_path)
-        self.ssl_context.load_cert_chain(
-            certfile=mds_mtls_config.client_combined_cert_path
-        )
-        super(MdsMtlsAdapter, self).__init__(*args, **kwargs)
+    class MdsMtlsAdapter(HTTPAdapter):
+        """An HTTP adapter that uses mTLS for the metadata server."""
 
-    def init_poolmanager(self, *args, **kwargs):
-        kwargs["ssl_context"] = self.ssl_context
-        return super(MdsMtlsAdapter, self).init_poolmanager(*args, **kwargs)
-
-    def proxy_manager_for(self, *args, **kwargs):
-        kwargs["ssl_context"] = self.ssl_context
-        return super(MdsMtlsAdapter, self).proxy_manager_for(*args, **kwargs)
-
-    def send(self, request, **kwargs):
-        # If we are in strict mode, always use mTLS (no HTTP fallback)
-        if _parse_mds_mode() == MdsMtlsMode.STRICT:
-            return super(MdsMtlsAdapter, self).send(request, **kwargs)
-
-        # In default mode, attempt mTLS first, then fallback to HTTP on failure
-        try:
-            response = super(MdsMtlsAdapter, self).send(request, **kwargs)
-            response.raise_for_status()
-            return response
-        except (
-            ssl.SSLError,
-            requests.exceptions.SSLError,
-            requests.exceptions.HTTPError,
-        ) as e:
-            _LOGGER.warning(
-                "mTLS connection to Compute Engine Metadata server failed. "
-                "Falling back to standard HTTP. Reason: %s",
-                e,
+        def __init__(
+            self, mds_mtls_config: MdsMtlsConfig = MdsMtlsConfig(), *args, **kwargs
+        ):
+            self.ssl_context = ssl.create_default_context()
+            self.ssl_context.load_verify_locations(cafile=mds_mtls_config.ca_cert_path)
+            self.ssl_context.load_cert_chain(
+                certfile=mds_mtls_config.client_combined_cert_path
             )
-            # Fallback to standard HTTP
-            parsed_original_url = urlparse(request.url)
-            http_fallback_url = urlunparse(parsed_original_url._replace(scheme="http"))
-            request.url = http_fallback_url
+            super(MdsMtlsAdapter, self).__init__(*args, **kwargs)
 
-            # Use a standard HTTPAdapter for the fallback
-            http_adapter = HTTPAdapter()
-            return http_adapter.send(request, **kwargs)
+        def init_poolmanager(self, *args, **kwargs):
+            kwargs["ssl_context"] = self.ssl_context
+            return super(MdsMtlsAdapter, self).init_poolmanager(*args, **kwargs)
+
+        def proxy_manager_for(self, *args, **kwargs):
+            kwargs["ssl_context"] = self.ssl_context
+            return super(MdsMtlsAdapter, self).proxy_manager_for(*args, **kwargs)
+
+        def send(self, request, **kwargs):
+            # If we are in strict mode, always use mTLS (no HTTP fallback)
+            if _parse_mds_mode() == MdsMtlsMode.STRICT:
+                return super(MdsMtlsAdapter, self).send(request, **kwargs)
+
+            # In default mode, attempt mTLS first, then fallback to HTTP on failure
+            try:
+                response = super(MdsMtlsAdapter, self).send(request, **kwargs)
+                response.raise_for_status()
+                return response
+            except (
+                ssl.SSLError,
+                requests.exceptions.SSLError,
+                requests.exceptions.HTTPError,
+            ) as e:
+                _LOGGER.warning(
+                    "mTLS connection to Compute Engine Metadata server failed. "
+                    "Falling back to standard HTTP. Reason: %s",
+                    e,
+                )
+                # Fallback to standard HTTP
+                parsed_original_url = urlparse(request.url)
+                http_fallback_url = urlunparse(parsed_original_url._replace(scheme="http"))
+                request.url = http_fallback_url
+
+                # Use a standard HTTPAdapter for the fallback
+                http_adapter = HTTPAdapter()
+                return http_adapter.send(request, **kwargs)
+
