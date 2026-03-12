@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-shopping-type/#history
 
+## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v1.2.0...google-shopping-type-v1.3.0) (2026-03-12)
+
+
+### Features
+
+* generate libraries ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
 ## [1.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v1.1.0...google-shopping-type-v1.2.0) (2026-01-08)
 
 

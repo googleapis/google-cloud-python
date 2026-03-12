@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-maps-routing/#history
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.8.0...google-maps-routing-v0.9.0) (2026-03-12)
+
+
+### Features
+
+* generate libraries ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.7.0...google-maps-routing-v0.8.0) (2026-01-09)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-gdchardwaremanagement/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.3.0...google-cloud-gdchardwaremanagement-v0.4.0) (2026-03-12)
+
+
+### Features
+
+* generate libraries ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.2.0...google-cloud-gdchardwaremanagement-v0.3.0) (2026-01-08)
 
 

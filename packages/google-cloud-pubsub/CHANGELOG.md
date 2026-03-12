@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.35.0...google-cloud-pubsub-v2.36.0) (2026-03-12)
+
+
+### Features
+
+* generate libraries ([a2fc584f8e532e417442f52eadfdabfec24125a1](https://github.com/googleapis/google-cloud-python/commit/a2fc584f8e532e417442f52eadfdabfec24125a1))
+
 ## [2.35.0](https://github.com/googleapis/python-pubsub/compare/v2.34.0...v2.35.0) (2026-02-05)
 
 
