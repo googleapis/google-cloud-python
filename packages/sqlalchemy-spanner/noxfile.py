@@ -306,9 +306,12 @@ def unit(session, test_type):
     if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
 
-    if test_type == "mockserver" and session.python != DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20:
+    if (
+        test_type == "mockserver"
+        and session.python != DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20
+    ):
         session.skip("mockserver tests only run on python 3.14")
-        
+
     if test_type == "mockserver":
         mockserver(session)
         return
@@ -323,13 +326,21 @@ def unit(session, test_type):
         session.install("opentelemetry-sdk")
         session.install("opentelemetry-instrumentation")
         session.run(
-            "python", "create_test_config.py", "my-project", "my-instance", "my-database"
+            "python",
+            "create_test_config.py",
+            "my-project",
+            "my-instance",
+            "my-database",
         )
         session.run("py.test", "--quiet", os.path.join("test/unit"), *session.posargs)
         return
 
+
 @nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS)
-@nox.parametrize("test_type", ["system", "compliance_14", "compliance_20", "migration_14", "migration_20"])
+@nox.parametrize(
+    "test_type",
+    ["system", "compliance_14", "compliance_20", "migration_14", "migration_20"],
+)
 def system(session, test_type):
     """Run SQLAlchemy dialect system test suite."""
 
@@ -347,10 +358,20 @@ def system(session, test_type):
 
     if test_type == "system" and session.python not in SYSTEM_TEST_PYTHON_VERSIONS:
         session.skip("Standard system tests configured to run exclusively on 3.12")
-    if test_type in ["compliance_14", "migration_14"] and session.python != UNIT_TEST_PYTHON_VERSIONS[0]:
-        session.skip(f"SQLAlchemy 1.4-based tests configured to run exclusively on {UNIT_TEST_PYTHON_VERSIONS[0]}")
-    if test_type in ["compliance_20", "migration_20"] and session.python != DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20:
-        session.skip(f"SQLAlchemy 2.0-based tests configured to run exclusively on {DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20}")
+    if (
+        test_type in ["compliance_14", "migration_14"]
+        and session.python != UNIT_TEST_PYTHON_VERSIONS[0]
+    ):
+        session.skip(
+            f"SQLAlchemy 1.4-based tests configured to run exclusively on {UNIT_TEST_PYTHON_VERSIONS[0]}"
+        )
+    if (
+        test_type in ["compliance_20", "migration_20"]
+        and session.python != DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20
+    ):
+        session.skip(
+            f"SQLAlchemy 2.0-based tests configured to run exclusively on {DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20}"
+        )
 
     if test_type == "system":
         session.install("pytest", "pytest-cov", "pytest-asyncio")
@@ -361,7 +382,9 @@ def system(session, test_type):
         session.install("opentelemetry-instrumentation")
         session.run("python", "create_test_database.py")
         session.install("sqlalchemy>=2.0")
-        session.run("py.test", "--quiet", os.path.join("test", "system"), *session.posargs)
+        session.run(
+            "py.test", "--quiet", os.path.join("test", "system"), *session.posargs
+        )
         session.run("python", "drop_test_database.py")
     elif test_type == "compliance_14":
         compliance_test_14(session)
@@ -372,25 +395,30 @@ def system(session, test_type):
     elif test_type == "migration_20":
         _migration_test(session)
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
     session.skip("mypy tests are not yet supported")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source"""
     session.skip("Core deps from source tests are not yet supported")
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
     session.skip("prerelease deps tests are not yet supported")
 
+
 @nox.session
 def format(session: nox.sessions.Session) -> None:
     session.install(BLACK_VERSION, ISORT_VERSION)
     import os
+
     python_files = [path for path in os.listdir(".") if path.endswith(".py")]
     session.run("isort", "--fss", *python_files)
     session.run("black", *python_files)
