@@ -22,6 +22,14 @@ API Reference
     networkconnectivity_v1alpha1/services_
     networkconnectivity_v1alpha1/types_
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    networkconnectivity_v1beta/services_
+    networkconnectivity_v1beta/types_
+
 
 Changelog
 ---------

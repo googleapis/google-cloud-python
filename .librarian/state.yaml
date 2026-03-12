@@ -2450,6 +2450,8 @@ libraries:
         service_config: networkconnectivity_v1.yaml
       - path: google/cloud/networkconnectivity/v1alpha1
         service_config: networkconnectivity_v1alpha1.yaml
+      - path: google/cloud/networkconnectivity/v1beta
+        service_config: networkconnectivity_v1beta.yaml
     source_roots:
       - packages/google-cloud-network-connectivity
     preserve_regex:
