@@ -1,0 +1,16 @@
+{
+  "api_description": "This API enables connectivity with and between Google Cloud resources.",
+  "api_id": "networkconnectivity.googleapis.com",
+  "api_shortname": "networkconnectivity",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-networkconnectivity/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-networkconnectivity",
+  "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
+  "name": "google-cloud-networkconnectivity",
+  "name_pretty": "Network Connectivity API",
+  "product_documentation": "",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
+}

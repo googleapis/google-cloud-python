@@ -2504,6 +2504,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-network-services/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-networkconnectivity
+    version: 0.0.0
+    last_generated_commit: d252e591a655910c3d1b581aadfb11e68c8ff294
+    apis:
+      - path: google/cloud/networkconnectivity/v1
+        service_config: networkconnectivity_v1.yaml
+    source_roots:
+      - packages/google-cloud-networkconnectivity
+    preserve_regex:
+      - packages/google-cloud-networkconnectivity/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-networkconnectivity
+    tag_format: '{id}-v{version}'
   - id: google-cloud-notebooks
     version: 1.15.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
