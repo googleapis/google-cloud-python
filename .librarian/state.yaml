@@ -2371,7 +2371,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring
     version: 2.29.1
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
     apis:
       - path: google/monitoring/v3
         service_config: monitoring.yaml
