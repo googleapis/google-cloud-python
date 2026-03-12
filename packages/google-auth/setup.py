@@ -22,14 +22,16 @@ cryptography_base_require = [
     "cryptography >= 38.0.3",
 ]
 
+requests_base_require = ["requests >= 2.20.0, < 3.0.0"]
+
 DEPENDENCIES = (
     "pyasn1-modules>=0.2.1",
     cryptography_base_require,
+    requests_base_require,
 )
 
-requests_extra_require = ["requests >= 2.20.0, < 3.0.0"]
 
-aiohttp_extra_require = ["aiohttp >= 3.6.2, < 4.0.0", *requests_extra_require]
+aiohttp_extra_require = ["aiohttp >= 3.6.2, < 4.0.0"]
 
 pyjwt_extra_require = ["pyjwt>=2.0"]
 
@@ -46,31 +48,35 @@ urllib3_extra_require = ["urllib3", "packaging"]
 rsa_extra_require = ["rsa>=3.1.4,<5"]
 
 # Unit test requirements.
-testing_extra_require = [
+testing_minimal_require = [
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1735): Remove `grpcio` from testing requirements once an extra is added for `grpcio` dependency.
     "grpcio",
     "flask",
     "freezegun",
-    *pyjwt_extra_require,
     "pytest",
     "pytest-cov",
     "pytest-localserver",
+    "responses",
+    "pytest-asyncio",
+]
+
+testing_extra_require = [
+    *testing_minimal_require,
+    *pyjwt_extra_require,
     *pyopenssl_extra_require,
     *reauth_extra_require,
-    "responses",
     *urllib3_extra_require,
     # Async Dependencies
     *aiohttp_extra_require,
-    "aioresponses",
-    "pytest-asyncio",
-    # TODO(https://github.com/googleapis/google-auth-library-python/issues/1665): Remove the pinned version of pyopenssl
-    # once `TestDecryptPrivateKey::test_success` is updated to remove the deprecated `OpenSSL.crypto.sign` and
-    # `OpenSSL.crypto.verify` methods. See: https://www.pyopenssl.org/en/latest/changelog.html#id3.
-    "pyopenssl < 24.3.0",
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1722): `test_aiohttp_requests` depend on
     # aiohttp < 3.10.0 which is a bug. Investigate and remove the pinned aiohttp version.
     "aiohttp < 3.10.0",
+    *pyopenssl_extra_require,
+    "aioresponses",
+    "oauth2client",
+    *rsa_extra_require,
 ]
+
 
 extras = {
     # Note: cryptography was made into a required dependency. Extra is kept for backwards compatibility
@@ -80,8 +86,9 @@ extras = {
     "pyopenssl": pyopenssl_extra_require,
     "pyjwt": pyjwt_extra_require,
     "reauth": reauth_extra_require,
-    "requests": requests_extra_require,
+    "requests": requests_base_require,
     "testing": testing_extra_require,
+    "testing_minimal": testing_minimal_require,
     "urllib3": urllib3_extra_require,
     "rsa": rsa_extra_require,
     # TODO(https://github.com/googleapis/google-auth-library-python/issues/1735): Add an extra for `grpcio` dependency.
