@@ -143,7 +143,7 @@ def unit(session, install_extras):
         extras_str = "testing_minimal"
 
     session.install("-e", f".[{extras_str}]", "-c", constraints_path)
-    
+
     if not install_extras:
         # Verify requests is actually not installed
         session.run("python", "-c", "import requests", success_codes=[1])

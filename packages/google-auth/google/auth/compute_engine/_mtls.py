@@ -169,10 +169,11 @@ if _HAS_REQUESTS:
                 )
                 # Fallback to standard HTTP
                 parsed_original_url = urlparse(request.url)
-                http_fallback_url = urlunparse(parsed_original_url._replace(scheme="http"))
+                http_fallback_url = urlunparse(
+                    parsed_original_url._replace(scheme="http")
+                )
                 request.url = http_fallback_url
 
                 # Use a standard HTTPAdapter for the fallback
                 http_adapter = HTTPAdapter()
                 return http_adapter.send(request, **kwargs)
-

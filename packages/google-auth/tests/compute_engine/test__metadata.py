@@ -970,12 +970,13 @@ def test__prepare_request_for_mds_mtls_http_request(mock_mds_mtls_adapter):
 
     assert mock_mds_mtls_adapter.call_count == 0
 
+
 @mock.patch("google.auth.compute_engine._mtls._HAS_REQUESTS", False)
 @mock.patch("google.auth.compute_engine._mtls._parse_mds_mode")
 def test_get_without_requests_default(mock_parse_mds_mode):
     mock_parse_mds_mode.return_value = _metadata._mtls.MdsMtlsMode.DEFAULT
     request = make_request("foobar", headers={"content-type": "text/plain"})
-    
+
     result = _metadata.get(request, PATH)
     assert result == "foobar"
     # Ensure no session is created since requests is missing
@@ -987,7 +988,6 @@ def test_get_without_requests_default(mock_parse_mds_mode):
 def test_get_without_requests_strict(mock_parse_mds_mode):
     mock_parse_mds_mode.return_value = _metadata._mtls.MdsMtlsMode.STRICT
     request = make_request("foobar", headers={"content-type": "text/plain"})
-    
+
     with pytest.raises(exceptions.MutualTLSChannelError, match="requests library"):
         _metadata.get(request, PATH)
-

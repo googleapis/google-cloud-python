@@ -391,9 +391,9 @@ def _get_gae_credentials():
 def _get_gce_credentials(request=None, quota_project_id=None):
     """Gets credentials and project ID from the GCE Metadata Service."""
     # Ping requires a transport, but we want application default credentials
-    # to require no arguments. 
+    # to require no arguments.
     # We'll use the requests transport if present, otherwise we'll fall back to
-    #_http_client transport. If TLS is enabled, http_client will fail to communicate
+    # _http_client transport. If TLS is enabled, http_client will fail to communicate
     # with the metadata server. That case will be handled by compute_engine._mtls.
 
     # While this library is normally bundled with compute_engine, there are
