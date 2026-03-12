@@ -355,10 +355,10 @@ def system(session, test_type):
         session.skip("Standard system tests configured to run exclusively on 3.12")
     if (
         test_type in ["compliance_14", "migration_14"]
-        and session.python != UNIT_TEST_PYTHON_VERSIONS[0]
+        and session.python != SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0]
     ):
         session.skip(
-            f"SQLAlchemy 1.4-based tests configured to run exclusively on {UNIT_TEST_PYTHON_VERSIONS[0]}"
+            f"SQLAlchemy 1.4-based tests configured to run exclusively on {SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0]}"
         )
     if (
         test_type in ["compliance_20", "migration_20"]
