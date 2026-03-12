@@ -7,9 +7,21 @@
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.5.0...google-ads-datamanager-v0.6.0) (2026-03-12)
 
 
+### Documentation
+
+* update filter field documentation to clarify case requirements and improve examples ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
+
 ### Features
 
-* generate libraries ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+* deprecate INVALID_COUNTRY_CODE and add MEMBERSHIP_DURATION_TOO_LONG to the ErrorReason enum ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
+
+### Bug Fixes
+
+* feat: update advertiser_identifier_count in PairIdInfo to be optional ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+* update publisher_name in PairIdInfo to be required ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+* update match_rate_percentage in PairIdInfo to be required ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
 
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-datamanager-v0.4.0...google-ads-datamanager-v0.5.0) (2026-02-26)
 

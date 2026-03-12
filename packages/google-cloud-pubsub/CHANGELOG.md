@@ -9,7 +9,7 @@
 
 ### Features
 
-* generate libraries ([a2fc584f8e532e417442f52eadfdabfec24125a1](https://github.com/googleapis/google-cloud-python/commit/a2fc584f8e532e417442f52eadfdabfec24125a1))
+* Add BigtableConfig type ([ec1a67666be8bec7686ad144a825ae5e6b1b2d8d](https://github.com/googleapis/google-cloud-python/commit/ec1a67666be8bec7686ad144a825ae5e6b1b2d8d))
 
 ## [2.35.0](https://github.com/googleapis/python-pubsub/compare/v2.34.0...v2.35.0) (2026-02-05)
 

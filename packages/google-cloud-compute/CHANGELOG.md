@@ -9,7 +9,7 @@
 
 ### Features
 
-* generate libraries ([3ea6729df18c9d9930acbe0e156ca761a78e7623](https://github.com/googleapis/google-cloud-python/commit/3ea6729df18c9d9930acbe0e156ca761a78e7623))
+* Update Compute Engine v1 API to revision 20260227 (#1166) ([7b22ea2d3be55fe4520bdb14881a9e8d4dec498d](https://github.com/googleapis/google-cloud-python/commit/7b22ea2d3be55fe4520bdb14881a9e8d4dec498d))
 
 ## [1.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.44.0...google-cloud-compute-v1.45.0) (2026-03-05)
 

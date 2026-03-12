@@ -9,7 +9,7 @@
 
 ### Features
 
-* generate libraries ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+* Add `OFFLINE` state to Zone resources A new `OFFLINE` state has been added to the `Zone.State` enum. This state indicates that the zone is temporarily not operational, for example, while undergoing maintenance or repair ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
 
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.2.0...google-cloud-gdchardwaremanagement-v0.3.0) (2026-01-08)
 
