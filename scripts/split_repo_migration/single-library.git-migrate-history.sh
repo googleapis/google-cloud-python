@@ -142,7 +142,7 @@ echo "Success"
 popd # back to workdir
 
 # Do a diff between source code split repo and migrated code.
-git clone --recurse-submodules --recurse-submodules --recurse-submodules "git@github.com:${SOURCE_REPO}.git" source-repo-validation  # Not ideal to clone again.
+git clone --recurse-submodules "git@github.com:${SOURCE_REPO}.git" source-repo-validation  # Not ideal to clone again.
 find source-repo-validation -name .git -exec rm -rf {} +  # That folder is not needed for validation.
 
 DIFF_FILE="${WORKDIR}/diff.txt"
