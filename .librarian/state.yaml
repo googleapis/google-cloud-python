@@ -3182,6 +3182,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-speech/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-storage
+    version: 3.9.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-storage
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
     version: 1.10.0
     last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
