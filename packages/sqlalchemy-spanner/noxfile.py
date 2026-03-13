@@ -98,6 +98,7 @@ nox.options.sessions = [
     "mockserver",
 ]
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
 def lint(session):
     """Run linters.
@@ -245,7 +246,10 @@ def mockserver(session):
         "9999",
     )
     session.run(
-        "py.test", "--quiet", os.path.join("tests", "mockserver_tests"), *session.posargs
+        "py.test",
+        "--quiet",
+        os.path.join("tests", "mockserver_tests"),
+        *session.posargs,
     )
 
 
