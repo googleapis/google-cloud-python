@@ -244,6 +244,8 @@ def run_unit(session, install_test_extra):
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
+    if session.python in ("3.7",):
+        session.skip("Python 3.7 is no longer supported")
     run_unit(session, install_test_extra=True)
 
 
@@ -600,7 +602,7 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         "pyarrow",
         # We exclude each version individually so that we can continue to test
         # some prerelease packages. See:
-        # https://github.com/googleapis/python-bigquery-dataframes/pull/268#discussion_r1423205172
+        # https://github.com/googleapis/google-cloud-python/pull/268#discussion_r1423205172
         # "pandas!=2.1.4, !=2.2.0rc0, !=2.2.0, !=2.2.1",
         "pandas",
         # Workaround https://github.com/googleapis/python-db-dtypes-pandas/issues/178

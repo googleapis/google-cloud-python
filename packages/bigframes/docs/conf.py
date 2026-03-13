@@ -160,7 +160,7 @@ html_theme = "pydata_sphinx_theme"
 # documentation.
 # https://pydata-sphinx-theme.readthedocs.io/en/stable/user_guide/layout.html#references
 html_theme_options = {
-    "github_url": "https://github.com/googleapis/python-bigquery-dataframes",
+    "github_url": "https://github.com/googleapis/google-cloud-python",
     "logo": {
         "text": "BigQuery DataFrames (BigFrames)",
     },
