@@ -549,7 +549,7 @@ def core_deps_from_source(session, protobuf_implementation):
         f"{CURRENT_DIRECTORY}/../google-api-core",
         f"{CURRENT_DIRECTORY}/../google-auth",
         f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
-        f"{CURRENT_DIRECTORY}/../proto-plus"
+        f"{CURRENT_DIRECTORY}/../proto-plus",
     ]
 
     for dep in core_dependencies_from_source:
