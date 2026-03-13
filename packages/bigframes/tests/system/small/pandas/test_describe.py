@@ -15,6 +15,8 @@
 import pandas.testing
 import pytest
 
+import bigframes.pandas as bpd
+
 
 def test_df_describe_non_temporal(scalars_dfs):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
@@ -352,3 +354,40 @@ def test_series_groupby_describe(scalars_dfs):
             check_dtype=False,
             check_index_type=False,
         )
+
+
+def test_describe_json_and_obj_ref_returns_count(session):
+    # Test describe() works on JSON and OBJ_REF types (without nunique, which fails)
+    sql = """
+        SELECT
+            PARSE_JSON('{"a": 1}') AS json_col,
+            'gs://cloud-samples-data/vision/ocr/sign.jpg' AS uri_col
+    """
+    df = session.read_gbq(sql)
+
+    df["obj_ref_col"] = df["uri_col"].str.to_blob()
+    df = df.drop(columns=["uri_col"])
+
+    res = df.describe(include="all").to_pandas()
+
+    assert "count" in res.index
+    assert res.loc["count", "json_col"] == 1.0
+    assert res.loc["count", "obj_ref_col"] == 1.0
+
+
+def test_describe_with_unsupported_type_returns_empty_dataframe(session):
+    df = session.read_gbq("SELECT ST_GEOGPOINT(1.0, 2.0) AS geo_col")
+
+    res = df.describe().to_pandas()
+
+    assert len(res.columns) == 0
+    assert len(res.index) == 1
+
+
+def test_describe_empty_dataframe_returns_empty_dataframe(session):
+    df = bpd.DataFrame()
+
+    res = df.describe().to_pandas()
+
+    assert len(res.columns) == 0
+    assert len(res.index) == 1

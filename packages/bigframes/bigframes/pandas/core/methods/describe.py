@@ -56,9 +56,10 @@ def describe(
             "max",
         ]
     ).intersection(describe_block.column_labels.get_level_values(-1))
-    describe_block = describe_block.stack(override_labels=stack_cols)
-
-    return dataframe.DataFrame(describe_block).droplevel(level=0)
+    if not stack_cols.empty:
+        describe_block = describe_block.stack(override_labels=stack_cols)
+        return dataframe.DataFrame(describe_block).droplevel(level=0)
+    return dataframe.DataFrame(describe_block)
 
 
 def _describe(
@@ -120,5 +121,7 @@ def _get_aggs_for_dtype(dtype) -> list[aggregations.UnaryAggregateOp]:
         dtypes.TIME_DTYPE,
     ]:
         return [aggregations.count_op, aggregations.nunique_op]
+    elif dtypes.is_json_like(dtype) or dtype == dtypes.OBJ_REF_DTYPE:
+        return [aggregations.count_op]
     else:
         return []
