@@ -18,7 +18,7 @@ from google.cloud.spanner_v1 import (
     FixedSizePool,
     ResultSet,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
@@ -29,7 +29,7 @@ class TestNotEnforcedFK(MockServerTestBase):
     """Ensure we emit correct DDL for not enforced foreign keys."""
 
     def test_create_table(self):
-        from test.mockserver_tests.not_enforced_fk_model import Base
+        from tests.mockserver_tests.not_enforced_fk_model import Base
 
         add_result(
             """SELECT true

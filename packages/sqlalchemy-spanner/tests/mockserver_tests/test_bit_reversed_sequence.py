@@ -21,7 +21,7 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     BeginTransactionRequest,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
@@ -32,7 +32,7 @@ import google.cloud.spanner_v1.types.result_set as result_set
 
 class TestBitReversedSequence(MockServerTestBase):
     def test_create_table(self):
-        from test.mockserver_tests.bit_reversed_sequence_model import Base
+        from tests.mockserver_tests.bit_reversed_sequence_model import Base
 
         add_result(
             """SELECT true
@@ -71,7 +71,7 @@ LIMIT 1
         )
 
     def test_insert_row(self):
-        from test.mockserver_tests.bit_reversed_sequence_model import Singer
+        from tests.mockserver_tests.bit_reversed_sequence_model import Singer
 
         result = result_set.ResultSet(
             dict(

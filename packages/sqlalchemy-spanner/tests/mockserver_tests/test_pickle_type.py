@@ -22,7 +22,7 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     TypeCode,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
     add_update_count,
@@ -34,7 +34,7 @@ import google.cloud.spanner_v1.types.result_set as result_set
 
 class TestPickleType(MockServerTestBase):
     def test_create_table(self):
-        from test.mockserver_tests.pickle_type_model import Base
+        from tests.mockserver_tests.pickle_type_model import Base
 
         add_result(
             """SELECT true
@@ -62,7 +62,7 @@ LIMIT 1
         )
 
     def test_insert_and_query(self):
-        from test.mockserver_tests.pickle_type_model import UserPreferences
+        from tests.mockserver_tests.pickle_type_model import UserPreferences
 
         add_update_count(
             "INSERT INTO user_preferences (user_id, username, preferences, created_at) "

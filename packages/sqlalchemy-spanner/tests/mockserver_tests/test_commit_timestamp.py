@@ -14,7 +14,7 @@
 
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import ResultSet
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
@@ -23,7 +23,7 @@ from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 
 class TestCommitTimestamp(MockServerTestBase):
     def test_create_table(self):
-        from test.mockserver_tests.commit_timestamp_model import Base
+        from tests.mockserver_tests.commit_timestamp_model import Base
 
         add_result(
             """SELECT true

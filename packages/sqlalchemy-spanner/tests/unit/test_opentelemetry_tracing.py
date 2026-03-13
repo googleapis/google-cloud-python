@@ -18,7 +18,7 @@ except ImportError:
 from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.spanner_v1 import SpannerClient
 from google.cloud.sqlalchemy_spanner import _opentelemetry_tracing
-from test._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
+from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
 
 
 def _make_rpc_error(error_cls, trailing_metadata=None):

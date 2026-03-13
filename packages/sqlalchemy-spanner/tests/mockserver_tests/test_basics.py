@@ -38,7 +38,7 @@ from google.cloud.spanner_v1 import (
     ResultSet,
     TypeCode,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_select1_result,
     add_result,

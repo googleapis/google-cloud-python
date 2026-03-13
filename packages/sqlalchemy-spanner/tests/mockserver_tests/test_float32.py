@@ -27,7 +27,7 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     TypeCode,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
@@ -35,7 +35,7 @@ from test.mockserver_tests.mock_server_test_base import (
 
 class TestFloat32(MockServerTestBase):
     def test_insert_data(self):
-        from test.mockserver_tests.float32_model import Number
+        from tests.mockserver_tests.float32_model import Number
 
         update_count = ResultSet(
             dict(

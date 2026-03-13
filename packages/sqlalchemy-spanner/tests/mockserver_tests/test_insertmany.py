@@ -25,7 +25,7 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     CreateSessionRequest,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
@@ -37,7 +37,7 @@ class TestInsertmany(MockServerTestBase):
     @mock.patch.object(uuid, "uuid4", mock.MagicMock(side_effect=["a", "b"]))
     def test_insertmany_with_uuid_sentinels(self):
         """Ensures one bulk insert for ORM objects distinguished by uuid."""
-        from test.mockserver_tests.insertmany_model import SingerUUID
+        from tests.mockserver_tests.insertmany_model import SingerUUID
 
         self.add_uuid_insert_result(
             "INSERT INTO singers_uuid (id, name) "
@@ -68,7 +68,7 @@ class TestInsertmany(MockServerTestBase):
         requirement, so we need to make sure we don't try to bulk
         insert with them.
         """
-        from test.mockserver_tests.insertmany_model import SingerIntID
+        from tests.mockserver_tests.insertmany_model import SingerIntID
 
         self.add_int_id_insert_result(
             "INSERT INTO singers_int_id (name) "

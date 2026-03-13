@@ -24,7 +24,7 @@ from google.cloud.spanner_v1 import (
     TypeCode,
     JsonObject,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
     add_update_count,
@@ -36,7 +36,7 @@ import google.cloud.spanner_v1.types.result_set as result_set
 
 class TestJson(MockServerTestBase):
     def test_create_table(self):
-        from test.mockserver_tests.json_model import Base
+        from tests.mockserver_tests.json_model import Base
 
         add_result(
             """SELECT true
@@ -91,7 +91,7 @@ LIMIT 1
     def _test_insert_json(
         self, description, expected, expected_type_code=TypeCode.JSON
     ):
-        from test.mockserver_tests.json_model import Venue
+        from tests.mockserver_tests.json_model import Venue
 
         add_update_count(
             "INSERT INTO venues (id, name, description) VALUES (@a0, @a1, @a2)", 1
@@ -132,7 +132,7 @@ LIMIT 1
         )
 
     def _test_select_json(self, description, expected):
-        from test.mockserver_tests.json_model import Venue
+        from tests.mockserver_tests.json_model import Venue
 
         sql = "SELECT venues.id, venues.name, venues.description \n" "FROM venues"
         add_venue_query_result(sql, description)

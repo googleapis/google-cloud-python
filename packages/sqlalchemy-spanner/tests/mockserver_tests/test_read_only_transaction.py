@@ -21,7 +21,7 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     TransactionOptions,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_singer_query_result,
 )
@@ -29,7 +29,7 @@ from test.mockserver_tests.mock_server_test_base import (
 
 class TestReadOnlyTransaction(MockServerTestBase):
     def test_read_only_transaction(self):
-        from test.mockserver_tests.read_only_model import Singer
+        from tests.mockserver_tests.read_only_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name \n" + "FROM singers")
         engine = self.create_engine()

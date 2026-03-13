@@ -21,18 +21,18 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     CommitRequest,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_update_count,
 )
-from test.mockserver_tests.mock_server_test_base import add_result
+from tests.mockserver_tests.mock_server_test_base import add_result
 import google.cloud.spanner_v1.types.type as spanner_type
 import google.cloud.spanner_v1.types.result_set as result_set
 
 
 class TestStaleReads(MockServerTestBase):
     def test_request_tag(self):
-        from test.mockserver_tests.tags_model import Singer
+        from tests.mockserver_tests.tags_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name \n" + "FROM singers")
         engine = self.create_engine()
@@ -58,7 +58,7 @@ class TestStaleReads(MockServerTestBase):
         eq_("my-tag-2", requests[3].request_options.request_tag)
 
     def test_transaction_tag(self):
-        from test.mockserver_tests.tags_model import Singer
+        from tests.mockserver_tests.tags_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name\n" + "FROM singers")
         add_single_singer_query_result(

@@ -22,7 +22,7 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     TransactionOptions,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_singer_query_result,
 )
@@ -30,7 +30,7 @@ from test.mockserver_tests.mock_server_test_base import (
 
 class TestStaleReads(MockServerTestBase):
     def test_stale_read_multi_use(self):
-        from test.mockserver_tests.stale_read_model import Singer
+        from tests.mockserver_tests.stale_read_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name \nFROM singers")
         engine = self.create_engine()
@@ -75,7 +75,7 @@ class TestStaleReads(MockServerTestBase):
             )
 
     def test_stale_read_single_use(self):
-        from test.mockserver_tests.stale_read_model import Singer
+        from tests.mockserver_tests.stale_read_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name \nFROM singers")
         engine = self.create_engine()

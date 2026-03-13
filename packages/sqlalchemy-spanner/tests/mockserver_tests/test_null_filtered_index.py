@@ -18,7 +18,7 @@ from google.cloud.spanner_v1 import (
     FixedSizePool,
     ResultSet,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
@@ -29,7 +29,7 @@ class TestNullFilteredIndex(MockServerTestBase):
     """Ensure we emit correct DDL for not null filtered indexes."""
 
     def test_create_table(self):
-        from test.mockserver_tests.null_filtered_index import Base
+        from tests.mockserver_tests.null_filtered_index import Base
 
         add_result(
             """SELECT true

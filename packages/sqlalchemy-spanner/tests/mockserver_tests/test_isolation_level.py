@@ -23,7 +23,7 @@ from google.cloud.spanner_v1 import (
     TransactionOptions,
 )
 
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
@@ -37,7 +37,7 @@ ISOLATION_LEVEL_UNSPECIFIED = (
 
 class TestIsolationLevel(MockServerTestBase):
     def test_default_isolation_level(self):
-        from test.mockserver_tests.isolation_level_model import Singer
+        from tests.mockserver_tests.isolation_level_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = self.create_engine()
@@ -51,7 +51,7 @@ class TestIsolationLevel(MockServerTestBase):
         )
 
     def test_engine_isolation_level(self):
-        from test.mockserver_tests.isolation_level_model import Singer
+        from tests.mockserver_tests.isolation_level_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = create_engine(
@@ -67,7 +67,7 @@ class TestIsolationLevel(MockServerTestBase):
         self.verify_isolation_level(TransactionOptions.IsolationLevel.REPEATABLE_READ)
 
     def test_execution_options_isolation_level(self):
-        from test.mockserver_tests.isolation_level_model import Singer
+        from tests.mockserver_tests.isolation_level_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = self.create_engine()
@@ -81,7 +81,7 @@ class TestIsolationLevel(MockServerTestBase):
         self.verify_isolation_level(TransactionOptions.IsolationLevel.REPEATABLE_READ)
 
     def test_override_engine_isolation_level(self):
-        from test.mockserver_tests.isolation_level_model import Singer
+        from tests.mockserver_tests.isolation_level_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = create_engine(
@@ -99,7 +99,7 @@ class TestIsolationLevel(MockServerTestBase):
         self.verify_isolation_level(TransactionOptions.IsolationLevel.SERIALIZABLE)
 
     def test_auto_commit(self):
-        from test.mockserver_tests.isolation_level_model import Singer
+        from tests.mockserver_tests.isolation_level_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = create_engine(
@@ -138,7 +138,7 @@ class TestIsolationLevel(MockServerTestBase):
         )
 
     def test_invalid_isolation_level(self):
-        from test.mockserver_tests.isolation_level_model import Singer
+        from tests.mockserver_tests.isolation_level_model import Singer
 
         engine = self.create_engine()
         with pytest.raises(ValueError):

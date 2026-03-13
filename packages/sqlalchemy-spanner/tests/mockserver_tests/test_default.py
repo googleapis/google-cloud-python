@@ -15,13 +15,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import FixedSizePool, ResultSet
-from test.mockserver_tests.mock_server_test_base import MockServerTestBase, add_result
+from tests.mockserver_tests.mock_server_test_base import MockServerTestBase, add_result
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 
 
 class TestCreateTableDefault(MockServerTestBase):
     def test_create_table_with_default(self):
-        from test.mockserver_tests.default_model import Base
+        from tests.mockserver_tests.default_model import Base
 
         add_result(
             """SELECT true
