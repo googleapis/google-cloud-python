@@ -664,6 +664,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
             run_system = True
         else:
+<<<<<<< HEAD
             session.log(
                 "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set"
             )
@@ -673,15 +674,26 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         session.log(
             f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build"
         )
+=======
+            session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set")
+            run_system = False
+    else:
+        # Skip to speed up build (only run python implementation on real Spanner)
+        session.log(f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build")
+>>>>>>> d4bff6eaee2 (chore: improves logic within prerelease_deps session)
         run_system = False
 
     if run_system:
         # Run the tests (deduplicated logic)
+<<<<<<< HEAD
         test_path = (
             system_test_path
             if os.path.exists(system_test_path)
             else system_test_folder_path
         )
+=======
+        test_path = system_test_path if os.path.exists(system_test_path) else system_test_folder_path
+>>>>>>> d4bff6eaee2 (chore: improves logic within prerelease_deps session)
         session.run(
             "py.test",
             "--verbose",
@@ -694,7 +706,10 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                 "SKIP_BACKUP_TESTS": "true",
             },
         )
+<<<<<<< HEAD
 
+=======
+>>>>>>> d4bff6eaee2 (chore: improves logic within prerelease_deps session)
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
