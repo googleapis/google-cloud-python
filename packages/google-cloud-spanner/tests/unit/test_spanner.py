@@ -1100,6 +1100,7 @@ class TestTransaction(OpenTelemetryBase):
     def test_transaction_for_concurrent_statement_should_begin_one_transaction_with_read(
         self,
     ):
+        self.maxDiff = None
         database = _Database()
         api = database.spanner_api = self._make_spanner_api()
         session = _Session(database)

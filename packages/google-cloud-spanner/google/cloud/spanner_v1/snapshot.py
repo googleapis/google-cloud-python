@@ -220,6 +220,7 @@ class _SnapshotBase(_SessionWrapper):
         # respectively.
         self._execute_sql_request_count: int = 0
         self._read_request_count: int = 0
+        self._begin_request_sent: bool = False
 
         # Identifier for the transaction.
         self._transaction_id: Optional[bytes] = None
@@ -229,9 +230,13 @@ class _SnapshotBase(_SessionWrapper):
         # highest sequence number is included in the  commit request.
         self._precommit_token: Optional[MultiplexedSessionPrecommitToken] = None
 
-        # Operations within a transaction can be performed using multiple
+        # Operation within a transaction can be performed using multiple
         # threads, so we need to use a lock when updating the transaction.
         self._lock: threading.Lock = threading.Lock()
+
+        # Event to coordinate concurrent requests beginning the transaction.
+        # This is used to prevent the "Transaction has not begun" race condition.
+        self._transaction_begin_event = threading.Event()
 
     def begin(self) -> bytes:
         """Begins a transaction on the database.
@@ -341,11 +346,27 @@ class _SnapshotBase(_SessionWrapper):
             read request, but is not a multi-use transaction or has not begun.
         """
 
-        if self._read_request_count > 0:
-            if not self._multi_use:
-                raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
-                raise ValueError("Transaction has not begun.")
+        with self._lock:
+            # Check if this request is beginning the transaction.
+            # If a request is already in progress, other requests must wait
+            # until the transaction ID is available.
+            if self._begin_request_sent or self._read_request_count > 0:
+                if not self._multi_use:
+                    raise ValueError("Cannot re-use single-use snapshot.")
+                if self._transaction_id is None:
+                    wait_needed = True
+                else:
+                    wait_needed = False
+            else:
+                wait_needed = False
+                self._begin_request_sent = True
+
+        if wait_needed:
+            # Wait for the transaction to begin (set by another concurrent request).
+            # This prevents the race condition where concurrent requests think
+            # the transaction hasn't begun.
+            if not self._transaction_begin_event.wait(timeout=30.0):
+                raise ValueError("Timed out waiting for transaction to begin.")
 
         session = self._session
         database = session._database
@@ -527,11 +548,27 @@ class _SnapshotBase(_SessionWrapper):
             read request, but is not a multi-use transaction or has not begun.
         """
 
-        if self._read_request_count > 0:
-            if not self._multi_use:
-                raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
-                raise ValueError("Transaction has not begun.")
+        with self._lock:
+            # Check if this request is beginning the transaction.
+            # If a request is already in progress, other requests must wait
+            # until the transaction ID is available.
+            if self._begin_request_sent or self._read_request_count > 0:
+                if not self._multi_use:
+                    raise ValueError("Cannot re-use single-use snapshot.")
+                if self._transaction_id is None:
+                    wait_needed = True
+                else:
+                    wait_needed = False
+            else:
+                wait_needed = False
+                self._begin_request_sent = True
+
+        if wait_needed:
+            # Wait for the transaction to begin (set by another concurrent request).
+            # This prevents the race condition where concurrent requests think
+            # the transaction hasn't begun.
+            if not self._transaction_begin_event.wait(timeout=30.0):
+                raise ValueError("Timed out waiting for transaction to begin.")
 
         if params is not None:
             params_pb = Struct(
@@ -1058,6 +1095,8 @@ class _SnapshotBase(_SessionWrapper):
         # caller is responsible for locking until the transaction ID is updated.
         if self._transaction_id is None and transaction_pb.id:
             self._transaction_id = transaction_pb.id
+            # Notify waiting threads that the transaction has begun.
+            self._transaction_begin_event.set()
 
         if transaction_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
