@@ -42,6 +42,7 @@ DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.14"]
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -49,6 +50,9 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
+
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -95,6 +99,9 @@ nox.options.sessions = [
     "docs",
     "docfx",
     "format",
+    "prerelease_deps",
+    "core_deps_from_source",
+    "mypy",
 ]
 
 # Error if a python version is missing
@@ -193,7 +200,7 @@ def install_unittest_dependencies(session, *constraints):
     session.run("pip", "list")
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -512,6 +519,14 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
+    # Sanity check: Only run tests if credentials or emulator are set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
+
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
@@ -621,3 +636,19 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                     "SKIP_BACKUP_TESTS": "true",
                 },
             )
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run the type checker."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add mypy tests
+    session.skip("mypy tests are not yet supported")
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
