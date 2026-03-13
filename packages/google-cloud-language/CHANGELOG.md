@@ -4,6 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.18.0...google-cloud-language-v2.19.0) (2026-01-08)
 
 
