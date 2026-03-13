@@ -9155,8 +9155,9 @@ def test_get_occurrence_rest_bad_request(request_type=grafeas.GetOccurrenceReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9225,17 +9226,19 @@ def test_get_occurrence_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_get_occurrence"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_get_occurrence_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_get_occurrence"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_get_occurrence"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_get_occurrence_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_get_occurrence"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9284,8 +9287,9 @@ def test_list_occurrences_rest_bad_request(request_type=grafeas.ListOccurrencesR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9348,17 +9352,19 @@ def test_list_occurrences_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_list_occurrences"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_list_occurrences_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_list_occurrences"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_list_occurrences"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_list_occurrences_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_list_occurrences"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9411,8 +9417,9 @@ def test_delete_occurrence_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9467,13 +9474,13 @@ def test_delete_occurrence_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_delete_occurrence"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_delete_occurrence"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = grafeas.DeleteOccurrenceRequest.pb(
             grafeas.DeleteOccurrenceRequest()
@@ -9518,8 +9525,9 @@ def test_create_occurrence_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10058,17 +10066,19 @@ def test_create_occurrence_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_create_occurrence"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_create_occurrence_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_create_occurrence"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_create_occurrence"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_create_occurrence_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_create_occurrence"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10121,8 +10131,9 @@ def test_batch_create_occurrences_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10180,17 +10191,20 @@ def test_batch_create_occurrences_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_batch_create_occurrences"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_batch_create_occurrences_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_batch_create_occurrences"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_batch_create_occurrences"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor,
+            "post_batch_create_occurrences_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_batch_create_occurrences"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10248,8 +10262,9 @@ def test_update_occurrence_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10788,17 +10803,19 @@ def test_update_occurrence_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_update_occurrence"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_update_occurrence_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_update_occurrence"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_update_occurrence"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_update_occurrence_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_update_occurrence"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10851,8 +10868,9 @@ def test_get_occurrence_note_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10921,17 +10939,19 @@ def test_get_occurrence_note_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_get_occurrence_note"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_get_occurrence_note_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_get_occurrence_note"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_get_occurrence_note"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_get_occurrence_note_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_get_occurrence_note"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10982,8 +11002,9 @@ def test_get_note_rest_bad_request(request_type=grafeas.GetNoteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11052,17 +11073,15 @@ def test_get_note_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_get_note"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_get_note_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_get_note"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GrafeasRestInterceptor, "post_get_note") as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_get_note_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GrafeasRestInterceptor, "pre_get_note") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11111,8 +11130,9 @@ def test_list_notes_rest_bad_request(request_type=grafeas.ListNotesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11175,17 +11195,15 @@ def test_list_notes_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_list_notes"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_list_notes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_list_notes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GrafeasRestInterceptor, "post_list_notes") as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_list_notes_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GrafeasRestInterceptor, "pre_list_notes") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11234,8 +11252,9 @@ def test_delete_note_rest_bad_request(request_type=grafeas.DeleteNoteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11290,13 +11309,11 @@ def test_delete_note_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_delete_note"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.GrafeasRestInterceptor, "pre_delete_note") as pre,
+    ):
         pre.assert_not_called()
         pb_message = grafeas.DeleteNoteRequest.pb(grafeas.DeleteNoteRequest())
         transcode.return_value = {
@@ -11337,8 +11354,9 @@ def test_create_note_rest_bad_request(request_type=grafeas.CreateNoteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11669,17 +11687,17 @@ def test_create_note_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_create_note"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_create_note_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_create_note"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_create_note"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_create_note_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GrafeasRestInterceptor, "pre_create_note") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11730,8 +11748,9 @@ def test_batch_create_notes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11789,17 +11808,19 @@ def test_batch_create_notes_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_batch_create_notes"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_batch_create_notes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_batch_create_notes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_batch_create_notes"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_batch_create_notes_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_batch_create_notes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11852,8 +11873,9 @@ def test_update_note_rest_bad_request(request_type=grafeas.UpdateNoteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12184,17 +12206,17 @@ def test_update_note_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_update_note"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_update_note_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_update_note"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_update_note"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_update_note_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.GrafeasRestInterceptor, "pre_update_note") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12245,8 +12267,9 @@ def test_list_note_occurrences_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12307,17 +12330,20 @@ def test_list_note_occurrences_rest_interceptors(null_interceptor):
     )
     client = GrafeasClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_list_note_occurrences"
-    ) as post, mock.patch.object(
-        transports.GrafeasRestInterceptor, "post_list_note_occurrences_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GrafeasRestInterceptor, "pre_list_note_occurrences"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "post_list_note_occurrences"
+        ) as post,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor,
+            "post_list_note_occurrences_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GrafeasRestInterceptor, "pre_list_note_occurrences"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12722,11 +12748,14 @@ def test_grafeas_base_transport():
 
 def test_grafeas_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "grafeas.grafeas_v1.services.grafeas.transports.GrafeasTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "grafeas.grafeas_v1.services.grafeas.transports.GrafeasTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GrafeasTransport(
@@ -12743,9 +12772,12 @@ def test_grafeas_base_transport_with_credentials_file():
 
 def test_grafeas_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "grafeas.grafeas_v1.services.grafeas.transports.GrafeasTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "grafeas.grafeas_v1.services.grafeas.transports.GrafeasTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GrafeasTransport()
@@ -12817,11 +12849,12 @@ def test_grafeas_transport_auth_gdch_credentials(transport_class):
 def test_grafeas_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

@@ -126,6 +126,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert SchemaServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -146,6 +147,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         SchemaServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        SchemaServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1283,11 +1288,13 @@ def test_schema_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -7537,8 +7544,9 @@ def test_create_schema_rest_bad_request(request_type=gp_schema.CreateSchemaReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7681,17 +7689,19 @@ def test_create_schema_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_create_schema"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_create_schema_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_create_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_create_schema"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_create_schema_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_create_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7740,8 +7750,9 @@ def test_get_schema_rest_bad_request(request_type=schema.GetSchemaRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7810,17 +7821,19 @@ def test_get_schema_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_get_schema"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_get_schema_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_get_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_get_schema"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_get_schema_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_get_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7869,8 +7882,9 @@ def test_list_schemas_rest_bad_request(request_type=schema.ListSchemasRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7933,17 +7947,19 @@ def test_list_schemas_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_list_schemas"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_list_schemas_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_list_schemas"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_list_schemas"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_list_schemas_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_list_schemas"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7994,8 +8010,9 @@ def test_list_schema_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8058,18 +8075,20 @@ def test_list_schema_revisions_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_list_schema_revisions"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor,
-        "post_list_schema_revisions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_list_schema_revisions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_list_schema_revisions"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor,
+            "post_list_schema_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_list_schema_revisions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8122,8 +8141,9 @@ def test_commit_schema_rest_bad_request(request_type=gp_schema.CommitSchemaReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8192,17 +8212,19 @@ def test_commit_schema_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_commit_schema"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_commit_schema_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_commit_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_commit_schema"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_commit_schema_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_commit_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8251,8 +8273,9 @@ def test_rollback_schema_rest_bad_request(request_type=schema.RollbackSchemaRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8321,17 +8344,20 @@ def test_rollback_schema_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_rollback_schema"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_rollback_schema_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_rollback_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_rollback_schema"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor,
+            "post_rollback_schema_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_rollback_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8382,8 +8408,9 @@ def test_delete_schema_revision_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8452,18 +8479,20 @@ def test_delete_schema_revision_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_delete_schema_revision"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor,
-        "post_delete_schema_revision_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_delete_schema_revision"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_delete_schema_revision"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor,
+            "post_delete_schema_revision_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_delete_schema_revision"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8514,8 +8543,9 @@ def test_delete_schema_rest_bad_request(request_type=schema.DeleteSchemaRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8572,13 +8602,13 @@ def test_delete_schema_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_delete_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_delete_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = schema.DeleteSchemaRequest.pb(schema.DeleteSchemaRequest())
         transcode.return_value = {
@@ -8619,8 +8649,9 @@ def test_validate_schema_rest_bad_request(request_type=gp_schema.ValidateSchemaR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8680,17 +8711,20 @@ def test_validate_schema_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_validate_schema"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_validate_schema_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_validate_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_validate_schema"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor,
+            "post_validate_schema_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_validate_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8743,8 +8777,9 @@ def test_validate_message_rest_bad_request(request_type=schema.ValidateMessageRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8804,17 +8839,20 @@ def test_validate_message_rest_interceptors(null_interceptor):
     )
     client = SchemaServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_validate_message"
-    ) as post, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "post_validate_message_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SchemaServiceRestInterceptor, "pre_validate_message"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "post_validate_message"
+        ) as post,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor,
+            "post_validate_message_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SchemaServiceRestInterceptor, "pre_validate_message"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8869,8 +8907,9 @@ def test_get_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -8931,8 +8970,9 @@ def test_set_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -8993,8 +9033,9 @@ def test_test_iam_permissions_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9318,11 +9359,14 @@ def test_schema_service_base_transport():
 
 def test_schema_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.pubsub_v1.services.schema_service.transports.SchemaServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.pubsub_v1.services.schema_service.transports.SchemaServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SchemaServiceTransport(
@@ -9342,9 +9386,12 @@ def test_schema_service_base_transport_with_credentials_file():
 
 def test_schema_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.pubsub_v1.services.schema_service.transports.SchemaServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.pubsub_v1.services.schema_service.transports.SchemaServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SchemaServiceTransport()
@@ -9422,11 +9469,12 @@ def test_schema_service_transport_auth_gdch_credentials(transport_class):
 def test_schema_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -10047,6 +10095,41 @@ async def test_set_iam_policy_from_dict_async():
         call.assert_called()
 
 
+def test_set_iam_policy_flattened():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = SchemaServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
 def test_get_iam_policy(transport: str = "grpc"):
     client = SchemaServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10212,6 +10295,41 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = SchemaServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
@@ -10389,6 +10507,47 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = SchemaServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():
