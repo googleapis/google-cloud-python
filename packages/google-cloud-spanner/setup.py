@@ -58,7 +58,7 @@ dependencies = [
 ]
 extras = {"libcst": "libcst >= 0.2.5"}
 
-url = "https://github.com/googleapis/python-spanner"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-spanner"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
