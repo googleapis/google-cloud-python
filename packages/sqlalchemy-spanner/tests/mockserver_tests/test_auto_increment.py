@@ -21,7 +21,7 @@ from google.cloud.spanner_v1 import (
     CommitRequest,
     BeginTransactionRequest,
 )
-from test.mockserver_tests.mock_server_test_base import (
+from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
     add_update_count,
@@ -33,7 +33,7 @@ import google.cloud.spanner_v1.types.result_set as result_set
 
 class TestAutoIncrement(MockServerTestBase):
     def test_create_table(self):
-        from test.mockserver_tests.auto_increment_model import Base
+        from tests.mockserver_tests.auto_increment_model import Base
 
         add_result(
             """SELECT true
@@ -59,7 +59,7 @@ LIMIT 1
         )
 
     def test_create_auto_increment_table(self):
-        from test.mockserver_tests.auto_increment_model import Base
+        from tests.mockserver_tests.auto_increment_model import Base
 
         add_result(
             """SELECT true
@@ -85,7 +85,7 @@ LIMIT 1
         )
 
     def test_create_table_with_specific_sequence_kind(self):
-        from test.mockserver_tests.auto_increment_model import Base
+        from tests.mockserver_tests.auto_increment_model import Base
 
         add_result(
             """SELECT true
@@ -112,7 +112,7 @@ LIMIT 1
         )
 
     def test_insert_row(self):
-        from test.mockserver_tests.auto_increment_model import Singer
+        from tests.mockserver_tests.auto_increment_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = self.create_engine()
@@ -133,7 +133,7 @@ LIMIT 1
         is_instance_of(requests[3], CommitRequest)
 
     def test_insert_row_with_pk_value(self):
-        from test.mockserver_tests.auto_increment_model import Singer
+        from tests.mockserver_tests.auto_increment_model import Singer
 
         # SQLAlchemy should not use a THEN RETURN clause when a value for the
         # primary key has been set on the model.

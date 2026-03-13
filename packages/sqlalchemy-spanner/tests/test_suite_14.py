@@ -140,7 +140,7 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeTextTest as _UnicodeTextTest,
     _UnicodeFixture as __UnicodeFixture,
 )
-from test._helpers import get_db_url, get_project
+from tests._helpers import get_db_url, get_project
 
 from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 

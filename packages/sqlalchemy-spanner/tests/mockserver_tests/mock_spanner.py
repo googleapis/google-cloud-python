@@ -18,9 +18,9 @@ from google.cloud.spanner_v1 import (
     ExecuteSqlRequest,
 )
 from google.protobuf import empty_pb2
-import test.mockserver_tests.spanner_pb2_grpc as spanner_grpc
-import test.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
-from test.mockserver_tests.mock_database_admin import DatabaseAdminServicer
+import tests.mockserver_tests.spanner_pb2_grpc as spanner_grpc
+import tests.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
+from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
 import google.cloud.spanner_v1.types.result_set as result_set
 import google.cloud.spanner_v1.types.transaction as transaction
 import google.cloud.spanner_v1.types.commit_response as commit

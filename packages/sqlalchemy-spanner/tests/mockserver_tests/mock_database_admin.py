@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from google.protobuf import empty_pb2
-import test.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
+import tests.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
 from google.longrunning import operations_pb2 as operations_pb2
 
 

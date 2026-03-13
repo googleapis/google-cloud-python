@@ -30,8 +30,8 @@ from google.cloud.spanner_v1.instance import Instance
 import grpc
 
 # TODO: Replace this with the mock server in the Spanner client lib
-from test.mockserver_tests.mock_spanner import SpannerServicer, start_mock_server
-from test.mockserver_tests.mock_database_admin import DatabaseAdminServicer
+from tests.mockserver_tests.mock_spanner import SpannerServicer, start_mock_server
+from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
 
 
 def add_result(sql: str, result: ResultSet):

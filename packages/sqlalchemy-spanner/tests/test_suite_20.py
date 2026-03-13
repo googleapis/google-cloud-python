@@ -152,7 +152,7 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeTextTest as _UnicodeTextTest,
     _UnicodeFixture as __UnicodeFixture,
 )  # noqa: F401, F403
-from test._helpers import (
+from tests._helpers import (
     get_db_url,
     get_project,
 )
