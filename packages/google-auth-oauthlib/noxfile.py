@@ -34,11 +34,7 @@ LINT_PATHS = ["docs", "google_auth_oauthlib", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-# TODO(https://github.com/googleapis/google-auth-library-python-oauthlib/issues/410):
-# Remove or restore testing for Python 3.7/3.8
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -160,31 +156,13 @@ def install_unittest_dependencies(session, *constraints):
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-@nox.parametrize(
-    "protobuf_implementation",
-    ["python", "upb", "cpp"],
-)
-def unit(session, protobuf_implementation):
+def unit(session):
     # Install all test dependencies, then install this package in-place.
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the unit tests.
     session.run(
@@ -199,9 +177,6 @@ def unit(session, protobuf_implementation):
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
-        env={
-            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-        },
     )
 
 

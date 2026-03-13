@@ -25,8 +25,6 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -222,18 +220,10 @@ def docfx(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all test dependencies, then install local packages in-place.
     session.install("pytest", "pytest-cov")
@@ -315,20 +305,12 @@ def prerelease_deps(session, protobuf_implementation):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all test dependencies, then install local packages in-place.
     session.install("pytest", "pytest-cov")

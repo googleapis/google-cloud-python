@@ -35,8 +35,6 @@ LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -173,31 +171,13 @@ def install_unittest_dependencies(session, *constraints):
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
-@nox.parametrize(
-    "protobuf_implementation",
-    ["python", "upb", "cpp"],
-)
-def unit(session, protobuf_implementation):
+def unit(session):
     # Install all test dependencies, then install this package in-place.
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the unit tests.
     session.run(
@@ -212,9 +192,6 @@ def unit(session, protobuf_implementation):
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
-        env={
-            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-        },
     )
 
 
@@ -386,20 +363,8 @@ def docfx(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-@nox.parametrize(
-    "protobuf_implementation",
-    ["python", "upb", "cpp"],
-)
-def prerelease_deps(session, protobuf_implementation):
+def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
@@ -441,9 +406,6 @@ def prerelease_deps(session, protobuf_implementation):
     session.run(
         "py.test",
         "tests/unit",
-        env={
-            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-        },
     )
 
     system_test_path = os.path.join("tests", "system.py")
@@ -457,9 +419,6 @@ def prerelease_deps(session, protobuf_implementation):
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
             *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
         )
     if os.path.exists(system_test_folder_path):
         session.run(
@@ -468,28 +427,13 @@ def prerelease_deps(session, protobuf_implementation):
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
             *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
         )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-@nox.parametrize(
-    "protobuf_implementation",
-    ["python", "upb", "cpp"],
-)
-def core_deps_from_source(session, protobuf_implementation):
+def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
@@ -533,9 +477,6 @@ def core_deps_from_source(session, protobuf_implementation):
     session.run(
         "py.test",
         "tests/unit",
-        env={
-            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-        },
     )
 
     system_test_path = os.path.join("tests", "system.py")
@@ -549,9 +490,6 @@ def core_deps_from_source(session, protobuf_implementation):
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
             *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
         )
     if os.path.exists(system_test_folder_path):
         session.run(
@@ -560,7 +498,4 @@ def core_deps_from_source(session, protobuf_implementation):
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
             *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-            },
         )
