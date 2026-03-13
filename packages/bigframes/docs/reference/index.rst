@@ -19,6 +19,16 @@ packages.
     bigframes.pandas.api.typing
     bigframes.streaming
 
+Pandas Extensions
+~~~~~~~~~~~~~~~~~
+
+BigQuery DataFrames provides extensions to pandas DataFrame objects.
+
+.. autosummary::
+    :toctree: api
+
+    bigframes.extensions.pandas.dataframe_accessor.BigQueryDataFrameAccessor
+
 ML APIs
 ~~~~~~~
 

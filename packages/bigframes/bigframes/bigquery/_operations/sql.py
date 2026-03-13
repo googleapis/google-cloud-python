@@ -16,19 +16,31 @@
 
 from __future__ import annotations
 
-from typing import Sequence
+from typing import cast, Optional, Sequence, Union
 
 import google.cloud.bigquery
 
 from bigframes.core.compile.sqlglot import sql
+import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.operations
 import bigframes.series
 
 
+def _format_names(sql_template: str, dataframe: bigframes.dataframe.DataFrame):
+    """Turn sql_template from a template that uses names to one that uses
+    numbers.
+    """
+    names_to_numbers = {name: f"{{{i}}}" for i, name in enumerate(dataframe.columns)}
+    numbers = [f"{{{i}}}" for i in range(len(dataframe.columns))]
+    return sql_template.format(*numbers, **names_to_numbers)
+
+
 def sql_scalar(
     sql_template: str,
-    columns: Sequence[bigframes.series.Series],
+    columns: Union[bigframes.dataframe.DataFrame, Sequence[bigframes.series.Series]],
+    *,
+    output_dtype: Optional[bigframes.dtypes.Dtype] = None,
 ) -> bigframes.series.Series:
     """Create a Series from a SQL template.
 
@@ -36,6 +48,9 @@ def sql_scalar(
 
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
+
+    Either pass in a sequence of series, in which case use  integers in the
+    format strings.
 
         >>> s = bpd.Series(["1.5", "2.5", "3.5"])
         >>> s = s.astype(pd.ArrowDtype(pa.decimal128(38, 9)))
@@ -45,13 +60,29 @@ def sql_scalar(
         2    4.000000000
         dtype: decimal128(38, 9)[pyarrow]
 
+    Or pass in a DataFrame, in which case use the column names in the format
+    strings.
+
+        >>> df = bpd.DataFrame({"a": ["1.5", "2.5", "3.5"]})
+        >>> df = df.astype({"a": pd.ArrowDtype(pa.decimal128(38, 9))})
+        >>> bbq.sql_scalar("ROUND({a}, 0, 'ROUND_HALF_EVEN')", df)
+        0    2.000000000
+        1    2.000000000
+        2    4.000000000
+        dtype: decimal128(38, 9)[pyarrow]
+
     Args:
         sql_template (str):
             A SQL format string with Python-style {0} placeholders for each of
             the Series objects in ``columns``.
-        columns (Sequence[bigframes.pandas.Series]):
+        columns (
+            Sequence[bigframes.pandas.Series] | bigframes.pandas.DataFrame
+        ):
             Series objects representing the column inputs to the
             ``sql_template``. Must contain at least one Series.
+        output_dtype (a BigQuery DataFrames compatible dtype, optional):
+            If provided, BigQuery DataFrames uses this to determine the output
+            of the returned Series. This avoids a dry run query.
 
     Returns:
         bigframes.pandas.Series:
@@ -60,28 +91,38 @@ def sql_scalar(
     Raises:
         ValueError: If ``columns`` is empty.
     """
+    if isinstance(columns, bigframes.dataframe.DataFrame):
+        sql_template = _format_names(sql_template, columns)
+        columns = [
+            cast(bigframes.series.Series, columns[column]) for column in columns.columns
+        ]
+
     if len(columns) == 0:
         raise ValueError("Must provide at least one column in columns")
+
+    base_series = columns[0]
 
     # To integrate this into our expression trees, we need to get the output
     # type, so we do some manual compilation and a dry run query to get that.
     # Another benefit of this is that if there is a syntax error in the SQL
     # template, then this will fail with an error earlier in the process,
     # aiding users in debugging.
-    literals_sql = [sql.to_sql(sql.literal(None, column.dtype)) for column in columns]
-    select_sql = sql_template.format(*literals_sql)
-    dry_run_sql = f"SELECT {select_sql}"
+    if output_dtype is None:
+        literals_sql = [
+            sql.to_sql(sql.literal(None, column.dtype)) for column in columns
+        ]
+        select_sql = sql_template.format(*literals_sql)
+        dry_run_sql = f"SELECT {select_sql}"
 
-    # Use the executor directly, because we want the original column IDs, not
-    # the user-friendly column names that block.to_sql_query() would produce.
-    base_series = columns[0]
-    bqclient = base_series._session.bqclient
-    job = bqclient.query(
-        dry_run_sql, job_config=google.cloud.bigquery.QueryJobConfig(dry_run=True)
-    )
-    _, output_type = bigframes.dtypes.convert_schema_field(job.schema[0])
+        # Use the executor directly, because we want the original column IDs, not
+        # the user-friendly column names that block.to_sql_query() would produce.
+        bqclient = base_series._session.bqclient
+        job = bqclient.query(
+            dry_run_sql, job_config=google.cloud.bigquery.QueryJobConfig(dry_run=True)
+        )
+        _, output_dtype = bigframes.dtypes.convert_schema_field(job.schema[0])
 
     op = bigframes.operations.SqlScalarOp(
-        _output_type=output_type, sql_template=sql_template
+        _output_type=output_dtype, sql_template=sql_template
     )
     return base_series._apply_nary_op(op, columns[1:])

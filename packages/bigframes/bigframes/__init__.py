@@ -32,6 +32,9 @@ from bigframes.core.global_session import (  # noqa: E402
 )
 import bigframes.enums as enums  # noqa: E402
 import bigframes.exceptions as exceptions  # noqa: E402
+
+# Register pandas extensions
+import bigframes.extensions.pandas.dataframe_accessor  # noqa: F401, E402
 from bigframes.session import connect, Session  # noqa: E402
 from bigframes.version import __version__  # noqa: E402
 

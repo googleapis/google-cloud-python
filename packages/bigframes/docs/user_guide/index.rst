@@ -18,6 +18,7 @@ User Guide
    Getting Started <../notebooks/getting_started/getting_started_bq_dataframes.ipynb>
    Magics <../notebooks/getting_started/magics.ipynb>
    ML Fundamentals <../notebooks/getting_started/ml_fundamentals_bq_dataframes.ipynb>
+   Pandas Extensions <../notebooks/getting_started/pandas_extensions.ipynb>
 
 .. toctree::
    :caption: DataFrames
