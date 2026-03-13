@@ -89,6 +89,15 @@ DEFAULT_PYTHON_VERSION = "3.14"
 DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20 = "3.14"
 
 
+nox.options.sessions = [
+    "system",
+    "compliance_test_14",
+    "compliance_test_20",
+    "migration_test",
+    "_migration_test",
+    "mockserver",
+]
+
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
 def lint(session):
     """Run linters.
