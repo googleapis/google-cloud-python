@@ -18,6 +18,15 @@ libraries:
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
+  - id: django-google-spanner
+    version: 4.0.2
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/django-google-spanner
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-ads-admanager
     version: 0.8.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
@@ -4127,6 +4136,12 @@ libraries:
     apis: []
     source_roots:
       - packages/sqlalchemy-bigquery
+  - id: sqlalchemy-spanner
+    version: 1.17.2
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/sqlalchemy-spanner
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
