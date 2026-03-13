@@ -32,6 +32,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_document import BaseDocumentReference
     from google.cloud.firestore_v1.base_query import BaseQuery
     from google.cloud.firestore_v1.client import Client
+    from google.cloud.firestore_v1.pipeline_expressions import Expression
 
 
 PipelineType = TypeVar("PipelineType", bound=_BasePipeline)
@@ -108,3 +109,66 @@ class PipelineSource(Generic[PipelineType]):
             a new pipeline instance targeting the specified documents
         """
         return self._create_pipeline(stages.Documents.of(*docs))
+
+    def literals(self, *documents: "Expression" | dict) -> PipelineType:
+        """
+        Returns documents from a fixed set of predefined document objects.
+
+        This stage is commonly used for testing other stages in isolation,
+        though it can also be used as inputs to join conditions.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
+            >>> documents = [
+            ...     {"name": "joe", "age": 10},
+            ...     {"name": "bob", "age": 30},
+            ...     {"name": "alice", "age": 40}
+            ... ]
+            >>> pipeline = client.pipeline()
+            ...     .literals(documents)
+            ...     .where(field("age").lessThan(35))
+
+            Output documents:
+            ```json
+            [
+                {"name": "joe", "age": 10},
+                {"name": "bob", "age": 30}
+            ]
+            ```
+
+        Behavior:
+            The `literals(...)` stage can only be used as the first stage in a pipeline (or
+            sub-pipeline). The order of documents returned from the `literals` matches the
+            order in which they are defined.
+
+            While literal values are the most common, it is also possible to pass in
+            expressions, which will be evaluated and returned, making it possible to test
+            out different query / expression behavior without first needing to create some
+            test data.
+
+            For example, the following shows how to quickly test out the `length(...)`
+            function on some constant test sets:
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
+            >>> documents = [
+            ...     {"x": Constant.of("foo-bar-baz").char_length()},
+            ...     {"x": Constant.of("bar").char_length()}
+            ... ]
+            >>> pipeline = client.pipeline().literals(documents)
+
+            Output documents:
+            ```json
+            [
+                {"x": 11},
+                {"x": 3}
+            ]
+            ```
+
+        Args:
+            *documents: One or more documents to be returned by this stage. Each can be a `dict`
+                       or an `Expression`.
+        Returns:
+            A new Pipeline object with this stage appended to the stage list.
+        """
+        return self._create_pipeline(stages.Literals(*documents))

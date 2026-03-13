@@ -685,3 +685,34 @@ tests:
           - fieldReferenceValue: awards
           - stringValue: full_replace
           name: replace_with
+  - description: literals
+    pipeline:
+      - Literals:
+        - title: "The Hitchhiker's Guide to the Galaxy"
+          author: "Douglas Adams"
+        - Constant:
+            value:
+              genre: "Science Fiction"
+              year: 1979
+    assert_results:
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        author: "Douglas Adams"
+      - genre: "Science Fiction"
+        year: 1979
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - mapValue:
+              fields:
+                author:
+                  stringValue: "Douglas Adams"
+                title:
+                  stringValue: "The Hitchhiker's Guide to the Galaxy"
+          - mapValue:
+              fields:
+                genre:
+                  stringValue: "Science Fiction"
+                year:
+                  integerValue: '1979'
+          name: literals
