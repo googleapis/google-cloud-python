@@ -39,7 +39,7 @@ LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.14"
 
 DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.14"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.8",
@@ -566,14 +566,6 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
-    # Sanity check: Only run tests if credentials or emulator are set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
-        "SPANNER_EMULATOR_HOST", ""
-    ):
-        session.skip(
-            "Credentials or emulator host must be set via environment variable"
-        )
-
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
@@ -656,37 +648,37 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
 
     # Only run system tests for one protobuf implementation on real Spanner to speed up the build.
     if os.environ.get("SPANNER_EMULATOR_HOST") or protobuf_implementation == "python":
-        # Only run system tests if found.
-        if os.path.exists(system_test_path):
-            session.run(
-                "py.test",
-                "--verbose",
-                "-o",
-                "asyncio_mode=auto",
-                f"--junitxml=system_{session.python}_sponge_log.xml",
-                system_test_path,
-                *session.posargs,
-                env={
-                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                    "SPANNER_DATABASE_DIALECT": database_dialect,
-                    "SKIP_BACKUP_TESTS": "true",
-                },
-            )
-        elif os.path.exists(system_test_folder_path):
-            session.run(
-                "py.test",
-                "--verbose",
-                "-o",
-                "asyncio_mode=auto",
-                f"--junitxml=system_{session.python}_sponge_log.xml",
-                system_test_folder_path,
-                *session.posargs,
-                env={
-                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                    "SPANNER_DATABASE_DIALECT": database_dialect,
-                    "SKIP_BACKUP_TESTS": "true",
-                },
-            )
+        # Sanity check: Only run system tests if credentials or emulator are set.
+        if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") or os.environ.get("SPANNER_EMULATOR_HOST"):
+            # Only run system tests if found.
+            if os.path.exists(system_test_path):
+                session.run(
+                    "py.test",
+                    "--verbose",
+                    f"--junitxml=system_{session.python}_sponge_log.xml",
+                    system_test_path,
+                    *session.posargs,
+                    env={
+                        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                        "SPANNER_DATABASE_DIALECT": database_dialect,
+                        "SKIP_BACKUP_TESTS": "true",
+                    },
+                )
+            elif os.path.exists(system_test_folder_path):
+                session.run(
+                    "py.test",
+                    "--verbose",
+                    f"--junitxml=system_{session.python}_sponge_log.xml",
+                    system_test_folder_path,
+                    *session.posargs,
+                    env={
+                        "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                        "SPANNER_DATABASE_DIALECT": database_dialect,
+                        "SKIP_BACKUP_TESTS": "true",
+                    },
+                )
+        else:
+            session.log("Skipping system tests because credentials/emulator are missing")
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
