@@ -14,7 +14,7 @@ A comprehensive list of changes in each version may be found in the `CHANGELOG`_
 
 - `Product Documentation`_
 - `Client Library Documentation`_
-- `github.com/googleapis/python-storage`_
+- `github.com/googleapis/google-cloud-python`_
 
 Certain control plane and long-running operations for Cloud Storage (including Folder
 and Managed Folder operations) are supported via the `Storage Control Client`_.
@@ -33,8 +33,8 @@ Google APIs Client Libraries, in `Client Libraries Explained`_.
 .. _Google Cloud Storage: https://cloud.google.com/storage
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storage/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/storage
-.. _CHANGELOG:  https://github.com/googleapis/python-storage/blob/main/CHANGELOG.md
-.. _github.com/googleapis/python-storage: https://github.com/googleapis/python-storage
+.. _CHANGELOG:  https://github.com/googleapis/google-cloud-python/blob/main/CHANGELOG.md
+.. _github.com/googleapis/google-cloud-python: https://github.com/googleapis/google-cloud-python
 .. _Storage Control Client: https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest
 .. _Storage Control API: https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
 .. _Client Libraries Explained: https://cloud.google.com/apis/docs/client-libraries-explained
@@ -77,7 +77,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _`samples/`: https://github.com/googleapis/python-storage/tree/main/samples
+.. _`samples/`: https://github.com/googleapis/google-cloud-python/tree/main/samples
 
 
 Supported Python Versions
