@@ -421,6 +421,38 @@ class TestFindNearest:
         assert len(result.args) == 3
 
 
+class TestLet:
+    def _make_one(self, *args, **kwargs):
+        return stages.Let(*args, **kwargs)
+
+    def test_ctor(self):
+        expr1 = Field.of("field1")
+        expr2 = Field.of("field2").add(1)
+        instance = self._make_one(var1=expr1, var2=expr2)
+        assert instance.variables == {"var1": expr1, "var2": expr2}
+        assert instance.name == "let"
+
+    def test_repr(self):
+        expr1 = Field.of("field1")
+        instance = self._make_one(var1=expr1)
+        repr_str = repr(instance)
+        assert repr_str == "Let(var1=Field.of('field1'))"
+
+    def test_to_pb(self):
+        expr1 = Field.of("field1")
+        expr2 = Constant.of(5)
+        instance = self._make_one(var1=expr1, num=expr2)
+        result = instance._to_pb()
+        assert result.name == "let"
+        assert len(result.args) == 1
+        expected_map_value = {
+            "var1": Value(field_reference_value="field1"),
+            "num": Value(integer_value=5),
+        }
+        assert result.args[0].map_value.fields == expected_map_value
+        assert len(result.options) == 0
+
+
 class TestRawStage:
     def _make_one(self, *args, **kwargs):
         return stages.RawStage(*args, **kwargs)

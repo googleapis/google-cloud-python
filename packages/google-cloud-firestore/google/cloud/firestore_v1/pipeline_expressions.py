@@ -1868,6 +1868,27 @@ class Field(Selectable):
         return Value(field_reference_value=self.path)
 
 
+class Variable(Selectable):
+    """Represents a reference to a variable within a pipeline."""
+
+    def __init__(self, name: str):
+        """Initializes a Variable reference.
+
+        Args:
+            name: The name of the variable.
+        """
+        self.name = name
+
+    def _to_map(self):
+        return self.name, self._to_pb()
+
+    def __repr__(self):
+        return f"Variable({self.name!r})"
+
+    def _to_pb(self):
+        return Value(variable_reference_value=self.name)
+
+
 class BooleanExpression(FunctionExpression):
     """Filters the given data in some way."""
 

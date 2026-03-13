@@ -303,6 +303,23 @@ class FindNearest(Stage):
         return options
 
 
+class Let(Stage):
+    """Stage which declares a set of variables which can be accessed from the current
+    scope and below."""
+
+    def __init__(self, **variables: Expression):
+        super().__init__("let")
+        self.variables = variables
+
+    def _pb_args(self):
+        map_val = {k: v._to_pb() for k, v in self.variables.items()}
+        return [Value(map_value={"fields": map_val})]
+
+    def __repr__(self):
+        vars_str = ", ".join(f"{k}={v!r}" for k, v in self.variables.items())
+        return f"{self.__class__.__name__}({vars_str})"
+
+
 class RawStage(Stage):
     """Represents a generic, named stage with parameters."""
 

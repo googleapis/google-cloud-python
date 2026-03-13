@@ -275,6 +275,31 @@ class _BasePipeline:
             stages.FindNearest(field, vector, distance_measure, options)
         )
 
+    def let(self, **variables: Expression) -> "_BasePipeline":
+        """
+        Stage which declares a set of variables which can be accessed from the current scope
+        and below.
+
+        Variables are defined in a separate (global) scope, that does not interfere with
+        local field references.
+
+        Example:
+            >>> from google.cloud.firestore_v1.pipeline_expressions import Field, add
+            >>> pipeline = client.pipeline().collection("books")
+            >>> pipeline = pipeline.let(
+            ...     rating_plus_one=add(Field.of("rating"), 1),
+            ...     has_awards=Field.of("awards").exists()
+            ... )
+            >>> # Later stages can use Variable.of("rating_plus_one")
+
+        Args:
+            **variables: Keyword arguments where keys are the variable names (str)
+                         and values are the `Expression` objects defining them.
+        Returns:
+            A new Pipeline object with this stage appended to the stage list
+        """
+        return self._append(stages.Let(**variables))
+
     def replace_with(
         self,
         field: Selectable,

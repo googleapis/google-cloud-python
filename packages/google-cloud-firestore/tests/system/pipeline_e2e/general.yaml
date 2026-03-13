@@ -685,3 +685,68 @@ tests:
           - fieldReferenceValue: awards
           - stringValue: full_replace
           name: replace_with
+  - description: testLetStage
+    pipeline:
+      - Collection: books
+      - Where:
+        - FunctionExpression.equal:
+          - Field: title
+          - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Let:
+          my_rating:
+            Field: rating
+          author_name: 
+            Field: author
+          rating_plus_one: 
+            FunctionExpression.add:
+              - Field: rating
+              - Constant: 1
+      - Select:
+        - title
+        - Variable: my_rating
+        - Variable: author_name
+        - Variable: rating_plus_one
+    assert_results:
+      - title: "The Hitchhiker's Guide to the Galaxy"
+        my_rating: 4.2
+        author_name: "Douglas Adams"
+        rating_plus_one: 5.2
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                my_rating:
+                  fieldReferenceValue: rating
+                author_name:
+                  fieldReferenceValue: author
+                rating_plus_one:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: rating
+                    - integerValue: '1'
+                    name: add
+          name: let
+        - args:
+          - mapValue:
+              fields:
+                title:
+                  fieldReferenceValue: title
+                my_rating:
+                  variableReferenceValue: my_rating
+                author_name:
+                  variableReferenceValue: author_name
+                rating_plus_one:
+                  variableReferenceValue: rating_plus_one
+          name: select
