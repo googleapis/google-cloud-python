@@ -79,7 +79,7 @@ UPGRADE_CODE = """def upgrade():
 
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
-BLACK_PATHS = ["google", "test", "noxfile.py", "setup.py", "samples"]
+BLACK_PATHS = ["google", "tests", "noxfile.py", "setup.py", "samples"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 ALL_PYTHON.extend(["3.7"])
@@ -114,7 +114,7 @@ def lint(session):
     session.run(
         "flake8",
         "google",
-        "test",
+        "tests",
         "--max-line-length=88",
     )
 
@@ -171,13 +171,13 @@ def compliance_test_14(session):
     session.run(
         "py.test",
         "--cov=google.cloud.sqlalchemy_spanner",
-        "--cov=test",
+        "--cov=tests",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
         "--asyncio-mode=auto",
-        "test/test_suite_14.py",
+        "tests/test_suite_14.py",
         *session.posargs,
     )
 
@@ -213,13 +213,13 @@ def compliance_test_20(session):
     session.run(
         "py.test",
         "--cov=google.cloud.sqlalchemy_spanner",
-        "--cov=test",
+        "--cov=tests",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
         "--asyncio-mode=auto",
-        "test/test_suite_20.py",
+        "tests/test_suite_20.py",
         *session.posargs,
     )
 
@@ -245,7 +245,7 @@ def mockserver(session):
         "9999",
     )
     session.run(
-        "py.test", "--quiet", os.path.join("test", "mockserver_tests"), *session.posargs
+        "py.test", "--quiet", os.path.join("tests", "mockserver_tests"), *session.posargs
     )
 
 
@@ -336,7 +336,7 @@ def unit(session, test_type):
         session.install("opentelemetry-api")
         session.install("opentelemetry-sdk")
         session.install("opentelemetry-instrumentation")
-        session.run("py.test", "--quiet", os.path.join("test/unit"), *session.posargs)
+        session.run("py.test", "--quiet", os.path.join("tests/unit"), *session.posargs)
         return
 
 
@@ -387,7 +387,7 @@ def system(session, test_type):
         session.run("python", "create_test_database.py")
         session.install("sqlalchemy>=2.0")
         session.run(
-            "py.test", "--quiet", os.path.join("test", "system"), *session.posargs
+            "py.test", "--quiet", os.path.join("tests", "system"), *session.posargs
         )
         session.run("python", "drop_test_database.py")
     elif test_type == "compliance_14":
