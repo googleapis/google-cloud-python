@@ -27,7 +27,6 @@ import warnings
 
 from google.auth import environment_vars
 from google.auth import exceptions
-import google.auth.transport._http_client
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.auth.credentials import Credentials  # noqa: F401
@@ -391,21 +390,22 @@ def _get_gae_credentials():
 def _get_gce_credentials(request=None, quota_project_id=None):
     """Gets credentials and project ID from the GCE Metadata Service."""
     # Ping requires a transport, but we want application default credentials
-    # to require no arguments. So, we'll use the _http_client transport which
-    # uses http.client. This is only acceptable because the metadata server
-    # doesn't do SSL and never requires proxies.
+    # to require no arguments.
+    # MDS connections use mTLS (#1856), which has a hard requirement for requests,
+    # so we cant use http.client anymore.
 
     # While this library is normally bundled with compute_engine, there are
     # some cases where it's not available, so we tolerate ImportError.
     try:
         from google.auth import compute_engine
         from google.auth.compute_engine import _metadata
+        from google.auth.transport.requests import Request
     except ImportError:
         _LOGGER.warning("Import of Compute Engine auth library failed.")
         return None, None
 
     if request is None:
-        request = google.auth.transport._http_client.Request()
+        request = Request()
 
     if _metadata.is_on_gce(request=request):
         # Get the project ID.
