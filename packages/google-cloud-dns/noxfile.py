@@ -477,10 +477,11 @@ def core_deps_from_source(session):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-cloud-core @ git+https://github.com/googleapis/python-cloud-core.git",
-        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
-        "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+        f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
+        f"{CURRENT_DIRECTORY}/../google-api-core",
+        f"{CURRENT_DIRECTORY}/../google-auth",
+        f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
+        f"{CURRENT_DIRECTORY}/../proto-plus"
     ]
     for dep in core_dependencies_from_source:
         session.install(dep, "--no-deps", "--ignore-installed")

@@ -435,7 +435,7 @@ def core_deps_from_source(session):
     session.install(*constraints_deps)
 
     core_dependencies_from_source = [
-        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
         "requests-oauthlib @ git+https://github.com/requests/requests-oauthlib.git",
     ]
 
