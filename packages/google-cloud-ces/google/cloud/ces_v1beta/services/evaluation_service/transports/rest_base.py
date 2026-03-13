@@ -1656,7 +1656,7 @@ class _BaseEvaluationServiceRestTransport(EvaluationServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta/{app=projects/*/locations/*/apps/*}:uploadEvaluationAudio",
+                    "uri": "/v1beta/{name=projects/*/locations/*/apps/*/evaluations/*}:uploadEvaluationAudio",
                     "body": "*",
                 },
             ]

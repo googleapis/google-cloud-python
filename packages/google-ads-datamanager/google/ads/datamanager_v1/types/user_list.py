@@ -569,21 +569,25 @@ class PairIdInfo(proto.Message):
 
             This field is a member of `oneof`_ ``_publisher_id``.
         publisher_name (str):
-            Optional. Descriptive name of the publisher
+            Required. Descriptive name of the publisher
             to be displayed in the UI for a better targeting
             experience.
 
             This field is a member of `oneof`_ ``_publisher_name``.
         match_rate_percentage (int):
-            Output only. This field denotes the
-            percentage of membership match of this user list
-            with the corresponding publisher's first party
-            data. Must be between 0 and 100 inclusive.
+            Required. This field denotes the percentage
+            of membership match of this user list with the
+            corresponding publisher's first party data. Must
+            be between 0 and 100 inclusive.
+
+            This field is a member of `oneof`_ ``_match_rate_percentage``.
         advertiser_identifier_count (int):
-            Output only. The count of the advertiser's
-            first party data records that have been uploaded
-            to a clean room provider. This does not signify
-            the size of a PAIR user list.
+            Optional. The count of the advertiser's first
+            party data records that have been uploaded to a
+            clean room provider. This does not signify the
+            size of a PAIR user list.
+
+            This field is a member of `oneof`_ ``_advertiser_identifier_count``.
         clean_room_identifier (str):
             Required. Immutable. Identifies a unique
             advertiser to publisher relationship with one
@@ -606,10 +610,12 @@ class PairIdInfo(proto.Message):
     match_rate_percentage: int = proto.Field(
         proto.INT32,
         number=3,
+        optional=True,
     )
     advertiser_identifier_count: int = proto.Field(
         proto.INT64,
         number=4,
+        optional=True,
     )
     clean_room_identifier: str = proto.Field(
         proto.STRING,

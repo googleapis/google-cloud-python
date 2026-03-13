@@ -76,6 +76,8 @@ class ToolServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ToolServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ToolServiceClient._DEFAULT_UNIVERSE
 
+    agent_path = staticmethod(ToolServiceClient.agent_path)
+    parse_agent_path = staticmethod(ToolServiceClient.parse_agent_path)
     app_path = staticmethod(ToolServiceClient.app_path)
     parse_app_path = staticmethod(ToolServiceClient.parse_app_path)
     secret_version_path = staticmethod(ToolServiceClient.secret_version_path)

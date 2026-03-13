@@ -96,8 +96,10 @@ packages_with_system_tests=(
   "google-cloud-error-reporting"
   "google-cloud-firestore"
   "google-cloud-logging"
+  "google-cloud-pubsub"
   "google-cloud-testutils"
   "sqlalchemy-bigquery"
+  "pandas-gbq"
 )
 
 # A file for running system tests
@@ -107,12 +109,16 @@ system_test_script="${PROJECT_ROOT}/.kokoro/system-single.sh"
 packages_with_system_tests_pattern=$(printf "|*%s*" "${packages_with_system_tests[@]}")
 packages_with_system_tests_pattern="${packages_with_system_tests_pattern:1}" # Remove the leading pipe
 
-# Run system tests for each package with directory `packages/*/tests/system` or directory `packages/*/system_tests`
-for dir in `find 'packages' -type d -wholename 'packages/*/tests/system' -o -wholename 'packages/*/system_tests'`; do
+# Run system tests for each package with directory packages/*/tests/system
+for path in `find 'packages' \
+  \( -type d -wholename 'packages/*/tests/system' \) -o \
+  \( -type d -wholename 'packages/*/system_tests' \) -o \
+  \( -type f -wholename 'packages/*/tests/system.py' \)`; do
+
   # Extract the package name and define the relative package path
-  # 1. Remove the 'packages/' prefix from the start
-  # 2. Remove everything after the first '/' remaining
-  package_name=${dir#packages/}
+  # 1. Remove the 'packages/' prefix
+  # 2. Remove everything after the first '/'
+  package_name=${path#packages/}
   package_name=${package_name%%/*}
   package_path="packages/${package_name}"
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-gke-hub/#history
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.21.0...google-cloud-gke-hub-v1.22.0) (2026-03-12)
+
+
+### Features
+
+* upgrade protobuf from v25.7 to v31.0 ([505bc9725fec0b2238a1fc102967f68027f9afdf](https://github.com/googleapis/google-cloud-python/commit/505bc9725fec0b2238a1fc102967f68027f9afdf))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.20.0...google-cloud-gke-hub-v1.21.0) (2026-02-12)
 
 

@@ -12764,7 +12764,58 @@ def test_insert_rest_call_success(request_type):
                 "current_revision": "current_revision_value",
                 "effective": True,
             },
+            "applied_accelerator_topologies": [
+                {
+                    "accelerator_topology": "accelerator_topology_value",
+                    "state": "state_value",
+                    "state_details": {
+                        "error": {
+                            "errors": [
+                                {
+                                    "code": "code_value",
+                                    "error_details": [
+                                        {
+                                            "error_info": {
+                                                "domain": "domain_value",
+                                                "metadatas": {},
+                                                "reason": "reason_value",
+                                            },
+                                            "help_": {
+                                                "links": [
+                                                    {
+                                                        "description": "description_value",
+                                                        "url": "url_value",
+                                                    }
+                                                ]
+                                            },
+                                            "localized_message": {
+                                                "locale": "locale_value",
+                                                "message": "message_value",
+                                            },
+                                            "quota_info": {
+                                                "dimensions": {},
+                                                "future_limit": 0.1305,
+                                                "limit": 0.543,
+                                                "limit_name": "limit_name_value",
+                                                "metric_name": "metric_name_value",
+                                                "rollout_status": "rollout_status_value",
+                                            },
+                                        }
+                                    ],
+                                    "location": "location_value",
+                                    "message": "message_value",
+                                }
+                            ]
+                        },
+                        "timestamp": "timestamp_value",
+                    },
+                }
+            ],
             "autoscaler": "autoscaler_value",
+            "bulk_instance_operation": {
+                "in_progress": True,
+                "last_progress_check": {"error": {}, "timestamp": "timestamp_value"},
+            },
             "is_stable": True,
             "stateful": {
                 "has_stateful_config": True,
@@ -12774,6 +12825,7 @@ def test_insert_rest_call_success(request_type):
         },
         "target_pools": ["target_pools_value1", "target_pools_value2"],
         "target_size": 1185,
+        "target_size_policy": {"mode": "mode_value"},
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
@@ -13662,7 +13714,58 @@ def test_patch_rest_call_success(request_type):
                 "current_revision": "current_revision_value",
                 "effective": True,
             },
+            "applied_accelerator_topologies": [
+                {
+                    "accelerator_topology": "accelerator_topology_value",
+                    "state": "state_value",
+                    "state_details": {
+                        "error": {
+                            "errors": [
+                                {
+                                    "code": "code_value",
+                                    "error_details": [
+                                        {
+                                            "error_info": {
+                                                "domain": "domain_value",
+                                                "metadatas": {},
+                                                "reason": "reason_value",
+                                            },
+                                            "help_": {
+                                                "links": [
+                                                    {
+                                                        "description": "description_value",
+                                                        "url": "url_value",
+                                                    }
+                                                ]
+                                            },
+                                            "localized_message": {
+                                                "locale": "locale_value",
+                                                "message": "message_value",
+                                            },
+                                            "quota_info": {
+                                                "dimensions": {},
+                                                "future_limit": 0.1305,
+                                                "limit": 0.543,
+                                                "limit_name": "limit_name_value",
+                                                "metric_name": "metric_name_value",
+                                                "rollout_status": "rollout_status_value",
+                                            },
+                                        }
+                                    ],
+                                    "location": "location_value",
+                                    "message": "message_value",
+                                }
+                            ]
+                        },
+                        "timestamp": "timestamp_value",
+                    },
+                }
+            ],
             "autoscaler": "autoscaler_value",
+            "bulk_instance_operation": {
+                "in_progress": True,
+                "last_progress_check": {"error": {}, "timestamp": "timestamp_value"},
+            },
             "is_stable": True,
             "stateful": {
                 "has_stateful_config": True,
@@ -13672,6 +13775,7 @@ def test_patch_rest_call_success(request_type):
         },
         "target_pools": ["target_pools_value1", "target_pools_value2"],
         "target_size": 1185,
+        "target_size_policy": {"mode": "mode_value"},
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {

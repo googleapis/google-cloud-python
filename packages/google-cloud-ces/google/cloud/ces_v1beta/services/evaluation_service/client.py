@@ -1190,7 +1190,7 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
             Union[evaluation_service.UploadEvaluationAudioRequest, dict]
         ] = None,
         *,
-        app: Optional[str] = None,
+        name: Optional[str] = None,
         audio_content: Optional[bytes] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1218,7 +1218,7 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = ces_v1beta.UploadEvaluationAudioRequest(
-                    app="app_value",
+                    name="name_value",
                     audio_content=b'audio_content_blob',
                 )
 
@@ -1232,12 +1232,12 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
             request (Union[google.cloud.ces_v1beta.types.UploadEvaluationAudioRequest, dict]):
                 The request object. Request message for
                 [EvaluationService.UploadEvaluationAudio][google.cloud.ces.v1beta.EvaluationService.UploadEvaluationAudio].
-            app (str):
-                Required. The resource name of the App for which to
-                upload the evaluation audio. Format:
-                ``projects/{project}/locations/{location}/apps/{app}``
+            name (str):
+                Required. The resource name of the Evaluation for which
+                to upload the evaluation audio. Format:
+                ``projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}``
 
-                This corresponds to the ``app`` field
+                This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             audio_content (bytes):
@@ -1267,7 +1267,7 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [app, audio_content]
+        flattened_params = [name, audio_content]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1283,8 +1283,8 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
             request = evaluation_service.UploadEvaluationAudioRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if app is not None:
-                request.app = app
+            if name is not None:
+                request.name = name
             if audio_content is not None:
                 request.audio_content = audio_content
 
@@ -1295,7 +1295,7 @@ class EvaluationServiceClient(metaclass=EvaluationServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("app", request.app),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.
