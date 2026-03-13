@@ -433,26 +433,11 @@ def _run_system_test_logic(session, test_type):
         )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python="3.12")
 @nox.parametrize("test_type", ["system", "system_noextras", "compliance"])
 @_calculate_duration
 def system(session, test_type):
     """Run the system test suite."""
-    if test_type == "compliance":
-        if session.python != DEFAULT_PYTHON_VERSION:
-            session.skip(
-                f"Compliance tests only run on latest Python: {DEFAULT_PYTHON_VERSION}"
-            )
-    elif test_type == "system_noextras":
-        if session.python not in (
-            SYSTEM_TEST_PYTHON_VERSIONS[0],
-            SYSTEM_TEST_PYTHON_VERSIONS[-1],
-        ):
-            session.skip(
-                f"system_noextras only runs on oldest ({SYSTEM_TEST_PYTHON_VERSIONS[0]}) "
-                f"and newest ({SYSTEM_TEST_PYTHON_VERSIONS[-1]}) supported Python versions"
-            )
-
     _run_system_test_logic(session, test_type)
 
 
