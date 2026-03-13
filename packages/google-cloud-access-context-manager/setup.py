@@ -30,7 +30,7 @@ version = "0.3.0"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "protobuf>=3.20.2,<7.0.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf >= 4.25.8, < 8.0.0",
 ]
 
 # Setup boilerplate below this line.
@@ -55,8 +55,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
@@ -69,7 +67,7 @@ setuptools.setup(
     platforms="Posix; MacOS X; Windows",
     packages=find_namespace_packages(exclude=("tests*", "testing*")),
     install_requires=dependencies,
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     include_package_data=True,
     zip_safe=False,
 )
