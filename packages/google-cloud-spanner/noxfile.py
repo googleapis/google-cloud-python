@@ -656,38 +656,16 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
-    # Only run system tests for one protobuf implementation on real Spanner to speed up the build.
-    if os.environ.get("SPANNER_EMULATOR_HOST") or protobuf_implementation == "python":
-        # Only run system tests if found.
-        if os.path.exists(system_test_path):
-            session.run(
-                "py.test",
-                "--verbose",
-                "-o",
-                "asyncio_mode=auto",
-                f"--junitxml=system_{session.python}_sponge_log.xml",
-                system_test_path,
-                *session.posargs,
-                env={
-                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                    "SPANNER_DATABASE_DIALECT": database_dialect,
-                    "SKIP_BACKUP_TESTS": "true",
-                },
-            )
-        elif os.path.exists(system_test_folder_path):
-            session.run(
-                "py.test",
-                "--verbose",
-                "-o",
-                "asyncio_mode=auto",
-                f"--junitxml=system_{session.python}_sponge_log.xml",
-                system_test_folder_path,
-                *session.posargs,
-                env={
-                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                    "SPANNER_DATABASE_DIALECT": database_dialect,
-                    "SKIP_BACKUP_TESTS": "true",
-                },
+    if os.environ.get("SPANNER_EMULATOR_HOST"):
+        # Run tests against the emulator
+        run_system = True
+    elif protobuf_implementation == "python":
+        # Run tests against real Spanner, but check creds first
+        if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
+            run_system = True
+        else:
+            session.log(
+                "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set"
             )
             run_system = False
     else:
@@ -718,7 +696,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         )
 
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
     session.skip("Mypy is not yet supported")
@@ -758,6 +736,7 @@ def mypy(session):
         "--check-untyped-defs",
         *session.posargs,
     )
+
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
