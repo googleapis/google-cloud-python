@@ -15,13 +15,18 @@
 from google.api_core.exceptions import Unknown
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_v1 import (
-    BeginTransactionRequest,
+    ExecuteSqlRequest,
     TransactionOptions,
 )
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_update_count,
 )
+
+
+def _get_first_execute_sql_request(requests):
+    """Return the first ExecuteSqlRequest from the captured requests."""
+    return next(req for req in requests if isinstance(req, ExecuteSqlRequest))
 
 
 class TestDbapiIsolationLevel(MockServerTestBase):
@@ -36,15 +41,9 @@ class TestDbapiIsolationLevel(MockServerTestBase):
             cursor.execute("insert into singers (id, name) values (1, 'Some Singer')")
             self.assertEqual(1, cursor.rowcount)
         connection.commit()
-        begin_requests = list(
-            filter(
-                lambda msg: isinstance(msg, BeginTransactionRequest),
-                self.spanner_service.requests,
-            )
-        )
-        self.assertEqual(1, len(begin_requests))
+        sql_request = _get_first_execute_sql_request(self.spanner_service.requests)
         self.assertEqual(
-            begin_requests[0].options.isolation_level,
+            sql_request.transaction.begin.isolation_level,
             TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
         )
 
@@ -62,14 +61,8 @@ class TestDbapiIsolationLevel(MockServerTestBase):
                 )
                 self.assertEqual(1, cursor.rowcount)
             connection.commit()
-            begin_requests = list(
-                filter(
-                    lambda msg: isinstance(msg, BeginTransactionRequest),
-                    self.spanner_service.requests,
-                )
-            )
-            self.assertEqual(1, len(begin_requests))
-            self.assertEqual(begin_requests[0].options.isolation_level, level)
+            sql_request = _get_first_execute_sql_request(self.spanner_service.requests)
+            self.assertEqual(sql_request.transaction.begin.isolation_level, level)
             MockServerTestBase.spanner_service.clear_requests()
 
     def test_isolation_level_in_connection_kwargs(self):
@@ -85,14 +78,8 @@ class TestDbapiIsolationLevel(MockServerTestBase):
                 )
                 self.assertEqual(1, cursor.rowcount)
             connection.commit()
-            begin_requests = list(
-                filter(
-                    lambda msg: isinstance(msg, BeginTransactionRequest),
-                    self.spanner_service.requests,
-                )
-            )
-            self.assertEqual(1, len(begin_requests))
-            self.assertEqual(begin_requests[0].options.isolation_level, level)
+            sql_request = _get_first_execute_sql_request(self.spanner_service.requests)
+            self.assertEqual(sql_request.transaction.begin.isolation_level, level)
             MockServerTestBase.spanner_service.clear_requests()
 
     def test_transaction_isolation_level(self):
@@ -109,14 +96,8 @@ class TestDbapiIsolationLevel(MockServerTestBase):
                 )
                 self.assertEqual(1, cursor.rowcount)
             connection.commit()
-            begin_requests = list(
-                filter(
-                    lambda msg: isinstance(msg, BeginTransactionRequest),
-                    self.spanner_service.requests,
-                )
-            )
-            self.assertEqual(1, len(begin_requests))
-            self.assertEqual(begin_requests[0].options.isolation_level, level)
+            sql_request = _get_first_execute_sql_request(self.spanner_service.requests)
+            self.assertEqual(sql_request.transaction.begin.isolation_level, level)
             MockServerTestBase.spanner_service.clear_requests()
 
     def test_begin_isolation_level(self):
@@ -133,14 +114,8 @@ class TestDbapiIsolationLevel(MockServerTestBase):
                 )
                 self.assertEqual(1, cursor.rowcount)
             connection.commit()
-            begin_requests = list(
-                filter(
-                    lambda msg: isinstance(msg, BeginTransactionRequest),
-                    self.spanner_service.requests,
-                )
-            )
-            self.assertEqual(1, len(begin_requests))
-            self.assertEqual(begin_requests[0].options.isolation_level, level)
+            sql_request = _get_first_execute_sql_request(self.spanner_service.requests)
+            self.assertEqual(sql_request.transaction.begin.isolation_level, level)
             MockServerTestBase.spanner_service.clear_requests()
 
     def test_begin_invalid_isolation_level(self):

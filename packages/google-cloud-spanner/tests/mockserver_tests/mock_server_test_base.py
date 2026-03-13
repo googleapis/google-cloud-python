@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
+import os
 import unittest
 
 import grpc
@@ -61,6 +62,19 @@ def aborted_status() -> _Status:
                 retry_info.SerializeToString(),
             ),
         ),
+    )
+    return status
+
+
+def invalid_argument_status() -> _Status:
+    error = status_pb2.Status(
+        code=code_pb2.INVALID_ARGUMENT,
+        message="Invalid argument.",
+    )
+    status = _Status(
+        code=code_to_grpc_status_code(error.code),
+        details=error.message,
+        trailing_metadata=(("grpc-status-details-bin", error.SerializeToString()),),
     )
     return status
 
@@ -174,6 +188,9 @@ class MockServerTestBase(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super(MockServerTestBase, self).__init__(*args, **kwargs)
+        # Disable built-in metrics for tests to avoid Unauthenticated errors
+        os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "true"
+
         self._client = None
         self._instance = None
         self._database = None

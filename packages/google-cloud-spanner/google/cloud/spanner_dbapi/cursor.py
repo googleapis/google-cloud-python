@@ -366,6 +366,16 @@ class Cursor(object):
                         raise
                     else:
                         self.transaction_helper.retry_transaction()
+                except Exception as ex:
+                    # In case of inline-begin failure, the transaction isn't started.
+                    # We immediately retry with an explicit BeginTransaction.
+                    transaction = getattr(self.connection, "_transaction", None)
+                    if transaction and not transaction._transaction_id:
+                        transaction._reset_and_begin()
+
+                        # Let the existing retry loop handle the retry of the statement
+                        continue
+                    raise ex
         else:
             self.connection.database.run_in_transaction(
                 self._do_execute_update_in_autocommit,

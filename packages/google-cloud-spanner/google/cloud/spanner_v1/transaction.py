@@ -214,6 +214,12 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         self.rolled_back = True
 
+    def _reset_and_begin(self):
+        """This function can be used to reset the transaction and execute an explicit BeginTransaction RPC if the first statement in the transaction failed, and that statement included an inlined BeginTransaction option."""
+        self._read_request_count = 0
+        self._execute_sql_request_count = 0
+        self.begin()
+
     def commit(
         self, return_commit_stats=False, request_options=None, max_commit_delay=None
     ):

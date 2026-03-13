@@ -155,8 +155,6 @@ class DatabaseSessionsManager(object):
         )
         session.create()
 
-        self._database.logger.info("Created multiplexed session.")
-
         return session
 
     def _build_maintenance_thread(self) -> Thread:

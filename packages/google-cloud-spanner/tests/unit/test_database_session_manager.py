@@ -98,9 +98,8 @@ class TestDatabaseSessionManager(TestCase):
         pool.get.assert_not_called()
         pool.put.assert_not_called()
 
-        # Verify logger calls.
-        info = manager._database.logger.info
-        info.assert_called_once_with("Created multiplexed session.")
+        # Verify create_session was called.
+        manager._database.spanner_api.create_session.assert_called_once()
 
     def test_partitioned_pooled(self):
         manager = self._manager
@@ -137,9 +136,8 @@ class TestDatabaseSessionManager(TestCase):
         pool.get.assert_not_called()
         pool.put.assert_not_called()
 
-        # Verify logger calls.
-        info = manager._database.logger.info
-        info.assert_called_once_with("Created multiplexed session.")
+        # Verify create_session was called.
+        manager._database.spanner_api.create_session.assert_called_once()
 
     def test_read_write_pooled(self):
         manager = self._manager
@@ -176,9 +174,8 @@ class TestDatabaseSessionManager(TestCase):
         pool.get.assert_not_called()
         pool.put.assert_not_called()
 
-        # Verify logger calls.
-        info = manager._database.logger.info
-        info.assert_called_once_with("Created multiplexed session.")
+        # Verify create_session was called.
+        manager._database.spanner_api.create_session.assert_called_once()
 
     def test_multiplexed_maintenance(self):
         manager = self._manager
@@ -198,10 +195,6 @@ class TestDatabaseSessionManager(TestCase):
         session_2 = manager.get_session(TransactionType.READ_ONLY)
         self.assertTrue(session_2.is_multiplexed)
         self.assertNotEqual(session_1, session_2)
-
-        # Verify logger calls.
-        info = manager._database.logger.info
-        info.assert_called_with("Created multiplexed session.")
 
     def test_exception_bad_request(self):
         manager = self._manager

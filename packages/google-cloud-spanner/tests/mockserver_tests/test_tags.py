@@ -115,7 +115,7 @@ class TestTags(MockServerTestBase):
         requests = self.spanner_service.requests
         self.assert_requests_sequence(
             requests,
-            [BeginTransactionRequest, ExecuteSqlRequest, CommitRequest],
+            [ExecuteSqlRequest, CommitRequest],
             TransactionType.READ_WRITE,
         )
 
@@ -131,7 +131,7 @@ class TestTags(MockServerTestBase):
         requests = self.spanner_service.requests
         self.assert_requests_sequence(
             requests,
-            [BeginTransactionRequest, ExecuteSqlRequest, CommitRequest],
+            [ExecuteSqlRequest, CommitRequest],
             TransactionType.READ_WRITE,
         )
 
@@ -148,7 +148,6 @@ class TestTags(MockServerTestBase):
         self.assert_requests_sequence(
             requests,
             [
-                BeginTransactionRequest,
                 ExecuteSqlRequest,
                 ExecuteSqlRequest,
                 CommitRequest,
@@ -156,7 +155,7 @@ class TestTags(MockServerTestBase):
             TransactionType.READ_WRITE,
         )
         mux_enabled = is_multiplexed_enabled(TransactionType.READ_WRITE)
-        tag_idx = 3 if mux_enabled else 2
+        tag_idx = 2 if mux_enabled else 1
         self.assertEqual(
             "my_transaction_tag", requests[tag_idx].request_options.transaction_tag
         )
@@ -180,7 +179,6 @@ class TestTags(MockServerTestBase):
         self.assert_requests_sequence(
             requests,
             [
-                BeginTransactionRequest,
                 ExecuteSqlRequest,
                 ExecuteSqlRequest,
                 CommitRequest,
@@ -188,7 +186,7 @@ class TestTags(MockServerTestBase):
             TransactionType.READ_WRITE,
         )
         mux_enabled = is_multiplexed_enabled(TransactionType.READ_WRITE)
-        tag_idx = 3 if mux_enabled else 2
+        tag_idx = 2 if mux_enabled else 1
         self.assertEqual(
             "my_transaction_tag", requests[tag_idx].request_options.transaction_tag
         )

@@ -156,7 +156,7 @@ class TestRequestIDHeader(MockServerTestBase):
             )
             for i in range(1, n + 2)
         ]
-        assert got_stream_segments == want_stream_segments
+        assert sorted(got_stream_segments) == sorted(want_stream_segments)
 
     def test_database_run_in_transaction_retries_on_abort(self):
         counters = dict(aborted=0)

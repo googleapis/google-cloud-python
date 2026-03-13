@@ -392,7 +392,14 @@ class Connection:
         this connection yet. Return the started one otherwise.
 
         This method is a no-op if the connection is in autocommit mode and no
-        explicit transaction has been started
+        explicit transaction has been started.
+
+        The transaction is returned without calling ``begin()``. The
+        underlying ``Transaction.execute_sql`` and ``execute_update``
+        methods detect ``_transaction_id is None`` and use *inline begin*
+        — piggybacking a ``BeginTransaction`` on the first RPC via
+        ``TransactionSelector(begin=...)``. This eliminates a separate
+        ``BeginTransaction`` RPC round-trip per transaction.
 
         :rtype: :class:`google.cloud.spanner_v1.transaction.Transaction`
         :returns: A Cloud Spanner transaction object, ready to use.
@@ -410,7 +417,6 @@ class Connection:
                 self.transaction_tag = None
                 self._snapshot = None
                 self._spanner_transaction_started = True
-                self._transaction.begin()
 
             return self._transaction
 

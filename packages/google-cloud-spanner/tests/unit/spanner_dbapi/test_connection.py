@@ -211,6 +211,26 @@ class TestConnection(unittest.TestCase):
         connection._autocommit = True
         self.assertIsNone(connection.transaction_checkout())
 
+    def test_transaction_checkout_does_not_call_begin(self):
+        """transaction_checkout must not call Transaction.begin().
+
+        The transaction should be returned with _transaction_id=None so that
+        execute_sql/execute_update can use inline begin via
+        TransactionSelector(begin=...), eliminating a separate
+        BeginTransaction RPC.
+        """
+        connection = Connection(INSTANCE, DATABASE)
+        mock_session = mock.MagicMock()
+        mock_transaction = mock.MagicMock()
+        mock_session.transaction.return_value = mock_transaction
+        connection._session_checkout = mock.MagicMock(return_value=mock_session)
+
+        txn = connection.transaction_checkout()
+
+        self.assertEqual(txn, mock_transaction)
+        self.assertTrue(connection._spanner_transaction_started)
+        mock_transaction.begin.assert_not_called()
+
     def test_snapshot_checkout(self):
         connection = build_connection(read_only=True)
         connection.autocommit = False

@@ -104,6 +104,11 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
                     connection._transaction = None
                     raise Aborted(status.message)
                 elif status.code != OK:
+                    if not transaction._transaction_id:
+                        # This should normally not happen,
+                        # but we safeguard against it just to be sure.
+                        transaction._reset_and_begin()
+                        continue
                     raise OperationalError(status.message)
 
                 cursor._batch_dml_rows_count = res
@@ -116,6 +121,11 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
                     raise
                 else:
                     connection._transaction_helper.retry_transaction()
+            except Exception as ex:
+                if not transaction._transaction_id:
+                    transaction._reset_and_begin()
+                    continue
+                raise ex
 
 
 def _do_batch_update_autocommit(transaction, statements):
