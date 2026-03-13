@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+.eggs/
+lib/
+lib64/
+*.egg-info/
+*.egg
+MANIFEST
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+cover/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# mypy
+.mypy_cache/
+
+# IDEs and editors
+.idea/
+.vscode/
+.DS_Store
+
+*_sponge_log.xml
