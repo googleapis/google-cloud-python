@@ -124,7 +124,7 @@ git filter-branch \
   --force \
   --prune-empty \
   --tree-filter \
-    "git submodule update --init --recursive; find . -mindepth 2 -name .git -exec rm -rf {} +; git submodule update --init --recursive; find . -mindepth 2 -name .git -exec rm -rf {} +; git submodule update --init --recursive; find . -mindepth 2 -name .git -exec rm -rf {} +; shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; { mv ${WORKDIR}/migrated-source/* ${TARGET_PATH} || echo 'No files to move' ; }"
+    "git submodule update --init --recursive; find . -mindepth 2 -name .git -exec rm -rf {} +; shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; { mv ${WORKDIR}/migrated-source/* ${TARGET_PATH} || echo 'No files to move' ; }"
 
 # back to workdir
 popd
