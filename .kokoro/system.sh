@@ -95,6 +95,7 @@ packages_with_system_tests=(
   "google-cloud-datastore"
   "google-cloud-dns"
   "google-cloud-error-reporting"
+  "sqlalchemy-spanner"
   "google-cloud-firestore"
   "google-cloud-logging"
   "google-cloud-pubsub"
