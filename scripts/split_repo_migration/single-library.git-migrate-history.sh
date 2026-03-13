@@ -70,7 +70,7 @@ echo "Created working directory: ${WORKDIR}"
 pushd "${WORKDIR}"  # cd into workdir
 
 echo "Cloning source repository: ${SOURCE_REPO}"
-git clone --recurse-submodules --recurse-submodules --recurse-submodules "git@github.com:${SOURCE_REPO}.git" source-repo
+git clone --recurse-submodules "git@github.com:${SOURCE_REPO}.git" source-repo
 
 pushd source-repo
 
