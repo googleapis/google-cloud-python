@@ -98,6 +98,7 @@ packages_with_system_tests=(
   "google-cloud-logging"
   "google-cloud-pubsub"
   "google-cloud-testutils"
+  "pandas-gbq"
 )
 
 # A file for running system tests
