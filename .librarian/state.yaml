@@ -3226,6 +3226,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-spanner
+    version: 3.63.0
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-spanner
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-speech
     version: 2.38.0
     last_generated_commit: c662840a94dbdf708caa44893a2d49119cdd391c
