@@ -49,7 +49,7 @@ setuptools.setup(
     author='Google LLC',
     author_email='dandhlee@google.com',
     license='Apache 2.0',
-    url='https://github.com/googleapis/sphinx-docfx-yaml',
+    url='https://github.com/googleapis/google-cloud-python/tree/main/packages/gcp-sphinx-docfx-yaml',
     package_dir={'': '.'},
     packages=packages,
     install_requires=dependencies,
