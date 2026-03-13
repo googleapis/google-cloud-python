@@ -116,7 +116,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-storage",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-storage",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
