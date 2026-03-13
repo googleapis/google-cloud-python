@@ -123,7 +123,7 @@ setuptools.setup(
     name=name,
     version=version_id,
     description=description,
-    download_url="https://github.com/googleapis/python-bigquery-dataframes/releases",
+    download_url="https://github.com/googleapis/google-cloud-python/tree/main/packages/bigframes/releases",
     long_description=readme,
     long_description_content_type="text/x-rst",
     author="Google LLC",
@@ -131,9 +131,9 @@ setuptools.setup(
     license="Apache 2.0",
     url="https://dataframes.bigquery.dev",
     project_urls={
-        "Source": "https://github.com/googleapis/python-bigquery-dataframes",
+        "Source": "https://github.com/googleapis/google-cloud-python/tree/main/packages/bigframes",
         "Changelog": "https://dataframes.bigquery.dev/changelog.html",
-        "Issues": "https://github.com/googleapis/python-bigquery-dataframes/issues",
+        "Issues": "https://github.com/googleapis/google-cloud-python/tree/main/packages/bigframes/issues",
     },
     classifiers=[
         release_status,

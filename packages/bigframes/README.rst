@@ -16,7 +16,7 @@ for many use cases, including:
 * `bigframes.bigquery.ai <https://dataframes.bigquery.dev/reference/api/bigframes.bigquery.ai.html>`_
   are a collection of powerful AI methods, powered by Gemini.
 
-BigQuery DataFrames is an `open-source package <https://github.com/googleapis/python-bigquery-dataframes>`_.
+BigQuery DataFrames is an `open-source package <https://github.com/googleapis/google-cloud-python>`_.
 
 .. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
@@ -64,15 +64,15 @@ Documentation
 To learn more about BigQuery DataFrames, visit these pages
 
 * `Introduction to BigQuery DataFrames (BigFrames) <https://cloud.google.com/bigquery/docs/bigquery-dataframes-introduction>`_
-* `Sample notebooks <https://github.com/googleapis/python-bigquery-dataframes/tree/main/notebooks>`_
+* `Sample notebooks <https://github.com/googleapis/google-cloud-python/tree/main/notebooks>`_
 * `API reference <https://dataframes.bigquery.dev/>`_
-* `Source code (GitHub) <https://github.com/googleapis/python-bigquery-dataframes>`_
+* `Source code (GitHub) <https://github.com/googleapis/google-cloud-python>`_
 
 License
 -------
 
 BigQuery DataFrames is distributed with the `Apache-2.0 license
-<https://github.com/googleapis/python-bigquery-dataframes/blob/main/LICENSE>`_.
+<https://github.com/googleapis/google-cloud-python/blob/main/LICENSE>`_.
 
 It also contains code derived from the following third-party packages:
 
@@ -84,7 +84,7 @@ It also contains code derived from the following third-party packages:
 * `SQLGlot <https://sqlglot.com/sqlglot.html>`_
 
 For details, see the `third_party
-<https://github.com/googleapis/python-bigquery-dataframes/tree/main/third_party/bigframes_vendored>`_
+<https://github.com/googleapis/google-cloud-python/tree/main/third_party/bigframes_vendored>`_
 directory.
 
 

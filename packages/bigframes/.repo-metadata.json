@@ -7,7 +7,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "INTEGRATION",
-    "repo": "googleapis/python-bigquery-dataframes",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "bigframes",
     "api_id": "bigquery.googleapis.com",
     "default_version": "",
