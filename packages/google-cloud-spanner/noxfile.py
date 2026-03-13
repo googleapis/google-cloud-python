@@ -654,16 +654,24 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
             run_system = True
         else:
-            session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set")
+            session.log(
+                "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set"
+            )
             run_system = False
     else:
         # Skip to speed up build (only run python implementation on real Spanner)
-        session.log(f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build")
+        session.log(
+            f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build"
+        )
         run_system = False
 
     if run_system:
         # Run the tests (deduplicated logic)
-        test_path = system_test_path if os.path.exists(system_test_path) else system_test_folder_path
+        test_path = (
+            system_test_path
+            if os.path.exists(system_test_path)
+            else system_test_folder_path
+        )
         session.run(
             "py.test",
             "--verbose",
@@ -677,12 +685,14 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
             },
         )
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add mypy tests
     session.skip("mypy tests are not yet supported")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
