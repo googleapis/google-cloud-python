@@ -36,6 +36,7 @@ Example credential:
 import datetime
 import io
 import json
+import logging
 import re
 
 from google.auth import _constants
@@ -45,6 +46,8 @@ from google.auth import exceptions
 from google.oauth2 import sts
 from google.oauth2 import utils
 
+_LOGGER = logging.getLogger(__name__)
+
 _EXTERNAL_ACCOUNT_AUTHORIZED_USER_JSON_TYPE = "external_account_authorized_user"
 
 
@@ -52,7 +55,7 @@ class Credentials(
     credentials.CredentialsWithQuotaProject,
     credentials.ReadOnlyScoped,
     credentials.CredentialsWithTokenUri,
-    credentials.CredentialsWithTrustBoundary,
+    credentials.CredentialsWithRegionalAccessBoundary,
 ):
     """Credentials for External Account Authorized Users.
 
@@ -87,7 +90,6 @@ class Credentials(
         scopes=None,
         quota_project_id=None,
         universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
-        trust_boundary=None,
     ):
         """Instantiates a external account authorized user credentials object.
 
@@ -113,7 +115,6 @@ class Credentials(
             create the credentials.
         universe_domain (Optional[str]): The universe domain. The default value
             is googleapis.com.
-        trust_boundary (Mapping[str,str]): A credential trust boundary.
 
         Returns:
             google.auth.external_account_authorized_user.Credentials: The
@@ -134,7 +135,6 @@ class Credentials(
         self._scopes = scopes
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         self._cred_file_path = None
-        self._trust_boundary = trust_boundary
 
         if not self.valid and not self.can_refresh:
             raise exceptions.InvalidOperation(
@@ -182,7 +182,6 @@ class Credentials(
             "scopes": self._scopes,
             "quota_project_id": self._quota_project_id,
             "universe_domain": self._universe_domain,
-            "trust_boundary": self._trust_boundary,
         }
 
     @property
@@ -308,18 +307,29 @@ class Credentials(
         if "refresh_token" in response_data:
             self._refresh_token = response_data["refresh_token"]
 
-    def _build_trust_boundary_lookup_url(self):
-        """Builds and returns the URL for the trust boundary lookup API."""
+    def _build_regional_access_boundary_lookup_url(self, request=None):
+        """Builds and returns the URL for the Regional Access Boundary lookup API.
+
+        Returns:
+            Optional[str]: The URL for the Regional Access Boundary lookup endpoint, or None
+                 if the URL cannot be built due to an invalid workforce pool audience format.
+        """
         # Audience format: //iam.googleapis.com/locations/global/workforcePools/POOL_ID/providers/PROVIDER_ID
         match = re.search(r"locations/[^/]+/workforcePools/([^/]+)", self._audience)
 
         if not match:
-            raise exceptions.InvalidValue("Invalid workforce pool audience format.")
+            _LOGGER.error(
+                "Invalid workforce pool audience format for Regional Access Boundary lookup: %s",
+                self._audience,
+            )
+            return None
 
         pool_id = match.groups()[0]
 
-        return _constants._WORKFORCE_POOL_TRUST_BOUNDARY_LOOKUP_ENDPOINT.format(
-            universe_domain=self._universe_domain, pool_id=pool_id
+        return (
+            _constants._WORKFORCE_POOL_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+                pool_id=pool_id
+            )
         )
 
     def revoke(self, request):
@@ -359,6 +369,7 @@ class Credentials(
         kwargs = self.constructor_args()
         cred = self.__class__(**kwargs)
         cred._cred_file_path = self._cred_file_path
+        self._copy_regional_access_boundary_manager(cred)
         return cred
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
@@ -377,12 +388,6 @@ class Credentials(
     def with_universe_domain(self, universe_domain):
         cred = self._make_copy()
         cred._universe_domain = universe_domain
-        return cred
-
-    @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
-        cred = self._make_copy()
-        cred._trust_boundary = trust_boundary
         return cred
 
     @classmethod
@@ -429,7 +434,6 @@ class Credentials(
             universe_domain=info.get(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
-            trust_boundary=info.get("trust_boundary"),
             **kwargs
         )
 

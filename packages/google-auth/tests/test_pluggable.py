@@ -274,7 +274,6 @@ class TestCredentials(object):
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
             universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-            trust_boundary=None,
         )
 
     @mock.patch.object(pluggable.Credentials, "__init__", return_value=None)
@@ -303,7 +302,6 @@ class TestCredentials(object):
             quota_project_id=None,
             workforce_pool_user_project=None,
             universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-            trust_boundary=None,
         )
 
     @mock.patch.object(pluggable.Credentials, "__init__", return_value=None)
@@ -339,7 +337,6 @@ class TestCredentials(object):
             quota_project_id=QUOTA_PROJECT_ID,
             workforce_pool_user_project=None,
             universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-            trust_boundary=None,
         )
 
     @mock.patch.object(pluggable.Credentials, "__init__", return_value=None)
@@ -369,7 +366,6 @@ class TestCredentials(object):
             quota_project_id=None,
             workforce_pool_user_project=None,
             universe_domain=DEFAULT_UNIVERSE_DOMAIN,
-            trust_boundary=None,
         )
 
     def test_constructor_invalid_options(self):

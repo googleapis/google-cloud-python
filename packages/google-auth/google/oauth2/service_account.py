@@ -72,6 +72,7 @@ specific subject using :meth:`~Credentials.with_subject`.
 
 import copy
 import datetime
+import logging
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -83,6 +84,8 @@ from google.auth import jwt
 from google.auth import metrics
 from google.oauth2 import _client
 
+_LOGGER = logging.getLogger(__name__)
+
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
@@ -92,7 +95,7 @@ class Credentials(
     credentials.Scoped,
     credentials.CredentialsWithQuotaProject,
     credentials.CredentialsWithTokenUri,
-    credentials.CredentialsWithTrustBoundary,
+    credentials.CredentialsWithRegionalAccessBoundary,
 ):
     """Service account credentials
 
@@ -196,7 +199,15 @@ class Credentials(
             self._additional_claims = additional_claims
         else:
             self._additional_claims = {}
-        self._trust_boundary = trust_boundary
+
+        if trust_boundary is not None:
+            import warnings
+
+            warnings.warn(
+                "The trust_boundary parameter is deprecated and has no effect.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
 
     @classmethod
     def _from_signer_and_info(cls, signer, info, **kwargs):
@@ -222,7 +233,6 @@ class Credentials(
             universe_domain=info.get(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
-            trust_boundary=info.get("trust_boundary"),
             **kwargs,
         )
 
@@ -296,9 +306,9 @@ class Credentials(
             additional_claims=self._additional_claims.copy(),
             always_use_jwt_access=self._always_use_jwt_access,
             universe_domain=self._universe_domain,
-            trust_boundary=self._trust_boundary,
         )
         cred._cred_file_path = self._cred_file_path
+        self._copy_regional_access_boundary_manager(cred)
         return cred
 
     @_helpers.copy_docstring(credentials.Scoped)
@@ -384,12 +394,6 @@ class Credentials(
         cred._token_uri = token_uri
         return cred
 
-    @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
-    def with_trust_boundary(self, trust_boundary):
-        cred = self._make_copy()
-        cred._trust_boundary = trust_boundary
-        return cred
-
     def _make_authorization_grant_assertion(self):
         """Create the OAuth 2.0 assertion.
 
@@ -433,7 +437,7 @@ class Credentials(
             return metrics.CRED_TYPE_SA_JWT
         return metrics.CRED_TYPE_SA_ASSERTION
 
-    @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
+    @_helpers.copy_docstring(credentials.CredentialsWithRegionalAccessBoundary)
     def _perform_refresh_token(self, request):
         if self._always_use_jwt_access and not self._jwt_credentials:
             # If self signed jwt should be used but jwt credential is not
@@ -499,27 +503,26 @@ class Credentials(
                 self, audience
             )
 
-    def _build_trust_boundary_lookup_url(self):
-        """Builds and returns the URL for the trust boundary lookup API.
+    def _build_regional_access_boundary_lookup_url(self, request=None):
+        """Builds and returns the URL for the Regional Access Boundary lookup API.
 
         This method constructs the specific URL for the IAM Credentials API's
         `allowedLocations` endpoint, using the credential's universe domain
         and service account email.
 
-        Raises:
-            ValueError: If `self.service_account_email` is None or an empty
-                string, as it's required to form the URL.
-
         Returns:
-            str: The URL for the trust boundary lookup endpoint.
+            Optional[str]: The URL for the Regional Access Boundary lookup endpoint, or None
+                 if the service account email is missing.
         """
         if not self.service_account_email:
-            raise ValueError(
-                "Service account email is required to build the trust boundary lookup URL."
+            _LOGGER.error(
+                "Service account email is required to build the Regional Access Boundary lookup URL for service account credentials."
             )
-        return _constants._SERVICE_ACCOUNT_TRUST_BOUNDARY_LOOKUP_ENDPOINT.format(
-            universe_domain=self._universe_domain,
-            service_account_email=self._service_account_email,
+            return None
+        return (
+            _constants._SERVICE_ACCOUNT_REGIONAL_ACCESS_BOUNDARY_LOOKUP_ENDPOINT.format(
+                service_account_email=self._service_account_email,
+            )
         )
 
     @_helpers.copy_docstring(credentials.Signing)
