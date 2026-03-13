@@ -40,6 +40,7 @@ DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
+    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -47,6 +48,9 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
+
+ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
+ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -94,6 +98,9 @@ nox.options.sessions = [
     "docs",
     "docfx",
     "format",
+    "prerelease_deps",
+    "core_deps_from_source",
+    "mypy",
 ]
 
 # Error if a python version is missing
@@ -213,7 +220,7 @@ def install_unittest_dependencies(session, *constraints):
     session.run("pip", "list")
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -576,6 +583,14 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
+    # Sanity check: Only run tests if credentials or emulator are set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
+
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
@@ -656,7 +671,6 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
-<<<<<<< HEAD
     if os.environ.get("SPANNER_EMULATOR_HOST"):
         # Run tests against the emulator
         run_system = True
@@ -665,36 +679,16 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
             run_system = True
         else:
-<<<<<<< HEAD
-            session.log(
-                "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set"
-            )
-            run_system = False
-    else:
-        # Skip to speed up build (only run python implementation on real Spanner)
-        session.log(
-            f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build"
-        )
-=======
             session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set")
             run_system = False
     else:
         # Skip to speed up build (only run python implementation on real Spanner)
         session.log(f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build")
->>>>>>> d4bff6eaee2 (chore: improves logic within prerelease_deps session)
         run_system = False
 
     if run_system:
         # Run the tests (deduplicated logic)
-<<<<<<< HEAD
-        test_path = (
-            system_test_path
-            if os.path.exists(system_test_path)
-            else system_test_folder_path
-        )
-=======
         test_path = system_test_path if os.path.exists(system_test_path) else system_test_folder_path
->>>>>>> d4bff6eaee2 (chore: improves logic within prerelease_deps session)
         session.run(
             "py.test",
             "--verbose",
@@ -707,11 +701,6 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                 "SKIP_BACKUP_TESTS": "true",
             },
         )
-<<<<<<< HEAD
-
-=======
->>>>>>> d4bff6eaee2 (chore: improves logic within prerelease_deps session)
-=======
     # Only run system tests for one protobuf implementation on real Spanner to speed up the build.
     if os.environ.get("SPANNER_EMULATOR_HOST") or protobuf_implementation == "python":
         # Sanity check: Only run system tests if credentials or emulator are set.
@@ -745,50 +734,41 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                 )
         else:
             session.log("Skipping system tests because credentials/emulator are missing")
->>>>>>> 3cda3a846be (chore: refine prerelease_deps to conditionally run system tests)
+        # Only run system tests if found.
+        if os.path.exists(system_test_path):
+            session.run(
+                "py.test",
+                "--verbose",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+                system_test_path,
+                *session.posargs,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+        elif os.path.exists(system_test_folder_path):
+            session.run(
+                "py.test",
+                "--verbose",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+                system_test_folder_path,
+                *session.posargs,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
-    session.skip("Mypy is not yet supported")
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
-    # use the latest version of mypy
-    session.install(
-        "mypy<1.16.0",
-        "types-requests",
-        "types-protobuf",
-    )
-    session.install(".")
-    session.run(
-        "mypy",
-        "-p",
-        "google",
-        #"--check-untyped-defs",
-        *session.posargs,
-    )
-
-
-@nox.session(python=ALL_PYTHON)
-def mypy(session):
-    """Run the type checker."""
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
-    # use the latest version of mypy
-    session.install(
-        "mypy<1.16.0",
-        "types-requests",
-        "types-protobuf",
-    )
-    session.install(".")
-    session.run(
-        "mypy",
-        "-p",
-        "google",
-        "--check-untyped-defs",
-        *session.posargs,
-    )
-
-
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add mypy tests
+    session.skip("mypy tests are not yet supported")
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
@@ -798,34 +778,3 @@ def core_deps_from_source(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
-
-@nox.session
-def format(session: nox.sessions.Session) -> None:
-    """
-    Run ruff to sort imports and format code.
-    """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
-    session.install(RUFF_VERSION)
-
-    # 2. Run Ruff to fix imports
-    # check --select I: Enables strict import sorting
-    # --fix: Applies the changes automatically
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
-
-    # 3. Run Ruff to format code
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
