@@ -479,7 +479,7 @@ def core_deps_from_source(session):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        f"{CURRENT_DIRECTORY}/../google-auth",
     ]
 
     for dep in core_dependencies_from_source:
