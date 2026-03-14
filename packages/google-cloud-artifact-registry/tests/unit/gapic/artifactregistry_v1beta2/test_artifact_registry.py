@@ -145,6 +145,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ArtifactRegistryClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -166,6 +167,10 @@ def test__get_default_mtls_endpoint():
     assert (
         ArtifactRegistryClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        ArtifactRegistryClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1336,11 +1341,13 @@ def test_artifact_registry_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -14944,8 +14951,9 @@ def test_import_apt_artifacts_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15002,20 +15010,21 @@ def test_import_apt_artifacts_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_import_apt_artifacts"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_import_apt_artifacts_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_import_apt_artifacts"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_import_apt_artifacts"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_import_apt_artifacts_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_import_apt_artifacts"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15068,8 +15077,9 @@ def test_import_yum_artifacts_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15126,20 +15136,21 @@ def test_import_yum_artifacts_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_import_yum_artifacts"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_import_yum_artifacts_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_import_yum_artifacts"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_import_yum_artifacts"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_import_yum_artifacts_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_import_yum_artifacts"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15192,8 +15203,9 @@ def test_list_repositories_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15256,18 +15268,20 @@ def test_list_repositories_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_repositories"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_list_repositories_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_list_repositories"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_list_repositories"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_list_repositories_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_list_repositories"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15323,8 +15337,9 @@ def test_get_repository_rest_bad_request(request_type=repository.GetRepositoryRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15393,17 +15408,20 @@ def test_get_repository_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_repository"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_repository_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_get_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_repository"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_get_repository_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_get_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15456,8 +15474,9 @@ def test_create_repository_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15591,20 +15610,21 @@ def test_create_repository_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_create_repository"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_create_repository_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_create_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_create_repository"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_create_repository_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_create_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15661,8 +15681,9 @@ def test_update_repository_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15812,18 +15833,20 @@ def test_update_repository_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_update_repository"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_update_repository_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_update_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_update_repository"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_update_repository_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_update_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15876,8 +15899,9 @@ def test_delete_repository_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15934,20 +15958,21 @@ def test_delete_repository_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_delete_repository"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_delete_repository_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_delete_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_delete_repository"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_delete_repository_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_delete_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15998,8 +16023,9 @@ def test_list_packages_rest_bad_request(request_type=package.ListPackagesRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16062,17 +16088,20 @@ def test_list_packages_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_packages"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_packages_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_list_packages"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_list_packages"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_list_packages_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_list_packages"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16125,8 +16154,9 @@ def test_get_package_rest_bad_request(request_type=package.GetPackageRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16193,17 +16223,19 @@ def test_get_package_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_package"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_package_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_get_package"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_package"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_package_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_get_package"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16254,8 +16286,9 @@ def test_delete_package_rest_bad_request(request_type=package.DeletePackageReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16314,19 +16347,21 @@ def test_delete_package_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_delete_package"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_delete_package_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_delete_package"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_delete_package"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_delete_package_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_delete_package"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16377,8 +16412,9 @@ def test_list_versions_rest_bad_request(request_type=version.ListVersionsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16443,17 +16479,20 @@ def test_list_versions_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_versions"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_versions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_list_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_list_versions"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_list_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_list_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16506,8 +16545,9 @@ def test_get_version_rest_bad_request(request_type=version.GetVersionRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16574,17 +16614,19 @@ def test_get_version_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_version"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_get_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_version"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_version_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_get_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16635,8 +16677,9 @@ def test_delete_version_rest_bad_request(request_type=version.DeleteVersionReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16695,19 +16738,21 @@ def test_delete_version_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_delete_version"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_delete_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_delete_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_delete_version"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_delete_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_delete_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16756,8 +16801,9 @@ def test_list_files_rest_bad_request(request_type=file.ListFilesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16820,17 +16866,19 @@ def test_list_files_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_files"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_files_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_list_files"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_list_files"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_list_files_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_list_files"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16881,8 +16929,9 @@ def test_get_file_rest_bad_request(request_type=file.GetFileRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16951,17 +17000,19 @@ def test_get_file_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_file"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_file_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_get_file"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_file"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_file_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_get_file"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17012,8 +17063,9 @@ def test_list_tags_rest_bad_request(request_type=tag.ListTagsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17078,17 +17130,19 @@ def test_list_tags_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_tags"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_list_tags_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_list_tags"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_list_tags"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_list_tags_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_list_tags"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17139,8 +17193,9 @@ def test_get_tag_rest_bad_request(request_type=tag.GetTagRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17207,17 +17262,19 @@ def test_get_tag_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_tag"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_tag_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_get_tag"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_tag"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_tag_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_get_tag"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17268,8 +17325,9 @@ def test_create_tag_rest_bad_request(request_type=gda_tag.CreateTagRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17404,17 +17462,19 @@ def test_create_tag_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_create_tag"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_create_tag_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_create_tag"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_create_tag"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_create_tag_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_create_tag"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17467,8 +17527,9 @@ def test_update_tag_rest_bad_request(request_type=gda_tag.UpdateTagRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17608,17 +17669,19 @@ def test_update_tag_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_update_tag"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_update_tag_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_update_tag"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_update_tag"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_update_tag_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_update_tag"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17669,8 +17732,9 @@ def test_delete_tag_rest_bad_request(request_type=tag.DeleteTagRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17729,13 +17793,13 @@ def test_delete_tag_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_delete_tag"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_delete_tag"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = tag.DeleteTagRequest.pb(tag.DeleteTagRequest())
         transcode.return_value = {
@@ -17780,8 +17844,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17845,17 +17910,20 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_set_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_set_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17908,8 +17976,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17973,17 +18042,20 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_get_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18036,8 +18108,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18099,18 +18172,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18166,8 +18241,9 @@ def test_get_project_settings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18235,18 +18311,20 @@ def test_get_project_settings_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_get_project_settings"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_get_project_settings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_get_project_settings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_get_project_settings"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_get_project_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_get_project_settings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18299,8 +18377,9 @@ def test_update_project_settings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18439,18 +18518,20 @@ def test_update_project_settings_rest_interceptors(null_interceptor):
     )
     client = ArtifactRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "post_update_project_settings"
-    ) as post, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor,
-        "post_update_project_settings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ArtifactRegistryRestInterceptor, "pre_update_project_settings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "post_update_project_settings"
+        ) as post,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor,
+            "post_update_project_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ArtifactRegistryRestInterceptor, "pre_update_project_settings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18503,8 +18584,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18563,8 +18645,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -19238,11 +19321,14 @@ def test_artifact_registry_base_transport():
 
 def test_artifact_registry_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.artifactregistry_v1beta2.services.artifact_registry.transports.ArtifactRegistryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.artifactregistry_v1beta2.services.artifact_registry.transports.ArtifactRegistryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ArtifactRegistryTransport(
@@ -19262,9 +19348,12 @@ def test_artifact_registry_base_transport_with_credentials_file():
 
 def test_artifact_registry_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.artifactregistry_v1beta2.services.artifact_registry.transports.ArtifactRegistryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.artifactregistry_v1beta2.services.artifact_registry.transports.ArtifactRegistryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ArtifactRegistryTransport()
@@ -19342,11 +19431,12 @@ def test_artifact_registry_transport_auth_gdch_credentials(transport_class):
 def test_artifact_registry_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -20205,6 +20295,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = ArtifactRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20344,6 +20468,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

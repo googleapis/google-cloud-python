@@ -387,28 +387,6 @@ replacements:
     after: 'description = "Google Cloud Pub/Sub API client library"'
     count: 1
 
-  # --- FIX: Drop Py 3.7/3.8 classifiers in setup.py ---
-  - paths:
-      - "packages/google-cloud-pubsub/setup.py"
-    before: '([ \t]+"Programming Language :: Python :: 3",\n)[ \t]+"Programming Language :: Python :: 3\.7",\n[ \t]+"Programming Language :: Python :: 3\.8",\n'
-    after: '\g<1>'
-    count: 1
-
-  # --- FIX: Restore setup.py python_requires to >=3.9 ---
-  - paths:
-      - "packages/google-cloud-pubsub/setup.py"
-    before: 'python_requires=">=3\.7",'
-    after: 'python_requires=">=3.9",'
-    count: 1
-
-  # --- FIX: Restore comment and allow google-api-core >= 1.34.0 ---
-  - paths:
-      - "packages/google-cloud-pubsub/setup.py"
-    before: '([ \t]+)"google-api-core\[grpc\] >= 1\.34\.1,([^"]+)",'
-    after: |-
-      \g<1># google-api-core >= 1.34.0 is allowed in order to support google-api-core 1.x
-      \g<1>"google-api-core[grpc] >= 1.34.0,\g<2>",
-    count: 1
 
   # --- FIX: Restore pubsub-specific grpcio bound ---
   - paths:
@@ -428,23 +406,6 @@ replacements:
       \g<1>"opentelemetry-sdk >= 1.27.0",
       ]
       extras = {"libcst": "libcst >= 0.3.10"}
-    count: 1
-# --- FIX: Blend README Python versions ---
-  - paths:
-      - "packages/google-cloud-pubsub/README.rst"
-    before: 'Supported Python Versions\n\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^\^[\s\S]+?\.\. _end-of-life: https://devguide\.python\.org/devcycle/#end-of-life-branches'
-    after: |-
-      Supported Python Versions
-      ^^^^^^^^^^^^^^^^^^^^^^^^^
-      Python >= 3.9
-
-      Deprecated Python Versions
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^
-      Python < 3.9
-
-      The last version of this library compatible with Python 3.7 and 3.8 is google-cloud-pubsub==2.34.0.
-
-      The last version of this library compatible with Python 2.7 is google-cloud-pubsub==1.7.0.
     count: 1
   - paths:
       - "packages/google-cloud-pubsub/noxfile.py"
@@ -550,17 +511,6 @@ replacements:
     count: 1
   - paths:
       - "packages/google-cloud-pubsub/noxfile.py"
-    before: '# Install all test dependencies, then install this package in-place\.\n\n([ \t]+)# TODO\(https://github\.com/googleapis/gapic-generator-python/issues/2388\):'
-    after: |-
-      # Install all test dependencies, then install this package in-place.
-
-      \g<1>if session.python in ["3.7", "3.8"]:
-      \g<1>    session.skip(f"Python {session.python} is no longer supported.")
-
-      \g<1># TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    count: 1
-  - paths:
-      - "packages/google-cloud-pubsub/noxfile.py"
     before: 'def core_deps_from_source\(session, protobuf_implementation\):[\s\S]+?PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,\n[ \t]+},\n[ \t]+\)'
     after: |-
       def core_deps_from_source(session, protobuf_implementation):
@@ -569,22 +519,8 @@ replacements:
     count: 1
   - paths:
       - "packages/google-cloud-pubsub/noxfile.py"
-    before: 'SYSTEM_TEST_PYTHON_VERSIONS: List\[str\] = ALL_PYTHON'
-    after: 'SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]'
-    count: 1
-  - paths:
-      - "packages/google-cloud-pubsub/noxfile.py"
     before: '"--cov=google",'
     after: '"--cov=google/cloud",'
-    count: 1
-  - paths:
-      - "packages/google-cloud-pubsub/noxfile.py"
-    before: '([ \t]+)session\.install\("--pre", "grpcio"\)'
-    after: |-
-      \g<1># Use pre-release gRPC for system tests.
-      \g<1># Exclude version 1.52.0rc1 which has a known issue.
-      \g<1># See https://github.com/grpc/grpc/issues/32163
-      \g<1>session.install("--pre", "grpcio!=1.52.0rc1")
     count: 1
   - paths:
       - "packages/google-cloud-pubsub/docs/conf.py"

@@ -128,6 +128,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert TelcoAutomationClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -148,6 +149,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         TelcoAutomationClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        TelcoAutomationClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1313,11 +1318,13 @@ def test_telco_automation_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -25726,8 +25733,9 @@ def test_list_orchestration_clusters_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25794,18 +25802,21 @@ def test_list_orchestration_clusters_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_orchestration_clusters"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_list_orchestration_clusters_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_orchestration_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_orchestration_clusters",
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_orchestration_clusters_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_orchestration_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25865,8 +25876,9 @@ def test_get_orchestration_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25935,18 +25947,20 @@ def test_get_orchestration_cluster_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_orchestration_cluster"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_get_orchestration_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_orchestration_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_get_orchestration_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_get_orchestration_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_get_orchestration_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26004,8 +26018,9 @@ def test_create_orchestration_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26170,20 +26185,23 @@ def test_create_orchestration_cluster_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_orchestration_cluster"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_create_orchestration_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_orchestration_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_create_orchestration_cluster",
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_create_orchestration_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "pre_create_orchestration_cluster",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26238,8 +26256,9 @@ def test_delete_orchestration_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26298,20 +26317,23 @@ def test_delete_orchestration_cluster_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_delete_orchestration_cluster"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_delete_orchestration_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_delete_orchestration_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_delete_orchestration_cluster",
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_delete_orchestration_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "pre_delete_orchestration_cluster",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26364,8 +26386,9 @@ def test_list_edge_slms_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26430,17 +26453,20 @@ def test_list_edge_slms_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_edge_slms"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_edge_slms_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_edge_slms"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_list_edge_slms"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_edge_slms_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_edge_slms"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26496,8 +26522,9 @@ def test_get_edge_slm_rest_bad_request(request_type=telcoautomation.GetEdgeSlmRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26571,17 +26598,19 @@ def test_get_edge_slm_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_edge_slm"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_edge_slm_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_edge_slm"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_get_edge_slm"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_get_edge_slm_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_get_edge_slm"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26634,8 +26663,9 @@ def test_create_edge_slm_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26769,19 +26799,21 @@ def test_create_edge_slm_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_edge_slm"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_edge_slm_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_edge_slm"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_create_edge_slm"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_create_edge_slm_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_create_edge_slm"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26834,8 +26866,9 @@ def test_delete_edge_slm_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26892,19 +26925,21 @@ def test_delete_edge_slm_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_delete_edge_slm"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_delete_edge_slm_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_delete_edge_slm"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_delete_edge_slm"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_delete_edge_slm_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_delete_edge_slm"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26959,8 +26994,9 @@ def test_create_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27131,17 +27167,20 @@ def test_create_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_blueprint_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_create_blueprint"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_create_blueprint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_create_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27198,8 +27237,9 @@ def test_update_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27372,17 +27412,20 @@ def test_update_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_update_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_update_blueprint_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_update_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_update_blueprint"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_update_blueprint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_update_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27437,8 +27480,9 @@ def test_get_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27519,17 +27563,20 @@ def test_get_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_blueprint_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_get_blueprint"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_get_blueprint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_get_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27584,8 +27631,9 @@ def test_delete_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27644,13 +27692,13 @@ def test_delete_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_delete_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_delete_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = telcoautomation.DeleteBlueprintRequest.pb(
             telcoautomation.DeleteBlueprintRequest()
@@ -27697,8 +27745,9 @@ def test_list_blueprints_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27763,17 +27812,20 @@ def test_list_blueprints_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_blueprints"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_blueprints_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_blueprints"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_list_blueprints"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_blueprints_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_blueprints"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27833,8 +27885,9 @@ def test_approve_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27915,18 +27968,20 @@ def test_approve_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_approve_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_approve_blueprint_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_approve_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_approve_blueprint"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_approve_blueprint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_approve_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27981,8 +28036,9 @@ def test_propose_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28063,18 +28119,20 @@ def test_propose_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_propose_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_propose_blueprint_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_propose_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_propose_blueprint"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_propose_blueprint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_propose_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28129,8 +28187,9 @@ def test_reject_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28211,17 +28270,20 @@ def test_reject_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_reject_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_reject_blueprint_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_reject_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_reject_blueprint"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_reject_blueprint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_reject_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28276,8 +28338,9 @@ def test_list_blueprint_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28342,18 +28405,20 @@ def test_list_blueprint_revisions_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_blueprint_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_list_blueprint_revisions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_blueprint_revisions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_list_blueprint_revisions"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_blueprint_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_blueprint_revisions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28413,8 +28478,9 @@ def test_search_blueprint_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28479,18 +28545,20 @@ def test_search_blueprint_revisions_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_search_blueprint_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_search_blueprint_revisions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_search_blueprint_revisions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_search_blueprint_revisions"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_search_blueprint_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_search_blueprint_revisions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28550,8 +28618,9 @@ def test_search_deployment_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28618,18 +28687,21 @@ def test_search_deployment_revisions_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_search_deployment_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_search_deployment_revisions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_search_deployment_revisions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_search_deployment_revisions",
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_search_deployment_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_search_deployment_revisions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28689,8 +28761,9 @@ def test_discard_blueprint_changes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28752,18 +28825,20 @@ def test_discard_blueprint_changes_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_discard_blueprint_changes"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_discard_blueprint_changes_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_discard_blueprint_changes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_discard_blueprint_changes"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_discard_blueprint_changes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_discard_blueprint_changes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28821,8 +28896,9 @@ def test_list_public_blueprints_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28885,18 +28961,20 @@ def test_list_public_blueprints_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_public_blueprints"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_list_public_blueprints_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_public_blueprints"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_list_public_blueprints"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_public_blueprints_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_public_blueprints"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28956,8 +29034,9 @@ def test_get_public_blueprint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29032,18 +29111,20 @@ def test_get_public_blueprint_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_public_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_get_public_blueprint_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_public_blueprint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_get_public_blueprint"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_get_public_blueprint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_get_public_blueprint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29100,8 +29181,9 @@ def test_create_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29275,18 +29357,20 @@ def test_create_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_create_deployment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_create_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_create_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_create_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29343,8 +29427,9 @@ def test_update_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29520,18 +29605,20 @@ def test_update_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_update_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_update_deployment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_update_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_update_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_update_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_update_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29586,8 +29673,9 @@ def test_get_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29670,17 +29758,20 @@ def test_get_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_get_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_get_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_get_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29735,8 +29826,9 @@ def test_remove_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29795,13 +29887,13 @@ def test_remove_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_remove_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_remove_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = telcoautomation.RemoveDeploymentRequest.pb(
             telcoautomation.RemoveDeploymentRequest()
@@ -29848,8 +29940,9 @@ def test_list_deployments_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29914,17 +30007,20 @@ def test_list_deployments_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_deployments"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_deployments_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_deployments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_list_deployments"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_deployments_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_deployments"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29984,8 +30080,9 @@ def test_list_deployment_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30050,18 +30147,20 @@ def test_list_deployment_revisions_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_deployment_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_list_deployment_revisions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_deployment_revisions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_list_deployment_revisions"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_deployment_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_deployment_revisions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30121,8 +30220,9 @@ def test_discard_deployment_changes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30184,18 +30284,20 @@ def test_discard_deployment_changes_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_discard_deployment_changes"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_discard_deployment_changes_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_discard_deployment_changes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_discard_deployment_changes"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_discard_deployment_changes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_discard_deployment_changes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30255,8 +30357,9 @@ def test_apply_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30339,17 +30442,20 @@ def test_apply_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_apply_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_apply_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_apply_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_apply_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_apply_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_apply_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30404,8 +30510,9 @@ def test_compute_deployment_status_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30472,18 +30579,20 @@ def test_compute_deployment_status_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_compute_deployment_status"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_compute_deployment_status_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_compute_deployment_status"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_compute_deployment_status"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_compute_deployment_status_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_compute_deployment_status"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30543,8 +30652,9 @@ def test_rollback_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30627,18 +30737,20 @@ def test_rollback_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_rollback_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_rollback_deployment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_rollback_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_rollback_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_rollback_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_rollback_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30693,8 +30805,9 @@ def test_get_hydrated_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30763,18 +30876,20 @@ def test_get_hydrated_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_hydrated_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_get_hydrated_deployment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_hydrated_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_get_hydrated_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_get_hydrated_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_get_hydrated_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30831,8 +30946,9 @@ def test_list_hydrated_deployments_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30897,18 +31013,20 @@ def test_list_hydrated_deployments_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_hydrated_deployments"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_list_hydrated_deployments_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_hydrated_deployments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_list_hydrated_deployments"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_list_hydrated_deployments_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_list_hydrated_deployments"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30970,8 +31088,9 @@ def test_update_hydrated_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31124,18 +31243,20 @@ def test_update_hydrated_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_update_hydrated_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_update_hydrated_deployment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_update_hydrated_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_update_hydrated_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_update_hydrated_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_update_hydrated_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31192,8 +31313,9 @@ def test_apply_hydrated_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31262,18 +31384,20 @@ def test_apply_hydrated_deployment_rest_interceptors(null_interceptor):
     )
     client = TelcoAutomationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_apply_hydrated_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor,
-        "post_apply_hydrated_deployment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_apply_hydrated_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "post_apply_hydrated_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor,
+            "post_apply_hydrated_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.TelcoAutomationRestInterceptor, "pre_apply_hydrated_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31328,8 +31452,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31388,8 +31513,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31450,8 +31576,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31512,8 +31639,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31574,8 +31702,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31636,8 +31765,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -32574,11 +32704,14 @@ def test_telco_automation_base_transport():
 
 def test_telco_automation_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.telcoautomation_v1alpha1.services.telco_automation.transports.TelcoAutomationTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.telcoautomation_v1alpha1.services.telco_automation.transports.TelcoAutomationTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TelcoAutomationTransport(
@@ -32595,9 +32728,12 @@ def test_telco_automation_base_transport_with_credentials_file():
 
 def test_telco_automation_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.telcoautomation_v1alpha1.services.telco_automation.transports.TelcoAutomationTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.telcoautomation_v1alpha1.services.telco_automation.transports.TelcoAutomationTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TelcoAutomationTransport()
@@ -32669,11 +32805,12 @@ def test_telco_automation_transport_auth_gdch_credentials(transport_class):
 def test_telco_automation_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -33527,6 +33664,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33664,6 +33833,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -33811,6 +34012,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33954,6 +34189,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -34101,6 +34370,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34240,6 +34543,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():
