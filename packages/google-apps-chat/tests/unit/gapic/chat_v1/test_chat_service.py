@@ -155,6 +155,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ChatServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -173,6 +174,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert ChatServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        ChatServiceClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -1279,11 +1283,13 @@ def test_chat_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -22094,8 +22100,9 @@ def test_create_message_rest_bad_request(request_type=gc_message.CreateMessageRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22718,17 +22725,19 @@ def test_create_message_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_message"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_message_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_create_message"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_message"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_message_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_create_message"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22779,8 +22788,9 @@ def test_list_messages_rest_bad_request(request_type=message.ListMessagesRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22843,17 +22853,19 @@ def test_list_messages_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_messages"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_messages_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_list_messages"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_messages"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_messages_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_list_messages"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22906,8 +22918,9 @@ def test_list_memberships_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22970,17 +22983,19 @@ def test_list_memberships_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_memberships"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_memberships_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_list_memberships"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_memberships"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_memberships_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_list_memberships"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23033,8 +23048,9 @@ def test_get_membership_rest_bad_request(request_type=membership.GetMembershipRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23101,17 +23117,19 @@ def test_get_membership_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_membership"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_membership"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_membership_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23162,8 +23180,9 @@ def test_get_message_rest_bad_request(request_type=message.GetMessageRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23238,17 +23257,19 @@ def test_get_message_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_message"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_message_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_message"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_message"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_message_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_message"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23297,8 +23318,9 @@ def test_update_message_rest_bad_request(request_type=gc_message.UpdateMessageRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23921,17 +23943,19 @@ def test_update_message_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_message"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_message_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_update_message"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_update_message"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_update_message_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_update_message"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23982,8 +24006,9 @@ def test_delete_message_rest_bad_request(request_type=message.DeleteMessageReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24040,13 +24065,13 @@ def test_delete_message_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_delete_message"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_delete_message"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = message.DeleteMessageRequest.pb(message.DeleteMessageRequest())
         transcode.return_value = {
@@ -24087,8 +24112,9 @@ def test_get_attachment_rest_bad_request(request_type=attachment.GetAttachmentRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24161,17 +24187,19 @@ def test_get_attachment_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_attachment"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_attachment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_attachment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_attachment"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_attachment_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_attachment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24224,8 +24252,9 @@ def test_upload_attachment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24285,17 +24314,20 @@ def test_upload_attachment_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_upload_attachment"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_upload_attachment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_upload_attachment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_upload_attachment"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_upload_attachment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_upload_attachment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24351,8 +24383,9 @@ def test_list_spaces_rest_bad_request(request_type=space.ListSpacesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24415,17 +24448,19 @@ def test_list_spaces_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_spaces"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_spaces_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_list_spaces"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_spaces"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_spaces_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_list_spaces"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24474,8 +24509,9 @@ def test_search_spaces_rest_bad_request(request_type=space.SearchSpacesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24540,17 +24576,19 @@ def test_search_spaces_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_search_spaces"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_search_spaces_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_search_spaces"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_search_spaces"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_search_spaces_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_search_spaces"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24599,8 +24637,9 @@ def test_get_space_rest_bad_request(request_type=space.GetSpaceRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24691,17 +24730,19 @@ def test_get_space_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_space"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_space_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_space"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_space"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_space_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_space"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24750,8 +24791,9 @@ def test_create_space_rest_bad_request(request_type=gc_space.CreateSpaceRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24951,17 +24993,19 @@ def test_create_space_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_space"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_space_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_create_space"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_space"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_space_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_create_space"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25010,8 +25054,9 @@ def test_set_up_space_rest_bad_request(request_type=space_setup.SetUpSpaceReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25102,17 +25147,19 @@ def test_set_up_space_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_set_up_space"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_set_up_space_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_set_up_space"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_set_up_space"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_set_up_space_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_set_up_space"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25161,8 +25208,9 @@ def test_update_space_rest_bad_request(request_type=gc_space.UpdateSpaceRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25362,17 +25410,19 @@ def test_update_space_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_space"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_space_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_update_space"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_update_space"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_update_space_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_update_space"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25421,8 +25471,9 @@ def test_delete_space_rest_bad_request(request_type=space.DeleteSpaceRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25479,13 +25530,13 @@ def test_delete_space_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_delete_space"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_delete_space"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = space.DeleteSpaceRequest.pb(space.DeleteSpaceRequest())
         transcode.return_value = {
@@ -25528,8 +25579,9 @@ def test_complete_import_space_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25589,18 +25641,20 @@ def test_complete_import_space_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_complete_import_space"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor,
-        "post_complete_import_space_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_complete_import_space"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_complete_import_space"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_complete_import_space_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_complete_import_space"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25655,8 +25709,9 @@ def test_find_direct_message_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25747,17 +25802,20 @@ def test_find_direct_message_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_find_direct_message"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_find_direct_message_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_find_direct_message"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_find_direct_message"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_find_direct_message_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_find_direct_message"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25808,8 +25866,9 @@ def test_create_membership_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25958,17 +26017,20 @@ def test_create_membership_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_membership"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_create_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_membership"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_create_membership_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_create_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26021,8 +26083,9 @@ def test_update_membership_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26171,17 +26234,20 @@ def test_update_membership_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_membership"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_update_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_update_membership"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_update_membership_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_update_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26234,8 +26300,9 @@ def test_delete_membership_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26302,17 +26369,20 @@ def test_delete_membership_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_delete_membership"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_delete_membership_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_delete_membership"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_delete_membership"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_delete_membership_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_delete_membership"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26365,8 +26435,9 @@ def test_create_reaction_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26519,17 +26590,19 @@ def test_create_reaction_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_reaction"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_reaction_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_create_reaction"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_reaction"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_reaction_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_create_reaction"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26580,8 +26653,9 @@ def test_list_reactions_rest_bad_request(request_type=reaction.ListReactionsRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26644,17 +26718,19 @@ def test_list_reactions_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_reactions"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_reactions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_list_reactions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_reactions"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_reactions_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_list_reactions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26705,8 +26781,9 @@ def test_delete_reaction_rest_bad_request(request_type=reaction.DeleteReactionRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26763,13 +26840,13 @@ def test_delete_reaction_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_delete_reaction"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_delete_reaction"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = reaction.DeleteReactionRequest.pb(reaction.DeleteReactionRequest())
         transcode.return_value = {
@@ -26812,8 +26889,9 @@ def test_create_custom_emoji_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26956,17 +27034,20 @@ def test_create_custom_emoji_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_custom_emoji"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_create_custom_emoji_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_create_custom_emoji"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_create_custom_emoji"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_create_custom_emoji_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_create_custom_emoji"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27017,8 +27098,9 @@ def test_get_custom_emoji_rest_bad_request(request_type=reaction.GetCustomEmojiR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27087,17 +27169,19 @@ def test_get_custom_emoji_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_custom_emoji"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_custom_emoji_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_custom_emoji"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_custom_emoji"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_custom_emoji_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_custom_emoji"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27148,8 +27232,9 @@ def test_list_custom_emojis_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27212,17 +27297,20 @@ def test_list_custom_emojis_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_custom_emojis"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_custom_emojis_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_list_custom_emojis"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_custom_emojis"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_list_custom_emojis_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_list_custom_emojis"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27277,8 +27365,9 @@ def test_delete_custom_emoji_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27335,13 +27424,13 @@ def test_delete_custom_emoji_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_delete_custom_emoji"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_delete_custom_emoji"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = reaction.DeleteCustomEmojiRequest.pb(
             reaction.DeleteCustomEmojiRequest()
@@ -27386,8 +27475,9 @@ def test_get_space_read_state_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27450,17 +27540,20 @@ def test_get_space_read_state_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_space_read_state"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_space_read_state_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_space_read_state"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_space_read_state"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_get_space_read_state_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_space_read_state"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27517,8 +27610,9 @@ def test_update_space_read_state_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27656,18 +27750,20 @@ def test_update_space_read_state_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_space_read_state"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor,
-        "post_update_space_read_state_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_update_space_read_state"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_update_space_read_state"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_update_space_read_state_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_update_space_read_state"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27724,8 +27820,9 @@ def test_get_thread_read_state_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27790,18 +27887,20 @@ def test_get_thread_read_state_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_thread_read_state"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor,
-        "post_get_thread_read_state_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_thread_read_state"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_thread_read_state"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_get_thread_read_state_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_thread_read_state"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27856,8 +27955,9 @@ def test_get_space_event_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27922,17 +28022,19 @@ def test_get_space_event_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_space_event"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_space_event_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_space_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_space_event"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_space_event_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_space_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27985,8 +28087,9 @@ def test_list_space_events_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28049,17 +28152,20 @@ def test_list_space_events_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_space_events"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_list_space_events_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_list_space_events"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_list_space_events"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_list_space_events_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_list_space_events"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28117,8 +28223,9 @@ def test_get_space_notification_setting_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28193,18 +28300,20 @@ def test_get_space_notification_setting_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_get_space_notification_setting"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor,
-        "post_get_space_notification_setting_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_get_space_notification_setting"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "post_get_space_notification_setting"
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_get_space_notification_setting_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor, "pre_get_space_notification_setting"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28266,8 +28375,9 @@ def test_update_space_notification_setting_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28426,18 +28536,22 @@ def test_update_space_notification_setting_rest_interceptors(null_interceptor):
     )
     client = ChatServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "post_update_space_notification_setting"
-    ) as post, mock.patch.object(
-        transports.ChatServiceRestInterceptor,
-        "post_update_space_notification_setting_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ChatServiceRestInterceptor, "pre_update_space_notification_setting"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_update_space_notification_setting",
+        ) as post,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "post_update_space_notification_setting_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ChatServiceRestInterceptor,
+            "pre_update_space_notification_setting",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29312,11 +29426,14 @@ def test_chat_service_base_transport():
 
 def test_chat_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.apps.chat_v1.services.chat_service.transports.ChatServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.apps.chat_v1.services.chat_service.transports.ChatServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ChatServiceTransport(
@@ -29364,9 +29481,12 @@ def test_chat_service_base_transport_with_credentials_file():
 
 def test_chat_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.apps.chat_v1.services.chat_service.transports.ChatServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.apps.chat_v1.services.chat_service.transports.ChatServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ChatServiceTransport()
@@ -29500,11 +29620,12 @@ def test_chat_service_transport_auth_gdch_credentials(transport_class):
 def test_chat_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
