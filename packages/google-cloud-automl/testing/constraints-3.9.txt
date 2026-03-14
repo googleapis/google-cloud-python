@@ -6,7 +6,7 @@
 # For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.21.0
-google-cloud-storage==1.18.0
+google-cloud-storage==1.42.0
 libcst==0.2.5
 pandas==1.1.3
 # numpy is a dependency of pandas
