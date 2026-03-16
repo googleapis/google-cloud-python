@@ -84,19 +84,15 @@ def autofield_init(self, *args, **kwargs):
             == "true"
         ):
             self.default = gen_rand_int64
+            self.db_returning = False
+            self.validators = []
             break
 
 
 AutoField.__init__ = autofield_init
-AutoField.db_returning = False
-AutoField.validators = []
 
 SmallAutoField.__init__ = autofield_init
 BigAutoField.__init__ = autofield_init
-SmallAutoField.db_returning = False
-BigAutoField.db_returning = False
-SmallAutoField.validators = []
-BigAutoField.validators = []
 
 
 def get_prep_value(self, value):
