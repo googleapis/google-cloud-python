@@ -258,6 +258,7 @@ class AsyncMultiRangeDownloader:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
         if retry_policy is None:
+
             def on_error_wrapper(exc):
                 self._open_retries += 1
                 self._on_open_error(exc)

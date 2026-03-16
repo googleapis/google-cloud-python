@@ -104,7 +104,9 @@ def test_basic_wrd_x_region(
         object_data = os.urandom(object_size)
         object_checksum = google_crc32c.value(object_data)
 
-        writer = AsyncAppendableObjectWriter(grpc_client, _CROSS_REGION_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(
+            grpc_client, _CROSS_REGION_BUCKET, object_name
+        )
         await writer.open()
         await writer.append(object_data)
         object_metadata = await writer.close(finalize_on_close=True)
@@ -122,11 +124,14 @@ def test_basic_wrd_x_region(
         assert buffer.getvalue() == object_data
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(_CROSS_REGION_BUCKET).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(_CROSS_REGION_BUCKET).blob(object_name)
+        )
         del writer
         gc.collect()
 
     event_loop.run_until_complete(_run())
+
 
 @pytest.mark.parametrize(
     "object_size",
