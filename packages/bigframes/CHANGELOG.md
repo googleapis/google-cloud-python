@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.38.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.37.0...v2.38.0) (2026-03-16)
+
+
+### Documentation
+
+* add notebooks to user guide page (#2505) ([5cf37888bc0b4b1b0993dadd1e0fe5ee08341ef4](https://github.com/googleapis/python-bigquery-dataframes/commit/5cf37888bc0b4b1b0993dadd1e0fe5ee08341ef4))
+* Fix typo in ExperimentOptions class docstring (#2498) ([077cb2ebe515fc5e07bcbb5dc663edd28d3eaf00](https://github.com/googleapis/python-bigquery-dataframes/commit/077cb2ebe515fc5e07bcbb5dc663edd28d3eaf00))
+
+
+### Features
+
+* add `df.bigquery` pandas accessor (#2513) ([91b6c245521218bb78b543885e1b9424278ce2ab](https://github.com/googleapis/python-bigquery-dataframes/commit/91b6c245521218bb78b543885e1b9424278ce2ab))
+* use EUC for AI IF, CLASSIFY, and SCORE when connection is not provided (#2507) ([fe94910abff28e244dd79e1540a6c2184a12eb44](https://github.com/googleapis/python-bigquery-dataframes/commit/fe94910abff28e244dd79e1540a6c2184a12eb44))
+* Add `bigframes.bigquery.rand()` function (#2501) ([5c43efb745118f506ecc30196da68e9d6f4346dc](https://github.com/googleapis/python-bigquery-dataframes/commit/5c43efb745118f506ecc30196da68e9d6f4346dc))
+* add bigquery.ml.get_insights function (#2493) ([d29a60953ac989bb2c95e6eec3010620ac776a3c](https://github.com/googleapis/python-bigquery-dataframes/commit/d29a60953ac989bb2c95e6eec3010620ac776a3c))
+* Add str, dt accessors to pd.col Expression objects (#2488) ([ce5de57019449ca77d308946df72f04289343b51](https://github.com/googleapis/python-bigquery-dataframes/commit/ce5de57019449ca77d308946df72f04289343b51))
+
+
+### Bug Fixes
+
+* handle unsupported types and empty results in describe (#2506) ([2326ad6aec15c20a66756eff093b50be484b3ba8](https://github.com/googleapis/python-bigquery-dataframes/commit/2326ad6aec15c20a66756eff093b50be484b3ba8))
+* no longer automatically use anywidget in the `%%bqsql` magics (#2504) ([43353e2bc9ffbc38b7383c24ecaac80d3b8bab32](https://github.com/googleapis/python-bigquery-dataframes/commit/43353e2bc9ffbc38b7383c24ecaac80d3b8bab32))
+
 ## [2.37.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.36.0...v2.37.0) (2026-03-03)
 
 
