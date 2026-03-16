@@ -22,6 +22,7 @@ from bigframes.core.compile.sqlglot.sql.base import (
     table,
     to_sql,
 )
+from bigframes.core.compile.sqlglot.sql.ddl import load_data
 from bigframes.core.compile.sqlglot.sql.dml import insert, replace
 
 __all__ = [
@@ -33,6 +34,8 @@ __all__ = [
     "literal",
     "table",
     "to_sql",
+    # From ddl.py
+    "load_data",
     # From dml.py
     "insert",
     "replace",

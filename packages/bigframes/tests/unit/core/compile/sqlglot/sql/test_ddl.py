@@ -12,29 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest import mock
-
 import pytest
 
-import bigframes.bigquery._operations.io
-import bigframes.session
+import bigframes.core.compile.sqlglot.sql as sql
+
+pytest.importorskip("pytest_snapshot")
 
 
-@pytest.fixture
-def mock_session():
-    return mock.create_autospec(spec=bigframes.session.Session)
-
-
-@mock.patch("bigframes.bigquery._operations.io._get_table_metadata")
-def test_load_data(get_table_metadata_mock, mock_session):
-    bigframes.bigquery._operations.io.load_data(
+def test_load_data_minimal(snapshot):
+    expr = sql.load_data(
         "my-project.my_dataset.my_table",
-        columns={"col1": "INT64", "col2": "STRING"},
         from_files_options={"format": "CSV", "uris": ["gs://bucket/path*"]},
-        session=mock_session,
     )
-    mock_session.read_gbq_query.assert_called_once()
-    generated_sql = mock_session.read_gbq_query.call_args[0][0]
-    expected = "LOAD DATA INTO `my-project.my_dataset.my_table` (\n  `col1` INT64,\n  `col2` STRING\n) FROM FILES (format='CSV', uris=['gs://bucket/path*'])"
-    assert generated_sql == expected
-    get_table_metadata_mock.assert_called_once()
+    snapshot.assert_match(sql.to_sql(expr), "out.sql")
+
+
+def test_load_data_all_options(snapshot):
+    expr = sql.load_data(
+        "my-project.my_dataset.my_table",
+        write_disposition="OVERWRITE",
+        columns={"col1": "INT64", "col2": "STRING"},
+        partition_by=["date_col"],
+        cluster_by=["cluster_col"],
+        table_options={"description": "my table"},
+        from_files_options={"format": "CSV", "uris": ["gs://bucket/path*"]},
+        with_partition_columns={"part1": "DATE", "part2": "STRING"},
+        connection_name="my-connection",
+    )
+    snapshot.assert_match(sql.to_sql(expr), "out.sql")

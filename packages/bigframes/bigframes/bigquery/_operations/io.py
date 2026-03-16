@@ -19,8 +19,8 @@ from typing import Mapping, Optional, Union
 import pandas as pd
 
 from bigframes.bigquery._operations.table import _get_table_metadata
+import bigframes.core.compile.sqlglot.sql as sql
 import bigframes.core.logging.log_adapter as log_adapter
-import bigframes.core.sql.io
 import bigframes.session
 
 
@@ -73,7 +73,7 @@ def load_data(
     """
     import bigframes.pandas as bpd
 
-    sql = bigframes.core.sql.io.load_data_ddl(
+    load_data_expr = sql.load_data(
         table_name=table_name,
         write_disposition=write_disposition,
         columns=columns,
@@ -84,11 +84,12 @@ def load_data(
         with_partition_columns=with_partition_columns,
         connection_name=connection_name,
     )
+    sql_text = sql.to_sql(load_data_expr)
 
     if session is None:
-        bpd.read_gbq_query(sql)
+        bpd.read_gbq_query(sql_text)
         session = bpd.get_global_session()
     else:
-        session.read_gbq_query(sql)
+        session.read_gbq_query(sql_text)
 
     return _get_table_metadata(bqclient=session.bqclient, table_name=table_name)

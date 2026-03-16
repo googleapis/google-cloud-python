@@ -166,7 +166,7 @@ class _Dialect(type):
         # files. Custom user dialects need to be imported at the top-level package, in
         # order for them to be registered as soon as possible.
         if key in DIALECT_MODULE_NAMES:
-            importlib.import_module(f"sqlglot.dialects.{key}")
+            importlib.import_module(f"bigframes_vendored.sqlglot.dialects.{key}")
 
     @classmethod
     def __getitem__(cls, key: str) -> t.Type[Dialect]:
