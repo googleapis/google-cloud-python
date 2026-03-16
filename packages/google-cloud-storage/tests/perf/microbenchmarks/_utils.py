@@ -18,7 +18,8 @@ import os
 import socket
 import psutil
 
-_C4_STANDARD_192_NIC = "ens3" # can be fetched via ip link show
+_C4_STANDARD_192_NIC = "ens3"  # can be fetched via ip link show
+
 
 def publish_benchmark_extra_info(
     benchmark: Any,
@@ -28,7 +29,6 @@ def publish_benchmark_extra_info(
     download_bytes_list: Optional[List[int]] = None,
     duration: Optional[int] = None,
 ) -> None:
-    
     """
     Helper function to publish benchmark parameters to the extra_info property.
     """
@@ -48,13 +48,14 @@ def publish_benchmark_extra_info(
     benchmark.group = benchmark_group
 
     if download_bytes_list is not None:
-        assert duration is not None, "Duration must be provided if total_bytes_transferred is provided."
+        assert (
+            duration is not None
+        ), "Duration must be provided if total_bytes_transferred is provided."
         throughputs_list = [x / duration / (1024 * 1024) for x in download_bytes_list]
         min_throughput = min(throughputs_list)
         max_throughput = max(throughputs_list)
         mean_throughput = statistics.mean(throughputs_list)
         median_throughput = statistics.median(throughputs_list)
-
 
     else:
         object_size = params.file_size_bytes
@@ -211,13 +212,13 @@ def get_affinity(irq):
 
 def get_primary_interface_name():
     primary_ip = None
-    
+
     # 1. Determine the Local IP used for internet access
     # We use UDP (SOCK_DGRAM) so we don't actually send a handshake/packet
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         # connect() to a public IP (Google DNS) to force route resolution
-        s.connect(('8.8.8.8', 80))
+        s.connect(("8.8.8.8", 80))
         primary_ip = s.getsockname()[0]
     except Exception:
         # Fallback if no internet
@@ -248,7 +249,7 @@ def get_irq_affinity():
     for irq in irqs:
         affinity_str = get_affinity(irq)
         if affinity_str != "N/A":
-            for part in affinity_str.split(','):
-                if '-' not in part:
+            for part in affinity_str.split(","):
+                if "-" not in part:
                     cpus.add(int(part))
     return cpus

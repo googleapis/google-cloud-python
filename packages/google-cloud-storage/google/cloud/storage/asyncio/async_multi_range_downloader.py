@@ -230,7 +230,6 @@ class AsyncMultiRangeDownloader:
         self.persisted_size: Optional[int] = None  # updated after opening the stream
         self._open_retries: int = 0
 
-
     async def __aenter__(self):
         """Opens the underlying bidi-gRPC connection to read from the object."""
         await self.open()
@@ -259,6 +258,7 @@ class AsyncMultiRangeDownloader:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
         if retry_policy is None:
+
             def on_error_wrapper(exc):
                 self._open_retries += 1
                 self._on_open_error(exc)

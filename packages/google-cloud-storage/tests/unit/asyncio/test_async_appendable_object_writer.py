@@ -175,9 +175,9 @@ class TestAsyncAppendableObjectWriter:
         writer._is_stream_open = True
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
-        mock_appendable_writer["mock_stream"].recv.return_value = (
-            storage_type.BidiWriteObjectResponse(persisted_size=100)
-        )
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=100)
 
         size = await writer.state_lookup()
 
@@ -246,9 +246,7 @@ class TestAsyncAppendableObjectWriter:
         ],
     )
     @pytest.mark.asyncio
-    async def test_append(
-        self, data_len, mock_appendable_writer
-    ):
+    async def test_append(self, data_len, mock_appendable_writer):
         """Verify append orchestrates manager and drives the internal generator."""
         # Arrange
         writer = self._make_one(mock_appendable_writer["mock_client"])
@@ -272,10 +270,19 @@ class TestAsyncAppendableObjectWriter:
         # Assert
         expected_recv_count = data_len // _DEFAULT_FLUSH_INTERVAL_BYTES
         assert writer.offset == data_len
-        assert writer.bytes_appended_since_last_flush == data_len % _DEFAULT_FLUSH_INTERVAL_BYTES
-        assert writer.persisted_size == expected_recv_count*_DEFAULT_FLUSH_INTERVAL_BYTES
-        assert writer.write_obj_stream.send.await_count == -(-data_len // _MAX_CHUNK_SIZE_BYTES)  # Ceiling division for number of chunks
-        assert writer.write_obj_stream.recv.await_count == expected_recv_count  # Expect 1 recv per flush interval
+        assert (
+            writer.bytes_appended_since_last_flush
+            == data_len % _DEFAULT_FLUSH_INTERVAL_BYTES
+        )
+        assert (
+            writer.persisted_size == expected_recv_count * _DEFAULT_FLUSH_INTERVAL_BYTES
+        )
+        assert writer.write_obj_stream.send.await_count == -(
+            -data_len // _MAX_CHUNK_SIZE_BYTES
+        )  # Ceiling division for number of chunks
+        assert (
+            writer.write_obj_stream.recv.await_count == expected_recv_count
+        )  # Expect 1 recv per flush interval
 
     @pytest.mark.asyncio
     async def test_append_recovery_reopens_stream(self, mock_appendable_writer):
@@ -339,9 +346,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
         writer.bytes_appended_since_last_flush = 100
 
-        mock_appendable_writer["mock_stream"].recv.return_value = (
-            storage_type.BidiWriteObjectResponse(persisted_size=200)
-        )
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=200)
 
         await writer.flush()
 
@@ -382,9 +389,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
         resource = storage_type.Object(size=999)
-        mock_appendable_writer["mock_stream"].recv.return_value = (
-            storage_type.BidiWriteObjectResponse(resource=resource)
-        )
+        mock_appendable_writer[
+            "mock_stream"
+        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
 
         res = await writer.finalize()
 
