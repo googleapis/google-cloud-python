@@ -44,11 +44,11 @@ async def sample_failover_instance():
     )
 
     # Make the request
-    operation = client.failover_instance(request=request)
+    operation = await client.failover_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

@@ -957,7 +957,7 @@ def test_render_calling_form_longrunning_async():
 
                    print("Waiting for operation to complete...")
 
-                   response = (await operation).result()
+                   response = await operation.result()
 
                    # Handle the response
                    print("Test print statement")
@@ -1016,6 +1016,84 @@ def test_render_method_call_basic_async():
         ),
         calling_form_enum=CallingForm,
         calling_form=CallingForm.Request,
+        transport="grpc-async",
+    )
+
+
+def test_render_method_call_lro_async():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        await client.categorize_mollusc(request=request)
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None),
+                samplegen.TransformedRequest(base="audio", body=True, single=None),
+                samplegen.TransformedRequest(base="guess", body=True, single=None),
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.LongRunningRequestPromise,
+        transport="grpc-async",
+    )
+
+
+def test_render_method_call_paged_async():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        client.categorize_mollusc(request=request)
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None),
+                samplegen.TransformedRequest(base="audio", body=True, single=None),
+                samplegen.TransformedRequest(base="guess", body=True, single=None),
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestPaged,
+        transport="grpc-async",
+    )
+
+
+def test_render_method_call_paged_all_async():
+    check_template(
+        """
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc",
+                                     "request": request,
+                                     "is_internal": False,
+                                    },
+                                  calling_form, calling_form_enum, transport) }}
+        """,
+        """
+        client.categorize_mollusc(request=request)
+        """,
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video", body=True, single=None),
+                samplegen.TransformedRequest(base="audio", body=True, single=None),
+                samplegen.TransformedRequest(base="guess", body=True, single=None),
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestPagedAll,
         transport="grpc-async",
     )
 

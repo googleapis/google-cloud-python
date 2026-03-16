@@ -45,11 +45,11 @@ async def sample_copy_log_entries():
     )
 
     # Make the request
-    operation = client._copy_log_entries(request=request)
+    operation = await client._copy_log_entries(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

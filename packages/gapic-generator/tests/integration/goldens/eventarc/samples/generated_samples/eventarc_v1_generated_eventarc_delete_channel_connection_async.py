@@ -44,11 +44,11 @@ async def sample_delete_channel_connection():
     )
 
     # Make the request
-    operation = client.delete_channel_connection(request=request)
+    operation = await client.delete_channel_connection(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

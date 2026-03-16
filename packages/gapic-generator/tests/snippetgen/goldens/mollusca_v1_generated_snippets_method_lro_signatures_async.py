@@ -52,11 +52,11 @@ async def sample_method_lro_signatures():
     )
 
     # Make the request
-    operation = client.method_lro_signatures(request=request)
+    operation = await client.method_lro_signatures(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

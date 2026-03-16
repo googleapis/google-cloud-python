@@ -45,11 +45,11 @@ async def sample_reschedule_maintenance():
     )
 
     # Make the request
-    operation = client.reschedule_maintenance(request=request)
+    operation = await client.reschedule_maintenance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

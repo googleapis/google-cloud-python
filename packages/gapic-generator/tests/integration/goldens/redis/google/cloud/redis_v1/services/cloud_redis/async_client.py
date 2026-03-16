@@ -682,11 +682,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_instance(request=request)
+                operation = await client.create_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -839,11 +839,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_instance(request=request)
+                operation = await client.update_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -980,11 +980,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.upgrade_instance(request=request)
+                operation = await client.upgrade_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1124,11 +1124,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_instance(request=request)
+                operation = await client.import_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1265,11 +1265,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_instance(request=request)
+                operation = await client.export_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1399,11 +1399,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.failover_instance(request=request)
+                operation = await client.failover_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1532,11 +1532,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_instance(request=request)
+                operation = await client.delete_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1665,11 +1665,11 @@ class CloudRedisAsyncClient:
                 )
 
                 # Make the request
-                operation = client.reschedule_maintenance(request=request)
+                operation = await client.reschedule_maintenance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

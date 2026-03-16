@@ -322,11 +322,11 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_assets(request=request)
+                operation = await client.export_assets(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1727,11 +1727,11 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.analyze_iam_policy_longrunning(request=request)
+                operation = await client.analyze_iam_policy_longrunning(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

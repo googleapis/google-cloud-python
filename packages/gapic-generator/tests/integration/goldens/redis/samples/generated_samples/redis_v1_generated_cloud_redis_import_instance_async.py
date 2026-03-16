@@ -48,11 +48,11 @@ async def sample_import_instance():
     )
 
     # Make the request
-    operation = client.import_instance(request=request)
+    operation = await client.import_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

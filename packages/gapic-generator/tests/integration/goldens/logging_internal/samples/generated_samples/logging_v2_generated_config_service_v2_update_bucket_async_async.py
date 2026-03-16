@@ -44,11 +44,11 @@ async def sample_update_bucket_async():
     )
 
     # Make the request
-    operation = client.update_bucket_async(request=request)
+    operation = await client.update_bucket_async(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

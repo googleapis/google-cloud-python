@@ -230,7 +230,7 @@ request=request
 {# Note: this doesn't deal with enums or unions #}
 {# LROs return operation objects and paged requests return pager objects #}
 {% if transport == "grpc-async" and calling_form not in
-[calling_form_enum.LongRunningRequestPromise, calling_form_enum.RequestPagedAll] %}
+[calling_form_enum.RequestPaged, calling_form_enum.RequestPagedAll] %}
 await{{ " "}}
 {%- endif -%}
 {% if calling_form in [calling_form_enum.RequestStreamingBidi,
@@ -242,13 +242,6 @@ client.{{ render_method_name(sample)|trim }}({{ render_request_params_unary(samp
 {% endif %}
 {% endmacro %}
 
-{% macro operation_text(transport) %}
-{% if transport == "grpc-async" %}
-(await operation)
-{% else %}
-operation
-{% endif %}
-{% endmacro %}
 
 {# Setting up the method invocation is the responsibility of the caller: #}
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
@@ -294,9 +287,7 @@ operation = {{ method_invocation_text|trim }}
 
 print("Waiting for operation to complete...")
 
-{% with operation_text = operation_text(transport) %}
-response = {{ operation_text|trim }}.result()
-{% endwith %}
+response = {% if transport == "grpc-async" %}await {% endif %}operation.result()
 
 # Handle the response
 {% for statement in response_statements %}

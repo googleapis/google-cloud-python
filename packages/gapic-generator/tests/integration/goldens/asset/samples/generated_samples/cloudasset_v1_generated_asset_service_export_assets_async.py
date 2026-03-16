@@ -48,11 +48,11 @@ async def sample_export_assets():
     )
 
     # Make the request
-    operation = client.export_assets(request=request)
+    operation = await client.export_assets(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

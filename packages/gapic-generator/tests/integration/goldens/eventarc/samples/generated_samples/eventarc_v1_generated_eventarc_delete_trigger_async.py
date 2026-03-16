@@ -45,11 +45,11 @@ async def sample_delete_trigger():
     )
 
     # Make the request
-    operation = client.delete_trigger(request=request)
+    operation = await client.delete_trigger(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

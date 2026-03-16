@@ -45,11 +45,11 @@ async def sample_upgrade_instance():
     )
 
     # Make the request
-    operation = client.upgrade_instance(request=request)
+    operation = await client.upgrade_instance(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

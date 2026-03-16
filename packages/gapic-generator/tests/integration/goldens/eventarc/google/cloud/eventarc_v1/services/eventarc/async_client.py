@@ -564,11 +564,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_trigger(request=request)
+                operation = await client.create_trigger(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -703,11 +703,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_trigger(request=request)
+                operation = await client.update_trigger(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -845,11 +845,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_trigger(request=request)
+                operation = await client.delete_trigger(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1218,11 +1218,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_channel(request=request)
+                operation = await client.create_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1359,11 +1359,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_channel(request=request)
+                operation = await client.update_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1493,11 +1493,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_channel(request=request)
+                operation = await client.delete_channel(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2084,11 +2084,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_channel_connection(request=request)
+                operation = await client.create_channel_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2225,11 +2225,11 @@ class EventarcAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_channel_connection(request=request)
+                operation = await client.delete_channel_connection(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
