@@ -56,7 +56,7 @@ nox.options.sessions = [
     "mypy",
     "conftest_retry",
     "system",
-    "unit",    # cover must be last to avoid error `No data to report`
+    "unit",  # cover must be last to avoid error `No data to report`
     "cover",
     "docfx",
     "docs",
