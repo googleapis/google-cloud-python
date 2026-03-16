@@ -21,7 +21,6 @@ import os
 
 import setuptools
 
-
 # Package metadata.
 
 name = "google-cloud-storage"
@@ -127,6 +126,7 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -139,7 +139,7 @@ setuptools.setup(
     packages=packages,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.10",
+    python_requires=">=3.8",
     include_package_data=True,
     zip_safe=False,
 )
