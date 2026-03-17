@@ -130,7 +130,7 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
     See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
     """
 
-    grpc_status_code: Optional[grpc.StatusCode] = None
+    grpc_status_code: Optional["grpc.StatusCode"] = None
     """Optional[grpc.StatusCode]: The gRPC status code associated with this
     error.
 
