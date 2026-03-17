@@ -81,23 +81,28 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         self, response: storage_v2.BidiReadObjectResponse, state: Dict[str, Any]
     ) -> None:
         """Processes a server response, performs integrity checks, and updates state."""
+        proto = getattr(response, "_pb", response)
 
         # Capture read_handle if provided.
-        if response.read_handle:
-            state["read_handle"] = response.read_handle
+        if proto.HasField("read_handle"):
+            state["read_handle"] = storage_v2.BidiReadHandle(
+                handle=proto.read_handle.handle
+            )
 
         download_states = state["download_states"]
 
-        for object_data_range in response.object_data_ranges:
+        for object_data_range in proto.object_data_ranges:
             # Ignore empty ranges or ranges for IDs not in our state
             # (e.g., from a previously cancelled request on the same stream).
-            if not object_data_range.read_range:
+            if not object_data_range.HasField("read_range"):
                 logger.warning(
                     "Received response with missing read_range field; ignoring."
                 )
                 continue
 
-            read_id = object_data_range.read_range.read_id
+            read_range_pb = object_data_range.read_range
+            read_id = read_range_pb.read_id
+
             if read_id not in download_states:
                 logger.warning(
                     f"Received data for unknown or stale read_id {read_id}; ignoring."
@@ -107,7 +112,8 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             read_state = download_states[read_id]
 
             # Offset Verification
-            chunk_offset = object_data_range.read_range.read_offset
+            # We must validate data before updating state or writing to buffer.
+            chunk_offset = read_range_pb.read_offset
             if chunk_offset != read_state.next_expected_offset:
                 raise DataCorruption(
                     response,
@@ -116,11 +122,11 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                 )
 
             # Checksum Verification
-            # We must validate data before updating state or writing to buffer.
-            data = object_data_range.checksummed_data.content
-            server_checksum = object_data_range.checksummed_data.crc32c
+            checksummed_data = object_data_range.checksummed_data
+            data = checksummed_data.content
 
-            if server_checksum is not None:
+            if checksummed_data.HasField("crc32c"):
+                server_checksum = checksummed_data.crc32c
                 client_checksum = int.from_bytes(Checksum(data).digest(), "big")
                 if server_checksum != client_checksum:
                     raise DataCorruption(

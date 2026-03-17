@@ -159,7 +159,6 @@ async def _download_time_based_async(client, filename, params):
 
 
 def _download_files_worker(process_idx, filename, params, bucket_type):
-
     if bucket_type == "zonal":
         return worker_loop.run_until_complete(
             _download_time_based_async(worker_client, filename, params)

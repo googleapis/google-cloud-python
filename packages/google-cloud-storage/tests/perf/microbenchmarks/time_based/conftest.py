@@ -17,5 +17,5 @@ import pytest
 @pytest.fixture
 def workload_params(request):
     params = request.param
-    files_names = [f'fio-go_storage_fio.0.{i}' for i in range(0, params.num_processes)]
+    files_names = [f"fio-go_storage_fio.0.{i}" for i in range(0, params.num_processes)]
     return params, files_names
