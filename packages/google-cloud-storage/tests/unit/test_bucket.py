@@ -2733,6 +2733,41 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.cors, [CORS_ENTRY])
         self.assertTrue("cors" in bucket._changes)
 
+    def test_encryption_getter(self):
+        from google.cloud.storage.bucket import BucketEncryption
+
+        NAME = "name"
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        ENCRYPTION_CONFIG = {"defaultKmsKeyName": KMS_RESOURCE}
+        bucket = self._make_one(name=NAME)
+        self.assertIsNone(bucket.encryption.default_kms_key_name)
+        bucket._properties["encryption"] = ENCRYPTION_CONFIG
+        encryption = bucket.encryption
+        self.assertIsInstance(encryption, BucketEncryption)
+        self.assertEqual(encryption.default_kms_key_name, KMS_RESOURCE)
+
+    def test_encryption_setter(self):
+        from google.cloud.storage.bucket import BucketEncryption
+
+        NAME = "name"
+        KMS_RESOURCE = (
+            "projects/test-project-123/"
+            "locations/us/"
+            "keyRings/test-ring/"
+            "cryptoKeys/test-key"
+        )
+        ENCRYPTION_CONFIG = {"defaultKmsKeyName": KMS_RESOURCE}
+        bucket = self._make_one(name=NAME)
+        encryption = BucketEncryption(bucket, default_kms_key_name=KMS_RESOURCE)
+        bucket.encryption = encryption
+        self.assertEqual(bucket._properties["encryption"], ENCRYPTION_CONFIG)
+        self.assertTrue("encryption" in bucket._changes)
+
     def test_default_kms_key_name_getter(self):
         NAME = "name"
         KMS_RESOURCE = (
@@ -4722,3 +4757,127 @@ class Test__item_to_notification(unittest.TestCase):
         self.assertEqual(notification._topic_name, topic)
         self.assertEqual(notification._topic_project, project)
         self.assertEqual(notification._properties, item)
+
+
+class Test_EncryptionEnforcementConfig(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import EncryptionEnforcementConfig
+
+        return EncryptionEnforcementConfig
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor(self):
+
+        from google.cloud.storage.constants import ENFORCEMENT_MODE_FULLY_RESTRICTED
+
+        config = self._make_one(restriction_mode=ENFORCEMENT_MODE_FULLY_RESTRICTED)
+
+        self.assertEqual(config.restriction_mode, ENFORCEMENT_MODE_FULLY_RESTRICTED)
+        self.assertIsNone(config.effective_time)
+
+    def test_from_api_repr(self):
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.storage.constants import ENFORCEMENT_MODE_NOT_RESTRICTED
+
+        now = _NOW(_UTC)
+        resource = {
+            "restrictionMode": ENFORCEMENT_MODE_NOT_RESTRICTED,
+            "effectiveTime": _datetime_to_rfc3339(now),
+        }
+        klass = self._get_target_class()
+        config = klass.from_api_repr(resource)
+        self.assertEqual(config.restriction_mode, ENFORCEMENT_MODE_NOT_RESTRICTED)
+        self.assertEqual(config.effective_time, now)
+
+    def test_restriction_mode_setter(self):
+        config = self._make_one()
+        self.assertIsNone(config.restriction_mode)
+        config.restriction_mode = "FULLY_RESTRICTED"
+        self.assertEqual(config.restriction_mode, "FULLY_RESTRICTED")
+        self.assertEqual(config["restrictionMode"], "FULLY_RESTRICTED")
+
+
+class Test_BucketEncryption(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import BucketEncryption
+
+        return BucketEncryption
+
+    def _make_one(self, bucket, **kw):
+        return self._get_target_class()(bucket, **kw)
+
+    @staticmethod
+    def _make_bucket():
+        from google.cloud.storage.bucket import Bucket
+
+        return mock.create_autospec(Bucket, instance=True)
+
+    def test_ctor_defaults(self):
+        bucket = self._make_bucket()
+        encryption = self._make_one(bucket)
+        self.assertIs(encryption.bucket, bucket)
+        self.assertIsNone(encryption.default_kms_key_name)
+        # Check that the config itself is None, not its sub-property
+        self.assertIsNone(encryption.google_managed_encryption_enforcement_config)
+        self.assertIsNone(encryption.customer_managed_encryption_enforcement_config)
+        self.assertIsNone(encryption.customer_supplied_encryption_enforcement_config)
+
+    def test_ctor_explicit(self):
+        from google.cloud.storage.bucket import EncryptionEnforcementConfig
+
+        bucket = self._make_bucket()
+        kms_key = "key"
+        google_config = EncryptionEnforcementConfig("FullyRestricted")
+        encryption = self._make_one(
+            bucket,
+            default_kms_key_name=kms_key,
+            google_managed_encryption_enforcement_config=google_config,
+        )
+        self.assertEqual(encryption.default_kms_key_name, kms_key)
+        self.assertEqual(
+            encryption.google_managed_encryption_enforcement_config.restriction_mode,
+            "FullyRestricted",
+        )
+
+    def test_from_api_repr(self):
+        klass = self._get_target_class()
+        bucket = self._make_bucket()
+        resource = {
+            "defaultKmsKeyName": "key",
+            "googleManagedEncryptionEnforcementConfig": {
+                "restrictionMode": "FullyRestricted"
+            },
+        }
+        encryption = klass.from_api_repr(resource, bucket)
+        self.assertEqual(encryption.default_kms_key_name, "key")
+        self.assertEqual(
+            encryption.google_managed_encryption_enforcement_config.restriction_mode,
+            "FullyRestricted",
+        )
+
+    def test_setters_trigger_patch(self):
+        from google.cloud.storage.bucket import EncryptionEnforcementConfig
+
+        bucket = self._make_bucket()
+        encryption = self._make_one(bucket)
+
+        encryption.default_kms_key_name = "new-key"
+        config = EncryptionEnforcementConfig("NotRestricted")
+        encryption.google_managed_encryption_enforcement_config = config
+        encryption.customer_managed_encryption_enforcement_config = config
+        encryption.customer_supplied_encryption_enforcement_config = config
+
+        self.assertEqual(bucket._patch_property.call_count, 4)
+        bucket._patch_property.assert_called_with("encryption", encryption)
+
+    def test_bucket_encryption_getters_handle_none(self):
+        bucket = self._make_bucket()
+        encryption = self._get_target_class()(bucket)
+        encryption["googleManagedEncryptionEnforcementConfig"] = None
+
+        config = encryption.google_managed_encryption_enforcement_config
+        self.assertIsNone(config)

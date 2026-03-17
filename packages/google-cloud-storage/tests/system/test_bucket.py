@@ -22,6 +22,11 @@ from google.cloud.storage.ip_filter import (
     PublicNetworkSource,
     VpcNetworkSource,
 )
+from google.cloud.storage.bucket import EncryptionEnforcementConfig
+from google.cloud.storage.constants import (
+    ENFORCEMENT_MODE_FULLY_RESTRICTED,
+    ENFORCEMENT_MODE_NOT_RESTRICTED,
+)
 
 
 def test_bucket_create_w_alt_storage_class(storage_client, buckets_to_delete):
@@ -1398,3 +1403,99 @@ def test_list_buckets_with_ip_filter(storage_client, buckets_to_delete):
     # Check that the summarized filter does not include full details.
     assert summarized_filter.public_network_source is None
     assert summarized_filter.vpc_network_sources == []
+
+
+def test_create_bucket_with_encryption_enforcement(storage_client, buckets_to_delete):
+    bucket_name = _helpers.unique_name("enforce-on-create")
+
+    # Initialize the bucket object locally
+    bucket = storage_client.bucket(bucket_name)
+
+    # Define and set the enforcement config
+    enforcement = EncryptionEnforcementConfig(
+        restriction_mode=ENFORCEMENT_MODE_FULLY_RESTRICTED
+    )
+    # Set the config on the local object
+    bucket.encryption.google_managed_encryption_enforcement_config = enforcement
+
+    # storage_client.create_bucket(bucket) sends the config in the initial POST
+    created_bucket = storage_client.create_bucket(bucket)
+    buckets_to_delete.append(created_bucket)
+
+    # Verify backend persistence and server-generated effective_time
+    config = created_bucket.encryption.google_managed_encryption_enforcement_config
+    assert config.restriction_mode == ENFORCEMENT_MODE_FULLY_RESTRICTED
+    assert isinstance(config.effective_time, datetime.datetime)
+
+
+def test_bucket_encryption_enforcement_config(storage_client, buckets_to_delete):
+    bucket_name = _helpers.unique_name("encryption-enforcement")
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(bucket)
+
+    # 1. Set initial enforcement configuration
+    # Testing both Google-managed and Customer-managed configurations
+    google_config = EncryptionEnforcementConfig(
+        restriction_mode=ENFORCEMENT_MODE_FULLY_RESTRICTED
+    )
+    customer_config = EncryptionEnforcementConfig(
+        restriction_mode=ENFORCEMENT_MODE_NOT_RESTRICTED
+    )
+
+    bucket.encryption.google_managed_encryption_enforcement_config = google_config
+    bucket.encryption.customer_managed_encryption_enforcement_config = customer_config
+
+    # Patch sends the 'encryption' dict to the server
+    bucket.patch()
+
+    # 2. Reload and Verify backend persistence
+    bucket.reload()
+
+    # Verify Google Managed Config and the presence of effective_time
+    reloaded_google = bucket.encryption.google_managed_encryption_enforcement_config
+    assert reloaded_google.restriction_mode == ENFORCEMENT_MODE_FULLY_RESTRICTED
+    assert isinstance(reloaded_google.effective_time, datetime.datetime)
+
+    # Verify Customer Managed Config
+    reloaded_customer = bucket.encryption.customer_managed_encryption_enforcement_config
+    assert reloaded_customer.restriction_mode == ENFORCEMENT_MODE_NOT_RESTRICTED
+    assert reloaded_customer.effective_time is None
+
+    # 3. Test updating an existing config
+    update_google_config = EncryptionEnforcementConfig(
+        restriction_mode=ENFORCEMENT_MODE_NOT_RESTRICTED
+    )
+    bucket.encryption.google_managed_encryption_enforcement_config = (
+        update_google_config
+    )
+    bucket.patch()
+    assert (
+        bucket.encryption.google_managed_encryption_enforcement_config.restriction_mode
+        == ENFORCEMENT_MODE_NOT_RESTRICTED
+    )
+
+
+def test_delete_bucket_encryption_enforcement_config(storage_client, buckets_to_delete):
+    bucket_name = _helpers.unique_name("delete-encryption-config")
+
+    # Create a bucket with an initial restricted config
+    enforcement = EncryptionEnforcementConfig(
+        restriction_mode=ENFORCEMENT_MODE_FULLY_RESTRICTED
+    )
+    bucket = storage_client.bucket(bucket_name)
+    bucket.encryption.google_managed_encryption_enforcement_config = enforcement
+    bucket = storage_client.create_bucket(bucket)
+    buckets_to_delete.append(bucket)
+
+    # Verify it exists first
+    assert bucket.encryption.google_managed_encryption_enforcement_config is not None
+
+    # DELETE: Set the specific enforcement config to None
+    bucket.encryption.google_managed_encryption_enforcement_config = None
+
+    # patch() sends the null value to the server to clear the field
+    bucket.patch()
+
+    # Reload and verify the field is gone
+    bucket.reload()
+    assert bucket.encryption.google_managed_encryption_enforcement_config is None
