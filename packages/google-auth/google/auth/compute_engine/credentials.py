@@ -156,9 +156,9 @@ class Credentials(
         # actual email address from the metadata server.
         if self._service_account_email == "default":
             if request is None:
-                from google.auth.transport import requests as google_auth_requests
+                from google.auth.transport import _http_client
 
-                request = google_auth_requests.Request()
+                request = _http_client.Request()
             try:
                 info = _metadata.get_service_account_info(request, "default")
                 if not info or "email" not in info:
