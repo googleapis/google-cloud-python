@@ -763,12 +763,18 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:190851>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=190851>`_
      - `Client Library Issues <https://github.com/googleapis/python-spanner-django/issues>`_
-   * - `Spanner dialect for SQLAlchemy <https://github.com/googleapis/python-spanner-sqlalchemy>`_
+   * - `Spanner Django <https://github.com/googleapis/google-cloud-python/tree/main/packages/django-google-spanner>`_
+     - stable
+     - |PyPI-django-google-spanner|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:190851>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=190851>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Spanner dialect for SQLAlchemy <https://github.com/googleapis/google-cloud-python/tree/main/packages/sqlalchemy-spanner>`_
      - stable
      - |PyPI-sqlalchemy-spanner|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:190851>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=190851>`_
-     - `Client Library Issues <https://github.com/googleapis/python-spanner-sqlalchemy/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Speech <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-speech>`_
      - stable
      - |PyPI-google-cloud-speech|
@@ -1099,12 +1105,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/savedsearches/559654>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
+   * - `BigQuery connector for pandas <https://github.com/googleapis/google-cloud-python/tree/main/packages/pandas-gbq>`_
      - preview
      - |PyPI-pandas-gbq|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/python-bigquery-pandas/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `CSS API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-css>`_
      - preview
      - |PyPI-google-shopping-css|
@@ -1573,12 +1579,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/savedsearches/559663>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187078>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
+   * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/google-cloud-python/tree/main/packages/sqlalchemy-bigquery>`_
      - preview
      - |PyPI-sqlalchemy-bigquery|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/python-bigquery-sqlalchemy/issues>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `SaaS Runtime API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-saasplatform-saasservicemgmt>`_
      - preview
      - |PyPI-google-cloud-saasplatform-saasservicemgmt|
@@ -1916,6 +1922,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-source-context
 .. |PyPI-google-cloud-spanner| image:: https://img.shields.io/pypi/v/google-cloud-spanner.svg
      :target: https://pypi.org/project/google-cloud-spanner
+.. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
+     :target: https://pypi.org/project/django-google-spanner
 .. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
      :target: https://pypi.org/project/django-google-spanner
 .. |PyPI-sqlalchemy-spanner| image:: https://img.shields.io/pypi/v/sqlalchemy-spanner.svg
