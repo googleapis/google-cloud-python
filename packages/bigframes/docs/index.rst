@@ -1,46 +1,52 @@
 .. BigQuery DataFrames documentation main file
 
-Welcome to BigQuery DataFrames
-==============================
+Scalable Python Data Analysis with BigQuery DataFrames (BigFrames)
+==================================================================
 
-**BigQuery DataFrames** (``bigframes``) provides a Pythonic interface for data analysis that scales to petabytes. It gives you the best of both worlds: the familiar API of **pandas** and **scikit-learn**, powered by the distributed computing engine of **BigQuery**.
+.. meta::
+   :description: BigQuery DataFrames (BigFrames) provides a scalable, pandas-compatible Python API for data analysis and machine learning on petabyte-scale datasets using the BigQuery engine.
 
-BigQuery DataFrames consists of three main components:
+**BigQuery DataFrames** (``bigframes``) is an open-source Python library that brings the power of **distributed computing** to your data science workflow. By providing a familiar **pandas** and **scikit-learn** compatible API, BigFrames allows you to analyze and model massive datasets where they live—directly in **BigQuery**.
 
-* **bigframes.pandas**: A pandas-compatible API for data exploration and transformation.
-* **bigframes.ml**: A scikit-learn-like interface for BigQuery ML, including integration with Gemini.
-* **bigframes.bigquery**: Specialized functions for managing BigQuery resources and deploying custom logic.
+Why Choose BigQuery DataFrames?
+-------------------------------
 
-Why BigQuery DataFrames?
-------------------------
+BigFrames eliminates the "data movement bottleneck." Instead of downloading large datasets to a local environment, BigFrames translates your Python code into optimized SQL, executing complex transformations across the BigQuery fleet.
 
-BigFrames allows you to process data where it lives. Instead of downloading massive datasets to your local machine, BigFrames translates your Python code into SQL and executes it across the BigQuery fleet.
+*   **Petabyte-Scale Scalability:** Effortlessly process datasets that far exceed local memory limits.
+*   **Familiar Python Ecosystem:** Use the same ``read_gbq``, ``groupby``, ``merge``, and ``pivot_table`` functions you already know from pandas.
+*   **Integrated Machine Learning:** Access BigQuery ML's powerful algorithms via a scikit-learn-like interface (``bigframes.ml``), including seamless **Gemini AI** integration.
+*   **Enterprise-Grade Security:** Maintain data governance and security by keeping your data within the BigQuery perimeter.
+*   **Hybrid Flexibility:** Easily move between distributed BigQuery processing and local pandas analysis with ``to_pandas()``.
 
-* **Scalability:** Work with datasets that exceed local memory limits without complex refactoring.
-* **Collaboration & Extensibility:** Bridge the gap between Python and SQL. Deploy custom Python functions to BigQuery, making your logic accessible to SQL-based teammates and data analysts.
-* **Production-Ready Pipelines:** Move seamlessly from interactive notebooks to production. BigFrames simplifies data engineering by integrating with tools like **dbt** and **Airflow**, offering a simpler operational model than Spark.
-* **Security & Governance:** Keep your data within the BigQuery perimeter. Benefit from enterprise-grade security, auditing, and data governance throughout your entire Python workflow.
-* **Familiarity:** Use ``read_gbq``, ``merge``, ``groupby``, and ``pivot_table`` just like you do in pandas.
+Core Components of BigFrames
+----------------------------
 
-Quickstart
-----------
+BigQuery DataFrames is organized into specialized modules designed for the modern data stack:
 
-Install the library via pip:
+1.  :mod:`bigframes.pandas`: A high-performance, pandas-compatible API for scalable data exploration, cleaning, and transformation.
+2.  :mod:`bigframes.bigquery`: Specialized utilities for direct BigQuery resource management, including integrations with Gemini and other AI models in the :mod:`bigframes.bigquery.ai` submodule.
+
+
+Quickstart: Scalable Data Analysis in Seconds
+---------------------------------------------
+
+Install BigQuery DataFrames via pip:
 
 .. code-block:: bash
 
     pip install --upgrade bigframes
 
-Load and aggregate a public dataset in just a few lines:
+The following example demonstrates how to perform a distributed aggregation on a public dataset with millions of rows using just a few lines of Python:
 
 .. code-block:: python
 
     import bigframes.pandas as bpd
 
-    # Load data from BigQuery
+    # Initialize BigFrames and load a public dataset
     df = bpd.read_gbq("bigquery-public-data.usa_names.usa_1910_2013")
 
-    # Perform familiar pandas operations at scale
+    # Perform familiar pandas operations that execute in the cloud
     top_names = (
         df.groupby("name")
         .agg({"number": "sum"})
@@ -48,32 +54,28 @@ Load and aggregate a public dataset in just a few lines:
         .head(10)
     )
 
+    # Bring the final, aggregated results back to local memory if needed
     print(top_names.to_pandas())
 
 
-User Guide
-----------
+Explore the Documentation
+-------------------------
 
 .. toctree::
     :maxdepth: 2
+    :caption: User Documentation
 
     user_guide/index
 
-API reference
--------------
-
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
+    :caption: API Reference
 
     reference/index
     supported_pandas_apis
 
-Changelog
----------
-
-For a list of all BigQuery DataFrames releases:
-
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
+    :caption: Community & Updates
 
     changelog

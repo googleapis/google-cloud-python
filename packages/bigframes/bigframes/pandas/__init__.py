@@ -12,7 +12,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""BigQuery DataFrames provides a DataFrame API backed by the BigQuery engine."""
+"""
+The primary entry point for the BigQuery DataFrames (BigFrames) pandas-compatible API.
+
+**BigQuery DataFrames** provides a Pythonic DataFrame and machine learning (ML) API
+powered by the BigQuery engine. The ``bigframes.pandas`` module implements a large
+subset of the pandas API, allowing you to perform large-scale data analysis
+using familiar pandas syntax while the computations are executed in the cloud.
+
+**Key Features:**
+
+* **Petabyte-Scale Scalability:** Handle datasets that exceed local memory by
+  offloading computation to the BigQuery distributed engine.
+* **Pandas Compatibility:** Use common pandas methods like
+  :func:`~bigframes.pandas.DataFrame.groupby`,
+  :func:`~bigframes.pandas.DataFrame.merge`,
+  :func:`~bigframes.pandas.DataFrame.pivot_table`, and more on BigQuery-backed
+  :class:`~bigframes.pandas.DataFrame` objects.
+* **Direct BigQuery Integration:** Read from and write to BigQuery tables and
+  queries with :func:`bigframes.pandas.read_gbq` and
+  :func:`bigframes.pandas.DataFrame.to_gbq`.
+* **User-defined Functions (UDFs):** Effortlessly deploy Python functions
+  functions using the :func:`bigframes.pandas.remote_function` and
+  :func:`bigframes.pandas.udf` decorators.
+* **Data Ingestion:** Support for various formats including CSV, Parquet, JSON,
+  and Arrow via :func:`bigframes.pandas.read_csv`,
+  :func:`bigframes.pandas.read_parquet`, etc., which are automatically uploaded
+  to BigQuery for processing. Convert any pandas DataFrame into a BigQuery
+  DataFrame using :func:`bigframes.pandas.read_pandas`.
+
+**Example usage:**
+
+    >>> import bigframes.pandas as bpd
+
+Initialize session and set options.
+
+    >>> bpd.options.bigquery.project = "your-project-id"  # doctest: +SKIP
+
+Load data from a BigQuery public dataset.
+
+    >>> df = bpd.read_gbq("bigquery-public-data.usa_names.usa_1910_2013")  # doctest: +SKIP
+
+Perform familiar pandas operations that execute in the cloud.
+
+    >>> top_names = (
+    ...     df.groupby("name")
+    ...     .agg({"number": "sum"})
+    ...     .sort_values("number", ascending=False)
+    ...     .head(10)
+    ... )  # doctest: +SKIP
+
+Bring the final, aggregated results back to local memory if needed.
+
+    >>> local_df = top_names.to_pandas()  # doctest: +SKIP
+
+BigQuery DataFrames is designed for data scientists and analysts who need the
+power of BigQuery with the ease of use of pandas. It eliminates the "data
+movement bottleneck" by keeping your data in BigQuery for processing.
+"""
 
 from __future__ import annotations
 

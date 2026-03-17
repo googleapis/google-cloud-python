@@ -12,9 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This module integrates BigQuery built-in functions for use with DataFrame objects,
-such as array functions:
-https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions. """
+"""
+Access BigQuery-specific operations and namespaces within BigQuery DataFrames.
+
+This module provides specialized functions and sub-modules that expose BigQuery's
+advanced capabilities to DataFrames and Series. It acts as a bridge between the
+pandas-compatible API and the full power of BigQuery SQL.
+
+Key sub-modules include:
+
+* :mod:`bigframes.bigquery.ai`: Generative and predictive AI functions (Gemini, BQML).
+* :mod:`bigframes.bigquery.ml`: Direct access to BigQuery ML model operations.
+* :mod:`bigframes.bigquery.obj`: Support for BigQuery object tables.
+
+This module also provides direct access to optimized BigQuery functions for:
+
+* **JSON Processing:** High-performance functions like ``json_extract``, ``json_value``,
+  and ``parse_json`` for handling semi-structured data.
+* **Geospatial Analysis:** Comprehensive geographic functions such as ``st_area``,
+  ``st_distance``, and ``st_centroid`` (``ST_`` prefixed functions).
+* **Array Operations:** Tools for working with BigQuery arrays, including ``array_agg``
+  and ``array_length``.
+* **Vector Search:** Integration with BigQuery's vector search and indexing
+  capabilities for high-dimensional data.
+* **Custom SQL:** The ``sql_scalar`` function allows embedding raw SQL snippets for
+  advanced operations not yet directly mapped in the API.
+
+By using these functions, you can leverage BigQuery's high-performance engine for
+domain-specific tasks while maintaining a Python-centric development experience.
+
+For the full list of BigQuery standard SQL functions, see:
+https://cloud.google.com/bigquery/docs/reference/standard-sql/functions-reference
+"""
 
 import sys
 
