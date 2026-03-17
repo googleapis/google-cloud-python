@@ -148,7 +148,7 @@ class _RegionalAccessBoundaryRefreshThread(threading.Thread):
     """Thread for background refreshing of the Regional Access Boundary."""
 
     def __init__(self, credentials, request, rab_manager):
-        super(_RegionalAccessBoundaryRefreshThread, self).__init__()
+        super().__init__()
         self.daemon = True
         self._credentials = credentials
         self._request = request

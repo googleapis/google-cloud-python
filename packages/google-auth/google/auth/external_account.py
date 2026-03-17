@@ -37,7 +37,6 @@ import json
 import logging
 import re
 from typing import Optional
-import warnings
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -207,12 +206,7 @@ class Credentials(
                 "credentials"
             )
 
-        if trust_boundary is not None:
-            warnings.warn(
-                "The trust_boundary parameter is deprecated and has no effect.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
+        self._trust_boundary = trust_boundary
 
     @property
     def info(self):

@@ -32,7 +32,6 @@ import http.client as http_client
 import json
 import logging
 from typing import Optional
-import warnings
 
 from google.auth import _constants
 from google.auth import _exponential_backoff
@@ -271,12 +270,7 @@ class Credentials(
         self._iam_endpoint_override = iam_endpoint_override
         self._cred_file_path = None
 
-        if trust_boundary is not None:
-            warnings.warn(
-                "The trust_boundary parameter is deprecated and has no effect.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
+        self._trust_boundary = trust_boundary
 
     def _metric_header_for_usage(self):
         return metrics.CRED_TYPE_SA_IMPERSONATE
@@ -446,6 +440,7 @@ class Credentials(
             lifetime=self._lifetime,
             quota_project_id=self._quota_project_id,
             iam_endpoint_override=self._iam_endpoint_override,
+            trust_boundary=self._trust_boundary,
         )
         cred._cred_file_path = self._cred_file_path
         self._copy_regional_access_boundary_manager(cred)
@@ -532,6 +527,7 @@ class Credentials(
         delegates = info.get("delegates")
         quota_project_id = info.get("quota_project_id")
         scopes = scopes or info.get("scopes")
+        trust_boundary = info.get("trust_boundary")
 
         return cls(
             source_credentials,
@@ -539,6 +535,7 @@ class Credentials(
             scopes,
             delegates,
             quota_project_id=quota_project_id,
+            trust_boundary=trust_boundary,
         )
 
 

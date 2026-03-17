@@ -22,7 +22,6 @@ Compute Engine using the Compute Engine metadata server.
 import datetime
 import logging
 from typing import Optional
-import warnings
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -96,12 +95,7 @@ class Credentials(
             self._universe_domain = universe_domain
             self._universe_domain_cached = True
 
-        if trust_boundary is not None:
-            warnings.warn(
-                "The trust_boundary parameter is deprecated and has no effect.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
+        self._trust_boundary = trust_boundary
 
     def _retrieve_info(self, request):
         """Retrieve information about the service account.
@@ -231,6 +225,7 @@ class Credentials(
             scopes=self._scopes,
             default_scopes=self._default_scopes,
             universe_domain=self._universe_domain,
+            trust_boundary=self._trust_boundary,
         )
         creds._universe_domain_cached = self._universe_domain_cached
         self._copy_regional_access_boundary_manager(creds)

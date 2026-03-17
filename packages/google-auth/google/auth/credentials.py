@@ -19,7 +19,7 @@ import abc
 from enum import Enum
 import logging
 import os
-from typing import Optional
+from typing import Dict, List, Optional
 from urllib.parse import urlparse
 
 from google.auth import _helpers, environment_vars
@@ -30,6 +30,11 @@ from google.auth._credentials_base import _BaseCredentials
 from google.auth._refresh_worker import RefreshThreadManager
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+
+# These constants are deprecated and no longer used.
+# They are kept solely for backward compatibility with older implementations.
+NO_OP_TRUST_BOUNDARY_LOCATIONS: List[str] = []
+NO_OP_TRUST_BOUNDARY_ENCODED_LOCATIONS = "0x0"
 
 _LOGGER = logging.getLogger("google.auth._default")
 
@@ -294,7 +299,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
     """Abstract base for credentials supporting regional access boundary configuration."""
 
     def __init__(self, *args, **kwargs):
-        super(CredentialsWithRegionalAccessBoundary, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._rab_manager = (
             _regional_access_boundary_utils._RegionalAccessBoundaryManager()
         )
@@ -414,7 +419,9 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         """
         self._perform_refresh_token(request)
 
-    def _lookup_regional_access_boundary(self, request):
+    def _lookup_regional_access_boundary(
+        self, request: "google.auth.transport.Request"  # noqa: F821
+    ) -> "Optional[Dict[str, str]]":
         """Calls the Regional Access Boundary lookup API to retrieve the Regional Access Boundary information.
 
         Args:
@@ -422,7 +429,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
                 HTTP requests.
 
         Returns:
-            Optional[dict]: The Regional Access Boundary information returned by the lookup API, or None if the lookup failed.
+            Optional[Dict[str, str]]: The Regional Access Boundary information returned by the lookup API, or None if the lookup failed.
         """
         from google.oauth2 import _client
 

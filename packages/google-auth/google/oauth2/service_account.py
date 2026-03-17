@@ -201,14 +201,7 @@ class Credentials(
         else:
             self._additional_claims = {}
 
-        if trust_boundary is not None:
-            import warnings
-
-            warnings.warn(
-                "The trust_boundary parameter is deprecated and has no effect.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
+        self._trust_boundary = trust_boundary
 
     @classmethod
     def _from_signer_and_info(cls, signer, info, **kwargs):
@@ -234,6 +227,7 @@ class Credentials(
             universe_domain=info.get(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
+            trust_boundary=info.get("trust_boundary"),
             **kwargs,
         )
 
@@ -307,6 +301,7 @@ class Credentials(
             additional_claims=self._additional_claims.copy(),
             always_use_jwt_access=self._always_use_jwt_access,
             universe_domain=self._universe_domain,
+            trust_boundary=self._trust_boundary,
         )
         cred._cred_file_path = self._cred_file_path
         self._copy_regional_access_boundary_manager(cred)
