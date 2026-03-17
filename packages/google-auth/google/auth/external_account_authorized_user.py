@@ -91,6 +91,7 @@ class Credentials(
         scopes=None,
         quota_project_id=None,
         universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
+        trust_boundary=None,
     ):
         """Instantiates a external account authorized user credentials object.
 
@@ -116,6 +117,7 @@ class Credentials(
             create the credentials.
         universe_domain (Optional[str]): The universe domain. The default value
             is googleapis.com.
+        trust_boundary (Mapping[str,str]): A credential trust boundary.
 
         Returns:
             google.auth.external_account_authorized_user.Credentials: The
@@ -136,6 +138,7 @@ class Credentials(
         self._scopes = scopes
         self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         self._cred_file_path = None
+        self._trust_boundary = trust_boundary
 
         if not self.valid and not self.can_refresh:
             raise exceptions.InvalidOperation(
@@ -183,6 +186,7 @@ class Credentials(
             "scopes": self._scopes,
             "quota_project_id": self._quota_project_id,
             "universe_domain": self._universe_domain,
+            "trust_boundary": self._trust_boundary,
         }
 
     @property
@@ -437,6 +441,7 @@ class Credentials(
             universe_domain=info.get(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
+            trust_boundary=info.get("trust_boundary"),
             **kwargs
         )
 
