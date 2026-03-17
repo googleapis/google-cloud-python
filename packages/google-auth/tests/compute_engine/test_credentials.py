@@ -308,6 +308,23 @@ class TestCredentials(object):
         expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
         assert url == expected_url
 
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    def test_build_regional_access_boundary_lookup_url_http_client_request(
+        self, mock_get
+    ):
+        mock_get.return_value = {"email": "resolved-email@example.com"}
+        creds = self.credentials
+        creds._universe_domain_cached = True
+
+        from google.auth.transport import _http_client
+
+        req = _http_client.Request()
+
+        url = creds._build_regional_access_boundary_lookup_url(request=req)
+
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        assert url == expected_url
+
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )

@@ -31,6 +31,7 @@ from datetime import datetime
 import http.client as http_client
 import json
 import logging
+from typing import Optional
 import warnings
 
 from google.auth import _constants
@@ -352,7 +353,9 @@ class Credentials(
             iam_endpoint_override=self._iam_endpoint_override,
         )
 
-    def _build_regional_access_boundary_lookup_url(self, request=None):
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
         """Builds and returns the URL for the Regional Access Boundary lookup API.
 
         This method constructs the specific URL for the IAM Credentials API's

@@ -38,6 +38,7 @@ import io
 import json
 import logging
 import re
+from typing import Optional
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -307,7 +308,9 @@ class Credentials(
         if "refresh_token" in response_data:
             self._refresh_token = response_data["refresh_token"]
 
-    def _build_regional_access_boundary_lookup_url(self, request=None):
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
         """Builds and returns the URL for the Regional Access Boundary lookup API.
 
         Returns:

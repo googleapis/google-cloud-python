@@ -21,6 +21,7 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 import logging
+from typing import Optional
 import warnings
 
 from google.auth import _constants
@@ -153,7 +154,9 @@ class Credentials(
             new_exc = exceptions.RefreshError(caught_exc)
             raise new_exc from caught_exc
 
-    def _build_regional_access_boundary_lookup_url(self, request=None):
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
         """Builds and returns the URL for the regional access boundary lookup API for GCE."""
         # If the service account email is 'default', we need to get the
         # actual email address from the metadata server.

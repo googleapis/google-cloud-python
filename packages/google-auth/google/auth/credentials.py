@@ -19,6 +19,7 @@ import abc
 from enum import Enum
 import logging
 import os
+from typing import Optional
 from urllib.parse import urlparse
 
 from google.auth import _helpers, environment_vars
@@ -436,7 +437,9 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
         return _client._lookup_regional_access_boundary(request, url, headers=headers)
 
     @abc.abstractmethod
-    def _build_regional_access_boundary_lookup_url(self, request=None):
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
         """
         Builds and returns the URL for the Regional Access Boundary lookup API.
 
@@ -680,6 +683,6 @@ class TokenState(Enum):
     INVALID = 3
 
 
-# For backwards compatibility with the previus feature name.
+# For backwards compatibility with the previous feature name.
 # Use CredentialsWithRegionalAccessBoundary instead.
 CredentialsWithTrustBoundary = CredentialsWithRegionalAccessBoundary

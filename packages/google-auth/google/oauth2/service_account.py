@@ -73,6 +73,7 @@ specific subject using :meth:`~Credentials.with_subject`.
 import copy
 import datetime
 import logging
+from typing import Optional
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -503,7 +504,9 @@ class Credentials(
                 self, audience
             )
 
-    def _build_regional_access_boundary_lookup_url(self, request=None):
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
         """Builds and returns the URL for the Regional Access Boundary lookup API.
 
         This method constructs the specific URL for the IAM Credentials API's

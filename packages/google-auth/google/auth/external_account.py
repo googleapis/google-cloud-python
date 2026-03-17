@@ -36,6 +36,7 @@ import io
 import json
 import logging
 import re
+from typing import Optional
 import warnings
 
 from google.auth import _constants
@@ -487,7 +488,9 @@ class Credentials(
 
             self.expiry = now + lifetime
 
-    def _build_regional_access_boundary_lookup_url(self, request=None):
+    def _build_regional_access_boundary_lookup_url(
+        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+    ):
         """Builds and returns the URL for the Regional Access Boundary lookup API."""
         url = None
         # Try to parse as a workload identity pool.
