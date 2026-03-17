@@ -375,9 +375,9 @@ class TestClient(unittest.TestCase):
         PROJECT = "PROJECT"
         custom_endpoint = "storage-example.p.googleapis.com"
         credentials = _make_credentials(project=PROJECT)
-            client = self._make_one(
-                credentials=credentials, client_options={"api_endpoint": custom_endpoint}
-            )
+        client = self._make_one(
+            credentials=credentials, client_options={"api_endpoint": custom_endpoint}
+        )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
