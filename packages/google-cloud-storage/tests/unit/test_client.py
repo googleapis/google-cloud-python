@@ -348,7 +348,12 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_custom_endpoint_use_auth(self):
         custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(client_options={"api_endpoint": custom_endpoint})
+        credentials = _make_credentials()
+        client = self._make_one(
+            project="project",
+            credentials=credentials,
+            client_options={"api_endpoint": custom_endpoint},
+        )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertIsNotNone(client.project)
         self.assertIsInstance(client._connection, Connection)
@@ -357,10 +362,10 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_custom_endpoint_bypass_auth(self):
         custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(
-            client_options={"api_endpoint": custom_endpoint},
-            use_auth_w_custom_endpoint=False,
-        )
+            client = self._make_one(
+                client_options={"api_endpoint": custom_endpoint},
+                use_auth_w_custom_endpoint=False,
+            )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, None)
         self.assertIsInstance(client._connection, Connection)
@@ -370,9 +375,9 @@ class TestClient(unittest.TestCase):
         PROJECT = "PROJECT"
         custom_endpoint = "storage-example.p.googleapis.com"
         credentials = _make_credentials(project=PROJECT)
-        client = self._make_one(
-            credentials=credentials, client_options={"api_endpoint": custom_endpoint}
-        )
+            client = self._make_one(
+                credentials=credentials, client_options={"api_endpoint": custom_endpoint}
+            )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
@@ -434,8 +439,9 @@ class TestClient(unittest.TestCase):
         host = "http://localhost:8080"
         environ = {_API_ENDPOINT_OVERRIDE_ENV_VAR: host}
         project = "my-test-project"
+        credentials = _make_credentials()
         with mock.patch("os.environ", environ):
-            client = self._make_one(project=project)
+            client = self._make_one(project=project, credentials=credentials)
 
         self.assertEqual(client.project, project)
         self.assertEqual(client._connection.API_BASE_URL, host)
@@ -1475,7 +1481,12 @@ class TestClient(unittest.TestCase):
 
     def test_create_bucket_w_custom_endpoint(self):
         custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(client_options={"api_endpoint": custom_endpoint})
+        credentials = _make_credentials()
+        client = self._make_one(
+            project="project",
+            credentials=credentials,
+            client_options={"api_endpoint": custom_endpoint},
+        )
         bucket_name = "bucket-name"
         api_response = {"name": bucket_name}
         client._post_resource = mock.Mock()
@@ -1533,14 +1544,18 @@ class TestClient(unittest.TestCase):
 
         client_info = ClientInfo()
 
-        client = self._make_one(project=None, client_info=client_info)
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=None, credentials=credentials, client_info=client_info
+        )
         self.assertGreater(len(client._connection.user_agent), 0)
 
         client.update_user_agent("my-test-agent/1.0")
         self.assertIn("my-test-agent/1.0", client._connection.user_agent)
 
     def test_update_user_agent_when_none_clientinfo_provided(self):
-        client = self._make_one(project=None)
+        credentials = _make_credentials()
+        client = self._make_one(project=None, credentials=credentials)
         client.update_user_agent("my-test-agent/1.0")
 
         self.assertIn("my-test-agent/1.0", client._connection.user_agent)
@@ -1549,7 +1564,10 @@ class TestClient(unittest.TestCase):
         from google.cloud._http import ClientInfo
 
         client_info = ClientInfo(user_agent="existing-agent/2.0")
-        client = self._make_one(project=None, client_info=client_info)
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=None, credentials=credentials, client_info=client_info
+        )
         client.update_user_agent("my-test-agent/1.0")
 
         self.assertIn(
@@ -2336,7 +2354,12 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.client import _item_to_bucket, _buckets_page_start
 
         custom_endpoint = "storage-example.p.googleapis.com"
-        client = self._make_one(client_options={"api_endpoint": custom_endpoint})
+        credentials = _make_credentials()
+        client = self._make_one(
+            project="project",
+            credentials=credentials,
+            client_options={"api_endpoint": custom_endpoint},
+        )
         client._list_resource = mock.Mock(spec=[])
 
         iterator = client.list_buckets()
@@ -3101,7 +3124,8 @@ class TestClient(unittest.TestCase):
         bucket_name = "bucket-name"
         unreachable_bucket = "projects/_/buckets/unreachable-bucket"
 
-        client = self._make_one(project=PROJECT)
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
 
         mock_bucket = mock.Mock()
         mock_bucket.name = bucket_name
