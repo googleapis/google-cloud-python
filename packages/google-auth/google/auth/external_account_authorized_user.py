@@ -38,7 +38,10 @@ import io
 import json
 import logging
 import re
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING: # pragma: NO COVER
+    import google.auth.transport
 
 from google.auth import _constants
 from google.auth import _helpers

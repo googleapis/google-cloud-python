@@ -31,7 +31,10 @@ from datetime import datetime
 import http.client as http_client
 import json
 import logging
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING: # pragma: NO COVER
+    import google.auth.transport
 
 from google.auth import _constants
 from google.auth import _exponential_backoff

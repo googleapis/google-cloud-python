@@ -19,7 +19,10 @@ import abc
 from enum import Enum
 import logging
 import os
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
+
+if TYPE_CHECKING: # pragma: NO COVER
+    import google.auth.transport
 from urllib.parse import urlparse
 
 from google.auth import _helpers, environment_vars
@@ -438,7 +441,7 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             _LOGGER.error("Failed to build Regional Access Boundary lookup URL.")
             return None
 
-        headers = {}
+        headers: Dict[str, str] = {}
         self._apply(headers)
         self._rab_manager.apply_headers(headers)
         return _client._lookup_regional_access_boundary(request, url, headers=headers)
