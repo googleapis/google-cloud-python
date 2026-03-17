@@ -43,3 +43,42 @@ def test_sql_scalar(scalar_types_df: bpd.DataFrame, snapshot, monkeypatch):
 
     session.read_pandas.assert_called_once()
     snapshot.assert_match(result, "out.sql")
+
+
+def test_ai_forecast(snapshot, monkeypatch):
+    import bigframes.bigquery.ai
+    import bigframes.session
+
+    session = mock.create_autospec(bigframes.session.Session)
+    bf_df = mock.create_autospec(bpd.DataFrame)
+    session.read_pandas.return_value = bf_df
+
+    def mock_ai_forecast(df, **kwargs):
+        assert df is bf_df
+        result_df = mock.create_autospec(bpd.DataFrame)
+        result_df.to_pandas.return_value = kwargs
+        return result_df
+
+    import bigframes.bigquery.ai
+
+    monkeypatch.setattr(bigframes.bigquery.ai, "forecast", mock_ai_forecast)
+
+    df = pd.DataFrame({"date": ["2020-01-01"], "value": [1.0]})
+    result = df.bigquery.ai.forecast(
+        timestamp_col="date",
+        data_col="value",
+        horizon=5,
+        session=session,
+    )
+
+    session.read_pandas.assert_called_once()
+    assert result == {
+        "timestamp_col": "date",
+        "data_col": "value",
+        "model": "TimesFM 2.0",
+        "id_cols": None,
+        "horizon": 5,
+        "confidence_level": 0.95,
+        "context_window": None,
+        "output_historical_time_series": False,
+    }
