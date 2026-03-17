@@ -362,10 +362,10 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_custom_endpoint_bypass_auth(self):
         custom_endpoint = "storage-example.p.googleapis.com"
-            client = self._make_one(
-                client_options={"api_endpoint": custom_endpoint},
-                use_auth_w_custom_endpoint=False,
-            )
+        client = self._make_one(
+            client_options={"api_endpoint": custom_endpoint},
+            use_auth_w_custom_endpoint=False,
+        )
         self.assertEqual(client._connection.API_BASE_URL, custom_endpoint)
         self.assertEqual(client.project, None)
         self.assertIsInstance(client._connection, Connection)
