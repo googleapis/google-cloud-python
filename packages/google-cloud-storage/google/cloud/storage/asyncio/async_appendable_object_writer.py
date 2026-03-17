@@ -15,7 +15,7 @@
 from io import BufferedReader
 import io
 import logging
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
@@ -367,7 +367,7 @@ class AsyncAppendableObjectWriter:
 
         def send_and_recv_generator(
             requests: List[BidiWriteObjectRequest],
-            state: dict[str, _WriteState],
+            state: Dict[str, _WriteState],
             metadata: Optional[List[Tuple[str, str]]] = None,
         ):
             async def generator():
