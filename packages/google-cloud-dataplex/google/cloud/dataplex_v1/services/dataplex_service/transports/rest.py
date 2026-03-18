@@ -35,7 +35,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dataplex_v1.types import analyze, resources, service, tasks
+from google.cloud.dataplex_v1.types import resources, service, tasks
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDataplexServiceRestTransport
@@ -91,14 +91,6 @@ class DataplexServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_create_environment(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_create_environment(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_create_lake(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -131,14 +123,6 @@ class DataplexServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_environment(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_delete_environment(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_delete_lake(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -168,14 +152,6 @@ class DataplexServiceRestInterceptor:
                 return request, metadata
 
             def post_get_asset(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_environment(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_environment(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -227,14 +203,6 @@ class DataplexServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_environments(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_environments(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_list_jobs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -256,14 +224,6 @@ class DataplexServiceRestInterceptor:
                 return request, metadata
 
             def post_list_lakes(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_list_sessions(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_sessions(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -304,14 +264,6 @@ class DataplexServiceRestInterceptor:
                 return request, metadata
 
             def post_update_asset(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_environment(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_environment(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -400,54 +352,6 @@ class DataplexServiceRestInterceptor:
         `post_create_asset` interceptor. The (possibly modified) response returned by
         `post_create_asset` will be passed to
         `post_create_asset_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_create_environment(
-        self,
-        request: service.CreateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for create_environment
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataplexService server.
-        """
-        return request, metadata
-
-    def post_create_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_environment
-
-        DEPRECATED. Please use the `post_create_environment_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataplexService server but before
-        it is returned to user code. This `post_create_environment` interceptor runs
-        before the `post_create_environment_with_metadata` interceptor.
-        """
-        return response
-
-    def post_create_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for create_environment
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataplexService server but before it is returned to user code.
-
-        We recommend only using this `post_create_environment_with_metadata`
-        interceptor in new development instead of the `post_create_environment` interceptor.
-        When both interceptors are used, this `post_create_environment_with_metadata` interceptor runs after the
-        `post_create_environment` interceptor. The (possibly modified) response returned by
-        `post_create_environment` will be passed to
-        `post_create_environment_with_metadata`.
         """
         return response, metadata
 
@@ -635,54 +539,6 @@ class DataplexServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_delete_environment(
-        self,
-        request: service.DeleteEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for delete_environment
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataplexService server.
-        """
-        return request, metadata
-
-    def post_delete_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for delete_environment
-
-        DEPRECATED. Please use the `post_delete_environment_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataplexService server but before
-        it is returned to user code. This `post_delete_environment` interceptor runs
-        before the `post_delete_environment_with_metadata` interceptor.
-        """
-        return response
-
-    def post_delete_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for delete_environment
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataplexService server but before it is returned to user code.
-
-        We recommend only using this `post_delete_environment_with_metadata`
-        interceptor in new development instead of the `post_delete_environment` interceptor.
-        When both interceptors are used, this `post_delete_environment_with_metadata` interceptor runs after the
-        `post_delete_environment` interceptor. The (possibly modified) response returned by
-        `post_delete_environment` will be passed to
-        `post_delete_environment_with_metadata`.
-        """
-        return response, metadata
-
     def pre_delete_lake(
         self,
         request: service.DeleteLakeRequest,
@@ -862,52 +718,6 @@ class DataplexServiceRestInterceptor:
         `post_get_asset` interceptor. The (possibly modified) response returned by
         `post_get_asset` will be passed to
         `post_get_asset_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_get_environment(
-        self,
-        request: service.GetEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[service.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for get_environment
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataplexService server.
-        """
-        return request, metadata
-
-    def post_get_environment(
-        self, response: analyze.Environment
-    ) -> analyze.Environment:
-        """Post-rpc interceptor for get_environment
-
-        DEPRECATED. Please use the `post_get_environment_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataplexService server but before
-        it is returned to user code. This `post_get_environment` interceptor runs
-        before the `post_get_environment_with_metadata` interceptor.
-        """
-        return response
-
-    def post_get_environment_with_metadata(
-        self,
-        response: analyze.Environment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[analyze.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for get_environment
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataplexService server but before it is returned to user code.
-
-        We recommend only using this `post_get_environment_with_metadata`
-        interceptor in new development instead of the `post_get_environment` interceptor.
-        When both interceptors are used, this `post_get_environment_with_metadata` interceptor runs after the
-        `post_get_environment` interceptor. The (possibly modified) response returned by
-        `post_get_environment` will be passed to
-        `post_get_environment_with_metadata`.
         """
         return response, metadata
 
@@ -1177,56 +987,6 @@ class DataplexServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_environments(
-        self,
-        request: service.ListEnvironmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for list_environments
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataplexService server.
-        """
-        return request, metadata
-
-    def post_list_environments(
-        self, response: service.ListEnvironmentsResponse
-    ) -> service.ListEnvironmentsResponse:
-        """Post-rpc interceptor for list_environments
-
-        DEPRECATED. Please use the `post_list_environments_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataplexService server but before
-        it is returned to user code. This `post_list_environments` interceptor runs
-        before the `post_list_environments_with_metadata` interceptor.
-        """
-        return response
-
-    def post_list_environments_with_metadata(
-        self,
-        response: service.ListEnvironmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Post-rpc interceptor for list_environments
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataplexService server but before it is returned to user code.
-
-        We recommend only using this `post_list_environments_with_metadata`
-        interceptor in new development instead of the `post_list_environments` interceptor.
-        When both interceptors are used, this `post_list_environments_with_metadata` interceptor runs after the
-        `post_list_environments` interceptor. The (possibly modified) response returned by
-        `post_list_environments` will be passed to
-        `post_list_environments_with_metadata`.
-        """
-        return response, metadata
-
     def pre_list_jobs(
         self,
         request: service.ListJobsRequest,
@@ -1362,52 +1122,6 @@ class DataplexServiceRestInterceptor:
         `post_list_lakes` interceptor. The (possibly modified) response returned by
         `post_list_lakes` will be passed to
         `post_list_lakes_with_metadata`.
-        """
-        return response, metadata
-
-    def pre_list_sessions(
-        self,
-        request: service.ListSessionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[service.ListSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for list_sessions
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataplexService server.
-        """
-        return request, metadata
-
-    def post_list_sessions(
-        self, response: service.ListSessionsResponse
-    ) -> service.ListSessionsResponse:
-        """Post-rpc interceptor for list_sessions
-
-        DEPRECATED. Please use the `post_list_sessions_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataplexService server but before
-        it is returned to user code. This `post_list_sessions` interceptor runs
-        before the `post_list_sessions_with_metadata` interceptor.
-        """
-        return response
-
-    def post_list_sessions_with_metadata(
-        self,
-        response: service.ListSessionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[service.ListSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for list_sessions
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataplexService server but before it is returned to user code.
-
-        We recommend only using this `post_list_sessions_with_metadata`
-        interceptor in new development instead of the `post_list_sessions` interceptor.
-        When both interceptors are used, this `post_list_sessions_with_metadata` interceptor runs after the
-        `post_list_sessions` interceptor. The (possibly modified) response returned by
-        `post_list_sessions` will be passed to
-        `post_list_sessions_with_metadata`.
         """
         return response, metadata
 
@@ -1641,54 +1355,6 @@ class DataplexServiceRestInterceptor:
         """
         return response, metadata
 
-    def pre_update_environment(
-        self,
-        request: service.UpdateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
-        """Pre-rpc interceptor for update_environment
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DataplexService server.
-        """
-        return request, metadata
-
-    def post_update_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for update_environment
-
-        DEPRECATED. Please use the `post_update_environment_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the DataplexService server but before
-        it is returned to user code. This `post_update_environment` interceptor runs
-        before the `post_update_environment_with_metadata` interceptor.
-        """
-        return response
-
-    def post_update_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for update_environment
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the DataplexService server but before it is returned to user code.
-
-        We recommend only using this `post_update_environment_with_metadata`
-        interceptor in new development instead of the `post_update_environment` interceptor.
-        When both interceptors are used, this `post_update_environment_with_metadata` interceptor runs after the
-        `post_update_environment` interceptor. The (possibly modified) response returned by
-        `post_update_environment` will be passed to
-        `post_update_environment_with_metadata`.
-        """
-        return response, metadata
-
     def pre_update_lake(
         self,
         request: service.UpdateLakeRequest,
@@ -1870,6 +1536,78 @@ class DataplexServiceRestInterceptor:
         self, response: locations_pb2.ListLocationsResponse
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DataplexService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataplexService server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DataplexService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataplexService server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DataplexService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataplexService server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
         after it is returned by the DataplexService server but before
@@ -2398,158 +2136,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.DataplexService",
                         "rpcName": "CreateAsset",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _CreateEnvironment(
-        _BaseDataplexServiceRestTransport._BaseCreateEnvironment,
-        DataplexServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("DataplexServiceRestTransport.CreateEnvironment")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: service.CreateEnvironmentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the create environment method over HTTP.
-
-            Args:
-                request (~.service.CreateEnvironmentRequest):
-                    The request object. Create environment request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_http_options()
-
-            request, metadata = self._interceptor.pre_create_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseCreateEnvironment._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.CreateEnvironment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "CreateEnvironment",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataplexServiceRestTransport._CreateEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_create_environment(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataplexServiceClient.create_environment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "CreateEnvironment",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3154,152 +2740,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEnvironment(
-        _BaseDataplexServiceRestTransport._BaseDeleteEnvironment,
-        DataplexServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("DataplexServiceRestTransport.DeleteEnvironment")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: service.DeleteEnvironmentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the delete environment method over HTTP.
-
-            Args:
-                request (~.service.DeleteEnvironmentRequest):
-                    The request object. Delete environment request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_http_options()
-
-            request, metadata = self._interceptor.pre_delete_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseDeleteEnvironment._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.DeleteEnvironment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "DeleteEnvironment",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataplexServiceRestTransport._DeleteEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_delete_environment(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataplexServiceClient.delete_environment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "DeleteEnvironment",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _DeleteLake(
         _BaseDataplexServiceRestTransport._BaseDeleteLake, DataplexServiceRestStub
     ):
@@ -3880,151 +3320,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.DataplexService",
                         "rpcName": "GetAsset",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _GetEnvironment(
-        _BaseDataplexServiceRestTransport._BaseGetEnvironment, DataplexServiceRestStub
-    ):
-        def __hash__(self):
-            return hash("DataplexServiceRestTransport.GetEnvironment")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: service.GetEnvironmentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> analyze.Environment:
-            r"""Call the get environment method over HTTP.
-
-            Args:
-                request (~.service.GetEnvironmentRequest):
-                    The request object. Get environment request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.analyze.Environment:
-                    Environment represents a user-visible
-                compute infrastructure for analytics
-                within a lake.
-
-            """
-
-            http_options = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_http_options()
-
-            request, metadata = self._interceptor.pre_get_environment(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseGetEnvironment._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.GetEnvironment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "GetEnvironment",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataplexServiceRestTransport._GetEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = analyze.Environment()
-            pb_resp = analyze.Environment.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_environment(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = analyze.Environment.to_json(response)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataplexServiceClient.get_environment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "GetEnvironment",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -4937,152 +4232,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _ListEnvironments(
-        _BaseDataplexServiceRestTransport._BaseListEnvironments, DataplexServiceRestStub
-    ):
-        def __hash__(self):
-            return hash("DataplexServiceRestTransport.ListEnvironments")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: service.ListEnvironmentsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> service.ListEnvironmentsResponse:
-            r"""Call the list environments method over HTTP.
-
-            Args:
-                request (~.service.ListEnvironmentsRequest):
-                    The request object. List environments request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.service.ListEnvironmentsResponse:
-                    List environments response.
-            """
-
-            http_options = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_http_options()
-
-            request, metadata = self._interceptor.pre_list_environments(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListEnvironments._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.ListEnvironments",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "ListEnvironments",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataplexServiceRestTransport._ListEnvironments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = service.ListEnvironmentsResponse()
-            pb_resp = service.ListEnvironmentsResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_list_environments(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_environments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = service.ListEnvironmentsResponse.to_json(
-                        response
-                    )
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataplexServiceClient.list_environments",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "ListEnvironments",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _ListJobs(
         _BaseDataplexServiceRestTransport._BaseListJobs, DataplexServiceRestStub
     ):
@@ -5515,150 +4664,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.DataplexService",
                         "rpcName": "ListLakes",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _ListSessions(
-        _BaseDataplexServiceRestTransport._BaseListSessions, DataplexServiceRestStub
-    ):
-        def __hash__(self):
-            return hash("DataplexServiceRestTransport.ListSessions")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: service.ListSessionsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> service.ListSessionsResponse:
-            r"""Call the list sessions method over HTTP.
-
-            Args:
-                request (~.service.ListSessionsRequest):
-                    The request object. List sessions request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.service.ListSessionsResponse:
-                    List sessions response.
-            """
-
-            http_options = (
-                _BaseDataplexServiceRestTransport._BaseListSessions._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_list_sessions(request, metadata)
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseListSessions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseListSessions._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.ListSessions",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "ListSessions",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataplexServiceRestTransport._ListSessions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = service.ListSessionsResponse()
-            pb_resp = service.ListSessionsResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_list_sessions(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sessions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = service.ListSessionsResponse.to_json(response)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataplexServiceClient.list_sessions",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "ListSessions",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6408,158 +5413,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEnvironment(
-        _BaseDataplexServiceRestTransport._BaseUpdateEnvironment,
-        DataplexServiceRestStub,
-    ):
-        def __hash__(self):
-            return hash("DataplexServiceRestTransport.UpdateEnvironment")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: service.UpdateEnvironmentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the update environment method over HTTP.
-
-            Args:
-                request (~.service.UpdateEnvironmentRequest):
-                    The request object. Update environment request.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_http_options()
-
-            request, metadata = self._interceptor.pre_update_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDataplexServiceRestTransport._BaseUpdateEnvironment._get_query_params_json(
-                transcoded_request
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.UpdateEnvironment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "UpdateEnvironment",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataplexServiceRestTransport._UpdateEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_update_environment(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataplex_v1.DataplexServiceClient.update_environment",
-                    extra={
-                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
-                        "rpcName": "UpdateEnvironment",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _UpdateLake(
         _BaseDataplexServiceRestTransport._BaseUpdateLake, DataplexServiceRestStub
     ):
@@ -7028,14 +5881,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         return self._CreateAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CreateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def create_lake(
         self,
     ) -> Callable[[service.CreateLakeRequest], operations_pb2.Operation]:
@@ -7068,14 +5913,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         return self._DeleteAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._DeleteEnvironment(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def delete_lake(
         self,
     ) -> Callable[[service.DeleteLakeRequest], operations_pb2.Operation]:
@@ -7104,14 +5941,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAsset(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_environment(
-        self,
-    ) -> Callable[[service.GetEnvironmentRequest], analyze.Environment]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_job(self) -> Callable[[service.GetJobRequest], tasks.Job]:
@@ -7154,14 +5983,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ListEnvironments(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
     def list_jobs(
         self,
     ) -> Callable[[service.ListJobsRequest], service.ListJobsResponse]:
@@ -7184,14 +6005,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLakes(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_sessions(
-        self,
-    ) -> Callable[[service.ListSessionsRequest], service.ListSessionsResponse]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ListSessions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_tasks(
@@ -7230,14 +6043,6 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAsset(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def update_environment(
-        self,
-    ) -> Callable[[service.UpdateEnvironmentRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpdateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_lake(
@@ -7537,6 +6342,439 @@ class DataplexServiceRestTransport(_BaseDataplexServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataplex.v1.DataplexService",
                         "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def get_iam_policy(self):
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetIamPolicy(
+        _BaseDataplexServiceRestTransport._BaseGetIamPolicy, DataplexServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DataplexServiceRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.GetIamPolicyRequest):
+                    The request object for GetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                policy_pb2.Policy: Response from GetIamPolicy method.
+            """
+
+            http_options = (
+                _BaseDataplexServiceRestTransport._BaseGetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataplexServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataplexServiceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.DataplexServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def set_iam_policy(self):
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _SetIamPolicy(
+        _BaseDataplexServiceRestTransport._BaseSetIamPolicy, DataplexServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DataplexServiceRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.SetIamPolicyRequest):
+                    The request object for SetIamPolicy method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                policy_pb2.Policy: Response from SetIamPolicy method.
+            """
+
+            http_options = (
+                _BaseDataplexServiceRestTransport._BaseSetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataplexServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataplexServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataplexServiceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = policy_pb2.Policy()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.DataplexServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def test_iam_permissions(self):
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _TestIamPermissions(
+        _BaseDataplexServiceRestTransport._BaseTestIamPermissions,
+        DataplexServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataplexServiceRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (iam_policy_pb2.TestIamPermissionsRequest):
+                    The request object for TestIamPermissions method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
+            """
+
+            http_options = _BaseDataplexServiceRestTransport._BaseTestIamPermissions._get_http_options()
+
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
+            transcoded_request = _BaseDataplexServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataplexServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataplexServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataplex_v1.DataplexServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataplexServiceRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataplex_v1.DataplexServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataplex.v1.DataplexService",
+                        "rpcName": "TestIamPermissions",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
                     },

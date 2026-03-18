@@ -331,11 +331,11 @@ class ProductInputsServiceGrpcTransport(ProductInputsServiceTransport):
         r"""Return a callable for the insert product input method over gRPC.
 
         `Uploads a product input to your Merchant Center
-        account </merchant/api/guides/products/overview#upload-product-input>`__.
+        account </merchant/api/guides/products/add-manage#add_a_product>`__.
         You must have a products `data
-        source </merchant/api/guides/data-sources/overview>`__ to be
-        able to insert a product. The unique identifier of the data
-        source is passed as a query parameter in the request URL.
+        source </merchant/api/guides/data-sources/api-sources#create-primary-data-source>`__
+        to be able to insert a product. The unique identifier of the
+        data source is passed as a query parameter in the request URL.
 
         If a product input with the same contentLanguage, offerId, and
         dataSource already exists, then the product input inserted by
@@ -371,11 +371,13 @@ class ProductInputsServiceGrpcTransport(ProductInputsServiceTransport):
     ]:
         r"""Return a callable for the update product input method over gRPC.
 
-        Updates the existing product input in your Merchant
-        Center account.
-        After inserting, updating, or deleting a product input,
-        it may take several minutes before the processed product
-        can be retrieved.
+        Updates the existing product input in your Merchant Center
+        account. The name of the product input to update is taken from
+        the ``name`` field within the ``ProductInput`` resource.
+
+        After inserting, updating, or deleting a product input, it may
+        take several minutes before the processed product can be
+        retrieved.
 
         Returns:
             Callable[[~.UpdateProductInputRequest],

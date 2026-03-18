@@ -3336,6 +3336,8 @@ def test_insert_product_input_rest_call_success(request_type):
                     "max_handling_time": 1784,
                     "min_transit_time": 1718,
                     "max_transit_time": 1720,
+                    "handling_cutoff_time": "handling_cutoff_time_value",
+                    "handling_cutoff_timezone": "handling_cutoff_timezone_value",
                 }
             ],
             "carrier_shipping": [
@@ -3364,6 +3366,18 @@ def test_insert_product_input_rest_call_success(request_type):
             "shipping_height": {},
             "max_handling_time": 1784,
             "min_handling_time": 1782,
+            "shipping_handling_business_days": [
+                {"country": "country_value", "business_days": "business_days_value"}
+            ],
+            "shipping_transit_business_days": {},
+            "handling_cutoff_times": [
+                {
+                    "country": "country_value",
+                    "cutoff_time": "cutoff_time_value",
+                    "cutoff_timezone": "cutoff_timezone_value",
+                    "disable_delivery_after_cutoff": True,
+                }
+            ],
             "shipping_label": "shipping_label_value",
             "transit_time_label": "transit_time_label_value",
             "size": "size_value",
@@ -3745,6 +3759,8 @@ def test_update_product_input_rest_call_success(request_type):
                     "max_handling_time": 1784,
                     "min_transit_time": 1718,
                     "max_transit_time": 1720,
+                    "handling_cutoff_time": "handling_cutoff_time_value",
+                    "handling_cutoff_timezone": "handling_cutoff_timezone_value",
                 }
             ],
             "carrier_shipping": [
@@ -3773,6 +3789,18 @@ def test_update_product_input_rest_call_success(request_type):
             "shipping_height": {},
             "max_handling_time": 1784,
             "min_handling_time": 1782,
+            "shipping_handling_business_days": [
+                {"country": "country_value", "business_days": "business_days_value"}
+            ],
+            "shipping_transit_business_days": {},
+            "handling_cutoff_times": [
+                {
+                    "country": "country_value",
+                    "cutoff_time": "cutoff_time_value",
+                    "cutoff_timezone": "cutoff_timezone_value",
+                    "disable_delivery_after_cutoff": True,
+                }
+            ],
             "shipping_label": "shipping_label_value",
             "transit_time_label": "transit_time_label_value",
             "size": "size_value",

@@ -3262,6 +3262,10 @@ def test_insert_css_product_input_rest_call_success(request_type):
                 "period_length": 1380,
                 "amount": {},
             },
+            "review_count": 1306,
+            "min_rating": 1064,
+            "max_rating": 1066,
+            "rating": 0.645,
         },
         "custom_attributes": [
             {"name": "name_value", "value": "value_value", "group_values": {}}
@@ -3573,6 +3577,10 @@ def test_update_css_product_input_rest_call_success(request_type):
                 "period_length": 1380,
                 "amount": {},
             },
+            "review_count": 1306,
+            "min_rating": 1064,
+            "max_rating": 1066,
+            "rating": 0.645,
         },
         "custom_attributes": [
             {"name": "name_value", "value": "value_value", "group_values": {}}

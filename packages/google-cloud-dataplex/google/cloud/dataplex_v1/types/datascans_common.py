@@ -29,12 +29,13 @@ __protobuf__ = proto.module(
 
 class DataScanCatalogPublishingStatus(proto.Message):
     r"""The status of publishing the data scan result as Dataplex
-    Universal Catalog metadata.
+    Universal Catalog metadata. Multiple DataScan log events may
+    exist, each with different publishing information depending on
+    the type of publishing triggered.
 
     Attributes:
         state (google.cloud.dataplex_v1.types.DataScanCatalogPublishingStatus.State):
-            Output only. Execution state for catalog
-            publishing.
+            Output only. Execution state for publishing.
     """
 
     class State(proto.Enum):
@@ -44,14 +45,17 @@ class DataScanCatalogPublishingStatus(proto.Message):
             STATE_UNSPECIFIED (0):
                 The publishing state is unspecified.
             SUCCEEDED (1):
-                Publish to catalog completed successfully.
+                Publishing to catalog completed successfully.
             FAILED (2):
                 Publish to catalog failed.
+            SKIPPED (3):
+                Publishing to catalog was skipped.
         """
 
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
+        SKIPPED = 3
 
     state: State = proto.Field(
         proto.ENUM,

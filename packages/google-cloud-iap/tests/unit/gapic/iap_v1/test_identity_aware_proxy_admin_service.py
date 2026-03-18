@@ -7978,6 +7978,9 @@ def test_update_iap_settings_rest_call_success(request_type):
             "cors_settings": {"allow_http_options": {"value": True}},
             "oauth_settings": {
                 "login_hint": {},
+                "client_id": {},
+                "client_secret": {},
+                "client_secret_sha256": {},
                 "programmatic_clients": [
                     "programmatic_clients_value1",
                     "programmatic_clients_value2",

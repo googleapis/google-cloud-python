@@ -36,6 +36,9 @@ from .backup_disaster_recovery import (
 from .bigquery_export import (
     BigQueryExport,
 )
+from .chokepoint import (
+    Chokepoint,
+)
 from .cloud_armor import (
     AdaptiveProtection,
     Attack,
@@ -45,6 +48,8 @@ from .cloud_armor import (
 )
 from .cloud_dlp_data_profile import (
     CloudDlpDataProfile,
+    InfoType,
+    SensitivityScore,
 )
 from .cloud_dlp_inspection import (
     CloudDlpInspection,
@@ -82,6 +87,9 @@ from .event_threat_detection_custom_module_validation_errors import (
 from .exfiltration import (
     ExfilResource,
     Exfiltration,
+)
+from .external_exposure import (
+    ExternalExposure,
 )
 from .external_system import (
     ExternalSystem,
@@ -288,12 +296,15 @@ __all__ = (
     "AttackPath",
     "BackupDisasterRecovery",
     "BigQueryExport",
+    "Chokepoint",
     "AdaptiveProtection",
     "Attack",
     "CloudArmor",
     "Requests",
     "SecurityPolicy",
     "CloudDlpDataProfile",
+    "InfoType",
+    "SensitivityScore",
     "CloudDlpInspection",
     "Compliance",
     "Connection",
@@ -309,6 +320,7 @@ __all__ = (
     "Position",
     "ExfilResource",
     "Exfiltration",
+    "ExternalExposure",
     "ExternalSystem",
     "File",
     "Finding",

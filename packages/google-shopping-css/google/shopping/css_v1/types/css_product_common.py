@@ -197,9 +197,8 @@ class Attributes(proto.Message):
         size_types (MutableSequence[str]):
             The cut of the item. It can be used to represent combined
             size types for apparel items. Maximum two of size types can
-            be provided (see
-            [https://support.google.com/merchants/answer/6324497](size
-            type)).
+            be provided (see `size
+            type <https://support.google.com/merchants/answer/6324497>`__.
         item_group_id (str):
             Shared identifier for all variants of the
             same product.
@@ -285,6 +284,41 @@ class Attributes(proto.Message):
             Number of periods (months or years) and
             amount of payment per period for an item with an
             associated subscription contract.
+        review_count (int):
+            Number of reviews of the product. Required if
+            [``rating``][google.shopping.css.v1.Attributes.rating] is
+            provided. This field is for an upcoming feature and is not
+            yet used.
+
+            This field is a member of `oneof`_ ``_review_count``.
+        min_rating (int):
+            Minimum rating score of the product. Required if
+            [``rating``][google.shopping.css.v1.Attributes.rating] is
+            provided. This field is for an upcoming feature and is not
+            yet used.
+
+            This field is a member of `oneof`_ ``_min_rating``.
+        max_rating (int):
+            Maximum rating score of the product. Required if
+            [``rating``][google.shopping.css.v1.Attributes.rating] is
+            provided. This field is for an upcoming feature and is not
+            yet used.
+
+            This field is a member of `oneof`_ ``_max_rating``.
+        rating (float):
+            Average rating score of the product. The value must be
+            within the range of [``min_rating``, ``max_rating``],
+            inclusive. When displayed on the product page, this rating
+            is normalized to a scale of [1, 5] with one decimal place.
+            If provided,
+            [``review_count``][google.shopping.css.v1.Attributes.review_count],
+            [``min_rating``][google.shopping.css.v1.Attributes.min_rating],
+            and
+            [``max_rating``][google.shopping.css.v1.Attributes.max_rating]
+            are also required. This field is for an upcoming feature and
+            is not yet used.
+
+            This field is a member of `oneof`_ ``_rating``.
     """
 
     cpp_link: str = proto.Field(
@@ -530,6 +564,26 @@ class Attributes(proto.Message):
         proto.MESSAGE,
         number=52,
         message="HeadlineOfferSubscriptionCost",
+    )
+    review_count: int = proto.Field(
+        proto.INT64,
+        number=54,
+        optional=True,
+    )
+    min_rating: int = proto.Field(
+        proto.INT64,
+        number=55,
+        optional=True,
+    )
+    max_rating: int = proto.Field(
+        proto.INT64,
+        number=56,
+        optional=True,
+    )
+    rating: float = proto.Field(
+        proto.DOUBLE,
+        number=57,
+        optional=True,
     )
 
 

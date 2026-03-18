@@ -48,6 +48,9 @@ __protobuf__ = proto.module(
         "ImportDataObjectsRequest",
         "ImportDataObjectsMetadata",
         "ImportDataObjectsResponse",
+        "ExportDataObjectsRequest",
+        "ExportDataObjectsMetadata",
+        "ExportDataObjectsResponse",
         "DedicatedInfrastructure",
         "DenseScannIndex",
     },
@@ -894,6 +897,101 @@ class ImportDataObjectsResponse(proto.Message):
         number=1,
         message=status_pb2.Status,
     )
+
+
+class ExportDataObjectsRequest(proto.Message):
+    r"""Request message for
+    [VectorSearchService.ExportDataObjects][google.cloud.vectorsearch.v1.VectorSearchService.ExportDataObjects].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.vectorsearch_v1.types.ExportDataObjectsRequest.GcsExportDestination):
+            The Cloud Storage location where user wants
+            to export Data Objects.
+
+            This field is a member of `oneof`_ ``destination``.
+        name (str):
+            Required. The resource name of the Collection from which we
+            want to export Data Objects. Format:
+            ``projects/{project}/locations/{location}/collections/{collection}``.
+    """
+
+    class GcsExportDestination(proto.Message):
+        r"""Google Cloud Storage configuration for the export.
+
+        Attributes:
+            export_uri (str):
+                Required. URI prefix of the Cloud Storage
+                where to export Data Objects. The bucket is
+                required to be in the same region as the
+                collection.
+            format_ (google.cloud.vectorsearch_v1.types.ExportDataObjectsRequest.GcsExportDestination.Format):
+                Required. The format of the exported Data
+                Objects.
+        """
+
+        class Format(proto.Enum):
+            r"""Options for the format of the exported Data Objects.
+
+            Values:
+                FORMAT_UNSPECIFIED (0):
+                    Unspecified format.
+                JSONL (2):
+                    Exports Data Objects in ``JSONL`` format.
+            """
+
+            FORMAT_UNSPECIFIED = 0
+            JSONL = 2
+
+        export_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        format_: "ExportDataObjectsRequest.GcsExportDestination.Format" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ExportDataObjectsRequest.GcsExportDestination.Format",
+        )
+
+    gcs_destination: GcsExportDestination = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message=GcsExportDestination,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExportDataObjectsMetadata(proto.Message):
+    r"""Metadata for the ExportDataObjects LRO.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        finish_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ExportDataObjectsResponse(proto.Message):
+    r"""Response for the ExportDataObjects LRO."""
 
 
 class DedicatedInfrastructure(proto.Message):

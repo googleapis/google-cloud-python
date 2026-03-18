@@ -38,8 +38,8 @@ class GetCssProductRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the CSS product to
-            retrieve.
+            Required. The name of the CSS product to retrieve. Format:
+            ``accounts/{account}/cssProducts/{css_product}``
     """
 
     name: str = proto.Field(

@@ -20,9 +20,6 @@ import pickle
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
@@ -39,9 +36,6 @@ from google.iam.v1 import (
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
-
-from google.cloud.dataplex_v1.types import analyze, content
-from google.cloud.dataplex_v1.types import content as gcd_content
 
 from .base import DEFAULT_CLIENT_INFO, ContentServiceTransport
 from .grpc import ContentServiceGrpcTransport
@@ -340,316 +334,9 @@ class ContentServiceGrpcAsyncIOTransport(ContentServiceTransport):
         # Return the channel from cache.
         return self._grpc_channel
 
-    @property
-    def create_content(
-        self,
-    ) -> Callable[[gcd_content.CreateContentRequest], Awaitable[analyze.Content]]:
-        r"""Return a callable for the create content method over gRPC.
-
-        Create a content.
-
-        Returns:
-            Callable[[~.CreateContentRequest],
-                    Awaitable[~.Content]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_content" not in self._stubs:
-            self._stubs["create_content"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/CreateContent",
-                request_serializer=gcd_content.CreateContentRequest.serialize,
-                response_deserializer=analyze.Content.deserialize,
-            )
-        return self._stubs["create_content"]
-
-    @property
-    def update_content(
-        self,
-    ) -> Callable[[gcd_content.UpdateContentRequest], Awaitable[analyze.Content]]:
-        r"""Return a callable for the update content method over gRPC.
-
-        Update a content. Only supports full resource update.
-
-        Returns:
-            Callable[[~.UpdateContentRequest],
-                    Awaitable[~.Content]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_content" not in self._stubs:
-            self._stubs["update_content"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/UpdateContent",
-                request_serializer=gcd_content.UpdateContentRequest.serialize,
-                response_deserializer=analyze.Content.deserialize,
-            )
-        return self._stubs["update_content"]
-
-    @property
-    def delete_content(
-        self,
-    ) -> Callable[[content.DeleteContentRequest], Awaitable[empty_pb2.Empty]]:
-        r"""Return a callable for the delete content method over gRPC.
-
-        Delete a content.
-
-        Returns:
-            Callable[[~.DeleteContentRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_content" not in self._stubs:
-            self._stubs["delete_content"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/DeleteContent",
-                request_serializer=content.DeleteContentRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_content"]
-
-    @property
-    def get_content(
-        self,
-    ) -> Callable[[content.GetContentRequest], Awaitable[analyze.Content]]:
-        r"""Return a callable for the get content method over gRPC.
-
-        Get a content resource.
-
-        Returns:
-            Callable[[~.GetContentRequest],
-                    Awaitable[~.Content]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_content" not in self._stubs:
-            self._stubs["get_content"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/GetContent",
-                request_serializer=content.GetContentRequest.serialize,
-                response_deserializer=analyze.Content.deserialize,
-            )
-        return self._stubs["get_content"]
-
-    @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
-        r"""Return a callable for the get iam policy method over gRPC.
-
-        Gets the access control policy for a contentitem resource. A
-        ``NOT_FOUND`` error is returned if the resource does not exist.
-        An empty policy is returned if the resource exists but does not
-        have a policy set on it.
-
-        Caller must have Google IAM ``dataplex.content.getIamPolicy``
-        permission on the resource.
-
-        Returns:
-            Callable[[~.GetIamPolicyRequest],
-                    Awaitable[~.Policy]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/GetIamPolicy",
-                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy_pb2.Policy.FromString,
-            )
-        return self._stubs["get_iam_policy"]
-
-    @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
-        r"""Return a callable for the set iam policy method over gRPC.
-
-        Sets the access control policy on the specified contentitem
-        resource. Replaces any existing policy.
-
-        Caller must have Google IAM ``dataplex.content.setIamPolicy``
-        permission on the resource.
-
-        Returns:
-            Callable[[~.SetIamPolicyRequest],
-                    Awaitable[~.Policy]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/SetIamPolicy",
-                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy_pb2.Policy.FromString,
-            )
-        return self._stubs["set_iam_policy"]
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
-        r"""Return a callable for the test iam permissions method over gRPC.
-
-        Returns the caller's permissions on a resource. If the resource
-        does not exist, an empty set of permissions is returned (a
-        ``NOT_FOUND`` error is not returned).
-
-        A caller is not required to have Google IAM permission to make
-        this request.
-
-        Note: This operation is designed to be used for building
-        permission-aware UIs and command-line tools, not for
-        authorization checking. This operation may "fail open" without
-        warning.
-
-        Returns:
-            Callable[[~.TestIamPermissionsRequest],
-                    Awaitable[~.TestIamPermissionsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/TestIamPermissions",
-                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
-            )
-        return self._stubs["test_iam_permissions"]
-
-    @property
-    def list_content(
-        self,
-    ) -> Callable[[content.ListContentRequest], Awaitable[content.ListContentResponse]]:
-        r"""Return a callable for the list content method over gRPC.
-
-        List content.
-
-        Returns:
-            Callable[[~.ListContentRequest],
-                    Awaitable[~.ListContentResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_content" not in self._stubs:
-            self._stubs["list_content"] = self._logged_channel.unary_unary(
-                "/google.cloud.dataplex.v1.ContentService/ListContent",
-                request_serializer=content.ListContentRequest.serialize,
-                response_deserializer=content.ListContentResponse.deserialize,
-            )
-        return self._stubs["list_content"]
-
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_content: self._wrap_method(
-                self.create_content,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_content: self._wrap_method(
-                self.update_content,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.delete_content: self._wrap_method(
-                self.delete_content,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_content: self._wrap_method(
-                self.get_content,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_iam_policy: self._wrap_method(
-                self.get_iam_policy,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.set_iam_policy: self._wrap_method(
-                self.set_iam_policy,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.test_iam_permissions: self._wrap_method(
-                self.test_iam_permissions,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.list_content: self._wrap_method(
-                self.list_content,
-                default_retry=retries.AsyncRetry(
-                    initial=1.0,
-                    maximum=10.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
             self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -657,6 +344,21 @@ class ContentServiceGrpcAsyncIOTransport(ContentServiceTransport):
             ),
             self.list_locations: self._wrap_method(
                 self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -799,6 +501,86 @@ class ContentServiceGrpcAsyncIOTransport(ContentServiceTransport):
                 response_deserializer=locations_pb2.Location.FromString,
             )
         return self._stubs["get_location"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+        Sets the IAM access control policy on the specified
+        function. Replaces any existing policy.
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+        Gets the IAM access control policy for a function.
+        Returns an empty policy if the function exists and does
+        not have a policy set.
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+        Tests the specified permissions against the IAM access control
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
 
 
 __all__ = ("ContentServiceGrpcAsyncIOTransport",)

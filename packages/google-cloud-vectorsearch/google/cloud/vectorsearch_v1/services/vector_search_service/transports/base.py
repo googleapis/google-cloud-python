@@ -278,6 +278,11 @@ class VectorSearchServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.export_data_objects: gapic_v1.method.wrap_method(
+                self.export_data_objects,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -418,6 +423,15 @@ class VectorSearchServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [vectorsearch_service.ImportDataObjectsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_data_objects(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.ExportDataObjectsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

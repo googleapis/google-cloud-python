@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,6 +49,11 @@ class Trigger(proto.Message):
             The scan is scheduled to run periodically.
 
             This field is a member of `oneof`_ ``mode``.
+        one_time (google.cloud.dataplex_v1.types.Trigger.OneTime):
+            The scan runs once, and does not create an
+            associated ScanJob child resource.
+
+            This field is a member of `oneof`_ ``mode``.
     """
 
     class OnDemand(proto.Message):
@@ -77,6 +83,27 @@ class Trigger(proto.Message):
             number=1,
         )
 
+    class OneTime(proto.Message):
+        r"""The scan runs once using create API.
+
+        Attributes:
+            ttl_after_scan_completion (google.protobuf.duration_pb2.Duration):
+                Optional. Time to live for OneTime scans.
+                default value is 24 hours, minimum value is 0
+                seconds, and maximum value is 365 days. The time
+                is calculated from the data scan job completion
+                time. If value is set as 0 seconds, the scan
+                will be immediately deleted upon job completion,
+                regardless of whether the job succeeded or
+                failed.
+        """
+
+        ttl_after_scan_completion: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+
     on_demand: OnDemand = proto.Field(
         proto.MESSAGE,
         number=100,
@@ -88,6 +115,12 @@ class Trigger(proto.Message):
         number=101,
         oneof="mode",
         message=Schedule,
+    )
+    one_time: OneTime = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="mode",
+        message=OneTime,
     )
 
 
