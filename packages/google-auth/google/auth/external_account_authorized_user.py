@@ -38,10 +38,8 @@ import io
 import json
 import logging
 import re
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 
-if TYPE_CHECKING: # pragma: NO COVER
-    import google.auth.transport
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -49,6 +47,9 @@ from google.auth import credentials
 from google.auth import exceptions
 from google.oauth2 import sts
 from google.oauth2 import utils
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
 

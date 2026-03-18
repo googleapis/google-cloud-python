@@ -21,10 +21,8 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 
-if TYPE_CHECKING: # pragma: NO COVER
-    import google.auth.transport
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -35,6 +33,9 @@ from google.auth import jwt
 from google.auth import metrics
 from google.auth.compute_engine import _metadata
 from google.oauth2 import _client
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
 

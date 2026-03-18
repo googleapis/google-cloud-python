@@ -36,10 +36,8 @@ import io
 import json
 import logging
 import re
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 
-if TYPE_CHECKING: # pragma: NO COVER
-    import google.auth.transport
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -49,6 +47,9 @@ from google.auth import impersonated_credentials
 from google.auth import metrics
 from google.oauth2 import sts
 from google.oauth2 import utils
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -208,8 +209,6 @@ class Credentials(
                 "workforce_pool_user_project should not be set for non-workforce pool "
                 "credentials"
             )
-
-        self._trust_boundary = trust_boundary
 
     @property
     def info(self):
@@ -431,6 +430,25 @@ class Credentials(
         """
         self._perform_refresh_token(request)
 
+    def _maybe_start_regional_access_boundary_refresh(self, request, url):
+        """Starts a background thread to refresh the Regional Access Boundary if needed.
+
+        For impersonated credentials, this delegates the logic to the
+        underlying impersonated credentials.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+            url (str): The URL of the request.
+        """
+        if getattr(self, "_impersonated_credentials", None):
+            self._impersonated_credentials._maybe_start_regional_access_boundary_refresh(
+                request, url
+            )
+            return
+
+        super()._maybe_start_regional_access_boundary_refresh(request, url)
+
     def _perform_refresh_token(self, request, cert_fingerprint=None):
         scopes = self._scopes if self._scopes is not None else self._default_scopes
 
@@ -447,6 +465,9 @@ class Credentials(
             self._impersonated_credentials.refresh(request)
             self.token = self._impersonated_credentials.token
             self.expiry = self._impersonated_credentials.expiry
+            # Propagate the inner RAB manager to ensure downstream injections
+            # apply the target service account's RAB.
+            self._rab_manager = self._impersonated_credentials._rab_manager
         else:
             now = _helpers.utcnow()
             additional_options = {}
@@ -489,6 +510,10 @@ class Credentials(
         self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
     ):
         """Builds and returns the URL for the Regional Access Boundary lookup API."""
+        if getattr(self, "_impersonated_credentials", None):
+            # Impersonated credentials independently fetch and manage their own RAB.
+            return None
+
         url = None
         # Try to parse as a workload identity pool.
         # Audience format: //iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID

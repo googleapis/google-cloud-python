@@ -73,10 +73,8 @@ specific subject using :meth:`~Credentials.with_subject`.
 import copy
 import datetime
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import Optional, TYPE_CHECKING
 
-if TYPE_CHECKING: # pragma: NO COVER
-    import google.auth.transport
 
 from google.auth import _constants
 from google.auth import _helpers
@@ -87,6 +85,9 @@ from google.auth import iam
 from google.auth import jwt
 from google.auth import metrics
 from google.oauth2 import _client
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import google.auth.transport
 
 _LOGGER = logging.getLogger(__name__)
 

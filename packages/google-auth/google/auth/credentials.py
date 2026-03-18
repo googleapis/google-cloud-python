@@ -19,11 +19,9 @@ import abc
 from enum import Enum
 import logging
 import os
-from typing import TYPE_CHECKING, Dict, List, Optional
-
-if TYPE_CHECKING: # pragma: NO COVER
-    import google.auth.transport
+from typing import Dict, List, Optional, TYPE_CHECKING
 from urllib.parse import urlparse
+
 
 from google.auth import _helpers, environment_vars
 from google.auth import _regional_access_boundary_utils
@@ -31,6 +29,9 @@ from google.auth import exceptions
 from google.auth import metrics
 from google.auth._credentials_base import _BaseCredentials
 from google.auth._refresh_worker import RefreshThreadManager
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import google.auth.transport
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 
@@ -343,7 +344,12 @@ class CredentialsWithRegionalAccessBoundary(Credentials):
             DeprecationWarning,
             stacklevel=2,
         )
-        return self._make_copy()
+        if hasattr(self, "_make_copy"):
+            return self._make_copy()  # type: ignore
+        else:
+            raise NotImplementedError(
+                "This credential does not support trust boundaries."
+            )
 
     def _copy_regional_access_boundary_manager(self, target):
         """Copies the regional access boundary manager to another instance."""
