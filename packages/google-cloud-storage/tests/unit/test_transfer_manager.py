@@ -530,9 +530,10 @@ def test_download_many_to_path():
     ]
 
     with mock.patch(
-        "google.cloud.storage.transfer_manager.download_many"
+        "google.cloud.storage.transfer_manager.download_many",
+        return_value=[FAKE_RESULT] * len(BLOBNAMES),
     ) as mock_download_many:
-        transfer_manager.download_many_to_path(
+        results = transfer_manager.download_many_to_path(
             bucket,
             BLOBNAMES,
             destination_directory=PATH_ROOT,
@@ -553,10 +554,70 @@ def test_download_many_to_path():
         raise_exception=True,
         max_workers=MAX_WORKERS,
         worker_type=WORKER_TYPE,
-        skip_if_exists=True,
+        skip_if_exists=False,
     )
+    assert results == [FAKE_RESULT] * len(BLOBNAMES)
     for blobname in BLOBNAMES:
         bucket.blob.assert_any_call(BLOB_NAME_PREFIX + blobname)
+
+def test_download_many_to_path_with_skip_if_exists():
+    bucket = mock.Mock()
+
+    BLOBNAMES = ["file_a.txt", "file_b.txt", "dir_a/file_c.txt"]
+    PATH_ROOT = "mypath/"
+    BLOB_NAME_PREFIX = "myprefix/"
+    DOWNLOAD_KWARGS = {"accept-encoding": "fake-gzip"}
+    MAX_WORKERS = 7
+    DEADLINE = 10
+    WORKER_TYPE = transfer_manager.THREAD
+
+    from google.cloud.storage.transfer_manager import _resolve_path
+
+    existing_file = str(_resolve_path(PATH_ROOT, "file_a.txt"))
+
+    def isfile_side_effect(path):
+        return path == existing_file
+
+    EXPECTED_BLOB_FILE_PAIRS = [
+        (mock.ANY, str(_resolve_path(PATH_ROOT, "file_b.txt"))),
+        (mock.ANY, str(_resolve_path(PATH_ROOT, "dir_a/file_c.txt"))),
+    ]
+
+    with mock.patch("os.path.isfile", side_effect=isfile_side_effect):
+        with mock.patch(
+            "google.cloud.storage.transfer_manager.download_many",
+            return_value=[FAKE_RESULT, FAKE_RESULT],
+        ) as mock_download_many:
+            results = transfer_manager.download_many_to_path(
+                bucket,
+                BLOBNAMES,
+                destination_directory=PATH_ROOT,
+                blob_name_prefix=BLOB_NAME_PREFIX,
+                download_kwargs=DOWNLOAD_KWARGS,
+                deadline=DEADLINE,
+                create_directories=False,
+                raise_exception=True,
+                max_workers=MAX_WORKERS,
+                worker_type=WORKER_TYPE,
+                skip_if_exists=True,
+            )
+
+    mock_download_many.assert_called_once_with(
+        EXPECTED_BLOB_FILE_PAIRS,
+        download_kwargs=DOWNLOAD_KWARGS,
+        deadline=DEADLINE,
+        raise_exception=True,
+        max_workers=MAX_WORKERS,
+        worker_type=WORKER_TYPE,
+        skip_if_exists=False,
+    )
+
+    assert len(results) == 3
+    assert isinstance(results[0], UserWarning)
+    assert str(results[0]) == "The blob file_a.txt is skipped because destination file already exists"
+    assert results[1] == FAKE_RESULT
+    assert results[2] == FAKE_RESULT
+
 
 
 @pytest.mark.parametrize(
@@ -584,9 +645,10 @@ def test_download_many_to_path_skips_download(blobname):
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         with mock.patch(
-            "google.cloud.storage.transfer_manager.download_many"
+            "google.cloud.storage.transfer_manager.download_many",
+            return_value=[],
         ) as mock_download_many:
-            transfer_manager.download_many_to_path(
+            results = transfer_manager.download_many_to_path(
                 bucket,
                 BLOBNAMES,
                 destination_directory=PATH_ROOT,
@@ -614,8 +676,10 @@ def test_download_many_to_path_skips_download(blobname):
         raise_exception=True,
         max_workers=MAX_WORKERS,
         worker_type=WORKER_TYPE,
-        skip_if_exists=True,
+        skip_if_exists=False,
     )
+    assert len(results) == 1
+    assert isinstance(results[0], UserWarning)
 
 
 @pytest.mark.parametrize(
@@ -649,9 +713,10 @@ def test_download_many_to_path_downloads_within_dest_dir(blobname):
     ]
 
     with mock.patch(
-        "google.cloud.storage.transfer_manager.download_many"
+        "google.cloud.storage.transfer_manager.download_many",
+        return_value=[FAKE_RESULT],
     ) as mock_download_many:
-        transfer_manager.download_many_to_path(
+        results = transfer_manager.download_many_to_path(
             bucket,
             BLOBNAMES,
             destination_directory=PATH_ROOT,
@@ -672,8 +737,9 @@ def test_download_many_to_path_downloads_within_dest_dir(blobname):
         raise_exception=True,
         max_workers=MAX_WORKERS,
         worker_type=WORKER_TYPE,
-        skip_if_exists=True,
+        skip_if_exists=False,
     )
+    assert results == [FAKE_RESULT]
     bucket.blob.assert_any_call(BLOB_NAME_PREFIX + blobname)
 
 

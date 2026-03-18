@@ -187,8 +187,9 @@ def test_download_many_to_path_skips_download(
             [str(warning.message) for warning in w]
         )
 
-        # 1 total - 1 skipped = 0 results
-        assert len(results) == 0
+        # 1 total - 1 skipped = 1 result (containing Warning)
+        assert len(results) == 1
+        assert isinstance(results[0], UserWarning)
 
 
 @pytest.mark.parametrize(
@@ -264,6 +265,87 @@ def test_download_many_to_path_downloads_within_dest_dir(
             downloaded_contents = downloaded_file.read()
 
         assert downloaded_contents == source_contents
+
+
+
+def test_download_many_to_path_mixed_results(
+    shared_bucket, file_data, blobs_to_delete
+):
+    """
+    Test download_many_to_path with successful downloads, skip_if_exists skips, and path traversal skips.
+    """
+    PREFIX = "mixed_results/"
+    BLOBNAMES = [
+        "success1.txt",
+        "success2.txt",
+        "exists.txt",
+        "../escape.txt"
+    ]
+
+    FILE_BLOB_PAIRS = [
+        (
+            file_data["simple"]["path"],
+            shared_bucket.blob(PREFIX + name),
+        )
+        for name in BLOBNAMES
+    ]
+
+    results = transfer_manager.upload_many(
+        FILE_BLOB_PAIRS,
+        skip_if_exists=True,
+        deadline=DEADLINE,
+    )
+    for result in results:
+        assert result is None
+
+    blobs = list(shared_bucket.list_blobs(prefix=PREFIX))
+    blobs_to_delete.extend(blobs)
+    assert len(blobs) == 4
+
+    # Actual Test
+    with tempfile.TemporaryDirectory() as tempdir:
+        existing_file_path = os.path.join(tempdir, "exists.txt")
+        with open(existing_file_path, "w") as f:
+            f.write("already here")
+
+        import warnings
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            results = transfer_manager.download_many_to_path(
+                shared_bucket,
+                BLOBNAMES,
+                destination_directory=tempdir,
+                blob_name_prefix=PREFIX,
+                deadline=DEADLINE,
+                create_directories=True,
+                skip_if_exists=True,
+            )
+
+        assert len(results) == 4
+
+        path_traversal_warnings = [
+            warning
+            for warning in w
+            if str(warning.message).startswith("The blob ")
+            and "will **NOT** be downloaded. The resolved destination_directory"
+            in str(warning.message)
+        ]
+        assert len(path_traversal_warnings) == 1, "---".join(
+            [str(warning.message) for warning in w]
+        )
+
+        assert results[0] is None
+        assert results[1] is None
+        assert isinstance(results[2], UserWarning)
+        assert "skipped because destination file already exists" in str(results[2])
+        assert isinstance(results[3], UserWarning)
+        assert "will **NOT** be downloaded" in str(results[3])
+
+        assert os.path.exists(os.path.join(tempdir, "success1.txt"))
+        assert os.path.exists(os.path.join(tempdir, "success2.txt"))
+
+        with open(existing_file_path, "r") as f:
+            assert f.read() == "already here"
 
 
 def test_download_many(listable_bucket):

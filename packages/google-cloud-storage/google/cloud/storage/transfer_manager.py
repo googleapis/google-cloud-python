@@ -805,42 +805,59 @@ def download_many_to_path(
 
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
-    :rtype: list
+    :rtype: List[None|Exception|UserWarning]
     :returns: A list of results corresponding to, in order, each item in the
-        input list. If an exception was received, it will be the result
-        for that operation. Otherwise, the return value from the successful
-        download method is used (which will be None).
+        input list. If an exception was received or a download was skipped
+        (e.g., due to existing file or path traversal), it will be the result
+        for that operation (as an Exception or UserWarning, respectively).
+        Otherwise, the result will be None for a successful download.
     """
+    results = [None] * len(blob_names)
     blob_file_pairs = []
+    indices_to_process = []
 
-    for blob_name in blob_names:
+    for i, blob_name in enumerate(blob_names):
         full_blob_name = blob_name_prefix + blob_name
         resolved_path = _resolve_path(destination_directory, blob_name)
         if not resolved_path.parent.is_relative_to(
             Path(destination_directory).resolve()
         ):
-            warnings.warn(
+            msg = (
                 f"The blob {blob_name} will **NOT** be downloaded. "
                 f"The resolved destination_directory - {resolved_path.parent} - is either invalid or "
                 f"escapes user provided {Path(destination_directory).resolve()} . Please download this file separately using `download_to_filename`"
             )
+            warnings.warn(msg)
+            results[i] = UserWarning(msg)
             continue
 
         resolved_path = str(resolved_path)
+        if skip_if_exists and os.path.isfile(resolved_path):
+            msg = f"The blob {blob_name} is skipped because destination file already exists"
+            results[i] = UserWarning(msg)
+            continue
+
         if create_directories:
             directory, _ = os.path.split(resolved_path)
             os.makedirs(directory, exist_ok=True)
         blob_file_pairs.append((bucket.blob(full_blob_name), resolved_path))
+        indices_to_process.append(i)
 
-    return download_many(
+    many_results = download_many(
         blob_file_pairs,
         download_kwargs=download_kwargs,
         deadline=deadline,
         raise_exception=raise_exception,
         worker_type=worker_type,
         max_workers=max_workers,
-        skip_if_exists=skip_if_exists,
+        skip_if_exists=False, # skip_if_exists is handled in the loop above
     )
+
+    for meta_index, result in zip(indices_to_process, many_results):
+        results[meta_index] = result
+
+    return results
+
 
 
 def download_chunks_concurrently(
