@@ -41,6 +41,19 @@ def table(faux_conn, metadata):
     table.drop(faux_conn)
 
 
+def test_compile_json_column(faux_conn, metadata):
+    sqlalchemy.Table(
+        "json_table",
+        metadata,
+        sqlalchemy.Column("id", sqlalchemy.Integer),
+        sqlalchemy.Column("data", sqlalchemy.JSON),
+    )
+    metadata.create_all(faux_conn.engine)
+    assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
+        "CREATE TABLE `json_table` ( `id` INT64, `data` JSON )"
+    )
+
+
 def test_constraints_are_ignored(faux_conn, metadata):
     sqlalchemy.Table(
         "ref",
