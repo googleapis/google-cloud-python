@@ -23,7 +23,6 @@ from __future__ import unicode_literals
 
 import http.client
 from typing import Optional, Dict
-from typing import Union
 import warnings
 
 from google.rpc import error_details_pb2
