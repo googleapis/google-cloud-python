@@ -275,7 +275,6 @@ class _BasePipeline:
             stages.FindNearest(field, vector, distance_measure, options)
         )
 
-
     def replace_with(
         self,
         field: Selectable,

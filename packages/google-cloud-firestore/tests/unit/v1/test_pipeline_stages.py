@@ -532,7 +532,7 @@ class TestLiterals:
         import datetime
         from google.cloud.firestore_v1._helpers import GeoPoint
         from google.cloud.firestore_v1.vector import Vector
-        
+
         doc = {
             "a": 1,
             "b": "string",
@@ -542,7 +542,7 @@ class TestLiterals:
             "f": b"bytes",
             "g": datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc),
             "h": GeoPoint(1.0, 2.0),
-            "i": Vector([1.0, 2.0])
+            "i": Vector([1.0, 2.0]),
         }
         instance = self._make_one(doc)
         assert instance.documents == (doc,)
@@ -550,7 +550,7 @@ class TestLiterals:
 
     def test_ctor_w_expressions(self):
         from google.cloud.firestore_v1.pipeline_expressions import FunctionExpression
-        
+
         expr = FunctionExpression("string_concat", [Constant("A"), Constant("B")])
         doc = {"res": expr}
         instance = self._make_one(doc)
@@ -578,7 +578,7 @@ class TestLiterals:
         import datetime
         from google.cloud.firestore_v1._helpers import GeoPoint
         from google.cloud.firestore_v1.vector import Vector
-        
+
         doc = {
             "a": 1,
             "b": "string",
@@ -588,13 +588,13 @@ class TestLiterals:
             "f": b"bytes",
             "g": datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc),
             "h": GeoPoint(1.0, 2.0),
-            "i": Vector([1.0, 2.0])
+            "i": Vector([1.0, 2.0]),
         }
         instance = self._make_one(doc)
         result = instance._to_pb()
         assert result.name == "literals"
         assert len(result.args) == 1
-        
+
         fields = result.args[0].map_value.fields
         assert fields["a"].integer_value == 1
         assert fields["b"].string_value == "string"
@@ -602,22 +602,30 @@ class TestLiterals:
         assert fields["d"].boolean_value is True
         assert fields["e"].null_value == 0
         assert fields["f"].bytes_value == b"bytes"
-        assert fields["g"].timestamp_value == datetime.datetime(2025, 1, 1, tzinfo=datetime.timezone.utc)
+        assert fields["g"].timestamp_value == datetime.datetime(
+            2025, 1, 1, tzinfo=datetime.timezone.utc
+        )
         assert fields["h"].geo_point_value.latitude == 1.0
         assert fields["h"].geo_point_value.longitude == 2.0
-        assert fields["i"].map_value.fields["value"].array_value.values[0].double_value == 1.0
-        assert fields["i"].map_value.fields["value"].array_value.values[1].double_value == 2.0
+        assert (
+            fields["i"].map_value.fields["value"].array_value.values[0].double_value
+            == 1.0
+        )
+        assert (
+            fields["i"].map_value.fields["value"].array_value.values[1].double_value
+            == 2.0
+        )
 
     def test_to_pb_w_expression(self):
         from google.cloud.firestore_v1.pipeline_expressions import FunctionExpression
-        
+
         expr = FunctionExpression("string_concat", [Constant("A"), Constant("B")])
         doc = {"res": expr}
         instance = self._make_one(doc)
         result = instance._to_pb()
         assert result.name == "literals"
         assert len(result.args) == 1
-        
+
         fields = result.args[0].map_value.fields
         assert fields["res"].function_value.name == "string_concat"
         assert fields["res"].function_value.args[0].string_value == "A"

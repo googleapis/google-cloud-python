@@ -32,7 +32,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.base_document import BaseDocumentReference
     from google.cloud.firestore_v1.base_query import BaseQuery
     from google.cloud.firestore_v1.client import Client
-    from google.cloud.firestore_v1.pipeline_expressions import Expression
+    from google.cloud.firestore_v1.pipeline_expressions import CONSTANT_TYPE, Expression
 
 
 PipelineType = TypeVar("PipelineType", bound=_BasePipeline)
@@ -110,7 +110,9 @@ class PipelineSource(Generic[PipelineType]):
         """
         return self._create_pipeline(stages.Documents.of(*docs))
 
-    def literals(self, *documents: dict[str, Expression | CONSTANT_TYPE]) -> PipelineType:
+    def literals(
+        self, *documents: dict[str, Expression | CONSTANT_TYPE]
+    ) -> PipelineType:
         """
         Returns documents from a fixed set of predefined document objects.
 
