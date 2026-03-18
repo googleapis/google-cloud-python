@@ -152,7 +152,9 @@ tests:
         - AliasedExpression:
             - FunctionExpression.trunc:
                 - Field: rating
-                - Constant: 1
+                - FunctionExpression.add:
+                    - Constant: 0
+                    - Constant: 1
             - "trunc_rating_with_places"
       - Sort:
         - Ordering:
@@ -200,7 +202,11 @@ tests:
                   functionValue:
                     args:
                     - fieldReferenceValue: rating
-                    - integerValue: '1'
+                    - functionValue:
+                        args:
+                        - integerValue: '0'
+                        - integerValue: '1'
+                        name: add
                     name: trunc
           name: select
         - args:
