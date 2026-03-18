@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.10.0](https://github.com/googleapis/python-storage/compare/v3.9.0...v3.10.0) (2026-03-18)
+
+
+### Features
+
+* [Bucket Encryption Enforcement] add support for bucket encryption enforcement config (#1742) ([2a6e8b00e4e6ff57460373f8e628fd363be47811](https://github.com/googleapis/python-storage/commit/2a6e8b00e4e6ff57460373f8e628fd363be47811))
+
+### Perf Improvments
+
+* [Rapid Buckets Reads] Use raw proto access for read resumption strategy (#1764) ([14cfd61ce35365a409650981239ef742cdf375fb](https://github.com/googleapis/python-storage/commit/14cfd61ce35365a409650981239ef742cdf375fb))
+* [Rapid Buckets Benchmarks] init mp pool & grpc client once, use os.sched_setaffinity (#1751) ([a9eb82c1b9b3c6ae5717d47b76284ed0deb5f769](https://github.com/googleapis/python-storage/commit/a9eb82c1b9b3c6ae5717d47b76284ed0deb5f769))
+* [Rapid Buckets Writes] don't flush at every append, results in bad perf (#1746) ([ab62d728ac7d7be3c4fe9a99d72e35ead310805a](https://github.com/googleapis/python-storage/commit/ab62d728ac7d7be3c4fe9a99d72e35ead310805a))
+
+
+### Bug Fixes
+
+* [Windows] skip downloading blobs whose name contain `":" ` eg: `C:` `D:` etc when application runs in Windows. (#1774) ([558198823ed51918db9c0137715d1e7f5b593975](https://github.com/googleapis/python-storage/commit/558198823ed51918db9c0137715d1e7f5b593975))
+* [Path Traversal] Prevent path traversal in `download_many_to_path` (#1768) ([700fec3bf7aa37bd5ea4b163cc3f9e8e6892bd5a](https://github.com/googleapis/python-storage/commit/700fec3bf7aa37bd5ea4b163cc3f9e8e6892bd5a))
+* [Rapid Buckets] pass token correctly, '&' instead of ',' (#1756) ([d8dd1e074d2431de9b45e0103181dce749a447a0](https://github.com/googleapis/python-storage/commit/d8dd1e074d2431de9b45e0103181dce749a447a0))
+
+
 ## [3.9.0](https://github.com/googleapis/python-storage/compare/v3.8.0...v3.9.0) (2026-02-02)
 
 
