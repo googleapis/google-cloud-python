@@ -1491,6 +1491,58 @@ class Expression(ABC):
         return AggregateFunction("last", [self])
 
     @expose_as_static
+    def array_first(self) -> "Expression":
+        """Creates an expression that returns the first element of an array.
+
+        Example:
+            >>> # Select the first element of array 'colors'
+            >>> Field.of("colors").array_first()
+
+        Returns:
+            A new `Expression` representing the first element of the array.
+        """
+        return FunctionExpression("array_first", [self])
+
+    @expose_as_static
+    def array_last(self) -> "Expression":
+        """Creates an expression that returns the last element of an array.
+
+        Example:
+            >>> # Select the last element of array 'colors'
+            >>> Field.of("colors").array_last()
+
+        Returns:
+            A new `Expression` representing the last element of the array.
+        """
+        return FunctionExpression("array_last", [self])
+
+    @expose_as_static
+    def array_first_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the first `n` elements of an array.
+
+        Example:
+            >>> # Select the first 2 elements of array 'colors'
+            >>> Field.of("colors").array_first_n(2)
+
+        Returns:
+            A new `Expression` representing the first `n` elements of the array.
+        """
+        return FunctionExpression("array_first_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+
+    @expose_as_static
+    def array_last_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the last `n` elements of an array.
+
+        Example:
+            >>> # Select the last 2 elements of array 'colors'
+            >>> Field.of("colors").array_last_n(2)
+
+        Returns:
+            A new `Expression` representing the last `n` elements of the array.
+        """
+        return FunctionExpression("array_last_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.

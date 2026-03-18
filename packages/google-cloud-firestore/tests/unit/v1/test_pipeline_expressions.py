@@ -1619,3 +1619,45 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.last()"
         infix_instance = arg1.last()
         assert infix_instance == instance
+
+    def test_array_first(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_first(arg1)
+        assert instance.name == "array_first"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_first()"
+        infix_instance = arg1.array_first()
+        assert infix_instance == instance
+
+    def test_array_last(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_last(arg1)
+        assert instance.name == "array_last"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_last()"
+        infix_instance = arg1.array_last()
+        assert infix_instance == instance
+
+    def test_array_first_n(self):
+        arg1 = self._make_arg("Value")
+        n = 2
+        instance = Expression.array_first_n(arg1, n)
+        assert instance.name == "array_first_n"
+        assert isinstance(instance.params[0], Constant)
+        assert instance.params[0].value == n
+        assert instance.params[1] == arg1
+        assert repr(instance) == "Constant.of(2).array_first_n(Value)"
+        infix_instance = arg1.array_first_n(n)
+        assert infix_instance == instance
+
+    def test_array_last_n(self):
+        arg1 = self._make_arg("Value")
+        n = 2
+        instance = Expression.array_last_n(arg1, n)
+        assert instance.name == "array_last_n"
+        assert isinstance(instance.params[0], Constant)
+        assert instance.params[0].value == n
+        assert instance.params[1] == arg1
+        assert repr(instance) == "Constant.of(2).array_last_n(Value)"
+        infix_instance = arg1.array_last_n(n)
+        assert infix_instance == instance
