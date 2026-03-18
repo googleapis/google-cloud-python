@@ -406,7 +406,7 @@ class Expression(ABC):
         return FunctionExpression("sqrt", [self])
 
     @expose_as_static
-    def trunc(self, places: Expression | None = None) -> "Expression":
+    def trunc(self, places: Expression | int | None = None) -> "Expression":
         """Creates an expression that truncates the numeric value. If places is None,
         truncates to an integer. Otherwise, truncates the numeric value to the
         specified number of decimal places.
