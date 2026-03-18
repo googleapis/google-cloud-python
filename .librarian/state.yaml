@@ -3719,6 +3719,24 @@ libraries:
     remove_regex:
       - packages/google-maps-mapsplatformdatasets
     tag_format: '{id}-v{version}'
+  - id: google-maps-navconnect
+    version: 0.0.0
+    last_generated_commit: 6ee7c04a487d4667e3c27c99ec0ce94c730bc311
+    apis:
+      - path: google/maps/navconnect/v1
+        service_config: navigationconnect_v1.yaml
+    source_roots:
+      - packages/google-maps-navconnect
+    preserve_regex:
+      - packages/google-maps-navconnect/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-navconnect
+    tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.7.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
@@ -4118,6 +4136,8 @@ libraries:
     apis: []
     source_roots:
       - packages/sqlalchemy-bigquery
+    preserve_regex: []
+    remove_regex: []
   - id: sqlalchemy-spanner
     version: 1.17.2
     last_generated_commit: ""
