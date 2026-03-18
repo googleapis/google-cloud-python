@@ -624,6 +624,7 @@ class Credentials(
             lifetime=self._service_account_impersonation_options.get(
                 "token_lifetime_seconds"
             ),
+            trust_boundary=self._trust_boundary,
         )
 
     def _create_default_metrics_options(self):
@@ -710,6 +711,7 @@ class Credentials(
             universe_domain=info.get(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
+            trust_boundary=info.get("trust_boundary"),
             **kwargs
         )
 
