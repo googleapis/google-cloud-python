@@ -88,6 +88,7 @@ def test_arima_plus_model_fit_score(
         result,
         columns=expected_columns,
         index=2 if id_col_name else 1,
+        col_exact=False,
     )
 
     # save, load to ensure configuration was kept

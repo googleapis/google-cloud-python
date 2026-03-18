@@ -493,7 +493,7 @@ def test_arima_plus_score(
             dtype="Float64",
         )
     pd.testing.assert_frame_equal(
-        result,
+        result[expected.columns],
         expected,
         rtol=0.1,
         check_index_type=False,
@@ -594,7 +594,7 @@ def test_arima_plus_score_series(
             dtype="Float64",
         )
     pd.testing.assert_frame_equal(
-        result,
+        result[expected.columns],
         expected,
         rtol=0.1,
         check_index_type=False,

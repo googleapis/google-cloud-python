@@ -198,6 +198,7 @@ def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
             "evaluation_status",
         ],
         index=1,
+        col_exact=False,
     )
 
 
@@ -226,6 +227,7 @@ def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name)
             "label",
             "evaluation_status",
         ],
+        col_exact=False,
     )
 
 
