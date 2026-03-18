@@ -21,7 +21,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import TYPE_CHECKING, Optional, Sequence
+from typing import TYPE_CHECKING, Mapping, Optional, Sequence
 
 from google.cloud.firestore_v1._helpers import encode_value
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
@@ -346,9 +346,9 @@ class Limit(Stage):
 class Literals(Stage):
     """Returns documents from a fixed set of predefined document objects."""
 
-    def __init__(self, *documents: dict[str, Expression | CONSTANT_TYPE]):
+    def __init__(self, *documents: Mapping[str, Expression | CONSTANT_TYPE]):
         super().__init__("literals")
-        self.documents = documents
+        self.documents = documents  # type: ignore
 
     def _pb_args(self):
         args = []

@@ -19,7 +19,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import Mapping, Generic, TypeVar, TYPE_CHECKING
 
 from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1._helpers import DOCUMENT_PATH_DELIMITER
@@ -111,7 +111,7 @@ class PipelineSource(Generic[PipelineType]):
         return self._create_pipeline(stages.Documents.of(*docs))
 
     def literals(
-        self, *documents: dict[str, Expression | CONSTANT_TYPE]
+        self, *documents: Mapping[str, Expression | CONSTANT_TYPE]
     ) -> PipelineType:
         """
         Returns documents from a fixed set of predefined document objects.
