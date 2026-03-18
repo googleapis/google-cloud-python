@@ -1543,6 +1543,68 @@ class Expression(ABC):
         return FunctionExpression("array_last_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
 
     @expose_as_static
+    def array_maximum(self) -> "Expression":
+        """Creates an expression that returns the maximum element of an array.
+
+        Example:
+            >>> # Select the maximum element of array 'scores'
+            >>> Field.of("scores").array_maximum()
+
+        Returns:
+            A new `Expression` representing the maximum element of the array.
+        """
+        return FunctionExpression("maximum", [self])
+
+    @expose_as_static
+    def array_minimum(self) -> "Expression":
+        """Creates an expression that returns the minimum element of an array.
+
+        Example:
+            >>> # Select the minimum element of array 'scores'
+            >>> Field.of("scores").array_minimum()
+
+        Returns:
+            A new `Expression` representing the minimum element of the array.
+        """
+        return FunctionExpression("minimum", [self])
+
+    @expose_as_static
+    def array_maximum_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the maximum `n` elements of an array.
+
+        Example:
+            >>> # Select the maximum 2 elements of array 'scores'
+            >>> Field.of("scores").array_maximum_n(2)
+
+        Note:
+            Returns the n largest non-null elements in the array, in descending
+            order. This does not use a stable sort, meaning the order of equivalent
+            elements is undefined.
+
+        Returns:
+            A new `Expression` representing the maximum `n` elements of the array.
+        """
+        return FunctionExpression("maximum_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+
+    @expose_as_static
+    def array_minimum_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the minimum `n` elements of an array.
+
+        Example:
+            >>> # Select the minimum 2 elements of array 'scores'
+            >>> Field.of("scores").array_minimum_n(2)
+
+        Note:
+            Returns the n smallest non-null elements in the array, in ascending
+            order. This does not use a stable sort, meaning the order of equivalent
+            elements is undefined.
+
+        Returns:
+            A new `Expression` representing the minimum `n` elements of the array.
+        """
+        return FunctionExpression("minimum_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.

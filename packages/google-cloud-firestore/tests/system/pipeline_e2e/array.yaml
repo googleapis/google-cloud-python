@@ -610,3 +610,65 @@ tests:
                     - integerValue: '2'
                     name: array_last_n
           name: select
+
+  - description: testArrayMaximum
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_maximum:
+                - Field: tags
+            - "maxTag"
+    assert_results:
+      - maxTag: "space"
+
+  - description: testArrayMinimum
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_minimum:
+                - Field: tags
+            - "minTag"
+    assert_results:
+      - minTag: "adventure"
+
+  - description: testArrayMaximumN
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_maximum_n:
+                - Field: tags
+                - Constant: 2
+            - "maxTags"
+    assert_results:
+      - maxTags: ["space", "comedy"]
+
+  - description: testArrayMinimumN
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_minimum_n:
+                - Field: tags
+                - Constant: 2
+            - "minTags"
+    assert_results:
+      - minTags: ["adventure", "comedy"]
