@@ -29,6 +29,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     AggregateFunction,
     AliasedExpression,
     BooleanExpression,
+    CONSTANT_TYPE,
     Expression,
     Field,
     Ordering,
@@ -345,7 +346,7 @@ class Limit(Stage):
 class Literals(Stage):
     """Returns documents from a fixed set of predefined document objects."""
 
-    def __init__(self, *documents: Expression | dict):
+    def __init__(self, *documents: dict[str, "Expression" | CONSTANT_TYPE]):
         super().__init__("literals")
         self.documents = documents
 
