@@ -672,3 +672,36 @@ tests:
             - "minTags"
     assert_results:
       - minTags: ["adventure", "comedy"]
+
+  - description: testArraySlice1Arg
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_slice:
+                - Field: tags
+                - Constant: 1
+            - "sliced"
+    assert_results:
+      - sliced: ["space", "adventure"]
+
+  - description: testArraySlice2Args
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_slice:
+                - Field: tags
+                - Constant: 1
+                - Constant: 1
+            - "sliced"
+    assert_results:
+      - sliced: ["space"]

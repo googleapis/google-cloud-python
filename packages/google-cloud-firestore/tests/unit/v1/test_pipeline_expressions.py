@@ -1703,3 +1703,32 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.minimum_n(Constant.of(2))"
         infix_instance = arg1.array_minimum_n(n)
         assert infix_instance == instance
+
+    def test_array_slice_1_arg(self):
+        arg1 = self._make_arg("Value")
+        offset = 1
+        instance = Expression.array_slice(arg1, offset)
+        assert instance.name == "array_slice"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == offset
+        assert len(instance.params) == 2
+        assert repr(instance) == "Value.array_slice(Constant.of(1))"
+        infix_instance = arg1.array_slice(offset)
+        assert infix_instance == instance
+
+    def test_array_slice_2_args(self):
+        arg1 = self._make_arg("Value")
+        offset = 1
+        length = 2
+        instance = Expression.array_slice(arg1, offset, length)
+        assert instance.name == "array_slice"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == offset
+        assert isinstance(instance.params[2], Constant)
+        assert instance.params[2].value == length
+        assert len(instance.params) == 3
+        assert repr(instance) == "Value.array_slice(Constant.of(1), Constant.of(2))"
+        infix_instance = arg1.array_slice(offset, length)
+        assert infix_instance == instance

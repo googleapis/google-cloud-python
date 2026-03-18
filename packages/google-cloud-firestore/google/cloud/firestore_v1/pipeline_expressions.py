@@ -1605,6 +1605,30 @@ class Expression(ABC):
         return FunctionExpression("minimum_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
 
     @expose_as_static
+    def array_slice(self, offset: int | "Expression", length: int | "Expression" | None = None) -> "Expression":
+        """Creates an expression that returns a slice of an array.
+
+        Example:
+            >>> # Slice array 'scores' starting at index 1 with length 2
+            >>> Field.of("scores").array_slice(1, 2)
+
+        Note:
+            Both offset and length allow negative values to represent wrap-around from the end
+            of the array.
+
+        Args:
+            offset: The starting index of the slice.
+            length: The number of elements to include in the slice. If omitted, slices to the end.
+
+        Returns:
+            A new `Expression` representing the slice of the array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(offset)]
+        if length is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(length))
+        return FunctionExpression("array_slice", args)
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.
