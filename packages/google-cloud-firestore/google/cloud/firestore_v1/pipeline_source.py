@@ -125,7 +125,7 @@ class PipelineSource(Generic[PipelineType]):
             ...     {"name": "alice", "age": 40}
             ... ]
             >>> pipeline = client.pipeline()
-            ...     .literals(documents)
+            ...     .literals(*documents)
             ...     .where(field("age").lessThan(35))
 
             Output documents:
@@ -155,7 +155,7 @@ class PipelineSource(Generic[PipelineType]):
             ...     {"x": Constant.of("foo-bar-baz").char_length()},
             ...     {"x": Constant.of("bar").char_length()}
             ... ]
-            >>> pipeline = client.pipeline().literals(documents)
+            >>> pipeline = client.pipeline().literals(*documents)
 
             Output documents:
             ```json
