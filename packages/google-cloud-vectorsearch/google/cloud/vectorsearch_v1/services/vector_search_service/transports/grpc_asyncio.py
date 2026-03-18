@@ -642,6 +642,36 @@ class VectorSearchServiceGrpcAsyncIOTransport(VectorSearchServiceTransport):
             )
         return self._stubs["import_data_objects"]
 
+    @property
+    def export_data_objects(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.ExportDataObjectsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export data objects method over gRPC.
+
+        Initiates a Long-Running Operation to export
+        DataObjects from a Collection.
+
+        Returns:
+            Callable[[~.ExportDataObjectsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_data_objects" not in self._stubs:
+            self._stubs["export_data_objects"] = self._logged_channel.unary_unary(
+                "/google.cloud.vectorsearch.v1.VectorSearchService/ExportDataObjects",
+                request_serializer=vectorsearch_service.ExportDataObjectsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_data_objects"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -783,6 +813,11 @@ class VectorSearchServiceGrpcAsyncIOTransport(VectorSearchServiceTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.export_data_objects: self._wrap_method(
+                self.export_data_objects,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

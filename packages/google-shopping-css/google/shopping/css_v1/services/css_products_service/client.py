@@ -773,8 +773,8 @@ class CssProductsServiceClient(metaclass=CssProductsServiceClientMeta):
             request (Union[google.shopping.css_v1.types.GetCssProductRequest, dict]):
                 The request object. The request message for the ``GetCssProduct`` method.
             name (str):
-                Required. The name of the CSS product
-                to retrieve.
+                Required. The name of the CSS product to retrieve.
+                Format: ``accounts/{account}/cssProducts/{css_product}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

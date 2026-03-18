@@ -481,6 +481,18 @@ class OAuthSettings(proto.Message):
             Note: IAP does not verify that the id token's hd
             claim matches this value since access behavior
             is managed by IAM policies.
+        client_id (google.protobuf.wrappers_pb2.StringValue):
+            Optional. OAuth 2.0 client ID used in the
+            OAuth flow. This allows for client sharing. The
+            risks of client sharing are outlined here:
+
+            https://cloud.google.com/iap/docs/sharing-oauth-clients#risks.
+        client_secret (google.protobuf.wrappers_pb2.StringValue):
+            Optional. Input only. OAuth secret paired
+            with client ID.
+        client_secret_sha256 (google.protobuf.wrappers_pb2.StringValue):
+            Output only. OAuth secret SHA256 paired with
+            client ID.
         programmatic_clients (MutableSequence[str]):
             Optional. List of client ids allowed to use
             IAP programmatically.
@@ -489,6 +501,21 @@ class OAuthSettings(proto.Message):
     login_hint: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=2,
+        message=wrappers_pb2.StringValue,
+    )
+    client_id: wrappers_pb2.StringValue = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.StringValue,
+    )
+    client_secret: wrappers_pb2.StringValue = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=wrappers_pb2.StringValue,
+    )
+    client_secret_sha256: wrappers_pb2.StringValue = proto.Field(
+        proto.MESSAGE,
+        number=6,
         message=wrappers_pb2.StringValue,
     )
     programmatic_clients: MutableSequence[str] = proto.RepeatedField(

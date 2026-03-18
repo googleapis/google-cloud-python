@@ -975,3 +975,315 @@ class ListMetadataJobsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class LookupEntryLinksPager:
+    """A pager for iterating through ``lookup_entry_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataplex_v1.types.LookupEntryLinksResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``entry_links`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``LookupEntryLinks`` requests and continue to iterate
+    through the ``entry_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataplex_v1.types.LookupEntryLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., catalog.LookupEntryLinksResponse],
+        request: catalog.LookupEntryLinksRequest,
+        response: catalog.LookupEntryLinksResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataplex_v1.types.LookupEntryLinksRequest):
+                The initial request object.
+            response (google.cloud.dataplex_v1.types.LookupEntryLinksResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = catalog.LookupEntryLinksRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[catalog.LookupEntryLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[catalog.EntryLink]:
+        for page in self.pages:
+            yield from page.entry_links
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class LookupEntryLinksAsyncPager:
+    """A pager for iterating through ``lookup_entry_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataplex_v1.types.LookupEntryLinksResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``entry_links`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``LookupEntryLinks`` requests and continue to iterate
+    through the ``entry_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataplex_v1.types.LookupEntryLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[catalog.LookupEntryLinksResponse]],
+        request: catalog.LookupEntryLinksRequest,
+        response: catalog.LookupEntryLinksResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataplex_v1.types.LookupEntryLinksRequest):
+                The initial request object.
+            response (google.cloud.dataplex_v1.types.LookupEntryLinksResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = catalog.LookupEntryLinksRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[catalog.LookupEntryLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[catalog.EntryLink]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.entry_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListMetadataFeedsPager:
+    """A pager for iterating through ``list_metadata_feeds`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataplex_v1.types.ListMetadataFeedsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``metadata_feeds`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListMetadataFeeds`` requests and continue to iterate
+    through the ``metadata_feeds`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataplex_v1.types.ListMetadataFeedsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., catalog.ListMetadataFeedsResponse],
+        request: catalog.ListMetadataFeedsRequest,
+        response: catalog.ListMetadataFeedsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataplex_v1.types.ListMetadataFeedsRequest):
+                The initial request object.
+            response (google.cloud.dataplex_v1.types.ListMetadataFeedsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = catalog.ListMetadataFeedsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[catalog.ListMetadataFeedsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[catalog.MetadataFeed]:
+        for page in self.pages:
+            yield from page.metadata_feeds
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListMetadataFeedsAsyncPager:
+    """A pager for iterating through ``list_metadata_feeds`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataplex_v1.types.ListMetadataFeedsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``metadata_feeds`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListMetadataFeeds`` requests and continue to iterate
+    through the ``metadata_feeds`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataplex_v1.types.ListMetadataFeedsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[catalog.ListMetadataFeedsResponse]],
+        request: catalog.ListMetadataFeedsRequest,
+        response: catalog.ListMetadataFeedsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataplex_v1.types.ListMetadataFeedsRequest):
+                The initial request object.
+            response (google.cloud.dataplex_v1.types.ListMetadataFeedsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = catalog.ListMetadataFeedsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[catalog.ListMetadataFeedsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[catalog.MetadataFeed]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.metadata_feeds:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

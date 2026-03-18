@@ -856,12 +856,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.ListEntriesRequest], Awaitable[catalog.ListEntriesResponse]]:
         r"""Return a callable for the list entries method over gRPC.
 
-        Lists Entries within an EntryGroup. Caution: The Vertex AI,
-        Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc Metastore
-        metadata that is stored in Dataplex Universal Catalog is
-        changing. For more information, see `Changes to metadata stored
-        in Dataplex Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        Lists Entries within an EntryGroup.
 
         Returns:
             Callable[[~.ListEntriesRequest],
@@ -887,12 +882,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.GetEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the get entry method over gRPC.
 
-        Gets an Entry. Caution: The Vertex AI, Bigtable, Spanner,
-        Pub/Sub, Dataform, and Dataproc Metastore metadata that is
-        stored in Dataplex Universal Catalog is changing. For more
-        information, see `Changes to metadata stored in Dataplex
-        Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        Gets an Entry.
 
         Returns:
             Callable[[~.GetEntryRequest],
@@ -918,12 +908,8 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.LookupEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the lookup entry method over gRPC.
 
-        Looks up an entry by name using the permission on the source
-        system. Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
-        Dataform, and Dataproc Metastore metadata that is stored in
-        Dataplex Universal Catalog is changing. For more information,
-        see `Changes to metadata stored in Dataplex Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        Looks up an entry by name using the permission on the
+        source system.
 
         Returns:
             Callable[[~.LookupEntryRequest],
@@ -1115,6 +1101,32 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["create_entry_link"]
 
     @property
+    def update_entry_link(
+        self,
+    ) -> Callable[[catalog.UpdateEntryLinkRequest], Awaitable[catalog.EntryLink]]:
+        r"""Return a callable for the update entry link method over gRPC.
+
+        Updates an Entry Link.
+
+        Returns:
+            Callable[[~.UpdateEntryLinkRequest],
+                    Awaitable[~.EntryLink]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_entry_link" not in self._stubs:
+            self._stubs["update_entry_link"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateEntryLink",
+                request_serializer=catalog.UpdateEntryLinkRequest.serialize,
+                response_deserializer=catalog.EntryLink.deserialize,
+            )
+        return self._stubs["update_entry_link"]
+
+    @property
     def delete_entry_link(
         self,
     ) -> Callable[[catalog.DeleteEntryLinkRequest], Awaitable[catalog.EntryLink]]:
@@ -1141,6 +1153,62 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["delete_entry_link"]
 
     @property
+    def lookup_entry_links(
+        self,
+    ) -> Callable[
+        [catalog.LookupEntryLinksRequest], Awaitable[catalog.LookupEntryLinksResponse]
+    ]:
+        r"""Return a callable for the lookup entry links method over gRPC.
+
+        Looks up Entry Links referencing the specified Entry.
+
+        Returns:
+            Callable[[~.LookupEntryLinksRequest],
+                    Awaitable[~.LookupEntryLinksResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "lookup_entry_links" not in self._stubs:
+            self._stubs["lookup_entry_links"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/LookupEntryLinks",
+                request_serializer=catalog.LookupEntryLinksRequest.serialize,
+                response_deserializer=catalog.LookupEntryLinksResponse.deserialize,
+            )
+        return self._stubs["lookup_entry_links"]
+
+    @property
+    def lookup_context(
+        self,
+    ) -> Callable[
+        [catalog.LookupContextRequest], Awaitable[catalog.LookupContextResponse]
+    ]:
+        r"""Return a callable for the lookup context method over gRPC.
+
+        Looks up LLM Context for the specified resources.
+
+        Returns:
+            Callable[[~.LookupContextRequest],
+                    Awaitable[~.LookupContextResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "lookup_context" not in self._stubs:
+            self._stubs["lookup_context"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/LookupContext",
+                request_serializer=catalog.LookupContextRequest.serialize,
+                response_deserializer=catalog.LookupContextResponse.deserialize,
+            )
+        return self._stubs["lookup_context"]
+
+    @property
     def get_entry_link(
         self,
     ) -> Callable[[catalog.GetEntryLinkRequest], Awaitable[catalog.EntryLink]]:
@@ -1165,6 +1233,144 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                 response_deserializer=catalog.EntryLink.deserialize,
             )
         return self._stubs["get_entry_link"]
+
+    @property
+    def create_metadata_feed(
+        self,
+    ) -> Callable[
+        [catalog.CreateMetadataFeedRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create metadata feed method over gRPC.
+
+        Creates a MetadataFeed.
+
+        Returns:
+            Callable[[~.CreateMetadataFeedRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_metadata_feed" not in self._stubs:
+            self._stubs["create_metadata_feed"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/CreateMetadataFeed",
+                request_serializer=catalog.CreateMetadataFeedRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_metadata_feed"]
+
+    @property
+    def get_metadata_feed(
+        self,
+    ) -> Callable[[catalog.GetMetadataFeedRequest], Awaitable[catalog.MetadataFeed]]:
+        r"""Return a callable for the get metadata feed method over gRPC.
+
+        Gets a MetadataFeed.
+
+        Returns:
+            Callable[[~.GetMetadataFeedRequest],
+                    Awaitable[~.MetadataFeed]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_metadata_feed" not in self._stubs:
+            self._stubs["get_metadata_feed"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/GetMetadataFeed",
+                request_serializer=catalog.GetMetadataFeedRequest.serialize,
+                response_deserializer=catalog.MetadataFeed.deserialize,
+            )
+        return self._stubs["get_metadata_feed"]
+
+    @property
+    def list_metadata_feeds(
+        self,
+    ) -> Callable[
+        [catalog.ListMetadataFeedsRequest], Awaitable[catalog.ListMetadataFeedsResponse]
+    ]:
+        r"""Return a callable for the list metadata feeds method over gRPC.
+
+        Retrieve a list of MetadataFeeds.
+
+        Returns:
+            Callable[[~.ListMetadataFeedsRequest],
+                    Awaitable[~.ListMetadataFeedsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_metadata_feeds" not in self._stubs:
+            self._stubs["list_metadata_feeds"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/ListMetadataFeeds",
+                request_serializer=catalog.ListMetadataFeedsRequest.serialize,
+                response_deserializer=catalog.ListMetadataFeedsResponse.deserialize,
+            )
+        return self._stubs["list_metadata_feeds"]
+
+    @property
+    def delete_metadata_feed(
+        self,
+    ) -> Callable[
+        [catalog.DeleteMetadataFeedRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete metadata feed method over gRPC.
+
+        Deletes a MetadataFeed.
+
+        Returns:
+            Callable[[~.DeleteMetadataFeedRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_metadata_feed" not in self._stubs:
+            self._stubs["delete_metadata_feed"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteMetadataFeed",
+                request_serializer=catalog.DeleteMetadataFeedRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_metadata_feed"]
+
+    @property
+    def update_metadata_feed(
+        self,
+    ) -> Callable[
+        [catalog.UpdateMetadataFeedRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update metadata feed method over gRPC.
+
+        Updates a MetadataFeed.
+
+        Returns:
+            Callable[[~.UpdateMetadataFeedRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_metadata_feed" not in self._stubs:
+            self._stubs["update_metadata_feed"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateMetadataFeed",
+                request_serializer=catalog.UpdateMetadataFeedRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_metadata_feed"]
 
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
@@ -1414,13 +1620,53 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_entry_link: self._wrap_method(
+                self.update_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_entry_link: self._wrap_method(
                 self.delete_entry_link,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.lookup_entry_links: self._wrap_method(
+                self.lookup_entry_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.lookup_context: self._wrap_method(
+                self.lookup_context,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_entry_link: self._wrap_method(
                 self.get_entry_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_metadata_feed: self._wrap_method(
+                self.create_metadata_feed,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_metadata_feed: self._wrap_method(
+                self.get_metadata_feed,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_metadata_feeds: self._wrap_method(
+                self.list_metadata_feeds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_metadata_feed: self._wrap_method(
+                self.delete_metadata_feed,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_metadata_feed: self._wrap_method(
+                self.update_metadata_feed,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1431,6 +1677,21 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
             ),
             self.list_locations: self._wrap_method(
                 self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1573,6 +1834,86 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                 response_deserializer=locations_pb2.Location.FromString,
             )
         return self._stubs["get_location"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+        Sets the IAM access control policy on the specified
+        function. Replaces any existing policy.
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+        Gets the IAM access control policy for a function.
+        Returns an empty policy if the function exists and does
+        not have a policy set.
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+        Tests the specified permissions against the IAM access control
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
 
 
 __all__ = ("CatalogServiceGrpcAsyncIOTransport",)
