@@ -48,8 +48,6 @@ class AsyncIODBAPISpannerCursor:
         return await asyncio.to_thread(self._sync_cursor.fetchone)
 
     async def fetchmany(self, size=None):
-        if size is None:
-            size = self.arraysize
         return await asyncio.to_thread(self._sync_cursor.fetchmany, size)
 
     async def fetchall(self):
