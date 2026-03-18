@@ -1643,10 +1643,10 @@ class TestExpressionessionMethods:
         n = 2
         instance = Expression.array_first_n(arg1, n)
         assert instance.name == "array_first_n"
-        assert isinstance(instance.params[0], Constant)
-        assert instance.params[0].value == n
-        assert instance.params[1] == arg1
-        assert repr(instance) == "Constant.of(2).array_first_n(Value)"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == n
+        assert repr(instance) == "Value.array_first_n(Constant.of(2))"
         infix_instance = arg1.array_first_n(n)
         assert infix_instance == instance
 
@@ -1655,9 +1655,9 @@ class TestExpressionessionMethods:
         n = 2
         instance = Expression.array_last_n(arg1, n)
         assert instance.name == "array_last_n"
-        assert isinstance(instance.params[0], Constant)
-        assert instance.params[0].value == n
-        assert instance.params[1] == arg1
-        assert repr(instance) == "Constant.of(2).array_last_n(Value)"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == n
+        assert repr(instance) == "Value.array_last_n(Constant.of(2))"
         infix_instance = arg1.array_last_n(n)
         assert infix_instance == instance
