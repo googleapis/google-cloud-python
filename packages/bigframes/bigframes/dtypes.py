@@ -772,6 +772,13 @@ def convert_schema_field(
 ) -> typing.Tuple[str, Dtype]:
     is_repeated = field.mode == "REPEATED"
     if field.field_type == "RECORD":
+        if field.description == OBJ_REF_DESCRIPTION_TAG:
+            bf_dtype = OBJ_REF_DTYPE  # type: ignore
+            if is_repeated:
+                pa_type = pa.list_(bigframes_dtype_to_arrow_dtype(bf_dtype))
+                bf_dtype = pd.ArrowDtype(pa_type)
+            return field.name, bf_dtype
+
         mapped_fields = map(convert_schema_field, field.fields)
         fields = []
         for name, dtype in mapped_fields:
@@ -815,7 +822,11 @@ def convert_to_schema_field(
             )
             inner_field = convert_to_schema_field(name, inner_type, overrides)
             return google.cloud.bigquery.SchemaField(
-                name, inner_field.field_type, mode="REPEATED", fields=inner_field.fields
+                name,
+                inner_field.field_type,
+                mode="REPEATED",
+                fields=inner_field.fields,
+                description=inner_field.description,
             )
         if pa.types.is_struct(bigframes_dtype.pyarrow_dtype):
             inner_fields: list[google.cloud.bigquery.SchemaField] = []
@@ -825,6 +836,14 @@ def convert_to_schema_field(
                 inner_bf_type = arrow_dtype_to_bigframes_dtype(field.type)
                 inner_fields.append(
                     convert_to_schema_field(field.name, inner_bf_type, overrides)
+                )
+
+            if bigframes_dtype == OBJ_REF_DTYPE:
+                return google.cloud.bigquery.SchemaField(
+                    name,
+                    "RECORD",
+                    fields=inner_fields,
+                    description=OBJ_REF_DESCRIPTION_TAG,
                 )
 
             return google.cloud.bigquery.SchemaField(
@@ -971,6 +990,7 @@ def lcd_type_or_throw(dtype1: Dtype, dtype2: Dtype) -> Dtype:
 
 
 TIMEDELTA_DESCRIPTION_TAG = "#microseconds"
+OBJ_REF_DESCRIPTION_TAG = "bigframes_dtype: OBJ_REF_DTYPE"
 
 
 def contains_db_dtypes_json_arrow_type(type_):

@@ -334,13 +334,14 @@ class BigQueryCachingExecutor(executor.Executor):
             session=array_value.session,
         )
 
-        has_timedelta_col = any(
-            t == bigframes.dtypes.TIMEDELTA_DTYPE for t in array_value.schema.dtypes
+        has_special_dtype_col = any(
+            t in (bigframes.dtypes.TIMEDELTA_DTYPE, bigframes.dtypes.OBJ_REF_DTYPE)
+            for t in array_value.schema.dtypes
         )
 
-        if spec.if_exists != "append" and has_timedelta_col:
+        if spec.if_exists != "append" and has_special_dtype_col:
             # Only update schema if this is not modifying an existing table, and the
-            # new table contains timedelta columns.
+            # new table contains special columns (like timedelta or obj_ref).
             table = self.bqclient.get_table(spec.table)
             table.schema = array_value.schema.to_bigquery()
             self.bqclient.update_table(table, ["schema"])

@@ -71,3 +71,11 @@ def test_infer_literal_type_arrow_scalar(scalar, expected_dtype):
 )
 def test_contains_db_dtypes_json_arrow_type(type_, expected):
     assert bigframes.dtypes.contains_db_dtypes_json_arrow_type(type_) == expected
+
+
+def test_convert_to_schema_field_list_description():
+    bf_dtype = bigframes.dtypes.OBJ_REF_DTYPE
+    list_bf_dtype = bigframes.dtypes.list_type(bf_dtype)
+    field = bigframes.dtypes.convert_to_schema_field("my_list", list_bf_dtype)
+    assert field.description == "bigframes_dtype: OBJ_REF_DTYPE"
+    assert field.mode == "REPEATED"
