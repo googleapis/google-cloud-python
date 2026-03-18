@@ -133,6 +133,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert GDCHardwareManagementClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -154,6 +155,10 @@ def test__get_default_mtls_endpoint():
     assert (
         GDCHardwareManagementClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        GDCHardwareManagementClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1356,11 +1361,13 @@ def test_gdc_hardware_management_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -25097,8 +25104,9 @@ def test_list_orders_rest_bad_request(request_type=service.ListOrdersRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25163,18 +25171,20 @@ def test_list_orders_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_orders"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_list_orders_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_orders"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_list_orders"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_orders_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_list_orders"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25223,8 +25233,9 @@ def test_get_order_rest_bad_request(request_type=service.GetOrderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25309,17 +25320,20 @@ def test_get_order_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_order"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_order_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_order"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_order"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_order_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_order"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25368,8 +25382,9 @@ def test_create_order_rest_bad_request(request_type=service.CreateOrderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25564,20 +25579,21 @@ def test_create_order_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_create_order"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_create_order_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_create_order"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_create_order"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_create_order_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_create_order"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25628,8 +25644,9 @@ def test_update_order_rest_bad_request(request_type=service.UpdateOrderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25826,20 +25843,21 @@ def test_update_order_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_update_order"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_update_order_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_update_order"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_update_order"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_update_order_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_update_order"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25888,8 +25906,9 @@ def test_delete_order_rest_bad_request(request_type=service.DeleteOrderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25946,20 +25965,21 @@ def test_delete_order_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_delete_order"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_delete_order_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_delete_order"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_delete_order"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_delete_order_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_delete_order"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26008,8 +26028,9 @@ def test_submit_order_rest_bad_request(request_type=service.SubmitOrderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26066,20 +26087,21 @@ def test_submit_order_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_submit_order"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_submit_order_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_submit_order"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_submit_order"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_submit_order_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_submit_order"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26128,8 +26150,9 @@ def test_cancel_order_rest_bad_request(request_type=service.CancelOrderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26186,20 +26209,21 @@ def test_cancel_order_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_cancel_order"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_cancel_order_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_cancel_order"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_cancel_order"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_cancel_order_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_cancel_order"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26248,8 +26272,9 @@ def test_list_sites_rest_bad_request(request_type=service.ListSitesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26314,17 +26339,20 @@ def test_list_sites_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_sites"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_sites_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_sites"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_list_sites"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_sites_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_list_sites"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26373,8 +26401,9 @@ def test_get_site_rest_bad_request(request_type=service.GetSiteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26447,17 +26476,20 @@ def test_get_site_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_site"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_site_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_site"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_site"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_site_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_site"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26506,8 +26538,9 @@ def test_create_site_rest_bad_request(request_type=service.CreateSiteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26681,20 +26714,21 @@ def test_create_site_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_create_site"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_create_site_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_create_site"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_create_site"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_create_site_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_create_site"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26745,8 +26779,9 @@ def test_update_site_rest_bad_request(request_type=service.UpdateSiteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26922,20 +26957,21 @@ def test_update_site_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_update_site"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_update_site_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_update_site"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_update_site"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_update_site_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_update_site"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26984,8 +27020,9 @@ def test_delete_site_rest_bad_request(request_type=service.DeleteSiteRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27042,20 +27079,21 @@ def test_delete_site_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_delete_site"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_delete_site_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_delete_site"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_delete_site"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_delete_site_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_delete_site"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27106,8 +27144,9 @@ def test_list_hardware_groups_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27172,18 +27211,20 @@ def test_list_hardware_groups_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_hardware_groups"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_list_hardware_groups_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_hardware_groups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_list_hardware_groups"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_hardware_groups_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_list_hardware_groups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27240,8 +27281,9 @@ def test_get_hardware_group_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27314,18 +27356,20 @@ def test_get_hardware_group_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_hardware_group"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_get_hardware_group_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_hardware_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_hardware_group"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_hardware_group_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_hardware_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27378,8 +27422,9 @@ def test_create_hardware_group_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27519,20 +27564,22 @@ def test_create_hardware_group_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_create_hardware_group"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_create_hardware_group_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_create_hardware_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_create_hardware_group",
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_create_hardware_group_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_create_hardware_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27589,8 +27636,9 @@ def test_update_hardware_group_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27734,20 +27782,22 @@ def test_update_hardware_group_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_update_hardware_group"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_update_hardware_group_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_update_hardware_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_update_hardware_group",
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_update_hardware_group_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_update_hardware_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27802,8 +27852,9 @@ def test_delete_hardware_group_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27862,20 +27913,22 @@ def test_delete_hardware_group_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_delete_hardware_group"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_delete_hardware_group_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_delete_hardware_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_delete_hardware_group",
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_delete_hardware_group_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_delete_hardware_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27926,8 +27979,9 @@ def test_list_hardware_rest_bad_request(request_type=service.ListHardwareRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27992,18 +28046,20 @@ def test_list_hardware_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_hardware"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_list_hardware_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_hardware"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_list_hardware"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_hardware_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_list_hardware"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28054,8 +28110,9 @@ def test_get_hardware_rest_bad_request(request_type=service.GetHardwareRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28132,18 +28189,20 @@ def test_get_hardware_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_hardware"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_get_hardware_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_hardware"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_hardware"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_hardware_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_hardware"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28192,8 +28251,9 @@ def test_create_hardware_rest_bad_request(request_type=service.CreateHardwareReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28380,20 +28440,21 @@ def test_create_hardware_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_create_hardware"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_create_hardware_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_create_hardware"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_create_hardware"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_create_hardware_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_create_hardware"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28444,8 +28505,9 @@ def test_update_hardware_rest_bad_request(request_type=service.UpdateHardwareReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28634,20 +28696,21 @@ def test_update_hardware_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_update_hardware"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_update_hardware_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_update_hardware"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_update_hardware"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_update_hardware_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_update_hardware"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28696,8 +28759,9 @@ def test_delete_hardware_rest_bad_request(request_type=service.DeleteHardwareReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28754,20 +28818,21 @@ def test_delete_hardware_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_delete_hardware"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_delete_hardware_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_delete_hardware"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_delete_hardware"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_delete_hardware_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_delete_hardware"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28816,8 +28881,9 @@ def test_list_comments_rest_bad_request(request_type=service.ListCommentsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28882,18 +28948,20 @@ def test_list_comments_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_comments"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_list_comments_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_comments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_list_comments"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_comments_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_list_comments"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28946,8 +29014,9 @@ def test_get_comment_rest_bad_request(request_type=service.GetCommentRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29018,18 +29087,20 @@ def test_get_comment_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_comment"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_get_comment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_comment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_comment"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_comment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_comment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29078,8 +29149,9 @@ def test_create_comment_rest_bad_request(request_type=service.CreateCommentReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29212,20 +29284,21 @@ def test_create_comment_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_create_comment"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_create_comment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_create_comment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_create_comment"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_create_comment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_create_comment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29278,8 +29351,9 @@ def test_record_action_on_comment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29350,18 +29424,22 @@ def test_record_action_on_comment_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_record_action_on_comment"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_record_action_on_comment_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_record_action_on_comment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_record_action_on_comment",
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_record_action_on_comment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "pre_record_action_on_comment",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29414,8 +29492,9 @@ def test_list_change_log_entries_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29480,18 +29559,22 @@ def test_list_change_log_entries_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_change_log_entries"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_list_change_log_entries_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_change_log_entries"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_change_log_entries",
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_change_log_entries_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "pre_list_change_log_entries",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29551,8 +29634,9 @@ def test_get_change_log_entry_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29619,18 +29703,20 @@ def test_get_change_log_entry_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_change_log_entry"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_get_change_log_entry_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_change_log_entry"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_change_log_entry"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_change_log_entry_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_change_log_entry"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29681,8 +29767,9 @@ def test_list_skus_rest_bad_request(request_type=service.ListSkusRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29747,17 +29834,20 @@ def test_list_skus_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_skus"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_skus_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_skus"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_list_skus"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_skus_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_list_skus"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29806,8 +29896,9 @@ def test_get_sku_rest_bad_request(request_type=service.GetSkuRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29882,17 +29973,20 @@ def test_get_sku_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_sku"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_sku_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_sku"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_sku"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_sku_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_sku"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29941,8 +30035,9 @@ def test_list_zones_rest_bad_request(request_type=service.ListZonesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30007,17 +30102,20 @@ def test_list_zones_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_zones"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_list_zones_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_list_zones"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_list_zones"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_list_zones_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_list_zones"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30066,8 +30164,9 @@ def test_get_zone_rest_bad_request(request_type=service.GetZoneRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30149,17 +30248,20 @@ def test_get_zone_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_zone"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_get_zone_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_get_zone"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_get_zone"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_get_zone_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_get_zone"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30208,8 +30310,9 @@ def test_create_zone_rest_bad_request(request_type=service.CreateZoneRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30390,20 +30493,21 @@ def test_create_zone_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_create_zone"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_create_zone_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_create_zone"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_create_zone"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_create_zone_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_create_zone"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30454,8 +30558,9 @@ def test_update_zone_rest_bad_request(request_type=service.UpdateZoneRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30638,20 +30743,21 @@ def test_update_zone_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_update_zone"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_update_zone_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_update_zone"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_update_zone"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_update_zone_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_update_zone"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30700,8 +30806,9 @@ def test_delete_zone_rest_bad_request(request_type=service.DeleteZoneRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30758,20 +30865,21 @@ def test_delete_zone_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_delete_zone"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_delete_zone_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_delete_zone"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_delete_zone"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_delete_zone_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_delete_zone"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30822,8 +30930,9 @@ def test_signal_zone_state_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30880,20 +30989,21 @@ def test_signal_zone_state_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "post_signal_zone_state"
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_signal_zone_state_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_signal_zone_state"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "post_signal_zone_state"
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_signal_zone_state_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor, "pre_signal_zone_state"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30944,8 +31054,9 @@ def test_request_order_date_change_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31002,21 +31113,23 @@ def test_request_order_date_change_rest_interceptors(null_interceptor):
     )
     client = GDCHardwareManagementClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_request_order_date_change",
-    ) as post, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor,
-        "post_request_order_date_change_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GDCHardwareManagementRestInterceptor, "pre_request_order_date_change"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_request_order_date_change",
+        ) as post,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "post_request_order_date_change_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GDCHardwareManagementRestInterceptor,
+            "pre_request_order_date_change",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31069,8 +31182,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31129,8 +31243,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31191,8 +31306,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31253,8 +31369,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31315,8 +31432,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31377,8 +31495,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -32310,11 +32429,14 @@ def test_gdc_hardware_management_base_transport():
 
 def test_gdc_hardware_management_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.transports.GDCHardwareManagementTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.transports.GDCHardwareManagementTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GDCHardwareManagementTransport(
@@ -32331,9 +32453,12 @@ def test_gdc_hardware_management_base_transport_with_credentials_file():
 
 def test_gdc_hardware_management_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.transports.GDCHardwareManagementTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management.transports.GDCHardwareManagementTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GDCHardwareManagementTransport()
@@ -32407,11 +32532,12 @@ def test_gdc_hardware_management_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -33313,6 +33439,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = GDCHardwareManagementClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33450,6 +33608,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -33597,6 +33787,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = GDCHardwareManagementClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33740,6 +33964,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -33887,6 +34145,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = GDCHardwareManagementClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -34028,6 +34320,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = GDCHardwareManagementClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = GDCHardwareManagementAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

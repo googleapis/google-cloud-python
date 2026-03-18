@@ -286,11 +286,11 @@ replacements:
     after: 'logging_v2.types.Tail'
     count: 2
   - paths: [
-      "packages/google-cloud-logging/testing/constraints-3.7.txt",
+      "packages/google-cloud-logging/testing/constraints-3.9.txt",
     ]
     before: |
       proto-plus==1.22.3
-      protobuf==3.20.2
+      protobuf==4.25.8
     after: |
       proto-plus==1.22.3
       google-cloud-core==2.0.0
@@ -306,7 +306,7 @@ replacements:
       markupsafe==2.0.1
       itsdangerous==2.0.1
       werkzeug==1.0.1
-      protobuf==3.20.2
+      protobuf==4.25.8
     count: 1
   - paths: [
       "packages/google-cloud-logging/docs/conf.py",
@@ -476,7 +476,10 @@ replacements:
     ]
     before: |
       """Run the type checker."""
-      [\s\S]*?"google",\n    \)
+      [\s\S]*?"google",
+      \        "--check-untyped-defs",
+      \        \*session.posargs,
+      \    \)
     after: |
       """Run the type checker."""
 
