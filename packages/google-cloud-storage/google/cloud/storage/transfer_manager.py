@@ -867,7 +867,6 @@ def download_many_to_path(
     return results
 
 
-
 def download_chunks_concurrently(
     blob,
     filename,
