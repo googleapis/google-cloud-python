@@ -714,3 +714,33 @@ tests:
                 year:
                   integerValue: '1979'
           name: literals
+  - description: literals_with_expression_input
+    pipeline:
+      - Literals:
+        - res:
+            FunctionExpression.string_concat:
+              - Constant: "A"
+              - Constant: "B"
+      - Select:
+        - res
+    assert_results:
+      - res: "AB"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  functionValue:
+                    args:
+                    - stringValue: "A"
+                    - stringValue: "B"
+                    name: string_concat
+          name: literals
+        - args:
+          - mapValue:
+              fields:
+                res:
+                  fieldReferenceValue: res
+          name: select
