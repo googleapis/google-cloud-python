@@ -513,6 +513,57 @@ def test_upload_many_from_filenames_additional_properties():
         assert getattr(blob, attrib) == value
 
 
+
+def test__resolve_path_raises_invalid_path_error_on_windows():
+    from google.cloud.storage.transfer_manager import _resolve_path, InvalidPathError
+
+    with mock.patch("os.name", "nt"):
+        with pytest.raises(InvalidPathError) as exc_info:
+            _resolve_path("C:\\target", "C:\\target\\file.txt")
+        assert "cannot be downloaded into" in str(exc_info.value)
+
+    # Test that it DOES NOT raise on non-windows
+    with mock.patch("os.name", "posix"):
+        # Should not raise
+        _resolve_path("/target", "C:\\target\\file.txt")
+
+
+def test_download_many_to_path_raises_invalid_path_error():
+    bucket = mock.Mock()
+
+    BLOBNAMES = ["C:\\target\\file.txt"]
+    PATH_ROOT = "mypath/"
+    BLOB_NAME_PREFIX = "myprefix/"
+    DOWNLOAD_KWARGS = {"accept-encoding": "fake-gzip"}
+    MAX_WORKERS = 7
+    DEADLINE = 10
+    WORKER_TYPE = transfer_manager.THREAD
+
+    with mock.patch("os.name", "nt"):
+        import warnings
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            results = transfer_manager.download_many_to_path(
+                bucket,
+                BLOBNAMES,
+                destination_directory=PATH_ROOT,
+                blob_name_prefix=BLOB_NAME_PREFIX,
+                download_kwargs=DOWNLOAD_KWARGS,
+                deadline=DEADLINE,
+                create_directories=False,
+                raise_exception=True,
+                max_workers=MAX_WORKERS,
+                worker_type=WORKER_TYPE,
+                skip_if_exists=True,
+            )
+
+    assert len(w) == 1
+    assert "will **NOT** be downloaded" in str(w[0].message)
+    assert len(results) == 1
+    assert isinstance(results[0], UserWarning)
+
+
 def test_download_many_to_path():
     bucket = mock.Mock()
 

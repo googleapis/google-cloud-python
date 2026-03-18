@@ -33,6 +33,12 @@ except ImportError:
     DataCorruptionDynamicParent = Exception
 
 
+class InvalidPathError(Exception):
+    """Raised when the provided path string is malformed."""
+
+    pass
+
+
 class InvalidResponse(InvalidResponseDynamicParent):
     """Error class for responses which are not in the correct state.
 

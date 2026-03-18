@@ -39,7 +39,7 @@ import google_crc32c
 
 from google.cloud.storage._media.requests.upload import XMLMPUContainer
 from google.cloud.storage._media.requests.upload import XMLMPUPart
-from google.cloud.storage.exceptions import DataCorruption
+from google.cloud.storage.exceptions import DataCorruption, InvalidPathError
 
 TM_DEFAULT_CHUNK_SIZE = 32 * 1024 * 1024
 DEFAULT_MAX_WORKERS = 8
@@ -263,6 +263,8 @@ def upload_many(
 
 
 def _resolve_path(target_dir, blob_path):
+    if os.name == "nt" and ":" in blob_path:
+        raise InvalidPathError(f"{blob_path} cannot be downloaded into {target_dir}")
     target_dir = Path(target_dir)
     blob_path = Path(blob_path)
     # blob_path.anchor will be '/' if `blob_path` is full path else it'll empty.
@@ -818,7 +820,13 @@ def download_many_to_path(
 
     for i, blob_name in enumerate(blob_names):
         full_blob_name = blob_name_prefix + blob_name
-        resolved_path = _resolve_path(destination_directory, blob_name)
+        try:
+            resolved_path = _resolve_path(destination_directory, blob_name)
+        except InvalidPathError as e:
+            msg = f"The blob {blob_name} will **NOT** be downloaded. {e}"
+            warnings.warn(msg)
+            results[i] = UserWarning(msg)
+            continue
         if not resolved_path.parent.is_relative_to(
             Path(destination_directory).resolve()
         ):
