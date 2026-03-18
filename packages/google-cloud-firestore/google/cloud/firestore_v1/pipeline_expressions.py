@@ -418,7 +418,11 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the truncated value.
         """
-        params = [self, places] if places is not None else [self]
+        params = (
+            [self, self._cast_to_expr_or_convert_to_constant(places)]
+            if places is not None
+            else [self]
+        )
         return FunctionExpression("trunc", params)
 
     @expose_as_static
