@@ -642,6 +642,9 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
 
     visit_DECIMAL = visit_NUMERIC
 
+    def visit_JSON(self, type_, **kw):
+        return "JSON"
+
 
 class BigQueryDDLCompiler(DDLCompiler):
     option_datatype_mapping = {

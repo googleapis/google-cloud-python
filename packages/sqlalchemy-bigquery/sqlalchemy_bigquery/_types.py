@@ -40,6 +40,7 @@ _type_map = {
     "FLOAT": sqlalchemy.types.Float,
     "INT64": sqlalchemy.types.Integer,
     "INTEGER": sqlalchemy.types.Integer,
+    "JSON": sqlalchemy.types.JSON,
     "NUMERIC": sqlalchemy.types.Numeric,
     "RECORD": STRUCT,
     "STRING": sqlalchemy.types.String,
@@ -60,6 +61,7 @@ FLOAT64 = _type_map["FLOAT64"]
 FLOAT = _type_map["FLOAT"]
 INT64 = _type_map["INT64"]
 INTEGER = _type_map["INTEGER"]
+JSON = _type_map["JSON"]
 NUMERIC = _type_map["NUMERIC"]
 RECORD = _type_map["RECORD"]
 STRING = _type_map["STRING"]
