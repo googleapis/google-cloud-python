@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.73.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.72.0...googleapis-common-protos-v1.73.0) (2026-03-05)
+
+
+### Chores
+
+* code formatting (#16023) ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
 ## [1.72.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.71.0...googleapis-common-protos-v1.72.0) (2025-11-06)
 
 

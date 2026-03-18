@@ -9607,6 +9607,7 @@ def test_create_occurrence_rest_call_success(request_type):
                                     }
                                 ],
                             },
+                            "line_number": 1168,
                         }
                     ],
                 }
@@ -10337,6 +10338,7 @@ def test_update_occurrence_rest_call_success(request_type):
                                     }
                                 ],
                             },
+                            "line_number": 1168,
                         }
                     ],
                 }

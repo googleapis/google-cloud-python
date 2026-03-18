@@ -84,6 +84,7 @@ from google.cloud.securitycenter_v1.types import (
     attack_path,
     backup_disaster_recovery,
     bigquery_export,
+    chokepoint,
     cloud_armor,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
@@ -97,6 +98,7 @@ from google.cloud.securitycenter_v1.types import (
     event_threat_detection_custom_module,
     event_threat_detection_custom_module_validation_errors,
     exfiltration,
+    external_exposure,
     external_system,
     file,
     finding,
@@ -45130,6 +45132,13 @@ def test_create_finding_rest_call_success(request_type):
         "cloud_dlp_data_profile": {
             "data_profile": "data_profile_value",
             "parent_type": 1,
+            "info_types": [
+                {
+                    "name": "name_value",
+                    "version": "version_value",
+                    "sensitivity_score": {"score": 10},
+                }
+            ],
         },
         "kernel_rootkit": {
             "name": "name_value",
@@ -45215,6 +45224,23 @@ def test_create_finding_rest_call_success(request_type):
             "related_findings": ["related_findings_value1", "related_findings_value2"],
         },
         "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
+        "chokepoint": {
+            "related_findings": ["related_findings_value1", "related_findings_value2"]
+        },
+        "external_exposure": {
+            "private_ip_address": "private_ip_address_value",
+            "private_port": "private_port_value",
+            "exposed_service": "exposed_service_value",
+            "public_ip_address": "public_ip_address_value",
+            "public_port": "public_port_value",
+            "exposed_endpoint": "exposed_endpoint_value",
+            "load_balancer_firewall_policy": "load_balancer_firewall_policy_value",
+            "service_firewall_policy": "service_firewall_policy_value",
+            "forwarding_rule": "forwarding_rule_value",
+            "backend_service": "backend_service_value",
+            "instance_group": "instance_group_value",
+            "network_endpoint_group": "network_endpoint_group_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -50285,6 +50311,13 @@ def test_update_finding_rest_call_success(request_type):
         "cloud_dlp_data_profile": {
             "data_profile": "data_profile_value",
             "parent_type": 1,
+            "info_types": [
+                {
+                    "name": "name_value",
+                    "version": "version_value",
+                    "sensitivity_score": {"score": 10},
+                }
+            ],
         },
         "kernel_rootkit": {
             "name": "name_value",
@@ -50370,6 +50403,23 @@ def test_update_finding_rest_call_success(request_type):
             "related_findings": ["related_findings_value1", "related_findings_value2"],
         },
         "group_memberships": [{"group_type": 1, "group_id": "group_id_value"}],
+        "chokepoint": {
+            "related_findings": ["related_findings_value1", "related_findings_value2"]
+        },
+        "external_exposure": {
+            "private_ip_address": "private_ip_address_value",
+            "private_port": "private_port_value",
+            "exposed_service": "exposed_service_value",
+            "public_ip_address": "public_ip_address_value",
+            "public_port": "public_port_value",
+            "exposed_endpoint": "exposed_endpoint_value",
+            "load_balancer_firewall_policy": "load_balancer_firewall_policy_value",
+            "service_firewall_policy": "service_firewall_policy_value",
+            "forwarding_rule": "forwarding_rule_value",
+            "backend_service": "backend_service_value",
+            "instance_group": "instance_group_value",
+            "network_endpoint_group": "network_endpoint_group_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

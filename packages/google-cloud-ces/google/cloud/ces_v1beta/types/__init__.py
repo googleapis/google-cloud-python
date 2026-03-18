@@ -47,6 +47,7 @@ from .agent_service import (
     GetDeploymentRequest,
     GetExampleRequest,
     GetGuardrailRequest,
+    GetSecuritySettingsRequest,
     GetToolRequest,
     GetToolsetRequest,
     ImportAppRequest,
@@ -79,8 +80,12 @@ from .agent_service import (
     UpdateDeploymentRequest,
     UpdateExampleRequest,
     UpdateGuardrailRequest,
+    UpdateSecuritySettingsRequest,
     UpdateToolRequest,
     UpdateToolsetRequest,
+)
+from .agent_tool import (
+    AgentTool,
 )
 from .agent_transfers import (
     ExpressionCondition,
@@ -276,6 +281,10 @@ from .search_suggestions import (
     GoogleSearchSuggestions,
     WebSearchQuery,
 )
+from .security_settings import (
+    EndpointControlPolicy,
+    SecuritySettings,
+)
 from .session_service import (
     AudioEncoding,
     BidiSessionClientMessage,
@@ -356,6 +365,7 @@ __all__ = (
     "GetDeploymentRequest",
     "GetExampleRequest",
     "GetGuardrailRequest",
+    "GetSecuritySettingsRequest",
     "GetToolRequest",
     "GetToolsetRequest",
     "ImportAppRequest",
@@ -388,8 +398,10 @@ __all__ = (
     "UpdateDeploymentRequest",
     "UpdateExampleRequest",
     "UpdateGuardrailRequest",
+    "UpdateSecuritySettingsRequest",
     "UpdateToolRequest",
     "UpdateToolsetRequest",
+    "AgentTool",
     "ExpressionCondition",
     "PythonCodeCondition",
     "TransferRule",
@@ -522,6 +534,8 @@ __all__ = (
     "Schema",
     "GoogleSearchSuggestions",
     "WebSearchQuery",
+    "EndpointControlPolicy",
+    "SecuritySettings",
     "BidiSessionClientMessage",
     "BidiSessionServerMessage",
     "Citations",

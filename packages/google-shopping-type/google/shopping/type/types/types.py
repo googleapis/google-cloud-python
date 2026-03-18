@@ -185,6 +185,23 @@ class Destination(proto.Message):
             YOUTUBE_SHOPPING (6):
                 `YouTube
                 Shopping <https://support.google.com/merchants/answer/12362804>`__.
+            YOUTUBE_SHOPPING_CHECKOUT (7):
+                Youtube shopping checkout.
+            YOUTUBE_AFFILIATE (8):
+                `Youtube
+                Affiliate <https://support.google.com/youtube/answer/13376398>`__.
+            FREE_VEHICLE_LISTINGS (9):
+                `Free vehicle
+                listings <https://support.google.com/merchants/answer/11189169>`__.
+            VEHICLE_ADS (10):
+                `Vehicle
+                ads <https://support.google.com/merchants/answer/11189169>`__.
+            CLOUD_RETAIL (11):
+                `Cloud
+                retail <https://cloud.google.com/solutions/retail>`__.
+            LOCAL_CLOUD_RETAIL (12):
+                `Local cloud
+                retail <https://cloud.google.com/solutions/retail>`__.
         """
 
         DESTINATION_ENUM_UNSPECIFIED = 0
@@ -194,6 +211,12 @@ class Destination(proto.Message):
         FREE_LISTINGS = 4
         FREE_LOCAL_LISTINGS = 5
         YOUTUBE_SHOPPING = 6
+        YOUTUBE_SHOPPING_CHECKOUT = 7
+        YOUTUBE_AFFILIATE = 8
+        FREE_VEHICLE_LISTINGS = 9
+        VEHICLE_ADS = 10
+        CLOUD_RETAIL = 11
+        LOCAL_CLOUD_RETAIL = 12
 
 
 class ReportingContext(proto.Message):
@@ -242,12 +265,18 @@ class ReportingContext(proto.Message):
             FREE_LISTINGS (7):
                 `Free product
                 listings <https://support.google.com/merchants/answer/9199328>`__.
+            FREE_LISTINGS_UCP_CHECKOUT (19):
+                `Free product listings on UCP
+                checkout <https://developers.google.com/merchant/ucp>`__.
             FREE_LOCAL_LISTINGS (8):
                 `Free local product
                 listings <https://support.google.com/merchants/answer/9825611>`__.
             FREE_LOCAL_VEHICLE_LISTINGS (9):
                 `Free local vehicle
                 listings <https://support.google.com/merchants/answer/11544533>`__.
+            YOUTUBE_AFFILIATE (18):
+                `Youtube
+                Affiliate <https://support.google.com/youtube/answer/13376398>`__.
             YOUTUBE_SHOPPING (10):
                 `YouTube
                 Shopping <https://support.google.com/merchants/answer/13478370>`__.
@@ -257,6 +286,15 @@ class ReportingContext(proto.Message):
             LOCAL_CLOUD_RETAIL (12):
                 `Local cloud
                 retail <https://cloud.google.com/solutions/retail>`__.
+            PRODUCT_REVIEWS (15):
+                `Product
+                Reviews <https://support.google.com/merchants/answer/14620732>`__.
+            MERCHANT_REVIEWS (16):
+                `Merchant
+                Reviews <https://developers.google.com/merchant-review-feeds>`__.
+            YOUTUBE_CHECKOUT (17):
+                YouTube Checkout
+                .
         """
 
         REPORTING_CONTEXT_ENUM_UNSPECIFIED = 0
@@ -269,11 +307,16 @@ class ReportingContext(proto.Message):
         LOCAL_INVENTORY_ADS = 5
         VEHICLE_INVENTORY_ADS = 6
         FREE_LISTINGS = 7
+        FREE_LISTINGS_UCP_CHECKOUT = 19
         FREE_LOCAL_LISTINGS = 8
         FREE_LOCAL_VEHICLE_LISTINGS = 9
+        YOUTUBE_AFFILIATE = 18
         YOUTUBE_SHOPPING = 10
         CLOUD_RETAIL = 11
         LOCAL_CLOUD_RETAIL = 12
+        PRODUCT_REVIEWS = 15
+        MERCHANT_REVIEWS = 16
+        YOUTUBE_CHECKOUT = 17
 
 
 class Channel(proto.Message):

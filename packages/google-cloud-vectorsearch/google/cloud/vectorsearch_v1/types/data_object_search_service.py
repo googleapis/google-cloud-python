@@ -119,13 +119,7 @@ class SearchHint(proto.Message):
     class IndexHint(proto.Message):
         r"""Message to specify the index to use for the search.
 
-        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
         Attributes:
-            dense_scann_params (google.cloud.vectorsearch_v1.types.SearchHint.IndexHint.DenseScannParams):
-                Optional. Dense ScaNN parameters.
-
-                This field is a member of `oneof`_ ``params``.
             name (str):
                 Required. The resource name of the index to use for the
                 search. The index must be in the same project, location, and
@@ -133,34 +127,6 @@ class SearchHint(proto.Message):
                 ``projects/{project}/locations/{location}/collections/{collection}/indexes/{index}``
         """
 
-        class DenseScannParams(proto.Message):
-            r"""Parameters for dense ScaNN.
-
-            Attributes:
-                search_leaves_pct (int):
-                    Optional. Dense ANN param overrides to control recall and
-                    latency. The percentage of leaves to search, in the range
-                    [0, 100].
-                initial_candidate_count (int):
-                    Optional. The number of initial candidates.
-                    Must be a positive integer (> 0).
-            """
-
-            search_leaves_pct: int = proto.Field(
-                proto.INT32,
-                number=1,
-            )
-            initial_candidate_count: int = proto.Field(
-                proto.INT32,
-                number=2,
-            )
-
-        dense_scann_params: "SearchHint.IndexHint.DenseScannParams" = proto.Field(
-            proto.MESSAGE,
-            number=2,
-            oneof="params",
-            message="SearchHint.IndexHint.DenseScannParams",
-        )
         name: str = proto.Field(
             proto.STRING,
             number=1,

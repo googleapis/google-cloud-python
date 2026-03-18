@@ -141,6 +141,11 @@ class RegionNotificationEndpointsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.aggregated_list: gapic_v1.method.wrap_method(
+                self.aggregated_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
                 default_timeout=None,
@@ -175,6 +180,18 @@ class RegionNotificationEndpointsTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListRegionNotificationEndpointsRequest],
+        Union[
+            compute.NotificationEndpointAggregatedList,
+            Awaitable[compute.NotificationEndpointAggregatedList],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

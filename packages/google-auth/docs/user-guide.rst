@@ -1042,7 +1042,7 @@ In the example above `source_credentials` does not have direct access to list bu
 in the target project. Using `ImpersonatedCredentials` will allow the source_credentials
 to assume the identity of a target_principal that does have access.
 
-It is possible to provide a delegation chain through `delegates` paramter while
+It is possible to provide a delegation chain through `delegates` parameter while
 initializing the impersonated credential. Refer `create short lived credentials delegated`_ for more details on delegation chain.
 
 .. _create short lived credentials delegated: https://cloud.google.com/iam/docs/create-short-lived-credentials-delegated

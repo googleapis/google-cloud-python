@@ -61,11 +61,13 @@ Services for Google Cloud Compute v1 API
     region_autoscalers
     region_backend_services
     region_commitments
+    region_composite_health_checks
     region_disks
     region_disk_types
     region_health_aggregation_policies
     region_health_checks
     region_health_check_services
+    region_health_sources
     region_instance_group_managers
     region_instance_groups
     region_instances

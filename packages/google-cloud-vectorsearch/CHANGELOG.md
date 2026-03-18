@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-vectorsearch/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.6.0...google-cloud-vectorsearch-v0.7.0) (2026-03-09)
+
+
+### Documentation
+
+* Changed default values for max_replica_count for AutoScaling ([1b21f1285f0f4349e9521e6dbaa96e6524cc378a](https://github.com/googleapis/google-cloud-python/commit/1b21f1285f0f4349e9521e6dbaa96e6524cc378a))
+
+
+### Bug Fixes
+
+* Removed field DenseScannParams from SearchHint ([1b21f1285f0f4349e9521e6dbaa96e6524cc378a](https://github.com/googleapis/google-cloud-python/commit/1b21f1285f0f4349e9521e6dbaa96e6524cc378a))
+
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.5.0...google-cloud-vectorsearch-v0.6.0) (2026-03-05)
+
+
+### Documentation
+
+* Updated documentation for Index Creation, Import Data Objects, Search ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
+
+### Features
+
+* Added index and search configuration management ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
+
+### Bug Fixes
+
+* Removed obsolete message `VertexRanker` ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+* Removed obsolete field `vertex` from message `.google.cloud.vectorsearch.v1.Ranker` ([6120fb0db084f5e8d1502fb1bb37594ac9976f6e](https://github.com/googleapis/google-cloud-python/commit/6120fb0db084f5e8d1502fb1bb37594ac9976f6e))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.4.0...google-cloud-vectorsearch-v0.5.0) (2026-02-19)
 
 
