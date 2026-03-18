@@ -528,23 +528,6 @@ class TestLiterals:
         assert instance.documents == (val1, val2)
         assert instance.name == "literals"
 
-    def test_repr(self):
-        val1 = Constant.of({"a": 1})
-        instance = self._make_one(val1, {"b": 2})
-        repr_str = repr(instance)
-        assert repr_str == "Literals(documents=(Constant.of({'a': 1}), {'b': 2}))"
-
-    def test_to_pb(self):
-        val1 = Constant.of({"a": 1})
-        val2 = {"b": 2}
-        instance = self._make_one(val1, val2)
-        result = instance._to_pb()
-        assert result.name == "literals"
-        assert len(result.args) == 2
-        assert result.args[0].map_value.fields["a"].integer_value == 1
-        assert result.args[1].map_value.fields["b"].integer_value == 2
-        assert len(result.options) == 0
-
     def test_ctor_extended_types(self):
         import datetime
         from google.cloud.firestore_v1._helpers import GeoPoint
@@ -564,6 +547,32 @@ class TestLiterals:
         instance = self._make_one(doc)
         assert instance.documents == (doc,)
         assert instance.name == "literals"
+
+    def test_ctor_w_expressions(self):
+        from google.cloud.firestore_v1.pipeline_expressions import FunctionExpression
+        
+        expr = FunctionExpression("string_concat", [Constant("A"), Constant("B")])
+        doc = {"res": expr}
+        instance = self._make_one(doc)
+        assert instance.documents == (doc,)
+        assert instance.name == "literals"
+
+    def test_repr(self):
+        val1 = Constant.of({"a": 1})
+        instance = self._make_one(val1, {"b": 2})
+        repr_str = repr(instance)
+        assert repr_str == "Literals(documents=(Constant.of({'a': 1}), {'b': 2}))"
+
+    def test_to_pb(self):
+        val1 = Constant.of({"a": 1})
+        val2 = {"b": 2}
+        instance = self._make_one(val1, val2)
+        result = instance._to_pb()
+        assert result.name == "literals"
+        assert len(result.args) == 2
+        assert result.args[0].map_value.fields["a"].integer_value == 1
+        assert result.args[1].map_value.fields["b"].integer_value == 2
+        assert len(result.options) == 0
 
     def test_to_pb_extended_types(self):
         import datetime
@@ -598,6 +607,21 @@ class TestLiterals:
         assert fields["h"].geo_point_value.longitude == 2.0
         assert fields["i"].map_value.fields["value"].array_value.values[0].double_value == 1.0
         assert fields["i"].map_value.fields["value"].array_value.values[1].double_value == 2.0
+
+    def test_to_pb_w_expression(self):
+        from google.cloud.firestore_v1.pipeline_expressions import FunctionExpression
+        
+        expr = FunctionExpression("string_concat", [Constant("A"), Constant("B")])
+        doc = {"res": expr}
+        instance = self._make_one(doc)
+        result = instance._to_pb()
+        assert result.name == "literals"
+        assert len(result.args) == 1
+        
+        fields = result.args[0].map_value.fields
+        assert fields["res"].function_value.name == "string_concat"
+        assert fields["res"].function_value.args[0].string_value == "A"
+        assert fields["res"].function_value.args[1].string_value == "B"
 
 
 class TestOffset:

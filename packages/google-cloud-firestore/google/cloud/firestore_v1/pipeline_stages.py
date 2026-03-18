@@ -356,7 +356,13 @@ class Literals(Stage):
             if hasattr(doc, "_to_pb"):
                 args.append(doc._to_pb())
             else:
-                args.append(encode_value(doc))
+                encoded_doc = {}
+                for k, v in doc.items():
+                    if hasattr(v, "_to_pb"):
+                        encoded_doc[k] = v._to_pb()
+                    else:
+                        encoded_doc[k] = encode_value(v)
+                args.append(Value(map_value={"fields": encoded_doc}))
         return args
 
 
