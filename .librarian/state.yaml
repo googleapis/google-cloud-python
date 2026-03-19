@@ -3719,6 +3719,24 @@ libraries:
     remove_regex:
       - packages/google-maps-mapsplatformdatasets
     tag_format: '{id}-v{version}'
+  - id: google-maps-navconnect
+    version: 0.0.0
+    last_generated_commit: dfcbe6807e8c0bb8d5abb2b5e875a2a03af8d874
+    apis:
+      - path: google/maps/navconnect/v1
+        service_config: navigationconnect_v1.yaml
+    source_roots:
+      - packages/google-maps-navconnect
+    preserve_regex:
+      - packages/google-maps-navconnect/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-navconnect
+    tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.7.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
