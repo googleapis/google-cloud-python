@@ -1115,6 +1115,17 @@ class TestExpressionessionMethods:
         infix_instance = arg1.map_get(Constant.of(arg2))
         assert infix_instance == instance
 
+    def test_map_set(self):
+        arg1 = self._make_arg("Map")
+        arg2 = "key"
+        arg3 = "value"
+        instance = Expression.map_set(arg1, arg2, arg3)
+        assert instance.name == "map_set"
+        assert instance.params == [arg1, Constant.of(arg2), Constant.of(arg3)]
+        assert repr(instance) == "Map.map_set(Constant.of('key'), Constant.of('value'))"
+        infix_instance = arg1.map_set(Constant.of(arg2), arg3)
+        assert infix_instance == instance
+
     def test_map_remove(self):
         arg1 = self._make_arg("Map")
         arg2 = "key"

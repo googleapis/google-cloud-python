@@ -107,6 +107,49 @@ tests:
                 title:
                   fieldReferenceValue: title
           name: select
+  - description: testMapSet
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.map_set:
+                - Field: awards
+                - "new_award"
+                - Constant: true
+            - "awards_set"
+    assert_results:
+      - awards_set:
+          hugo: true
+          nebula: true
+          new_award: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "Dune"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                awards_set:
+                  functionValue:
+                    name: map_set
+                    args:
+                    - fieldReferenceValue: awards
+                    - stringValue: "new_award"
+                    - booleanValue: true
+          name: select
   - description: testMapRemove
     pipeline:
       - Collection: books

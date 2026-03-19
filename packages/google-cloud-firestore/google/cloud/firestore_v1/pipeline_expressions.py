@@ -1265,6 +1265,33 @@ class Expression(ABC):
             "map_get", [self, self._cast_to_expr_or_convert_to_constant(key)]
         )
 
+    def map_set(self, key: str | Constant[str], value: Any) -> "Expression":
+        """Creates an expression that returns a new map with the specified entries added or
+        updated.
+
+        Note:
+            `mapSet` only performs shallow updates to the map. Setting a value to `None`
+            will retain the key with a `None` value. To remove a key entirely, use
+            `map_remove`.
+
+        Example:
+            >>> Map({"city": "London"}).map_set("city", "New York")
+            >>> Field.of("address").map_set("city", "Seattle")
+
+        Args:
+            key: The key to set in the map.
+            value: The value to associate with the key.
+
+        Returns:
+            A new `Expression` representing the map_set operation.
+        """
+        args = [
+            self,
+            self._cast_to_expr_or_convert_to_constant(key),
+            self._cast_to_expr_or_convert_to_constant(value)
+        ]
+        return FunctionExpression("map_set", args)
+
     @expose_as_static
     def map_remove(self, key: str | Constant[str]) -> "Expression":
         """Remove a key from a the map produced by evaluating this expression.
