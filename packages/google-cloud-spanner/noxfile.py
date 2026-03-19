@@ -116,12 +116,17 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install(FLAKE8_VERSION, RUFF_VERSION)
+    # Check formatting
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
@@ -129,10 +134,16 @@ def lint(session):
 # https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+    session.install(RUFF_VERSION)
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
