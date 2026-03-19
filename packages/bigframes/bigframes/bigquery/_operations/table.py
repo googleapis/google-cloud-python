@@ -19,8 +19,8 @@ from typing import Mapping, Optional, Union
 import google.cloud.bigquery
 import pandas as pd
 
+import bigframes.core.compile.sqlglot.sql as sg_sql
 import bigframes.core.logging.log_adapter as log_adapter
-import bigframes.core.sql.table
 import bigframes.session
 
 
@@ -80,14 +80,16 @@ def create_external_table(
     """
     import bigframes.pandas as bpd
 
-    sql = bigframes.core.sql.table.create_external_table_ddl(
-        table_name=table_name,
-        replace=replace,
-        if_not_exists=if_not_exists,
-        columns=columns,
-        partition_columns=partition_columns,
-        connection_name=connection_name,
-        options=options,
+    sql = sg_sql.to_sql(
+        sg_sql.create_external_table(
+            table_name=table_name,
+            replace=replace,
+            if_not_exists=if_not_exists,
+            columns=columns,
+            partition_columns=partition_columns,
+            connection_name=connection_name,
+            options=options,
+        )
     )
 
     if session is None:
