@@ -627,13 +627,11 @@ class _DefaultAwsSecurityCredentialsSupplier(AwsSecurityCredentialsSupplier):
         Returns:
             bool: True if running in a Fargate environment.
         """
-        if os.environ.get("ECS_CONTAINER_METADATA_URI_V4"):
-            return True
-        if os.environ.get("ECS_CONTAINER_METADATA_URI"):
-            return True
-        if "AWS_ECS_FARGATE" in os.environ.get("AWS_EXECUTION_ENV", ""):
-            return True
-        return False
+        return bool(
+            os.environ.get("ECS_CONTAINER_METADATA_URI_V4")
+            or os.environ.get("ECS_CONTAINER_METADATA_URI")
+            or "AWS_ECS_FARGATE" in os.environ.get("AWS_EXECUTION_ENV", "")
+        )
 
 
 class Credentials(external_account.Credentials):
