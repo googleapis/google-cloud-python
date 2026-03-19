@@ -25,13 +25,13 @@ from opentelemetry.semconv.attributes.otel_attributes import (
 )
 from opentelemetry.trace.status import Status, StatusCode
 
-from google.cloud.spanner_v1.services.spanner import SpannerClient
 from google.cloud.spanner_v1 import gapic_version
 from google.cloud.spanner_v1._helpers import (
     _get_cloud_region,
     _metadata_with_span_context,
 )
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+from google.cloud.spanner_v1.services.spanner import SpannerClient
 
 TRACER_NAME = "cloud.google.com/python/spanner"
 TRACER_VERSION = gapic_version.__version__

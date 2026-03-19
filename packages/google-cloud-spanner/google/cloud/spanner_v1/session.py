@@ -22,7 +22,6 @@ from typing import MutableMapping, Optional
 from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
 from google.api_core.gapic_v1 import method
 
-from google.cloud.spanner_v1.types.spanner import CreateSessionRequest, ExecuteSqlRequest
 from google.cloud.spanner_v1._helpers import (
     _delay_until_retry,
     _get_retry_delay,
@@ -38,6 +37,10 @@ from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
+from google.cloud.spanner_v1.types.spanner import (
+    CreateSessionRequest,
+    ExecuteSqlRequest,
+)
 
 DEFAULT_RETRY_TIMEOUT_SECS = 30
 """Default timeout used by :meth:`Session.run_in_transaction`."""

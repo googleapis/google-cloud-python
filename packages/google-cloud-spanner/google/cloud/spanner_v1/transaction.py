@@ -22,17 +22,6 @@ from google.api_core import gapic_v1
 from google.api_core.exceptions import InternalServerError
 from google.protobuf.struct_pb2 import Struct
 
-from google.cloud.spanner_v1.types.spanner import (
-    CommitRequest,
-    ExecuteBatchDmlRequest,
-    ExecuteBatchDmlResponse,
-    ExecuteSqlRequest,
-    RequestOptions,
-)
-from google.cloud.spanner_v1.types.commit_response import CommitResponse
-from google.cloud.spanner_v1.types.mutation import Mutation
-from google.cloud.spanner_v1.types.result_set import ResultSet
-from google.cloud.spanner_v1.types.transaction import TransactionOptions
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _check_rst_stream_error,
@@ -49,6 +38,17 @@ from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace
 from google.cloud.spanner_v1.batch import _BatchBase
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
+from google.cloud.spanner_v1.types.commit_response import CommitResponse
+from google.cloud.spanner_v1.types.mutation import Mutation
+from google.cloud.spanner_v1.types.result_set import ResultSet
+from google.cloud.spanner_v1.types.spanner import (
+    CommitRequest,
+    ExecuteBatchDmlRequest,
+    ExecuteBatchDmlResponse,
+    ExecuteSqlRequest,
+    RequestOptions,
+)
+from google.cloud.spanner_v1.types.transaction import TransactionOptions
 
 
 class Transaction(_SnapshotBase, _BatchBase):

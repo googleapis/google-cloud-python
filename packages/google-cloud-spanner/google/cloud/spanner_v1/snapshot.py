@@ -27,22 +27,6 @@ from google.api_core.exceptions import (
 )
 from google.protobuf.struct_pb2 import Struct
 
-from google.cloud.spanner_v1.types.spanner import (
-    BeginTransactionRequest,
-    ExecuteSqlRequest,
-    PartitionOptions,
-    PartitionQueryRequest,
-    PartitionReadRequest,
-    ReadRequest,
-    RequestOptions,
-)
-from google.cloud.spanner_v1.types.mutation import Mutation
-from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSet
-from google.cloud.spanner_v1.types.transaction import (
-    Transaction,
-    TransactionOptions,
-    TransactionSelector,
-)
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _augment_error_with_request_id,
@@ -61,6 +45,22 @@ from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken
+from google.cloud.spanner_v1.types.mutation import Mutation
+from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSet
+from google.cloud.spanner_v1.types.spanner import (
+    BeginTransactionRequest,
+    ExecuteSqlRequest,
+    PartitionOptions,
+    PartitionQueryRequest,
+    PartitionReadRequest,
+    ReadRequest,
+    RequestOptions,
+)
+from google.cloud.spanner_v1.types.transaction import (
+    Transaction,
+    TransactionOptions,
+    TransactionSelector,
+)
 
 _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "RST_STREAM",

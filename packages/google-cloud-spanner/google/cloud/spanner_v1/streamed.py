@@ -17,9 +17,9 @@
 from google.protobuf.struct_pb2 import ListValue, Value
 
 from google.cloud import exceptions
+from google.cloud.spanner_v1._helpers import _get_type_decoder, _parse_nullable
 from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSetMetadata
 from google.cloud.spanner_v1.types.type import TypeCode
-from google.cloud.spanner_v1._helpers import _get_type_decoder, _parse_nullable
 
 
 class StreamedResultSet(object):
