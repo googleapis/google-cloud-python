@@ -41,15 +41,6 @@ from google.cloud.spanner_admin_database_v1 import (
     UpdateDatabaseDdlRequest,
 )
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
-from google.cloud.spanner_v1.batch import Batch, MutationGroups
-from google.cloud.spanner_v1.database_sessions_manager import (
-    DatabaseSessionsManager,
-    TransactionType,
-)
-from google.cloud.spanner_v1.pool import BurstyPool
-from google.cloud.spanner_v1.session import Session
-from google.cloud.spanner_v1.snapshot import Snapshot, _restart_on_unavailable
-from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
     _merge_query_options,
@@ -82,8 +73,25 @@ from google.cloud.spanner_v1._opentelemetry_tracing import (
     trace_call,
 )
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
-
+from google.cloud.spanner_v1.pool import BurstyPool
+from google.cloud.spanner_v1.services.spanner import SpannerClient
+from google.cloud.spanner_v1.services.spanner.transports.grpc import (
+    SpannerGrpcTransport,
+)
+from google.cloud.spanner_v1.session import Session
+from google.cloud.spanner_v1.snapshot import Snapshot, _restart_on_unavailable
+from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1.table import Table
+from google.cloud.spanner_v1.transaction import (
+    BatchTransactionId,
+    DefaultTransactionOptions,
+)
+from google.cloud.spanner_v1.types.spanner import ExecuteSqlRequest, RequestOptions
+from google.cloud.spanner_v1.types.transaction import (
+    TransactionOptions,
+    TransactionSelector,
+)
+from google.cloud.spanner_v1.types.type import Type, TypeCode
 
 SPANNER_DATA_SCOPE = "https://www.googleapis.com/auth/spanner.data"
 _DATABASE_NAME_RE = re.compile(

@@ -26,24 +26,23 @@ from google.api_core.exceptions import (
     ServiceUnavailable,
 )
 from google.protobuf.struct_pb2 import Struct
-from google.cloud.aio._cross_sync import CrossSync
-from google.cloud.spanner_v1._helpers import _retry
-from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _augment_error_with_request_id,
     _check_rst_stream_error,
     _make_value_pb,
+    _merge_client_context,
     _merge_query_options,
+    _merge_request_options,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
+    _retry,
     _SessionWrapper,
     _validate_client_context,
-    _merge_client_context,
-    _merge_request_options,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken
 from google.cloud.spanner_v1.types.mutation import Mutation
 from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSet

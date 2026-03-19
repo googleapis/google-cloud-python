@@ -682,6 +682,55 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                     "SKIP_BACKUP_TESTS": "true",
                 },
             )
+            run_system = False
+    else:
+        # Skip to speed up build (only run python implementation on real Spanner)
+        session.log(
+            f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build"
+        )
+        run_system = False
+
+    if run_system:
+        # Run the tests (deduplicated logic)
+        test_path = (
+            system_test_path
+            if os.path.exists(system_test_path)
+            else system_test_folder_path
+        )
+        session.run(
+            "py.test",
+            "--verbose",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            test_path,
+            *session.posargs,
+            env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                "SPANNER_DATABASE_DIALECT": database_dialect,
+                "SKIP_BACKUP_TESTS": "true",
+            },
+        )
+
+
+@nox.session(python=ALL_PYTHON)
+def mypy(session):
+    """Run the type checker."""
+    session.skip("Mypy is not yet supported")
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
+    # use the latest version of mypy
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+    )
+    session.install(".")
+    session.run(
+        "mypy",
+        "-p",
+        "google",
+        # "--check-untyped-defs",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
