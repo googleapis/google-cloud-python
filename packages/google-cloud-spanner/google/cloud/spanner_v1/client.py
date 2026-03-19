@@ -31,6 +31,7 @@ import os
 import threading
 from typing import Optional
 import warnings
+
 import google.api_core.client_options
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
@@ -46,9 +47,6 @@ from google.cloud.spanner_admin_instance_v1 import (
     InstanceAdminClient as InstanceAdminClient,
     ListInstanceConfigsRequest,
     ListInstancesRequest,
-)
-from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.grpc import (
-    InstanceAdminGrpcTransport,
 )
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,

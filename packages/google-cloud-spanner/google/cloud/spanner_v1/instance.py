@@ -34,9 +34,6 @@ from google.cloud.spanner_admin_database_v1 import (
 from google.cloud.spanner_admin_database_v1.types import backup, spanner_database_admin
 from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
 from google.cloud.spanner_v1.database import Database
-from google.cloud.spanner_v1.testing.database_test import TestDatabase
-from google.cloud.spanner_v1._helpers import _metadata_with_prefix
-from google.cloud.spanner_v1.backup import Backup
 
 _INSTANCE_NAME_RE = re.compile(
     "^projects/(?P<project>[^/]+)/instances/(?P<instance_id>[a-z][-a-z0-9]*)$"
@@ -468,7 +465,13 @@ class Instance(object):
                 proto_descriptors=proto_descriptors,
             )
         else:
+<<<<<<< HEAD
             db = TestDatabase(
+=======
+            from google.cloud.spanner_v1.testing.database_test import TestDatabase
+
+            return TestDatabase(
+>>>>>>> 577b6b0c38a (chore: updates imports to avoid circular import errors)
                 database_id,
                 self,
                 ddl_statements=ddl_statements,

@@ -41,6 +41,13 @@ from google.cloud.spanner_admin_database_v1 import (
     UpdateDatabaseDdlRequest,
 )
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
+from google.cloud.spanner_v1.types.spanner import ExecuteSqlRequest, RequestOptions
+from google.cloud.spanner_v1.types.transaction import (
+    TransactionOptions,
+    TransactionSelector,
+)
+from google.cloud.spanner_v1.types.type import Type, TypeCode
+from google.cloud.spanner_v1.transaction import DefaultTransactionOptions
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
     _merge_query_options,
@@ -58,12 +65,6 @@ from google.cloud.spanner_v1.transaction import (
     BatchTransactionId,
     DefaultTransactionOptions,
 )
-from google.cloud.spanner_v1.types.spanner import ExecuteSqlRequest, RequestOptions
-from google.cloud.spanner_v1.types.transaction import (
-    TransactionOptions,
-    TransactionSelector,
-)
-from google.cloud.spanner_v1.types.type import Type, TypeCode
 from google.cloud.spanner_v1.services.spanner.transports.grpc import (
     SpannerGrpcTransport,
 )

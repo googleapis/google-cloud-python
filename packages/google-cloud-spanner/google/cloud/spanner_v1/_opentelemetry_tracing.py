@@ -25,7 +25,6 @@ from opentelemetry.semconv.attributes.otel_attributes import (
 )
 from opentelemetry.trace.status import Status, StatusCode
 
-from google.cloud.spanner_v1 import gapic_version
 from google.cloud.spanner_v1._helpers import (
     _get_cloud_region,
     _metadata_with_span_context,

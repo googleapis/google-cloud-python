@@ -26,6 +26,7 @@ from google.api_core.exceptions import (
     ServiceUnavailable,
 )
 from google.protobuf.struct_pb2 import Struct
+
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _augment_error_with_request_id,
