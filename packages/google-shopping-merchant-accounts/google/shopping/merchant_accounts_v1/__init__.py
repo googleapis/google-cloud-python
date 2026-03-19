@@ -118,6 +118,7 @@ from .types.accountrelationships import (
 from .types.accounts import (
     Account,
     CreateAndConfigureAccountRequest,
+    CreateTestAccountRequest,
     DeleteAccountRequest,
     GetAccountRequest,
     ListAccountsRequest,
@@ -467,6 +468,7 @@ __all__ = (
     "CreateOmnichannelSettingRequest",
     "CreateOnlineReturnPolicyRequest",
     "CreateRegionRequest",
+    "CreateTestAccountRequest",
     "CreateUserRequest",
     "CustomerService",
     "CutoffTime",

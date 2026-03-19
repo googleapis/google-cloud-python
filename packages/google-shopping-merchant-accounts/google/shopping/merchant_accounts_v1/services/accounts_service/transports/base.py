@@ -147,6 +147,11 @@ class AccountsServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_test_account: gapic_v1.method.wrap_method(
+                self.create_test_account,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_account: gapic_v1.method.wrap_method(
                 self.delete_account,
                 default_timeout=None,
@@ -192,6 +197,15 @@ class AccountsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [accounts.CreateAndConfigureAccountRequest],
+        Union[accounts.Account, Awaitable[accounts.Account]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_test_account(
+        self,
+    ) -> Callable[
+        [accounts.CreateTestAccountRequest],
         Union[accounts.Account, Awaitable[accounts.Account]],
     ]:
         raise NotImplementedError()

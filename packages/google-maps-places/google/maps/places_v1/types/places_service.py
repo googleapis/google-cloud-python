@@ -220,6 +220,9 @@ class SearchNearbyRequest(proto.Message):
         routing_parameters (google.maps.places_v1.types.RoutingParameters):
             Optional. Parameters that affect the routing
             to the search results.
+        include_future_opening_businesses (bool):
+            Optional. If true, include businesses that
+            are not yet open but will open in the future.
     """
 
     class RankPreference(proto.Enum):
@@ -300,6 +303,10 @@ class SearchNearbyRequest(proto.Message):
         proto.MESSAGE,
         number=10,
         message="RoutingParameters",
+    )
+    include_future_opening_businesses: bool = proto.Field(
+        proto.BOOL,
+        number=15,
     )
 
 
@@ -419,6 +426,9 @@ class SearchTextRequest(proto.Message):
             Google Maps. Places will not return fields including
             ``location``, ``plus_code``, and other location related
             fields for these businesses.
+        include_future_opening_businesses (bool):
+            Optional. If true, include businesses that
+            are not yet open but will open in the future.
     """
 
     class RankPreference(proto.Enum):
@@ -637,6 +647,10 @@ class SearchTextRequest(proto.Message):
     include_pure_service_area_businesses: bool = proto.Field(
         proto.BOOL,
         number=20,
+    )
+    include_future_opening_businesses: bool = proto.Field(
+        proto.BOOL,
+        number=21,
     )
 
 
@@ -959,6 +973,9 @@ class AutocompletePlacesRequest(proto.Message):
             Google Maps. Places will not return fields including
             ``location``, ``plus_code``, and other location related
             fields for these businesses.
+        include_future_opening_businesses (bool):
+            Optional. If true, include businesses that
+            are not yet open but will open in the future.
     """
 
     class LocationBias(proto.Message):
@@ -1085,6 +1102,10 @@ class AutocompletePlacesRequest(proto.Message):
     include_pure_service_area_businesses: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    include_future_opening_businesses: bool = proto.Field(
+        proto.BOOL,
+        number=13,
     )
 
 

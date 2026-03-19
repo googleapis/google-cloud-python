@@ -454,6 +454,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
                 - ``checkout``
                 - ``free-listings``
+                - ``product-ratings``
                 - ``shopping-ads``
                 - ``youtube-shopping-checkout``
 
@@ -620,6 +621,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
                 - ``checkout``
                 - ``free-listings``
+                - ``product-ratings``
                 - ``shopping-ads``
                 - ``youtube-shopping-checkout``
 
@@ -787,6 +789,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
                 - ``checkout``
                 - ``free-listings``
+                - ``product-ratings``
                 - ``shopping-ads``
                 - ``youtube-shopping-checkout``
 

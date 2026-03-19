@@ -1585,7 +1585,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dlp
     version: 3.34.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: dfcbe6807e8c0bb8d5abb2b5e875a2a03af8d874
     apis:
       - path: google/privacy/dlp/v2
         service_config: dlp_v2.yaml
@@ -3721,7 +3721,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.7.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: dfcbe6807e8c0bb8d5abb2b5e875a2a03af8d874
     apis:
       - path: google/maps/places/v1
         service_config: places_v1.yaml
@@ -3800,7 +3800,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.3.0
-    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
+    last_generated_commit: dfcbe6807e8c0bb8d5abb2b5e875a2a03af8d874
     apis:
       - path: google/shopping/merchant/accounts/v1
         service_config: merchantapi_v1.yaml
