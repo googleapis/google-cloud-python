@@ -34,6 +34,7 @@ import nox
 FLAKE8_VERSION = "flake8==6.1.0"
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
+RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -702,3 +703,34 @@ def core_deps_from_source(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
+
+@nox.session
+def format(session: nox.sessions.Session) -> None:
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
