@@ -265,15 +265,20 @@ class Session(
             metrics=self._metrics,
             publisher=self._publisher,
         )
+
+        labels = {}
+        if not self._strictly_ordered:
+            labels["bigframes-mode"] = "unordered"
+
         self._executor: executor.Executor = bq_caching_executor.BigQueryCachingExecutor(
             bqclient=self._clients_provider.bqclient,
             bqstoragereadclient=self._clients_provider.bqstoragereadclient,
             loader=self._loader,
             storage_manager=self._temp_storage_manager,
-            strictly_ordered=self._strictly_ordered,
             metrics=self._metrics,
             enable_polars_execution=context.enable_polars_execution,
             publisher=self._publisher,
+            labels=labels,
         )
 
     def __del__(self):

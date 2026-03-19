@@ -15,9 +15,12 @@ from __future__ import annotations
 
 import functools
 import itertools
-from typing import Callable, Dict, Optional, Sequence
+from typing import Callable, Dict, Optional, Sequence, TYPE_CHECKING
 
 import bigframes.core.nodes as nodes
+
+if TYPE_CHECKING:
+    import bigframes.session.execution_cache as execution_cache
 
 
 def is_trivially_executable(node: nodes.BigFrameNode) -> bool:
@@ -65,7 +68,7 @@ def select_cache_target(
     root: nodes.BigFrameNode,
     min_complexity: float,
     max_complexity: float,
-    cache: dict[nodes.BigFrameNode, nodes.BigFrameNode],
+    cache: execution_cache.ExecutionCache,
     heuristic: Callable[[int, int], float],
 ) -> Optional[nodes.BigFrameNode]:
     """Take tree, and return candidate nodes with (# of occurences, post-caching planning complexity).
@@ -75,7 +78,7 @@ def select_cache_target(
 
     @functools.cache
     def _with_caching(subtree: nodes.BigFrameNode) -> nodes.BigFrameNode:
-        return nodes.top_down(subtree, lambda x: cache.get(x, x))
+        return cache.subsitute_cached_subplans(subtree)
 
     def _combine_counts(
         left: Dict[nodes.BigFrameNode, int], right: Dict[nodes.BigFrameNode, int]
@@ -106,6 +109,7 @@ def select_cache_target(
     if len(node_counts) == 0:
         raise ValueError("node counts should be non-zero")
 
+    # for each considered node, calculate heuristic value, and return node with max value
     return max(
         node_counts.keys(),
         key=lambda node: heuristic(

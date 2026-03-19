@@ -17,7 +17,6 @@ from __future__ import annotations
 import math
 import threading
 from typing import Literal, Mapping, Optional, Sequence, Tuple
-import weakref
 
 import google.api_core.exceptions
 from google.cloud import bigquery
@@ -47,6 +46,7 @@ from bigframes.session import (
     semi_executor,
 )
 import bigframes.session._io.bigquery as bq_io
+import bigframes.session.execution_cache as execution_cache
 import bigframes.session.execution_spec as ex_spec
 import bigframes.session.metrics
 import bigframes.session.planner
@@ -58,58 +58,6 @@ QUERY_COMPLEXITY_LIMIT = 1e7
 MAX_SUBTREE_FACTORINGS = 5
 _MAX_CLUSTER_COLUMNS = 4
 MAX_SMALL_RESULT_BYTES = 10 * 1024 * 1024 * 1024  # 10G
-
-SourceIdMapping = Mapping[str, str]
-
-
-class ExecutionCache:
-    def __init__(self):
-        # current assumption is only 1 cache of a given node
-        # in future, might have multiple caches, with different layout, localities
-        self._cached_executions: weakref.WeakKeyDictionary[
-            nodes.BigFrameNode, nodes.CachedTableNode
-        ] = weakref.WeakKeyDictionary()
-        self._uploaded_local_data: weakref.WeakKeyDictionary[
-            local_data.ManagedArrowTable,
-            tuple[bq_data.BigqueryDataSource, SourceIdMapping],
-        ] = weakref.WeakKeyDictionary()
-
-    @property
-    def mapping(self) -> Mapping[nodes.BigFrameNode, nodes.BigFrameNode]:
-        return self._cached_executions
-
-    def cache_results_table(
-        self,
-        original_root: nodes.BigFrameNode,
-        data: bq_data.BigqueryDataSource,
-    ):
-        # Assumption: GBQ cached table uses field name as bq column name
-        scan_list = nodes.ScanList(
-            tuple(
-                nodes.ScanItem(field.id, field.id.sql) for field in original_root.fields
-            )
-        )
-        cached_replacement = nodes.CachedTableNode(
-            source=data,
-            scan_list=scan_list,
-            table_session=original_root.session,
-            original_node=original_root,
-        )
-        assert original_root.schema == cached_replacement.schema
-        self._cached_executions[original_root] = cached_replacement
-
-    def cache_remote_replacement(
-        self,
-        local_data: local_data.ManagedArrowTable,
-        bq_data: bq_data.BigqueryDataSource,
-    ):
-        # bq table has one extra column for offsets, those are implicit for local data
-        assert len(local_data.schema.items) + 1 == len(bq_data.table.physical_schema)
-        mapping = {
-            local_data.schema.items[i].column: bq_data.table.physical_schema[i].name
-            for i in range(len(local_data.schema))
-        }
-        self._uploaded_local_data[local_data] = (bq_data, mapping)
 
 
 class BigQueryCachingExecutor(executor.Executor):
@@ -128,20 +76,20 @@ class BigQueryCachingExecutor(executor.Executor):
         bqstoragereadclient: google.cloud.bigquery_storage_v1.BigQueryReadClient,
         loader: loader.GbqDataLoader,
         *,
-        strictly_ordered: bool = True,
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
         enable_polars_execution: bool = False,
         publisher: bigframes.core.events.Publisher,
+        labels: Mapping[str, str] = {},
     ):
         self.bqclient = bqclient
         self.storage_manager = storage_manager
-        self.strictly_ordered: bool = strictly_ordered
-        self.cache: ExecutionCache = ExecutionCache()
+        self.cache: execution_cache.ExecutionCache = execution_cache.ExecutionCache()
         self.metrics = metrics
         self.loader = loader
         self.bqstoragereadclient = bqstoragereadclient
         self._enable_polars_execution = enable_polars_execution
         self._publisher = publisher
+        self._labels = labels
 
         # TODO(tswast): Send events from semi-executors, too.
         self._semi_executors: Sequence[semi_executor.SemiExecutor] = (
@@ -410,8 +358,8 @@ class BigQueryCachingExecutor(executor.Executor):
                 bigframes.options.compute.maximum_bytes_billed
             )
 
-        if not self.strictly_ordered:
-            job_config.labels["bigframes-mode"] = "unordered"
+        if self._labels:
+            job_config.labels.update(self._labels)
 
         try:
             # Trick the type checker into thinking we got a literal.
@@ -450,9 +398,6 @@ class BigQueryCachingExecutor(executor.Executor):
             else:
                 raise
 
-    def replace_cached_subtrees(self, node: nodes.BigFrameNode) -> nodes.BigFrameNode:
-        return nodes.top_down(node, lambda x: self.cache.mapping.get(x, x))
-
     def _is_trivially_executable(self, array_value: bigframes.core.ArrayValue):
         """
         Can the block be evaluated very cheaply?
@@ -482,7 +427,7 @@ class BigQueryCachingExecutor(executor.Executor):
         ):
             self._simplify_with_caching(plan)
 
-        plan = self.replace_cached_subtrees(plan)
+        plan = self.cache.subsitute_cached_subplans(plan)
         plan = rewrite.column_pruning(plan)
         plan = plan.top_down(rewrite.fold_row_counts)
 
@@ -527,7 +472,7 @@ class BigQueryCachingExecutor(executor.Executor):
             self._cache_with_cluster_cols(
                 bigframes.core.ArrayValue(target), cluster_cols_sql_names
             )
-        elif self.strictly_ordered:
+        elif not target.order_ambiguous:
             self._cache_with_offsets(bigframes.core.ArrayValue(target))
         else:
             self._cache_with_cluster_cols(bigframes.core.ArrayValue(target), [])
@@ -552,7 +497,7 @@ class BigQueryCachingExecutor(executor.Executor):
             node,
             min_complexity=(QUERY_COMPLEXITY_LIMIT / 500),
             max_complexity=QUERY_COMPLEXITY_LIMIT,
-            cache=dict(self.cache.mapping),
+            cache=self.cache,
             # Heuristic: subtree_compleixty * (copies of subtree)^2
             heuristic=lambda complexity, count: math.log(complexity)
             + 2 * math.log(count),
@@ -581,32 +526,37 @@ class BigQueryCachingExecutor(executor.Executor):
         def map_local_scans(node: nodes.BigFrameNode):
             if not isinstance(node, nodes.ReadLocalNode):
                 return node
-            if node.local_data_source not in self.cache._uploaded_local_data:
-                return node
-            bq_source, source_mapping = self.cache._uploaded_local_data[
+            uploaded_local_data = self.cache.get_uploaded_local_data(
                 node.local_data_source
-            ]
-            scan_list = node.scan_list.remap_source_ids(source_mapping)
+            )
+            if uploaded_local_data is None:
+                return node
+
+            scan_list = node.scan_list.remap_source_ids(
+                uploaded_local_data.source_mapping
+            )
             # offsets_col isn't part of ReadTableNode, so emulate by adding to end of scan_list
             if node.offsets_col is not None:
                 # Offsets are always implicitly the final column of uploaded data
                 # See: Loader.load_data
                 scan_list = scan_list.append(
-                    bq_source.table.physical_schema[-1].name,
+                    uploaded_local_data.bq_source.table.physical_schema[-1].name,
                     bigframes.dtypes.INT_DTYPE,
                     node.offsets_col,
                 )
-            return nodes.ReadTableNode(bq_source, scan_list, node.session)
+            return nodes.ReadTableNode(
+                uploaded_local_data.bq_source, scan_list, node.session
+            )
 
         return original_root.bottom_up(map_local_scans)
 
     def _upload_local_data(self, local_table: local_data.ManagedArrowTable):
-        if local_table in self.cache._uploaded_local_data:
+        if self.cache.get_uploaded_local_data(local_table) is not None:
             return
         # Lock prevents concurrent repeated work, but slows things down.
         # Might be better as a queue and a worker thread
         with self._upload_lock:
-            if local_table not in self.cache._uploaded_local_data:
+            if self.cache.get_uploaded_local_data(local_table) is None:
                 uploaded = self.loader.load_data_or_write_data(
                     local_table, bigframes.core.guid.generate_guid()
                 )
