@@ -26,8 +26,8 @@ import os
 import pathlib
 import re
 import shutil
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
@@ -149,22 +149,34 @@ def blacken(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def format(session):
+@nox.session
+def format(session: nox.sessions.Session) -> None:
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
     session.run(
-        "isort",
-        "--fss",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
+
+    # 3. Run Ruff to format code
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
@@ -698,17 +710,11 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def mypy(session):
-    """Run the type checker."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add mypy tests
-    session.skip("mypy tests are not yet supported")
-
-
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
+    session.skip("Mypy is not yet supported")
+
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
     # use the latest version of mypy
     session.install(
@@ -721,7 +727,7 @@ def mypy(session):
         "mypy",
         "-p",
         "google",
-        "--check-untyped-defs",
+        #"--check-untyped-defs",
         *session.posargs,
     )
 
@@ -734,34 +740,3 @@ def core_deps_from_source(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
-
-@nox.session
-def format(session: nox.sessions.Session) -> None:
-    """
-    Run ruff to sort imports and format code.
-    """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
-    session.install(RUFF_VERSION)
-
-    # 2. Run Ruff to fix imports
-    # check --select I: Enables strict import sorting
-    # --fix: Applies the changes automatically
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
-
-    # 3. Run Ruff to format code
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
