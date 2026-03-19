@@ -3,7 +3,6 @@
     "client_documentation": "https://googleapis.dev/python/pandas-gbq/latest/",
     "distribution_name": "pandas-gbq",
     "issue_tracker": "https://github.com/googleapis/python-bigquery-pandas/issues",
-    "language": "python",
     "library_type": "INTEGRATION",
     "name": "pandas-gbq",
     "name_pretty": "Google BigQuery connector for pandas",

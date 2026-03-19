@@ -3,7 +3,6 @@
     "default_version": "v1",
     "distribution_name": "google-cloud-documentai-toolbox",
     "issue_tracker": "https://github.com/googleapis/python-documentai-toolbox/issues",
-    "language": "python",
     "library_type": "OTHER",
     "name": "documentai-toolbox",
     "name_pretty": "Document AI Toolbox",

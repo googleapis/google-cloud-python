@@ -3,7 +3,8 @@ Python Client for Access Context Manager
 
 |preview| |pypi| |versions|
 
-`Access Context Manager`_: 
+`Access Context Manager`_: An API for setting attribute based access control to requests to GCP
+services.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

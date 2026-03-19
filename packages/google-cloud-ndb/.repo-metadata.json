@@ -3,7 +3,6 @@
     "client_documentation": "https://googleapis.dev/python/python-ndb/latest",
     "distribution_name": "google-cloud-ndb",
     "issue_tracker": "https://github.com/googleapis/python-ndb/issues",
-    "language": "python",
     "library_type": "GAPIC_MANUAL",
     "name": "python-ndb",
     "name_pretty": "NDB Client Library for Google Cloud Datastore",

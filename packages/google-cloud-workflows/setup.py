@@ -21,14 +21,16 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-cloud-workflows"
+name = "google-cloud-workflows-executions"
 
 
-description = "Google Cloud Workflows API client library"
+description = "Google Cloud Workflows Executions API client library"
 
 version = None
 
-with open(os.path.join(package_root, "google/cloud/workflows/gapic_version.py")) as fp:
+with open(
+    os.path.join(package_root, "google/cloud/workflows/executions/gapic_version.py")
+) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1
     version = version_candidates[0]
@@ -50,7 +52,7 @@ dependencies = [
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 extras = {}
-url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-workflows"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-workflows-executions"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

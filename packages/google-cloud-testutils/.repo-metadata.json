@@ -2,7 +2,6 @@
     "client_documentation": "https://github.com/googleapis/google-cloud-python/packages/google-cloud-testutils",
     "distribution_name": "google-cloud-testutils",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
-    "language": "python",
     "library_type": "OTHER",
     "name": "google-cloud-test-utils",
     "name_pretty": "Python Test Utils for Google Cloud",

@@ -3,7 +3,7 @@ Python Client for Cloud Identity and Access Management
 
 |stable| |pypi| |versions|
 
-`Cloud Identity and Access Management`_: 
+`Cloud Identity and Access Management`_: Manages access control for Google Cloud Platform resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

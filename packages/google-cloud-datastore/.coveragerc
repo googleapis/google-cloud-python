@@ -4,8 +4,8 @@ branch = True
 [report]
 show_missing = True
 omit =
-    google/cloud/datastore/__init__.py
-    google/cloud/datastore/gapic_version.py
+    google/cloud/datastore_admin/__init__.py
+    google/cloud/datastore_admin/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

@@ -4,8 +4,8 @@ branch = True
 [report]
 show_missing = True
 omit =
-    google/cloud/workflows/__init__.py
-    google/cloud/workflows/gapic_version.py
+    google/cloud/workflows/executions/__init__.py
+    google/cloud/workflows/executions/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

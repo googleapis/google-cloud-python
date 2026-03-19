@@ -1,7 +1,6 @@
 {
     "client_documentation": "https://googleapis.dev/python/google-api-core/latest",
     "distribution_name": "google-api-core",
-    "language": "python",
     "library_type": "CORE",
     "name": "google-api-core",
     "name_pretty": "Google API client core library",

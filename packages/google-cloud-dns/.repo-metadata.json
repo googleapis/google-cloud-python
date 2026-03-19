@@ -1,10 +1,8 @@
 {
-    "api_description": "provides methods that you can use to manage DNS for your applications.",
     "api_shortname": "dns",
     "client_documentation": "https://cloud.google.com/python/docs/reference/dns/latest",
     "distribution_name": "google-cloud-dns",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559772",
-    "language": "python",
     "library_type": "REST",
     "name": "dns",
     "name_pretty": "Cloud DNS",
