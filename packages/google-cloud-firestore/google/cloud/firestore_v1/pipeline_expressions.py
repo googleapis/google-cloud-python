@@ -406,6 +406,26 @@ class Expression(ABC):
         return FunctionExpression("sqrt", [self])
 
     @expose_as_static
+    def trunc(self, places: Expression | int | None = None) -> "Expression":
+        """Creates an expression that truncates the numeric value. If places is None,
+        truncates to an integer. Otherwise, truncates the numeric value to the
+        specified number of decimal places.
+
+        Example:
+            >>> # Truncate the 'value' field to 2 decimal places.
+            >>> Field.of("value").trunc(PipelineSource.literals(2))
+
+        Returns:
+            A new `Expression` representing the truncated value.
+        """
+        params = (
+            [self, self._cast_to_expr_or_convert_to_constant(places)]
+            if places is not None
+            else [self]
+        )
+        return FunctionExpression("trunc", params)
+
+    @expose_as_static
     def logical_maximum(self, *others: Expression | CONSTANT_TYPE) -> "Expression":
         """Creates an expression that returns the larger value between this expression
         and another expression or constant, based on Firestore's value type ordering.
@@ -2109,3 +2129,15 @@ class CurrentTimestamp(FunctionExpression):
 
     def __init__(self):
         super().__init__("current_timestamp", [], use_infix_repr=False)
+
+
+class Rand(FunctionExpression):
+    """Creates an expression that generates a random number between 0.0 and 1.0 but not
+    including 1.0.
+
+    Returns:
+        A new `Expression` representing the rand operation.
+    """
+
+    def __init__(self):
+        super().__init__("rand", [], use_infix_repr=False)

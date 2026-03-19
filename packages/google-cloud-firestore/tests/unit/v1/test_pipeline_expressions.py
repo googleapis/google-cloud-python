@@ -1418,6 +1418,23 @@ class TestExpressionessionMethods:
         infix_instance = arg1.sqrt()
         assert infix_instance == instance
 
+    def test_trunc(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.trunc(arg1)
+        assert instance.name == "trunc"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.trunc()"
+        infix_instance = arg1.trunc()
+        assert infix_instance == instance
+
+        places = self._make_arg("Places")
+        instance_with_places = Expression.trunc(arg1, places)
+        assert instance_with_places.name == "trunc"
+        assert instance_with_places.params == [arg1, places]
+        assert repr(instance_with_places) == "Value.trunc(Places)"
+        infix_instance_with_places = arg1.trunc(places)
+        assert infix_instance_with_places == instance_with_places
+
     def test_array_length(self):
         arg1 = self._make_arg("Array")
         instance = Expression.array_length(arg1)
@@ -1583,6 +1600,12 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.maximum()"
         infix_instance = arg1.maximum()
         assert infix_instance == instance
+
+    def test_rand(self):
+        instance = expr.Rand()
+        assert instance.name == "rand"
+        assert instance.params == []
+        assert repr(instance) == "Rand()"
 
     def test_array_agg(self):
         arg1 = self._make_arg("Value")
