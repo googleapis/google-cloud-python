@@ -48,11 +48,9 @@ from google.cloud.spanner_admin_instance_v1 import (
 from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.grpc import (
     InstanceAdminGrpcTransport,
 )
-from google.cloud.spanner_v1 import (
-    DefaultTransactionOptions,
-    ExecuteSqlRequest,
-    __version__,
-)
+from google.cloud.spanner_v1.transaction import DefaultTransactionOptions
+from google.cloud.spanner_v1.types.spanner import ExecuteSqlRequest
+from google.cloud.spanner_v1.gapic_version import __version__
 from google.cloud.spanner_v1._helpers import (
     _create_experimental_host_transport,
     _merge_query_options,

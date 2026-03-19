@@ -27,17 +27,18 @@ from google.api_core.exceptions import (
 )
 from google.protobuf.struct_pb2 import Struct
 
-from google.cloud.spanner_v1 import (
+from google.cloud.spanner_v1.types.spanner import (
     BeginTransactionRequest,
     ExecuteSqlRequest,
-    Mutation,
-    PartialResultSet,
     PartitionOptions,
     PartitionQueryRequest,
     PartitionReadRequest,
     ReadRequest,
     RequestOptions,
-    ResultSet,
+)
+from google.cloud.spanner_v1.types.mutation import Mutation
+from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSet
+from google.cloud.spanner_v1.types.transaction import (
     Transaction,
     TransactionOptions,
     TransactionSelector,

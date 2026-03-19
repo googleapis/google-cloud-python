@@ -21,8 +21,10 @@ from warnings import warn
 
 from google.cloud.exceptions import NotFound
 
-from google.cloud.spanner_v1 import BatchCreateSessionsRequest
-from google.cloud.spanner_v1 import Session as SessionProto
+from google.cloud.spanner_v1.types.spanner import (
+    BatchCreateSessionsRequest,
+    Session as SessionProto,
+)
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,

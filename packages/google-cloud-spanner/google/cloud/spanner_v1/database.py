@@ -40,16 +40,14 @@ from google.cloud.spanner_admin_database_v1 import (
 )
 from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
-from google.cloud.spanner_v1 import (
-    DefaultTransactionOptions,
-    ExecuteSqlRequest,
-    RequestOptions,
-    SpannerClient,
+from google.cloud.spanner_v1.types.spanner import ExecuteSqlRequest, RequestOptions
+from google.cloud.spanner_v1.types.transaction import (
     TransactionOptions,
     TransactionSelector,
-    Type,
-    TypeCode,
 )
+from google.cloud.spanner_v1.types.type import Type, TypeCode
+from google.cloud.spanner_v1.transaction import DefaultTransactionOptions
+from google.cloud.spanner_v1.services.spanner import SpannerClient
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
     _create_experimental_host_transport,

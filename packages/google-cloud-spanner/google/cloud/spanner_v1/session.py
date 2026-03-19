@@ -22,7 +22,7 @@ from typing import MutableMapping, Optional
 from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
 from google.api_core.gapic_v1 import method
 
-from google.cloud.spanner_v1 import CreateSessionRequest, ExecuteSqlRequest
+from google.cloud.spanner_v1.types.spanner import CreateSessionRequest, ExecuteSqlRequest
 from google.cloud.spanner_v1._helpers import (
     _delay_until_retry,
     _get_retry_delay,

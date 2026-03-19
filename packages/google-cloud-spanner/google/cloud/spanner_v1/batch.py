@@ -20,14 +20,14 @@ from typing import List, Optional
 
 from google.api_core.exceptions import InternalServerError
 
-from google.cloud.spanner_v1 import (
+from google.cloud.spanner_v1.types.spanner import (
     BatchWriteRequest,
     CommitRequest,
-    CommitResponse,
-    Mutation,
     RequestOptions,
-    TransactionOptions,
 )
+from google.cloud.spanner_v1.types.commit_response import CommitResponse
+from google.cloud.spanner_v1.types.mutation import Mutation
+from google.cloud.spanner_v1.types.transaction import TransactionOptions
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _check_rst_stream_error,
