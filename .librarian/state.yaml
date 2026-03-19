@@ -3228,12 +3228,71 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-spanner
     version: 3.63.0
-    last_generated_commit: ""
-    apis: []
+    last_generated_commit: 64f1dbf504bab7b58ed96a539a5b26a7ebfc65c7
+    apis:
+      - path: google/spanner/admin/instance/v1
+        service_config: spanner.yaml
+      - path: google/spanner/admin/database/v1
+        service_config: spanner.yaml
+      - path: google/spanner/v1
+        service_config: spanner.yaml
     source_roots:
       - packages/google-cloud-spanner
-    preserve_regex: []
-    remove_regex: []
+    preserve_regex:
+      - packages/google-cloud-spanner/CHANGELOG.md
+      - docs/CHANGELOG.md
+    remove_regex:
+      - ^packages/google-cloud-spanner/.coveragerc
+      - ^packages/google-cloud-spanner/.flake8
+      - ^packages/google-cloud-spanner/.repo-metadata.json
+      - ^packages/google-cloud-spanner/LICENSE
+      - ^packages/google-cloud-spanner/MANIFEST.in
+      - ^packages/google-cloud-spanner/README.rst
+      - ^packages/google-cloud-spanner/mypy.ini
+      - ^packages/google-cloud-spanner/noxfile.py
+      - ^packages/google-cloud-spanner/setup.py
+      - ^packages/google-cloud-spanner/docs/conf.py
+      - ^packages/google-cloud-spanner/docs/index.rst
+      - ^packages/google-cloud-spanner/docs/summary_overview.md
+      - ^packages/google-cloud-spanner/docs/README.rst
+      - ^packages/google-cloud-spanner/docs/_static
+      - ^packages/google-cloud-spanner/docs/_templates
+      - ^packages/google-cloud-spanner/docs/multiprocessing.rst
+      - ^packages/google-cloud-spanner/docs/spanner_v1/spanner.rst
+      - ^packages/google-cloud-spanner/docs/spanner_v1/services_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_v1/types_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/spanner_admin_database.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/services_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_database_v1/types_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/spanner_admin_instance.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/services_.rst
+      - ^packages/google-cloud-spanner/docs/spanner_admin_instance_v1/types_.rst
+      - ^packages/google-cloud-spanner/google/cloud/spanner/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/gapic_metadata.json
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/services
+      - ^packages/google-cloud-spanner/google/cloud/spanner_v1/types
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/gapic_metadata.json
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/services
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_database_v1/types
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/__init__.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/gapic_metadata.json
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/gapic_version.py
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/py.typed
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/services
+      - ^packages/google-cloud-spanner/google/cloud/spanner_admin_instance_v1/types
+      - ^packages/google-cloud-spanner/testing
+      - ^packages/google-cloud-spanner/tests/__init__.py
+      - ^packages/google-cloud-spanner/tests/unit/__init__.py
+      - ^packages/google-cloud-spanner/tests/unit/gapic
+      - ^packages/google-cloud-spanner/samples/generated_samples
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
     version: 2.38.0
