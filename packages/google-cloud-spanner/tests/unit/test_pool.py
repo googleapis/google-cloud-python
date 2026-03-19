@@ -13,43 +13,47 @@
 # limitations under the License.
 
 
-from functools import total_ordering
 import time
 import unittest
 from datetime import datetime, timedelta
+from functools import total_ordering
 
 import mock
-from google.cloud.spanner_v1 import pool as MUT
-from google.cloud.spanner_v1 import _opentelemetry_tracing
-from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import BatchCreateSessionsResponse
-from google.cloud.spanner_v1 import Session
-from google.cloud.spanner_v1 import SpannerClient
-from google.cloud.spanner_v1.database import Database
-from google.cloud.spanner_v1.pool import AbstractSessionPool
-from google.cloud.spanner_v1.pool import SessionCheckout
-from google.cloud.spanner_v1.pool import FixedSizePool
-from google.cloud.spanner_v1.pool import BurstyPool
-from google.cloud.spanner_v1.pool import PingingPool
-from google.cloud.spanner_v1.transaction import Transaction
-from google.cloud.exceptions import NotFound
 from google.cloud._testing import _Monkey
+from google.cloud.exceptions import NotFound
+
+from google.cloud.spanner_v1 import (
+    BatchCreateSessionsResponse,
+    ExecuteSqlRequest,
+    Session,
+    SpannerClient,
+    _opentelemetry_tracing,
+)
+from google.cloud.spanner_v1 import pool as MUT
 from google.cloud.spanner_v1._helpers import (
+    AtomicCounter,
+    _augment_errors_with_request_id,
     _metadata_with_request_id,
     _metadata_with_request_id_and_req_id,
-    _augment_errors_with_request_id,
-    AtomicCounter,
+)
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1.database import Database
+from google.cloud.spanner_v1.pool import (
+    AbstractSessionPool,
+    BurstyPool,
+    FixedSizePool,
+    PingingPool,
+    SessionCheckout,
 )
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
-
-from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1.transaction import Transaction
 from tests._builders import build_database
 from tests._helpers import (
-    OpenTelemetryBase,
+    HAS_OPENTELEMETRY_INSTALLED,
     LIB_VERSION,
+    OpenTelemetryBase,
     StatusCode,
     enrich_with_otel_scope,
-    HAS_OPENTELEMETRY_INSTALLED,
 )
 
 

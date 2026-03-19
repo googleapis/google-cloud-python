@@ -14,8 +14,8 @@
 
 import pytest
 
-from google.cloud.spanner_v1.metrics.metrics_tracer_factory import MetricsTracerFactory
 from google.cloud.spanner_v1.metrics.metrics_tracer import MetricsTracer
+from google.cloud.spanner_v1.metrics.metrics_tracer_factory import MetricsTracerFactory
 
 pytest.importorskip("opentelemetry")
 
@@ -30,15 +30,9 @@ def metrics_tracer_factory():
         "test_instance"
     ).set_instance_config("test_config").set_location("test_location").set_client_hash(
         "test_hash"
-    ).set_client_uid(
-        "test_uid"
-    ).set_client_name(
-        "test_name"
-    ).set_database(
+    ).set_client_uid("test_uid").set_client_name("test_name").set_database(
         "test_db"
-    ).enable_direct_path(
-        False
-    )
+    ).enable_direct_path(False)
     return factory
 
 

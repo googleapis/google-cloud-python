@@ -13,43 +13,43 @@
 # limitations under the License.
 
 """Database cursor for Google Cloud Spanner DB API."""
+
 from collections import namedtuple
 
 import sqlparse
-
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import AlreadyExists
-from google.api_core.exceptions import FailedPrecondition
-from google.api_core.exceptions import InternalServerError
-from google.api_core.exceptions import InvalidArgument
-from google.api_core.exceptions import OutOfRange
+from google.api_core.exceptions import (
+    Aborted,
+    AlreadyExists,
+    FailedPrecondition,
+    InternalServerError,
+    InvalidArgument,
+    OutOfRange,
+)
 
 from google.cloud import spanner_v1 as spanner
-from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
-from google.cloud.spanner_dbapi.exceptions import IntegrityError
-from google.cloud.spanner_dbapi.exceptions import InterfaceError
-from google.cloud.spanner_dbapi.exceptions import OperationalError
-from google.cloud.spanner_dbapi.exceptions import ProgrammingError
-
 from google.cloud.spanner_dbapi import (
     _helpers,
-    client_side_statement_executor,
     batch_dml_executor,
+    client_side_statement_executor,
+    parse_utils,
 )
-from google.cloud.spanner_dbapi._helpers import ColumnInfo
-from google.cloud.spanner_dbapi._helpers import CODE_TO_DISPLAY_SIZE
-
-from google.cloud.spanner_dbapi import parse_utils
+from google.cloud.spanner_dbapi._helpers import CODE_TO_DISPLAY_SIZE, ColumnInfo
+from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
+from google.cloud.spanner_dbapi.exceptions import (
+    IntegrityError,
+    InterfaceError,
+    OperationalError,
+    ProgrammingError,
+)
 from google.cloud.spanner_dbapi.parse_utils import get_param_types
 from google.cloud.spanner_dbapi.parsed_statement import (
-    StatementType,
-    Statement,
-    ParsedStatement,
     AutocommitDmlMode,
+    ParsedStatement,
+    Statement,
+    StatementType,
 )
 from google.cloud.spanner_dbapi.transaction_helper import CursorStatementType
-from google.cloud.spanner_dbapi.utils import PeekIterator
-from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
+from google.cloud.spanner_dbapi.utils import PeekIterator, StreamedManyResultSets
 from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 

@@ -13,20 +13,10 @@
 # limitations under the License.
 
 
-from .constants import (
-    BUILT_IN_METRICS_METER_NAME,
-    NATIVE_METRICS_PREFIX,
-    SPANNER_RESOURCE_TYPE,
-    MONITORED_RESOURCE_LABELS,
-    METRIC_LABELS,
-    METRIC_NAMES,
-)
-
 import logging
-from typing import Optional, List, Union, NoReturn, Tuple, Dict
+from typing import Dict, List, NoReturn, Optional, Tuple, Union
 
 import google.auth
-from google.auth import credentials as ga_credentials
 from google.api.distribution_pb2 import (  # pylint: disable=no-name-in-module
     Distribution,
 )
@@ -34,17 +24,41 @@ from google.api.distribution_pb2 import (  # pylint: disable=no-name-in-module
 # pylint: disable=no-name-in-module
 from google.api.metric_pb2 import (  # pylint: disable=no-name-in-module
     Metric as GMetric,
+)
+from google.api.metric_pb2 import (
     MetricDescriptor,
 )
 from google.api.monitored_resource_pb2 import (  # pylint: disable=no-name-in-module
     MonitoredResource,
 )
+from google.auth import credentials as ga_credentials
 
 # pylint: disable=no-name-in-module
 from google.protobuf.timestamp_pb2 import Timestamp
+
 from google.cloud.spanner_v1.gapic_version import __version__
 
+from .constants import (
+    BUILT_IN_METRICS_METER_NAME,
+    METRIC_LABELS,
+    METRIC_NAMES,
+    MONITORED_RESOURCE_LABELS,
+    NATIVE_METRICS_PREFIX,
+    SPANNER_RESOURCE_TYPE,
+)
+
 try:
+    from google.cloud.monitoring_v3 import (
+        CreateTimeSeriesRequest,
+        MetricServiceClient,
+        Point,
+        TimeInterval,
+        TimeSeries,
+        TypedValue,
+    )
+    from google.cloud.monitoring_v3.services.metric_service.transports.grpc import (
+        MetricServiceGrpcTransport,
+    )
     from opentelemetry.sdk.metrics.export import (
         Gauge,
         Histogram,
@@ -57,17 +71,6 @@ try:
         Sum,
     )
     from opentelemetry.sdk.resources import Resource
-    from google.cloud.monitoring_v3.services.metric_service.transports.grpc import (
-        MetricServiceGrpcTransport,
-    )
-    from google.cloud.monitoring_v3 import (
-        CreateTimeSeriesRequest,
-        MetricServiceClient,
-        Point,
-        TimeInterval,
-        TimeSeries,
-        TypedValue,
-    )
 
     HAS_OPENTELEMETRY_INSTALLED = True
 except ImportError:  # pragma: NO COVER
@@ -203,7 +206,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
 
     @staticmethod
     def _extract_metric_labels(
-        data_point: Union["NumberDataPoint", "HistogramDataPoint"]
+        data_point: Union["NumberDataPoint", "HistogramDataPoint"],
     ) -> Tuple[dict, dict]:
         """
         Extract the metric labels from the data point.

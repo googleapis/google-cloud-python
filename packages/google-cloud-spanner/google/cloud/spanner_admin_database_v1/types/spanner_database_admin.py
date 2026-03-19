@@ -18,15 +18,16 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import (
+    field_mask_pb2,  # type: ignore
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
+from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
 from google.cloud.spanner_admin_database_v1.types import common
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.spanner.admin.database.v1",
@@ -75,6 +76,7 @@ class RestoreSourceType(proto.Enum):
             A backup was used as the source of the
             restore.
     """
+
     TYPE_UNSPECIFIED = 0
     BACKUP = 1
 
@@ -207,6 +209,7 @@ class Database(proto.Message):
                 database will be restored, and the database will transition
                 to ``READY`` state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -996,6 +999,7 @@ class RestoreDatabaseEncryptionConfig(proto.Message):
                 Use customer managed encryption. If specified,
                 ``kms_key_name`` must must contain a valid Cloud KMS key.
         """
+
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION = 1
         GOOGLE_DEFAULT_ENCRYPTION = 2

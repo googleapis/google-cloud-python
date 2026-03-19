@@ -18,9 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
 from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.spanner.admin.instance.v1",
@@ -45,6 +43,7 @@ class FulfillmentPeriod(proto.Enum):
             Extended fulfillment period. It can take up
             to an hour for the operation to complete.
     """
+
     FULFILLMENT_PERIOD_UNSPECIFIED = 0
     FULFILLMENT_PERIOD_NORMAL = 1
     FULFILLMENT_PERIOD_EXTENDED = 2

@@ -19,30 +19,32 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
-from google.cloud.spanner_admin_database_v1.types import backup
+from google.cloud.spanner_admin_database_v1.types import (
+    backup,
+    backup_schedule,
+    spanner_database_admin,
+)
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
-from google.cloud.spanner_admin_database_v1.types import backup_schedule
 from google.cloud.spanner_admin_database_v1.types import (
     backup_schedule as gsad_backup_schedule,
 )
-from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from .base import DatabaseAdminTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, DatabaseAdminTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -1249,12 +1251,12 @@ class DatabaseAdminGrpcTransport(DatabaseAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "internal_update_graph_operation" not in self._stubs:
-            self._stubs[
-                "internal_update_graph_operation"
-            ] = self._logged_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/InternalUpdateGraphOperation",
-                request_serializer=spanner_database_admin.InternalUpdateGraphOperationRequest.serialize,
-                response_deserializer=spanner_database_admin.InternalUpdateGraphOperationResponse.deserialize,
+            self._stubs["internal_update_graph_operation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.spanner.admin.database.v1.DatabaseAdmin/InternalUpdateGraphOperation",
+                    request_serializer=spanner_database_admin.InternalUpdateGraphOperationRequest.serialize,
+                    response_deserializer=spanner_database_admin.InternalUpdateGraphOperationResponse.deserialize,
+                )
             )
         return self._stubs["internal_update_graph_operation"]
 

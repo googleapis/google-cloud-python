@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-
-from google.cloud.spanner_v1.metrics.metrics_tracer import MetricsTracer, MetricOpTracer
-import mock
-from opentelemetry.metrics import Counter, Histogram
 from datetime import datetime
+
+import mock
+import pytest
+from opentelemetry.metrics import Counter, Histogram
+
+from google.cloud.spanner_v1.metrics.metrics_tracer import MetricOpTracer, MetricsTracer
 
 pytest.importorskip("opentelemetry")
 

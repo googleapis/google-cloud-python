@@ -14,52 +14,57 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 from typing import (
-    Dict,
+    AsyncIterable,
+    Awaitable,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    AsyncIterable,
-    Awaitable,
     Sequence,
     Tuple,
     Type,
     Union,
 )
 
-from google.cloud.spanner_v1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
+from google.cloud.spanner_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.spanner_v1.services.spanner import pagers
-from google.cloud.spanner_v1.types import commit_response
-from google.cloud.spanner_v1.types import location
-from google.cloud.spanner_v1.types import mutation
-from google.cloud.spanner_v1.types import result_set
-from google.cloud.spanner_v1.types import spanner
-from google.cloud.spanner_v1.types import transaction
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import (
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.rpc import status_pb2  # type: ignore
-from .transports.base import SpannerTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import SpannerGrpcAsyncIOTransport
+
+from google.cloud.spanner_v1.services.spanner import pagers
+from google.cloud.spanner_v1.types import (
+    commit_response,
+    location,
+    mutation,
+    result_set,
+    spanner,
+    transaction,
+)
+
 from .client import SpannerClient
+from .transports.base import DEFAULT_CLIENT_INFO, SpannerTransport
+from .transports.grpc_asyncio import SpannerGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -121,7 +126,9 @@ class SpannerAsyncClient:
         Returns:
             SpannerAsyncClient: The constructed client.
         """
-        return SpannerClient.from_service_account_info.__func__(SpannerAsyncClient, info, *args, **kwargs)  # type: ignore
+        return SpannerClient.from_service_account_info.__func__(
+            SpannerAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -137,7 +144,9 @@ class SpannerAsyncClient:
         Returns:
             SpannerAsyncClient: The constructed client.
         """
-        return SpannerClient.from_service_account_file.__func__(SpannerAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return SpannerClient.from_service_account_file.__func__(
+            SpannerAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 

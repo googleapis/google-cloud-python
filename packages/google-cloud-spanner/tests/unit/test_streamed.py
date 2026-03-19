@@ -52,16 +52,13 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_scalar_field(name, type_):
-        from google.cloud.spanner_v1 import StructType
-        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import StructType, Type
 
         return StructType.Field(name=name, type_=Type(code=type_))
 
     @staticmethod
     def _make_array_field(name, element_type_code=None, element_type=None):
-        from google.cloud.spanner_v1 import StructType
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import StructType, Type, TypeCode
 
         if element_type is None:
             element_type = Type(code=element_type_code)
@@ -70,9 +67,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_struct_type(struct_type_fields):
-        from google.cloud.spanner_v1 import StructType
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import StructType, Type, TypeCode
 
         fields = [
             StructType.Field(name=key, type_=Type(code=value))
@@ -89,8 +84,8 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_list_value(values=(), value_pbs=None):
-        from google.protobuf.struct_pb2 import ListValue
-        from google.protobuf.struct_pb2 import Value
+        from google.protobuf.struct_pb2 import ListValue, Value
+
         from google.cloud.spanner_v1._helpers import _make_list_value_pb
 
         if value_pbs is not None:
@@ -99,8 +94,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_result_set_metadata(fields=(), transaction_id=None):
-        from google.cloud.spanner_v1 import ResultSetMetadata
-        from google.cloud.spanner_v1 import StructType
+        from google.cloud.spanner_v1 import ResultSetMetadata, StructType
 
         metadata = ResultSetMetadata(row_type=StructType(fields=[]))
         for field in fields:
@@ -111,8 +105,9 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_result_set_stats(query_plan=None, **kw):
-        from google.cloud.spanner_v1 import ResultSetStats
         from google.protobuf.struct_pb2 import Struct
+
+        from google.cloud.spanner_v1 import ResultSetStats
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
         query_stats = Struct(
@@ -149,8 +144,8 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIs(streamed.stats, stats)
 
     def test__merge_chunk_bool(self):
-        from google.cloud.spanner_v1.streamed import Unmergeable
         from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1.streamed import Unmergeable
 
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
@@ -250,8 +245,8 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(merged.number_value, 3.14159)
 
     def test__merge_chunk_float64_w_float64(self):
-        from google.cloud.spanner_v1.streamed import Unmergeable
         from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1.streamed import Unmergeable
 
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
@@ -377,8 +372,9 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_float(self):
-        from google.cloud.spanner_v1 import TypeCode
         import math
+
+        from google.cloud.spanner_v1 import TypeCode
 
         PI = math.pi
         EULER = math.e
@@ -460,9 +456,7 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_array_of_int(self):
-        from google.cloud.spanner_v1 import StructType
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import StructType, Type, TypeCode
 
         subarray_type = Type(
             code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.INT64)
@@ -492,9 +486,7 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_array_of_string(self):
-        from google.cloud.spanner_v1 import StructType
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import StructType, Type, TypeCode
 
         subarray_type = Type(
             code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.STRING)
@@ -941,8 +933,9 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(found, [])
 
     def test___iter___one_result_set_partial(self):
-        from google.cloud.spanner_v1 import TypeCode
         from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import TypeCode
 
         FIELDS = [
             self._make_scalar_field("full_name", TypeCode.STRING),

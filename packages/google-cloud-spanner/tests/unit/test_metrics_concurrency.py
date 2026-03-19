@@ -15,10 +15,11 @@
 import threading
 import time
 import unittest
+
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
-from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 
 
 class TestMetricsConcurrency(unittest.TestCase):

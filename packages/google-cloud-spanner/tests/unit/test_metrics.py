@@ -1,4 +1,4 @@
-﻿# Copyright 2025 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import MagicMock
 from google.api_core.exceptions import ServiceUnavailable
 from google.auth import exceptions
 from google.auth.credentials import Credentials
+from grpc._interceptor import _UnaryOutcome
+from opentelemetry import metrics
 
 from google.cloud.spanner_v1.client import Client
-from unittest.mock import patch
-from grpc._interceptor import _UnaryOutcome
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
-from opentelemetry import metrics
 
 pytest.importorskip("opentelemetry")
 # Skip if semconv attributes are not present, as tracing won't be enabled either
@@ -69,9 +69,7 @@ def patched_client(monkeypatch):
         "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceClient"
     ), patch(
         "google.cloud.spanner_v1.metrics.metrics_exporter.CloudMonitoringMetricsExporter"
-    ), patch(
-        "opentelemetry.sdk.metrics.export.PeriodicExportingMetricReader"
-    ):
+    ), patch("opentelemetry.sdk.metrics.export.PeriodicExportingMetricReader"):
         client = Client(
             project="test",
             credentials=TestCredentials(),

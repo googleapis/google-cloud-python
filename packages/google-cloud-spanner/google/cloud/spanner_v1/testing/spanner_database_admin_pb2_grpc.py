@@ -20,6 +20,7 @@ from google.longrunning import (
     operations_pb2 as google_dot_longrunning_dot_operations__pb2,
 )
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+
 from google.cloud.spanner_admin_database_v1.types import (
     backup as google_dot_spanner_dot_admin_dot_database_dot_v1_dot_backup__pb2,
 )

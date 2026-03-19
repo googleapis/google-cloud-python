@@ -15,27 +15,28 @@
 """Cloud Spanner DB-API Connection class unit tests."""
 
 import datetime
-import mock
 import unittest
 import warnings
+
+import mock
 import pytest
 from google.auth.credentials import AnonymousCredentials
 
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
+from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
+from google.cloud.spanner_dbapi.connection import CLIENT_TRANSACTION_NOT_STARTED_WARNING
 from google.cloud.spanner_dbapi.exceptions import (
     InterfaceError,
     OperationalError,
     ProgrammingError,
 )
-from google.cloud.spanner_dbapi import Connection
-from google.cloud.spanner_dbapi.connection import CLIENT_TRANSACTION_NOT_STARTED_WARNING
 from google.cloud.spanner_dbapi.parsed_statement import (
-    ParsedStatement,
-    StatementType,
-    Statement,
-    ClientSideStatementType,
     AutocommitDmlMode,
+    ClientSideStatementType,
+    ParsedStatement,
+    Statement,
+    StatementType,
 )
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 from tests._builders import build_connection, build_session
@@ -58,8 +59,8 @@ class TestConnection(unittest.TestCase):
     def _make_connection(
         self, database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED, **kwargs
     ):
-        from google.cloud.spanner_v1.instance import Instance
         from google.cloud.spanner_v1.client import Client
+        from google.cloud.spanner_v1.instance import Instance
 
         # We don't need a real Client object to test the constructor
         client = Client(
@@ -240,8 +241,7 @@ class TestConnection(unittest.TestCase):
         self.assertIsNone(connection.snapshot_checkout())
 
     def test_close(self):
-        from google.cloud.spanner_dbapi import connect
-        from google.cloud.spanner_dbapi import InterfaceError
+        from google.cloud.spanner_dbapi import InterfaceError, connect
 
         connection = connect(
             "test-instance",

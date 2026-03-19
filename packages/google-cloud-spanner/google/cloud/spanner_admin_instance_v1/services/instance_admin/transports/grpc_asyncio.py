@@ -15,31 +15,31 @@
 #
 import inspect
 import json
-import pickle
 import logging as std_logging
+import pickle
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry_async as retries
-from google.api_core import operations_v1
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import retry_async as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from .base import InstanceAdminTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, InstanceAdminTransport
 from .grpc import InstanceAdminGrpcTransport
 
 try:
@@ -648,12 +648,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instance_config_operations" not in self._stubs:
-            self._stubs[
-                "list_instance_config_operations"
-            ] = self._logged_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigOperations",
-                request_serializer=spanner_instance_admin.ListInstanceConfigOperationsRequest.serialize,
-                response_deserializer=spanner_instance_admin.ListInstanceConfigOperationsResponse.deserialize,
+            self._stubs["list_instance_config_operations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigOperations",
+                    request_serializer=spanner_instance_admin.ListInstanceConfigOperationsRequest.serialize,
+                    response_deserializer=spanner_instance_admin.ListInstanceConfigOperationsResponse.deserialize,
+                )
             )
         return self._stubs["list_instance_config_operations"]
 
@@ -1255,12 +1255,12 @@ class InstanceAdminGrpcAsyncIOTransport(InstanceAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instance_partition_operations" not in self._stubs:
-            self._stubs[
-                "list_instance_partition_operations"
-            ] = self._logged_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitionOperations",
-                request_serializer=spanner_instance_admin.ListInstancePartitionOperationsRequest.serialize,
-                response_deserializer=spanner_instance_admin.ListInstancePartitionOperationsResponse.deserialize,
+            self._stubs["list_instance_partition_operations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitionOperations",
+                    request_serializer=spanner_instance_admin.ListInstancePartitionOperationsRequest.serialize,
+                    response_deserializer=spanner_instance_admin.ListInstancePartitionOperationsResponse.deserialize,
+                )
             )
         return self._stubs["list_instance_partition_operations"]
 

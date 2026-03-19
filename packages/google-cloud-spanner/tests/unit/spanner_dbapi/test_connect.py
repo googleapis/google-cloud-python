@@ -30,8 +30,7 @@ USER_AGENT = "user-agent"
 @mock.patch("google.cloud.spanner_v1.Client")
 class Test_connect(unittest.TestCase):
     def test_w_implicit(self, mock_client):
-        from google.cloud.spanner_dbapi import connect
-        from google.cloud.spanner_dbapi import Connection
+        from google.cloud.spanner_dbapi import Connection, connect
 
         client = mock_client.return_value
         instance = client.instance.return_value
@@ -70,10 +69,9 @@ class Test_connect(unittest.TestCase):
         self.assertTrue(connection.instance._client.route_to_leader_enabled)
 
     def test_w_explicit(self, mock_client):
-        from google.cloud.spanner_v1.pool import AbstractSessionPool
-        from google.cloud.spanner_dbapi import connect
-        from google.cloud.spanner_dbapi import Connection
+        from google.cloud.spanner_dbapi import Connection, connect
         from google.cloud.spanner_dbapi.version import PY_VERSION
+        from google.cloud.spanner_v1.pool import AbstractSessionPool
 
         credentials = build_scoped_credentials()
         pool = mock.create_autospec(AbstractSessionPool)
@@ -119,8 +117,7 @@ class Test_connect(unittest.TestCase):
         )
 
     def test_w_credential_file_path(self, mock_client):
-        from google.cloud.spanner_dbapi import connect
-        from google.cloud.spanner_dbapi import Connection
+        from google.cloud.spanner_dbapi import Connection, connect
         from google.cloud.spanner_dbapi.version import PY_VERSION
 
         credentials_path = "dummy/file/path.json"
@@ -147,8 +144,7 @@ class Test_connect(unittest.TestCase):
         self.assertEqual(client_info.python_version, PY_VERSION)
 
     def test_with_kwargs(self, mock_client):
-        from google.cloud.spanner_dbapi import connect
-        from google.cloud.spanner_dbapi import Connection
+        from google.cloud.spanner_dbapi import Connection, connect
 
         client = mock_client.return_value
         instance = client.instance.return_value

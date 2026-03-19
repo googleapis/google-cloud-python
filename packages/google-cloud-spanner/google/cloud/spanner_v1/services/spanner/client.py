@@ -13,40 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
-    Dict,
     Callable,
+    Dict,
+    Iterable,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    Iterable,
     Sequence,
     Tuple,
     Type,
     Union,
     cast,
 )
-import warnings
 
-from google.cloud.spanner_v1 import gapic_version as package_version
-
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
+
+from google.cloud.spanner_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -62,18 +62,24 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.cloud.spanner_v1.services.spanner import pagers
-from google.cloud.spanner_v1.types import commit_response
-from google.cloud.spanner_v1.types import location
-from google.cloud.spanner_v1.types import mutation
-from google.cloud.spanner_v1.types import result_set
-from google.cloud.spanner_v1.types import spanner
-from google.cloud.spanner_v1.types import transaction
-from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import (
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.rpc import status_pb2  # type: ignore
-from .transports.base import SpannerTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
+from google.cloud.spanner_v1.services.spanner import pagers
+from google.cloud.spanner_v1.types import (
+    commit_response,
+    location,
+    mutation,
+    result_set,
+    spanner,
+    transaction,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, SpannerTransport
 from .transports.grpc import SpannerGrpcTransport
 from .transports.grpc_asyncio import SpannerGrpcAsyncIOTransport
 from .transports.rest import SpannerRestTransport
@@ -694,8 +700,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(SpannerTransport, transport)
             self._api_endpoint = self._transport.host

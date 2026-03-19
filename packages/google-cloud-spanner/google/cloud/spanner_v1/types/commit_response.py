@@ -18,10 +18,9 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
-from google.cloud.spanner_v1.types import transaction
 from google.protobuf import timestamp_pb2  # type: ignore
 
+from google.cloud.spanner_v1.types import transaction
 
 __protobuf__ = proto.module(
     package="google.spanner.v1",

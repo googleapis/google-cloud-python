@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import os
+
 import mock
 import pytest
-
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import InMemoryMetricReader
 

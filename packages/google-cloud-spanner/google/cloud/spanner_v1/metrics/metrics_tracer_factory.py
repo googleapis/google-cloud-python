@@ -14,28 +14,27 @@
 
 """Factory for creating MetricTracer instances, facilitating metrics collection and tracing."""
 
-from google.cloud.spanner_v1.metrics.metrics_tracer import MetricsTracer
+from typing import Dict
 
 from google.cloud.spanner_v1.metrics.constants import (
-    METRIC_NAME_OPERATION_LATENCIES,
-    MONITORED_RES_LABEL_KEY_PROJECT,
-    METRIC_NAME_ATTEMPT_LATENCIES,
-    METRIC_NAME_OPERATION_COUNT,
+    BUILT_IN_METRICS_METER_NAME,
+    METRIC_LABEL_KEY_CLIENT_NAME,
+    METRIC_LABEL_KEY_CLIENT_UID,
+    METRIC_LABEL_KEY_DATABASE,
+    METRIC_LABEL_KEY_DIRECT_PATH_ENABLED,
     METRIC_NAME_ATTEMPT_COUNT,
+    METRIC_NAME_ATTEMPT_LATENCIES,
+    METRIC_NAME_GFE_LATENCY,
+    METRIC_NAME_GFE_MISSING_HEADER_COUNT,
+    METRIC_NAME_OPERATION_COUNT,
+    METRIC_NAME_OPERATION_LATENCIES,
+    MONITORED_RES_LABEL_KEY_CLIENT_HASH,
     MONITORED_RES_LABEL_KEY_INSTANCE,
     MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG,
     MONITORED_RES_LABEL_KEY_LOCATION,
-    MONITORED_RES_LABEL_KEY_CLIENT_HASH,
-    METRIC_LABEL_KEY_CLIENT_UID,
-    METRIC_LABEL_KEY_CLIENT_NAME,
-    METRIC_LABEL_KEY_DATABASE,
-    METRIC_LABEL_KEY_DIRECT_PATH_ENABLED,
-    BUILT_IN_METRICS_METER_NAME,
-    METRIC_NAME_GFE_LATENCY,
-    METRIC_NAME_GFE_MISSING_HEADER_COUNT,
+    MONITORED_RES_LABEL_KEY_PROJECT,
 )
-
-from typing import Dict
+from google.cloud.spanner_v1.metrics.metrics_tracer import MetricsTracer
 
 try:
     from opentelemetry.metrics import Counter, Histogram, get_meter_provider
@@ -147,9 +146,9 @@ class MetricsTracerFactory:
         Returns:
             MetricsTracerFactory: The current instance of MetricsTracerFactory to enable method chaining.
         """
-        self._client_attributes[
-            MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG
-        ] = instance_config
+        self._client_attributes[MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG] = (
+            instance_config
+        )
         return self
 
     def set_location(self, location: str) -> "MetricsTracerFactory":

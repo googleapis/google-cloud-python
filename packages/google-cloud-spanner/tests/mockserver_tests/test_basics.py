@@ -22,21 +22,20 @@ from google.cloud.spanner_v1 import (
     TransactionOptions,
     TypeCode,
 )
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 from google.cloud.spanner_v1.transaction import Transaction
-from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-
+from tests._helpers import is_multiplexed_enabled
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     _make_partial_result_sets,
+    add_error,
+    add_execute_streaming_sql_results,
     add_select1_result,
     add_single_result,
     add_update_count,
-    add_error,
     unavailable_status,
-    add_execute_streaming_sql_results,
 )
-from tests._helpers import is_multiplexed_enabled
 
 
 class TestBasics(MockServerTestBase):
@@ -64,10 +63,7 @@ class TestBasics(MockServerTestBase):
                     "test-project", "test-instance", "test-database"
                 ),
                 statements=[
-                    "CREATE TABLE Test ("
-                    "Id INT64, "
-                    "Value STRING(MAX)) "
-                    "PRIMARY KEY (Id)",
+                    "CREATE TABLE Test (Id INT64, Value STRING(MAX)) PRIMARY KEY (Id)",
                 ],
             )
         )

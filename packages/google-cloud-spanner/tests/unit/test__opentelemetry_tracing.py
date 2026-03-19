@@ -7,12 +7,12 @@ except ImportError:
     pass
 
 from google.api_core.exceptions import GoogleAPICallError
-from google.cloud.spanner_v1._helpers import GOOGLE_CLOUD_REGION_GLOBAL
-from google.cloud.spanner_v1 import _opentelemetry_tracing
 
+from google.cloud.spanner_v1 import _opentelemetry_tracing
+from google.cloud.spanner_v1._helpers import GOOGLE_CLOUD_REGION_GLOBAL
 from tests._helpers import (
-    OpenTelemetryBase,
     LIB_VERSION,
+    OpenTelemetryBase,
     enrich_with_otel_scope,
 )
 
@@ -165,13 +165,13 @@ class TestTracing(OpenTelemetryBase):
     def test_trace_call_terminal_span_status_ALWAYS_ON_sampler(self):
         # Verify that we don't unconditionally set the terminal span status to
         # SpanStatus.OK per https://github.com/googleapis/python-spanner/issues/1246
+        from opentelemetry.sdk.trace import TracerProvider
         from opentelemetry.sdk.trace.export import SimpleSpanProcessor
         from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
             InMemorySpanExporter,
         )
-        from opentelemetry.trace.status import Status, StatusCode
-        from opentelemetry.sdk.trace import TracerProvider
         from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+        from opentelemetry.trace.status import Status, StatusCode
 
         tracer_provider = TracerProvider(sampler=ALWAYS_ON)
         trace_exporter = InMemorySpanExporter()
@@ -203,11 +203,11 @@ class TestTracing(OpenTelemetryBase):
         # Verify that we get the correct status even when using the ALWAYS_OFF
         # sampler which produces the NonRecordingSpan per
         # https://github.com/googleapis/python-spanner/issues/1286
+        from opentelemetry.sdk.trace import TracerProvider
         from opentelemetry.sdk.trace.export import SimpleSpanProcessor
         from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
             InMemorySpanExporter,
         )
-        from opentelemetry.sdk.trace import TracerProvider
         from opentelemetry.sdk.trace.sampling import ALWAYS_OFF
 
         tracer_provider = TracerProvider(sampler=ALWAYS_OFF)

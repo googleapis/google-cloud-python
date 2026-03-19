@@ -17,8 +17,10 @@ import unittest
 
 class Test_compare_checksums(unittest.TestCase):
     def test_equal(self):
-        from google.cloud.spanner_dbapi.checksum import _compare_checksums
-        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.checksum import (
+            ResultsChecksum,
+            _compare_checksums,
+        )
 
         original = ResultsChecksum()
         original.consume_result(5)
@@ -29,8 +31,10 @@ class Test_compare_checksums(unittest.TestCase):
         self.assertIsNone(_compare_checksums(original, retried))
 
     def test_less_results(self):
-        from google.cloud.spanner_dbapi.checksum import _compare_checksums
-        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.checksum import (
+            ResultsChecksum,
+            _compare_checksums,
+        )
         from google.cloud.spanner_dbapi.exceptions import RetryAborted
 
         original = ResultsChecksum()
@@ -42,8 +46,10 @@ class Test_compare_checksums(unittest.TestCase):
             _compare_checksums(original, retried)
 
     def test_more_results(self):
-        from google.cloud.spanner_dbapi.checksum import _compare_checksums
-        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.checksum import (
+            ResultsChecksum,
+            _compare_checksums,
+        )
         from google.cloud.spanner_dbapi.exceptions import RetryAborted
 
         original = ResultsChecksum()
@@ -57,8 +63,10 @@ class Test_compare_checksums(unittest.TestCase):
             _compare_checksums(original, retried)
 
     def test_mismatch(self):
-        from google.cloud.spanner_dbapi.checksum import _compare_checksums
-        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.checksum import (
+            ResultsChecksum,
+            _compare_checksums,
+        )
         from google.cloud.spanner_dbapi.exceptions import RetryAborted
 
         original = ResultsChecksum()

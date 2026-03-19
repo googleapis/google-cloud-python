@@ -17,9 +17,7 @@ import unittest
 
 class TestDBAPIGlobals(unittest.TestCase):
     def test_apilevel(self):
-        from google.cloud.spanner_dbapi import apilevel
-        from google.cloud.spanner_dbapi import paramstyle
-        from google.cloud.spanner_dbapi import threadsafety
+        from google.cloud.spanner_dbapi import apilevel, paramstyle, threadsafety
 
         self.assertEqual(apilevel, "2.0", "We implement PEP-0249 version 2.0")
         self.assertEqual(paramstyle, "format", "Cloud Spanner uses @param")

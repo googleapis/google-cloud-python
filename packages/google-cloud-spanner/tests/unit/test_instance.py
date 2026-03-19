@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import unittest
+
 import mock
 from google.auth.credentials import AnonymousCredentials
 
@@ -407,6 +408,7 @@ class TestInstance(unittest.TestCase):
 
     def test_update_not_found(self):
         from google.cloud.exceptions import NotFound
+
         from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 
         client = _Client(self.PROJECT)
@@ -549,6 +551,7 @@ class TestInstance(unittest.TestCase):
 
     def test_database_factory_explicit(self):
         from logging import Logger
+
         from google.cloud.spanner_v1.database import Database
         from tests._fixtures import DDL_STATEMENTS
 
@@ -584,9 +587,11 @@ class TestInstance(unittest.TestCase):
 
     def test_list_databases(self):
         from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListDatabasesRequest
-        from google.cloud.spanner_admin_database_v1 import ListDatabasesResponse
+        from google.cloud.spanner_admin_database_v1 import (
+            DatabaseAdminClient,
+            ListDatabasesRequest,
+            ListDatabasesResponse,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -600,9 +605,9 @@ class TestInstance(unittest.TestCase):
             ]
         )
 
-        ld_api = api._transport._wrapped_methods[
-            api._transport.list_databases
-        ] = mock.Mock(return_value=databases_pb)
+        ld_api = api._transport._wrapped_methods[api._transport.list_databases] = (
+            mock.Mock(return_value=databases_pb)
+        )
 
         response = instance.list_databases()
         databases = list(response)
@@ -623,9 +628,11 @@ class TestInstance(unittest.TestCase):
         )
 
     def test_list_databases_w_options(self):
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListDatabasesRequest
-        from google.cloud.spanner_admin_database_v1 import ListDatabasesResponse
+        from google.cloud.spanner_admin_database_v1 import (
+            DatabaseAdminClient,
+            ListDatabasesRequest,
+            ListDatabasesResponse,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -634,9 +641,9 @@ class TestInstance(unittest.TestCase):
 
         databases_pb = ListDatabasesResponse(databases=[])
 
-        ld_api = api._transport._wrapped_methods[
-            api._transport.list_databases
-        ] = mock.Mock(return_value=databases_pb)
+        ld_api = api._transport._wrapped_methods[api._transport.list_databases] = (
+            mock.Mock(return_value=databases_pb)
+        )
 
         page_size = 42
         response = instance.list_databases(page_size=page_size)
@@ -672,9 +679,11 @@ class TestInstance(unittest.TestCase):
 
     def test_backup_factory_explicit(self):
         import datetime
+
         from google.cloud._helpers import UTC
-        from google.cloud.spanner_v1.backup import Backup
+
         from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+        from google.cloud.spanner_v1.backup import Backup
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
@@ -702,9 +711,11 @@ class TestInstance(unittest.TestCase):
 
     def test_list_backups_defaults(self):
         from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListBackupsRequest
-        from google.cloud.spanner_admin_database_v1 import ListBackupsResponse
+        from google.cloud.spanner_admin_database_v1 import (
+            DatabaseAdminClient,
+            ListBackupsRequest,
+            ListBackupsResponse,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -719,9 +730,9 @@ class TestInstance(unittest.TestCase):
             ]
         )
 
-        lbo_api = api._transport._wrapped_methods[
-            api._transport.list_backups
-        ] = mock.Mock(return_value=backups_pb)
+        lbo_api = api._transport._wrapped_methods[api._transport.list_backups] = (
+            mock.Mock(return_value=backups_pb)
+        )
 
         backups = instance.list_backups()
 
@@ -741,9 +752,11 @@ class TestInstance(unittest.TestCase):
 
     def test_list_backups_w_options(self):
         from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListBackupsRequest
-        from google.cloud.spanner_admin_database_v1 import ListBackupsResponse
+        from google.cloud.spanner_admin_database_v1 import (
+            DatabaseAdminClient,
+            ListBackupsRequest,
+            ListBackupsResponse,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -758,9 +771,9 @@ class TestInstance(unittest.TestCase):
             ]
         )
 
-        ldo_api = api._transport._wrapped_methods[
-            api._transport.list_backups
-        ] = mock.Mock(return_value=backups_pb)
+        ldo_api = api._transport._wrapped_methods[api._transport.list_backups] = (
+            mock.Mock(return_value=backups_pb)
+        )
 
         backups = instance.list_backups(filter_="filter", page_size=10)
 
@@ -782,12 +795,15 @@ class TestInstance(unittest.TestCase):
 
     def test_list_backup_operations_defaults(self):
         from google.api_core.operation import Operation
-        from google.cloud.spanner_admin_database_v1 import CreateBackupMetadata
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListBackupOperationsRequest
-        from google.cloud.spanner_admin_database_v1 import ListBackupOperationsResponse
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
+
+        from google.cloud.spanner_admin_database_v1 import (
+            CreateBackupMetadata,
+            DatabaseAdminClient,
+            ListBackupOperationsRequest,
+            ListBackupOperationsResponse,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -827,12 +843,15 @@ class TestInstance(unittest.TestCase):
 
     def test_list_backup_operations_w_options(self):
         from google.api_core.operation import Operation
-        from google.cloud.spanner_admin_database_v1 import CreateBackupMetadata
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListBackupOperationsRequest
-        from google.cloud.spanner_admin_database_v1 import ListBackupOperationsResponse
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
+
+        from google.cloud.spanner_admin_database_v1 import (
+            CreateBackupMetadata,
+            DatabaseAdminClient,
+            ListBackupOperationsRequest,
+            ListBackupOperationsResponse,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -874,17 +893,16 @@ class TestInstance(unittest.TestCase):
 
     def test_list_database_operations_defaults(self):
         from google.api_core.operation import Operation
-        from google.cloud.spanner_admin_database_v1 import CreateDatabaseMetadata
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListDatabaseOperationsRequest
-        from google.cloud.spanner_admin_database_v1 import (
-            ListDatabaseOperationsResponse,
-        )
-        from google.cloud.spanner_admin_database_v1 import (
-            OptimizeRestoredDatabaseMetadata,
-        )
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
+
+        from google.cloud.spanner_admin_database_v1 import (
+            CreateDatabaseMetadata,
+            DatabaseAdminClient,
+            ListDatabaseOperationsRequest,
+            ListDatabaseOperationsResponse,
+            OptimizeRestoredDatabaseMetadata,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -932,16 +950,17 @@ class TestInstance(unittest.TestCase):
 
     def test_list_database_operations_w_options(self):
         from google.api_core.operation import Operation
-        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
-        from google.cloud.spanner_admin_database_v1 import ListDatabaseOperationsRequest
-        from google.cloud.spanner_admin_database_v1 import (
-            ListDatabaseOperationsResponse,
-        )
-        from google.cloud.spanner_admin_database_v1 import RestoreDatabaseMetadata
-        from google.cloud.spanner_admin_database_v1 import RestoreSourceType
-        from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlMetadata
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
+
+        from google.cloud.spanner_admin_database_v1 import (
+            DatabaseAdminClient,
+            ListDatabaseOperationsRequest,
+            ListDatabaseOperationsResponse,
+            RestoreDatabaseMetadata,
+            RestoreSourceType,
+            UpdateDatabaseDdlMetadata,
+        )
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -1009,8 +1028,9 @@ class TestInstance(unittest.TestCase):
         )
 
     def test_type_string_to_type_pb_miss(self):
-        from google.cloud.spanner_v1 import instance
         from google.protobuf.empty_pb2 import Empty
+
+        from google.cloud.spanner_v1 import instance
 
         self.assertEqual(instance._type_string_to_type_pb("invalid_string"), Empty)
 

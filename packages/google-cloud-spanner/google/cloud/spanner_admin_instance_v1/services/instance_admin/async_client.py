@@ -14,11 +14,12 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
+import uuid
+from collections import OrderedDict
 from typing import (
-    Dict,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -28,37 +29,42 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
-from google.cloud.spanner_admin_instance_v1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
+from google.cloud.spanner_admin_instance_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+from google.api_core import (
+    operation,  # type: ignore
+    operation_async,  # type: ignore
+)
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore  # type: ignore
+from google.protobuf import (
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
+
 from google.cloud.spanner_admin_instance_v1.services.instance_admin import pagers
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import InstanceAdminTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import InstanceAdminGrpcAsyncIOTransport
+
 from .client import InstanceAdminClient
+from .transports.base import DEFAULT_CLIENT_INFO, InstanceAdminTransport
+from .transports.grpc_asyncio import InstanceAdminGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -153,7 +159,9 @@ class InstanceAdminAsyncClient:
         Returns:
             InstanceAdminAsyncClient: The constructed client.
         """
-        return InstanceAdminClient.from_service_account_info.__func__(InstanceAdminAsyncClient, info, *args, **kwargs)  # type: ignore
+        return InstanceAdminClient.from_service_account_info.__func__(
+            InstanceAdminAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -169,7 +177,9 @@ class InstanceAdminAsyncClient:
         Returns:
             InstanceAdminAsyncClient: The constructed client.
         """
-        return InstanceAdminClient.from_service_account_file.__func__(InstanceAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return InstanceAdminClient.from_service_account_file.__func__(
+            InstanceAdminAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 

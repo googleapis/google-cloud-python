@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import defaultdict
 import threading
+from collections import defaultdict
 
-from grpc_interceptor import ClientInterceptor
 from google.api_core.exceptions import Aborted
+from grpc_interceptor import ClientInterceptor
+
 from google.cloud.spanner_v1.request_id_header import parse_request_id
 
 

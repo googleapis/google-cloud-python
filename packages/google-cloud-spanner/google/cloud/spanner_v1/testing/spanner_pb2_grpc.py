@@ -14,6 +14,7 @@
 
 import grpc
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+
 from google.cloud.spanner_v1.types import (
     commit_response as google_dot_spanner_dot_v1_dot_commit__response__pb2,
 )

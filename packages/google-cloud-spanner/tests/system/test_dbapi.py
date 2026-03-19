@@ -13,29 +13,28 @@
 # limitations under the License.
 import base64
 import datetime
+import decimal
+import time
 from collections import defaultdict
 
 import pytest
-import time
-import decimal
-
-from google.cloud import spanner_v1
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.cloud._helpers import UTC
 
+from google.cloud import spanner_v1
 from google.cloud.spanner_dbapi.connection import Connection, connect
 from google.cloud.spanner_dbapi.exceptions import (
-    ProgrammingError,
     OperationalError,
+    ProgrammingError,
     RetryAborted,
 )
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_v1 import JsonObject
 from google.cloud.spanner_v1 import gapic_version as package_version
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-from . import _helpers
 from tests._helpers import is_multiplexed_enabled
+
+from . import _helpers
 
 DATABASE_NAME = "dbapi-txn"
 SPANNER_RPC_PREFIX = "/google.spanner.v1.Spanner/"

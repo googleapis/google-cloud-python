@@ -11,12 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, List, Any, Dict
-from google.api_core.exceptions import Aborted
+from typing import TYPE_CHECKING, Any, Dict, List
 
-import time
+from google.api_core.exceptions import Aborted
 
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
 from google.cloud.spanner_dbapi.exceptions import RetryAborted
@@ -114,9 +114,9 @@ class TransactionRetryHelper:
                 result_details=result_details,
                 size=size,
             )
-            self._last_statement_details_per_cursor[
-                cursor
-            ] = last_statement_result_details
+            self._last_statement_details_per_cursor[cursor] = (
+                last_statement_result_details
+            )
             self._statement_result_details_list.append(last_statement_result_details)
 
     def add_execute_statement_for_retry(

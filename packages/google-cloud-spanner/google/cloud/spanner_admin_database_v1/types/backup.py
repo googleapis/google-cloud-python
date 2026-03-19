@@ -18,12 +18,13 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import (
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 
 from google.cloud.spanner_admin_database_v1.types import common
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.spanner.admin.database.v1",
@@ -220,6 +221,7 @@ class Backup(proto.Message):
             READY (2):
                 The backup is complete and ready for use.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -273,12 +275,12 @@ class Backup(proto.Message):
         number=8,
         message=common.EncryptionInfo,
     )
-    encryption_information: MutableSequence[
-        common.EncryptionInfo
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=common.EncryptionInfo,
+    encryption_information: MutableSequence[common.EncryptionInfo] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=common.EncryptionInfo,
+        )
     )
     database_dialect: common.DatabaseDialect = proto.Field(
         proto.ENUM,
@@ -307,12 +309,12 @@ class Backup(proto.Message):
         number=18,
         message=timestamp_pb2.Timestamp,
     )
-    instance_partitions: MutableSequence[
-        "BackupInstancePartition"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=19,
-        message="BackupInstancePartition",
+    instance_partitions: MutableSequence["BackupInstancePartition"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=19,
+            message="BackupInstancePartition",
+        )
     )
 
 
@@ -971,6 +973,7 @@ class CreateBackupEncryptionConfig(proto.Message):
                 Use customer managed encryption. If specified,
                 ``kms_key_name`` must contain a valid Cloud KMS key.
         """
+
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_DATABASE_ENCRYPTION = 1
         GOOGLE_DEFAULT_ENCRYPTION = 2
@@ -1046,6 +1049,7 @@ class CopyBackupEncryptionConfig(proto.Message):
                 ``kms_key_name`` or ``kms_key_names`` must contain valid
                 Cloud KMS key(s).
         """
+
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION = 1
         GOOGLE_DEFAULT_ENCRYPTION = 2

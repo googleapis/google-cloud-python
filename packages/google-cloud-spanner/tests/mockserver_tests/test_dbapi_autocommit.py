@@ -14,10 +14,10 @@
 
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_v1 import (
-    ExecuteSqlRequest,
-    TypeCode,
     CommitRequest,
     ExecuteBatchDmlRequest,
+    ExecuteSqlRequest,
+    TypeCode,
 )
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,

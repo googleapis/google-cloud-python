@@ -18,9 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
 from google.protobuf import struct_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.spanner.v1",
@@ -95,6 +93,7 @@ class PlanNode(proto.Message):
                 arithmetic operators appearing inside predicate
                 expressions or references to column names.
         """
+
         KIND_UNSPECIFIED = 0
         RELATIONAL = 1
         SCALAR = 2

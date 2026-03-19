@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
-from typing import Any
-
+import base64
 import gzip
 import pickle
-import base64
+from dataclasses import dataclass
+from typing import Any
 
 from google.cloud.spanner_v1 import BatchTransactionId
 

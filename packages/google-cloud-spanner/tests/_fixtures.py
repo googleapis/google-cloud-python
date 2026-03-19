@@ -14,7 +14,6 @@
 
 """Test fixtures."""
 
-
 DDL = """\
 CREATE TABLE contacts (
     contact_id INT64,

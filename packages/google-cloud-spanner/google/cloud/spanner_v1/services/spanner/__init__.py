@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import SpannerClient
 from .async_client import SpannerAsyncClient
+from .client import SpannerClient
 
 __all__ = (
     "SpannerClient",

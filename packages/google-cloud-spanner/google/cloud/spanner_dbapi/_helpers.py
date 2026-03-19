@@ -14,7 +14,6 @@
 
 from google.cloud.spanner_v1 import param_types
 
-
 SQL_LIST_TABLES = """
 SELECT table_name
 FROM information_schema.tables

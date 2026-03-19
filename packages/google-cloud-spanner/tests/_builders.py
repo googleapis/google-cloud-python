@@ -13,10 +13,12 @@
 # limitations under the License.
 from datetime import datetime
 from logging import Logger
-from mock import create_autospec
 from typing import Mapping
 
 from google.auth.credentials import Credentials, Scoped
+from google.cloud._helpers import _datetime_to_pb_timestamp
+from mock import create_autospec
+
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_v1 import SpannerClient
 from google.cloud.spanner_v1.client import Client
@@ -24,15 +26,18 @@ from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.session import Session
 from google.cloud.spanner_v1.transaction import Transaction
-
 from google.cloud.spanner_v1.types import (
     CommitResponse as CommitResponsePB,
+)
+from google.cloud.spanner_v1.types import (
     MultiplexedSessionPrecommitToken as PrecommitTokenPB,
+)
+from google.cloud.spanner_v1.types import (
     Session as SessionPB,
+)
+from google.cloud.spanner_v1.types import (
     Transaction as TransactionPB,
 )
-
-from google.cloud._helpers import _datetime_to_pb_timestamp
 
 # Default values used to populate required or expected attributes.
 # Tests should not depend on them: if a test requires a specific

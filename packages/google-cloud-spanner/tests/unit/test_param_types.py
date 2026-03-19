@@ -74,10 +74,12 @@ class Test_JsonbParamType(unittest.TestCase):
 
 class Test_OidParamType(unittest.TestCase):
     def test_it(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-        from google.cloud.spanner_v1 import TypeAnnotationCode
-        from google.cloud.spanner_v1 import param_types
+        from google.cloud.spanner_v1 import (
+            Type,
+            TypeAnnotationCode,
+            TypeCode,
+            param_types,
+        )
 
         expected = Type(
             code=TypeCode.INT64,
@@ -91,9 +93,8 @@ class Test_OidParamType(unittest.TestCase):
 
 class Test_ProtoMessageParamType(unittest.TestCase):
     def test_it(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-        from google.cloud.spanner_v1 import param_types
+        from google.cloud.spanner_v1 import Type, TypeCode, param_types
+
         from .testdata import singer_pb2
 
         singer_info = singer_pb2.SingerInfo()
@@ -108,9 +109,8 @@ class Test_ProtoMessageParamType(unittest.TestCase):
 
 class Test_ProtoEnumParamType(unittest.TestCase):
     def test_it(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-        from google.cloud.spanner_v1 import param_types
+        from google.cloud.spanner_v1 import Type, TypeCode, param_types
+
         from .testdata import singer_pb2
 
         singer_genre = singer_pb2.Genre

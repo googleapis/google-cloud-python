@@ -22,7 +22,6 @@ from google.cloud.spanner_v1.types import (
     TypeCode,
 )
 
-
 _EXISTS_TEMPLATE = """
 SELECT EXISTS(
     SELECT TABLE_NAME

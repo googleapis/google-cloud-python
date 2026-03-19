@@ -17,15 +17,8 @@ import unittest
 import grpc
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
-from google.cloud.spanner_v1 import Type
-
-from google.cloud.spanner_v1 import StructType
-from google.cloud.spanner_v1._helpers import _make_value_pb
-
-from google.cloud.spanner_v1 import PartialResultSet
 from google.protobuf.duration_pb2 import Duration
 from google.rpc import code_pb2, status_pb2
-
 from google.rpc.error_details_pb2 import RetryInfo
 from grpc_status._common import code_to_grpc_status_code
 from grpc_status.rpc_status import _Status
@@ -33,7 +26,16 @@ from grpc_status.rpc_status import _Status
 import google.cloud.spanner_v1.types.result_set as result_set
 import google.cloud.spanner_v1.types.type as spanner_type
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
-from google.cloud.spanner_v1 import Client, FixedSizePool, ResultSetMetadata, TypeCode
+from google.cloud.spanner_v1 import (
+    Client,
+    FixedSizePool,
+    PartialResultSet,
+    ResultSetMetadata,
+    StructType,
+    Type,
+    TypeCode,
+)
+from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.testing.mock_database_admin import DatabaseAdminServicer
@@ -311,9 +313,9 @@ class MockServerTestBase(unittest.TestCase):
         """
         from google.cloud.spanner_v1 import (
             BatchCreateSessionsRequest,
+            BeginTransactionRequest,
             CreateSessionRequest,
             ExecuteSqlRequest,
-            BeginTransactionRequest,
         )
 
         # Count session creation requests that come before the first non-session request

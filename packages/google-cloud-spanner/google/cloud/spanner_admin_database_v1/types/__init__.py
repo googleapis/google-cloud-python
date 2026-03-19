@@ -45,10 +45,10 @@ from .backup_schedule import (
     UpdateBackupScheduleRequest,
 )
 from .common import (
+    DatabaseDialect,
     EncryptionConfig,
     EncryptionInfo,
     OperationProgress,
-    DatabaseDialect,
 )
 from .spanner_database_admin import (
     AddSplitPointsRequest,
@@ -75,12 +75,12 @@ from .spanner_database_admin import (
     RestoreDatabaseMetadata,
     RestoreDatabaseRequest,
     RestoreInfo,
+    RestoreSourceType,
     SplitPoints,
     UpdateDatabaseDdlMetadata,
     UpdateDatabaseDdlRequest,
     UpdateDatabaseMetadata,
     UpdateDatabaseRequest,
-    RestoreSourceType,
 )
 
 __all__ = (

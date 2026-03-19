@@ -11,19 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from datetime import timedelta
 from enum import Enum
 from os import getenv
-from datetime import timedelta
 from threading import Event, Lock, Thread
 from time import sleep, time
 from typing import Optional
 from weakref import ref
 
-from google.cloud.spanner_v1.session import Session
 from google.cloud.spanner_v1._opentelemetry_tracing import (
-    get_current_span,
     add_span_event,
+    get_current_span,
 )
+from google.cloud.spanner_v1.session import Session
 
 
 class TransactionType(Enum):

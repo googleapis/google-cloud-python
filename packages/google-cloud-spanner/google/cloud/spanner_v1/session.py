@@ -14,34 +14,30 @@
 
 """Wrapper for Cloud Spanner Session objects."""
 
-from functools import total_ordering
 import time
 from datetime import datetime
+from functools import total_ordering
 from typing import MutableMapping, Optional
 
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import GoogleAPICallError
-from google.api_core.exceptions import NotFound
+from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
 from google.api_core.gapic_v1 import method
-from google.cloud.spanner_v1._helpers import _delay_until_retry
-from google.cloud.spanner_v1._helpers import _get_retry_delay
-from google.cloud.spanner_v1._helpers import (
-    _metadata_with_prefix,
-    _metadata_with_leader_aware_routing,
-)
 
-from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import CreateSessionRequest
+from google.cloud.spanner_v1 import CreateSessionRequest, ExecuteSqlRequest
+from google.cloud.spanner_v1._helpers import (
+    _delay_until_retry,
+    _get_retry_delay,
+    _metadata_with_leader_aware_routing,
+    _metadata_with_prefix,
+)
 from google.cloud.spanner_v1._opentelemetry_tracing import (
     add_span_event,
     get_current_span,
     trace_call,
 )
 from google.cloud.spanner_v1.batch import Batch
+from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
-from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
-
 
 DEFAULT_RETRY_TIMEOUT_SECS = 30
 """Default timeout used by :meth:`Session.run_in_transaction`."""

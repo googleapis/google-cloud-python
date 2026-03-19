@@ -15,11 +15,12 @@
 
 """This module provides a singleton factory for creating SpannerMetricsTracer instances."""
 
-from .metrics_tracer_factory import MetricsTracerFactory
-import os
-import logging
-from .constants import SPANNER_SERVICE_NAME
 import contextvars
+import logging
+import os
+
+from .constants import SPANNER_SERVICE_NAME
+from .metrics_tracer_factory import MetricsTracerFactory
 
 try:
     import mmh3
@@ -32,10 +33,12 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_OPENTELEMETRY_INSTALLED = False
 
-from .metrics_tracer import MetricsTracer
+from uuid import uuid4
+
 from google.cloud.spanner_v1 import __version__
 from google.cloud.spanner_v1._helpers import _get_cloud_region
-from uuid import uuid4
+
+from .metrics_tracer import MetricsTracer
 
 log = logging.getLogger(__name__)
 

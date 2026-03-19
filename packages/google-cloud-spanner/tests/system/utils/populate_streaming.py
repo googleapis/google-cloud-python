@@ -14,19 +14,20 @@
 
 """Populate spanner databases with data for streaming system tests."""
 
+# Import relative to the script's directory
+from streaming_utils import (
+    DATABASE_NAME,
+    FORTY_KAY,
+    FOUR_HUNDRED_KAY,
+    FOUR_KAY,
+    FOUR_MEG,
+    INSTANCE_NAME,
+    print_func,
+)
+
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
-
-# Import relative to the script's directory
-from streaming_utils import FOUR_KAY
-from streaming_utils import FORTY_KAY
-from streaming_utils import FOUR_HUNDRED_KAY
-from streaming_utils import FOUR_MEG
-from streaming_utils import DATABASE_NAME
-from streaming_utils import INSTANCE_NAME
-from streaming_utils import print_func
-
 
 DDL = """\
 CREATE TABLE {0.table} (
@@ -46,9 +47,7 @@ CREATE TABLE {3.table} (
     chunk_me STRING({3.value_size}),
     chunk_me_2 STRING({3.value_size}) )
     PRIMARY KEY (pkey);
-""".format(
-    FOUR_KAY, FORTY_KAY, FOUR_HUNDRED_KAY, FOUR_MEG
-)
+""".format(FOUR_KAY, FORTY_KAY, FOUR_HUNDRED_KAY, FOUR_MEG)
 
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]

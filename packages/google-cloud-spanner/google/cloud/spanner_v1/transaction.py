@@ -13,41 +13,42 @@
 # limitations under the License.
 
 """Spanner read-write transaction support."""
-import functools
-from google.protobuf.struct_pb2 import Struct
-from typing import Optional
 
-from google.cloud.spanner_v1._helpers import (
-    _make_value_pb,
-    _merge_query_options,
-    _metadata_with_prefix,
-    _metadata_with_leader_aware_routing,
-    _retry,
-    _check_rst_stream_error,
-    _merge_Transaction_Options,
-    _merge_client_context,
-    _merge_request_options,
-)
+import functools
+from dataclasses import dataclass, field
+from typing import Any, Optional
+
+from google.api_core import gapic_v1
+from google.api_core.exceptions import InternalServerError
+from google.protobuf.struct_pb2 import Struct
+
 from google.cloud.spanner_v1 import (
     CommitRequest,
     CommitResponse,
-    ResultSet,
+    ExecuteBatchDmlRequest,
     ExecuteBatchDmlResponse,
+    ExecuteSqlRequest,
     Mutation,
+    RequestOptions,
+    ResultSet,
+    TransactionOptions,
 )
-from google.cloud.spanner_v1 import ExecuteBatchDmlRequest
-from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import TransactionOptions
-from google.cloud.spanner_v1._helpers import AtomicCounter
-from google.cloud.spanner_v1.snapshot import _SnapshotBase
-from google.cloud.spanner_v1.batch import _BatchBase
+from google.cloud.spanner_v1._helpers import (
+    AtomicCounter,
+    _check_rst_stream_error,
+    _make_value_pb,
+    _merge_client_context,
+    _merge_query_options,
+    _merge_request_options,
+    _merge_Transaction_Options,
+    _metadata_with_leader_aware_routing,
+    _metadata_with_prefix,
+    _retry,
+)
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
-from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1.batch import _BatchBase
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
-from google.api_core import gapic_v1
-from google.api_core.exceptions import InternalServerError
-from dataclasses import dataclass, field
-from typing import Any
+from google.cloud.spanner_v1.snapshot import _SnapshotBase
 
 
 class Transaction(_SnapshotBase, _BatchBase):
@@ -93,9 +94,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :returns: transaction options for this transaction.
         """
 
-        default_transaction_options = (
-            self._session._database.default_transaction_options.default_read_write_transaction_options
-        )
+        default_transaction_options = self._session._database.default_transaction_options.default_read_write_transaction_options
 
         merge_transaction_options = TransactionOptions(
             read_write=TransactionOptions.ReadWrite(

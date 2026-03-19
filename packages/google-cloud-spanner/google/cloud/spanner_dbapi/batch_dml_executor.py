@@ -16,14 +16,15 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import TYPE_CHECKING, List
+
+from google.api_core.exceptions import Aborted
+from google.rpc.code_pb2 import ABORTED, OK
+
 from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
-    StatementType,
     Statement,
+    StatementType,
 )
-from google.rpc.code_pb2 import ABORTED, OK
-from google.api_core.exceptions import Aborted
-
 from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
 
 if TYPE_CHECKING:

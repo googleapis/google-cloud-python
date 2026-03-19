@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.spanner.v1",
     manifest={
@@ -112,6 +111,7 @@ class TypeCode(proto.Enum):
             Encoded as ``string``, in lower-case hexa-decimal format, as
             described in RFC 9562, section 4.
     """
+
     TYPE_CODE_UNSPECIFIED = 0
     BOOL = 1
     INT64 = 2
@@ -166,6 +166,7 @@ class TypeAnnotationCode(proto.Enum):
             specify that a value should be treated using the
             semantics of the OID type.
     """
+
     TYPE_ANNOTATION_CODE_UNSPECIFIED = 0
     PG_NUMERIC = 2
     PG_JSONB = 3

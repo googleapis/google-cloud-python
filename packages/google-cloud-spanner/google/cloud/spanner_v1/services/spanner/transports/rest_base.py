@@ -14,22 +14,24 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from .base import SpannerTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1, path_template
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    json_format,
+)
 
-from google.cloud.spanner_v1.types import commit_response
-from google.cloud.spanner_v1.types import result_set
-from google.cloud.spanner_v1.types import spanner
-from google.cloud.spanner_v1.types import transaction
 from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
-from google.protobuf import empty_pb2  # type: ignore
+from google.cloud.spanner_v1.types import (
+    commit_response,
+    result_set,
+    spanner,
+    transaction,
+)
+
+from .base import DEFAULT_CLIENT_INFO, SpannerTransport
 
 
 class _BaseSpannerRestTransport(SpannerTransport):

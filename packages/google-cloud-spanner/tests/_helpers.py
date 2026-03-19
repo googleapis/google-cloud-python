@@ -15,12 +15,11 @@ try:
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
+    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
     from opentelemetry.semconv.attributes.otel_attributes import (
         OTEL_SCOPE_NAME,
         OTEL_SCOPE_VERSION,
     )
-    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
-
     from opentelemetry.trace.status import StatusCode
 
     trace.set_tracer_provider(TracerProvider(sampler=TraceIdRatioBased(1.0)))

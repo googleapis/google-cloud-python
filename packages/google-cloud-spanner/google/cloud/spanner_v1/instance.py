@@ -14,23 +14,24 @@
 
 """User friendly container for Cloud Spanner Instance."""
 
-import google.api_core.operation
-from google.api_core.exceptions import InvalidArgument
 import re
 import typing
 
+import google.api_core.operation
+from google.api_core.exceptions import InvalidArgument
+from google.cloud.exceptions import NotFound
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.field_mask_pb2 import FieldMask
-from google.cloud.exceptions import NotFound
 
+from google.cloud.spanner_admin_database_v1 import (
+    DatabaseDialect,
+    ListBackupOperationsRequest,
+    ListBackupsRequest,
+    ListDatabaseOperationsRequest,
+    ListDatabasesRequest,
+)
+from google.cloud.spanner_admin_database_v1.types import backup, spanner_database_admin
 from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
-from google.cloud.spanner_admin_database_v1.types import backup
-from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
-from google.cloud.spanner_admin_database_v1 import DatabaseDialect
-from google.cloud.spanner_admin_database_v1 import ListBackupsRequest
-from google.cloud.spanner_admin_database_v1 import ListBackupOperationsRequest
-from google.cloud.spanner_admin_database_v1 import ListDatabasesRequest
-from google.cloud.spanner_admin_database_v1 import ListDatabaseOperationsRequest
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.backup import Backup
 from google.cloud.spanner_v1.database import Database
@@ -180,12 +181,12 @@ class Instance(object):
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
             raise ValueError(
-                "Instance protobuf name was not in the " "expected format.",
+                "Instance protobuf name was not in the expected format.",
                 instance_pb.name,
             )
         if match.group("project") != client.project:
             raise ValueError(
-                "Project ID on instance does not match the " "project ID on the client"
+                "Project ID on instance does not match the project ID on the client"
             )
         instance_id = match.group("instance_id")
         configuration_name = instance_pb.config

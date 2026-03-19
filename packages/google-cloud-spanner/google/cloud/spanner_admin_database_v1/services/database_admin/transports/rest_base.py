@@ -14,27 +14,31 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from .base import DatabaseAdminTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1, path_template
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    json_format,
+)
 
-from google.cloud.spanner_admin_database_v1.types import backup
+from google.cloud.spanner_admin_database_v1.types import (
+    backup,
+    backup_schedule,
+    spanner_database_admin,
+)
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
-from google.cloud.spanner_admin_database_v1.types import backup_schedule
 from google.cloud.spanner_admin_database_v1.types import (
     backup_schedule as gsad_backup_schedule,
 )
-from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+
+from .base import DEFAULT_CLIENT_INFO, DatabaseAdminTransport
 
 
 class _BaseDatabaseAdminRestTransport(DatabaseAdminTransport):

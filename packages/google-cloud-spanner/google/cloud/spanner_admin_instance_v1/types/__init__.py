@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 from .common import (
+    FulfillmentPeriod,
     OperationProgress,
     ReplicaSelection,
-    FulfillmentPeriod,
 )
 from .spanner_instance_admin import (
     AutoscalingConfig,

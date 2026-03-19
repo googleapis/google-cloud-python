@@ -12,24 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from typing import TYPE_CHECKING, Union
+
 from google.cloud.spanner_v1 import TransactionOptions
 
 if TYPE_CHECKING:
-    from google.cloud.spanner_dbapi.cursor import Cursor
     from google.cloud.spanner_dbapi import ProgrammingError
+    from google.cloud.spanner_dbapi.cursor import Cursor
 
 from google.cloud.spanner_dbapi.parsed_statement import (
-    ParsedStatement,
     ClientSideStatementType,
+    ParsedStatement,
 )
 from google.cloud.spanner_v1 import (
-    Type,
-    StructType,
-    TypeCode,
-    ResultSetMetadata,
     PartialResultSet,
+    ResultSetMetadata,
+    StructType,
+    Type,
+    TypeCode,
 )
-
 from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 

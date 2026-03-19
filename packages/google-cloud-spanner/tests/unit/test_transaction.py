@@ -11,49 +11,48 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from datetime import timedelta
 from threading import Lock
 from typing import Mapping
-from datetime import timedelta
 
 import mock
+from google.api_core import gapic_v1
+from google.api_core.retry import Retry
 
 from google.cloud.spanner_v1 import (
-    RequestOptions,
-    CommitRequest,
-    Mutation,
-    KeySet,
     BeginTransactionRequest,
-    TransactionOptions,
+    CommitRequest,
+    DefaultTransactionOptions,
+    KeySet,
+    Mutation,
+    RequestOptions,
     ResultSetMetadata,
+    TransactionOptions,
+    Type,
+    TypeCode,
     _opentelemetry_tracing,
 )
-from google.cloud.spanner_v1._helpers import GOOGLE_CLOUD_REGION_GLOBAL
-from google.cloud.spanner_v1 import DefaultTransactionOptions
-from google.cloud.spanner_v1 import Type
-from google.cloud.spanner_v1 import TypeCode
-from google.api_core.retry import Retry
-from google.api_core import gapic_v1
 from google.cloud.spanner_v1._helpers import (
+    GOOGLE_CLOUD_REGION_GLOBAL,
     AtomicCounter,
+    _augment_errors_with_request_id,
     _metadata_with_request_id,
     _metadata_with_request_id_and_req_id,
-    _augment_errors_with_request_id,
 )
 from google.cloud.spanner_v1.batch import _make_write_pb
 from google.cloud.spanner_v1.database import Database
-from google.cloud.spanner_v1.transaction import Transaction
 from google.cloud.spanner_v1.request_id_header import (
     REQ_RAND_PROCESS_ID,
     build_request_id,
 )
+from google.cloud.spanner_v1.transaction import Transaction
 from tests._builders import (
-    build_transaction,
+    build_commit_response_pb,
     build_precommit_token_pb,
     build_session,
-    build_commit_response_pb,
+    build_transaction,
     build_transaction_pb,
 )
-
 from tests._helpers import (
     HAS_OPENTELEMETRY_INSTALLED,
     LIB_VERSION,
@@ -702,6 +701,7 @@ class TestTransaction(OpenTelemetryBase):
 
     def test__make_params_pb_w_params_w_param_types(self):
         from google.protobuf.struct_pb2 import Struct
+
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
         session = _Session()
@@ -740,16 +740,17 @@ class TestTransaction(OpenTelemetryBase):
         use_multiplexed=False,
     ):
         from google.protobuf.struct_pb2 import Struct
+
         from google.cloud.spanner_v1 import (
+            ExecuteSqlRequest,
             ResultSet,
             ResultSetStats,
+            TransactionSelector,
         )
-        from google.cloud.spanner_v1 import TransactionSelector
         from google.cloud.spanner_v1._helpers import (
             _make_value_pb,
             _merge_query_options,
         )
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
 
         MODE = 2  # PROFILE
         database = _Database()
@@ -1010,13 +1011,16 @@ class TestTransaction(OpenTelemetryBase):
         begin=True,
         use_multiplexed=False,
     ):
-        from google.rpc.status_pb2 import Status
         from google.protobuf.struct_pb2 import Struct
-        from google.cloud.spanner_v1 import param_types
-        from google.cloud.spanner_v1 import ResultSet
-        from google.cloud.spanner_v1 import ExecuteBatchDmlRequest
-        from google.cloud.spanner_v1 import ExecuteBatchDmlResponse
-        from google.cloud.spanner_v1 import TransactionSelector
+        from google.rpc.status_pb2 import Status
+
+        from google.cloud.spanner_v1 import (
+            ExecuteBatchDmlRequest,
+            ExecuteBatchDmlResponse,
+            ResultSet,
+            TransactionSelector,
+            param_types,
+        )
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
         insert_dml = "INSERT INTO table(pkey, desc) VALUES (%pkey, %desc)"
@@ -1221,8 +1225,7 @@ class TestTransaction(OpenTelemetryBase):
         self._batch_update_helper(error_after=2, count=1)
 
     def test_batch_update_error(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
+        from google.cloud.spanner_v1 import Type, TypeCode
 
         database = _Database()
         api = database.spanner_api = self._make_spanner_api()

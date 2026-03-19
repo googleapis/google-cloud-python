@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import InstanceAdminClient
 from .async_client import InstanceAdminAsyncClient
+from .client import InstanceAdminClient
 
 __all__ = (
     "InstanceAdminClient",

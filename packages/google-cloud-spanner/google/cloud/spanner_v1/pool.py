@@ -17,23 +17,23 @@
 import datetime
 import queue
 import time
+from warnings import warn
 
 from google.cloud.exceptions import NotFound
+
 from google.cloud.spanner_v1 import BatchCreateSessionsRequest
 from google.cloud.spanner_v1 import Session as SessionProto
-from google.cloud.spanner_v1.session import Session
 from google.cloud.spanner_v1._helpers import (
-    _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
+    _metadata_with_prefix,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import (
     add_span_event,
     get_current_span,
     trace_call,
 )
-from warnings import warn
-
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+from google.cloud.spanner_v1.session import Session
 
 _NOW = datetime.datetime.utcnow  # unit tests may replace
 
