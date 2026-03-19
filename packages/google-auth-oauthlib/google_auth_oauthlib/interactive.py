@@ -26,7 +26,6 @@ import socket
 
 import google_auth_oauthlib.flow
 
-
 LOCALHOST = "localhost"
 DEFAULT_PORTS_TO_TRY = 100
 

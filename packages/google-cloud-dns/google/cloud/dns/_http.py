@@ -15,7 +15,6 @@
 """Create / interact with Google Cloud DNS connections."""
 
 from google.cloud import _http
-
 from google.cloud.dns import __version__
 
 
