@@ -659,6 +659,26 @@ def mypy(session):
     session.skip("mypy tests are not yet supported")
 
 
+@nox.session(python=ALL_PYTHON)
+def mypy(session):
+    """Run the type checker."""
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
+    # use the latest version of mypy
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+    )
+    session.install(".")
+    session.run(
+        "mypy",
+        "-p",
+        "google",
+        "--check-untyped-defs",
+        *session.posargs,
+    )
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
