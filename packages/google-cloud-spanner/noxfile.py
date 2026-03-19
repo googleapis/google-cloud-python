@@ -26,8 +26,8 @@ import os
 import pathlib
 import re
 import shutil
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
@@ -136,25 +136,32 @@ def blacken(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def format(session):
+@nox.session
+def format(session: nox.sessions.Session) -> None:
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
+
+    # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -728,13 +735,16 @@ def mypy(session):
         "mypy",
         "-p",
         "google",
-        # "--check-untyped-defs",
+        #"--check-untyped-defs",
         *session.posargs,
     )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def generate(session):
-    """Regenerate synchronous code from asynchronous code."""
-    session.install("black", "autoflake")
-    session.run("python", ".cross_sync/generate.py", "google/cloud/spanner_v1")
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
