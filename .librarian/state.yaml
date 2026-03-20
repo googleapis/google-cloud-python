@@ -2444,7 +2444,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-connectivity
     version: 2.13.0
-    last_generated_commit: d252e591a655910c3d1b581aadfb11e68c8ff294
+    last_generated_commit: 77291a3c21b89ebfab5a473a5cbf0eb6eec22a30
     apis:
       - path: google/cloud/networkconnectivity/v1
         service_config: networkconnectivity_v1.yaml
