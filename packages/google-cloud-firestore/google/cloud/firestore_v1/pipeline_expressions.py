@@ -1606,18 +1606,15 @@ class Expression(ABC):
 
     @expose_as_static
     def array_slice(self, offset: int | "Expression", length: int | "Expression" | None = None) -> "Expression":
-        """Creates an expression that returns a slice of an array.
+        """Ccreates an expression that returns a slice of an array starting from the specified
+        offset with a given length.
 
         Example:
             >>> # Slice array 'scores' starting at index 1 with length 2
             >>> Field.of("scores").array_slice(1, 2)
 
-        Note:
-            Both offset and length allow negative values to represent wrap-around from the end
-            of the array.
-
         Args:
-            offset: The starting index of the slice.
+            offset: the 0-based index of the first element to include.
             length: The number of elements to include in the slice. If omitted, slices to the end.
 
         Returns:
