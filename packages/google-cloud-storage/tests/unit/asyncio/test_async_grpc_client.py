@@ -184,6 +184,23 @@ class TestAsyncGrpcClient:
         transport = kwargs["transport"]
         assert isinstance(transport._credentials, AnonymousCredentials)
 
+    def test_grpc_client_with_anon_creds_no_client_options(self):
+        # Act & Assert
+        message = "Either client_options or `client_option.api_endpoint` is None. Please provide api_endpoint when `AnonymousCredentials` is used "
+        with pytest.raises(ValueError, match=message):
+            async_grpc_client.AsyncGrpcClient(
+                credentials=AnonymousCredentials(),
+            )
+
+    def test_grpc_client_with_anon_creds_empty_client_options(self):
+        # Act & Assert
+        message = "Either client_options or `client_option.api_endpoint` is None. Please provide api_endpoint when `AnonymousCredentials` is used "
+        with pytest.raises(ValueError, match=message):
+            async_grpc_client.AsyncGrpcClient(
+                client_options=client_options.ClientOptions(),
+                credentials=AnonymousCredentials(),
+            )
+
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_user_agent_with_custom_client_info(self, mock_async_storage_client):
         """Test that gcloud-python user agent is appended to existing user agent.

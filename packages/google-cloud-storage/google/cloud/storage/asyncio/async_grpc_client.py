@@ -55,6 +55,10 @@ class AsyncGrpcClient:
         attempt_direct_path=True,
     ):
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
+            if client_options is None or client_options.api_endpoint is None:
+                raise ValueError(
+                    "Either client_options or `client_option.api_endpoint` is None. Please provide api_endpoint when `AnonymousCredentials` is used "
+                )
             self._grpc_client = self._create_anonymous_client(
                 client_options, credentials
             )
