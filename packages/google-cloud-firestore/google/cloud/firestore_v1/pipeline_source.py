@@ -166,7 +166,7 @@ class PipelineSource(Generic[PipelineType]):
 
         Args:
             *documents: One or more documents to be returned by this stage. Each can be a `dict`
-                       or an `Expression`.
+                       of values of `Expression` or `CONSTANT_TYPE` types.
         Returns:
             A new Pipeline object with this stage appended to the stage list.
         """
