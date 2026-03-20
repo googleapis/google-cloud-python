@@ -563,18 +563,7 @@ class TestLiterals:
         repr_str = repr(instance)
         assert repr_str == "Literals(documents=(Constant.of({'a': 1}), {'b': 2}))"
 
-    def test_to_pb(self):
-        val1 = Constant.of({"a": 1})
-        val2 = {"b": 2}
-        instance = self._make_one(val1, val2)
-        result = instance._to_pb()
-        assert result.name == "literals"
-        assert len(result.args) == 2
-        assert result.args[0].map_value.fields["a"].integer_value == 1
-        assert result.args[1].map_value.fields["b"].integer_value == 2
-        assert len(result.options) == 0
-
-    def test_to_pb_extended_types(self):
+    def test_to_pb_constant_types(self):
         import datetime
         from google.cloud.firestore_v1._helpers import GeoPoint
         from google.cloud.firestore_v1.vector import Vector
