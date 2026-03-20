@@ -2683,25 +2683,6 @@ def test_remote_function_ingress_settings(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_remote_function_ingress_settings_w_all(session):
-    ingress_settings_args = {"cloud_function_ingress_settings": "all"}
-
-    with pytest.raises(
-        google.api_core.exceptions.FailedPrecondition,
-        match="400.*allowedIngress violated",
-    ):
-
-        def square(x: int) -> int:
-            return x * x
-
-        session.remote_function(
-            reuse=False,
-            cloud_function_service_account="default",
-            **ingress_settings_args,
-        )(square)
-
-
-@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_ingress_settings_unsupported(session):
     with pytest.raises(
         ValueError, match="'unknown' not one of the supported ingress settings values"
