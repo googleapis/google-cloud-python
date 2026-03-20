@@ -116,9 +116,6 @@ class PipelineSource(Generic[PipelineType]):
         """
         Returns documents from a fixed set of predefined document objects.
 
-        This stage is commonly used for testing other stages in isolation,
-        though it can also be used as inputs to join conditions.
-
         Example:
             >>> from google.cloud.firestore_v1.pipeline_expressions import Constant
             >>> documents = [
