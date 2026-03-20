@@ -114,7 +114,7 @@ class TestPipelineSource:
         from google.cloud.firestore_v1.pipeline_expressions import Field
 
         instance = self._make_client().pipeline()
-        documents = (Field.of("a"), {"name": "joe"})
+        documents = ({"field": Field.of("a")}, {"name": "joe"})
         ppl = instance.literals(*documents)
         assert isinstance(ppl, self._expected_pipeline_type)
         assert len(ppl.stages) == 1

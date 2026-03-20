@@ -522,7 +522,7 @@ class TestLiterals:
         return stages.Literals(*args, **kwargs)
 
     def test_ctor(self):
-        val1 = Constant.of({"a": 1})
+        val1 = {"a": Field.of("a")}
         val2 = {"b": 2}
         instance = self._make_one(val1, val2)
         assert instance.documents == (val1, val2)
@@ -558,10 +558,12 @@ class TestLiterals:
         assert instance.name == "literals"
 
     def test_repr(self):
-        val1 = Constant.of({"a": 1})
+        from google.cloud.firestore_v1.pipeline_expressions import Field
+
+        val1 = {"a": Field.of("a")}
         instance = self._make_one(val1, {"b": 2})
         repr_str = repr(instance)
-        assert repr_str == "Literals(documents=(Constant.of({'a': 1}), {'b': 2}))"
+        assert repr_str == "Literals(documents=({'a': Field.of('a')}, {'b': 2}))"
 
     def test_to_pb_constant_types(self):
         import datetime
