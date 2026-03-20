@@ -111,7 +111,7 @@ class PipelineSource(Generic[PipelineType]):
         return self._create_pipeline(stages.Documents.of(*docs))
 
     def literals(
-        self, *documents: Mapping[str, Expression | CONSTANT_TYPE]
+        self, *documents: dict[str, Expression | CONSTANT_TYPE]
     ) -> PipelineType:
         """
         Returns documents from a fixed set of predefined document objects.

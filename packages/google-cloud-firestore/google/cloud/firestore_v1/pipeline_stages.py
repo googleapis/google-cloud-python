@@ -346,7 +346,7 @@ class Limit(Stage):
 class Literals(Stage):
     """Returns documents from a fixed set of predefined document objects."""
 
-    def __init__(self, *documents: Mapping[str, Expression | CONSTANT_TYPE]):
+    def __init__(self, *documents: dict[str, Expression | CONSTANT_TYPE]):
         super().__init__("literals")
         self.documents = documents  # type: ignore
 
