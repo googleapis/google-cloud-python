@@ -138,7 +138,7 @@ def _reference_getter(table):
 
 
 def _view_use_legacy_sql_getter(
-    table: Union["Table", "TableListItem"]
+    table: Union["Table", "TableListItem"],
 ) -> Optional[bool]:
     """bool: Specifies whether to execute the view with Legacy or Standard SQL.
 
@@ -359,6 +359,131 @@ class TableReference(_TableBase):
         return f"TableReference({dataset_ref!r}, '{self.table_id}')"
 
 
+class PropertyGraphReference:
+    """PropertyGraphReferences are pointers to property graphs.
+
+    Args:
+        dataset_ref: A pointer to the dataset
+        property_graph_id: The ID of the property graph
+    """
+
+    _PROPERTY_TO_API_FIELD = {
+        "dataset_id": "datasetId",
+        "project": "projectId",
+        "property_graph_id": "propertyGraphId",
+    }
+
+    def __init__(self, dataset_ref: "DatasetReference", property_graph_id: str):
+        self._properties = {}
+
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["project"],
+            dataset_ref.project,
+        )
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["dataset_id"],
+            dataset_ref.dataset_id,
+        )
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["property_graph_id"],
+            property_graph_id,
+        )
+
+    @property
+    def project(self) -> str:
+        """str: Project bound to the property graph."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["project"]
+        )
+
+    @property
+    def dataset_id(self) -> str:
+        """str: ID of dataset containing the property graph."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["dataset_id"]
+        )
+
+    @property
+    def property_graph_id(self) -> str:
+        """str: The property graph ID."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["property_graph_id"]
+        )
+
+    @classmethod
+    def from_string(
+        cls, property_graph_id: str, default_project: Optional[str] = None
+    ) -> "PropertyGraphReference":
+        """Construct a property graph reference from string.
+
+        Args:
+            property_graph_id (str):
+                A property graph ID in standard SQL format.
+            default_project (Optional[str]):
+                The project ID to use when ``property_graph_id`` does not
+                include a project ID.
+
+        Returns:
+            PropertyGraphReference: Property graph reference parsed from ``property_graph_id``.
+        """
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        (
+            output_project_id,
+            output_dataset_id,
+            output_property_graph_id,
+        ) = _helpers._parse_3_part_id(
+            property_graph_id,
+            default_project=default_project,
+            property_name="property_graph_id",
+        )
+
+        return cls(
+            DatasetReference(output_project_id, output_dataset_id),
+            output_property_graph_id,
+        )
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> "PropertyGraphReference":
+        """Factory: construct a property graph reference given its API representation."""
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        project = resource["projectId"]
+        dataset_id = resource["datasetId"]
+        property_graph_id = resource["propertyGraphId"]
+
+        return cls(DatasetReference(project, dataset_id), property_graph_id)
+
+    def to_api_repr(self) -> dict:
+        """Construct the API resource representation of this property graph reference."""
+        return copy.deepcopy(self._properties)
+
+    def __str__(self):
+        return f"{self.project}.{self.dataset_id}.{self.property_graph_id}"
+
+    def __repr__(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        dataset_ref = DatasetReference(self.project, self.dataset_id)
+        return f"PropertyGraphReference({dataset_ref!r}, '{self.property_graph_id}')"
+
+    def __eq__(self, other):
+        if isinstance(other, PropertyGraphReference):
+            return (
+                self.project == other.project
+                and self.dataset_id == other.dataset_id
+                and self.property_graph_id == other.property_graph_id
+            )
+        else:
+            return NotImplemented
+
+    def __hash__(self):
+        return hash((self.project, self.dataset_id, self.property_graph_id))
+
+
 class Table(_TableBase):
     """Tables represent a set of rows whose values correspond to a schema.
 
@@ -452,9 +577,9 @@ class Table(_TableBase):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["biglake_configuration"]
-        ] = api_repr
+        self._properties[self._PROPERTY_TO_API_FIELD["biglake_configuration"]] = (
+            api_repr
+        )
 
     @property
     def require_partition_filter(self):
@@ -468,9 +593,9 @@ class Table(_TableBase):
 
     @require_partition_filter.setter
     def require_partition_filter(self, value):
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["require_partition_filter"]
-        ] = value
+        self._properties[self._PROPERTY_TO_API_FIELD["require_partition_filter"]] = (
+            value
+        )
 
     @property
     def schema(self):
@@ -568,9 +693,9 @@ class Table(_TableBase):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["encryption_configuration"]
-        ] = api_repr
+        self._properties[self._PROPERTY_TO_API_FIELD["encryption_configuration"]] = (
+            api_repr
+        )
 
     @property
     def created(self):
@@ -845,9 +970,9 @@ class Table(_TableBase):
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
         value_ms = google.cloud._helpers._millis_from_datetime(value)
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["expires"]
-        ] = _helpers._str_or_none(value_ms)
+        self._properties[self._PROPERTY_TO_API_FIELD["expires"]] = (
+            _helpers._str_or_none(value_ms)
+        )
 
     @property
     def friendly_name(self):
@@ -1043,9 +1168,9 @@ class Table(_TableBase):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["external_data_configuration"]
-        ] = api_repr
+        self._properties[self._PROPERTY_TO_API_FIELD["external_data_configuration"]] = (
+            api_repr
+        )
 
     @property
     def snapshot_definition(self) -> Optional["SnapshotDefinition"]:

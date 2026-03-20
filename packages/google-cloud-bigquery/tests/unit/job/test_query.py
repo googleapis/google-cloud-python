@@ -680,6 +680,55 @@ class TestQueryJob(_Base):
         self.assertEqual(remote.dataset_id, "other-dataset")
         self.assertEqual(remote.project, "other-project-123")
 
+    def test_referenced_property_graphs(self):
+        from google.cloud.bigquery.table import PropertyGraphReference
+
+        ref_pg_resource = [
+            {
+                "projectId": self.PROJECT,
+                "datasetId": "dataset",
+                "propertyGraphId": "pg1",
+            },
+            {
+                "projectId": self.PROJECT,
+                "datasetId": "dataset",
+                "propertyGraphId": "pg2",
+            },
+            {
+                "projectId": "other-project-123",
+                "datasetId": "other-dataset",
+                "propertyGraphId": "other-pg",
+            },
+        ]
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        self.assertEqual(job.referenced_property_graphs, [])
+
+        statistics = job._properties["statistics"] = {}
+        self.assertEqual(job.referenced_property_graphs, [])
+
+        query_stats = statistics["query"] = {}
+        self.assertEqual(job.referenced_property_graphs, [])
+
+        query_stats["referencedPropertyGraphs"] = ref_pg_resource
+
+        pg1, pg2, remote = job.referenced_property_graphs
+
+        self.assertIsInstance(pg1, PropertyGraphReference)
+        self.assertEqual(pg1.property_graph_id, "pg1")
+        self.assertEqual(pg1.dataset_id, "dataset")
+        self.assertEqual(pg1.project, self.PROJECT)
+
+        self.assertIsInstance(pg2, PropertyGraphReference)
+        self.assertEqual(pg2.property_graph_id, "pg2")
+        self.assertEqual(pg2.dataset_id, "dataset")
+        self.assertEqual(pg2.project, self.PROJECT)
+
+        self.assertIsInstance(remote, PropertyGraphReference)
+        self.assertEqual(remote.property_graph_id, "other-pg")
+        self.assertEqual(remote.dataset_id, "other-dataset")
+        self.assertEqual(remote.project, "other-project-123")
+
     def test_timeline(self):
         timeline_resource = [
             {
@@ -1586,12 +1635,10 @@ class TestQueryJob(_Base):
     def test_result_error(self):
         from google.cloud import exceptions
 
-        query = textwrap.dedent(
-            """
+        query = textwrap.dedent("""
             SELECT foo, bar
             FROM table_baz
-            WHERE foo == bar"""
-        )
+            WHERE foo == bar""")
 
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, query, client)
@@ -1635,12 +1682,10 @@ class TestQueryJob(_Base):
             assert expected_line in debug_message
 
     def test_result_transport_timeout_error(self):
-        query = textwrap.dedent(
-            """
+        query = textwrap.dedent("""
             SELECT foo, bar
             FROM table_baz
-            WHERE foo == bar"""
-        )
+            WHERE foo == bar""")
 
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, query, client)
@@ -1694,12 +1739,10 @@ class TestQueryJob(_Base):
     def test__begin_error(self):
         from google.cloud import exceptions
 
-        query = textwrap.dedent(
-            """
+        query = textwrap.dedent("""
             SELECT foo, bar
             FROM table_baz
-            WHERE foo == bar"""
-        )
+            WHERE foo == bar""")
 
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, query, client)

@@ -50,7 +50,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import _table_arg_to_table_ref
-from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import TableReference, PropertyGraphReference
 from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery._tqdm_helpers import wait_for_query
 
@@ -1331,6 +1331,35 @@ class QueryJob(_AsyncJob):
             tables.append(t_dataset.table(t_name))
 
         return tables
+
+    @property
+    def referenced_property_graphs(self):
+        """Return referenced property graphs from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.referenced_property_graphs
+
+        Returns:
+            List[google.cloud.bigquery.table.PropertyGraphReference]:
+                mappings describing the property graphs, or an empty list
+                if the query has not yet completed.
+        """
+        property_graphs = []
+        datasets_by_project_name = {}
+
+        for pg in self._job_statistics().get("referencedPropertyGraphs", ()):
+            pg_project = pg["projectId"]
+
+            ds_id = pg["datasetId"]
+            pg_dataset = datasets_by_project_name.get((pg_project, ds_id))
+            if pg_dataset is None:
+                pg_dataset = DatasetReference(pg_project, ds_id)
+                datasets_by_project_name[(pg_project, ds_id)] = pg_dataset
+
+            pg_name = pg["propertyGraphId"]
+            property_graphs.append(PropertyGraphReference(pg_dataset, pg_name))
+
+        return property_graphs
 
     @property
     def undeclared_query_parameters(self):
