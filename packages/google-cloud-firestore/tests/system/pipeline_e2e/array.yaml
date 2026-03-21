@@ -745,3 +745,58 @@ tests:
                     - stringValue: "first"
                     name: array_index_of
           name: select
+
+  - description: testArrayIndexOfAll
+    pipeline:
+      - Collection: books
+      - Sort:
+          - Ordering:
+            - Field: title
+            - ASCENDING
+      - Aggregate:
+        - AliasedExpression:
+            - FunctionExpression.array_agg:
+              - Field: genre
+            - "genre_array"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_index_of_all:
+                - Field: genre_array
+                - Constant: "Science Fiction"
+            - "sciFiIndices"
+    assert_results:
+      - sciFiIndices: [2, 7]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                direction:
+                  stringValue: ascending
+                expression:
+                  fieldReferenceValue: title
+          name: sort
+        - args:
+          - mapValue:
+              fields:
+                genre_array:
+                  functionValue:
+                    name: array_agg
+                    args:
+                    - fieldReferenceValue: genre
+          - mapValue: {}
+          name: aggregate
+        - args:
+          - mapValue:
+              fields:
+                sciFiIndices:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: genre_array
+                    - stringValue: "Science Fiction"
+                    name: array_index_of_all
+          name: select

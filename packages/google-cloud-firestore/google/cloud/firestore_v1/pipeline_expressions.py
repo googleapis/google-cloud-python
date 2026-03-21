@@ -1653,6 +1653,31 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def array_index_of_all(
+        self, search: "Expression" | CONSTANT_TYPE
+    ) -> "Expression":
+        """Creates an expression that returns all indices of a value in an array.
+        Returns an empty array if the value is not found.
+
+        Example:
+            >>> # Get all indices of "comedy" in the 'tags' array
+            >>> Field.of("tags").array_index_of_all("comedy")
+
+        Args:
+            search: The element (expression or constant) to find the indices of.
+
+        Returns:
+            A new `Expression` representing the 'array_index_of_all' value.
+        """
+        return FunctionExpression(
+            "array_index_of_all", 
+            [
+                self, 
+                self._cast_to_expr_or_convert_to_constant(search)
+            ]
+        )
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.
