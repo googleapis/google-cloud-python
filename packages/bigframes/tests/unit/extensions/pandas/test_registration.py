@@ -22,6 +22,8 @@ def test_bigframes_import_registers_accessor():
     df = pd.DataFrame({"a": [1]})
     # If bigframes was imported, df.bigquery should exist
     assert hasattr(df, "bigquery")
-    from bigframes.extensions.pandas.dataframe_accessor import BigQueryDataFrameAccessor
+    from bigframes.extensions.pandas.dataframe_accessor import (
+        PandasBigQueryDataFrameAccessor,
+    )
 
-    assert isinstance(df.bigquery, BigQueryDataFrameAccessor)
+    assert isinstance(df.bigquery, PandasBigQueryDataFrameAccessor)

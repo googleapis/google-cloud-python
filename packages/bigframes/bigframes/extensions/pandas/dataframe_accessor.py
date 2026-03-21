@@ -18,10 +18,12 @@ import pandas
 import pandas.api.extensions
 
 import bigframes.core.global_session as bf_session
+from bigframes.core.logging import log_adapter
 import bigframes.pandas as bpd
 
 
-class AIAccessor:
+@log_adapter.class_logger
+class PandasAIAccessor:
     """
     Pandas DataFrame accessor for BigQuery AI functions.
     """
@@ -101,7 +103,8 @@ class AIAccessor:
 
 
 @pandas.api.extensions.register_dataframe_accessor("bigquery")
-class BigQueryDataFrameAccessor:
+@log_adapter.class_logger
+class PandasBigQueryDataFrameAccessor:
     """
     Pandas DataFrame accessor for BigQuery DataFrames functionality.
 
@@ -112,11 +115,11 @@ class BigQueryDataFrameAccessor:
         self._obj = pandas_obj
 
     @property
-    def ai(self) -> "AIAccessor":
+    def ai(self) -> "PandasAIAccessor":
         """
         Accessor for BigQuery AI functions.
         """
-        return AIAccessor(self._obj)
+        return PandasAIAccessor(self._obj)
 
     def sql_scalar(self, sql_template: str, *, output_dtype=None, session=None):
         """

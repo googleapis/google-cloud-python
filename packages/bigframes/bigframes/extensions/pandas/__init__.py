@@ -11,3 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""
+BigQuery DataFrames automatically registers a pandas extenstion when imported.
+This allows you to use the power of the BigQuery engine with pandas objects
+directly.
+"""
+
+from bigframes.extensions.pandas.dataframe_accessor import (
+    PandasBigQueryDataFrameAccessor,
+)
+
+__all__ = ["PandasBigQueryDataFrameAccessor"]
