@@ -1527,7 +1527,9 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the first `n` elements of the array.
         """
-        return FunctionExpression("array_first_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+        return FunctionExpression(
+            "array_first_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
 
     @expose_as_static
     def array_last_n(self, n: int | "Expression") -> "Expression":
@@ -1540,7 +1542,9 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the last `n` elements of the array.
         """
-        return FunctionExpression("array_last_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+        return FunctionExpression(
+            "array_last_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
 
     @expose_as_static
     def array_maximum(self) -> "Expression":
@@ -1584,7 +1588,9 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the maximum `n` elements of the array.
         """
-        return FunctionExpression("maximum_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+        return FunctionExpression(
+            "maximum_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
 
     @expose_as_static
     def array_minimum_n(self, n: int | "Expression") -> "Expression":
@@ -1602,10 +1608,14 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the minimum `n` elements of the array.
         """
-        return FunctionExpression("minimum_n", [self, self._cast_to_expr_or_convert_to_constant(n)])
+        return FunctionExpression(
+            "minimum_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
 
     @expose_as_static
-    def array_slice(self, offset: int | "Expression", length: int | "Expression" | None = None) -> "Expression":
+    def array_slice(
+        self, offset: int | "Expression", length: int | "Expression" | None = None
+    ) -> "Expression":
         """Ccreates an expression that returns a slice of an array starting from the specified
         offset with a given length.
 
@@ -1626,9 +1636,7 @@ class Expression(ABC):
         return FunctionExpression("array_slice", args)
 
     @expose_as_static
-    def array_index_of(
-        self, search: "Expression" | CONSTANT_TYPE
-    ) -> "Expression":
+    def array_index_of(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
         """Creates an expression that returns the index of a value in an array.
 
         Returns -1 if the value is not found.
@@ -1644,18 +1652,16 @@ class Expression(ABC):
             A new `Expression` representing the 'array_index_of' value.
         """
         return FunctionExpression(
-            "array_index_of", 
+            "array_index_of",
             [
-                self, 
+                self,
                 self._cast_to_expr_or_convert_to_constant(search),
-                self._cast_to_expr_or_convert_to_constant("first")
-            ]
+                self._cast_to_expr_or_convert_to_constant("first"),
+            ],
         )
 
     @expose_as_static
-    def array_index_of_all(
-        self, search: "Expression" | CONSTANT_TYPE
-    ) -> "Expression":
+    def array_index_of_all(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
         """Creates an expression that returns all indices of a value in an array.
         Returns an empty array if the value is not found.
 
@@ -1670,11 +1676,8 @@ class Expression(ABC):
             A new `Expression` representing the 'array_index_of_all' value.
         """
         return FunctionExpression(
-            "array_index_of_all", 
-            [
-                self, 
-                self._cast_to_expr_or_convert_to_constant(search)
-            ]
+            "array_index_of_all",
+            [self, self._cast_to_expr_or_convert_to_constant(search)],
         )
 
     @expose_as_static
@@ -1704,7 +1707,7 @@ class Expression(ABC):
         ]
         if index_alias is not None:
             args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
-            
+
         args.append(self._cast_to_expr_or_convert_to_constant(body))
 
         return FunctionExpression("array_transform", args)
@@ -1730,7 +1733,6 @@ class Expression(ABC):
                 self._cast_to_expr_or_convert_to_constant(body),
             ],
         )
-
 
     @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":

@@ -1744,7 +1744,10 @@ class TestExpressionessionMethods:
         assert isinstance(instance.params[2], Constant)
         assert instance.params[2].value == "first"
         assert len(instance.params) == 3
-        assert repr(instance) == "Value.array_index_of(Constant.of('comedy'), Constant.of('first'))"
+        assert (
+            repr(instance)
+            == "Value.array_index_of(Constant.of('comedy'), Constant.of('first'))"
+        )
         infix_instance = arg1.array_index_of(value)
         assert infix_instance == instance
 
@@ -1781,7 +1784,9 @@ class TestExpressionessionMethods:
         element_alias = "e"
         index_alias = "i"
         body = self._make_arg("BodyValue")
-        instance = Expression.array_transform(arg1, element_alias, body, index_alias=index_alias)
+        instance = Expression.array_transform(
+            arg1, element_alias, body, index_alias=index_alias
+        )
         assert instance.name == "array_transform"
         assert instance.params[0] == arg1
         assert isinstance(instance.params[1], Constant)
@@ -1790,8 +1795,13 @@ class TestExpressionessionMethods:
         assert instance.params[2].value == index_alias
         assert instance.params[3] == body
         assert len(instance.params) == 4
-        assert repr(instance) == "Value.array_transform(Constant.of('e'), Constant.of('i'), BodyValue)"
-        infix_instance = arg1.array_transform(element_alias, body, index_alias=index_alias)
+        assert (
+            repr(instance)
+            == "Value.array_transform(Constant.of('e'), Constant.of('i'), BodyValue)"
+        )
+        infix_instance = arg1.array_transform(
+            element_alias, body, index_alias=index_alias
+        )
         assert infix_instance == instance
 
     def test_array_filter(self):
@@ -1808,4 +1818,3 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.array_filter(Constant.of('e'), BodyValue)"
         infix_instance = arg1.array_filter(element_alias, body)
         assert infix_instance == instance
-
