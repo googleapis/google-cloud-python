@@ -898,3 +898,51 @@ tests:
         - args:
           - integerValue: '1'
           name: limit
+
+  - description: testArrayFilter
+    pipeline:
+      - Collection: books
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_filter:
+                - Array:
+                    - 1
+                    - 10
+                    - 100
+                - "num"
+                - FunctionExpression.greater_than:
+                    - Field: "num"
+                    - Constant: 9
+            - "filtered"
+      - Limit: 1
+    assert_results:
+      - filtered: [10, 100]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                filtered:
+                  functionValue:
+                    name: array_filter
+                    args:
+                    - functionValue:
+                        name: array
+                        args:
+                        - integerValue: '1'
+                        - integerValue: '10'
+                        - integerValue: '100'
+                    - stringValue: num
+                    - functionValue:
+                        name: greater_than
+                        args:
+                        - fieldReferenceValue: num
+                        - integerValue: '9'
+          name: select
+        - args:
+          - integerValue: '1'
+          name: limit

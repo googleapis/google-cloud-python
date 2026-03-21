@@ -1709,6 +1709,28 @@ class Expression(ABC):
 
         return FunctionExpression("array_transform", args)
 
+    @expose_as_static
+    def array_filter(self, element_alias: str, body: "Expression") -> "Expression":
+        """
+        Takes an array, evaluates a boolean expression on each element, and returns a new
+        array containing only the elements for which the expression evaluates to True.
+
+        Args:
+           element_alias: Element variable name.
+           body: Boolean expression applied to each element.
+
+        Returns:
+            Expression: The created FunctionExpression AST node.
+        """
+        return FunctionExpression(
+            "array_filter",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(element_alias),
+                self._cast_to_expr_or_convert_to_constant(body),
+            ],
+        )
+
 
     @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":

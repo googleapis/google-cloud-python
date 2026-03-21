@@ -1794,3 +1794,18 @@ class TestExpressionessionMethods:
         infix_instance = arg1.array_transform(element_alias, body, index_alias=index_alias)
         assert infix_instance == instance
 
+    def test_array_filter(self):
+        arg1 = self._make_arg("Value")
+        element_alias = "e"
+        body = self._make_arg("BodyValue")
+        instance = Expression.array_filter(arg1, element_alias, body)
+        assert instance.name == "array_filter"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == element_alias
+        assert instance.params[2] == body
+        assert len(instance.params) == 3
+        assert repr(instance) == "Value.array_filter(Constant.of('e'), BodyValue)"
+        infix_instance = arg1.array_filter(element_alias, body)
+        assert infix_instance == instance
+
