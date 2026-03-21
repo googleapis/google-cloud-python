@@ -1626,6 +1626,33 @@ class Expression(ABC):
         return FunctionExpression("array_slice", args)
 
     @expose_as_static
+    def array_index_of(
+        self, search: "Expression" | CONSTANT_TYPE
+    ) -> "Expression":
+        """Creates an expression that returns the index of a value in an array.
+
+        Returns -1 if the value is not found.
+
+        Example:
+            >>> # Get the index of "comedy" in the 'tags' array
+            >>> Field.of("tags").array_index_of("comedy")
+
+        Args:
+            search: The element (expression or constant) to find the index of.
+
+        Returns:
+            A new `Expression` representing the 'array_index_of' value.
+        """
+        return FunctionExpression(
+            "array_index_of", 
+            [
+                self, 
+                self._cast_to_expr_or_convert_to_constant(search),
+                self._cast_to_expr_or_convert_to_constant("first")
+            ]
+        )
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.

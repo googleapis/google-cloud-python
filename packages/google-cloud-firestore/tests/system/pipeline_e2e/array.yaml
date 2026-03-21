@@ -705,3 +705,43 @@ tests:
             - "sliced"
     assert_results:
       - sliced: ["space"]
+
+  - description: testArrayIndexOf
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_index_of:
+                - Field: tags
+                - Constant: "space"
+            - "spaceIndex"
+    assert_results:
+      - spaceIndex: 1
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                spaceIndex:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: tags
+                    - stringValue: "space"
+                    - stringValue: "first"
+                    name: array_index_of
+          name: select

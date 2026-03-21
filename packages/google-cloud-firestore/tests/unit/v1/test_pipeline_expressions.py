@@ -1732,3 +1732,18 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.array_slice(Constant.of(1), Constant.of(2))"
         infix_instance = arg1.array_slice(offset, length)
         assert infix_instance == instance
+
+    def test_array_index_of(self):
+        arg1 = self._make_arg("Value")
+        value = "comedy"
+        instance = Expression.array_index_of(arg1, value)
+        assert instance.name == "array_index_of"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == value
+        assert isinstance(instance.params[2], Constant)
+        assert instance.params[2].value == "first"
+        assert len(instance.params) == 3
+        assert repr(instance) == "Value.array_index_of(Constant.of('comedy'), Constant.of('first'))"
+        infix_instance = arg1.array_index_of(value)
+        assert infix_instance == instance
