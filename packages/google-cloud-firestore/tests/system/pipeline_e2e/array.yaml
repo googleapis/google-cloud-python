@@ -800,3 +800,101 @@ tests:
                     - stringValue: "Science Fiction"
                     name: array_index_of_all
           name: select
+
+  - description: testArrayTransform
+    pipeline:
+      - Collection: books
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_transform:
+                - Array:
+                    - 1
+                    - 10
+                    - 100
+                - "num"
+                - FunctionExpression.add:
+                    - Field: "num"
+                    - Constant: 1
+            - "transformed"
+      - Limit: 1
+    assert_results:
+      - transformed: [2, 11, 101]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                transformed:
+                  functionValue:
+                    name: array_transform
+                    args:
+                    - functionValue:
+                        name: array
+                        args:
+                        - integerValue: '1'
+                        - integerValue: '10'
+                        - integerValue: '100'
+                    - stringValue: num
+                    - functionValue:
+                        name: add
+                        args:
+                        - fieldReferenceValue: num
+                        - integerValue: '1'
+          name: select
+        - args:
+          - integerValue: '1'
+          name: limit
+
+  - description: testArrayTransformWithIndex
+    pipeline:
+      - Collection: books
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.array_transform:
+                - Array:
+                    - 1
+                    - 10
+                    - 100
+                - "num"
+                - FunctionExpression.multiply: # body
+                    - Field: "num"
+                    - Field: "idx"
+                - "idx"                        # index_alias
+            - "transformed"
+      - Limit: 1
+    assert_results:
+      - transformed: [0, 10, 200]
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - mapValue:
+              fields:
+                transformed:
+                  functionValue:
+                    name: array_transform
+                    args:
+                    - functionValue:
+                        name: array
+                        args:
+                        - integerValue: '1'
+                        - integerValue: '10'
+                        - integerValue: '100'
+                    - stringValue: num
+                    - stringValue: idx
+                    - functionValue:
+                        name: multiply
+                        args:
+                        - fieldReferenceValue: num
+                        - fieldReferenceValue: idx
+          name: select
+        - args:
+          - integerValue: '1'
+          name: limit

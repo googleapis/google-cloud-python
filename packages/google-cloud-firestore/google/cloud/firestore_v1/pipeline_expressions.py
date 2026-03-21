@@ -1678,6 +1678,39 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def array_transform(
+        self, element_alias: str, body: "Expression", index_alias: str | None = None
+    ) -> "Expression":
+        """Creates an expression that transforms elements of an array.
+
+        Example:
+            >>> # Transform each element by adding 1.
+            >>> Field.of("nums").array_transform("e", Field.of("e").add(1))
+            >>>
+            >>> # Transform each element by adding its index to it.
+            >>> Field.of("nums").array_transform("e", Field.of("e").add(Field.of("i")), index_alias="i")
+
+        Args:
+            element_alias: The variable name to use for the current element within the body expression.
+            body: The expression to apply to each element.
+            index_alias: The variable name to use for the current index within the body expression.
+
+        Returns:
+            A new `Expression` applying the transformation to the array elements.
+        """
+        args = [
+            self,
+            self._cast_to_expr_or_convert_to_constant(element_alias),
+        ]
+        if index_alias is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
+            
+        args.append(self._cast_to_expr_or_convert_to_constant(body))
+
+        return FunctionExpression("array_transform", args)
+
+
+    @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":
         """Creates an expression that converts a number of microseconds since the epoch (1970-01-01
         00:00:00 UTC) to a timestamp.
