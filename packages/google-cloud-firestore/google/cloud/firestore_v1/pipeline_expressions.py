@@ -792,7 +792,9 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the maximum element.
         """
-        return FunctionExpression("maximum", [self], infix_name_override="array_maximum")
+        return FunctionExpression(
+            "maximum", [self], infix_name_override="array_maximum"
+        )
 
     @expose_as_static
     def array_minimum(self) -> "Expression":
@@ -805,7 +807,9 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the minimum element.
         """
-        return FunctionExpression("minimum", [self], infix_name_override="array_minimum")
+        return FunctionExpression(
+            "minimum", [self], infix_name_override="array_minimum"
+        )
 
     @expose_as_static
     def array_first(self) -> "Expression":
@@ -887,7 +891,9 @@ class Expression(ABC):
             A new `Expression` representing the maximum N elements.
         """
         return FunctionExpression(
-            "maximum_n", [self, self._cast_to_expr_or_convert_to_constant(n)], infix_name_override="array_maximum_n"
+            "maximum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            infix_name_override="array_maximum_n",
         )
 
     @expose_as_static
@@ -908,13 +914,13 @@ class Expression(ABC):
             A new `Expression` representing the minimum N elements.
         """
         return FunctionExpression(
-            "minimum_n", [self, self._cast_to_expr_or_convert_to_constant(n)], infix_name_override="array_minimum_n"
+            "minimum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            infix_name_override="array_minimum_n",
         )
 
     @expose_as_static
-    def array_index_of(
-        self, search: Expression | CONSTANT_TYPE
-    ) -> "Expression":
+    def array_index_of(self, search: Expression | CONSTANT_TYPE) -> "Expression":
         """Creates an expression that returns the first index of a search value in an array.
 
         Returns the first index of the search value in the array, or -1 if not found.
