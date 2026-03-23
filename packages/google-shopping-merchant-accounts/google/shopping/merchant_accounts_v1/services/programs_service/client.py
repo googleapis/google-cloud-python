@@ -805,6 +805,7 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 
@@ -1054,6 +1055,7 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 
@@ -1180,6 +1182,7 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 

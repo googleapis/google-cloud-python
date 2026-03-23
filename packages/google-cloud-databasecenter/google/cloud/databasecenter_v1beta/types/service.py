@@ -82,8 +82,7 @@ class ResourceCategory(proto.Enum):
 
 
 class Edition(proto.Enum):
-    r"""Proto representing the edition of the instance.
-    NextId: 4.
+    r"""Represents the edition of a database resource.
 
     Values:
         EDITION_UNSPECIFIED (0):
@@ -117,6 +116,12 @@ class SubResourceType(proto.Enum):
             A resource acting as a read-replica.
         SUB_RESOURCE_TYPE_EXTERNAL_PRIMARY (5):
             A resource acting as an external primary.
+        SUB_RESOURCE_TYPE_READ_POOL (6):
+            A resource acting as a read pool.
+        SUB_RESOURCE_TYPE_RESERVATION (7):
+            Represents a reservation resource.
+        SUB_RESOURCE_TYPE_DATASET (8):
+            Represents a dataset resource.
         SUB_RESOURCE_TYPE_OTHER (4):
             For the rest of the categories.
     """
@@ -126,6 +131,9 @@ class SubResourceType(proto.Enum):
     SUB_RESOURCE_TYPE_SECONDARY = 2
     SUB_RESOURCE_TYPE_READ_REPLICA = 3
     SUB_RESOURCE_TYPE_EXTERNAL_PRIMARY = 5
+    SUB_RESOURCE_TYPE_READ_POOL = 6
+    SUB_RESOURCE_TYPE_RESERVATION = 7
+    SUB_RESOURCE_TYPE_DATASET = 8
     SUB_RESOURCE_TYPE_OTHER = 4
 
 

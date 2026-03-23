@@ -166,6 +166,7 @@ from google.shopping.merchant_accounts_v1.types.accountrelationships import (
 from google.shopping.merchant_accounts_v1.types.accounts import (
     Account,
     CreateAndConfigureAccountRequest,
+    CreateTestAccountRequest,
     DeleteAccountRequest,
     GetAccountRequest,
     ListAccountsRequest,
@@ -415,6 +416,7 @@ __all__ = (
     "UpdateAccountRelationshipRequest",
     "Account",
     "CreateAndConfigureAccountRequest",
+    "CreateTestAccountRequest",
     "DeleteAccountRequest",
     "GetAccountRequest",
     "ListAccountsRequest",

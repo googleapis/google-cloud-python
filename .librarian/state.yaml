@@ -999,7 +999,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-ces
     version: 0.2.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/cloud/ces/v1
         service_config: ces_v1.yaml
@@ -1280,7 +1280,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
     version: 0.6.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/cloud/databasecenter/v1beta
         service_config: databasecenter_v1beta.yaml
@@ -1551,7 +1551,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow-cx
     version: 2.4.0
-    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/cloud/dialogflow/cx/v3
         service_config: dialogflow_v3.yaml
@@ -1567,7 +1567,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
     version: 0.17.0
-    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/cloud/discoveryengine/v1
         service_config: discoveryengine_v1.yaml
@@ -1585,7 +1585,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dlp
     version: 3.34.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/privacy/dlp/v2
         service_config: dlp_v2.yaml
@@ -1697,7 +1697,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-error-reporting
     version: 1.14.0
-    last_generated_commit: ebfdba37e54d9cd3e78380d226c2c4ab5a5f7fd4
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/devtools/clouderrorreporting/v1beta1
         service_config: clouderrorreporting_v1beta1.yaml
@@ -1804,7 +1804,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-firestore
     version: 2.25.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/firestore/admin/v1
         service_config: firestore_v1.yaml
@@ -2179,7 +2179,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-logging
     version: 3.14.0
-    last_generated_commit: 69bf99a9d0910fa86c3c5867ea357aa004dfcc55
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/logging/v2
         service_config: logging_v2.yaml
@@ -2926,7 +2926,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
     version: 0.15.0
-    last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/cloud/run/v2
         service_config: run_v2.yaml
@@ -3355,7 +3355,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-trace
     version: 1.18.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/devtools/cloudtrace/v2
         service_config: cloudtrace_v2.yaml
@@ -3499,7 +3499,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-visionai
     version: 0.4.0
-    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/cloud/visionai/v1alpha1
         service_config: visionai_v1alpha1.yaml
@@ -3748,7 +3748,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-places
     version: 0.7.0
-    last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/maps/places/v1
         service_config: places_v1.yaml
@@ -3827,7 +3827,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.3.0
-    last_generated_commit: 256b575f6915282b20795c13414b21f2c0af65db
+    last_generated_commit: 28d90ca63e8c8bf06278afab07c5890aabe20ad3
     apis:
       - path: google/shopping/merchant/accounts/v1
         service_config: merchantapi_v1.yaml
