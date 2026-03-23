@@ -61,6 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.type.date_pb2 as date_pb2  # type: ignore
 import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore

@@ -1272,6 +1272,11 @@
               "methods": [
                 "run_session"
               ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
+              ]
             }
           }
         },
@@ -1287,6 +1292,11 @@
               "methods": [
                 "run_session"
               ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
+              ]
             }
           }
         },
@@ -1301,6 +1311,11 @@
             "RunSession": {
               "methods": [
                 "run_session"
+              ]
+            },
+            "StreamRunSession": {
+              "methods": [
+                "stream_run_session"
               ]
             }
           }

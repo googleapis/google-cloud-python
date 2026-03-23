@@ -112,6 +112,7 @@ from google.cloud.backupdr_v1.types.backupvault import (
     UpdateDataSourceRequest,
 )
 from google.cloud.backupdr_v1.types.backupvault_alloydb import (
+    AlloyDBClusterBackupPlanAssociationProperties,
     AlloyDbClusterBackupProperties,
     AlloyDBClusterDataSourceProperties,
 )
@@ -262,6 +263,7 @@ __all__ = (
     "BackupConfigState",
     "BackupVaultView",
     "BackupView",
+    "AlloyDBClusterBackupPlanAssociationProperties",
     "AlloyDbClusterBackupProperties",
     "AlloyDBClusterDataSourceProperties",
     "BackupApplianceBackupProperties",

@@ -9467,10 +9467,36 @@ def test_parse_answer_record_path():
     assert expected == actual
 
 
-def test_context_path():
+def test_app_path():
     project = "oyster"
-    session = "nudibranch"
-    context = "cuttlefish"
+    location = "nudibranch"
+    app = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/apps/{app}".format(
+        project=project,
+        location=location,
+        app=app,
+    )
+    actual = ParticipantsClient.app_path(project, location, app)
+    assert expected == actual
+
+
+def test_parse_app_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "app": "nautilus",
+    }
+    path = ParticipantsClient.app_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParticipantsClient.parse_app_path(path)
+    assert expected == actual
+
+
+def test_context_path():
+    project = "scallop"
+    session = "abalone"
+    context = "squid"
     expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
         project=project,
         session=session,
@@ -9482,9 +9508,9 @@ def test_context_path():
 
 def test_parse_context_path():
     expected = {
-        "project": "mussel",
-        "session": "winkle",
-        "context": "nautilus",
+        "project": "clam",
+        "session": "whelk",
+        "context": "octopus",
     }
     path = ParticipantsClient.context_path(**expected)
 
@@ -9494,8 +9520,8 @@ def test_parse_context_path():
 
 
 def test_intent_path():
-    project = "scallop"
-    intent = "abalone"
+    project = "oyster"
+    intent = "nudibranch"
     expected = "projects/{project}/agent/intents/{intent}".format(
         project=project,
         intent=intent,
@@ -9506,8 +9532,8 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "squid",
-        "intent": "clam",
+        "project": "cuttlefish",
+        "intent": "mussel",
     }
     path = ParticipantsClient.intent_path(**expected)
 
@@ -9517,9 +9543,9 @@ def test_parse_intent_path():
 
 
 def test_message_path():
-    project = "whelk"
-    conversation = "octopus"
-    message = "oyster"
+    project = "winkle"
+    conversation = "nautilus"
+    message = "scallop"
     expected = (
         "projects/{project}/conversations/{conversation}/messages/{message}".format(
             project=project,
@@ -9533,9 +9559,9 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "project": "nudibranch",
-        "conversation": "cuttlefish",
-        "message": "mussel",
+        "project": "abalone",
+        "conversation": "squid",
+        "message": "clam",
     }
     path = ParticipantsClient.message_path(**expected)
 
@@ -9545,9 +9571,9 @@ def test_parse_message_path():
 
 
 def test_participant_path():
-    project = "winkle"
-    conversation = "nautilus"
-    participant = "scallop"
+    project = "whelk"
+    conversation = "octopus"
+    participant = "oyster"
     expected = "projects/{project}/conversations/{conversation}/participants/{participant}".format(
         project=project,
         conversation=conversation,
@@ -9559,9 +9585,9 @@ def test_participant_path():
 
 def test_parse_participant_path():
     expected = {
-        "project": "abalone",
-        "conversation": "squid",
-        "participant": "clam",
+        "project": "nudibranch",
+        "conversation": "cuttlefish",
+        "participant": "mussel",
     }
     path = ParticipantsClient.participant_path(**expected)
 
@@ -9571,9 +9597,9 @@ def test_parse_participant_path():
 
 
 def test_phrase_set_path():
-    project = "whelk"
-    location = "octopus"
-    phrase_set = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    phrase_set = "scallop"
     expected = "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
         project=project,
         location=location,
@@ -9585,9 +9611,9 @@ def test_phrase_set_path():
 
 def test_parse_phrase_set_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "phrase_set": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "phrase_set": "clam",
     }
     path = ParticipantsClient.phrase_set_path(**expected)
 
@@ -9597,9 +9623,9 @@ def test_parse_phrase_set_path():
 
 
 def test_session_entity_type_path():
-    project = "winkle"
-    session = "nautilus"
-    entity_type = "scallop"
+    project = "whelk"
+    session = "octopus"
+    entity_type = "oyster"
     expected = (
         "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
             project=project,
@@ -9613,9 +9639,9 @@ def test_session_entity_type_path():
 
 def test_parse_session_entity_type_path():
     expected = {
-        "project": "abalone",
-        "session": "squid",
-        "entity_type": "clam",
+        "project": "nudibranch",
+        "session": "cuttlefish",
+        "entity_type": "mussel",
     }
     path = ParticipantsClient.session_entity_type_path(**expected)
 
@@ -9625,9 +9651,38 @@ def test_parse_session_entity_type_path():
 
 
 def test_tool_path():
-    project = "whelk"
-    location = "octopus"
-    tool = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    app = "scallop"
+    tool = "abalone"
+    expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+        project=project,
+        location=location,
+        app=app,
+        tool=tool,
+    )
+    actual = ParticipantsClient.tool_path(project, location, app, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "app": "whelk",
+        "tool": "octopus",
+    }
+    path = ParticipantsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParticipantsClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_tool_path():
+    project = "oyster"
+    location = "nudibranch"
+    tool = "cuttlefish"
     expected = "projects/{project}/locations/{location}/tools/{tool}".format(
         project=project,
         location=location,
@@ -9639,9 +9694,9 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "tool": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "tool": "nautilus",
     }
     path = ParticipantsClient.tool_path(**expected)
 
@@ -9650,8 +9705,39 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_toolset_path():
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    toolset = "clam"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+    )
+    actual = ParticipantsClient.toolset_path(project, location, app, toolset)
+    assert expected == actual
+
+
+def test_parse_toolset_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "toolset": "nudibranch",
+    }
+    path = ParticipantsClient.toolset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParticipantsClient.parse_toolset_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9661,7 +9747,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "mussel",
     }
     path = ParticipantsClient.common_billing_account_path(**expected)
 
@@ -9671,7 +9757,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9681,7 +9767,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nautilus",
     }
     path = ParticipantsClient.common_folder_path(**expected)
 
@@ -9691,7 +9777,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9701,7 +9787,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "abalone",
     }
     path = ParticipantsClient.common_organization_path(**expected)
 
@@ -9711,7 +9797,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9721,7 +9807,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "clam",
     }
     path = ParticipantsClient.common_project_path(**expected)
 
@@ -9731,8 +9817,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9743,8 +9829,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ParticipantsClient.common_location_path(**expected)
 

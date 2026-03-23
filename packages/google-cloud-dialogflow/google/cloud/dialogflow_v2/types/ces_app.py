@@ -19,27 +19,37 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.cloud.dialogflow_v2.types import tool
+
 __protobuf__ = proto.module(
-    package="google.shopping.merchant.accounts.v1",
+    package="google.cloud.dialogflow.v2",
     manifest={
-        "TermsOfServiceKind",
+        "CesAppSpec",
     },
 )
 
 
-class TermsOfServiceKind(proto.Enum):
-    r"""The TermsOfService Kind.
+class CesAppSpec(proto.Message):
+    r"""Spec of CES app that the generator can choose from.
 
-    Values:
-        TERMS_OF_SERVICE_KIND_UNSPECIFIED (0):
-            Default value. This value is unused.
-        MERCHANT_CENTER (1):
-            Terms of service for the Merchant Center
-            application.
+    Attributes:
+        ces_app (str):
+            Optional. Format:
+            ``projects/<Project ID>/locations/<Location ID>/apps/<app ID>``.
+        confirmation_requirement (google.cloud.dialogflow_v2.types.Tool.ConfirmationRequirement):
+            Optional. Indicates whether the app requires
+            human confirmation.
     """
 
-    TERMS_OF_SERVICE_KIND_UNSPECIFIED = 0
-    MERCHANT_CENTER = 1
+    ces_app: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confirmation_requirement: tool.Tool.ConfirmationRequirement = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=tool.Tool.ConfirmationRequirement,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

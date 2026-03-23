@@ -3308,6 +3308,7 @@ def test_export_app_non_empty_request_with_auto_populated_field():
     request = agent_service.ExportAppRequest(
         name="name_value",
         gcs_uri="gcs_uri_value",
+        app_version="app_version_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3321,6 +3322,7 @@ def test_export_app_non_empty_request_with_auto_populated_field():
         assert args[0] == agent_service.ExportAppRequest(
             name="name_value",
             gcs_uri="gcs_uri_value",
+            app_version="app_version_value",
         )
 
 
@@ -37638,6 +37640,7 @@ def test_create_tool_rest_call_success(request_type):
             "api_authentication": {},
             "tls_config": {},
             "service_directory_config": {},
+            "custom_headers": {},
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -37656,6 +37659,14 @@ def test_create_tool_rest_call_success(request_type):
             "name": "name_value",
             "description": "description_value",
             "widget_type": 1,
+            "ui_config": {},
+            "data_mapping": {
+                "source_tool_name": "source_tool_name_value",
+                "field_mappings": {},
+                "python_function": {},
+                "mode": 1,
+                "python_script": "python_script_value",
+            },
         },
         "name": "name_value",
         "display_name": "display_name_value",
@@ -38064,6 +38075,7 @@ def test_update_tool_rest_call_success(request_type):
             "api_authentication": {},
             "tls_config": {},
             "service_directory_config": {},
+            "custom_headers": {},
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -38082,6 +38094,14 @@ def test_update_tool_rest_call_success(request_type):
             "name": "name_value",
             "description": "description_value",
             "widget_type": 1,
+            "ui_config": {},
+            "data_mapping": {
+                "source_tool_name": "source_tool_name_value",
+                "field_mappings": {},
+                "python_function": {},
+                "mode": 1,
+                "python_script": "python_script_value",
+            },
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/tools/sample4",
         "display_name": "display_name_value",
@@ -40457,6 +40477,7 @@ def test_create_toolset_rest_call_success(request_type):
                     {"display_name": "display_name_value", "cert": b"cert_blob"}
                 ]
             },
+            "custom_headers": {},
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -40739,6 +40760,7 @@ def test_update_toolset_rest_call_success(request_type):
                     {"display_name": "display_name_value", "cert": b"cert_blob"}
                 ]
             },
+            "custom_headers": {},
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -41776,6 +41798,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "api_authentication": {},
                         "tls_config": {},
                         "service_directory_config": {},
+                        "custom_headers": {},
                     },
                     "file_search_tool": {
                         "corpus_type": 1,
@@ -41797,6 +41820,14 @@ def test_create_app_version_rest_call_success(request_type):
                         "name": "name_value",
                         "description": "description_value",
                         "widget_type": 1,
+                        "ui_config": {},
+                        "data_mapping": {
+                            "source_tool_name": "source_tool_name_value",
+                            "field_mappings": {},
+                            "python_function": {},
+                            "mode": 1,
+                            "python_script": "python_script_value",
+                        },
                     },
                     "name": "name_value",
                     "display_name": "display_name_value",
@@ -41932,6 +41963,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "api_authentication": {},
                         "service_directory_config": {},
                         "tls_config": {},
+                        "custom_headers": {},
                     },
                     "open_api_toolset": {
                         "open_api_schema": "open_api_schema_value",

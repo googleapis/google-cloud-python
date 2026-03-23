@@ -85,6 +85,8 @@ class ParticipantsAsyncClient:
 
     answer_record_path = staticmethod(ParticipantsClient.answer_record_path)
     parse_answer_record_path = staticmethod(ParticipantsClient.parse_answer_record_path)
+    app_path = staticmethod(ParticipantsClient.app_path)
+    parse_app_path = staticmethod(ParticipantsClient.parse_app_path)
     context_path = staticmethod(ParticipantsClient.context_path)
     parse_context_path = staticmethod(ParticipantsClient.parse_context_path)
     intent_path = staticmethod(ParticipantsClient.intent_path)
@@ -101,6 +103,10 @@ class ParticipantsAsyncClient:
     )
     tool_path = staticmethod(ParticipantsClient.tool_path)
     parse_tool_path = staticmethod(ParticipantsClient.parse_tool_path)
+    tool_path = staticmethod(ParticipantsClient.tool_path)
+    parse_tool_path = staticmethod(ParticipantsClient.parse_tool_path)
+    toolset_path = staticmethod(ParticipantsClient.toolset_path)
+    parse_toolset_path = staticmethod(ParticipantsClient.parse_toolset_path)
     common_billing_account_path = staticmethod(
         ParticipantsClient.common_billing_account_path
     )

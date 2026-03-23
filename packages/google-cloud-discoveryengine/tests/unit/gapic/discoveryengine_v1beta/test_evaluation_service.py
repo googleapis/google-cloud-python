@@ -4662,7 +4662,29 @@ def test_create_evaluation_rest_call_success(request_type):
                 "offset": 647,
                 "one_box_page_size": 1792,
                 "data_store_specs": [
-                    {"data_store": "data_store_value", "filter": "filter_value"}
+                    {
+                        "data_store": "data_store_value",
+                        "filter": "filter_value",
+                        "boost_spec": {
+                            "condition_boost_specs": [
+                                {
+                                    "condition": "condition_value",
+                                    "boost": 0.551,
+                                    "boost_control_spec": {
+                                        "field_name": "field_name_value",
+                                        "attribute_type": 1,
+                                        "interpolation_type": 1,
+                                        "control_points": [
+                                            {
+                                                "attribute_value": "attribute_value_value",
+                                                "boost_amount": 0.1306,
+                                            }
+                                        ],
+                                    },
+                                }
+                            ]
+                        },
+                    }
                 ],
                 "filter": "filter_value",
                 "canonical_filter": "canonical_filter_value",
@@ -4702,25 +4724,7 @@ def test_create_evaluation_rest_call_success(request_type):
                         "enable_dynamic_position": True,
                     }
                 ],
-                "boost_spec": {
-                    "condition_boost_specs": [
-                        {
-                            "condition": "condition_value",
-                            "boost": 0.551,
-                            "boost_control_spec": {
-                                "field_name": "field_name_value",
-                                "attribute_type": 1,
-                                "interpolation_type": 1,
-                                "control_points": [
-                                    {
-                                        "attribute_value": "attribute_value_value",
-                                        "boost_amount": 0.1306,
-                                    }
-                                ],
-                            },
-                        }
-                    ]
-                },
+                "boost_spec": {},
                 "params": {},
                 "query_expansion_spec": {
                     "condition": 1,

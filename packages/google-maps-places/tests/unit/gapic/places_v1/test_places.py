@@ -44,6 +44,7 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 import google.auth
+import google.type.date_pb2 as date_pb2  # type: ignore
 import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore

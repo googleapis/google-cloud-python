@@ -44,6 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.type.date_pb2 as date_pb2  # type: ignore
 import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore

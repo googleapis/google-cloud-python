@@ -813,7 +813,7 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> session_service.RunSessionResponse:
-        r"""Initiates a single turn interaction with the CES
+        r"""Initiates a single-turn interaction with the CES
         agent within a session.
 
         .. code-block:: python
@@ -876,6 +876,109 @@ class SessionServiceClient(metaclass=SessionServiceClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.run_session]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("config.session", request.config.session),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def stream_run_session(
+        self,
+        request: Optional[Union[session_service.RunSessionRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> Iterable[session_service.RunSessionResponse]:
+        r"""Initiates a single-turn interaction with the CES agent. Uses
+        server-side streaming to deliver incremental results and partial
+        responses as they are generated.
+
+        By default, complete responses (e.g., messages from callbacks or
+        full LLM responses) are sent to the client as soon as they are
+        available. To enable streaming individual text chunks directly
+        from the model, set
+        [enable_text_streaming][google.cloud.ces.v1beta.SessionConfig.enable_text_streaming]
+        to true.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import ces_v1beta
+
+            def sample_stream_run_session():
+                # Create a client
+                client = ces_v1beta.SessionServiceClient()
+
+                # Initialize request argument(s)
+                config = ces_v1beta.SessionConfig()
+                config.session = "session_value"
+
+                inputs = ces_v1beta.SessionInput()
+                inputs.text = "text_value"
+
+                request = ces_v1beta.RunSessionRequest(
+                    config=config,
+                    inputs=inputs,
+                )
+
+                # Make the request
+                stream = client.stream_run_session(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.ces_v1beta.types.RunSessionRequest, dict]):
+                The request object. Request message for
+                [SessionService.RunSession][google.cloud.ces.v1beta.SessionService.RunSession].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            Iterable[google.cloud.ces_v1beta.types.RunSessionResponse]:
+                Response message for
+                   [SessionService.RunSession][google.cloud.ces.v1beta.SessionService.RunSession].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, session_service.RunSessionRequest):
+            request = session_service.RunSessionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.stream_run_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

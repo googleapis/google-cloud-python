@@ -70,8 +70,12 @@ from google.cloud.dialogflow_v2.services.generators import (
 )
 from google.cloud.dialogflow_v2.types import (
     agent_coaching_instruction,
+    ces_app,
+    ces_tool,
     generator,
+    tool,
     tool_call,
+    toolset,
 )
 from google.cloud.dialogflow_v2.types import generator as gcd_generator
 
@@ -4624,6 +4628,9 @@ def test_create_generator_rest_call_success(request_type):
                             {
                                 "tool_call": {
                                     "tool": "tool_value",
+                                    "ces_tool": "ces_tool_value",
+                                    "ces_toolset": "ces_toolset_value",
+                                    "ces_app": "ces_app_value",
                                     "tool_display_name": "tool_display_name_value",
                                     "tool_display_details": "tool_display_details_value",
                                     "action": "action_value",
@@ -4634,6 +4641,9 @@ def test_create_generator_rest_call_success(request_type):
                                 },
                                 "tool_call_result": {
                                     "tool": "tool_value",
+                                    "ces_toolset": "ces_toolset_value",
+                                    "ces_tool": "ces_tool_value",
+                                    "ces_app": "ces_app_value",
                                     "action": "action_value",
                                     "error": {"message": "message_value"},
                                     "raw_content": b"raw_content_blob",
@@ -4664,6 +4674,17 @@ def test_create_generator_rest_call_success(request_type):
             "enable_deduping": True,
             "similarity_threshold": 0.21630000000000002,
         },
+        "toolset_tools": [
+            {
+                "toolset": "toolset_value",
+                "operation_id": "operation_id_value",
+                "confirmation_requirement": 1,
+            }
+        ],
+        "ces_tool_specs": [
+            {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
+        ],
+        "ces_app_specs": [{"ces_app": "ces_app_value", "confirmation_requirement": 1}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5319,6 +5340,9 @@ def test_update_generator_rest_call_success(request_type):
                             {
                                 "tool_call": {
                                     "tool": "tool_value",
+                                    "ces_tool": "ces_tool_value",
+                                    "ces_toolset": "ces_toolset_value",
+                                    "ces_app": "ces_app_value",
                                     "tool_display_name": "tool_display_name_value",
                                     "tool_display_details": "tool_display_details_value",
                                     "action": "action_value",
@@ -5329,6 +5353,9 @@ def test_update_generator_rest_call_success(request_type):
                                 },
                                 "tool_call_result": {
                                     "tool": "tool_value",
+                                    "ces_toolset": "ces_toolset_value",
+                                    "ces_tool": "ces_tool_value",
+                                    "ces_app": "ces_app_value",
                                     "action": "action_value",
                                     "error": {"message": "message_value"},
                                     "raw_content": b"raw_content_blob",
@@ -5359,6 +5386,17 @@ def test_update_generator_rest_call_success(request_type):
             "enable_deduping": True,
             "similarity_threshold": 0.21630000000000002,
         },
+        "toolset_tools": [
+            {
+                "toolset": "toolset_value",
+                "operation_id": "operation_id_value",
+                "confirmation_requirement": 1,
+            }
+        ],
+        "ces_tool_specs": [
+            {"ces_tool": "ces_tool_value", "confirmation_requirement": 1}
+        ],
+        "ces_app_specs": [{"ces_app": "ces_app_value", "confirmation_requirement": 1}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6379,10 +6417,36 @@ def test_generators_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_generator_path():
+def test_app_path():
     project = "squid"
     location = "clam"
-    generator = "whelk"
+    app = "whelk"
+    expected = "projects/{project}/locations/{location}/apps/{app}".format(
+        project=project,
+        location=location,
+        app=app,
+    )
+    actual = GeneratorsClient.app_path(project, location, app)
+    assert expected == actual
+
+
+def test_parse_app_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "app": "nudibranch",
+    }
+    path = GeneratorsClient.app_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorsClient.parse_app_path(path)
+    assert expected == actual
+
+
+def test_generator_path():
+    project = "cuttlefish"
+    location = "mussel"
+    generator = "winkle"
     expected = "projects/{project}/locations/{location}/generators/{generator}".format(
         project=project,
         location=location,
@@ -6394,9 +6458,9 @@ def test_generator_path():
 
 def test_parse_generator_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "generator": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "generator": "abalone",
     }
     path = GeneratorsClient.generator_path(**expected)
 
@@ -6406,9 +6470,38 @@ def test_parse_generator_path():
 
 
 def test_tool_path():
-    project = "cuttlefish"
-    location = "mussel"
-    tool = "winkle"
+    project = "squid"
+    location = "clam"
+    app = "whelk"
+    tool = "octopus"
+    expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+        project=project,
+        location=location,
+        app=app,
+        tool=tool,
+    )
+    actual = GeneratorsClient.tool_path(project, location, app, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "app": "cuttlefish",
+        "tool": "mussel",
+    }
+    path = GeneratorsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorsClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_tool_path():
+    project = "winkle"
+    location = "nautilus"
+    tool = "scallop"
     expected = "projects/{project}/locations/{location}/tools/{tool}".format(
         project=project,
         location=location,
@@ -6420,9 +6513,9 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "tool": "abalone",
+        "project": "abalone",
+        "location": "squid",
+        "tool": "clam",
     }
     path = GeneratorsClient.tool_path(**expected)
 
@@ -6431,8 +6524,39 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_toolset_path():
+    project = "whelk"
+    location = "octopus"
+    app = "oyster"
+    toolset = "nudibranch"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+    )
+    actual = GeneratorsClient.toolset_path(project, location, app, toolset)
+    assert expected == actual
+
+
+def test_parse_toolset_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "app": "winkle",
+        "toolset": "nautilus",
+    }
+    path = GeneratorsClient.toolset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GeneratorsClient.parse_toolset_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6442,7 +6566,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "abalone",
     }
     path = GeneratorsClient.common_billing_account_path(**expected)
 
@@ -6452,7 +6576,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6462,7 +6586,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "clam",
     }
     path = GeneratorsClient.common_folder_path(**expected)
 
@@ -6472,7 +6596,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6482,7 +6606,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "octopus",
     }
     path = GeneratorsClient.common_organization_path(**expected)
 
@@ -6492,7 +6616,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6502,7 +6626,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nudibranch",
     }
     path = GeneratorsClient.common_project_path(**expected)
 
@@ -6512,8 +6636,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6524,8 +6648,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = GeneratorsClient.common_location_path(**expected)
 

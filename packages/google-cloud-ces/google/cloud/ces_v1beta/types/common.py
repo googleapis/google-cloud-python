@@ -447,12 +447,15 @@ class ChannelProfile(proto.Message):
                     Widget supports only voice input.
                 CHAT_ONLY (3):
                     Widget supports only chat input.
+                CHAT_VOICE_AND_VIDEO (4):
+                    Widget supports chat, voice, and video input.
             """
 
             MODALITY_UNSPECIFIED = 0
             CHAT_AND_VOICE = 1
             VOICE_ONLY = 2
             CHAT_ONLY = 3
+            CHAT_VOICE_AND_VIDEO = 4
 
         class Theme(proto.Enum):
             r"""Theme of the web widget.

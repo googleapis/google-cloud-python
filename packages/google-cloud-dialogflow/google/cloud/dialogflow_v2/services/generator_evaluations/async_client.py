@@ -82,6 +82,8 @@ class GeneratorEvaluationsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = GeneratorEvaluationsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = GeneratorEvaluationsClient._DEFAULT_UNIVERSE
 
+    app_path = staticmethod(GeneratorEvaluationsClient.app_path)
+    parse_app_path = staticmethod(GeneratorEvaluationsClient.parse_app_path)
     generator_path = staticmethod(GeneratorEvaluationsClient.generator_path)
     parse_generator_path = staticmethod(GeneratorEvaluationsClient.parse_generator_path)
     generator_evaluation_path = staticmethod(
@@ -92,6 +94,10 @@ class GeneratorEvaluationsAsyncClient:
     )
     tool_path = staticmethod(GeneratorEvaluationsClient.tool_path)
     parse_tool_path = staticmethod(GeneratorEvaluationsClient.parse_tool_path)
+    tool_path = staticmethod(GeneratorEvaluationsClient.tool_path)
+    parse_tool_path = staticmethod(GeneratorEvaluationsClient.parse_tool_path)
+    toolset_path = staticmethod(GeneratorEvaluationsClient.toolset_path)
+    parse_toolset_path = staticmethod(GeneratorEvaluationsClient.parse_toolset_path)
     common_billing_account_path = staticmethod(
         GeneratorEvaluationsClient.common_billing_account_path
     )
