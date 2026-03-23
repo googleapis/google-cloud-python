@@ -652,3 +652,399 @@ tests:
                     - stringValue: ", "
                     name: join
           name: select
+  - description: RegexFind
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.regex_find:
+                - Field: author
+                - Constant: "Adams"
+            - "regexFound"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                regexFound:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "Adams"
+                    name: regex_find
+          name: select
+  - description: RegexFindAll
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.regex_find_all:
+                - Field: author
+                - Constant: "[A-Za-z]+"
+            - "regexFoundAll"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                regexFoundAll:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "[A-Za-z]+"
+                    name: regex_find_all
+          name: select
+  - description: StringSplit
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_split:
+                - Field: author
+                - Constant: " "
+            - "splitAuthor"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                splitAuthor:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: " "
+                    name: split
+          name: select
+  - description: StringRepeat
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_repeat:
+                - Field: author
+                - Constant: 2
+            - "repeatedAuthor"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                repeatedAuthor:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - integerValue: '2'
+                    name: string_repeat
+          name: select
+  - description: StringReplaceAll
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_all:
+                - Field: author
+                - Constant: "s"
+                - Constant: "z"
+            - "replacedAuthor"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                replacedAuthor:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "s"
+                    - stringValue: "z"
+                    name: string_replace_all
+          name: select
+  - description: StringReplaceOne
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_one:
+                - Field: author
+                - Constant: "a"
+                - Constant: "o"
+            - "replacedAuthorOne"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                replacedAuthorOne:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "a"
+                    - stringValue: "o"
+                    name: string_replace_one
+          name: select
+  - description: StringIndexOf
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_index_of:
+                - Field: author
+                - Constant: "Adams"
+            - "indexOf"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                indexOf:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "Adams"
+                    name: string_index_of
+          name: select
+  - description: LTrim
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Field: author
+            - "trimmed"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    name: ltrim
+          name: select
+  - description: LTrimWithValues
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Field: author
+                - Constant: "D"
+            - "trimmedValues"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                trimmedValues:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "D"
+                    name: ltrim
+          name: select
+  - description: RTrim
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Field: author
+            - "trimmed"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    name: rtrim
+          name: select
+  - description: RTrimWithValues
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Field: author
+                - Constant: "s"
+            - "trimmedValues"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                trimmedValues:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "s"
+                    name: rtrim
+          name: select

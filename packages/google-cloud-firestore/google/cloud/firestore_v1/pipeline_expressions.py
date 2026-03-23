@@ -898,6 +898,199 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def regex_find(self, pattern: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns the first substring that matches the specified regex pattern.
+
+        Example:
+            >>> # Get the first match of email
+            >>> Field.of("text").regex_find(r"\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b")
+
+        Args:
+            pattern: The regular expression pattern to search for.
+
+        Returns:
+            A new `Expression` finding the regex substring.
+        """
+        return FunctionExpression(
+            "regex_find", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def regex_find_all(self, pattern: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns all substrings that match the specified regex pattern.
+
+        Example:
+            >>> # Get all hashtags
+            >>> Field.of("post").regex_find_all(r"#[a-zA-Z]+\\b")
+
+        Args:
+            pattern: The regular expression pattern to search for.
+
+        Returns:
+            A new `Expression` finding all regex substrings.
+        """
+        return FunctionExpression(
+            "regex_find_all", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def string_split(self, delimiter: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that splits a string by a delimiter.
+
+        Example:
+            >>> # Split by comma
+            >>> Field.of("tags").string_split(",")
+
+        Args:
+            delimiter: The delimiter to split by.
+
+        Returns:
+            A new `Expression` representing the split string.
+        """
+        return FunctionExpression(
+            "split", [self, self._cast_to_expr_or_convert_to_constant(delimiter)], infix_name_override="string_split"
+        )
+
+    @expose_as_static
+    def string_repeat(self, repetition: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that repeats a string a specified number of times.
+
+        Example:
+            >>> # Repeat the string 3 times
+            >>> Field.of("name").string_repeat(3)
+
+        Args:
+            repetition: The number of times to repeat the string.
+
+        Returns:
+            A new `Expression` representing the repeated string.
+        """
+        return FunctionExpression(
+            "string_repeat",
+            [self, self._cast_to_expr_or_convert_to_constant(repetition)],
+        )
+
+    @expose_as_static
+    def string_replace_all(
+        self,
+        search: Expression | CONSTANT_TYPE,
+        replacement: Expression | CONSTANT_TYPE,
+    ) -> "Expression":
+        """Creates an expression that replaces all occurrences of a search value with a replacement value.
+
+        Example:
+            >>> # Replace 'user' with 'admin'
+            >>> Field.of("role").string_replace_all("user", "admin")
+
+        Args:
+            search: The string to search for.
+            replacement: The string to replace it with.
+
+        Returns:
+            A new `Expression` representing the string with all replacements made.
+        """
+        return FunctionExpression(
+            "string_replace_all",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_replace_one(
+        self,
+        search: Expression | CONSTANT_TYPE,
+        replacement: Expression | CONSTANT_TYPE,
+    ) -> "Expression":
+        """Creates an expression that replaces the first occurrence of a search value with a replacement value.
+
+        Example:
+            >>> # Replace first 'apple' with 'orange'
+            >>> Field.of("fruits").string_replace_one("apple", "orange")
+
+        Args:
+            search: The string to search for.
+            replacement: The string to replace it with.
+
+        Returns:
+            A new `Expression` representing the string with the first replacement made.
+        """
+        return FunctionExpression(
+            "string_replace_one",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_index_of(self, search: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns the index of a search value in a string.
+
+        Example:
+            >>> # Get the index of 'target'
+            >>> Field.of("text").string_index_of("target")
+
+        Args:
+            search: The string to search for.
+
+        Returns:
+            A new `Expression` representing the index of the string.
+        """
+        return FunctionExpression(
+            "string_index_of", [self, self._cast_to_expr_or_convert_to_constant(search)]
+        )
+
+    @expose_as_static
+    def ltrim(
+        self, values_to_trim: Expression | CONSTANT_TYPE | None = None
+    ) -> "Expression":
+        """Creates an expression that removes leading whitespace (or specified characters) from a string.
+
+        Example:
+            >>> # Trim leading spaces
+            >>> Field.of("text").ltrim()
+            >>> # Trim specific character
+            >>> Field.of("text").ltrim("-")
+
+        Args:
+            values_to_trim: The substring or expression defining characters to trim. Defaults to None (trims whitespace).
+
+        Returns:
+            A new `Expression` representing the left-trimmed string.
+        """
+        args = [self]
+        if values_to_trim is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(values_to_trim))
+        return FunctionExpression("ltrim", args)
+
+    @expose_as_static
+    def rtrim(
+        self, values_to_trim: Expression | CONSTANT_TYPE | None = None
+    ) -> "Expression":
+        """Creates an expression that removes trailing whitespace (or specified characters) from a string.
+
+        Example:
+            >>> # Trim trailing spaces
+            >>> Field.of("text").rtrim()
+            >>> # Trim specific character
+            >>> Field.of("text").rtrim("-")
+
+        Args:
+            values_to_trim: The substring or expression defining characters to trim. Defaults to None (trims whitespace).
+
+        Returns:
+            A new `Expression` representing the right-trimmed string.
+        """
+        args = [self]
+        if values_to_trim is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(values_to_trim))
+        return FunctionExpression("rtrim", args)
+
+    @expose_as_static
     def exists(self) -> "BooleanExpression":
         """Creates an expression that checks if a field exists in the document.
 

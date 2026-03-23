@@ -1642,3 +1642,113 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.last()"
         infix_instance = arg1.last()
         assert infix_instance == instance
+
+    def test_regex_find(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Pattern")
+        instance = Expression.regex_find(arg1, arg2)
+        assert instance.name == "regex_find"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.regex_find(Pattern)"
+        infix_instance = arg1.regex_find(arg2)
+        assert infix_instance == instance
+
+    def test_regex_find_all(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Pattern")
+        instance = Expression.regex_find_all(arg1, arg2)
+        assert instance.name == "regex_find_all"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.regex_find_all(Pattern)"
+        infix_instance = arg1.regex_find_all(arg2)
+        assert infix_instance == instance
+
+    def test_string_split(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Delimiter")
+        instance = Expression.string_split(arg1, arg2)
+        assert instance.name == "split"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.string_split(Delimiter)"
+        infix_instance = arg1.string_split(arg2)
+        assert infix_instance == instance
+
+    def test_string_repeat(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Repetition")
+        instance = Expression.string_repeat(arg1, arg2)
+        assert instance.name == "string_repeat"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.string_repeat(Repetition)"
+        infix_instance = arg1.string_repeat(arg2)
+        assert infix_instance == instance
+
+    def test_string_replace_all(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Search")
+        arg3 = self._make_arg("Replacement")
+        instance = Expression.string_replace_all(arg1, arg2, arg3)
+        assert instance.name == "string_replace_all"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Value.string_replace_all(Search, Replacement)"
+        infix_instance = arg1.string_replace_all(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_string_replace_one(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Search")
+        arg3 = self._make_arg("Replacement")
+        instance = Expression.string_replace_one(arg1, arg2, arg3)
+        assert instance.name == "string_replace_one"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Value.string_replace_one(Search, Replacement)"
+        infix_instance = arg1.string_replace_one(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_string_index_of(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("Search")
+        instance = Expression.string_index_of(arg1, arg2)
+        assert instance.name == "string_index_of"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.string_index_of(Search)"
+        infix_instance = arg1.string_index_of(arg2)
+        assert infix_instance == instance
+
+    def test_ltrim(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.ltrim(arg1)
+        assert instance.name == "ltrim"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.ltrim()"
+        infix_instance = arg1.ltrim()
+        assert infix_instance == instance
+
+    def test_ltrim_with_values(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("ValuesToTrim")
+        instance = Expression.ltrim(arg1, arg2)
+        assert instance.name == "ltrim"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.ltrim(ValuesToTrim)"
+        infix_instance = arg1.ltrim(arg2)
+        assert infix_instance == instance
+
+    def test_rtrim(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.rtrim(arg1)
+        assert instance.name == "rtrim"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.rtrim()"
+        infix_instance = arg1.rtrim()
+        assert infix_instance == instance
+
+    def test_rtrim_with_values(self):
+        arg1 = self._make_arg("Value")
+        arg2 = self._make_arg("ValuesToTrim")
+        instance = Expression.rtrim(arg1, arg2)
+        assert instance.name == "rtrim"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Value.rtrim(ValuesToTrim)"
+        infix_instance = arg1.rtrim(arg2)
+        assert infix_instance == instance
