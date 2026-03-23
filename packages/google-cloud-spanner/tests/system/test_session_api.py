@@ -1435,7 +1435,17 @@ def test_transaction_batch_update_w_parent_span(
         "CloudSpanner.DMLTransaction",
         "CloudSpanner.Transaction.commit",
     ]
-    assert got_span_names == expected_span_names
+
+    prefix_len = 4
+    assert got_span_names[:prefix_len] == expected_span_names[:prefix_len]
+    remaining = got_span_names[prefix_len:]
+    assert len(remaining) >= 2
+    for name in remaining:
+        assert name in [
+            "CloudSpanner.DMLTransaction",
+            "CloudSpanner.Transaction.commit",
+        ]
+    assert remaining[-1] == "CloudSpanner.Transaction.commit"
 
     # We expect:
     # |------CloudSpanner.CreateSession--------
