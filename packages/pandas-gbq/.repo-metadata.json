@@ -1,15 +1,13 @@
 {
+    "api_id": "bigquery.googleapis.com",
+    "client_documentation": "https://googleapis.dev/python/pandas-gbq/latest/",
+    "distribution_name": "pandas-gbq",
+    "issue_tracker": "https://github.com/googleapis/python-bigquery-pandas/issues",
+    "language": "python",
+    "library_type": "INTEGRATION",
     "name": "pandas-gbq",
     "name_pretty": "Google BigQuery connector for pandas",
     "product_documentation": "https://cloud.google.com/bigquery",
-    "client_documentation": "https://googleapis.dev/python/pandas-gbq/latest/",
-    "issue_tracker": "https://github.com/googleapis/python-bigquery-pandas/issues",
     "release_level": "preview",
-    "language": "python",
-    "library_type": "INTEGRATION",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "pandas-gbq",
-    "api_id": "bigquery.googleapis.com",
-    "default_version": "",
-    "codeowner_team": "@googleapis/cloud-sdk-python-team @googleapis/bigquery-dataframe-team"
+    "repo": "googleapis/google-cloud-python"
 }

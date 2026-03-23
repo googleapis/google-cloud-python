@@ -1,13 +1,11 @@
 {
-    "name": "sqlalchemy-bigquery",
-    "name_pretty": "SQLAlchemy dialect for BigQuery",
+    "api_id": "bigquery.googleapis.com",
     "client_documentation": "https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html",
-    "release_level": "preview",
+    "distribution_name": "sqlalchemy-bigquery",
     "language": "python",
     "library_type": "INTEGRATION",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "sqlalchemy-bigquery",
-    "api_id": "bigquery.googleapis.com",
-    "default_version": "",
-    "codeowner_team": "@googleapis/python-core-client-libraries"
+    "name": "sqlalchemy-bigquery",
+    "name_pretty": "SQLAlchemy dialect for BigQuery",
+    "release_level": "preview",
+    "repo": "googleapis/google-cloud-python"
 }
