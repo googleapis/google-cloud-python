@@ -140,6 +140,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DataformClient._get_default_mtls_endpoint(None) is None
     assert DataformClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -156,6 +157,7 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert DataformClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert DataformClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 
 def test__read_environment_variables():
@@ -1245,11 +1247,13 @@ def test_dataform_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -43189,8 +43193,9 @@ def test_get_team_folder_rest_bad_request(request_type=dataform.GetTeamFolderReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43257,17 +43262,19 @@ def test_get_team_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_team_folder"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_team_folder_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_team_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_team_folder"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_team_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_team_folder"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43318,8 +43325,9 @@ def test_create_team_folder_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43461,17 +43469,19 @@ def test_create_team_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_team_folder"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_team_folder_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_team_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_team_folder"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_team_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_team_folder"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43528,8 +43538,9 @@ def test_update_team_folder_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43675,17 +43686,19 @@ def test_update_team_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_team_folder"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_team_folder_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_update_team_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_team_folder"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_team_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_update_team_folder"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43738,8 +43751,9 @@ def test_delete_team_folder_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43794,13 +43808,13 @@ def test_delete_team_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_delete_team_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_delete_team_folder"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = dataform.DeleteTeamFolderRequest.pb(
             dataform.DeleteTeamFolderRequest()
@@ -43847,8 +43861,9 @@ def test_query_team_folder_contents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43911,18 +43926,20 @@ def test_query_team_folder_contents_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_team_folder_contents"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_query_team_folder_contents_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_query_team_folder_contents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_query_team_folder_contents"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_team_folder_contents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_query_team_folder_contents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43980,8 +43997,9 @@ def test_search_team_folders_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44042,17 +44060,19 @@ def test_search_team_folders_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_search_team_folders"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_search_team_folders_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_search_team_folders"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_search_team_folders"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_search_team_folders_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_search_team_folders"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44105,8 +44125,9 @@ def test_get_folder_rest_bad_request(request_type=dataform.GetFolderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44177,17 +44198,17 @@ def test_get_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_folder"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_folder_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_folder"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DataformRestInterceptor, "pre_get_folder") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44236,8 +44257,9 @@ def test_create_folder_rest_bad_request(request_type=dataform.CreateFolderReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44385,17 +44407,19 @@ def test_create_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_folder"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_folder_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_folder"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_folder"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44446,8 +44470,9 @@ def test_update_folder_rest_bad_request(request_type=dataform.UpdateFolderReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44597,17 +44622,19 @@ def test_update_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_folder"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_folder_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_update_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_folder"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_update_folder"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44656,8 +44683,9 @@ def test_delete_folder_rest_bad_request(request_type=dataform.DeleteFolderReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44712,13 +44740,13 @@ def test_delete_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_delete_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_delete_folder"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = dataform.DeleteFolderRequest.pb(dataform.DeleteFolderRequest())
         transcode.return_value = {
@@ -44761,8 +44789,9 @@ def test_query_folder_contents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44823,17 +44852,20 @@ def test_query_folder_contents_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_folder_contents"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_folder_contents_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_query_folder_contents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_query_folder_contents"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_folder_contents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_query_folder_contents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44891,8 +44923,9 @@ def test_query_user_root_contents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44953,18 +44986,20 @@ def test_query_user_root_contents_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_user_root_contents"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_query_user_root_contents_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_query_user_root_contents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_query_user_root_contents"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_user_root_contents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_query_user_root_contents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45020,8 +45055,9 @@ def test_move_folder_rest_bad_request(request_type=dataform.MoveFolderRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45076,19 +45112,18 @@ def test_move_folder_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_folder"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_folder_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_move_folder"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_move_folder"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_move_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DataformRestInterceptor, "pre_move_folder") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45139,8 +45174,9 @@ def test_list_repositories_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45203,17 +45239,19 @@ def test_list_repositories_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_repositories"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_repositories_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_list_repositories"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_repositories"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_repositories_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_list_repositories"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45266,8 +45304,9 @@ def test_get_repository_rest_bad_request(request_type=dataform.GetRepositoryRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45347,17 +45386,19 @@ def test_get_repository_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_repository"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_repository_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_repository"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_repository_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45408,8 +45449,9 @@ def test_create_repository_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45585,17 +45627,19 @@ def test_create_repository_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_repository"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_repository_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_repository"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_repository_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45652,8 +45696,9 @@ def test_update_repository_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45833,17 +45878,19 @@ def test_update_repository_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_repository"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_repository_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_update_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_repository"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_repository_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_update_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45896,8 +45943,9 @@ def test_delete_repository_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45952,13 +46000,13 @@ def test_delete_repository_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_delete_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_delete_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = dataform.DeleteRepositoryRequest.pb(
             dataform.DeleteRepositoryRequest()
@@ -46001,8 +46049,9 @@ def test_move_repository_rest_bad_request(request_type=dataform.MoveRepositoryRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46057,19 +46106,20 @@ def test_move_repository_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_repository"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_repository_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_move_repository"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_move_repository"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_move_repository_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_move_repository"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46120,8 +46170,9 @@ def test_commit_repository_changes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46182,18 +46233,20 @@ def test_commit_repository_changes_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_commit_repository_changes"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_commit_repository_changes_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_commit_repository_changes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_commit_repository_changes"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_commit_repository_changes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_commit_repository_changes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46251,8 +46304,9 @@ def test_read_repository_file_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46313,17 +46367,20 @@ def test_read_repository_file_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_read_repository_file"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_read_repository_file_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_read_repository_file"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_read_repository_file"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_read_repository_file_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_read_repository_file"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46381,8 +46438,9 @@ def test_query_repository_directory_contents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46445,18 +46503,22 @@ def test_query_repository_directory_contents_rest_interceptors(null_interceptor)
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_repository_directory_contents"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_query_repository_directory_contents_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_query_repository_directory_contents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_repository_directory_contents",
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_repository_directory_contents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "pre_query_repository_directory_contents",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46514,8 +46576,9 @@ def test_fetch_repository_history_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46576,18 +46639,20 @@ def test_fetch_repository_history_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_repository_history"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_fetch_repository_history_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_fetch_repository_history"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_fetch_repository_history"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_fetch_repository_history_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_fetch_repository_history"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46645,8 +46710,9 @@ def test_compute_repository_access_token_status_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46712,19 +46778,22 @@ def test_compute_repository_access_token_status_rest_interceptors(null_intercept
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_compute_repository_access_token_status",
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_compute_repository_access_token_status_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_compute_repository_access_token_status"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_compute_repository_access_token_status",
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_compute_repository_access_token_status_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "pre_compute_repository_access_token_status",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46782,8 +46851,9 @@ def test_fetch_remote_branches_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46844,17 +46914,20 @@ def test_fetch_remote_branches_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_remote_branches"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_remote_branches_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_fetch_remote_branches"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_fetch_remote_branches"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_fetch_remote_branches_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_fetch_remote_branches"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46910,8 +46983,9 @@ def test_list_workspaces_rest_bad_request(request_type=dataform.ListWorkspacesRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46974,17 +47048,19 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_workspaces"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_workspaces_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_list_workspaces"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_workspaces"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_workspaces_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_list_workspaces"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47037,8 +47113,9 @@ def test_get_workspace_rest_bad_request(request_type=dataform.GetWorkspaceReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47105,17 +47182,19 @@ def test_get_workspace_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_workspace"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_workspace_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_workspace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_workspace"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_workspace_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_workspace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47166,8 +47245,9 @@ def test_create_workspace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47307,17 +47387,19 @@ def test_create_workspace_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_workspace"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_workspace_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_workspace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_workspace"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_workspace_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_workspace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47372,8 +47454,9 @@ def test_delete_workspace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47430,13 +47513,13 @@ def test_delete_workspace_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_delete_workspace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_delete_workspace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = dataform.DeleteWorkspaceRequest.pb(
             dataform.DeleteWorkspaceRequest()
@@ -47483,8 +47566,9 @@ def test_install_npm_packages_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47544,17 +47628,20 @@ def test_install_npm_packages_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_install_npm_packages"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_install_npm_packages_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_install_npm_packages"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_install_npm_packages"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_install_npm_packages_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_install_npm_packages"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47612,8 +47699,9 @@ def test_pull_git_commits_rest_bad_request(request_type=dataform.PullGitCommitsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47673,17 +47761,19 @@ def test_pull_git_commits_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_pull_git_commits"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_pull_git_commits_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_pull_git_commits"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_pull_git_commits"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_pull_git_commits_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_pull_git_commits"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47736,8 +47826,9 @@ def test_push_git_commits_rest_bad_request(request_type=dataform.PushGitCommitsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47797,17 +47888,19 @@ def test_push_git_commits_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_push_git_commits"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_push_git_commits_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_push_git_commits"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_push_git_commits"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_push_git_commits_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_push_git_commits"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47862,8 +47955,9 @@ def test_fetch_file_git_statuses_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47923,17 +48017,20 @@ def test_fetch_file_git_statuses_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_file_git_statuses"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_file_git_statuses_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_fetch_file_git_statuses"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_fetch_file_git_statuses"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_fetch_file_git_statuses_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_fetch_file_git_statuses"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47993,8 +48090,9 @@ def test_fetch_git_ahead_behind_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48059,17 +48157,20 @@ def test_fetch_git_ahead_behind_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_git_ahead_behind"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_git_ahead_behind_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_fetch_git_ahead_behind"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_fetch_git_ahead_behind"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_fetch_git_ahead_behind_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_fetch_git_ahead_behind"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48129,8 +48230,9 @@ def test_commit_workspace_changes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48190,18 +48292,20 @@ def test_commit_workspace_changes_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_commit_workspace_changes"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_commit_workspace_changes_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_commit_workspace_changes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_commit_workspace_changes"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_commit_workspace_changes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_commit_workspace_changes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48261,8 +48365,9 @@ def test_reset_workspace_changes_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48322,17 +48427,20 @@ def test_reset_workspace_changes_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_reset_workspace_changes"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_reset_workspace_changes_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_reset_workspace_changes"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_reset_workspace_changes"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_reset_workspace_changes_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_reset_workspace_changes"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48390,8 +48498,9 @@ def test_fetch_file_diff_rest_bad_request(request_type=dataform.FetchFileDiffReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48454,17 +48563,19 @@ def test_fetch_file_diff_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_file_diff"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_fetch_file_diff_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_fetch_file_diff"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_fetch_file_diff"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_fetch_file_diff_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_fetch_file_diff"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48519,8 +48630,9 @@ def test_query_directory_contents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48583,18 +48695,20 @@ def test_query_directory_contents_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_directory_contents"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_query_directory_contents_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_query_directory_contents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_query_directory_contents"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_directory_contents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_query_directory_contents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48652,8 +48766,9 @@ def test_search_files_rest_bad_request(request_type=dataform.SearchFilesRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48716,17 +48831,19 @@ def test_search_files_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_search_files"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_search_files_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_search_files"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_search_files"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_search_files_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_search_files"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48779,8 +48896,9 @@ def test_make_directory_rest_bad_request(request_type=dataform.MakeDirectoryRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48840,17 +48958,19 @@ def test_make_directory_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_make_directory"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_make_directory_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_make_directory"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_make_directory"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_make_directory_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_make_directory"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48905,8 +49025,9 @@ def test_remove_directory_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48966,17 +49087,19 @@ def test_remove_directory_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_remove_directory"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_remove_directory_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_remove_directory"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_remove_directory"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_remove_directory_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_remove_directory"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49031,8 +49154,9 @@ def test_move_directory_rest_bad_request(request_type=dataform.MoveDirectoryRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49092,17 +49216,19 @@ def test_move_directory_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_directory"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_directory_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_move_directory"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_move_directory"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_move_directory_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_move_directory"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49155,8 +49281,9 @@ def test_read_file_rest_bad_request(request_type=dataform.ReadFileRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49219,17 +49346,15 @@ def test_read_file_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_read_file"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_read_file_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_read_file"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.DataformRestInterceptor, "post_read_file") as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_read_file_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DataformRestInterceptor, "pre_read_file") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49280,8 +49405,9 @@ def test_remove_file_rest_bad_request(request_type=dataform.RemoveFileRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49341,17 +49467,17 @@ def test_remove_file_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_remove_file"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_remove_file_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_remove_file"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_remove_file"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_remove_file_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DataformRestInterceptor, "pre_remove_file") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49404,8 +49530,9 @@ def test_move_file_rest_bad_request(request_type=dataform.MoveFileRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49465,17 +49592,15 @@ def test_move_file_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_file"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_move_file_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_move_file"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.DataformRestInterceptor, "post_move_file") as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_move_file_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DataformRestInterceptor, "pre_move_file") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49526,8 +49651,9 @@ def test_write_file_rest_bad_request(request_type=dataform.WriteFileRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49587,17 +49713,17 @@ def test_write_file_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_write_file"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_write_file_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_write_file"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_write_file"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_write_file_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DataformRestInterceptor, "pre_write_file") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49648,8 +49774,9 @@ def test_list_release_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49712,17 +49839,20 @@ def test_list_release_configs_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_release_configs"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_release_configs_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_list_release_configs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_release_configs"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_list_release_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_list_release_configs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49782,8 +49912,9 @@ def test_get_release_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49858,17 +49989,19 @@ def test_get_release_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_release_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_release_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_release_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_release_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_release_config_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_release_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49921,8 +50054,9 @@ def test_create_release_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50102,17 +50236,20 @@ def test_create_release_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_release_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_release_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_release_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_release_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_create_release_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_release_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50169,8 +50306,9 @@ def test_update_release_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50354,17 +50492,20 @@ def test_update_release_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_release_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_release_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_update_release_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_release_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_update_release_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_update_release_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50419,8 +50560,9 @@ def test_delete_release_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50477,13 +50619,13 @@ def test_delete_release_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_delete_release_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_delete_release_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = dataform.DeleteReleaseConfigRequest.pb(
             dataform.DeleteReleaseConfigRequest()
@@ -50528,8 +50670,9 @@ def test_list_compilation_results_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50592,18 +50735,20 @@ def test_list_compilation_results_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_compilation_results"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_list_compilation_results_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_list_compilation_results"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_compilation_results"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_list_compilation_results_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_list_compilation_results"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50663,8 +50808,9 @@ def test_get_compilation_result_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50734,17 +50880,20 @@ def test_get_compilation_result_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_compilation_result"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_compilation_result_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_compilation_result"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_compilation_result"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_get_compilation_result_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_compilation_result"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50797,8 +50946,9 @@ def test_create_compilation_result_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50974,18 +51124,20 @@ def test_create_compilation_result_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_compilation_result"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_create_compilation_result_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_compilation_result"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_compilation_result"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_create_compilation_result_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_compilation_result"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51040,8 +51192,9 @@ def test_query_compilation_result_actions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51104,18 +51257,20 @@ def test_query_compilation_result_actions_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_compilation_result_actions"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_query_compilation_result_actions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_query_compilation_result_actions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_query_compilation_result_actions"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_compilation_result_actions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_query_compilation_result_actions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51173,8 +51328,9 @@ def test_list_workflow_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51237,17 +51393,20 @@ def test_list_workflow_configs_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_workflow_configs"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_workflow_configs_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_list_workflow_configs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_workflow_configs"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_list_workflow_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_list_workflow_configs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51307,8 +51466,9 @@ def test_get_workflow_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51381,17 +51541,19 @@ def test_get_workflow_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_workflow_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_workflow_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_workflow_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_workflow_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_workflow_config_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_workflow_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51444,8 +51606,9 @@ def test_create_workflow_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51624,17 +51787,20 @@ def test_create_workflow_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_workflow_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_workflow_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_workflow_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_workflow_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_create_workflow_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_workflow_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51691,8 +51857,9 @@ def test_update_workflow_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51875,17 +52042,20 @@ def test_update_workflow_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_workflow_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_workflow_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_update_workflow_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_workflow_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_update_workflow_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_update_workflow_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51940,8 +52110,9 @@ def test_delete_workflow_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51998,13 +52169,13 @@ def test_delete_workflow_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_delete_workflow_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_delete_workflow_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = dataform.DeleteWorkflowConfigRequest.pb(
             dataform.DeleteWorkflowConfigRequest()
@@ -52049,8 +52220,9 @@ def test_list_workflow_invocations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52113,18 +52285,20 @@ def test_list_workflow_invocations_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_list_workflow_invocations"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_list_workflow_invocations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_list_workflow_invocations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_list_workflow_invocations"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_list_workflow_invocations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_list_workflow_invocations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52184,8 +52358,9 @@ def test_get_workflow_invocation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52255,17 +52430,20 @@ def test_get_workflow_invocation_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_workflow_invocation"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_workflow_invocation_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_workflow_invocation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_workflow_invocation"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_get_workflow_invocation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_workflow_invocation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52320,8 +52498,9 @@ def test_create_workflow_invocation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52487,18 +52666,20 @@ def test_create_workflow_invocation_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_create_workflow_invocation"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_create_workflow_invocation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_create_workflow_invocation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_create_workflow_invocation"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_create_workflow_invocation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_create_workflow_invocation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52555,8 +52736,9 @@ def test_delete_workflow_invocation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52613,13 +52795,13 @@ def test_delete_workflow_invocation_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_delete_workflow_invocation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_delete_workflow_invocation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = dataform.DeleteWorkflowInvocationRequest.pb(
             dataform.DeleteWorkflowInvocationRequest()
@@ -52666,8 +52848,9 @@ def test_cancel_workflow_invocation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52727,18 +52910,20 @@ def test_cancel_workflow_invocation_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_cancel_workflow_invocation"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_cancel_workflow_invocation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_cancel_workflow_invocation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_cancel_workflow_invocation"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_cancel_workflow_invocation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_cancel_workflow_invocation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52798,8 +52983,9 @@ def test_query_workflow_invocation_actions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52862,18 +53048,20 @@ def test_query_workflow_invocation_actions_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_query_workflow_invocation_actions"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor,
-        "post_query_workflow_invocation_actions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_query_workflow_invocation_actions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_query_workflow_invocation_actions"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_query_workflow_invocation_actions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_query_workflow_invocation_actions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -52929,8 +53117,9 @@ def test_get_config_rest_bad_request(request_type=dataform.GetConfigRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -52995,17 +53184,17 @@ def test_get_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_config_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.DataformRestInterceptor, "pre_get_config") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53054,8 +53243,9 @@ def test_update_config_rest_bad_request(request_type=dataform.UpdateConfigReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53192,17 +53382,19 @@ def test_update_config_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_config"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_update_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_update_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_config"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_update_config_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_update_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53255,8 +53447,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53318,17 +53511,19 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_get_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_get_iam_policy_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53381,8 +53576,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53444,17 +53640,19 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_set_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_set_iam_policy_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53507,8 +53705,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -53568,17 +53767,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = DataformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DataformRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.DataformRestInterceptor, "post_test_iam_permissions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DataformRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.DataformRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DataformRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -53634,8 +53836,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -53694,8 +53897,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -53756,8 +53960,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -53818,8 +54023,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -53880,8 +54086,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -53942,8 +54149,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -55657,11 +55865,14 @@ def test_dataform_base_transport():
 
 def test_dataform_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.dataform_v1beta1.services.dataform.transports.DataformTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.dataform_v1beta1.services.dataform.transports.DataformTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataformTransport(
@@ -55681,9 +55892,12 @@ def test_dataform_base_transport_with_credentials_file():
 
 def test_dataform_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dataform_v1beta1.services.dataform.transports.DataformTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.dataform_v1beta1.services.dataform.transports.DataformTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataformTransport()
@@ -55761,11 +55975,12 @@ def test_dataform_transport_auth_gdch_credentials(transport_class):
 def test_dataform_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -56913,6 +57128,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = DataformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = DataformClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -57050,6 +57297,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = DataformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -57197,6 +57476,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = DataformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = DataformClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -57340,6 +57653,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = DataformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -57487,6 +57834,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = DataformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = DataformClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -57626,6 +58007,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = DataformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = DataformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

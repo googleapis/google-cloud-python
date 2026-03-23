@@ -31,8 +31,6 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -68,7 +66,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = [
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -303,34 +301,15 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
-
-    if session.python in ["3.7", "3.8"]:
-        session.skip(f"Python {session.python} is no longer supported.")
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove this check once support for Protobuf 3.x is dropped.
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the unit tests.
     session.run(
@@ -352,10 +331,10 @@ def unit(session, protobuf_implementation):
 
 
 def install_systemtest_dependencies(session, *constraints):
-    # Use pre-release gRPC for system tests.
-    # Exclude version 1.52.0rc1 which has a known issue.
-    # See https://github.com/grpc/grpc/issues/32163
-    session.install("--pre", "grpcio!=1.52.0rc1")
+    if session.python >= "3.12":
+        session.install("--pre", "grpcio>=1.75.1")
+    else:
+        session.install("--pre", "grpcio<=1.62.2")
 
     session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
 
@@ -522,7 +501,7 @@ def docfx(session):
 @nox.session(python=PREVIEW_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def prerelease_deps(session, protobuf_implementation):
     """
@@ -531,16 +510,6 @@ def prerelease_deps(session, protobuf_implementation):
     Pre-release versions can be installed using
     `pip install --pre <package>`.
     """
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove this check once support for Protobuf 3.x is dropped.
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".")
@@ -585,7 +554,7 @@ def prerelease_deps(session, protobuf_implementation):
         "google-api-core",
         "google-auth",
         "grpc-google-iam-v1",
-        "grpcio",
+        "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
         "grpcio-status",
         "protobuf",
         "proto-plus",
