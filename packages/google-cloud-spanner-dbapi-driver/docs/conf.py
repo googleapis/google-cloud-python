@@ -91,7 +91,8 @@ author = "Google APIs"
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = __version__
+import google.cloud.spanner_driver.version
+release = google.cloud.spanner_driver.version.__version__
 # The short X.Y version.
 version = ".".join(release.split(".")[0:2])
 
