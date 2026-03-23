@@ -31,9 +31,7 @@ import warnings
 
 import nox
 
-FLAKE8_VERSION = "flake8==6.1.0"
-BLACK_VERSION = "black[jupyter]==23.7.0"
-ISORT_VERSION = "isort==5.11.0"
+RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -109,16 +107,16 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
     session.run(
-        "ruff",
-        "format",
+        "ruff", "format",
         "--check",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
+        "--line-length=88", 
         *LINT_PATHS,
     )
-    session.run("flake8", "google", "tests")
 
 
 # Use a python runtime which is available in the owlbot post processor here
@@ -126,15 +124,12 @@ def lint(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log(
-        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
-    )
-
+    session.log("WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future.")
+    
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
     session.run(
-        "ruff",
-        "format",
+        "ruff", "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
@@ -151,28 +146,26 @@ def format(session):
     # Use the --fss option to sort imports using strict alphabetical order.
     # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
     session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
+        "ruff", "check",
+        "--select", "I",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
     session.run(
-        "ruff",
-        "format",
+        "ruff", "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments", "setuptools>=79.0.1")
+    session.install("setuptools", "docutils", "pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
