@@ -4,8 +4,8 @@ branch = True
 [report]
 show_missing = True
 omit =
-    google/cloud/firestore/__init__.py
-    google/cloud/firestore/gapic_version.py
+    google/cloud/firestore_admin/__init__.py
+    google/cloud/firestore_admin/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

@@ -1,4 +1,5 @@
 {
+    "api_description": "An API to manage the running of Batch resources on Google Cloud Platform.",
     "api_id": "batch.googleapis.com",
     "api_shortname": "batch",
     "client_documentation": "https://cloud.google.com/python/docs/reference/batch/latest",

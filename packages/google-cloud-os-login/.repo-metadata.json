@@ -1,4 +1,5 @@
 {
+    "api_description": "You can use OS Login to manage access to your VM instances using IAM roles.",
     "api_id": "oslogin.googleapis.com",
     "api_shortname": "oslogin",
     "client_documentation": "https://cloud.google.com/python/docs/reference/oslogin/latest",
