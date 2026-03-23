@@ -1453,6 +1453,124 @@ class TestExpressionessionMethods:
         infix_instance = arg1.array_reverse()
         assert infix_instance == instance
 
+    def test_array_maximum(self):
+        arg1 = self._make_arg("Array")
+        instance = Expression.array_maximum(arg1)
+        assert instance.name == "maximum"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Array.array_maximum()"
+        infix_instance = arg1.array_maximum()
+        assert infix_instance == instance
+
+    def test_array_minimum(self):
+        arg1 = self._make_arg("Array")
+        instance = Expression.array_minimum(arg1)
+        assert instance.name == "minimum"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Array.array_minimum()"
+        infix_instance = arg1.array_minimum()
+        assert infix_instance == instance
+
+    def test_array_first(self):
+        arg1 = self._make_arg("Array")
+        instance = Expression.array_first(arg1)
+        assert instance.name == "array_first"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Array.array_first()"
+        infix_instance = arg1.array_first()
+        assert infix_instance == instance
+
+    def test_array_first_n(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("N")
+        instance = Expression.array_first_n(arg1, arg2)
+        assert instance.name == "array_first_n"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Array.array_first_n(N)"
+        infix_instance = arg1.array_first_n(arg2)
+        assert infix_instance == instance
+
+    def test_array_last(self):
+        arg1 = self._make_arg("Array")
+        instance = Expression.array_last(arg1)
+        assert instance.name == "array_last"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Array.array_last()"
+        infix_instance = arg1.array_last()
+        assert infix_instance == instance
+
+    def test_array_last_n(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("N")
+        instance = Expression.array_last_n(arg1, arg2)
+        assert instance.name == "array_last_n"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Array.array_last_n(N)"
+        infix_instance = arg1.array_last_n(arg2)
+        assert infix_instance == instance
+
+    def test_array_maximum_n(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("N")
+        instance = Expression.array_maximum_n(arg1, arg2)
+        assert instance.name == "maximum_n"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Array.array_maximum_n(N)"
+        infix_instance = arg1.array_maximum_n(arg2)
+        assert infix_instance == instance
+
+    def test_array_minimum_n(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("N")
+        instance = Expression.array_minimum_n(arg1, arg2)
+        assert instance.name == "minimum_n"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Array.array_minimum_n(N)"
+        infix_instance = arg1.array_minimum_n(arg2)
+        assert infix_instance == instance
+
+    def test_array_index_of(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("Search")
+        instance = Expression.array_index_of(arg1, arg2)
+        assert instance.name == "array_index_of"
+        assert len(instance.params) == 3
+        assert instance.params[0] == arg1
+        assert instance.params[1] == arg2
+        infix_instance = arg1.array_index_of(arg2)
+        assert infix_instance == instance
+
+    def test_array_index_of_all(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("Search")
+        instance = Expression.array_index_of_all(arg1, arg2)
+        assert instance.name == "array_index_of_all"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Array.array_index_of_all(Search)"
+        infix_instance = arg1.array_index_of_all(arg2)
+        assert infix_instance == instance
+
+    def test_array_slice(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("Offset")
+        instance = Expression.array_slice(arg1, arg2)
+        assert instance.name == "array_slice"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "Array.array_slice(Offset)"
+        infix_instance = arg1.array_slice(arg2)
+        assert infix_instance == instance
+
+    def test_array_slice_with_length(self):
+        arg1 = self._make_arg("Array")
+        arg2 = self._make_arg("Offset")
+        arg3 = self._make_arg("Length")
+        instance = Expression.array_slice(arg1, arg2, arg3)
+        assert instance.name == "array_slice"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "Array.array_slice(Offset, Length)"
+        infix_instance = arg1.array_slice(arg2, arg3)
+        assert infix_instance == instance
+
     def test_array_concat(self):
         arg1 = self._make_arg("ArrayRef1")
         arg2 = self._make_arg("ArrayRef2")

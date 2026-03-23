@@ -782,6 +782,204 @@ class Expression(ABC):
         return FunctionExpression("array_reverse", [self])
 
     @expose_as_static
+    def array_maximum(self) -> "Expression":
+        """Creates an expression that finds the maximum element in a numeric array.
+
+        Example:
+            >>> # Get the maximum value in the 'scores' array
+            >>> Field.of("scores").array_maximum()
+
+        Returns:
+            A new `Expression` representing the maximum element.
+        """
+        return FunctionExpression("maximum", [self])
+
+    @expose_as_static
+    def array_minimum(self) -> "Expression":
+        """Creates an expression that finds the minimum element in a numeric array.
+
+        Example:
+            >>> # Get the minimum value in the 'scores' array
+            >>> Field.of("scores").array_minimum()
+
+        Returns:
+            A new `Expression` representing the minimum element.
+        """
+        return FunctionExpression("minimum", [self])
+
+    @expose_as_static
+    def array_first(self) -> "Expression":
+        """Creates an expression that returns the first element of an array.
+
+        Example:
+            >>> # Get the first value in the 'scores' array
+            >>> Field.of("scores").array_first()
+
+        Returns:
+            A new `Expression` representing the first element.
+        """
+        return FunctionExpression("array_first", [self])
+
+    @expose_as_static
+    def array_first_n(self, n: Expression | int) -> "Expression":
+        """Creates an expression that returns the first N elements of an array.
+
+        Example:
+            >>> # Get the first 3 values in the 'scores' array
+            >>> Field.of("scores").array_first_n(3)
+
+        Args:
+            n: The number of elements to return. Can be an integer or an Expression.
+
+        Returns:
+            A new `Expression` representing the first N elements.
+        """
+        return FunctionExpression(
+            "array_first_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_last(self) -> "Expression":
+        """Creates an expression that returns the last element of an array.
+
+        Example:
+            >>> # Get the last value in the 'scores' array
+            >>> Field.of("scores").array_last()
+
+        Returns:
+            A new `Expression` representing the last element.
+        """
+        return FunctionExpression("array_last", [self])
+
+    @expose_as_static
+    def array_last_n(self, n: Expression | int) -> "Expression":
+        """Creates an expression that returns the last N elements of an array.
+
+        Example:
+            >>> # Get the last 3 values in the 'scores' array
+            >>> Field.of("scores").array_last_n(3)
+
+        Args:
+            n: The number of elements to return. Can be an integer or an Expression.
+
+        Returns:
+            A new `Expression` representing the last N elements.
+        """
+        return FunctionExpression(
+            "array_last_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_maximum_n(self, n: Expression | int) -> "Expression":
+        """Creates an expression that finds the N maximum elements in an array.
+
+        Example:
+            >>> # Get the 3 highest scores
+            >>> Field.of("scores").array_maximum_n(3)
+
+        Note: This does not use a stable sort, meaning the order of equivalent
+        elements is undefined.
+
+        Args:
+            n: The number of elements to return. Can be an integer or an Expression.
+
+        Returns:
+            A new `Expression` representing the maximum N elements.
+        """
+        return FunctionExpression(
+            "maximum_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_minimum_n(self, n: Expression | int) -> "Expression":
+        """Creates an expression that finds the N minimum elements in an array.
+
+        Example:
+            >>> # Get the 3 lowest scores
+            >>> Field.of("scores").array_minimum_n(3)
+
+        Note: This does not use a stable sort, meaning the order of equivalent
+        elements is undefined.
+
+        Args:
+            n: The number of elements to return. Can be an integer or an Expression.
+
+        Returns:
+            A new `Expression` representing the minimum N elements.
+        """
+        return FunctionExpression(
+            "minimum_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_index_of(
+        self, search: Expression | CONSTANT_TYPE
+    ) -> "Expression":
+        """Creates an expression that returns the first index of a search value in an array.
+
+        Returns the first index of the search value in the array, or -1 if not found.
+
+        Example:
+            >>> # Get the first position of 'user_1' in an array
+            >>> Field.of("users").array_index_of("user_1")
+
+        Args:
+            search: The value to search for. Can be an Expression or a constant.
+
+        Returns:
+            A new `Expression` representing the index of the element.
+        """
+        return FunctionExpression(
+            "array_index_of",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+                self._cast_to_expr_or_convert_to_constant("first"),
+            ],
+        )
+
+    @expose_as_static
+    def array_index_of_all(self, search: Expression | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns the indices of all occurrences of a search value in an array.
+
+        Example:
+            >>> # Get all positions of 'user_1' in an array
+            >>> Field.of("users").array_index_of_all("user_1")
+
+        Args:
+            search: The value to search for. Can be an Expression or a constant.
+
+        Returns:
+            A new `Expression` representing the indices.
+        """
+        return FunctionExpression(
+            "array_index_of_all",
+            [self, self._cast_to_expr_or_convert_to_constant(search)],
+        )
+
+    @expose_as_static
+    def array_slice(
+        self, offset: Expression | int, length: Expression | int | None = None
+    ) -> "Expression":
+        """Creates an expression that returns a slice of an array starting from the specified offset.
+
+        Example:
+            >>> # Get a slice of the array starting at index 1 and taking 2 elements
+            >>> Field.of("scores").array_slice(1, 2)
+
+        Args:
+            offset: The 0-based index of the first element to include.
+            length: The number of elements to include. If omitted, takes all remaining.
+
+        Returns:
+            A new `Expression` representing the sliced array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(offset)]
+        if length is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(length))
+        return FunctionExpression("array_slice", args)
+
+    @expose_as_static
     def array_concat(
         self, *other_arrays: Array | list[Expression | CONSTANT_TYPE] | Expression
     ) -> "Expression":
