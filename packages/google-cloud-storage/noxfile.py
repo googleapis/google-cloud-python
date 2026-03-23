@@ -26,6 +26,7 @@ import shutil
 
 import nox
 
+FLAKE8_VERSION = "flake8==6.1.0"
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.12.0"
 RUFF_VERSION = "ruff==0.14.14"
