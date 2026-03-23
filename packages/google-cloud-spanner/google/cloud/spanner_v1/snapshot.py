@@ -194,31 +194,16 @@ class _SnapshotBase(_SessionWrapper):
         self._client_context = _validate_client_context(client_context)
         self._execute_sql_request_count: int = 0
         self._read_request_count: int = 0
-<<<<<<< HEAD
-=======
         self._begin_request_sent: bool = False
 
         # Identifier for the transaction.
->>>>>>> 89f67fd10d4 (chore: updates thread handling to avoid race condition in tests)
         self._transaction_id: Optional[bytes] = None
         self._precommit_token: Optional[MultiplexedSessionPrecommitToken] = None
         self._lock: CrossSync._Sync_Impl.Lock = CrossSync._Sync_Impl.Lock()
 
-<<<<<<< HEAD
-    @property
-    def _resource_info(self):
-        """Resource information for metrics labels."""
-        database = self._session._database
-        return {
-            "project": database._instance._client.project,
-            "instance": database._instance.instance_id,
-            "database": database.database_id,
-        }
-=======
         # Operation within a transaction can be performed using multiple
         # threads, so we need to use a lock when updating the transaction.
         self._lock: threading.Lock = threading.Lock()
->>>>>>> 89f67fd10d4 (chore: updates thread handling to avoid race condition in tests)
 
         # Event to coordinate concurrent requests beginning the transaction.
         # This is used to prevent the "Transaction has not begun" race condition.
@@ -250,14 +235,6 @@ class _SnapshotBase(_SessionWrapper):
         column_info=None,
         lazy_decode=False,
     ):
-<<<<<<< HEAD
-        """Perform a ``StreamingRead`` API request for rows in a table."""
-        if self._read_request_count > 0:
-            if not self._multi_use:
-                raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
-                raise ValueError("Transaction has not begun.")
-=======
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -361,7 +338,6 @@ class _SnapshotBase(_SessionWrapper):
             if not self._transaction_begin_event.wait(timeout=30.0):
                 raise ValueError("Timed out waiting for transaction to begin.")
 
->>>>>>> 89f67fd10d4 (chore: updates thread handling to avoid race condition in tests)
         session = self._session
         database = session._database
         api = database.spanner_api
@@ -436,14 +412,6 @@ class _SnapshotBase(_SessionWrapper):
         column_info=None,
         lazy_decode=False,
     ):
-<<<<<<< HEAD
-        """Perform an ``ExecuteStreamingSql`` API request."""
-        if self._read_request_count > 0:
-            if not self._multi_use:
-                raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
-                raise ValueError("Transaction has not begun.")
-=======
         """Perform an ``ExecuteStreamingSql`` API request.
 
         :type sql: str
@@ -566,7 +534,6 @@ class _SnapshotBase(_SessionWrapper):
             if not self._transaction_begin_event.wait(timeout=30.0):
                 raise ValueError("Timed out waiting for transaction to begin.")
 
->>>>>>> 89f67fd10d4 (chore: updates thread handling to avoid race condition in tests)
         if params is not None:
             params_pb = Struct(
                 fields={key: _make_value_pb(value) for (key, value) in params.items()}
@@ -917,12 +884,9 @@ class _SnapshotBase(_SessionWrapper):
         """Updates the snapshot for the given transaction."""
         if self._transaction_id is None and transaction_pb.id:
             self._transaction_id = transaction_pb.id
-<<<<<<< HEAD
-=======
             # Notify waiting threads that the transaction has begun.
             self._transaction_begin_event.set()
 
->>>>>>> 89f67fd10d4 (chore: updates thread handling to avoid race condition in tests)
         if transaction_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
 
