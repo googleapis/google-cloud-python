@@ -164,7 +164,7 @@ def lint(session):
         "ruff",
         "format",
         "--check",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        f"--target-version=py{DEFAULT_PYTHON_VERSION.replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
     )
@@ -189,7 +189,7 @@ def format(session):
         "--select",
         "I",
         "--fix",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        f"--target-version=py{DEFAULT_PYTHON_VERSION.replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
@@ -198,7 +198,7 @@ def format(session):
     session.run(
         "ruff",
         "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        f"--target-version=py{DEFAULT_PYTHON_VERSION.replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
@@ -460,7 +460,7 @@ def prerelease_deps(session):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
+        CURRENT_DIRECTORY / "testing" / f"constraints-{PREVIEW_PYTHON_VERSION}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
@@ -536,7 +536,7 @@ def core_deps_from_source(session):
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt",
+        CURRENT_DIRECTORY / "testing" / f"constraints-{DEFAULT_PYTHON_VERSION}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
