@@ -374,7 +374,7 @@ class PropertyGraphReference:
     }
 
     def __init__(self, dataset_ref: "DatasetReference", property_graph_id: str):
-        self._properties = {}
+        self._properties: Dict[str, Any] = {}
 
         _helpers._set_sub_prop(
             self._properties,
