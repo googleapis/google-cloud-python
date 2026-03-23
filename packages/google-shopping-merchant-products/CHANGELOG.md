@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-products/#history
 
+## [1.4.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v1.3.0...google-shopping-merchant-products-v1.4.0) (2026-03-23)
+
+
+### Documentation
+
+* Updated various comments, including links to data source creation guides ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* Updated comments for several fields, including product name formats, data source creation, destination field descriptions (now also referred to as Marketing Methods), and the default page size for `ListProductsRequest` ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
+
+### Features
+
+* update products_common fields to include `handling_cutoff_timezone `, `shipping_handling_business_days`, `shipping_transit_business_days` ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* Added the `product_id_base64_url_encoded` field to `InsertProductInputRequest`, `DeleteProductInputRequest`, and `GetProductRequest`. This allows for product IDs containing special characters to be correctly handled when unpadded base64url-encoded ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* Added several fields to enhance shipping configurations: - `handling_cutoff_time` and `handling_cutoff_timezone` within the `Shipping` message - `ShippingBusinessDaysConfig` message to define business days for shipping - `shipping_handling_business_days` and `shipping_transit_business_days` in `ProductAttributes` - `HandlingCutoffTime` message to configure country-specific handling cutoffs - `handling_cutoff_times` array in `ProductAttributes` ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* Added `handling_cutoff_time` and `handling_cutoff_timezone` fields to the `Shipping` message within `Attributes` ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* Added C#, PHP, and Ruby namespace options to ProductInputs, Products, and ProductsCommon proto files for improved client library generation ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v1.2.0...google-shopping-merchant-products-v1.3.0) (2026-01-09)
 
 

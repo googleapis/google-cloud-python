@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iap/#history
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.19.0...google-cloud-iap-v1.20.0) (2026-03-23)
+
+
+### Features
+
+* add oauth fields for IapSettings ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.18.0...google-cloud-iap-v1.19.0) (2026-01-08)
 
 
