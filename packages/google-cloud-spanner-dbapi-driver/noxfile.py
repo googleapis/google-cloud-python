@@ -31,7 +31,12 @@ LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
 if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
+
+# TODO: Remove 3.7, 3.8, 3.9 once we drop support for them.
 ALL_PYTHON = [
+    "3.7",
+    "3.8",
+    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -65,7 +70,6 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "spannerlib-python",
     "mock",
@@ -97,6 +101,9 @@ nox.options.error_on_missing_interpreters = True
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
+    if session.python in ("3.7", "3.8", "3.9"):
+        session.skip("Python versions < 3.10 are no longer supported")
+
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
         "mypy<1.16.0",
@@ -235,6 +242,8 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
+    if session.python in ("3.7", "3.8", "3.9"):
+        session.skip("Python versions < 3.10 are no longer supported")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -283,9 +292,12 @@ def install_systemtest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 def system(session):
     """Run the system test suite."""
+    if session.python in ("3.7", "3.8", "3.9"):
+        session.skip("Python versions < 3.10 are no longer supported")
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
