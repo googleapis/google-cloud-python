@@ -26,7 +26,6 @@ import shutil
 
 import nox
 
-
 RUFF_VERSION = "ruff==0.14.14"
 
 LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
@@ -85,10 +84,11 @@ def lint(session):
 
     # 2. Check formatting
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         "--check",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88", 
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -96,12 +96,15 @@ def lint(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log("WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future.")
-    
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
@@ -535,8 +538,10 @@ def format(session):
     # check --select I: Enables strict import sorting
     # --fix: Applies the changes automatically
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
@@ -545,7 +550,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
