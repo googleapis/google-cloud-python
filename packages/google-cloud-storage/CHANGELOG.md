@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.10.1](https://github.com/googleapis/python-storage/compare/v3.10.0...v3.10.1) (2026-03-23)
+
+
+### Bug Fixes
+
+* raise ValueError if api_endpoint is unset when using AnonymousCredentials in AsyncGrpcClient.  (#1778) ([17828ea316872938a98a6360b10a2495c54bbbcb](https://github.com/googleapis/python-storage/commit/17828ea316872938a98a6360b10a2495c54bbbcb))
+
 ## [3.10.0](https://github.com/googleapis/python-storage/compare/v3.9.0...v3.10.0) (2026-03-18)
 
 
