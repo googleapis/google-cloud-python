@@ -82,7 +82,7 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-spanner-dbapi"
+project = "google-cloud-spanner-dbapi-driver"
 copyright = "2025, Google, LLC"
 author = "Google APIs"
 
