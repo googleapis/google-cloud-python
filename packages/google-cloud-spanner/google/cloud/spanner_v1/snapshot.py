@@ -21,6 +21,7 @@ import functools
 from typing import List, Optional, Union
 
 from google.api_core import gapic_v1
+from google.cloud.aio._cross_sync import CrossSync
 from google.api_core.exceptions import (
     Aborted,
     InternalServerError,
