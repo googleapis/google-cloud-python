@@ -716,6 +716,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-biglake
     tag_format: '{id}-v{version}'
+  - id: google-cloud-biglake-hive
+    version: 0.0.0
+    last_generated_commit: 6649b7fea255d74c5bdd027a19ed444d0121f946
+    apis:
+      - path: google/cloud/biglake/hive/v1beta
+        service_config: biglake_v1beta.yaml
+    source_roots:
+      - packages/google-cloud-biglake-hive
+    preserve_regex:
+      - packages/google-cloud-biglake-hive/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-biglake-hive
+    tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery
     version: 3.40.1
     last_generated_commit: ""
