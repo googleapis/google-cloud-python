@@ -13,11 +13,11 @@
 # limitations under the License.
 
 import os
-import mock
-import pytest
 
+import mock
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import InMemoryMetricReader
+import pytest
 
 from google.cloud.spanner_v1 import Client
 

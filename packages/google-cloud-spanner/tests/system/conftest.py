@@ -19,10 +19,11 @@ import pytest
 
 from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
-from . import _helpers
 from google.cloud.spanner_admin_database_v1.types.backup import (
     CreateBackupEncryptionConfig,
 )
+
+from . import _helpers
 
 
 @pytest.fixture(scope="function")

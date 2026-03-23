@@ -35,6 +35,14 @@ class MetricsCapture:
     _token: Token
     """Token to reset the context variable after the operation completes."""
 
+    def __init__(self, resource_info: dict = None):
+        """Initialize the context manager.
+
+        Args:
+            resource_info (dict): Optional dictionary containing project, instance and database info.
+        """
+        self._resource_info = resource_info
+
     def __enter__(self):
         """Enter the runtime context related to this object.
 
@@ -52,6 +60,15 @@ class MetricsCapture:
         # Define a new metrics tracer for the new operation
         # Set the context var and keep the token for reset
         tracer = factory.create_metrics_tracer()
+
+        if tracer and self._resource_info:
+            if "project" in self._resource_info:
+                tracer.set_project(self._resource_info["project"])
+            if "instance" in self._resource_info:
+                tracer.set_instance(self._resource_info["instance"])
+            if "database" in self._resource_info:
+                tracer.set_database(self._resource_info["database"])
+
         self._token = SpannerMetricsTracerFactory.set_current_tracer(tracer)
         if tracer:
             tracer.record_operation_start()

@@ -16,14 +16,15 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import TYPE_CHECKING, List
+
+from google.api_core.exceptions import Aborted
+from google.rpc.code_pb2 import ABORTED, OK
+
 from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
-    StatementType,
     Statement,
+    StatementType,
 )
-from google.rpc.code_pb2 import ABORTED, OK
-from google.api_core.exceptions import Aborted
-
 from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
 
 if TYPE_CHECKING:
@@ -96,6 +97,7 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
         many_result_set.add_iter(res)
         cursor._row_count = sum([max(val, 0) for val in res])
     else:
+        retry_count = 0
         while True:
             try:
                 transaction = connection.transaction_checkout()
@@ -107,6 +109,9 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
                     if not transaction._transaction_id:
                         # This should normally not happen,
                         # but we safeguard against it just to be sure.
+                        if retry_count > 0:
+                            raise OperationalError(status.message)
+                        retry_count += 1
                         transaction._reset_and_begin()
                         continue
                     raise OperationalError(status.message)

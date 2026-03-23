@@ -36,7 +36,6 @@ from google.cloud.spanner_v1 import (
 )
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-from google.api_core.exceptions import InvalidArgument
 from google.rpc import code_pb2, status_pb2
 
 from tests.mockserver_tests.mock_server_test_base import (
@@ -50,9 +49,8 @@ from tests.mockserver_tests.mock_server_test_base import (
 
 
 class TestDbapiInlineBegin(MockServerTestBase):
-    @classmethod
-    def setup_class(cls):
-        super().setup_class()
+    def setUp(self):
+        super().setUp()
         add_single_result(
             "select name from singers", "name", TypeCode.STRING, [("Some Singer",)]
         )
@@ -691,7 +689,7 @@ class TestDbapiInlineBegin(MockServerTestBase):
                     [(1, "Some Singer"), (2, "Another Singer")],
                 )
                 self.fail("Expected InvalidArgument")
-            except InvalidArgument:
+            except ProgrammingError:
                 # Expect error (e.g., INVALID_ARGUMENT because of invalid syntax)
                 pass
 

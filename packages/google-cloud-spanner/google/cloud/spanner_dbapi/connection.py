@@ -22,24 +22,24 @@ from google.auth.credentials import AnonymousCredentials
 
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import partition_helper
-from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode, BatchDmlExecutor
-from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
-from google.cloud.spanner_dbapi.partition_helper import PartitionId
-from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, Statement
-from google.cloud.spanner_dbapi.transaction_helper import TransactionRetryHelper
+from google.cloud.spanner_dbapi.batch_dml_executor import BatchDmlExecutor, BatchMode
 from google.cloud.spanner_dbapi.cursor import Cursor
-from google.cloud.spanner_v1 import RequestOptions, TransactionOptions
-from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-from google.cloud.spanner_v1.snapshot import Snapshot
-
 from google.cloud.spanner_dbapi.exceptions import (
     InterfaceError,
     OperationalError,
     ProgrammingError,
 )
-from google.cloud.spanner_dbapi.version import DEFAULT_USER_AGENT
-from google.cloud.spanner_dbapi.version import PY_VERSION
-
+from google.cloud.spanner_dbapi.parsed_statement import (
+    AutocommitDmlMode,
+    ParsedStatement,
+    Statement,
+)
+from google.cloud.spanner_dbapi.partition_helper import PartitionId
+from google.cloud.spanner_dbapi.transaction_helper import TransactionRetryHelper
+from google.cloud.spanner_dbapi.version import DEFAULT_USER_AGENT, PY_VERSION
+from google.cloud.spanner_v1 import RequestOptions, TransactionOptions
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
+from google.cloud.spanner_v1.snapshot import Snapshot
 
 CLIENT_TRANSACTION_NOT_STARTED_WARNING = (
     "This method is non-operational as a transaction has not been started."

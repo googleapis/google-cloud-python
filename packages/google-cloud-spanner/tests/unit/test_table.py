@@ -14,14 +14,10 @@
 
 import unittest
 
-from google.cloud.exceptions import NotFound
 import mock
 
-from google.cloud.spanner_v1.types import (
-    StructType,
-    Type,
-    TypeCode,
-)
+from google.cloud.exceptions import NotFound
+from google.cloud.spanner_v1.types import StructType, Type, TypeCode
 
 
 class _BaseTest(unittest.TestCase):

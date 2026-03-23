@@ -13,20 +13,20 @@
 # limitations under the License.
 
 """Cursor() class unit tests."""
-from unittest import mock
 import sys
 import unittest
+from unittest import mock
 
+from google.api_core.exceptions import Aborted
 from google.auth.credentials import AnonymousCredentials
 from google.rpc.code_pb2 import ABORTED
 
+from google.cloud.spanner_dbapi.connection import connect
 from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
-    StatementType,
     Statement,
+    StatementType,
 )
-from google.api_core.exceptions import Aborted
-from google.cloud.spanner_dbapi.connection import connect
 
 
 class TestCursor(unittest.TestCase):
@@ -89,7 +89,7 @@ class TestCursor(unittest.TestCase):
 
     @mock.patch("google.cloud.spanner_v1.Client")
     def test_close(self, mock_client):
-        from google.cloud.spanner_dbapi import connect, InterfaceError
+        from google.cloud.spanner_dbapi import InterfaceError, connect
 
         connection = connect(self.INSTANCE, self.DATABASE)
 
@@ -402,6 +402,7 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_integrity_error(self):
         from google.api_core import exceptions
+
         from google.cloud.spanner_dbapi.exceptions import IntegrityError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -434,6 +435,7 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_invalid_argument(self):
         from google.api_core import exceptions
+
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -448,6 +450,7 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_internal_server_error(self):
         from google.api_core import exceptions
+
         from google.cloud.spanner_dbapi.exceptions import OperationalError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -462,8 +465,7 @@ class TestCursor(unittest.TestCase):
 
     @mock.patch("google.cloud.spanner_v1.Client")
     def test_executemany_on_closed_cursor(self, mock_client):
-        from google.cloud.spanner_dbapi import InterfaceError
-        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_dbapi import InterfaceError, connect
 
         connection = connect("test-instance", "test-database")
 
@@ -475,7 +477,7 @@ class TestCursor(unittest.TestCase):
 
     @mock.patch("google.cloud.spanner_v1.Client")
     def test_executemany_DLL(self, mock_client):
-        from google.cloud.spanner_dbapi import connect, ProgrammingError
+        from google.cloud.spanner_dbapi import ProgrammingError, connect
 
         connection = connect("test-instance", "test-database")
 
@@ -485,7 +487,7 @@ class TestCursor(unittest.TestCase):
             cursor.executemany("""DROP DATABASE database_name""", ())
 
     def test_executemany_client_statement(self):
-        from google.cloud.spanner_dbapi import connect, ProgrammingError
+        from google.cloud.spanner_dbapi import ProgrammingError, connect
 
         connection = connect(
             "test-instance",
@@ -712,10 +714,11 @@ class TestCursor(unittest.TestCase):
         transaction.commit.assert_called_once()
 
     def test_executemany_insert_batch_failed(self):
+        from google.rpc.code_pb2 import UNKNOWN
+
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_dbapi.exceptions import OperationalError
         from google.cloud.spanner_v1.types.spanner import Session
-        from google.rpc.code_pb2 import UNKNOWN
 
         sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
         err_details = "Details here"
@@ -1032,8 +1035,8 @@ class TestCursor(unittest.TestCase):
             cursor.run_sql_in_snapshot("sql")
 
     def test_get_table_column_schema(self):
-        from google.cloud.spanner_dbapi.cursor import ColumnDetails
         from google.cloud.spanner_dbapi import _helpers
+        from google.cloud.spanner_dbapi.cursor import ColumnDetails
         from google.cloud.spanner_v1 import param_types
 
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
@@ -1067,6 +1070,7 @@ class TestCursor(unittest.TestCase):
         while streaming the first element with a PeekIterator.
         """
         from google.api_core.exceptions import Aborted
+
         from google.cloud.spanner_dbapi.connection import connect
 
         connection = connect("test-instance", "test-database")

@@ -15,10 +15,10 @@
 import re
 
 from google.cloud.spanner_dbapi.parsed_statement import (
-    ParsedStatement,
-    StatementType,
     ClientSideStatementType,
+    ParsedStatement,
     Statement,
+    StatementType,
 )
 
 RE_BEGIN = re.compile(

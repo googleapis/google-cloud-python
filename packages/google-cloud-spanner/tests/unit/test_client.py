@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
-import os
-import mock
 from google.auth.credentials import AnonymousCredentials
+import mock
 
-from google.cloud.spanner_v1 import DirectedReadOptions, DefaultTransactionOptions
+from google.cloud.spanner_v1 import DefaultTransactionOptions, DirectedReadOptions
 from tests._builders import build_scoped_credentials
 
 
@@ -73,6 +73,7 @@ class TestClient(unittest.TestCase):
         default_transaction_options=None,
     ):
         import google.api_core.client_options
+
         from google.cloud.spanner_v1 import client as MUT
 
         kwargs = {}
@@ -136,8 +137,9 @@ class TestClient(unittest.TestCase):
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")
     @mock.patch("warnings.warn")
     def test_constructor_emulator_host_warning(self, mock_warn, mock_em):
-        from google.cloud.spanner_v1 import client as MUT
         from google.auth.credentials import AnonymousCredentials
+
+        from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = None
         creds = build_scoped_credentials()
@@ -183,6 +185,7 @@ class TestClient(unittest.TestCase):
 
     def test_constructor_custom_client_options_obj(self):
         from google.api_core.client_options import ClientOptions
+
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
@@ -273,8 +276,8 @@ class TestClient(unittest.TestCase):
         Test that Client constructor handles exceptions during metrics
         initialization and logs a warning.
         """
-        from google.cloud.spanner_v1.client import Client
         from google.cloud.spanner_v1 import client as MUT
+        from google.cloud.spanner_v1.client import Client
 
         MUT._metrics_monitor_initialized = False
         mock_spanner_metrics_factory.side_effect = Exception("Metrics init failed")
@@ -399,8 +402,9 @@ class TestClient(unittest.TestCase):
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")
     def test_instance_admin_api(self, mock_em):
-        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
         from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         mock_em.return_value = None
 
@@ -467,8 +471,8 @@ class TestClient(unittest.TestCase):
         self.assertNotIn("credentials", called_kw)
 
     def test_instance_admin_api_emulator_code(self):
-        from google.auth.credentials import AnonymousCredentials
         from google.api_core.client_options import ClientOptions
+        from google.auth.credentials import AnonymousCredentials
 
         credentials = AnonymousCredentials()
         client_info = mock.Mock()
@@ -500,8 +504,9 @@ class TestClient(unittest.TestCase):
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")
     def test_database_admin_api(self, mock_em):
-        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
         from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         mock_em.return_value = None
         credentials = build_scoped_credentials()
@@ -567,8 +572,8 @@ class TestClient(unittest.TestCase):
         self.assertNotIn("credentials", called_kw)
 
     def test_database_admin_api_emulator_code(self):
-        from google.auth.credentials import AnonymousCredentials
         from google.api_core.client_options import ClientOptions
+        from google.auth.credentials import AnonymousCredentials
 
         credentials = AnonymousCredentials()
         client_info = mock.Mock()
@@ -621,12 +626,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project_name, project_name)
 
     def test_list_instance_configs(self):
+        from google.cloud.spanner_admin_instance_v1 import (
+            ListInstanceConfigsRequest,
+            ListInstanceConfigsResponse,
+        )
         from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceConfig as InstanceConfigPB,
         )
-        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
-        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
         api = InstanceAdminClient(credentials=AnonymousCredentials())
         credentials = build_scoped_credentials()
@@ -668,12 +675,14 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_instance_configs_w_options(self):
+        from google.cloud.spanner_admin_instance_v1 import (
+            ListInstanceConfigsRequest,
+            ListInstanceConfigsResponse,
+        )
         from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceConfig as InstanceConfigPB,
         )
-        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
-        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
         credentials = build_scoped_credentials()
         api = InstanceAdminClient(credentials=credentials)
@@ -707,8 +716,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_instance_factory_defaults(self):
-        from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
-        from google.cloud.spanner_v1.instance import Instance
+        from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT, Instance
 
         credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -746,10 +754,12 @@ class TestClient(unittest.TestCase):
         self.assertIs(instance._client, client)
 
     def test_list_instances(self):
-        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
+        from google.cloud.spanner_admin_instance_v1 import (
+            InstanceAdminClient,
+            ListInstancesRequest,
+            ListInstancesResponse,
+        )
         from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
-        from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
-        from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
         credentials = build_scoped_credentials()
         api = InstanceAdminClient(credentials=credentials)
@@ -795,9 +805,11 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_instances_w_options(self):
-        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
-        from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
-        from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
+        from google.cloud.spanner_admin_instance_v1 import (
+            InstanceAdminClient,
+            ListInstancesRequest,
+            ListInstancesResponse,
+        )
 
         credentials = build_scoped_credentials()
         api = InstanceAdminClient(credentials=credentials)

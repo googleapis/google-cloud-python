@@ -20,64 +20,71 @@ from google.cloud.spanner_v1 import gapic_version as package_version
 
 __version__: str = package_version.__version__
 
-from .services.spanner import SpannerClient
-from .services.spanner import SpannerAsyncClient
+from google.cloud.spanner_v1 import param_types
+from google.cloud.spanner_v1._async.client import Client as AsyncClient
+from google.cloud.spanner_v1._async.pool import BurstyPool as AsyncBurstyPool
+from google.cloud.spanner_v1._async.pool import PingingPool as AsyncPingingPool
+from google.cloud.spanner_v1._async.pool import (
+    AbstractSessionPool as AsyncAbstractSessionPool,
+)
+from google.cloud.spanner_v1._async.pool import FixedSizePool as AsyncFixedSizePool
+from google.cloud.spanner_v1._async.pool import (
+    TransactionPingingPool as AsyncTransactionPingingPool,
+)
+from google.cloud.spanner_v1.client import Client
+from google.cloud.spanner_v1.keyset import KeyRange, KeySet
+from google.cloud.spanner_v1.pool import (
+    AbstractSessionPool,
+    BurstyPool,
+    FixedSizePool,
+    PingingPool,
+    TransactionPingingPool,
+)
+
+from .data_types import Interval, JsonObject
+from .exceptions import wrap_with_request_id
+from .services.spanner import SpannerAsyncClient, SpannerClient
+from .transaction import BatchTransactionId, DefaultTransactionOptions
+from .types import RequestOptions
 from .types.commit_response import CommitResponse
 from .types.keys import KeyRange as KeyRangePB
 from .types.keys import KeySet as KeySetPB
 from .types.mutation import Mutation
-from .types.query_plan import PlanNode
-from .types.query_plan import QueryPlan
-from .types.result_set import PartialResultSet
-from .types import RequestOptions
-from .types.result_set import ResultSet
-from .types.result_set import ResultSetMetadata
-from .types.result_set import ResultSetStats
-from .types.spanner import BatchCreateSessionsRequest
-from .types.spanner import BatchCreateSessionsResponse
-from .types.spanner import BatchWriteRequest
-from .types.spanner import BatchWriteResponse
-from .types.spanner import BeginTransactionRequest
-from .types.spanner import ClientContext
-from .types.spanner import CommitRequest
-from .types.spanner import CreateSessionRequest
-from .types.spanner import DeleteSessionRequest
-from .types.spanner import DirectedReadOptions
-from .types.spanner import ExecuteBatchDmlRequest
-from .types.spanner import ExecuteBatchDmlResponse
-from .types.spanner import ExecuteSqlRequest
-from .types.spanner import GetSessionRequest
-from .types.spanner import ListSessionsRequest
-from .types.spanner import ListSessionsResponse
-from .types.spanner import Partition
-from .types.spanner import PartitionOptions
-from .types.spanner import PartitionQueryRequest
-from .types.spanner import PartitionReadRequest
-from .types.spanner import PartitionResponse
-from .types.spanner import ReadRequest
-from .types.spanner import RollbackRequest
-from .types.spanner import Session
-from .types.transaction import Transaction
-from .types.transaction import TransactionOptions
-from .types.transaction import TransactionSelector
-from .types.type import StructType
-from .types.type import Type
-from .types.type import TypeAnnotationCode
-from .types.type import TypeCode
-from .data_types import JsonObject, Interval
-from .transaction import BatchTransactionId, DefaultTransactionOptions
-from .exceptions import wrap_with_request_id
-
-from google.cloud.spanner_v1 import param_types
-from google.cloud.spanner_v1.client import Client
-from google.cloud.spanner_v1.keyset import KeyRange
-from google.cloud.spanner_v1.keyset import KeySet
-from google.cloud.spanner_v1.pool import AbstractSessionPool
-from google.cloud.spanner_v1.pool import BurstyPool
-from google.cloud.spanner_v1.pool import FixedSizePool
-from google.cloud.spanner_v1.pool import PingingPool
-from google.cloud.spanner_v1.pool import TransactionPingingPool
-
+from .types.query_plan import PlanNode, QueryPlan
+from .types.result_set import (
+    PartialResultSet,
+    ResultSet,
+    ResultSetMetadata,
+    ResultSetStats,
+)
+from .types.spanner import (
+    BatchCreateSessionsRequest,
+    BatchCreateSessionsResponse,
+    BatchWriteRequest,
+    BatchWriteResponse,
+    BeginTransactionRequest,
+    ClientContext,
+    CommitRequest,
+    CreateSessionRequest,
+    DeleteSessionRequest,
+    DirectedReadOptions,
+    ExecuteBatchDmlRequest,
+    ExecuteBatchDmlResponse,
+    ExecuteSqlRequest,
+    GetSessionRequest,
+    ListSessionsRequest,
+    ListSessionsResponse,
+    Partition,
+    PartitionOptions,
+    PartitionQueryRequest,
+    PartitionReadRequest,
+    PartitionResponse,
+    ReadRequest,
+    RollbackRequest,
+    Session,
+)
+from .types.transaction import Transaction, TransactionOptions, TransactionSelector
+from .types.type import StructType, Type, TypeAnnotationCode, TypeCode
 
 COMMIT_TIMESTAMP = "spanner.commit_timestamp()"
 """Placeholder be used to store commit timestamp of a transaction in a column.
@@ -94,6 +101,7 @@ __all__ = (
     "wrap_with_request_id",
     # google.cloud.spanner_v1.client
     "Client",
+    "AsyncClient",
     # google.cloud.spanner_v1.keyset
     "KeyRange",
     "KeySet",
@@ -103,6 +111,11 @@ __all__ = (
     "FixedSizePool",
     "PingingPool",
     "TransactionPingingPool",
+    "AsyncAbstractSessionPool",
+    "AsyncBurstyPool",
+    "AsyncFixedSizePool",
+    "AsyncPingingPool",
+    "AsyncTransactionPingingPool",
     # local
     "COMMIT_TIMESTAMP",
     # google.cloud.spanner_v1.types

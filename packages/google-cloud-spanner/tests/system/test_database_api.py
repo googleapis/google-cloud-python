@@ -16,18 +16,17 @@ import datetime
 import time
 import uuid
 
-import pytest
-
 from google.api_core import exceptions
 from google.iam.v1 import policy_pb2
+from google.type import expr_pb2
+import pytest
+
 from google.cloud import spanner_v1
-from google.cloud.spanner_v1.pool import FixedSizePool, PingingPool
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1 import DirectedReadOptions
-from google.type import expr_pb2
-from . import _helpers
-from . import _sample_data
+from google.cloud.spanner_v1.pool import FixedSizePool, PingingPool
 
+from . import _helpers, _sample_data
 
 DBAPI_OPERATION_TIMEOUT = 240  # seconds
 FKADC_CUSTOMERS_COLUMNS = ("CustomerId", "CustomerName")

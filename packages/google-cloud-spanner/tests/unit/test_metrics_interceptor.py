@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest.mock import MagicMock
+
 import pytest
+
 from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
-from unittest.mock import MagicMock
 
 
 @pytest.fixture

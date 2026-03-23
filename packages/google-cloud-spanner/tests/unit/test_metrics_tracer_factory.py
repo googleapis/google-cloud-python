@@ -14,8 +14,8 @@
 
 import pytest
 
-from google.cloud.spanner_v1.metrics.metrics_tracer_factory import MetricsTracerFactory
 from google.cloud.spanner_v1.metrics.metrics_tracer import MetricsTracer
+from google.cloud.spanner_v1.metrics.metrics_tracer_factory import MetricsTracerFactory
 
 pytest.importorskip("opentelemetry")
 

@@ -15,8 +15,9 @@
 from collections import defaultdict
 import threading
 
-from grpc_interceptor import ClientInterceptor
 from google.api_core.exceptions import Aborted
+from grpc_interceptor import ClientInterceptor
+
 from google.cloud.spanner_v1.request_id_header import parse_request_id
 
 

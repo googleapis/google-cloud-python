@@ -12,29 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-from mock import PropertyMock, patch
-
-from google.cloud.spanner_v1.session import Session
-from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-from . import _helpers
-from google.cloud.spanner_v1 import Client
 from google.api_core.exceptions import Aborted
 from google.auth.credentials import AnonymousCredentials
 from google.rpc import code_pb2
+from mock import PropertyMock, patch
+import pytest
 
+from google.cloud.spanner_v1 import Client
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
+from google.cloud.spanner_v1.session import Session
+
+from . import _helpers
 from .._helpers import is_multiplexed_enabled
 
 HAS_OTEL_INSTALLED = False
 
 try:
+    from opentelemetry import trace
+    from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import SimpleSpanProcessor
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
-    from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.sampling import ALWAYS_ON
-    from opentelemetry import trace
 
     HAS_OTEL_INSTALLED = True
 except ImportError:
@@ -152,11 +152,11 @@ def test_observability_options_propagation():
 
 
 def create_db_trace_exporter():
+    from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import SimpleSpanProcessor
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
-    from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.sampling import ALWAYS_ON
 
     PROJECT = _helpers.EMULATOR_PROJECT
@@ -334,11 +334,11 @@ def test_transaction_update_implicit_begin_nested_inside_commit():
     # Tests to ensure that transaction.commit() without a began transaction
     # has transaction.begin() inlined and nested under the commit span.
     from google.auth.credentials import AnonymousCredentials
+    from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.export import SimpleSpanProcessor
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
-    from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.sampling import ALWAYS_ON
 
     PROJECT = _helpers.EMULATOR_PROJECT

@@ -14,19 +14,17 @@
 import unittest
 from unittest import mock
 
-from google.cloud.spanner_dbapi.exceptions import (
-    RetryAborted,
-)
-from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, StatementType
 from google.api_core.exceptions import Aborted
 
+from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+from google.cloud.spanner_dbapi.exceptions import RetryAborted
+from google.cloud.spanner_dbapi.parsed_statement import ParsedStatement, StatementType
 from google.cloud.spanner_dbapi.transaction_helper import (
-    TransactionRetryHelper,
-    ExecuteStatement,
     CursorStatementType,
+    ExecuteStatement,
     FetchStatement,
     ResultType,
+    TransactionRetryHelper,
 )
 
 

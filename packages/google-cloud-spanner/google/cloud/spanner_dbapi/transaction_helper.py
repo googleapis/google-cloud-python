@@ -13,10 +13,10 @@
 # limitations under the License.
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, List, Any, Dict
-from google.api_core.exceptions import Aborted
-
 import time
+from typing import TYPE_CHECKING, Any, Dict, List
+
+from google.api_core.exceptions import Aborted
 
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
 from google.cloud.spanner_dbapi.exceptions import RetryAborted
@@ -24,6 +24,7 @@ from google.cloud.spanner_v1._helpers import _get_retry_delay
 
 if TYPE_CHECKING:
     from google.cloud.spanner_dbapi import Connection, Cursor
+
 from google.cloud.spanner_dbapi.checksum import ResultsChecksum, _compare_checksums
 
 MAX_INTERNAL_RETRIES = 50

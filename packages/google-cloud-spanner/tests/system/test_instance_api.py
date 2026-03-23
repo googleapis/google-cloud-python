@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import pytest
-
 from test_utils import retry
 
 from . import _helpers

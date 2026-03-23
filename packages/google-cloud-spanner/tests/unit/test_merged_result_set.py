@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 
 
@@ -43,15 +44,13 @@ class TestMergedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_scalar_field(name, type_):
-        from google.cloud.spanner_v1 import StructType
-        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import StructType, Type
 
         return StructType.Field(name=name, type_=Type(code=type_))
 
     @staticmethod
     def _make_result_set_metadata(fields=()):
-        from google.cloud.spanner_v1 import ResultSetMetadata
-        from google.cloud.spanner_v1 import StructType
+        from google.cloud.spanner_v1 import ResultSetMetadata, StructType
 
         metadata = ResultSetMetadata(row_type=StructType(fields=[]))
         for field in fields:

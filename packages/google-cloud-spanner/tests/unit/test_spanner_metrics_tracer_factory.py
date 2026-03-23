@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import pytest
+
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )

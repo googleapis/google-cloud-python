@@ -20,12 +20,13 @@ import re
 import warnings
 
 import sqlparse
+
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_v1 import JsonObject
-from . import client_side_statement_parser
 
+from . import client_side_statement_parser
 from .exceptions import Error
-from .parsed_statement import ParsedStatement, StatementType, Statement
+from .parsed_statement import ParsedStatement, Statement, StatementType
 from .types import DateStr, TimestampStr
 from .utils import sanitize_literals_for_upload
 

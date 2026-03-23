@@ -14,42 +14,41 @@
 
 import pytest
 import threading
+
+from google.api_core import gapic_v1
 from google.protobuf.struct_pb2 import Struct
+import mock
+
 from google.cloud.spanner_v1 import (
-    PartialResultSet,
-    ResultSetMetadata,
-    ResultSetStats,
-    ResultSet,
-    RequestOptions,
-    Type,
-    TypeCode,
-    ExecuteSqlRequest,
-    ReadRequest,
-    StructType,
-    TransactionOptions,
-    TransactionSelector,
+    DefaultTransactionOptions,
     DirectedReadOptions,
     ExecuteBatchDmlRequest,
     ExecuteBatchDmlResponse,
+    ExecuteSqlRequest,
+    PartialResultSet,
+    ReadRequest,
+    RequestOptions,
+    ResultSet,
+    ResultSetMetadata,
+    ResultSetStats,
+    StructType,
+    TransactionOptions,
+    TransactionSelector,
+    Type,
+    TypeCode,
     param_types,
-    DefaultTransactionOptions,
 )
-from google.cloud.spanner_v1.types import transaction as transaction_type
-from google.cloud.spanner_v1.keyset import KeySet
-
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
+    _augment_errors_with_request_id,
     _make_value_pb,
     _merge_query_options,
     _metadata_with_request_id,
     _metadata_with_request_id_and_req_id,
-    _augment_errors_with_request_id,
 )
+from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
-import mock
-
-from google.api_core import gapic_v1
-
+from google.cloud.spanner_v1.types import transaction as transaction_type
 from tests._helpers import OpenTelemetryBase
 
 TABLE_NAME = "citizens"
@@ -1289,6 +1288,7 @@ class _Client(object):
     def __init__(self):
         from google.cloud.spanner_v1 import ExecuteSqlRequest
 
+        self.project = "project-id"
         self._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
         self.directed_read_options = None
         self.default_transaction_options = DefaultTransactionOptions()
@@ -1304,11 +1304,14 @@ class _Client(object):
 class _Instance(object):
     def __init__(self):
         self._client = _Client()
+        self.instance_id = "test-instance"
+        self.experimental_host = None
 
 
 class _Database(object):
     def __init__(self):
         self.name = "testing"
+        self.database_id = "test-database"
         self._instance = _Instance()
         self._route_to_leader_enabled = True
         self._directed_read_options = None

@@ -305,8 +305,7 @@ class TestKeySet(unittest.TestCase):
         self.assertEqual(len(result.ranges), 0)
 
     def test_to_pb_w_only_ranges(self):
-        from google.cloud.spanner_v1 import KeyRangePB
-        from google.cloud.spanner_v1 import KeySetPB
+        from google.cloud.spanner_v1 import KeyRangePB, KeySetPB
         from google.cloud.spanner_v1.keyset import KeyRange
 
         KEY_1 = "KEY_1"

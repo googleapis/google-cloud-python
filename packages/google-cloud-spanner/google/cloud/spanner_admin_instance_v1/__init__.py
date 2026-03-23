@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.spanner_admin_instance_v1 import gapic_version as package_version
+import sys
 
 import google.api_core as api_core
-import sys
+
+from google.cloud.spanner_admin_instance_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -27,51 +28,48 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
-
-from .services.instance_admin import InstanceAdminClient
-from .services.instance_admin import InstanceAdminAsyncClient
-
-from .types.common import OperationProgress
-from .types.common import ReplicaSelection
-from .types.common import FulfillmentPeriod
-from .types.spanner_instance_admin import AutoscalingConfig
-from .types.spanner_instance_admin import CreateInstanceConfigMetadata
-from .types.spanner_instance_admin import CreateInstanceConfigRequest
-from .types.spanner_instance_admin import CreateInstanceMetadata
-from .types.spanner_instance_admin import CreateInstancePartitionMetadata
-from .types.spanner_instance_admin import CreateInstancePartitionRequest
-from .types.spanner_instance_admin import CreateInstanceRequest
-from .types.spanner_instance_admin import DeleteInstanceConfigRequest
-from .types.spanner_instance_admin import DeleteInstancePartitionRequest
-from .types.spanner_instance_admin import DeleteInstanceRequest
-from .types.spanner_instance_admin import FreeInstanceMetadata
-from .types.spanner_instance_admin import GetInstanceConfigRequest
-from .types.spanner_instance_admin import GetInstancePartitionRequest
-from .types.spanner_instance_admin import GetInstanceRequest
-from .types.spanner_instance_admin import Instance
-from .types.spanner_instance_admin import InstanceConfig
-from .types.spanner_instance_admin import InstancePartition
-from .types.spanner_instance_admin import ListInstanceConfigOperationsRequest
-from .types.spanner_instance_admin import ListInstanceConfigOperationsResponse
-from .types.spanner_instance_admin import ListInstanceConfigsRequest
-from .types.spanner_instance_admin import ListInstanceConfigsResponse
-from .types.spanner_instance_admin import ListInstancePartitionOperationsRequest
-from .types.spanner_instance_admin import ListInstancePartitionOperationsResponse
-from .types.spanner_instance_admin import ListInstancePartitionsRequest
-from .types.spanner_instance_admin import ListInstancePartitionsResponse
-from .types.spanner_instance_admin import ListInstancesRequest
-from .types.spanner_instance_admin import ListInstancesResponse
-from .types.spanner_instance_admin import MoveInstanceMetadata
-from .types.spanner_instance_admin import MoveInstanceRequest
-from .types.spanner_instance_admin import MoveInstanceResponse
-from .types.spanner_instance_admin import ReplicaComputeCapacity
-from .types.spanner_instance_admin import ReplicaInfo
-from .types.spanner_instance_admin import UpdateInstanceConfigMetadata
-from .types.spanner_instance_admin import UpdateInstanceConfigRequest
-from .types.spanner_instance_admin import UpdateInstanceMetadata
-from .types.spanner_instance_admin import UpdateInstancePartitionMetadata
-from .types.spanner_instance_admin import UpdateInstancePartitionRequest
-from .types.spanner_instance_admin import UpdateInstanceRequest
+from .services.instance_admin import InstanceAdminAsyncClient, InstanceAdminClient
+from .types.common import FulfillmentPeriod, OperationProgress, ReplicaSelection
+from .types.spanner_instance_admin import (
+    AutoscalingConfig,
+    CreateInstanceConfigMetadata,
+    CreateInstanceConfigRequest,
+    CreateInstanceMetadata,
+    CreateInstancePartitionMetadata,
+    CreateInstancePartitionRequest,
+    CreateInstanceRequest,
+    DeleteInstanceConfigRequest,
+    DeleteInstancePartitionRequest,
+    DeleteInstanceRequest,
+    FreeInstanceMetadata,
+    GetInstanceConfigRequest,
+    GetInstancePartitionRequest,
+    GetInstanceRequest,
+    Instance,
+    InstanceConfig,
+    InstancePartition,
+    ListInstanceConfigOperationsRequest,
+    ListInstanceConfigOperationsResponse,
+    ListInstanceConfigsRequest,
+    ListInstanceConfigsResponse,
+    ListInstancePartitionOperationsRequest,
+    ListInstancePartitionOperationsResponse,
+    ListInstancePartitionsRequest,
+    ListInstancePartitionsResponse,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    MoveInstanceMetadata,
+    MoveInstanceRequest,
+    MoveInstanceResponse,
+    ReplicaComputeCapacity,
+    ReplicaInfo,
+    UpdateInstanceConfigMetadata,
+    UpdateInstanceConfigRequest,
+    UpdateInstanceMetadata,
+    UpdateInstancePartitionMetadata,
+    UpdateInstancePartitionRequest,
+    UpdateInstanceRequest,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -82,8 +80,8 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import warnings
         import sys
+        import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.spanner_admin_instance_v1"

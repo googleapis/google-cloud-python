@@ -14,23 +14,22 @@
 
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_v1 import (
-    ExecuteSqlRequest,
     BeginTransactionRequest,
-    TypeCode,
     CommitRequest,
+    ExecuteSqlRequest,
+    TypeCode,
 )
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
+from tests._helpers import is_multiplexed_enabled
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_single_result,
 )
-from tests._helpers import is_multiplexed_enabled
-from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 
 
 class TestTags(MockServerTestBase):
-    @classmethod
-    def setup_class(cls):
-        super().setup_class()
+    def setUp(self):
+        super().setUp()
         add_single_result(
             "select name from singers", "name", TypeCode.STRING, [("Some Singer",)]
         )

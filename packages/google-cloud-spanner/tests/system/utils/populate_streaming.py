@@ -14,19 +14,20 @@
 
 """Populate spanner databases with data for streaming system tests."""
 
+# Import relative to the script's directory
+from streaming_utils import (
+    DATABASE_NAME,
+    FORTY_KAY,
+    FOUR_HUNDRED_KAY,
+    FOUR_KAY,
+    FOUR_MEG,
+    INSTANCE_NAME,
+    print_func,
+)
+
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
-
-# Import relative to the script's directory
-from streaming_utils import FOUR_KAY
-from streaming_utils import FORTY_KAY
-from streaming_utils import FOUR_HUNDRED_KAY
-from streaming_utils import FOUR_MEG
-from streaming_utils import DATABASE_NAME
-from streaming_utils import INSTANCE_NAME
-from streaming_utils import print_func
-
 
 DDL = """\
 CREATE TABLE {0.table} (

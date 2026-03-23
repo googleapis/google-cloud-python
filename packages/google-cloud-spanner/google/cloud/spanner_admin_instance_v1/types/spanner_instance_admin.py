@@ -17,13 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.spanner_admin_instance_v1.types import common
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.spanner_admin_instance_v1.types import common
 
 __protobuf__ = proto.module(
     package="google.spanner.admin.instance.v1",

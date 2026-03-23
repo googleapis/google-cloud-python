@@ -19,9 +19,9 @@
    https://www.python.org/dev/peps/pep-0249/#type-objects-and-constructors
 """
 
+from base64 import b64encode
 import datetime
 import time
-from base64 import b64encode
 
 
 def _date_from_ticks(ticks):

@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import InstanceAdminTransport
 from .grpc import InstanceAdminGrpcTransport
 from .grpc_asyncio import InstanceAdminGrpcAsyncIOTransport
-from .rest import InstanceAdminRestTransport
-from .rest import InstanceAdminRestInterceptor
-
+from .rest import InstanceAdminRestInterceptor, InstanceAdminRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[InstanceAdminTransport]]

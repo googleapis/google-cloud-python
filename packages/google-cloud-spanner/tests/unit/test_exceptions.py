@@ -17,6 +17,7 @@
 import unittest
 
 from google.api_core.exceptions import Aborted
+
 from google.cloud.spanner_v1.exceptions import wrap_with_request_id
 
 

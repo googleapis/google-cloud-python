@@ -15,15 +15,14 @@
 import sys
 import unittest
 
+from google.cloud.spanner_dbapi.parse_utils import classify_statement
 from google.cloud.spanner_dbapi.parsed_statement import (
-    StatementType,
+    ClientSideStatementType,
     ParsedStatement,
     Statement,
-    ClientSideStatementType,
+    StatementType,
 )
-from google.cloud.spanner_v1 import param_types
-from google.cloud.spanner_v1 import JsonObject
-from google.cloud.spanner_dbapi.parse_utils import classify_statement
+from google.cloud.spanner_v1 import JsonObject, param_types
 
 
 class TestParseUtils(unittest.TestCase):

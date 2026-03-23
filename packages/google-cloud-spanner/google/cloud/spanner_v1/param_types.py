@@ -14,13 +14,15 @@
 
 """Types exported from this package."""
 
-from google.cloud.spanner_v1 import Type
-from google.cloud.spanner_v1 import TypeAnnotationCode
-from google.cloud.spanner_v1 import TypeCode
-from google.cloud.spanner_v1 import StructType
-from google.protobuf.message import Message
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from google.protobuf.message import Message
 
+from google.cloud.spanner_v1.types.type import (
+    StructType,
+    Type,
+    TypeAnnotationCode,
+    TypeCode,
+)
 
 # Scalar parameter types
 STRING = Type(code=TypeCode.STRING)

@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.api_core import exceptions
 import pytest
 
-from google.api_core import exceptions
 from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 
@@ -33,6 +33,7 @@ def test_table_exists_reload_database_dialect(
     shared_instance, shared_database, not_emulator
 ):
     database = shared_instance.database(shared_database.database_id)
+    database.reload()
     assert database.database_dialect != DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
     table = database.table("all_types")
     assert table.exists()

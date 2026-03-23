@@ -13,9 +13,9 @@
 # limitations under the License.
 
 
+import json
 import unittest
 
-import json
 from google.cloud.spanner_v1.data_types import JsonObject
 
 

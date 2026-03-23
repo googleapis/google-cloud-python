@@ -17,24 +17,25 @@ import threading
 
 from google.cloud.spanner_v1 import (
     BatchCreateSessionsRequest,
+    BeginTransactionRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
-    BeginTransactionRequest,
 )
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
-    add_select1_result,
     aborted_status,
     add_error,
+    add_select1_result,
     unavailable_status,
 )
-from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 
 
 class TestRequestIDHeader(MockServerTestBase):
     def tearDown(self):
+        super().tearDown()
         self.database._x_goog_request_id_interceptor.reset()
 
     def test_snapshot_execute_sql(self):

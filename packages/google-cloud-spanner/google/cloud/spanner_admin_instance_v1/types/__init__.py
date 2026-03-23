@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import (
-    OperationProgress,
-    ReplicaSelection,
-    FulfillmentPeriod,
-)
+from .common import FulfillmentPeriod, OperationProgress, ReplicaSelection
 from .spanner_instance_admin import (
     AutoscalingConfig,
     CreateInstanceConfigMetadata,

@@ -14,6 +14,7 @@
 
 from google.longrunning import operations_pb2 as operations_pb2
 from google.protobuf import empty_pb2
+
 import google.cloud.spanner_v1.testing.spanner_database_admin_pb2_grpc as database_admin_grpc
 
 

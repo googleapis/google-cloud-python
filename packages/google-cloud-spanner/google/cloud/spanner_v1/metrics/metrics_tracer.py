@@ -21,7 +21,9 @@ while the helper classes provide additional functionality and context for the me
 
 from datetime import datetime
 from typing import Dict
+
 from grpc import StatusCode
+
 from .constants import (
     METRIC_LABEL_KEY_CLIENT_NAME,
     METRIC_LABEL_KEY_CLIENT_UID,

@@ -68,6 +68,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
+    "pytest-asyncio",
     "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
@@ -221,9 +222,8 @@ def unit(session, protobuf_implementation):
         session.install("protobuf<4")
 
     # Run py.test against the unit tests.
-    session.run(
+    args = [
         "py.test",
-        "--quiet",
         "-s",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
@@ -232,8 +232,13 @@ def unit(session, protobuf_implementation):
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
-        *session.posargs,
+    ]
+    if not session.posargs:
+        args.append(os.path.join("tests", "unit"))
+    args.extend(session.posargs)
+
+    session.run(
+        *args,
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
@@ -366,12 +371,19 @@ def system(session, protobuf_implementation, database_dialect):
 
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run(
+        args = [
             "py.test",
             "--quiet",
+            "-o",
+            "asyncio_mode=auto",
             f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            *session.posargs,
+        ]
+        if not session.posargs:
+            args.append(system_test_path)
+        args.extend(session.posargs)
+
+        session.run(
+            *args,
             env={
                 "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
                 "SPANNER_DATABASE_DIALECT": database_dialect,
@@ -379,12 +391,47 @@ def system(session, protobuf_implementation, database_dialect):
             },
         )
     elif system_test_folder_exists:
-        session.run(
+        # Run sync tests
+        sync_args = [
             "py.test",
             "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
+            "-o",
+            "asyncio_mode=auto",
+            f"--junitxml=system_{session.python}_sync_sponge_log.xml",
+        ]
+        if not session.posargs:
+            sync_args.append(os.path.join("tests", "system"))
+            sync_args.append("--ignore=tests/system/_async")
+        else:
+            sync_args.extend(session.posargs)
+
+        session.run(
+            *sync_args,
+            env={
+                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                "SPANNER_DATABASE_DIALECT": database_dialect,
+                "SKIP_BACKUP_TESTS": "true",
+            },
+        )
+
+        # Run async tests
+        async_args = [
+            "py.test",
+            "--quiet",
+            "-o",
+            "asyncio_mode=auto",
+            f"--junitxml=system_{session.python}_async_sponge_log.xml",
+        ]
+        if not session.posargs:
+            async_args.append(os.path.join("tests", "system", "_async"))
+        else:
+            # If posargs are provided, only run if they match async tests
+            # or just skip if they were already run in sync.
+            # For simplicity, we only run async folder if no posargs.
+            return
+
+        session.run(
+            *async_args,
             env={
                 "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
                 "SPANNER_DATABASE_DIALECT": database_dialect,
@@ -597,6 +644,8 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
             session.run(
                 "py.test",
                 "--verbose",
+                "-o",
+                "asyncio_mode=auto",
                 f"--junitxml=system_{session.python}_sponge_log.xml",
                 system_test_path,
                 *session.posargs,
@@ -610,6 +659,8 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
             session.run(
                 "py.test",
                 "--verbose",
+                "-o",
+                "asyncio_mode=auto",
                 f"--junitxml=system_{session.python}_sponge_log.xml",
                 system_test_folder_path,
                 *session.posargs,
@@ -619,3 +670,10 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                     "SKIP_BACKUP_TESTS": "true",
                 },
             )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def generate(session):
+    """Regenerate synchronous code from asynchronous code."""
+    session.install("black", "autoflake")
+    session.run("python", ".cross_sync/generate.py", "google/cloud/spanner_v1")

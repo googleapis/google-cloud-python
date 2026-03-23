@@ -13,36 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging
-import json  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import gapic_v1
-import google.protobuf
-
-from google.protobuf import json_format
-
-from requests import __version__ as requests_version
 import dataclasses
+import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-
-from google.cloud.spanner_v1.types import commit_response
-from google.cloud.spanner_v1.types import result_set
-from google.cloud.spanner_v1.types import spanner
-from google.cloud.spanner_v1.types import transaction
-from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
+from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
+from google.cloud.spanner_v1.types import (
+    commit_response,
+    result_set,
+    spanner,
+    transaction,
+)
 
-from .rest_base import _BaseSpannerRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseSpannerRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]

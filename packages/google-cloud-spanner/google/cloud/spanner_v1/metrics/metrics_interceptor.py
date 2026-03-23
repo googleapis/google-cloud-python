@@ -14,15 +14,13 @@
 
 """Interceptor for collecting Cloud Spanner metrics."""
 
-from grpc_interceptor import ClientInterceptor
-from .constants import (
-    GOOGLE_CLOUD_RESOURCE_KEY,
-    SPANNER_METHOD_PREFIX,
-)
-
-from typing import Dict
-from .spanner_metrics_tracer_factory import SpannerMetricsTracerFactory
 import re
+from typing import Dict
+
+from grpc_interceptor import ClientInterceptor
+
+from .constants import GOOGLE_CLOUD_RESOURCE_KEY, SPANNER_METHOD_PREFIX
+from .spanner_metrics_tracer_factory import SpannerMetricsTracerFactory
 
 
 class MetricsInterceptor(ClientInterceptor):

@@ -13,39 +13,41 @@
 # limitations under the License.
 
 
+import datetime
+from datetime import timezone
 import unittest
-from tests import _helpers as ot_helpers
 from unittest.mock import MagicMock
+
+from google.api_core.exceptions import Aborted, Unknown
+from google.rpc.status_pb2 import Status
+import mock
+
+from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
+from google.cloud.spanner_v1 import (
+    BatchWriteResponse,
+    CommitResponse,
+    DefaultTransactionOptions,
+    Mutation,
+    RequestOptions,
+    TransactionOptions,
+    _opentelemetry_tracing,
+)
+from google.cloud.spanner_v1._helpers import (
+    AtomicCounter,
+    _augment_errors_with_request_id,
+    _metadata_with_request_id,
+    _metadata_with_request_id_and_req_id,
+)
+from google.cloud.spanner_v1.batch import Batch, MutationGroups, _BatchBase
+from google.cloud.spanner_v1.keyset import KeySet
+from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
+from tests import _helpers as ot_helpers
 from tests._helpers import (
-    OpenTelemetryBase,
     LIB_VERSION,
+    OpenTelemetryBase,
     StatusCode,
     enrich_with_otel_scope,
 )
-from google.cloud.spanner_v1 import (
-    RequestOptions,
-    CommitResponse,
-    TransactionOptions,
-    Mutation,
-    BatchWriteResponse,
-    DefaultTransactionOptions,
-    _opentelemetry_tracing,
-)
-import mock
-from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
-import datetime
-from google.api_core.exceptions import Aborted, Unknown
-from google.cloud.spanner_v1.batch import MutationGroups, _BatchBase, Batch
-from google.cloud.spanner_v1.keyset import KeySet
-from google.rpc.status_pb2 import Status
-
-from google.cloud.spanner_v1._helpers import (
-    AtomicCounter,
-    _metadata_with_request_id,
-    _augment_errors_with_request_id,
-    _metadata_with_request_id_and_req_id,
-)
-from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
@@ -238,7 +240,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         return_value="global",
     )
     def test_commit_ok(self, mock_region):
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
@@ -321,7 +323,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
         read_lock_mode=TransactionOptions.ReadWrite.ReadLockMode.READ_LOCK_MODE_UNSPECIFIED,
     ):
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
@@ -513,7 +515,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         return_value="global",
     )
     def test_context_mgr_already_committed(self, mock_region):
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI()
         session = _Session(database)
@@ -531,7 +533,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         return_value="global",
     )
     def test_context_mgr_success(self, mock_region):
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
@@ -582,7 +584,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         return_value="global",
     )
     def test_context_mgr_failure(self, mock_region):
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
         database = _Database()
@@ -671,7 +673,7 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         exclude_txn_from_change_streams=False,
         enable_end_to_end_tracing=False,
     ):
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         status_pb = Status(code=200)
         response = BatchWriteResponse(
@@ -806,8 +808,11 @@ class _Database(object):
 
     def __init__(self, enable_end_to_end_tracing=False):
         self.name = "testing"
+        self.database_id = "testing"
         self._instance = mock.Mock()
+        self._instance.instance_id = "instance-id"
         self._instance._client = mock.Mock()
+        self._instance._client.project = "project-id"
         self._instance._client._client_context = None
         self._route_to_leader_enabled = True
         if enable_end_to_end_tracing:

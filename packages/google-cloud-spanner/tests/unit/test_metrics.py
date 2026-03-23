@@ -1,4 +1,4 @@
-﻿# Copyright 2025 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
+
 from google.api_core.exceptions import ServiceUnavailable
 from google.auth import exceptions
 from google.auth.credentials import Credentials
+from grpc._interceptor import _UnaryOutcome
+from opentelemetry import metrics
+import pytest
 
 from google.cloud.spanner_v1.client import Client
-from unittest.mock import patch
-from grpc._interceptor import _UnaryOutcome
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
     SpannerMetricsTracerFactory,
 )
-from opentelemetry import metrics
 
 pytest.importorskip("opentelemetry")
 # Skip if semconv attributes are not present, as tracing won't be enabled either
@@ -53,7 +53,7 @@ class TestCredentials(Credentials):
 
 @pytest.fixture(autouse=True)
 def patched_client(monkeypatch):
-    monkeypatch.setenv("SPANNER_ENABLE_BUILTIN_METRICS", "true")
+    monkeypatch.setenv("SPANNER_DISABLE_BUILTIN_METRICS", "false")
     metrics.set_meter_provider(metrics.NoOpMeterProvider())
 
     # Remove the Tracer factory to avoid previously disabled factory polluting from other tests
@@ -92,6 +92,28 @@ def test_metrics_emission_with_failure_attempt(patched_client):
     factory = SpannerMetricsTracerFactory()
 
     assert factory.enabled
+
+    from google.cloud.spanner_v1.services.spanner.client import SpannerClient
+    from google.cloud.spanner_v1.services.spanner.transports.grpc import (
+        SpannerGrpcTransport,
+    )
+    from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
+
+    import google.auth.credentials
+
+    # Recreate the SpannerClient and transport with MetricsInterceptor properly bound
+    credentials = database._instance._client.credentials
+    if isinstance(credentials, google.auth.credentials.Scoped):
+        from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE
+
+        credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
+
+    transport = SpannerGrpcTransport(
+        credentials=credentials,
+        client_info=database._instance._client._client_info,
+        metrics_interceptor=MetricsInterceptor(),
+    )
+    database._spanner_api = SpannerClient(transport=transport)
 
     transport = database.spanner_api._transport
     metrics_interceptor = transport._metrics_interceptor

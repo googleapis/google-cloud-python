@@ -14,15 +14,17 @@
 
 import unittest
 from unittest import mock
+
 from google.protobuf import struct_pb2
-from google.cloud.spanner_v1.types import (
-    ClientContext,
-    RequestOptions,
-    ExecuteSqlRequest,
-)
+
 from google.cloud.spanner_v1._helpers import (
     _merge_client_context,
     _merge_request_options,
+)
+from google.cloud.spanner_v1.types import (
+    ClientContext,
+    ExecuteSqlRequest,
+    RequestOptions,
 )
 
 
@@ -225,12 +227,9 @@ class TestClientContext(unittest.TestCase):
             )
 
     def test_batch_commit_propagates_client_context(self):
-        from google.cloud.spanner_v1.batch import Batch
-        from google.cloud.spanner_v1.types import (
-            CommitRequest,
-            CommitResponse,
-        )
         from google.cloud.spanner_v1 import DefaultTransactionOptions
+        from google.cloud.spanner_v1.batch import Batch
+        from google.cloud.spanner_v1.types import CommitRequest, CommitResponse
 
         session = mock.Mock(spec=["name", "_database"])
         session.name = "session-name"
@@ -272,8 +271,8 @@ class TestClientContext(unittest.TestCase):
         from google.cloud.spanner_v1.transaction import Transaction
         from google.cloud.spanner_v1.types import (
             ExecuteSqlRequest,
-            ResultSet,
             MultiplexedSessionPrecommitToken,
+            ResultSet,
         )
 
         session = mock.Mock(spec=["name", "_database", "_precommit_token"])
@@ -342,7 +341,7 @@ class TestClientContext(unittest.TestCase):
         api = database.spanner_api = mock.Mock()
 
         with mock.patch(
-            "google.cloud.spanner_v1.batch._retry", side_effect=lambda f, **kw: f()
+            "google.cloud.spanner_v1._helpers._retry", side_effect=lambda f, **kw: f()
         ):
             mg.batch_write()
 

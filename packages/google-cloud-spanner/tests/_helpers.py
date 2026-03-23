@@ -1,5 +1,5 @@
-import unittest
 from os import getenv
+from unittest import IsolatedAsyncioTestCase
 
 import mock
 
@@ -15,12 +15,11 @@ try:
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
+    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
     from opentelemetry.semconv.attributes.otel_attributes import (
         OTEL_SCOPE_NAME,
         OTEL_SCOPE_VERSION,
     )
-    from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
-
     from opentelemetry.trace.status import StatusCode
 
     trace.set_tracer_provider(TracerProvider(sampler=TraceIdRatioBased(1.0)))
@@ -86,12 +85,17 @@ def use_test_ot_exporter():
     _TEST_OT_PROVIDER_INITIALIZED = True
 
 
-class OpenTelemetryBase(unittest.TestCase):
+class OpenTelemetryBase(IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
         if HAS_OPENTELEMETRY_INSTALLED:
             use_test_ot_exporter()
             cls.ot_exporter = get_test_ot_exporter()
+
+    def setUp(self):
+        super().setUp()
+        if HAS_OPENTELEMETRY_INSTALLED:
+            self.ot_exporter.clear()
 
     def tearDown(self):
         if HAS_OPENTELEMETRY_INSTALLED:

@@ -13,31 +13,27 @@
 # limitations under the License.
 
 import unittest
-from unittest.mock import patch, MagicMock, Mock
+from unittest.mock import MagicMock, Mock, patch
 
+from google.api.metric_pb2 import MetricDescriptor
 from google.auth.credentials import AnonymousCredentials
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import (
+    AggregationTemporality,
+    Gauge,
+    Histogram,
+    HistogramDataPoint,
+    InMemoryMetricReader,
+    NumberDataPoint,
+    Sum,
+)
 
+from google.cloud.spanner_v1.metrics.constants import METRIC_NAME_OPERATION_COUNT
 from google.cloud.spanner_v1.metrics.metrics_exporter import (
     CloudMonitoringMetricsExporter,
     _normalize_label_key,
 )
-from google.api.metric_pb2 import MetricDescriptor
-from opentelemetry.sdk.metrics import MeterProvider
-from opentelemetry.sdk.metrics.export import (
-    InMemoryMetricReader,
-    Sum,
-    Gauge,
-    Histogram,
-    NumberDataPoint,
-    HistogramDataPoint,
-    AggregationTemporality,
-)
-from google.cloud.spanner_v1.metrics.constants import METRIC_NAME_OPERATION_COUNT
-
-from tests._helpers import (
-    HAS_OPENTELEMETRY_INSTALLED,
-)
-
+from tests._helpers import HAS_OPENTELEMETRY_INSTALLED
 
 # Test Constants
 PROJECT_ID = "fake-project-id"
@@ -268,15 +264,17 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
         def test_batch_write(self):
             """Verify that writes happen in batches of 200"""
-            from google.protobuf.timestamp_pb2 import Timestamp
-            from google.cloud.monitoring_v3 import MetricServiceClient
-            from google.api.monitored_resource_pb2 import MonitoredResource
-            from google.api.metric_pb2 import Metric as GMetric
             import random
+
+            from google.api.metric_pb2 import Metric as GMetric
+            from google.api.monitored_resource_pb2 import MonitoredResource
+            from google.protobuf.timestamp_pb2 import Timestamp
+
             from google.cloud.monitoring_v3 import (
-                TimeSeries,
+                MetricServiceClient,
                 Point,
                 TimeInterval,
+                TimeSeries,
                 TypedValue,
             )
 

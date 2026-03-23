@@ -14,18 +14,19 @@
 
 from __future__ import absolute_import
 
-from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1 import param_types
-from google.cloud.spanner_v1 import Client
-from google.cloud.spanner_v1 import KeyRange
-from google.cloud.spanner_v1 import KeySet
-from google.cloud.spanner_v1 import AbstractSessionPool
-from google.cloud.spanner_v1 import BurstyPool
-from google.cloud.spanner_v1 import FixedSizePool
-from google.cloud.spanner_v1 import PingingPool
-from google.cloud.spanner_v1 import TransactionPingingPool
-from google.cloud.spanner_v1 import COMMIT_TIMESTAMP
-
+from google.cloud.spanner_v1 import (
+    COMMIT_TIMESTAMP,
+    AbstractSessionPool,
+    BurstyPool,
+    Client,
+    FixedSizePool,
+    KeyRange,
+    KeySet,
+    PingingPool,
+    TransactionPingingPool,
+    __version__,
+    param_types,
+)
 
 __all__ = (
     # google.cloud.spanner

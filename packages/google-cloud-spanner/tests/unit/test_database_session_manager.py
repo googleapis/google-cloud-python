@@ -12,15 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from datetime import timedelta
-from mock import Mock, patch
 from os import environ
-from time import time, sleep
+from time import sleep, time
 from typing import Callable
 from unittest import TestCase
 
 from google.api_core.exceptions import BadRequest, FailedPrecondition
-from google.cloud.spanner_v1.database_sessions_manager import DatabaseSessionsManager
-from google.cloud.spanner_v1.database_sessions_manager import TransactionType
+from mock import Mock, patch
+
+from google.cloud.spanner_v1.database_sessions_manager import (
+    DatabaseSessionsManager,
+    TransactionType,
+)
 from tests._builders import build_database
 
 

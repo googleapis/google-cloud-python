@@ -22,11 +22,13 @@ class TestParser(unittest.TestCase):
 
     @unittest.skipIf(skip_condition, skip_message)
     def test_func(self):
-        from google.cloud.spanner_dbapi.parser import FUNC
-        from google.cloud.spanner_dbapi.parser import a_args
-        from google.cloud.spanner_dbapi.parser import expect
-        from google.cloud.spanner_dbapi.parser import func
-        from google.cloud.spanner_dbapi.parser import pyfmt_str
+        from google.cloud.spanner_dbapi.parser import (
+            FUNC,
+            a_args,
+            expect,
+            func,
+            pyfmt_str,
+        )
 
         cases = [
             ("_91())", ")", func("_91", a_args([]))),
@@ -67,8 +69,7 @@ class TestParser(unittest.TestCase):
     @unittest.skipIf(skip_condition, skip_message)
     def test_func_fail(self):
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
-        from google.cloud.spanner_dbapi.parser import FUNC
-        from google.cloud.spanner_dbapi.parser import expect
+        from google.cloud.spanner_dbapi.parser import FUNC, expect
 
         cases = [
             ("", "FUNC: `` does not begin with `a-zA-z` nor a `_`"),
@@ -104,11 +105,13 @@ class TestParser(unittest.TestCase):
 
     @unittest.skipIf(skip_condition, skip_message)
     def test_a_args(self):
-        from google.cloud.spanner_dbapi.parser import ARGS
-        from google.cloud.spanner_dbapi.parser import a_args
-        from google.cloud.spanner_dbapi.parser import expect
-        from google.cloud.spanner_dbapi.parser import func
-        from google.cloud.spanner_dbapi.parser import pyfmt_str
+        from google.cloud.spanner_dbapi.parser import (
+            ARGS,
+            a_args,
+            expect,
+            func,
+            pyfmt_str,
+        )
 
         cases = [
             ("()", "", a_args([])),
@@ -133,8 +136,7 @@ class TestParser(unittest.TestCase):
     @unittest.skipIf(skip_condition, skip_message)
     def test_a_args_fail(self):
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
-        from google.cloud.spanner_dbapi.parser import ARGS
-        from google.cloud.spanner_dbapi.parser import expect
+        from google.cloud.spanner_dbapi.parser import ARGS, expect
 
         cases = [
             ("", "ARGS: supposed to begin with `\\(`"),
@@ -168,8 +170,7 @@ class TestParser(unittest.TestCase):
         self.assertTrue(a1 == a2)
 
     def test_a_args_homogeneous(self):
-        from google.cloud.spanner_dbapi.parser import a_args
-        from google.cloud.spanner_dbapi.parser import terminal
+        from google.cloud.spanner_dbapi.parser import a_args, terminal
 
         a_obj = a_args([a_args([terminal(10**i)]) for i in range(10)])
         self.assertTrue(a_obj.homogenous())
@@ -188,17 +189,14 @@ class TestParser(unittest.TestCase):
         skip_condition, "Python 2 does not support 0-argument super() calls"
     )
     def test_values(self):
-        from google.cloud.spanner_dbapi.parser import a_args
-        from google.cloud.spanner_dbapi.parser import terminal
-        from google.cloud.spanner_dbapi.parser import values
+        from google.cloud.spanner_dbapi.parser import a_args, terminal, values
 
         a_obj = a_args([a_args([terminal(10**i)]) for i in range(10)])
         self.assertEqual(str(values(a_obj)), "VALUES%s" % str(a_obj))
 
     def test_expect(self):
-        from google.cloud.spanner_dbapi.parser import ARGS
-        from google.cloud.spanner_dbapi.parser import expect
         from google.cloud.spanner_dbapi import exceptions
+        from google.cloud.spanner_dbapi.parser import ARGS, expect
 
         with self.assertRaises(exceptions.ProgrammingError):
             expect(word="", token=ARGS)
@@ -212,12 +210,14 @@ class TestParser(unittest.TestCase):
 
     @unittest.skipIf(skip_condition, skip_message)
     def test_expect_values(self):
-        from google.cloud.spanner_dbapi.parser import VALUES
-        from google.cloud.spanner_dbapi.parser import a_args
-        from google.cloud.spanner_dbapi.parser import expect
-        from google.cloud.spanner_dbapi.parser import func
-        from google.cloud.spanner_dbapi.parser import pyfmt_str
-        from google.cloud.spanner_dbapi.parser import values
+        from google.cloud.spanner_dbapi.parser import (
+            VALUES,
+            a_args,
+            expect,
+            func,
+            pyfmt_str,
+            values,
+        )
 
         cases = [
             ("VALUES ()", "", values([a_args([])])),
@@ -258,8 +258,7 @@ class TestParser(unittest.TestCase):
     @unittest.skipIf(skip_condition, skip_message)
     def test_expect_values_fail(self):
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
-        from google.cloud.spanner_dbapi.parser import VALUES
-        from google.cloud.spanner_dbapi.parser import expect
+        from google.cloud.spanner_dbapi.parser import VALUES, expect
 
         cases = [
             ("", "VALUES: `` does not start with VALUES"),

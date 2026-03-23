@@ -17,12 +17,13 @@
 import re
 
 from google.cloud.exceptions import NotFound
-
+from google.cloud.spanner_admin_database_v1 import (
+    CopyBackupEncryptionConfig,
+    CopyBackupRequest,
+    CreateBackupEncryptionConfig,
+    CreateBackupRequest,
+)
 from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
-from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
-from google.cloud.spanner_admin_database_v1 import CreateBackupRequest
-from google.cloud.spanner_admin_database_v1 import CopyBackupEncryptionConfig
-from google.cloud.spanner_admin_database_v1 import CopyBackupRequest
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
 _BACKUP_NAME_RE = re.compile(

@@ -17,19 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.spanner_v1.types import keys
-from google.cloud.spanner_v1.types import location as gs_location
-from google.cloud.spanner_v1.types import mutation
-from google.cloud.spanner_v1.types import result_set
-from google.cloud.spanner_v1.types import transaction as gs_transaction
-from google.cloud.spanner_v1.types import type as gs_type
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.spanner_v1.types import keys
+from google.cloud.spanner_v1.types import location as gs_location
+from google.cloud.spanner_v1.types import mutation, result_set
+from google.cloud.spanner_v1.types import transaction as gs_transaction
+from google.cloud.spanner_v1.types import type as gs_type
 
 __protobuf__ = proto.module(
     package="google.spanner.v1",

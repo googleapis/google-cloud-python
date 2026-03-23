@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import SpannerTransport
 from .grpc import SpannerGrpcTransport
 from .grpc_asyncio import SpannerGrpcAsyncIOTransport
-from .rest import SpannerRestTransport
-from .rest import SpannerRestInterceptor
-
+from .rest import SpannerRestInterceptor, SpannerRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SpannerTransport]]
