@@ -39,7 +39,7 @@ ALL_PYTHON = [
     "3.14",
 ]
 
-DEFAULT_PYTHON_VERSION = "3.11"
+DEFAULT_PYTHON_VERSION = "3.14"
 
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
 # Switch this to Python 3.15 alpha1
