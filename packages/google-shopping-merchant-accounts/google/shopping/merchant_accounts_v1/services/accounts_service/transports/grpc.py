@@ -380,6 +380,50 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return self._stubs["create_and_configure_account"]
 
     @property
+    def create_test_account(
+        self,
+    ) -> Callable[[accounts.CreateTestAccountRequest], accounts.Account]:
+        r"""Return a callable for the create test account method over gRPC.
+
+        Creates a Merchant Center test account.
+
+        Test accounts are intended for development and testing
+        purposes, such as validating API integrations or new
+        feature behavior.
+
+        Key characteristics and limitations of test accounts:
+
+        - Immutable Type: A test account cannot be converted
+          into a regular   (live) Merchant Center account.
+          Likewise, a regular account cannot be   converted into
+          a test account.
+        - Non-Serving Products: Any products, offers, or data
+          created within a   test account will not be published
+          or made visible to end-users on any   Google surfaces.
+          They are strictly for testing environments.
+        - Separate Environment: Test accounts operate in a
+          sandbox-like manner,   isolated from live serving and
+          real user traffic.
+
+        Returns:
+            Callable[[~.CreateTestAccountRequest],
+                    ~.Account]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_test_account" not in self._stubs:
+            self._stubs["create_test_account"] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1.AccountsService/CreateTestAccount",
+                request_serializer=accounts.CreateTestAccountRequest.serialize,
+                response_deserializer=accounts.Account.deserialize,
+            )
+        return self._stubs["create_test_account"]
+
+    @property
     def delete_account(
         self,
     ) -> Callable[[accounts.DeleteAccountRequest], empty_pb2.Empty]:

@@ -380,6 +380,7 @@ class ProgramsServiceAsyncClient:
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 
@@ -635,6 +636,7 @@ class ProgramsServiceAsyncClient:
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 
@@ -764,6 +766,7 @@ class ProgramsServiceAsyncClient:
 
                    - checkout
                    - free-listings
+                   - product-ratings
                    - shopping-ads
                    - youtube-shopping-checkout
 
