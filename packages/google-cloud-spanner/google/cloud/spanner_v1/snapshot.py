@@ -18,6 +18,7 @@
 """Model a set of read-only queries to a database as a snapshot."""
 
 import functools
+import threading
 from typing import List, Optional, Union
 
 from google.api_core import gapic_v1
@@ -203,10 +204,6 @@ class _SnapshotBase(_SessionWrapper):
         self._transaction_id: Optional[bytes] = None
         self._precommit_token: Optional[MultiplexedSessionPrecommitToken] = None
         self._lock: CrossSync._Sync_Impl.Lock = CrossSync._Sync_Impl.Lock()
-
-        # Operation within a transaction can be performed using multiple
-        # threads, so we need to use a lock when updating the transaction.
-        self._lock: threading.Lock = threading.Lock()
 
         # Event to coordinate concurrent requests beginning the transaction.
         # This is used to prevent the "Transaction has not begun" race condition.

@@ -45,6 +45,9 @@ from google.cloud.spanner_admin_database_v1 import (
 from google.cloud.spanner_admin_database_v1.services.database_admin.transports.grpc import (
     DatabaseAdminGrpcTransport,
 )
+from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.grpc import (
+    InstanceAdminGrpcTransport,
+)
 from google.cloud.spanner_admin_instance_v1 import (
     InstanceAdminClient as InstanceAdminClient,
 )

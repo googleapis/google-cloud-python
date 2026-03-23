@@ -36,6 +36,8 @@ from google.cloud.spanner_admin_database_v1 import (
 )
 from google.cloud.spanner_admin_database_v1.types import backup, spanner_database_admin
 from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1.backup import Backup
 from google.cloud.spanner_v1.database import Database
 
 _INSTANCE_NAME_RE = re.compile(
