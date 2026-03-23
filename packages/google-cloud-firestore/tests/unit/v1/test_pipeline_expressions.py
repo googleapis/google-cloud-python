@@ -1537,6 +1537,7 @@ class TestExpressionessionMethods:
         assert len(instance.params) == 3
         assert instance.params[0] == arg1
         assert instance.params[1] == arg2
+        assert instance.params[2] == "first"
         infix_instance = arg1.array_index_of(arg2)
         assert infix_instance == instance
 
