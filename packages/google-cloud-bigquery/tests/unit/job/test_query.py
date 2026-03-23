@@ -1635,10 +1635,12 @@ class TestQueryJob(_Base):
     def test_result_error(self):
         from google.cloud import exceptions
 
-        query = textwrap.dedent("""
+        query = textwrap.dedent(
+            """
             SELECT foo, bar
             FROM table_baz
-            WHERE foo == bar""")
+            WHERE foo == bar"""
+        )
 
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, query, client)
@@ -1682,10 +1684,12 @@ class TestQueryJob(_Base):
             assert expected_line in debug_message
 
     def test_result_transport_timeout_error(self):
-        query = textwrap.dedent("""
+        query = textwrap.dedent(
+            """
             SELECT foo, bar
             FROM table_baz
-            WHERE foo == bar""")
+            WHERE foo == bar"""
+        )
 
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, query, client)
@@ -1739,10 +1743,12 @@ class TestQueryJob(_Base):
     def test__begin_error(self):
         from google.cloud import exceptions
 
-        query = textwrap.dedent("""
+        query = textwrap.dedent(
+            """
             SELECT foo, bar
             FROM table_baz
-            WHERE foo == bar""")
+            WHERE foo == bar"""
+        )
 
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, query, client)
