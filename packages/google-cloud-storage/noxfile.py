@@ -28,6 +28,7 @@ import nox
 
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.12.0"
+RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -82,23 +83,30 @@ def lint(session):
     """
     session.install("flake8", BLACK_VERSION)
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_PATHS,
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
-
-    Format code to uniform standard.
-    """
-    session.install(BLACK_VERSION)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+    session.install(RUFF_VERSION)
     session.run(
-        "black",
-        *BLACK_PATHS,
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
     )
 
 
@@ -488,9 +496,23 @@ def prerelease_deps(session, protobuf_implementation):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add mypy tests
-    session.skip("mypy tests are not yet supported")
+    session.skip("Mypy is not yet supported")
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
+    # use the latest version of mypy
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+    )
+    session.install(".")
+    session.run(
+        "mypy",
+        "-p",
+        "google",
+        # "--check-untyped-defs",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -506,13 +528,30 @@ def core_deps_from_source(session):
 @nox.session
 def format(session: nox.sessions.Session) -> None:
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
 
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
-    session.run("isort", "--fss", *python_files)
-    session.run("black", *python_files)
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
