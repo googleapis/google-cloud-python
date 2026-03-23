@@ -26,17 +26,19 @@ In the hierarchy of API concepts
 * a :class:`~google.cloud.spanner_v1.instance.Instance` owns a
   :class:`~google.cloud.spanner_v1.database.Database`
 """
+
 import logging
 import os
 import threading
-from typing import Optional
 import warnings
+from typing import Optional
 
 import google.api_core.client_options
+import grpc
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
-import grpc
 from google.cloud.client import ClientWithProject
+
 from google.cloud.spanner_admin_database_v1 import (
     DatabaseAdminClient as DatabaseAdminClient,
 )
@@ -45,6 +47,8 @@ from google.cloud.spanner_admin_database_v1.services.database_admin.transports.g
 )
 from google.cloud.spanner_admin_instance_v1 import (
     InstanceAdminClient as InstanceAdminClient,
+)
+from google.cloud.spanner_admin_instance_v1 import (
     ListInstanceConfigsRequest,
     ListInstancesRequest,
 )

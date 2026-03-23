@@ -47,9 +47,7 @@ CREATE TABLE {3.table} (
     chunk_me STRING({3.value_size}),
     chunk_me_2 STRING({3.value_size}) )
     PRIMARY KEY (pkey);
-""".format(
-    FOUR_KAY, FORTY_KAY, FOUR_HUNDRED_KAY, FOUR_MEG
-)
+""".format(FOUR_KAY, FORTY_KAY, FOUR_HUNDRED_KAY, FOUR_MEG)
 
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]

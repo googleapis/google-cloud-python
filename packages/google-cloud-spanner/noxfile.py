@@ -118,10 +118,11 @@ def lint(session):
 
     # 2. Check formatting
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         "--check",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88", 
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -131,12 +132,15 @@ def lint(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log("WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future.")
-    
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
@@ -173,7 +177,6 @@ def format(session: nox.sessions.Session) -> None:
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
-
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -681,16 +684,24 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
             run_system = True
         else:
-            session.log("Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set")
+            session.log(
+                "Skipping system tests because GOOGLE_APPLICATION_CREDENTIALS is not set"
+            )
             run_system = False
     else:
         # Skip to speed up build (only run python implementation on real Spanner)
-        session.log(f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build")
+        session.log(
+            f"Skipping system tests for protobuf={protobuf_implementation} on real Spanner to speed up build"
+        )
         run_system = False
 
     if run_system:
         # Run the tests (deduplicated logic)
-        test_path = system_test_path if os.path.exists(system_test_path) else system_test_folder_path
+        test_path = (
+            system_test_path
+            if os.path.exists(system_test_path)
+            else system_test_folder_path
+        )
         session.run(
             "py.test",
             "--verbose",
@@ -706,7 +717,9 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     # Only run system tests for one protobuf implementation on real Spanner to speed up the build.
     if os.environ.get("SPANNER_EMULATOR_HOST") or protobuf_implementation == "python":
         # Sanity check: Only run system tests if credentials or emulator are set.
-        if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") or os.environ.get("SPANNER_EMULATOR_HOST"):
+        if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") or os.environ.get(
+            "SPANNER_EMULATOR_HOST"
+        ):
             # Only run system tests if found.
             if os.path.exists(system_test_path):
                 session.run(
@@ -735,7 +748,9 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
                     },
                 )
         else:
-            session.log("Skipping system tests because credentials/emulator are missing")
+            session.log(
+                "Skipping system tests because credentials/emulator are missing"
+            )
         # Only run system tests if found.
         if os.path.exists(system_test_path):
             session.run(
@@ -771,6 +786,7 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add mypy tests
     session.skip("mypy tests are not yet supported")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):

@@ -146,9 +146,9 @@ class MetricsTracerFactory:
         Returns:
             MetricsTracerFactory: The current instance of MetricsTracerFactory to enable method chaining.
         """
-        self._client_attributes[
-            MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG
-        ] = instance_config
+        self._client_attributes[MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG] = (
+            instance_config
+        )
         return self
 
     def set_location(self, location: str) -> "MetricsTracerFactory":

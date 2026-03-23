@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """DB-API Connection for the Google Cloud Spanner."""
+
 import warnings
 
 from google.api_core.client_options import ClientOptions

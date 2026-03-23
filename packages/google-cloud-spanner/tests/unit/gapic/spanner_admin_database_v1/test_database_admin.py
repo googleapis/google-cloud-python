@@ -23,17 +23,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -44,33 +44,37 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.auth
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
     grpc_helpers_async,
     operation,
+    operation_async,  # type: ignore
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import (
+    any_pb2,  # type: ignore
+    duration_pb2,  # type: ignore
+    empty_pb2,  # type: ignore
+    field_mask_pb2,  # type: ignore
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
@@ -80,13 +84,16 @@ from google.cloud.spanner_admin_database_v1.services.database_admin import (
     pagers,
     transports,
 )
-from google.cloud.spanner_admin_database_v1.types import common, spanner_database_admin
+from google.cloud.spanner_admin_database_v1.types import (
+    backup,
+    backup_schedule,
+    common,
+    spanner_database_admin,
+)
+from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
 from google.cloud.spanner_admin_database_v1.types import (
     backup_schedule as gsad_backup_schedule,
 )
-from google.cloud.spanner_admin_database_v1.types import backup
-from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
-from google.cloud.spanner_admin_database_v1.types import backup_schedule
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1306,9 +1313,7 @@ def test_database_admin_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -2966,9 +2971,9 @@ def test_update_database_ddl_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_database_ddl
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_database_ddl] = (
+            mock_rpc
+        )
         request = {}
         client.update_database_ddl(request)
 
@@ -3633,9 +3638,9 @@ def test_get_database_ddl_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_database_ddl
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_database_ddl] = (
+            mock_rpc
+        )
         request = {}
         client.get_database_ddl(request)
 
@@ -4648,9 +4653,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 
@@ -7278,9 +7283,9 @@ def test_restore_database_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.restore_database
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.restore_database] = (
+            mock_rpc
+        )
         request = {}
         client.restore_database(request)
 
@@ -8189,9 +8194,9 @@ def test_list_backup_operations_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_backup_operations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_backup_operations] = (
+            mock_rpc
+        )
         request = {}
         client.list_backup_operations(request)
 
@@ -8734,9 +8739,9 @@ def test_list_database_roles_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_database_roles
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_database_roles] = (
+            mock_rpc
+        )
         request = {}
         client.list_database_roles(request)
 
@@ -9273,9 +9278,9 @@ def test_add_split_points_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.add_split_points
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.add_split_points] = (
+            mock_rpc
+        )
         request = {}
         client.add_split_points(request)
 
@@ -9615,9 +9620,9 @@ def test_create_backup_schedule_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_backup_schedule] = (
+            mock_rpc
+        )
         request = {}
         client.create_backup_schedule(request)
 
@@ -9977,9 +9982,9 @@ def test_get_backup_schedule_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_backup_schedule] = (
+            mock_rpc
+        )
         request = {}
         client.get_backup_schedule(request)
 
@@ -10316,9 +10321,9 @@ def test_update_backup_schedule_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_backup_schedule] = (
+            mock_rpc
+        )
         request = {}
         client.update_backup_schedule(request)
 
@@ -10666,9 +10671,9 @@ def test_delete_backup_schedule_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_backup_schedule] = (
+            mock_rpc
+        )
         request = {}
         client.delete_backup_schedule(request)
 
@@ -11002,9 +11007,9 @@ def test_list_backup_schedules_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_backup_schedules
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_backup_schedules] = (
+            mock_rpc
+        )
         request = {}
         client.list_backup_schedules(request)
 
@@ -12586,9 +12591,9 @@ def test_update_database_ddl_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_database_ddl
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_database_ddl] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_database_ddl(request)
@@ -12957,9 +12962,9 @@ def test_get_database_ddl_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_database_ddl
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_database_ddl] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_database_ddl(request)
@@ -13505,9 +13510,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
 
         request = {}
         client.test_iam_permissions(request)
@@ -14899,9 +14904,9 @@ def test_restore_database_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.restore_database
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.restore_database] = (
+            mock_rpc
+        )
 
         request = {}
         client.restore_database(request)
@@ -15365,9 +15370,9 @@ def test_list_backup_operations_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_backup_operations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_backup_operations] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_backup_operations(request)
@@ -15627,9 +15632,9 @@ def test_list_database_roles_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_database_roles
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_database_roles] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_database_roles(request)
@@ -15892,9 +15897,9 @@ def test_add_split_points_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.add_split_points
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.add_split_points] = (
+            mock_rpc
+        )
 
         request = {}
         client.add_split_points(request)
@@ -16090,9 +16095,9 @@ def test_create_backup_schedule_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_backup_schedule] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_backup_schedule(request)
@@ -16303,9 +16308,9 @@ def test_get_backup_schedule_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_backup_schedule] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_backup_schedule(request)
@@ -16488,9 +16493,9 @@ def test_update_backup_schedule_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_backup_schedule] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_backup_schedule(request)
@@ -16683,9 +16688,9 @@ def test_delete_backup_schedule_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_backup_schedule
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_backup_schedule] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_backup_schedule(request)
@@ -16863,9 +16868,9 @@ def test_list_backup_schedules_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_backup_schedules
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_backup_schedules] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_backup_schedules(request)

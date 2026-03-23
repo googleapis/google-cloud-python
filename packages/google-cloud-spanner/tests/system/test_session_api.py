@@ -21,13 +21,13 @@ import threading
 import time
 import uuid
 
-from google.api_core import datetime_helpers, exceptions
-from google.rpc import code_pb2
 import grpc
 import pytest
+from google.api_core import datetime_helpers, exceptions
+from google.cloud._helpers import UTC
+from google.rpc import code_pb2
 
 from google.cloud import spanner_v1
-from google.cloud._helpers import UTC
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1 import _opentelemetry_tracing
 from google.cloud.spanner_v1._helpers import AtomicCounter, _get_cloud_region
@@ -887,9 +887,9 @@ def test_transaction_read_and_insert_then_rollback(
 
             # Check that all expected span types are present
             for expected_name in expected_span_names:
-                assert (
-                    expected_name in actual_span_names
-                ), f"Expected span '{expected_name}' not found in actual spans: {actual_span_names}"
+                assert expected_name in actual_span_names, (
+                    f"Expected span '{expected_name}' not found in actual spans: {actual_span_names}"
+                )
         else:
             # If counts match, verify each span in order
             for i, expected in enumerate(expected_span_properties):
@@ -2837,7 +2837,7 @@ def test_execute_sql_w_query_param_struct(sessions_database, not_postgres):
 
     # Query with equality check for struct value
     struct_equality_query = (
-        "SELECT " '@struct_param=STRUCT<threadf INT64, userf STRING>(1,"bob")'
+        'SELECT @struct_param=STRUCT<threadf INT64, userf STRING>(1,"bob")'
     )
     struct_type = param_types.Struct(
         [

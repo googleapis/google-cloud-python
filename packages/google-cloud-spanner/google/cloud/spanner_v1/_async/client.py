@@ -28,16 +28,16 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.client"
 import logging
 import os
 import threading
-from typing import Optional
 import warnings
+from typing import Optional
 
 import google.api_core.client_options
+import grpc
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
-import grpc
+from google.cloud.client import ClientWithProject
 
 from google.cloud.aio._cross_sync import CrossSync  # noqa: F401
-from google.cloud.client import ClientWithProject
 from google.cloud.spanner_admin_database_v1 import (
     DatabaseAdminAsyncClient as DatabaseAdminClient,
 )
@@ -53,6 +53,8 @@ else:
 
 from google.cloud.spanner_admin_instance_v1 import (
     InstanceAdminAsyncClient as InstanceAdminClient,
+)
+from google.cloud.spanner_admin_instance_v1 import (
     ListInstanceConfigsRequest,
     ListInstancesRequest,
 )

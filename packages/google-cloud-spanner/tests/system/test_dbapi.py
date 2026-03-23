@@ -12,16 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import base64
-from collections import defaultdict
 import datetime
 import decimal
 import time
+from collections import defaultdict
 
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 import pytest
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud._helpers import UTC
 
 from google.cloud import spanner_v1
-from google.cloud._helpers import UTC
 from google.cloud.spanner_dbapi.connection import Connection, connect
 from google.cloud.spanner_dbapi.exceptions import (
     OperationalError,

@@ -14,8 +14,8 @@
 
 import unittest
 
-from google.auth.credentials import AnonymousCredentials
 import mock
+from google.auth.credentials import AnonymousCredentials
 
 from google.cloud.spanner_v1 import DefaultTransactionOptions
 
@@ -408,6 +408,7 @@ class TestInstance(unittest.TestCase):
 
     def test_update_not_found(self):
         from google.cloud.exceptions import NotFound
+
         from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 
         client = _Client(self.PROJECT)
@@ -585,12 +586,12 @@ class TestInstance(unittest.TestCase):
         self.assertIs(database._proto_descriptors, proto_descriptors)
 
     def test_list_databases(self):
+        from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
         from google.cloud.spanner_admin_database_v1 import (
             DatabaseAdminClient,
             ListDatabasesRequest,
             ListDatabasesResponse,
         )
-        from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -604,9 +605,9 @@ class TestInstance(unittest.TestCase):
             ]
         )
 
-        ld_api = api._transport._wrapped_methods[
-            api._transport.list_databases
-        ] = mock.Mock(return_value=databases_pb)
+        ld_api = api._transport._wrapped_methods[api._transport.list_databases] = (
+            mock.Mock(return_value=databases_pb)
+        )
 
         response = instance.list_databases()
         databases = list(response)
@@ -640,9 +641,9 @@ class TestInstance(unittest.TestCase):
 
         databases_pb = ListDatabasesResponse(databases=[])
 
-        ld_api = api._transport._wrapped_methods[
-            api._transport.list_databases
-        ] = mock.Mock(return_value=databases_pb)
+        ld_api = api._transport._wrapped_methods[api._transport.list_databases] = (
+            mock.Mock(return_value=databases_pb)
+        )
 
         page_size = 42
         response = instance.list_databases(page_size=page_size)
@@ -681,6 +682,7 @@ class TestInstance(unittest.TestCase):
         from datetime import timezone
 
         from google.cloud._helpers import UTC
+
         from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
         from google.cloud.spanner_v1.backup import Backup
 
@@ -709,12 +711,12 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(backup._encryption_config, encryption_config)
 
     def test_list_backups_defaults(self):
+        from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
         from google.cloud.spanner_admin_database_v1 import (
             DatabaseAdminClient,
             ListBackupsRequest,
             ListBackupsResponse,
         )
-        from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -729,9 +731,9 @@ class TestInstance(unittest.TestCase):
             ]
         )
 
-        lbo_api = api._transport._wrapped_methods[
-            api._transport.list_backups
-        ] = mock.Mock(return_value=backups_pb)
+        lbo_api = api._transport._wrapped_methods[api._transport.list_backups] = (
+            mock.Mock(return_value=backups_pb)
+        )
 
         backups = instance.list_backups()
 
@@ -750,12 +752,12 @@ class TestInstance(unittest.TestCase):
         )
 
     def test_list_backups_w_options(self):
+        from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
         from google.cloud.spanner_admin_database_v1 import (
             DatabaseAdminClient,
             ListBackupsRequest,
             ListBackupsResponse,
         )
-        from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
 
         api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
@@ -770,9 +772,9 @@ class TestInstance(unittest.TestCase):
             ]
         )
 
-        ldo_api = api._transport._wrapped_methods[
-            api._transport.list_backups
-        ] = mock.Mock(return_value=backups_pb)
+        ldo_api = api._transport._wrapped_methods[api._transport.list_backups] = (
+            mock.Mock(return_value=backups_pb)
+        )
 
         backups = instance.list_backups(filter_="filter", page_size=10)
 

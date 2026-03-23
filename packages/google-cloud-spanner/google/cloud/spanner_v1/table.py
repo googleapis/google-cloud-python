@@ -15,6 +15,7 @@
 """User friendly container for Cloud Spanner Table."""
 
 from google.cloud.exceptions import NotFound
+
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_v1.types import Type, TypeCode
 

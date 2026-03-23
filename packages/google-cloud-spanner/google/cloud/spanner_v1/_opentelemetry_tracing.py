@@ -14,9 +14,9 @@
 
 """Manages OpenTelemetry trace creation and handling"""
 
+import os
 from contextlib import contextmanager
 from datetime import datetime
-import os
 
 from opentelemetry import trace
 from opentelemetry.semconv.attributes.otel_attributes import (

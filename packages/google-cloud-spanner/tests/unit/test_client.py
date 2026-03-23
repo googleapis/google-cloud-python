@@ -15,8 +15,8 @@
 import os
 import unittest
 
-from google.auth.credentials import AnonymousCredentials
 import mock
+from google.auth.credentials import AnonymousCredentials
 
 from google.cloud.spanner_v1 import DefaultTransactionOptions, DirectedReadOptions
 from tests._builders import build_scoped_credentials
@@ -99,7 +99,7 @@ class TestClient(unittest.TestCase):
             query_options=query_options,
             directed_read_options=directed_read_options,
             default_transaction_options=default_transaction_options,
-            **kwargs
+            **kwargs,
         )
 
         expected_creds = expected_creds or creds.with_scopes.return_value
@@ -627,10 +627,10 @@ class TestClient(unittest.TestCase):
 
     def test_list_instance_configs(self):
         from google.cloud.spanner_admin_instance_v1 import (
+            InstanceAdminClient,
             ListInstanceConfigsRequest,
             ListInstanceConfigsResponse,
         )
-        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceConfig as InstanceConfigPB,
         )
@@ -676,10 +676,10 @@ class TestClient(unittest.TestCase):
 
     def test_list_instance_configs_w_options(self):
         from google.cloud.spanner_admin_instance_v1 import (
+            InstanceAdminClient,
             ListInstanceConfigsRequest,
             ListInstanceConfigsResponse,
         )
-        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceConfig as InstanceConfigPB,
         )
@@ -754,12 +754,12 @@ class TestClient(unittest.TestCase):
         self.assertIs(instance._client, client)
 
     def test_list_instances(self):
+        from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceAdminClient,
             ListInstancesRequest,
             ListInstancesResponse,
         )
-        from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
 
         credentials = build_scoped_credentials()
         api = InstanceAdminClient(credentials=credentials)
@@ -778,9 +778,9 @@ class TestClient(unittest.TestCase):
             ]
         )
 
-        li_api = api._transport._wrapped_methods[
-            api._transport.list_instances
-        ] = mock.Mock(return_value=instance_pbs)
+        li_api = api._transport._wrapped_methods[api._transport.list_instances] = (
+            mock.Mock(return_value=instance_pbs)
+        )
 
         response = client.list_instances()
         instances = list(response)
@@ -818,9 +818,9 @@ class TestClient(unittest.TestCase):
 
         instance_pbs = ListInstancesResponse(instances=[])
 
-        li_api = api._transport._wrapped_methods[
-            api._transport.list_instances
-        ] = mock.Mock(return_value=instance_pbs)
+        li_api = api._transport._wrapped_methods[api._transport.list_instances] = (
+            mock.Mock(return_value=instance_pbs)
+        )
 
         page_size = 42
         filter_ = "name:instance"

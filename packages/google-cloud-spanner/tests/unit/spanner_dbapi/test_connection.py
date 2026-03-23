@@ -18,9 +18,9 @@ import datetime
 import unittest
 import warnings
 
-from google.auth.credentials import AnonymousCredentials
 import mock
 import pytest
+from google.auth.credentials import AnonymousCredentials
 
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_dbapi import Connection

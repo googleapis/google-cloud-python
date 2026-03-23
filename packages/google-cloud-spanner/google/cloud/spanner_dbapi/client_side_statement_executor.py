@@ -16,8 +16,8 @@ from typing import TYPE_CHECKING, Union
 from google.cloud.spanner_v1 import TransactionOptions
 
 if TYPE_CHECKING:
-    from google.cloud.spanner_dbapi.cursor import Cursor
     from google.cloud.spanner_dbapi import ProgrammingError
+    from google.cloud.spanner_dbapi.cursor import Cursor
 
 from google.cloud.spanner_dbapi.parsed_statement import (
     ClientSideStatementType,

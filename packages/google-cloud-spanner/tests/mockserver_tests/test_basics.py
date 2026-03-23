@@ -63,10 +63,7 @@ class TestBasics(MockServerTestBase):
                     "test-project", "test-instance", "test-database"
                 ),
                 statements=[
-                    "CREATE TABLE Test ("
-                    "Id INT64, "
-                    "Value STRING(MAX)) "
-                    "PRIMARY KEY (Id)",
+                    "CREATE TABLE Test (Id INT64, Value STRING(MAX)) PRIMARY KEY (Id)",
                 ],
             )
         )

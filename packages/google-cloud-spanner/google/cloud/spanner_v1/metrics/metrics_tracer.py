@@ -486,9 +486,9 @@ class MetricsTracer:
         :return: This instance of MetricsTracer for method chaining.
         """
         if MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG not in self._client_attributes:
-            self._client_attributes[
-                MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG
-            ] = instance_config
+            self._client_attributes[MONITORED_RES_LABEL_KEY_INSTANCE_CONFIG] = (
+                instance_config
+            )
         return self
 
     def set_location(self, location: str) -> "MetricsTracer":

@@ -16,29 +16,29 @@
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.transaction"
 
-from dataclasses import dataclass, field
 import functools
+from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from google.cloud.spanner_v1._helpers import (
-    AtomicCounter,
-    _make_value_pb,
-    _merge_query_options,
-    _metadata_with_prefix,
-    _metadata_with_leader_aware_routing,
-    _check_rst_stream_error,
-    _merge_Transaction_Options,
-    _merge_client_context,
-    _merge_request_options,
-)
-from google.cloud.spanner_v1._async._helpers import _retry
 from google.api_core import gapic_v1
 from google.api_core.exceptions import InternalServerError
 from google.protobuf.struct_pb2 import Struct
 
 from google.cloud.aio._cross_sync import CrossSync
+from google.cloud.spanner_v1._async._helpers import _retry
 from google.cloud.spanner_v1._async.batch import _BatchBase
 from google.cloud.spanner_v1._async.snapshot import _SnapshotBase
+from google.cloud.spanner_v1._helpers import (
+    AtomicCounter,
+    _check_rst_stream_error,
+    _make_value_pb,
+    _merge_client_context,
+    _merge_query_options,
+    _merge_request_options,
+    _merge_Transaction_Options,
+    _metadata_with_leader_aware_routing,
+    _metadata_with_prefix,
+)
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.types.commit_response import CommitResponse
@@ -92,9 +92,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :returns: transaction options for this transaction.
         """
 
-        default_transaction_options = (
-            self._session._database.default_transaction_options.default_read_write_transaction_options
-        )
+        default_transaction_options = self._session._database.default_transaction_options.default_read_write_transaction_options
 
         merge_transaction_options = TransactionOptions(
             read_write=TransactionOptions.ReadWrite(

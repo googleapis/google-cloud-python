@@ -22,27 +22,28 @@ import re
 import threading
 from typing import Optional
 
+import google.auth.credentials
+import grpc
 from google.api_core import gapic_v1
 from google.api_core.exceptions import Aborted
 from google.api_core.retry_async import AsyncRetry
-import google.auth.credentials
+from google.cloud.exceptions import NotFound
 from google.iam.v1 import iam_policy_pb2, options_pb2
 from google.protobuf.field_mask_pb2 import FieldMask
-import grpc
 
 from google.cloud.aio._cross_sync import CrossSync
-from google.cloud.exceptions import NotFound
 from google.cloud.spanner_admin_database_v1 import (
     CreateDatabaseRequest,
-    Database as DatabasePB,
     EncryptionConfig,
     ListDatabaseRolesRequest,
     RestoreDatabaseEncryptionConfig,
     RestoreDatabaseRequest,
     UpdateDatabaseDdlRequest,
 )
+from google.cloud.spanner_admin_database_v1 import (
+    Database as DatabasePB,
+)
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
-
 from google.cloud.spanner_v1._async.batch import Batch, MutationGroups
 from google.cloud.spanner_v1._async.database_sessions_manager import (
     DatabaseSessionsManager,
@@ -91,8 +92,6 @@ from google.cloud.spanner_v1._opentelemetry_tracing import (
     get_current_span,
     trace_call,
 )
-
-
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.table import Table
 
@@ -272,7 +271,7 @@ class Database(object):
         match = _DATABASE_NAME_RE.match(database_pb.name)
         if match is None:
             raise ValueError(
-                "Database protobuf name was not in the " "expected format.",
+                "Database protobuf name was not in the expected format.",
                 database_pb.name,
             )
         if match.group("project") != instance._client.project:
@@ -283,8 +282,7 @@ class Database(object):
         instance_id = match.group("instance_id")
         if instance_id != instance.instance_id:
             raise ValueError(
-                "Instance ID on database does not match the "
-                "Instance ID on the instance"
+                "Instance ID on database does not match the Instance ID on the instance"
             )
         database_id = match.group("database_id")
 

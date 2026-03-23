@@ -17,8 +17,8 @@ import os
 from unittest import IsolatedAsyncioTestCase
 from unittest.mock import AsyncMock
 
-from google.auth.credentials import AnonymousCredentials
 import mock
+from google.auth.credentials import AnonymousCredentials
 
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1 import DefaultTransactionOptions, DirectedReadOptions
@@ -127,7 +127,7 @@ class TestClient(IsolatedAsyncioTestCase):
             query_options=query_options,
             directed_read_options=directed_read_options,
             default_transaction_options=default_transaction_options,
-            **kwargs
+            **kwargs,
         )
 
         expected_creds = expected_creds or creds.with_scopes.return_value
@@ -678,11 +678,13 @@ class TestClient(IsolatedAsyncioTestCase):
 
     @CrossSync.pytest
     async def test_list_instance_configs(self):
-        from google.cloud.spanner_admin_instance_v1 import InstanceAdminAsyncClient
+        from google.cloud.spanner_admin_instance_v1 import (
+            InstanceAdminAsyncClient,
+            ListInstanceConfigsResponse,
+        )
         from google.cloud.spanner_admin_instance_v1 import (
             InstanceConfig as InstanceConfigPB,
         )
-        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
         credentials = build_scoped_credentials()
         api = InstanceAdminAsyncClient(credentials=credentials)

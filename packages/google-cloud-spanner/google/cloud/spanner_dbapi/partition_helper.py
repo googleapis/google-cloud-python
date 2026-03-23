@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import base64
-from dataclasses import dataclass
 import gzip
 import pickle
+from dataclasses import dataclass
 from typing import Any
 
 from google.cloud.spanner_v1 import BatchTransactionId

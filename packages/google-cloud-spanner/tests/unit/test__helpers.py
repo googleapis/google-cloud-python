@@ -14,9 +14,9 @@
 
 
 import datetime
-from datetime import timezone
 import unittest
 import uuid
+from datetime import timezone
 
 import mock
 from opentelemetry.sdk.resources import Resource

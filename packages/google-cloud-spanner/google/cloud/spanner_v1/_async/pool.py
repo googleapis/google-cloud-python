@@ -13,14 +13,16 @@
 # limitations under the License.
 
 """Pools managing shared Session objects."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.pool"
 import asyncio
 import datetime
 import time
 from warnings import warn
 
-from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.exceptions import NotFound
+
+from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._async.session import Session
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_leader_aware_routing,

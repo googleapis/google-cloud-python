@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Cursor() class unit tests."""
+
 import sys
 import unittest
 from unittest import mock

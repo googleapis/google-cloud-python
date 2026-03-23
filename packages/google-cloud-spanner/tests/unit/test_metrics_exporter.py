@@ -1,4 +1,4 @@
-﻿# Copyright 2025 Google LLC All rights reserved.
+# Copyright 2025 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -268,8 +268,6 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
             from google.api.metric_pb2 import Metric as GMetric
             from google.api.monitored_resource_pb2 import MonitoredResource
-            from google.protobuf.timestamp_pb2 import Timestamp
-
             from google.cloud.monitoring_v3 import (
                 MetricServiceClient,
                 Point,
@@ -277,6 +275,7 @@ if HAS_OPENTELEMETRY_INSTALLED:
                 TimeSeries,
                 TypedValue,
             )
+            from google.protobuf.timestamp_pb2 import Timestamp
 
             mockClient = MagicMock(spec=MetricServiceClient)
             mockClient.create_service_time_series = Mock(return_value=None)
