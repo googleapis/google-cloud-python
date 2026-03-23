@@ -37,7 +37,7 @@ def test_list_instances(
     instances = list(spanner_client.list_instances())
 
     for instance in instances:
-        assert instance in existing_instances or instance is shared_instance
+        assert instance in existing_instances or instance.name == shared_instance.name
 
 
 def test_reload_instance(spanner_client, shared_instance_id, shared_instance):
