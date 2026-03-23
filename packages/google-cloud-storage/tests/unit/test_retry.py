@@ -14,10 +14,10 @@
 
 import unittest
 
+import mock
+
 from google.cloud.storage import _helpers
 from google.cloud.storage.exceptions import InvalidResponse
-
-import mock
 
 
 class Test_should_retry(unittest.TestCase):
@@ -27,9 +27,10 @@ class Test_should_retry(unittest.TestCase):
         return retry._should_retry(exc)
 
     def test_w_retryable_transport_error(self):
-        from google.cloud.storage import retry
         from google.auth.exceptions import TransportError as eTransportError
         from requests import ConnectionError as rConnectionError
+
+        from google.cloud.storage import retry
 
         caught_exc = rConnectionError("Remote end closed connection unexpected")
         exc = eTransportError(caught_exc)

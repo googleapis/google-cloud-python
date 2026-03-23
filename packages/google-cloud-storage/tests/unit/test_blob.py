@@ -15,30 +15,33 @@
 import base64
 import datetime
 import hashlib
+import http.client
 import io
 import json
 import os
 import tempfile
 import unittest
-import http.client
 from unittest.mock import patch
 from urllib.parse import urlencode
 
 import mock
 import pytest
-
 from google.cloud.exceptions import NotFound
+
 from google.cloud.storage import _helpers
-from google.cloud.storage._helpers import _get_default_headers
-from google.cloud.storage._helpers import _get_default_storage_base_url
-from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
-from google.cloud.storage._helpers import _NOW
-from google.cloud.storage._helpers import _UTC
-from google.cloud.storage.exceptions import DataCorruption
-from google.cloud.storage.exceptions import InvalidResponse
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
+from google.cloud.storage._helpers import (
+    _DEFAULT_UNIVERSE_DOMAIN,
+    _NOW,
+    _UTC,
+    _get_default_headers,
+    _get_default_storage_base_url,
+)
+from google.cloud.storage.exceptions import DataCorruption, InvalidResponse
+from google.cloud.storage.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_RETRY_IF_ETAG_IN_JSON,
+    DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+)
 from tests.unit.test__helpers import GCCL_INVOCATION_TEST_CONST
 
 
@@ -87,7 +90,7 @@ class Test_Blob(unittest.TestCase):
     def test_ctor_with_encoded_unicode(self):
         blob_name = b"wet \xe2\x9b\xb5"
         blob = self._make_one(blob_name, bucket=None)
-        unicode_name = "wet \N{sailboat}"
+        unicode_name = "wet \N{SAILBOAT}"
         self.assertNotIsInstance(blob.name, bytes)
         self.assertIsInstance(blob.name, str)
         self.assertEqual(blob.name, unicode_name)
@@ -446,7 +449,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.public_url, "https://storage.googleapis.com/name/foo~bar")
 
     def test_public_url_with_non_ascii(self):
-        blob_name = "winter \N{snowman}"
+        blob_name = "winter \N{SNOWMAN}"
         bucket = _Bucket()
         blob = self._make_one(blob_name, bucket=bucket)
         expected_url = "https://storage.googleapis.com/name/winter%20%E2%98%83"
@@ -494,8 +497,11 @@ class Test_Blob(unittest.TestCase):
         scheme="http",
     ):
         from urllib import parse
-        from google.cloud.storage._helpers import _bucket_bound_hostname_url
-        from google.cloud.storage._helpers import _get_default_storage_base_url
+
+        from google.cloud.storage._helpers import (
+            _bucket_bound_hostname_url,
+            _get_default_storage_base_url,
+        )
         from google.cloud.storage.blob import _get_encryption_headers
 
         delta = datetime.timedelta(hours=1)
@@ -1065,7 +1071,7 @@ class Test_Blob(unittest.TestCase):
         download_url = blob._get_download_url(client)
         del client._connection.get_api_base_url_for_mtls
         expected_url = (
-            "https://foo.mtls/download/storage/v1/b/" "buhkit/o/bzzz-fly.txt?alt=media"
+            "https://foo.mtls/download/storage/v1/b/buhkit/o/bzzz-fly.txt?alt=media"
         )
         self.assertEqual(download_url, expected_url)
 
@@ -1720,6 +1726,7 @@ class Test_Blob(unittest.TestCase):
         self, updated, raw_download, timeout=None, **extra_kwargs
     ):
         import os
+
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = "blob-name"
@@ -2261,7 +2268,7 @@ class Test_Blob(unittest.TestCase):
         )
 
     def test_download_as_text_w_non_ascii_w_explicit_encoding(self):
-        expected_value = "\x0AFe"
+        expected_value = "\x0aFe"
         encoding = "utf-16"
         charset = "latin1"
         payload = expected_value.encode(encoding)
@@ -2274,7 +2281,7 @@ class Test_Blob(unittest.TestCase):
         )
 
     def test_download_as_text_w_non_ascii_wo_explicit_encoding_w_charset(self):
-        expected_value = "\x0AFe"
+        expected_value = "\x0aFe"
         charset = "utf-16"
         payload = expected_value.encode(charset)
         self._download_as_text_helper(
@@ -3784,11 +3791,11 @@ class Test_Blob(unittest.TestCase):
         self._upload_from_string_helper(data)
 
     def test_upload_from_string_w_text(self):
-        data = "\N{snowman} \N{sailboat}"
+        data = "\N{SNOWMAN} \N{SAILBOAT}"
         self._upload_from_string_helper(data)
 
     def test_upload_from_string_w_text_w_retry(self):
-        data = "\N{snowman} \N{sailboat}"
+        data = "\N{SNOWMAN} \N{SAILBOAT}"
         self._upload_from_string_helper(data, retry=DEFAULT_RETRY)
 
     def _create_resumable_upload_session_helper(
@@ -3969,10 +3976,13 @@ class Test_Blob(unittest.TestCase):
         self._create_resumable_upload_session_helper(client=client)
 
     def test_get_iam_policy_defaults(self):
-        from google.cloud.storage.iam import STORAGE_OWNER_ROLE
-        from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
-        from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
         from google.api_core.iam import Policy
+
+        from google.cloud.storage.iam import (
+            STORAGE_EDITOR_ROLE,
+            STORAGE_OWNER_ROLE,
+            STORAGE_VIEWER_ROLE,
+        )
 
         blob_name = "blob-name"
         path = f"/b/name/o/{blob_name}"
@@ -4094,10 +4104,14 @@ class Test_Blob(unittest.TestCase):
 
     def test_set_iam_policy(self):
         import operator
-        from google.cloud.storage.iam import STORAGE_OWNER_ROLE
-        from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
-        from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
+
         from google.api_core.iam import Policy
+
+        from google.cloud.storage.iam import (
+            STORAGE_EDITOR_ROLE,
+            STORAGE_OWNER_ROLE,
+            STORAGE_VIEWER_ROLE,
+        )
 
         blob_name = "blob-name"
         path = f"/b/name/o/{blob_name}"
@@ -4198,9 +4212,11 @@ class Test_Blob(unittest.TestCase):
         )
 
     def test_test_iam_permissions_defaults(self):
-        from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
-        from google.cloud.storage.iam import STORAGE_BUCKETS_GET
-        from google.cloud.storage.iam import STORAGE_BUCKETS_UPDATE
+        from google.cloud.storage.iam import (
+            STORAGE_BUCKETS_GET,
+            STORAGE_BUCKETS_UPDATE,
+            STORAGE_OBJECTS_LIST,
+        )
 
         blob_name = "blob-name"
         permissions = [
@@ -4230,9 +4246,11 @@ class Test_Blob(unittest.TestCase):
         )
 
     def test_test_iam_permissions_w_user_project_w_timeout_w_retry(self):
-        from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
-        from google.cloud.storage.iam import STORAGE_BUCKETS_GET
-        from google.cloud.storage.iam import STORAGE_BUCKETS_UPDATE
+        from google.cloud.storage.iam import (
+            STORAGE_BUCKETS_GET,
+            STORAGE_BUCKETS_UPDATE,
+            STORAGE_OBJECTS_LIST,
+        )
 
         blob_name = "blob-name"
         user_project = "user-project-123"
@@ -6016,8 +6034,7 @@ class Test_Blob(unittest.TestCase):
 
     @mock.patch("warnings.warn")
     def test_from_string(self, mock_warn):
-        from google.cloud.storage.blob import _FROM_STRING_DEPRECATED
-        from google.cloud.storage.blob import Blob
+        from google.cloud.storage.blob import _FROM_STRING_DEPRECATED, Blob
 
         client = self._make_client()
         basic_uri = "gs://bucket_name/b"
@@ -6044,8 +6061,8 @@ class Test_Blob(unittest.TestCase):
 
     def test_open(self):
         from io import TextIOWrapper
-        from google.cloud.storage.fileio import BlobReader
-        from google.cloud.storage.fileio import BlobWriter
+
+        from google.cloud.storage.fileio import BlobReader, BlobWriter
 
         blob_name = "blob-name"
         client = self._make_client()
@@ -6086,6 +6103,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_downloads_w_client_custom_headers(self):
         import google.auth.credentials
+
         from google.cloud.storage import Client
 
         custom_headers = {
@@ -6132,6 +6150,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_object_lock_retention_configuration_w_entry(self):
         from google.cloud._helpers import _RFC3339_MICROS
+
         from google.cloud.storage.blob import Retention
 
         now = _NOW(_UTC)
@@ -6195,7 +6214,7 @@ class Test__quote(unittest.TestCase):
         return _quote(*args, **kw)
 
     def test_bytes(self):
-        quoted = self._call_fut(b"\xDE\xAD\xBE\xEF")
+        quoted = self._call_fut(b"\xde\xad\xbe\xef")
         self.assertEqual(quoted, "%DE%AD%BE%EF")
 
     def test_unicode(self):
@@ -6261,7 +6280,6 @@ class Test__raise_from_invalid_response(unittest.TestCase):
 
     def _helper(self, message, code=http.client.BAD_REQUEST, reason=None, args=()):
         import requests
-
         from google.api_core import exceptions
 
         response = requests.Response()

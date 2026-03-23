@@ -14,13 +14,13 @@
 
 import importlib
 import os
-import pytest
 import sys
 
 import mock
+import pytest
 from google.api_core.exceptions import GoogleAPICallError
-from google.cloud.storage import __version__
-from google.cloud.storage import _opentelemetry_tracing
+
+from google.cloud.storage import __version__, _opentelemetry_tracing
 
 
 @pytest.fixture
@@ -189,6 +189,7 @@ def test_get_final_attributes(setup, setup_optin):
 
 def test_set_conditional_retry_attr(setup, setup_optin):
     from google.api_core import retry as api_retry
+
     from google.cloud.storage.retry import ConditionalRetryPolicy
 
     test_span_name = "OtelTracing.Test"

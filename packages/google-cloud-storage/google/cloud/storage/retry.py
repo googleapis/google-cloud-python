@@ -22,12 +22,11 @@ import http
 import requests
 import requests.exceptions as requests_exceptions
 import urllib3
-
 from google.api_core import exceptions as api_exceptions
 from google.api_core import retry
 from google.auth import exceptions as auth_exceptions
-from google.cloud.storage.exceptions import InvalidResponse
 
+from google.cloud.storage.exceptions import InvalidResponse
 
 _RETRYABLE_TYPES = (
     api_exceptions.TooManyRequests,  # 429

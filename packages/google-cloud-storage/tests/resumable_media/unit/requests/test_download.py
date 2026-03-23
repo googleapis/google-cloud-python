@@ -14,15 +14,14 @@
 
 import http.client
 import io
-
 from unittest import mock
+
 import pytest  # type: ignore
 
 from google.cloud.storage._media import _helpers
-from google.cloud.storage._media.requests import download as download_mod
 from google.cloud.storage._media.requests import _request_helpers
+from google.cloud.storage._media.requests import download as download_mod
 from google.cloud.storage.exceptions import DataCorruption
-
 
 URL_PREFIX = "https://www.googleapis.com/download/storage/v1/b/{BUCKET}/o/"
 EXAMPLE_URL = URL_PREFIX + "{OBJECT}?alt=media"

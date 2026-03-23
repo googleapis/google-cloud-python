@@ -13,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import tempfile
 import os
+import tempfile
 
 import pytest
+from google.api_core import exceptions
 
 from google.cloud.storage import transfer_manager
 from google.cloud.storage._helpers import _base64_md5hash
-
-from google.api_core import exceptions
 
 DEADLINE = 30
 
@@ -269,8 +268,7 @@ def test_upload_chunks_concurrently(shared_bucket, file_data, blobs_to_delete):
 def test_upload_chunks_concurrently_with_metadata(
     shared_bucket, file_data, blobs_to_delete
 ):
-    from google.cloud.storage._helpers import _NOW
-    from google.cloud.storage._helpers import _UTC
+    from google.cloud.storage._helpers import _NOW, _UTC
 
     now = _NOW(_UTC)
     custom_metadata = {"key_a": "value_a", "key_b": "value_b"}

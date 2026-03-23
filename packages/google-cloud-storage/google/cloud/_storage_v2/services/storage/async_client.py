@@ -14,50 +14,55 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 from typing import (
-    Dict,
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
     Sequence,
     Tuple,
     Type,
     Union,
 )
 
-from google.cloud._storage_v2 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
+from google.cloud._storage_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import (
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
+
 from google.cloud._storage_v2.services.storage import pagers
 from google.cloud._storage_v2.types import storage
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import StorageTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import StorageGrpcAsyncIOTransport
+
 from .client import StorageClient
+from .transports.base import DEFAULT_CLIENT_INFO, StorageTransport
+from .transports.grpc_asyncio import StorageGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -148,7 +153,9 @@ class StorageAsyncClient:
         Returns:
             StorageAsyncClient: The constructed client.
         """
-        return StorageClient.from_service_account_info.__func__(StorageAsyncClient, info, *args, **kwargs)  # type: ignore
+        return StorageClient.from_service_account_info.__func__(
+            StorageAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -164,7 +171,9 @@ class StorageAsyncClient:
         Returns:
             StorageAsyncClient: The constructed client.
         """
-        return StorageClient.from_service_account_file.__func__(StorageAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return StorageClient.from_service_account_file.__func__(
+            StorageAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 

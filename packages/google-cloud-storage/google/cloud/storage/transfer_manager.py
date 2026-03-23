@@ -14,31 +14,26 @@
 
 """Concurrent media operations."""
 
-import concurrent.futures
-
-import io
-import inspect
-import os
-import warnings
-import pickle
-import copyreg
-import struct
 import base64
+import concurrent.futures
+import copyreg
 import functools
-
-from google.api_core import exceptions
-from google.cloud.storage import Client
-from google.cloud.storage import Blob
-from google.cloud.storage.blob import _get_host_name
-from google.cloud.storage.blob import _quote
-from google.cloud.storage.constants import _DEFAULT_TIMEOUT
-from google.cloud.storage.retry import DEFAULT_RETRY
+import inspect
+import io
+import os
+import pickle
+import struct
+import warnings
 
 import google_crc32c
+from google.api_core import exceptions
 
-from google.cloud.storage._media.requests.upload import XMLMPUContainer
-from google.cloud.storage._media.requests.upload import XMLMPUPart
+from google.cloud.storage import Blob, Client
+from google.cloud.storage._media.requests.upload import XMLMPUContainer, XMLMPUPart
+from google.cloud.storage.blob import _get_host_name, _quote
+from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.exceptions import DataCorruption
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 TM_DEFAULT_CHUNK_SIZE = 32 * 1024 * 1024
 DEFAULT_MAX_WORKERS = 8

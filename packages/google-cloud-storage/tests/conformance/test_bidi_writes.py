@@ -1,13 +1,13 @@
 import asyncio
 import uuid
+
 import grpc
 import requests
-
 from google.api_core import exceptions
-from google.auth import credentials as auth_credentials
-from google.cloud import _storage_v2 as storage_v2
-
 from google.api_core.retry_async import AsyncRetry
+from google.auth import credentials as auth_credentials
+
+from google.cloud import _storage_v2 as storage_v2
 from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
@@ -108,9 +108,9 @@ async def run_test_scenario(
                 # Scenarios like 503, 500, smarter resumption, and redirects
                 # SHOULD trigger at least one retry attempt.
                 if not use_default:
-                    assert (
-                        retry_count > 0
-                    ), f"Test passed but no retry was actually triggered for {scenario['name']}!"
+                    assert retry_count > 0, (
+                        f"Test passed but no retry was actually triggered for {scenario['name']}!"
+                    )
                 else:
                     print("Successfully recovered using library's default policy.")
                 print(f"Success: {scenario['name']}")
@@ -122,9 +122,9 @@ async def run_test_scenario(
                 raise
 
             if not use_default:
-                assert (
-                    retry_count == 0
-                ), f"Retry was incorrectly triggered for non-retriable error in {scenario['name']}!"
+                assert retry_count == 0, (
+                    f"Retry was incorrectly triggered for non-retriable error in {scenario['name']}!"
+                )
                 print(f"Success: caught expected exception for {scenario['name']}: {e}")
 
     finally:

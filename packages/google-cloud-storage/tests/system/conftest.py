@@ -16,13 +16,13 @@ import contextlib
 import os
 
 import pytest
-
 from google.api_core import exceptions
+
 from google.cloud import kms
 from google.cloud.storage._helpers import _base64_md5hash
 from google.cloud.storage.retry import DEFAULT_RETRY
-from . import _helpers
 
+from . import _helpers
 
 dirname = os.path.realpath(os.path.dirname(__file__))
 data_dirname = os.path.abspath(os.path.join(dirname, "..", "data"))

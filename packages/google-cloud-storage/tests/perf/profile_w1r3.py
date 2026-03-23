@@ -19,12 +19,11 @@ import os
 import random
 import time
 import uuid
-
 from functools import partial, update_wrapper
 
-from google.cloud import storage
-
 import _perf_utils as _pu
+
+from google.cloud import storage
 
 
 def WRITE(bucket, blob_name, checksum, size, args, **kwargs):

@@ -31,11 +31,10 @@ The main concepts with this API are:
   machine).
 """
 
-from google.cloud.storage.version import __version__
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.client import Client
-
+from google.cloud.storage.version import __version__
 
 __all__ = ["__version__", "Batch", "Blob", "Bucket", "Client"]

@@ -28,15 +28,11 @@ import random
 import re
 import sys
 import urllib.parse
-
-from google.cloud.storage._media import _helpers
-from google.cloud.storage._media import UPLOAD_CHUNK_SIZE
-from google.cloud.storage.exceptions import InvalidResponse
-from google.cloud.storage.exceptions import DataCorruption
-from google.cloud.storage.retry import DEFAULT_RETRY
-
 from xml.etree import ElementTree
 
+from google.cloud.storage._media import UPLOAD_CHUNK_SIZE, _helpers
+from google.cloud.storage.exceptions import DataCorruption, InvalidResponse
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 _CONTENT_TYPE_HEADER = "content-type"
 _CONTENT_RANGE_TEMPLATE = "bytes {:d}-{:d}/{:d}"
@@ -55,8 +51,7 @@ _STREAM_ERROR_TEMPLATE = (
     "{:d} bytes have already been updated (they should match)."
 )
 _STREAM_READ_PAST_TEMPLATE = (
-    "{:d} bytes have been read from the stream, which exceeds "
-    "the expected total {:d}."
+    "{:d} bytes have been read from the stream, which exceeds the expected total {:d}."
 )
 _DELETE = "DELETE"
 _POST = "POST"

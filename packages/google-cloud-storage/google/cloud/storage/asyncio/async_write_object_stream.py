@@ -13,14 +13,16 @@
 # limitations under the License.
 
 from typing import List, Optional, Tuple
+
 import grpc
+from google.api_core.bidi_async import AsyncBidiRpc
+
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio import _utils
-from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
-from google.api_core.bidi_async import AsyncBidiRpc
+from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 
 
 class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):

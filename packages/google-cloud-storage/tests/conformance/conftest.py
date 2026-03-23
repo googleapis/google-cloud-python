@@ -17,11 +17,10 @@ import random
 import uuid
 
 import pytest
-
 from google.auth.credentials import AnonymousCredentials
-from google.cloud import storage
 from google.cloud.exceptions import NotFound
 
+from google.cloud import storage
 
 """Environment variable or default host for Storage testbench emulator."""
 _HOST = os.environ.get("STORAGE_EMULATOR_HOST", "http://localhost:9000")

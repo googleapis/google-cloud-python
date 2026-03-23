@@ -19,11 +19,10 @@ import logging
 import multiprocessing
 import sys
 
-from google.cloud import storage
-
 import _perf_utils as _pu
 import profile_w1r3 as w1r3
 
+from google.cloud import storage
 
 ##### PROFILE BENCHMARKING TEST TYPES #####
 PROFILE_WRITE_ONE_READ_THREE = "w1r3"

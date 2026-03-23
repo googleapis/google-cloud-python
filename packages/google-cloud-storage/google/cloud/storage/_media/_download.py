@@ -14,14 +14,12 @@
 
 """Virtual bases classes for downloading media from Google APIs."""
 
-
 import http.client
 import re
 
 from google.cloud.storage._media import _helpers
 from google.cloud.storage.exceptions import InvalidResponse
 from google.cloud.storage.retry import DEFAULT_RETRY
-
 
 _CONTENT_RANGE_RE = re.compile(
     r"bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)",
@@ -304,7 +302,7 @@ class ChunkedDownload(DownloadBase):
     ):
         if start < 0:
             raise ValueError(
-                "On a chunked download the starting " "value cannot be negative."
+                "On a chunked download the starting value cannot be negative."
             )
         super(ChunkedDownload, self).__init__(
             media_url,

@@ -17,13 +17,14 @@ import datetime
 import hashlib
 import os
 import time
+
 import pytest
 import requests
-
 from google.api_core import path_template
+
 from google.cloud import iam_credentials_v1
-from google.cloud.storage._helpers import _NOW
-from google.cloud.storage._helpers import _UTC
+from google.cloud.storage._helpers import _NOW, _UTC
+
 from . import _helpers
 
 
@@ -51,12 +52,12 @@ def _create_signed_list_blobs_url_helper(
     )
 
     response = requests.get(signed_url)
-    assert (
-        response.status_code == 200
-    ), f"Response content start: {response.content} \
+    assert response.status_code == 200, (
+        f"Response content start: {response.content} \
         :Response content end. \
         Response headers start: {response.headers} \
         :Response headers end."
+    )
 
 
 def test_create_signed_list_blobs_url_v2(storage_client, signing_bucket, no_mtls):
@@ -142,12 +143,12 @@ def _create_signed_read_url_helper(
         headers["x-goog-encryption-key-sha256"] = key_hash
 
     response = requests.get(signed_url, headers=headers)
-    assert (
-        response.status_code == 200
-    ), f"Response content start: {response.content} \
+    assert response.status_code == 200, (
+        f"Response content start: {response.content} \
         :Response content end. \
         Response headers start: {response.headers} \
         :Response headers end."
+    )
 
     if payload is not None:
         assert response.content == payload
@@ -345,12 +346,12 @@ def _create_signed_delete_url_helper(client, bucket, version="v2", expiration=No
 
     response = requests.request("DELETE", signed_delete_url)
 
-    assert (
-        response.status_code == 204
-    ), f"Response content start: {response.content} \
+    assert response.status_code == 204, (
+        f"Response content start: {response.content} \
         :Response content end. \
         Response headers start: {response.headers} \
         :Response headers end."
+    )
     assert response.content == b""
     assert not blob.exists()
 
@@ -380,23 +381,23 @@ def _create_signed_resumable_upload_url_helper(
 
     post_headers = {"x-goog-resumable": "start"}
     post_response = requests.post(signed_resumable_upload_url, headers=post_headers)
-    assert (
-        post_response.status_code == 201
-    ), f"Response content start: {post_response.content} \
+    assert post_response.status_code == 201, (
+        f"Response content start: {post_response.content} \
         :Response content end. \
         Response headers start: {post_response.headers} \
         :Response headers end."
+    )
 
     # Finish uploading the body.
     location = post_response.headers["Location"]
     put_headers = {"content-length": str(len(payload))}
     put_response = requests.put(location, headers=put_headers, data=payload)
-    assert (
-        put_response.status_code == 200
-    ), f"Response content start: {put_response.content} \
+    assert put_response.status_code == 200, (
+        f"Response content start: {put_response.content} \
         :Response content end. \
         Response headers start: {put_response.headers} \
         :Response headers end."
+    )
 
     # Download using a signed URL and verify.
     signed_download_url = blob.generate_signed_url(
@@ -404,12 +405,12 @@ def _create_signed_resumable_upload_url_helper(
     )
 
     get_response = requests.get(signed_download_url)
-    assert (
-        get_response.status_code == 200
-    ), f"Response content start: {get_response.content} \
+    assert get_response.status_code == 200, (
+        f"Response content start: {get_response.content} \
         :Response content end. \
         Response headers start: {get_response.headers} \
         :Response headers end."
+    )
     assert get_response.content == payload
 
     # Finally, delete the blob using a signed URL.
@@ -421,12 +422,12 @@ def _create_signed_resumable_upload_url_helper(
     )
 
     delete_response = requests.delete(signed_delete_url)
-    assert (
-        delete_response.status_code == 204
-    ), f"Response content start: {delete_response.content} \
+    assert delete_response.status_code == 204, (
+        f"Response content start: {delete_response.content} \
         :Response content end. \
         Response headers start: {delete_response.headers} \
         :Response headers end."
+    )
 
 
 def test_create_signed_resumable_upload_url_v2(storage_client, signing_bucket, no_mtls):
@@ -477,12 +478,12 @@ def test_generate_signed_post_policy_v4(
         response = requests.post(policy["url"], data=policy["fields"], files=files)
 
     os.remove(blob_name)
-    assert (
-        response.status_code == 204
-    ), f"Response content start: {response.content} \
+    assert response.status_code == 204, (
+        f"Response content start: {response.content} \
         :Response content end. \
         Response headers start: {response.headers} \
         :Response headers end."
+    )
 
     blob = bucket.get_blob(blob_name)
     assert blob.download_as_bytes() == payload
@@ -530,12 +531,12 @@ def test_generate_signed_post_policy_v4_access_token_sa_email(
         response = requests.post(policy["url"], data=policy["fields"], files=files)
 
     os.remove(blob_name)
-    assert (
-        response.status_code == 204
-    ), f"Response content start: {response.content} \
+    assert response.status_code == 204, (
+        f"Response content start: {response.content} \
         :Response content end. \
         Response headers start: {response.headers} \
         :Response headers end."
+    )
 
     blob = signing_bucket.get_blob(blob_name)
     blobs_to_delete.append(blob)
@@ -570,11 +571,11 @@ def test_generate_signed_post_policy_v4_invalid_field(
         response = requests.post(policy["url"], data=policy["fields"], files=files)
 
     os.remove(blob_name)
-    assert (
-        response.status_code == 400
-    ), f"Response content start: {response.content} \
+    assert response.status_code == 400, (
+        f"Response content start: {response.content} \
         :Response content end. \
         Response headers start: {response.headers} \
         :Response headers end."
+    )
 
     assert list(bucket.list_blobs()) == []

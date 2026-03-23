@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import google_crc32c
-
 from google.api_core import exceptions
 
 

@@ -12,21 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import pickle
+import tempfile
+
+import mock
 import pytest
-
-from google.cloud.storage import Blob
-from google.cloud.storage import Client
-from google.cloud.storage import transfer_manager
-from google.cloud.storage.retry import DEFAULT_RETRY
-
 from google.api_core import exceptions
 
+from google.cloud.storage import Blob, Client, transfer_manager
 from google.cloud.storage.exceptions import DataCorruption
-
-import os
-import tempfile
-import mock
-import pickle
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 BLOB_TOKEN_STRING = "blob token"
 FAKE_CONTENT_TYPE = "text/fake"
@@ -879,8 +875,10 @@ def test_upload_chunks_concurrently_passes_concurrency_options():
 
 def test_upload_chunks_concurrently_with_metadata_and_encryption():
     import datetime
-    from google.cloud.storage._helpers import _UTC
+
     from google.cloud._helpers import _RFC3339_MICROS
+
+    from google.cloud.storage._helpers import _UTC
 
     now = datetime.datetime.now(_UTC)
     now_str = now.strftime(_RFC3339_MICROS)

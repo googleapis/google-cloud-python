@@ -20,12 +20,13 @@ import tempfile
 import uuid
 import warnings
 
-import pytest
 import mock
-
-from google.cloud.storage.exceptions import DataCorruption
+import pytest
 from google.api_core import exceptions
+
 from google.cloud.storage._helpers import _base64_md5hash
+from google.cloud.storage.exceptions import DataCorruption
+
 from . import _helpers
 
 encryption_key = "b23ff11bba187db8c37077e6af3b25b8"
@@ -1161,8 +1162,7 @@ def test_blob_update_storage_class_large_file(
 
 
 def test_object_retention_lock(storage_client, buckets_to_delete, blobs_to_delete):
-    from google.cloud.storage._helpers import _NOW
-    from google.cloud.storage._helpers import _UTC
+    from google.cloud.storage._helpers import _NOW, _UTC
 
     # Test bucket created with object retention enabled
     new_bucket_name = _helpers.unique_name("object-retention")

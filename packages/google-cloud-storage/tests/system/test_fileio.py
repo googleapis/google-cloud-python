@@ -17,6 +17,7 @@
 import pytest
 
 from google.cloud.storage.fileio import CHUNK_SIZE_MULTIPLE
+
 from .test_blob import _check_blob_hash
 
 

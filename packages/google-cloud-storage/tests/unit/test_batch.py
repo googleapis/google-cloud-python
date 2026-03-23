@@ -13,9 +13,8 @@
 # limitations under the License.
 
 import http.client
-from http.client import SERVICE_UNAVAILABLE
-from http.client import NO_CONTENT
 import unittest
+from http.client import NO_CONTENT, SERVICE_UNAVAILABLE
 
 import mock
 import requests

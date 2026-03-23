@@ -28,7 +28,6 @@ Each subpackage is tailored to a specific transport library:
 
 from google.cloud.storage._media.common import UPLOAD_CHUNK_SIZE
 
-
 __all__ = [
     "UPLOAD_CHUNK_SIZE",
 ]

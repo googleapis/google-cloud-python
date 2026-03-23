@@ -27,8 +27,8 @@ import mock
 import pytest
 
 from google.cloud.storage._helpers import _UTC
-from . import _read_local_json
 
+from . import _read_local_json
 
 _SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
 _CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")["signingV4Tests"]
@@ -45,8 +45,7 @@ def _utc_seconds(when):
 
 
 def _make_cet_timezone():
-    from datetime import timezone
-    from datetime import timedelta
+    from datetime import timedelta, timezone
 
     return timezone(timedelta(hours=1), name="CET")
 
@@ -761,8 +760,9 @@ class TestQuoteParam(unittest.TestCase):
         )
 
     def test_unquoted_symbols(self):
-        from google.cloud.storage._signing import _quote_param
         import string
+
+        from google.cloud.storage._signing import _quote_param
 
         UNQUOTED = string.ascii_letters + string.digits + ".~_-"
 
@@ -788,6 +788,7 @@ class TestQuoteParam(unittest.TestCase):
 class TestV4Stamps(unittest.TestCase):
     def test_get_v4_now_dtstamps(self):
         import datetime
+
         from google.cloud.storage._signing import get_v4_now_dtstamps
 
         with mock.patch(

@@ -15,9 +15,9 @@
 """Create / interact with Google Cloud Storage connections."""
 
 import functools
+
 from google.cloud import _http
-from google.cloud.storage import __version__
-from google.cloud.storage import _helpers
+from google.cloud.storage import __version__, _helpers
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 
 

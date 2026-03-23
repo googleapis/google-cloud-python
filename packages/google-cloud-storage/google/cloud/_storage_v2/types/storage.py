@@ -18,13 +18,13 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
-
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import (
+    duration_pb2,  # type: ignore
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.storage.v2",
@@ -3009,6 +3009,7 @@ class ServiceConstants(proto.Message):
                 returned by the GetListObjectsSplitPoints RPC is
                 valid.
         """
+
         _pb_options = {"allow_alias": True}
         VALUES_UNSPECIFIED = 0
         MAX_READ_CHUNK_BYTES = 2097152
@@ -3990,12 +3991,12 @@ class Bucket(proto.Message):
             optional=True,
             message="Bucket.IpFilter.PublicNetworkSource",
         )
-        vpc_network_sources: MutableSequence[
-            "Bucket.IpFilter.VpcNetworkSource"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="Bucket.IpFilter.VpcNetworkSource",
+        vpc_network_sources: MutableSequence["Bucket.IpFilter.VpcNetworkSource"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="Bucket.IpFilter.VpcNetworkSource",
+            )
         )
         allow_cross_org_vpcs: bool = proto.Field(
             proto.BOOL,
@@ -4620,6 +4621,7 @@ class Object(proto.Message):
                     The Retention configuration cannot be removed.
                     The mode cannot be changed.
             """
+
             MODE_UNSPECIFIED = 0
             UNLOCKED = 1
             LOCKED = 2

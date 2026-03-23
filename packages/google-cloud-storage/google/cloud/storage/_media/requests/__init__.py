@@ -662,15 +662,20 @@ transmitted in chunks until completion:
    >>> json_response['name'] == blob_name
    True
 """
-from google.cloud.storage._media.requests.download import ChunkedDownload
-from google.cloud.storage._media.requests.download import Download
-from google.cloud.storage._media.requests.upload import MultipartUpload
-from google.cloud.storage._media.requests.download import RawChunkedDownload
-from google.cloud.storage._media.requests.download import RawDownload
-from google.cloud.storage._media.requests.upload import ResumableUpload
-from google.cloud.storage._media.requests.upload import SimpleUpload
-from google.cloud.storage._media.requests.upload import XMLMPUContainer
-from google.cloud.storage._media.requests.upload import XMLMPUPart
+
+from google.cloud.storage._media.requests.download import (
+    ChunkedDownload,
+    Download,
+    RawChunkedDownload,
+    RawDownload,
+)
+from google.cloud.storage._media.requests.upload import (
+    MultipartUpload,
+    ResumableUpload,
+    SimpleUpload,
+    XMLMPUContainer,
+    XMLMPUPart,
+)
 
 __all__ = [
     "ChunkedDownload",

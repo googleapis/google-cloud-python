@@ -19,68 +19,68 @@
 import base64
 import copy
 import hashlib
-from io import BytesIO
-from io import TextIOWrapper
 import logging
 import mimetypes
 import os
 import re
-from email.parser import HeaderParser
-from urllib.parse import parse_qsl
-from urllib.parse import quote
-from urllib.parse import urlencode
-from urllib.parse import urlsplit
-from urllib.parse import urlunsplit
 import warnings
-
-from google.cloud.storage._media.requests import ChunkedDownload
-from google.cloud.storage._media.requests import Download
-from google.cloud.storage._media.requests import RawDownload
-from google.cloud.storage._media.requests import RawChunkedDownload
-from google.cloud.storage._media.requests import MultipartUpload
-from google.cloud.storage._media.requests import ResumableUpload
+from email.parser import HeaderParser
+from io import BytesIO, TextIOWrapper
+from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
 
 from google.api_core.iam import Policy
-from google.cloud import exceptions
-from google.cloud._helpers import _bytes_to_unicode
-from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud._helpers import _rfc3339_nanos_to_datetime
-from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import (
+    _bytes_to_unicode,
+    _datetime_to_rfc3339,
+    _rfc3339_nanos_to_datetime,
+    _to_bytes,
+)
 from google.cloud.exceptions import NotFound
+
+from google.cloud import exceptions
+from google.cloud.storage._helpers import (
+    _API_VERSION,
+    _add_etag_match_headers,
+    _add_generation_match_parameters,
+    _bucket_bound_hostname_url,
+    _get_default_headers,
+    _get_default_storage_base_url,
+    _PropertyMixin,
+    _raise_if_more_than_one_set,
+    _scalar_property,
+    _virtual_hosted_style_base_url,
+)
+from google.cloud.storage._media.requests import (
+    ChunkedDownload,
+    Download,
+    MultipartUpload,
+    RawChunkedDownload,
+    RawDownload,
+    ResumableUpload,
+)
 from google.cloud.storage._opentelemetry_tracing import (
     _get_opentelemetry_attributes_from_url,
+    create_trace_span,
 )
-from google.cloud.storage._helpers import _add_etag_match_headers
-from google.cloud.storage._helpers import _add_generation_match_parameters
-from google.cloud.storage._helpers import _PropertyMixin
-from google.cloud.storage._helpers import _scalar_property
-from google.cloud.storage._helpers import _bucket_bound_hostname_url
-from google.cloud.storage._helpers import _raise_if_more_than_one_set
-from google.cloud.storage._helpers import _get_default_headers
-from google.cloud.storage._helpers import _get_default_storage_base_url
-from google.cloud.storage._signing import generate_signed_url_v2
-from google.cloud.storage._signing import generate_signed_url_v4
-from google.cloud.storage._helpers import _API_VERSION
-from google.cloud.storage._helpers import _virtual_hosted_style_base_url
-from google.cloud.storage._opentelemetry_tracing import create_trace_span
-from google.cloud.storage.acl import ACL
-from google.cloud.storage.acl import ObjectACL
-from google.cloud.storage.constants import _DEFAULT_TIMEOUT
-from google.cloud.storage.constants import ARCHIVE_STORAGE_CLASS
-from google.cloud.storage.constants import COLDLINE_STORAGE_CLASS
-from google.cloud.storage.constants import MULTI_REGIONAL_LEGACY_STORAGE_CLASS
-from google.cloud.storage.constants import NEARLINE_STORAGE_CLASS
-from google.cloud.storage.constants import REGIONAL_LEGACY_STORAGE_CLASS
-from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
-from google.cloud.storage.exceptions import DataCorruption
-from google.cloud.storage.exceptions import InvalidResponse
-from google.cloud.storage.retry import ConditionalRetryPolicy
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
-from google.cloud.storage.fileio import BlobReader
-from google.cloud.storage.fileio import BlobWriter
-
+from google.cloud.storage._signing import generate_signed_url_v2, generate_signed_url_v4
+from google.cloud.storage.acl import ACL, ObjectACL
+from google.cloud.storage.constants import (
+    _DEFAULT_TIMEOUT,
+    ARCHIVE_STORAGE_CLASS,
+    COLDLINE_STORAGE_CLASS,
+    MULTI_REGIONAL_LEGACY_STORAGE_CLASS,
+    NEARLINE_STORAGE_CLASS,
+    REGIONAL_LEGACY_STORAGE_CLASS,
+    STANDARD_STORAGE_CLASS,
+)
+from google.cloud.storage.exceptions import DataCorruption, InvalidResponse
+from google.cloud.storage.fileio import BlobReader, BlobWriter
+from google.cloud.storage.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_RETRY_IF_ETAG_IN_JSON,
+    DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ConditionalRetryPolicy,
+)
 
 _DEFAULT_CONTENT_TYPE = "application/octet-stream"
 _DOWNLOAD_URL_TEMPLATE = "{hostname}/download/storage/{api_version}{path}?alt=media"
@@ -107,7 +107,7 @@ _WRITABLE_FIELDS = (
     "storageClass",
 )
 _READ_LESS_THAN_SIZE = (
-    "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
+    "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
 )
 _CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE = (
     "A checksum of type `{}` was requested, but checksumming is not available "

@@ -14,16 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
 import io
 import string
+import unittest
 
 import mock
-
 from google.api_core.exceptions import RequestRangeNotSatisfiable
+
 from google.cloud.storage.fileio import CHUNK_SIZE_MULTIPLE
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
+from google.cloud.storage.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+)
 
 TEST_TEXT_DATA = string.ascii_lowercase + "\n" + string.ascii_uppercase + "\n"
 TEST_BINARY_DATA = TEST_TEXT_DATA.encode("utf-8")
@@ -356,7 +358,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
                 blob,
                 chunk_size=chunk_size,
                 content_type=PLAIN_CONTENT_TYPE,
-                **upload_kwargs
+                **upload_kwargs,
             )
 
         # The transmit_next_chunk method must actually consume bytes from the
@@ -382,7 +384,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
             None,
             chunk_size=chunk_size,
             retry=DEFAULT_RETRY,
-            **upload_kwargs
+            **upload_kwargs,
         )
         upload.transmit_next_chunk.assert_called_with(transport, timeout=timeout)
         self.assertEqual(upload.transmit_next_chunk.call_count, 4)

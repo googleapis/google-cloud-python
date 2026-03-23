@@ -25,7 +25,6 @@ from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
 
-
 OBJECT_FINALIZE_EVENT_TYPE = "OBJECT_FINALIZE"
 OBJECT_METADATA_UPDATE_EVENT_TYPE = "OBJECT_METADATA_UPDATE"
 OBJECT_DELETE_EVENT_TYPE = "OBJECT_DELETE"

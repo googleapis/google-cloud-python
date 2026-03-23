@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import asyncio
-
+import sys
 from unittest import mock
 
 try:
@@ -30,9 +29,7 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import bidi_async
-from google.api_core import exceptions
-
+from google.api_core import bidi_async, exceptions
 
 if sys.version_info < (3, 10):  # type: ignore[operator]
 

@@ -14,16 +14,16 @@
 
 import datetime
 import io
-import re
 import os
+import re
 import tempfile
 
 import pytest
+from test_utils.vpcsc_config import vpcsc_config
 
 from google.cloud import exceptions
-from test_utils.vpcsc_config import vpcsc_config
-from . import _helpers
 
+from . import _helpers
 
 dual_data_loc_1 = os.getenv("DUAL_REGION_LOC_1", "US-EAST1")
 dual_data_loc_2 = os.getenv("DUAL_REGION_LOC_2", "US-WEST1")

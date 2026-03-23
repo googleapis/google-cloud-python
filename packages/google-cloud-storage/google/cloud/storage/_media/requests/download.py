@@ -14,11 +14,11 @@
 
 """Support for downloading media from Google APIs."""
 
-import urllib3.response  # type: ignore
 import http
 
-from google.cloud.storage._media import _download
-from google.cloud.storage._media import _helpers
+import urllib3.response  # type: ignore
+
+from google.cloud.storage._media import _download, _helpers
 from google.cloud.storage._media.requests import _request_helpers
 from google.cloud.storage.exceptions import DataCorruption
 

@@ -16,10 +16,8 @@ import unittest
 
 import mock
 
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
-from google.cloud.storage._helpers import _NOW
-from google.cloud.storage._helpers import _UTC
+from google.cloud.storage._helpers import _NOW, _UTC
+from google.cloud.storage.retry import DEFAULT_RETRY, DEFAULT_RETRY_IF_ETAG_IN_JSON
 
 
 class TestHMACKeyMetadata(unittest.TestCase):

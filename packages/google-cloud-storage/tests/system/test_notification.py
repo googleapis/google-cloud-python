@@ -23,8 +23,8 @@ blob_name_prefix = "blob-name-prefix/"
 @pytest.fixture(scope="session")
 def event_types():
     from google.cloud.storage.notification import (
-        OBJECT_FINALIZE_EVENT_TYPE,
         OBJECT_DELETE_EVENT_TYPE,
+        OBJECT_FINALIZE_EVENT_TYPE,
     )
 
     return [OBJECT_FINALIZE_EVENT_TYPE, OBJECT_DELETE_EVENT_TYPE]

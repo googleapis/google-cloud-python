@@ -17,8 +17,10 @@
 from google.cloud.storage._helpers import _add_generation_match_parameters
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
+from google.cloud.storage.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+)
 
 
 class _ACLEntity(object):

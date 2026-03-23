@@ -16,8 +16,10 @@ import unittest
 
 import mock
 
-from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
+from google.cloud.storage.retry import (
+    DEFAULT_RETRY,
+    DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+)
 
 GCCL_INVOCATION_TEST_CONST = "gccl-invocation-id/test-invocation-123"
 
@@ -54,8 +56,10 @@ class Test__get_api_endpoint_override(unittest.TestCase):
         return _get_api_endpoint_override()
 
     def test_wo_env_var(self):
-        from google.cloud.storage._helpers import _TRUE_DEFAULT_STORAGE_HOST
-        from google.cloud.storage._helpers import _DEFAULT_SCHEME
+        from google.cloud.storage._helpers import (
+            _DEFAULT_SCHEME,
+            _TRUE_DEFAULT_STORAGE_HOST,
+        )
 
         with mock.patch("os.environ", {}):
             override = self._call_fut()

@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from importlib import reload
-from unittest.mock import Mock
-from unittest.mock import sentinel
 import sys
+from importlib import reload
+from unittest.mock import Mock, sentinel
 
 
 def test_exceptions_imports_correctly_in_base_case():

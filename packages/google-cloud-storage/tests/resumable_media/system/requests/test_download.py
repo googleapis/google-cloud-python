@@ -22,18 +22,16 @@ import sys
 
 import google.auth  # type: ignore
 import google.auth.transport.requests as tr_requests  # type: ignore
+import google_crc32c
 import pytest  # type: ignore
 
 import google.cloud.storage._media.requests as resumable_requests
+import google.cloud.storage._media.requests.download as download_mod
 from google.cloud.storage._media import _helpers
 from google.cloud.storage._media.requests import _request_helpers
-import google.cloud.storage._media.requests.download as download_mod
-from google.cloud.storage.exceptions import InvalidResponse
-from google.cloud.storage.exceptions import DataCorruption
+from google.cloud.storage.exceptions import DataCorruption, InvalidResponse
+
 from .. import utils
-
-import google_crc32c
-
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURR_DIR, "..", "..", "data")

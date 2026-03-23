@@ -22,44 +22,43 @@ import functools
 import json
 import os
 import warnings
-import google.api_core.client_options
 
+import google.api_core.client_options
+from google.api_core import page_iterator
 from google.auth.credentials import AnonymousCredentials
 from google.auth.transport import mtls
-from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 
-from google.cloud.storage._helpers import _add_generation_match_parameters
-from google.cloud.storage._helpers import _bucket_bound_hostname_url
-from google.cloud.storage._helpers import _get_api_endpoint_override
-from google.cloud.storage._helpers import _get_environ_project
-from google.cloud.storage._helpers import _get_storage_emulator_override
-from google.cloud.storage._helpers import _virtual_hosted_style_base_url
-from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
-from google.cloud.storage._helpers import _DEFAULT_SCHEME
-from google.cloud.storage._helpers import _STORAGE_HOST_TEMPLATE
-from google.cloud.storage._helpers import _NOW
-from google.cloud.storage._helpers import _UTC
-from google.cloud.storage._opentelemetry_tracing import create_trace_span
-
+from google.cloud.storage._helpers import (
+    _DEFAULT_SCHEME,
+    _DEFAULT_UNIVERSE_DOMAIN,
+    _NOW,
+    _STORAGE_HOST_TEMPLATE,
+    _UTC,
+    _add_generation_match_parameters,
+    _bucket_bound_hostname_url,
+    _get_api_endpoint_override,
+    _get_environ_project,
+    _get_storage_emulator_override,
+    _virtual_hosted_style_base_url,
+)
 from google.cloud.storage._http import Connection
+from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage._signing import (
+    _sign_message,
+    ensure_signed_credentials,
     get_expiration_seconds_v4,
     get_v4_now_dtstamps,
-    ensure_signed_credentials,
-    _sign_message,
 )
+from google.cloud.storage.acl import BucketACL, DefaultObjectACL
 from google.cloud.storage.batch import Batch
-from google.cloud.storage.bucket import Bucket, _item_to_blob, _blobs_page_start
 from google.cloud.storage.blob import Blob
-from google.cloud.storage.hmac_key import HMACKeyMetadata
-from google.cloud.storage.acl import BucketACL
-from google.cloud.storage.acl import DefaultObjectACL
+from google.cloud.storage.bucket import Bucket, _blobs_page_start, _item_to_blob
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+from google.cloud.storage.hmac_key import HMACKeyMetadata
 from google.cloud.storage.retry import DEFAULT_RETRY
-
 
 _marker = object()
 
@@ -1126,9 +1125,9 @@ class Client(ClientWithProject):
                 predefined_default_object_acl = DefaultObjectACL.validate_predefined(
                     predefined_default_object_acl
                 )
-                query_params[
-                    "predefinedDefaultObjectAcl"
-                ] = predefined_default_object_acl
+                query_params["predefinedDefaultObjectAcl"] = (
+                    predefined_default_object_acl
+                )
 
             if user_project is not None:
                 query_params["userProject"] = user_project
