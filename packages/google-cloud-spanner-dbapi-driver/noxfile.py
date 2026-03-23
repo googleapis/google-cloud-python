@@ -45,6 +45,7 @@ ALL_PYTHON = [
 ]
 
 DEFAULT_PYTHON_VERSION = "3.14"
+DOCS_PYTHON_VERSION = "3.10"
 
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
 # Switch this to Python 3.15 alpha1
@@ -350,7 +351,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=DOCS_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
@@ -386,7 +387,7 @@ def docs(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=DOCS_PYTHON_VERSION)
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
