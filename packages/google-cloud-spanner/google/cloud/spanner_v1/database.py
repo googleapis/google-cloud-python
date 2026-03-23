@@ -59,6 +59,11 @@ from google.cloud.spanner_v1._opentelemetry_tracing import (
     get_current_span,
     trace_call,
 )
+from google.cloud.spanner_v1.batch import Batch, MutationGroups
+from google.cloud.spanner_v1.database_sessions_manager import (
+    DatabaseSessionsManager,
+    TransactionType,
+)
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
