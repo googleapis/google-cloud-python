@@ -64,8 +64,23 @@ def test_datetime_to_integer_label(scalar_types_df: bpd.DataFrame, snapshot):
         "fixed_freq": ops.DatetimeToIntegerLabelOp(
             freq=pd.tseries.offsets.Day(), origin="start", closed="left"  # type: ignore
         ).as_expr("datetime_col", "timestamp_col"),
+        "origin_epoch": ops.DatetimeToIntegerLabelOp(
+            freq=pd.tseries.offsets.Day(), origin="epoch", closed="left"  # type: ignore
+        ).as_expr("datetime_col", "timestamp_col"),
+        "origin_start_day": ops.DatetimeToIntegerLabelOp(
+            freq=pd.tseries.offsets.Day(), origin="start_day", closed="left"  # type: ignore
+        ).as_expr("datetime_col", "timestamp_col"),
         "non_fixed_freq_weekly": ops.DatetimeToIntegerLabelOp(
             freq=pd.tseries.offsets.Week(weekday=6), origin="start", closed="left"  # type: ignore
+        ).as_expr("datetime_col", "timestamp_col"),
+        "non_fixed_freq_monthly": ops.DatetimeToIntegerLabelOp(
+            freq=pd.tseries.offsets.MonthEnd(), origin="start", closed="left"  # type: ignore
+        ).as_expr("datetime_col", "timestamp_col"),
+        "non_fixed_freq_quarterly": ops.DatetimeToIntegerLabelOp(
+            freq=pd.tseries.offsets.QuarterEnd(startingMonth=12), origin="start", closed="left"  # type: ignore
+        ).as_expr("datetime_col", "timestamp_col"),
+        "non_fixed_freq_yearly": ops.DatetimeToIntegerLabelOp(
+            freq=pd.tseries.offsets.YearEnd(), origin="start", closed="left"  # type: ignore
         ).as_expr("datetime_col", "timestamp_col"),
     }
 
@@ -183,6 +198,9 @@ def test_to_datetime(scalar_types_df: bpd.DataFrame, snapshot):
     col_names = ["int64_col", "string_col", "float64_col", "timestamp_col"]
     bf_df = scalar_types_df[col_names]
     ops_map = {col_name: ops.ToDatetimeOp().as_expr(col_name) for col_name in col_names}
+    ops_map["string_col_fmt"] = ops.ToDatetimeOp(format="%Y-%m-%d").as_expr(
+        "string_col"
+    )
 
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
     snapshot.assert_match(sql, "out.sql")
@@ -198,6 +216,7 @@ def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):
         "int64_col_us": ops.ToTimestampOp(unit="us").as_expr("int64_col"),
         "int64_col_ns": ops.ToTimestampOp(unit="ns").as_expr("int64_col"),
         "datetime_col": ops.ToTimestampOp().as_expr("datetime_col"),
+        "string_col_fmt": ops.ToTimestampOp(format="%Y-%m-%d").as_expr("string_col"),
     }
 
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))

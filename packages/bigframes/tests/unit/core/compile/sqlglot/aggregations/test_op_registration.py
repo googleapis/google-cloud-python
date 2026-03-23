@@ -42,3 +42,23 @@ def test_register_function_first_argument_is_not_agg_op_raise_error():
         ValueError, match=r".*first parameter must be a window operator.*"
     ):
         test_func(sge.to_identifier("A"))
+
+
+def test_register_already_registered_raise_error():
+    reg = op_registration.OpRegistration()
+
+    @reg.register(agg_ops.SizeOp)
+    def test_func1(op, input):
+        return input
+
+    with pytest.raises(ValueError, match=r".*is already registered.*"):
+
+        @reg.register(agg_ops.SizeOp)
+        def test_func2(op, input):
+            return input
+
+
+def test_getitem_not_registered_raise_error():
+    reg = op_registration.OpRegistration()
+    with pytest.raises(ValueError, match=r".*is not registered.*"):
+        _ = reg[agg_ops.SizeOp()]

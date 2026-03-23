@@ -14,7 +14,9 @@
 
 import pytest
 
+from bigframes import operations as ops
 import bigframes.pandas as bpd
+from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")
 
@@ -31,6 +33,28 @@ def test_obj_get_access_url(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_obj_get_access_url_with_duration(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "string_col"
+    bf_df = scalar_types_df[[col_name]]
+    sql = utils._apply_ops_to_sql(
+        bf_df,
+        [ops.ObjGetAccessUrl(mode="READ", duration=3600).as_expr(col_name)],
+        [col_name],
+    )
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_obj_make_ref(scalar_types_df: bpd.DataFrame, snapshot):
     blob_df = scalar_types_df["string_col"].str.to_blob()
     snapshot.assert_match(blob_df.to_frame().sql, "out.sql")
+
+
+def test_obj_make_ref_json(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "string_col"
+    bf_df = scalar_types_df[[col_name]]
+    sql = utils._apply_ops_to_sql(
+        bf_df,
+        [ops.obj_make_ref_json_op.as_expr(col_name)],
+        [col_name],
+    )
+    snapshot.assert_match(sql, "out.sql")

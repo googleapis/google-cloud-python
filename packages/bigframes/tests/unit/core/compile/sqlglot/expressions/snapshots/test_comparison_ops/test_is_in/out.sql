@@ -10,5 +10,10 @@ SELECT
   COALESCE(`int64_col` IN (123456), FALSE) AS `ints_wo_match_nulls`,
   (
     `float64_col` IS NULL
-  ) OR `float64_col` IN (1, 2, 3) AS `float_in_ints`
+  ) OR `float64_col` IN (1, 2, 3) AS `float_in_ints`,
+  (
+    `int64_col` IS NULL
+  ) OR `int64_col` IN (2) AS `mixed_with_null`,
+  COALESCE(CAST(`bool_col` AS INT64) IN (1, 2.5), FALSE) AS `bool_in_mixed`,
+  `int64_col` IS NULL AS `only_null_match`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

@@ -105,31 +105,6 @@ def _coerce_bool_to_int(typed_expr: TypedExpr) -> sge.Expression:
     return typed_expr.expr
 
 
-def _string_slice(expr: TypedExpr, op: ops.ArraySliceOp) -> sge.Expression:
-    # local name for each element in the array
-    el = sg.to_identifier("el")
-    # local name for the index in the array
-    slice_idx = sg.to_identifier("slice_idx")
-
-    conditions: typing.List[sge.Predicate] = [slice_idx >= op.start]
-    if op.stop is not None:
-        conditions.append(slice_idx < op.stop)
-
-    selected_elements = (
-        sge.select(el)
-        .from_(
-            sge.Unnest(
-                expressions=[expr.expr],
-                alias=sge.TableAlias(columns=[el]),
-                offset=slice_idx,
-            )
-        )
-        .where(*conditions)
-    )
-
-    return sge.array(selected_elements)
-
-
 def _array_slice(expr: TypedExpr, op: ops.ArraySliceOp) -> sge.Expression:
     # local name for each element in the array
     el = sg.to_identifier("el")

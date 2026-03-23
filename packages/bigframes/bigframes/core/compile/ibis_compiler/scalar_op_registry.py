@@ -663,7 +663,7 @@ def datetime_to_integer_label_non_fixed_frequency(
             .else_((x_int - first - 1) // us + 1)  # type: ignore
             .end()
         )
-    elif rule_code == "ME":  # Monthly
+    elif rule_code in ("M", "ME"):  # Monthly
         x_int = x.year() * 12 + x.month() - 1  # type: ignore
         first = y.year() * 12 + y.month() - 1  # type: ignore
         x_int_label = (
@@ -672,7 +672,7 @@ def datetime_to_integer_label_non_fixed_frequency(
             .else_((x_int - first - 1) // n + 1)  # type: ignore
             .end()
         )
-    elif rule_code == "QE-DEC":  # Quarterly
+    elif rule_code in ("Q-DEC", "QE-DEC"):  # Quarterly
         x_int = x.year() * 4 + x.quarter() - 1  # type: ignore
         first = y.year() * 4 + y.quarter() - 1  # type: ignore
         x_int_label = (
@@ -681,7 +681,7 @@ def datetime_to_integer_label_non_fixed_frequency(
             .else_((x_int - first - 1) // n + 1)  # type: ignore
             .end()
         )
-    elif rule_code == "YE-DEC":  # Yearly
+    elif rule_code in ("A-DEC", "Y-DEC", "YE-DEC"):  # Yearly
         x_int = x.year()  # type: ignore
         first = y.year()  # type: ignore
         x_int_label = (
@@ -749,7 +749,7 @@ def integer_label_to_datetime_op_non_fixed_frequency(
             .cast(ibis_dtypes.Timestamp(timezone="UTC"))
             .cast(y.type())
         )
-    elif rule_code == "ME":  # Monthly
+    elif rule_code in ("M", "ME"):  # Monthly
         one = ibis_types.literal(1)
         twelve = ibis_types.literal(12)
         first = y.year() * twelve + y.month() - one  # type: ignore
@@ -769,7 +769,7 @@ def integer_label_to_datetime_op_non_fixed_frequency(
             0,
         )
         x_label = next_month_date - ibis_api.interval(days=1)
-    elif rule_code == "QE-DEC":  # Quarterly
+    elif rule_code in ("Q-DEC", "QE-DEC"):  # Quarterly
         one = ibis_types.literal(1)
         three = ibis_types.literal(3)
         four = ibis_types.literal(4)
@@ -792,7 +792,7 @@ def integer_label_to_datetime_op_non_fixed_frequency(
         )
 
         x_label = next_month_date - ibis_api.interval(days=1)
-    elif rule_code == "YE-DEC":  # Yearly
+    elif rule_code in ("A-DEC", "Y-DEC", "YE-DEC"):  # Yearly
         one = ibis_types.literal(1)
         first = y.year()  # type: ignore
         x = x * n + first  # type: ignore

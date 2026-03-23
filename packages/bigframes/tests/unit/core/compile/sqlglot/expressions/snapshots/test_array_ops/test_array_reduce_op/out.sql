@@ -18,5 +18,10 @@ SELECT
     SELECT
       COALESCE(LOGICAL_OR(bf_arr_reduce_uid), FALSE)
     FROM UNNEST(`bool_list_col`) AS bf_arr_reduce_uid
-  ) AS `any_bool`
+  ) AS `any_bool`,
+  (
+    SELECT
+      ARRAY_AGG(bf_arr_reduce_uid IGNORE NULLS)
+    FROM UNNEST(`string_list_col`) AS bf_arr_reduce_uid
+  ) AS `array_agg_str`
 FROM `bigframes-dev`.`sqlglot_test`.`repeated_types` AS `bft_0`

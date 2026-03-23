@@ -44,6 +44,13 @@ def test_is_in(scalar_types_df: bpd.DataFrame, snapshot):
             values=(None, 123456), match_nulls=False
         ).as_expr(int_col),
         "float_in_ints": ops.IsInOp(values=(1, 2, 3, None)).as_expr(float_col),
+        "mixed_with_null": ops.IsInOp(
+            values=("1.0", 2, None), match_nulls=True
+        ).as_expr(int_col),
+        "bool_in_mixed": ops.IsInOp(values=(1, 2.5)).as_expr(bool_col),
+        "only_null_match": ops.IsInOp(values=(None,), match_nulls=True).as_expr(
+            int_col
+        ),
     }
 
     sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
@@ -62,6 +69,7 @@ def test_eq_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df["int_eq_int"] = bf_df["int64_col"] == bf_df["int64_col"]
     bf_df["int_eq_1"] = bf_df["int64_col"] == 1
     bf_df["int_eq_null"] = bf_df["int64_col"] == pd.NA
+    bf_df["null_eq_int"] = pd.NA == bf_df["int64_col"]
 
     bf_df["int_eq_bool"] = bf_df["int64_col"] == bf_df["bool_col"]
     bf_df["bool_eq_int"] = bf_df["bool_col"] == bf_df["int64_col"]
@@ -74,6 +82,7 @@ def test_gt_numeric(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_gt_int"] = bf_df["int64_col"] > bf_df["int64_col"]
     bf_df["int_gt_1"] = bf_df["int64_col"] > 1
+    bf_df["null_gt_int"] = pd.NA > bf_df["int64_col"]
 
     bf_df["int_gt_bool"] = bf_df["int64_col"] > bf_df["bool_col"]
     bf_df["bool_gt_int"] = bf_df["bool_col"] > bf_df["int64_col"]
@@ -86,6 +95,7 @@ def test_ge_numeric(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_ge_int"] = bf_df["int64_col"] >= bf_df["int64_col"]
     bf_df["int_ge_1"] = bf_df["int64_col"] >= 1
+    bf_df["null_ge_int"] = pd.NA >= bf_df["int64_col"]
 
     bf_df["int_ge_bool"] = bf_df["int64_col"] >= bf_df["bool_col"]
     bf_df["bool_ge_int"] = bf_df["bool_col"] >= bf_df["int64_col"]
@@ -98,6 +108,7 @@ def test_lt_numeric(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_lt_int"] = bf_df["int64_col"] < bf_df["int64_col"]
     bf_df["int_lt_1"] = bf_df["int64_col"] < 1
+    bf_df["null_lt_int"] = pd.NA < bf_df["int64_col"]
 
     bf_df["int_lt_bool"] = bf_df["int64_col"] < bf_df["bool_col"]
     bf_df["bool_lt_int"] = bf_df["bool_col"] < bf_df["int64_col"]
@@ -110,6 +121,7 @@ def test_le_numeric(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_le_int"] = bf_df["int64_col"] <= bf_df["int64_col"]
     bf_df["int_le_1"] = bf_df["int64_col"] <= 1
+    bf_df["null_le_int"] = pd.NA <= bf_df["int64_col"]
 
     bf_df["int_le_bool"] = bf_df["int64_col"] <= bf_df["bool_col"]
     bf_df["bool_le_int"] = bf_df["bool_col"] <= bf_df["int64_col"]
@@ -137,6 +149,7 @@ def test_ne_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df["int_ne_int"] = bf_df["int64_col"] != bf_df["int64_col"]
     bf_df["int_ne_1"] = bf_df["int64_col"] != 1
     bf_df["int_ne_null"] = bf_df["int64_col"] != pd.NA
+    bf_df["null_ne_int"] = pd.NA != bf_df["int64_col"]
 
     bf_df["int_ne_bool"] = bf_df["int64_col"] != bf_df["bool_col"]
     bf_df["bool_ne_int"] = bf_df["bool_col"] != bf_df["int64_col"]

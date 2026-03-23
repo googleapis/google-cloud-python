@@ -70,7 +70,5 @@ def compile_analytic(
             aggregate.arg.output_type,
         )
         return unary_compiler.compile(aggregate.op, column, window)
-    elif isinstance(aggregate, agg_expressions.BinaryAggregation):
-        raise NotImplementedError("binary analytic operations not yet supported")
     else:
         raise ValueError(f"Unexpected analytic operation: {aggregate}")

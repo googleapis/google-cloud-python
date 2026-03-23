@@ -13,5 +13,11 @@ SELECT
   )
   OR (
     NOT `bool_col` AND CAST(NULL AS BOOLEAN)
-  ) AS `bool_and_null`
+  ) AS `bool_and_null`,
+  (
+    `bool_col` AND NOT CAST(NULL AS BOOLEAN)
+  )
+  OR (
+    NOT `bool_col` AND CAST(NULL AS BOOLEAN)
+  ) AS `null_and_bool`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

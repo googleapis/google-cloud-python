@@ -219,9 +219,17 @@ def test_str_pad(scalar_types_df: bpd.DataFrame, snapshot):
 def test_str_slice(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "string_col"
     bf_df = scalar_types_df[[col_name]]
-    sql = utils._apply_ops_to_sql(
-        bf_df, [ops.StrSliceOp(1, 3).as_expr(col_name)], [col_name]
-    )
+    ops_map = {
+        "1_3": ops.StrSliceOp(1, 3).as_expr(col_name),
+        "none_3": ops.StrSliceOp(None, 3).as_expr(col_name),
+        "1_none": ops.StrSliceOp(1, None).as_expr(col_name),
+        "m3_none": ops.StrSliceOp(-3, None).as_expr(col_name),
+        "none_m3": ops.StrSliceOp(None, -3).as_expr(col_name),
+        "m5_m3": ops.StrSliceOp(-5, -3).as_expr(col_name),
+        "1_m3": ops.StrSliceOp(1, -3).as_expr(col_name),
+        "m3_5": ops.StrSliceOp(-3, 5).as_expr(col_name),
+    }
+    sql = utils._apply_ops_to_sql(bf_df, list(ops_map.values()), list(ops_map.keys()))
 
     snapshot.assert_match(sql, "out.sql")
 
