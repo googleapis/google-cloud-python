@@ -4,9 +4,3 @@ global_files_allowlist:
   # versions which are hardcoded in the file.
   - path: "CHANGELOG.md"
     permissions: "read-write"
-libraries:
-# libraries have "release_blocked: true" so that releases are
-# explicitly initiated
-  - id: "google-cloud-documentai-toolbox"
-    release_blocked: true
-    generate_blocked: true
