@@ -31,6 +31,7 @@ from .accountrelationships import (
 from .accounts import (
     Account,
     CreateAndConfigureAccountRequest,
+    CreateTestAccountRequest,
     DeleteAccountRequest,
     GetAccountRequest,
     ListAccountsRequest,
@@ -238,6 +239,7 @@ __all__ = (
     "UpdateAccountRelationshipRequest",
     "Account",
     "CreateAndConfigureAccountRequest",
+    "CreateTestAccountRequest",
     "DeleteAccountRequest",
     "GetAccountRequest",
     "ListAccountsRequest",
