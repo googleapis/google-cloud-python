@@ -5,16 +5,18 @@ import traceback
 import urllib
 import uuid
 
-import grpc
 import pytest
 import requests
 from google.api_core import client_options, exceptions
-from google.auth import credentials as auth_credentials
 
 from google.cloud import _storage_v2 as storage_v2
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
-from google.cloud.storage.asyncio.async_multi_range_downloader import \
-    AsyncMultiRangeDownloader
+from google.cloud.storage.asyncio.async_multi_range_downloader import (
+    AsyncMultiRangeDownloader,
+)
+from google.cloud.storage.asyncio.async_appendable_object_writer import (
+    AsyncAppendableObjectWriter,
+)
 from tests.conformance._utils import start_grpc_server
 
 # --- Configuration ---
@@ -138,12 +140,11 @@ async def test_bidi_reads(testbench):
     start_grpc_server(
         grpc_endpoint, test_bench_endpoint
     )  # Ensure the testbench gRPC server is running before this test executes.
-    channel = grpc.aio.insecure_channel(GRPC_ENDPOINT)
-    creds = auth_credentials.AnonymousCredentials()
-    transport = storage_v2.services.storage.transports.StorageGrpcAsyncIOTransport(
-        channel=channel, credentials=creds
+
+    grpc_client = AsyncGrpcClient._create_insecure_grpc_client(
+        client_options=client_options.ClientOptions(api_endpoint=GRPC_ENDPOINT),
     )
-    gapic_client = storage_v2.StorageAsyncClient(transport=transport)
+    gapic_client = grpc_client.grpc_client
     http_client = requests.Session()
 
     bucket_name = f"grpc-test-bucket-{uuid.uuid4().hex[:8]}"
@@ -166,22 +167,11 @@ async def test_bidi_reads(testbench):
         create_bucket_request = storage_v2.CreateBucketRequest(
             parent="projects/_", bucket_id=bucket_name, bucket=bucket_resource
         )
-        await gapic_client.create_bucket(request=create_bucket_request)
-
-        write_spec = storage_v2.WriteObjectSpec(
-            resource=storage_v2.Object(
-                bucket=f"projects/_/buckets/{bucket_name}", name=object_name
-            )
-        )
-
-        async def write_req_gen():
-            yield storage_v2.WriteObjectRequest(
-                write_object_spec=write_spec,
-                checksummed_data={"content": content},
-                finish_write=True,
-            )
-
-        await gapic_client.write_object(requests=write_req_gen())
+        _ = await gapic_client.create_bucket(request=create_bucket_request)
+        w = AsyncAppendableObjectWriter(grpc_client, bucket_name, object_name)
+        await w.open()
+        await w.append(content)
+        _ = await w.close(finalize_on_close=True)
 
         # Run all defined test scenarios.
         for scenario in test_scenarios:
