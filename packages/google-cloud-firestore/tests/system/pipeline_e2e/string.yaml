@@ -829,17 +829,20 @@ tests:
       - Collection: books
       - Where:
           - FunctionExpression.equal:
-              - Field: author
-              - Constant: "Douglas Adams"
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
       - Select:
         - AliasedExpression:
             - FunctionExpression.string_replace_all:
-                - Field: author
-                - Constant: "as"
-                - Constant: "AS"
+                - FunctionExpression.concat:
+                    - Field: author
+                    - Constant: ": "
+                    - Field: title
+                - Constant: "la"
+                - Constant: "LA"
             - "replaced"
     assert_results:
-      - replaced: "DouglAS Adams"
+      - replaced: "DougLAs Adams: The Hitchhiker's Guide to the GaLAxy"
     assert_proto:
       pipeline:
         stages:
@@ -849,8 +852,8 @@ tests:
         - args:
           - functionValue:
               args:
-              - fieldReferenceValue: author
-              - stringValue: "Douglas Adams"
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
               name: equal
           name: where
         - args:
@@ -859,9 +862,14 @@ tests:
                 replaced:
                   functionValue:
                     args:
-                    - fieldReferenceValue: author
-                    - stringValue: "as"
-                    - stringValue: "AS"
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: author
+                        - stringValue: ": "
+                        - fieldReferenceValue: title
+                        name: concat
+                    - stringValue: "la"
+                    - stringValue: "LA"
                     name: string_replace_all
           name: select
 
