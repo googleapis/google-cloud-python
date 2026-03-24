@@ -26,8 +26,6 @@ JOB_ID = "test-job-id"
 
 
 def test_cancel_w_custom_retry(global_time_lock):
-    from google.cloud.bigquery.retry import DEFAULT_RETRY
-
     api_path = "/projects/{}/jobs/{}/cancel".format(PROJECT, JOB_ID)
     resource = {
         "jobReference": {
