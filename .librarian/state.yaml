@@ -1637,6 +1637,15 @@ libraries:
     remove_regex:
       - packages/google-cloud-documentai/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-documentai-toolbox
+    version: 0.15.1-alpha
+    last_generated_commit: ""
+    apis: []
+    source_roots:
+      - packages/google-cloud-documentai-toolbox
+    preserve_regex: []
+    remove_regex: []
+    tag_format: '{id}-v{version}'
   - id: google-cloud-domains
     version: 1.12.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
