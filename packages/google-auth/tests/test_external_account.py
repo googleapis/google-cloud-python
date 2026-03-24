@@ -2146,6 +2146,27 @@ class TestCredentials(object):
 
         credentials._impersonated_credentials.refresh.assert_called_once_with(request)
 
+    def test_regional_access_boundary_refresh_delegates_to_impersonated_credentials(
+        self,
+    ):
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
+        )
+        credentials._impersonated_credentials = mock.Mock()
+        request = self.make_mock_request()
+        url = "https://example.com"
+
+        # Instead of doing super()._maybe_start..., it should delegate to the impersonated_credentials
+        with mock.patch(
+            "google.auth.credentials.CredentialsWithRegionalAccessBoundary._maybe_start_regional_access_boundary_refresh"
+        ) as mock_super_refresh:
+            credentials._maybe_start_regional_access_boundary_refresh(request, url)
+            mock_super_refresh.assert_not_called()
+
+        credentials._impersonated_credentials._maybe_start_regional_access_boundary_refresh.assert_called_once_with(
+            request, url
+        )
+
     def test_get_mtls_cert_and_key_paths(self):
         credentials = self.make_credentials()
         with pytest.raises(NotImplementedError):

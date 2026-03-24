@@ -302,9 +302,10 @@ class TestCredentials(object):
         }
         creds = self.credentials
         creds._universe_domain_cached = True
-        url = creds._build_regional_access_boundary_lookup_url()
+        mock_request = mock.Mock()
+        url = creds._build_regional_access_boundary_lookup_url(request=mock_request)
 
-        mock_get_service_account_info.assert_called_once_with(mock.ANY, "default")
+        mock_get_service_account_info.assert_called_once_with(mock_request, "default")
         expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
         assert url == expected_url
 

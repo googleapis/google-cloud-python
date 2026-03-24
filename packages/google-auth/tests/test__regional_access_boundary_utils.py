@@ -327,3 +327,109 @@ class TestCredentialsWithRegionalAccessBoundary(object):
             credentials._regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN
         )
         assert creds._rab_manager._update_lock is not None
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_regional_access_boundary_refresh_thread_run_success(self, mock_utcnow):
+        mock_now = datetime.datetime(2025, 1, 1, 12, 0, 0)
+        mock_utcnow.return_value = mock_now
+
+        creds = mock.Mock()
+        request = mock.Mock()
+        rab_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+
+        creds._lookup_regional_access_boundary.return_value = {
+            "locations": ["us-east1"],
+            "encodedLocations": "0xABC123",
+        }
+
+        worker = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshThread(
+            creds, request, rab_manager
+        )
+        worker.run()
+
+        assert rab_manager._data.encoded_locations == "0xABC123"
+        expected_expiry = (
+            mock_now
+            + _regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_TTL
+        )
+        assert rab_manager._data.expiry == expected_expiry
+        assert rab_manager._data.cooldown_expiry is None
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_regional_access_boundary_refresh_thread_run_failure(self, mock_utcnow):
+        mock_now = datetime.datetime(2025, 1, 1, 12, 0, 0)
+        mock_utcnow.return_value = mock_now
+
+        creds = mock.Mock()
+        request = mock.Mock()
+        rab_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+
+        initial_cooldown = rab_manager._data.cooldown_duration
+
+        creds._lookup_regional_access_boundary.side_effect = Exception(
+            "Network failure"
+        )
+
+        worker = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshThread(
+            creds, request, rab_manager
+        )
+        worker.run()
+
+        assert rab_manager._data.encoded_locations is None
+        assert rab_manager._data.expiry is None
+        expected_cooldown_expiry = mock_now + initial_cooldown
+        assert rab_manager._data.cooldown_expiry == expected_cooldown_expiry
+        assert rab_manager._data.cooldown_duration == initial_cooldown * 2
+
+    @mock.patch("google.auth._helpers.utcnow")
+    def test_regional_access_boundary_refresh_thread_run_failure_hard_expiry(
+        self, mock_utcnow
+    ):
+        mock_now = datetime.datetime(2025, 1, 1, 12, 0, 0)
+        mock_utcnow.return_value = mock_now
+
+        creds = mock.Mock()
+        request = mock.Mock()
+        rab_manager = _regional_access_boundary_utils._RegionalAccessBoundaryManager()
+
+        # Simulate existing data that has hard expired
+        rab_manager._data = _regional_access_boundary_utils._RegionalAccessBoundaryData(
+            encoded_locations="0xExpiredToken",
+            expiry=mock_now - datetime.timedelta(hours=1),
+            cooldown_expiry=None,
+            cooldown_duration=_regional_access_boundary_utils.DEFAULT_REGIONAL_ACCESS_BOUNDARY_COOLDOWN,
+        )
+
+        creds._lookup_regional_access_boundary.side_effect = Exception(
+            "Network failure"
+        )
+
+        worker = _regional_access_boundary_utils._RegionalAccessBoundaryRefreshThread(
+            creds, request, rab_manager
+        )
+        worker.run()
+
+        # Assert data was aggressively cleared rather than reused due to total expiration
+        assert rab_manager._data.encoded_locations is None
+        assert rab_manager._data.expiry is None
+        assert rab_manager._data.cooldown_expiry is not None
+
+    def test_regional_access_boundary_refresh_manager_start_refresh_safety_lock(self):
+        manager = (
+            _regional_access_boundary_utils._RegionalAccessBoundaryRefreshManager()
+        )
+        creds = mock.Mock()
+        request = mock.Mock()
+        rab_manager = mock.Mock()
+
+        mock_worker = mock.Mock()
+        mock_worker.is_alive.return_value = True
+        manager._worker = mock_worker
+
+        with mock.patch(
+            "google.auth._regional_access_boundary_utils._RegionalAccessBoundaryRefreshThread"
+        ) as mock_thread_class:
+            manager.start_refresh(creds, request, rab_manager)
+
+            mock_thread_class.assert_not_called()
+            assert manager._worker == mock_worker
