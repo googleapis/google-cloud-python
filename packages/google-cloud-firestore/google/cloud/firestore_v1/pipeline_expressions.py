@@ -1624,7 +1624,7 @@ class Expression(ABC):
     def array_slice(
         self, offset: int | "Expression", length: int | "Expression" | None = None
     ) -> "Expression":
-        """Ccreates an expression that returns a slice of an array starting from the specified
+        """Creates an expression that returns a slice of an array starting from the specified
         offset with a given length.
 
         Example:
