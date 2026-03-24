@@ -1288,7 +1288,7 @@ class Expression(ABC):
         args = [
             self,
             self._cast_to_expr_or_convert_to_constant(key),
-            self._cast_to_expr_or_convert_to_constant(value)
+            self._cast_to_expr_or_convert_to_constant(value),
         ]
         return FunctionExpression("map_set", args)
 
