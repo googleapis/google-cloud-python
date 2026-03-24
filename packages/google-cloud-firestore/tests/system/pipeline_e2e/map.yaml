@@ -310,3 +310,41 @@ tests:
           a: "orig"
           b: "new"
           c: "new"
+  - description: testMapKeys
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.map_keys:
+                - Field: awards
+            - "award_keys"
+    assert_results:
+      - award_keys:
+          - hugo
+          - nebula
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "Dune"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                award_keys:
+                  functionValue:
+                    name: map_keys
+                    args:
+                    - fieldReferenceValue: awards
+          name: select

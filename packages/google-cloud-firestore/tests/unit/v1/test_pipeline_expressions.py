@@ -1147,6 +1147,15 @@ class TestExpressionessionMethods:
         infix_instance = arg1.map_merge(arg2, arg3)
         assert infix_instance == instance
 
+    def test_map_keys(self):
+        arg1 = self._make_arg("Map")
+        instance = Expression.map_keys(arg1)
+        assert instance.name == "map_keys"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Map.map_keys()"
+        infix_instance = arg1.map_keys()
+        assert infix_instance == instance
+
     def test_mod(self):
         arg1 = self._make_arg("Left")
         arg2 = self._make_arg("Right")
