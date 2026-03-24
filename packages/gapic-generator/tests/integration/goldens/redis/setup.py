@@ -76,7 +76,7 @@ setuptools.setup(
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    license="Apache 2.0",
+    license="Apache-2.0",
     url=url,
     classifiers=[
         release_status,

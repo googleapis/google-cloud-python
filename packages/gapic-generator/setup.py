@@ -60,7 +60,7 @@ setuptools.setup(
     """,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    license="Apache 2.0",
+    license="Apache-2.0",
     packages=setuptools.find_namespace_packages(exclude=["docs", "tests"]),
     url=url,
     classifiers=[
