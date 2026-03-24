@@ -128,6 +128,7 @@ class _MutateRowsOperationAsync:
         Raises:
             MutationsExceptionGroup: if any mutations failed
         """
+<<<<<<< ours
         with self._operation_metric:
             try:
                 # trigger mutate_rows
@@ -156,6 +157,23 @@ class _MutateRowsOperationAsync:
                 if all_errors:
                     raise bt_exceptions.MutationsExceptionGroup(
                         all_errors, len(self.mutations)
+=======
+        try:
+            # trigger mutate_rows
+            await self._operation()
+        except Exception as exc:
+            # exceptions raised by retryable are added to the list of exceptions for all unfinalized mutations
+            incomplete_indices = self.remaining_indices.copy()
+            for idx in incomplete_indices:
+                self._handle_entry_error(idx, exc)
+        finally:
+            # raise exception detailing incomplete mutations
+            all_errors: list[bt_exceptions.FailedMutationEntryError] = []
+            for idx, exc_list in self.errors.items():
+                if len(exc_list) == 0:
+                    raise core_exceptions.ClientError(
+                        f"Mutation {idx} failed with no associated errors"
+>>>>>>> theirs
                     )
 
     @CrossSync.convert
