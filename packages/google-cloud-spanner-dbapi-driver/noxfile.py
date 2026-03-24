@@ -84,6 +84,12 @@ SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
+COMPLIANCE_TEST_STANDARD_DEPENDENCIES = [
+    "pytest",
+    "spannerlib-python",
+    "google-cloud-spanner",
+]
+
 VERBOSE = False
 MODE = "--verbose" if VERBOSE else "--quiet"
 
@@ -335,6 +341,31 @@ def system(session):
             system_test_folder_path,
             *session.posargs,
         )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def compliance(session):
+    """Run compliance tests."""
+
+    # Sanity check: Only run tests if the environment variable is set.
+    if not os.environ.get("SPANNER_EMULATOR_HOST", ""):
+        session.skip(
+            "Emulator host must be set via SPANNER_EMULATOR_HOST environment variable"
+        )
+
+    session.install(*COMPLIANCE_TEST_STANDARD_DEPENDENCIES)
+    session.install("-e", ".")
+
+    test_paths = (
+        session.posargs if session.posargs else [os.path.join("tests", "compliance")]
+    )
+    session.run(
+        "py.test",
+        MODE,
+        f"--junitxml=compliance_{session.python}_sponge_log.xml",
+        *test_paths,
+        env={},
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
