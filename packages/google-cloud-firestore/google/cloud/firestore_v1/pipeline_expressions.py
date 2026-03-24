@@ -1637,19 +1637,18 @@ class Expression(ABC):
 
     @expose_as_static
     def array_index_of(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
-        """Creates an expression that returns the index of a value in an array.
-
-        Returns -1 if the value is not found.
+        """Creates an expression that returns the first index of the search value in the array,
+        or -1 if not found.
 
         Example:
             >>> # Get the index of "comedy" in the 'tags' array
             >>> Field.of("tags").array_index_of("comedy")
 
         Args:
-            search: The element (expression or constant) to find the index of.
+            search: An expression evaluating to the value to search for.
 
         Returns:
-            A new `Expression` representing the 'array_index_of' value.
+            A new `Expression` representing the index.
         """
         return FunctionExpression(
             "array_index_of",
@@ -1663,75 +1662,20 @@ class Expression(ABC):
     @expose_as_static
     def array_index_of_all(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
         """Creates an expression that returns all indices of a value in an array.
-        Returns an empty array if the value is not found.
 
         Example:
             >>> # Get all indices of "comedy" in the 'tags' array
             >>> Field.of("tags").array_index_of_all("comedy")
 
         Args:
-            search: The element (expression or constant) to find the indices of.
+            search: An expression evaluating to the value to search for.
 
         Returns:
-            A new `Expression` representing the 'array_index_of_all' value.
+            A new `Expression` representing the indices.
         """
         return FunctionExpression(
             "array_index_of_all",
             [self, self._cast_to_expr_or_convert_to_constant(search)],
-        )
-
-    @expose_as_static
-    def array_transform(
-        self, element_alias: str, body: "Expression", index_alias: str | None = None
-    ) -> "Expression":
-        """Creates an expression that transforms elements of an array.
-
-        Example:
-            >>> # Transform each element by adding 1.
-            >>> Field.of("nums").array_transform("e", Field.of("e").add(1))
-            >>>
-            >>> # Transform each element by adding its index to it.
-            >>> Field.of("nums").array_transform("e", Field.of("e").add(Field.of("i")), index_alias="i")
-
-        Args:
-            element_alias: The variable name to use for the current element within the body expression.
-            body: The expression to apply to each element.
-            index_alias: The variable name to use for the current index within the body expression.
-
-        Returns:
-            A new `Expression` applying the transformation to the array elements.
-        """
-        args = [
-            self,
-            self._cast_to_expr_or_convert_to_constant(element_alias),
-        ]
-        if index_alias is not None:
-            args.append(self._cast_to_expr_or_convert_to_constant(index_alias))
-
-        args.append(self._cast_to_expr_or_convert_to_constant(body))
-
-        return FunctionExpression("array_transform", args)
-
-    @expose_as_static
-    def array_filter(self, element_alias: str, body: "Expression") -> "Expression":
-        """
-        Takes an array, evaluates a boolean expression on each element, and returns a new
-        array containing only the elements for which the expression evaluates to True.
-
-        Args:
-           element_alias: Element variable name.
-           body: Boolean expression applied to each element.
-
-        Returns:
-            Expression: The created FunctionExpression AST node.
-        """
-        return FunctionExpression(
-            "array_filter",
-            [
-                self,
-                self._cast_to_expr_or_convert_to_constant(element_alias),
-                self._cast_to_expr_or_convert_to_constant(body),
-            ],
         )
 
     @expose_as_static
