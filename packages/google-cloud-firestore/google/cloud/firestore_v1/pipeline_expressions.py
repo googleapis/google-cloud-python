@@ -1420,8 +1420,8 @@ class Expression(ABC):
     @expose_as_static
     def string_replace_one(
         self,
-        find: str | bytes | Constant | Expression,
-        replacement: str | bytes | Constant | Expression,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
     ) -> "Expression":
         """Creates an expression that replaces the first occurrence of a substring or byte
         sequence with a replacement.
@@ -1449,7 +1449,7 @@ class Expression(ABC):
     @expose_as_static
     def string_index_of(
         self,
-        search: str | bytes | Constant | Expression,
+        search: str | bytes | Constant[str] | Constant[bytes] | Expression,
     ) -> "Expression":
         """Creates an expression that finds the index of the first occurrence of a substring or
         byte sequence.
