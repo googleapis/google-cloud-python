@@ -1369,6 +1369,25 @@ class Expression(ABC):
         return FunctionExpression("map_values", [self])
 
     @expose_as_static
+    def map_entries(self) -> "Expression":
+        """Creates an expression that returns the entries of a map as an array of maps,
+        where each map contains a `"k"` property for the key and a `"v"` property for the value.
+        For example: `[{ "k": "key1", "v": "value1" }, ...]`.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_entries()
+            >>> Field.of("address").map_entries()
+
+        Returns:
+            A new `Expression` representing the entries of the map.
+        """
+        return FunctionExpression("map_entries", [self])
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 
