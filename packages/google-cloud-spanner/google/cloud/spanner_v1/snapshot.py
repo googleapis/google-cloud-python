@@ -17,6 +17,7 @@
 
 """Model a set of read-only queries to a database as a snapshot."""
 import functools
+import threading
 from typing import List, Optional, Union
 from google.api_core import gapic_v1
 from google.api_core.exceptions import (
@@ -208,6 +209,16 @@ class _SnapshotBase(_SessionWrapper):
         # Event to coordinate concurrent requests beginning the transaction.
         # This is used to prevent the "Transaction has not begun" race condition.
         self._transaction_begin_event = threading.Event()
+
+    @property
+    def _resource_info(self):
+        """Resource information for metrics labels."""
+        database = self._session._database
+        return {
+            "project": database._instance._client.project,
+            "instance": database._instance.instance_id,
+            "database": database.database_id,
+        }
 
     def begin(self) -> bytes:
         """Begins a transaction on the database.
