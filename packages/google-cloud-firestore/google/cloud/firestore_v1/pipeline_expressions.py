@@ -1389,6 +1389,35 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def string_replace_all(
+        self,
+        find: str | bytes | Constant | Expression,
+        replacement: str | bytes | Constant | Expression,
+    ) -> "Expression":
+        """Creates an expression that replaces all occurrences of a substring or byte
+        sequence with a replacement.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_replace_all("foo", "bar")
+
+        Args:
+            find: The substring or byte sequence to search for.
+            replacement: The replacement string or byte sequence.
+
+        Returns:
+            A new `Expression` representing the string or byte array with replacements.
+        """
+        return FunctionExpression(
+            "string_replace_all",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(find),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 

@@ -824,3 +824,44 @@ tests:
                     name: string_repeat
           name: select
 
+  - description: testStringReplaceAll
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_all:
+                - Field: author
+                - Constant: "as"
+                - Constant: "AS"
+            - "replaced"
+    assert_results:
+      - replaced: "DouglAS Adams"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                replaced:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: author
+                    - stringValue: "as"
+                    - stringValue: "AS"
+                    name: string_replace_all
+          name: select
+
