@@ -873,6 +873,40 @@ tests:
                     name: string_replace_all
           name: select
 
+  - description: testStringReplaceAllWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_all:
+                - Constant: !!binary Zm9vYmF6Zm9v
+                - Constant: !!binary Zm9v
+                - Constant: !!binary YmFy
+            - "replacedBytes"
+    assert_results:
+      - replacedBytes: !!binary YmFyYmF6YmFy
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                replacedBytes:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmF6Zm9v
+                    - bytesValue: Zm9v
+                    - bytesValue: YmFy
+                    name: string_replace_all
+          name: select
+
   - description: testStringReplaceOne
     pipeline:
       - Collection: books
@@ -922,6 +956,40 @@ tests:
                     name: string_replace_one
           name: select
 
+  - description: testStringReplaceOneWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_one:
+                - Constant: !!binary Zm9vYmF6Zm9v
+                - Constant: !!binary Zm9v
+                - Constant: !!binary YmFy
+            - "replacedBytes"
+    assert_results:
+      - replacedBytes: !!binary YmFyYmF6Zm9v
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                replacedBytes:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmF6Zm9v
+                    - bytesValue: Zm9v
+                    - bytesValue: YmFy
+                    name: string_replace_one
+          name: select
+
   - description: testStringIndexOf
     pipeline:
       - Collection: books
@@ -961,3 +1029,34 @@ tests:
                     name: string_index_of
           name: select
 
+  - description: testStringIndexOfWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_index_of:
+                - Constant: !!binary Zm9vYmF6
+                - Constant: !!binary YmF6
+            - "index"
+    assert_results:
+      - index: 3
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                index:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmF6
+                    - bytesValue: YmF6
+                    name: string_index_of
+          name: select
