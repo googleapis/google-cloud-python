@@ -1385,7 +1385,8 @@ class Expression(ABC):
             A new `Expression` representing the repeated string or byte array.
         """
         return FunctionExpression(
-            "string_repeat", [self, self._cast_to_expr_or_convert_to_constant(repetitions)]
+            "string_repeat",
+            [self, self._cast_to_expr_or_convert_to_constant(repetitions)],
         )
 
     @expose_as_static
