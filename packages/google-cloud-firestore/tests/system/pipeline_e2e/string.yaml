@@ -652,3 +652,86 @@ tests:
                     - stringValue: ", "
                     name: join
           name: select
+  - description: testRegexFind
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.regex_find:
+                - Field: title
+                - Constant: "Hitchhiker's"
+            - "found"
+    assert_results:
+      - found: "Hitchhiker's"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                found:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: title
+                    - stringValue: "Hitchhiker's"
+                    name: regex_find
+          name: select
+  - description: testRegexFindAll
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.regex_find_all:
+                - Field: title
+                - Constant: "(?i)[a-z]+"
+            - "found_all"
+    assert_results:
+      - found_all:
+        - "The"
+        - "Hitchhiker"
+        - "s"
+        - "Guide"
+        - "to"
+        - "the"
+        - "Galaxy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                found_all:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: title
+                    - stringValue: "(?i)[a-z]+"
+                    name: regex_find_all
+          name: select

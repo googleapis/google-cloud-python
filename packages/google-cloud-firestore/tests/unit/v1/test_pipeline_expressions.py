@@ -1279,6 +1279,26 @@ class TestExpressionessionMethods:
         infix_instance = arg1.cosine_distance(arg2)
         assert infix_instance == instance
 
+    def test_regex_find(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("pattern")
+        instance = Expression.regex_find(arg1, arg2)
+        assert instance.name == "regex_find"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.regex_find(pattern)"
+        infix_instance = arg1.regex_find(arg2)
+        assert infix_instance == instance
+
+    def test_regex_find_all(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("pattern")
+        instance = Expression.regex_find_all(arg1, arg2)
+        assert instance.name == "regex_find_all"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.regex_find_all(pattern)"
+        infix_instance = arg1.regex_find_all(arg2)
+        assert infix_instance == instance
+
     def test_dot_product(self):
         arg1 = self._make_arg("Vector1")
         arg2 = self._make_arg("Vector2")

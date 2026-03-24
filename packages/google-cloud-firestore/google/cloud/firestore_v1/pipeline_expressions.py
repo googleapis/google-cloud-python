@@ -1308,6 +1308,48 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def regex_find(self, pattern: str | Constant[str] | "Expression") -> "Expression":
+        """Creates an expression that returns the first substring of a string expression that
+        matches a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("email").regex_find("@[A-Za-z0-9.-]+")
+            >>> Field.of("email").regex_find(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def regex_find_all(self, pattern: str | Constant[str] | "Expression") -> "Expression":
+        """Creates an expression that evaluates to an array of all substrings in a string expression
+        that match a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("comment").regex_find_all("@[A-Za-z0-9_]+")
+            >>> Field.of("comment").regex_find_all(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find_all", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 
