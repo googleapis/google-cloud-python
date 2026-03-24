@@ -125,6 +125,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert BetaAnalyticsDataClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -146,6 +147,10 @@ def test__get_default_mtls_endpoint():
     assert (
         BetaAnalyticsDataClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        BetaAnalyticsDataClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1324,11 +1329,13 @@ def test_beta_analytics_data_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -6736,8 +6743,9 @@ def test_run_report_rest_bad_request(request_type=analytics_data_api.RunReportRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6802,17 +6810,19 @@ def test_run_report_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_run_report"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_run_report_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_run_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_run_report"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_run_report_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_run_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6870,8 +6880,9 @@ def test_run_pivot_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6934,18 +6945,20 @@ def test_run_pivot_report_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_run_pivot_report"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_run_pivot_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_run_pivot_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_run_pivot_report"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_run_pivot_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_run_pivot_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7003,8 +7016,9 @@ def test_batch_run_reports_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7067,18 +7081,20 @@ def test_batch_run_reports_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_reports"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_batch_run_reports_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_reports"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_reports"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_batch_run_reports_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_reports"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7136,8 +7152,9 @@ def test_batch_run_pivot_reports_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7200,18 +7217,20 @@ def test_batch_run_pivot_reports_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_pivot_reports"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_batch_run_pivot_reports_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_pivot_reports"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_batch_run_pivot_reports"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_batch_run_pivot_reports_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_batch_run_pivot_reports"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7269,8 +7288,9 @@ def test_get_metadata_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7333,17 +7353,20 @@ def test_get_metadata_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_get_metadata"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_get_metadata_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_get_metadata"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_get_metadata"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_get_metadata_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_get_metadata"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7398,8 +7421,9 @@ def test_run_realtime_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7464,18 +7488,20 @@ def test_run_realtime_report_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_run_realtime_report"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_run_realtime_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_run_realtime_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_run_realtime_report"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_run_realtime_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_run_realtime_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7533,8 +7559,9 @@ def test_check_compatibility_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7594,18 +7621,20 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_check_compatibility"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_check_compatibility_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_check_compatibility"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_check_compatibility"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_check_compatibility_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_check_compatibility"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7663,8 +7692,9 @@ def test_create_audience_export_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7802,20 +7832,21 @@ def test_create_audience_export_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_create_audience_export"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_create_audience_export_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_create_audience_export"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_create_audience_export"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_create_audience_export_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_create_audience_export"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7868,8 +7899,9 @@ def test_query_audience_export_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7932,18 +7964,20 @@ def test_query_audience_export_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_query_audience_export"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_query_audience_export_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_query_audience_export"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_query_audience_export"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_query_audience_export_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_query_audience_export"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8001,8 +8035,9 @@ def test_get_audience_export_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8079,18 +8114,20 @@ def test_get_audience_export_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_get_audience_export"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_get_audience_export_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_get_audience_export"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_get_audience_export"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_get_audience_export_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_get_audience_export"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8145,8 +8182,9 @@ def test_list_audience_exports_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8209,18 +8247,20 @@ def test_list_audience_exports_rest_interceptors(null_interceptor):
     )
     client = BetaAnalyticsDataClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "post_list_audience_exports"
-    ) as post, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor,
-        "post_list_audience_exports_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BetaAnalyticsDataRestInterceptor, "pre_list_audience_exports"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "post_list_audience_exports"
+        ) as post,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor,
+            "post_list_audience_exports_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BetaAnalyticsDataRestInterceptor, "pre_list_audience_exports"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8595,11 +8635,14 @@ def test_beta_analytics_data_base_transport():
 
 def test_beta_analytics_data_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.analytics.data_v1beta.services.beta_analytics_data.transports.BetaAnalyticsDataTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.analytics.data_v1beta.services.beta_analytics_data.transports.BetaAnalyticsDataTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BetaAnalyticsDataTransport(
@@ -8619,9 +8662,12 @@ def test_beta_analytics_data_base_transport_with_credentials_file():
 
 def test_beta_analytics_data_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.analytics.data_v1beta.services.beta_analytics_data.transports.BetaAnalyticsDataTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.analytics.data_v1beta.services.beta_analytics_data.transports.BetaAnalyticsDataTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BetaAnalyticsDataTransport()
@@ -8699,11 +8745,12 @@ def test_beta_analytics_data_transport_auth_gdch_credentials(transport_class):
 def test_beta_analytics_data_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
