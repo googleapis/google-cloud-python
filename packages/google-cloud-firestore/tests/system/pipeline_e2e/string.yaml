@@ -780,3 +780,47 @@ tests:
                     - stringValue: " "
                     name: split
           name: select
+
+  - description: testStringRepeat
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_repeat:
+                - FunctionExpression.to_upper:
+                    - Field: author
+                - Constant: 2
+            - "repeated"
+    assert_results:
+      - repeated: "DOUGLAS ADAMSDOUGLAS ADAMS"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                repeated:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: author
+                        name: to_upper
+                    - integerValue: "2"
+                    name: string_repeat
+          name: select
+

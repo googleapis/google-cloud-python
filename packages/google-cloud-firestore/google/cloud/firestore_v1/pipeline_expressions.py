@@ -1368,6 +1368,27 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def string_repeat(self, repetitions: int | "Expression") -> "Expression":
+        """Creates an expression that repeats a string or byte array a specified number
+        of times.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("name").string_repeat(3)
+            >>> # Called statically using the field name:
+            >>> Expression.string_repeat("name", 3)
+
+        Args:
+            repetitions: The number of times to repeat the string or byte array.
+
+        Returns:
+            A new `Expression` representing the repeated string or byte array.
+        """
+        return FunctionExpression(
+            "string_repeat", [self, self._cast_to_expr_or_convert_to_constant(repetitions)]
+        )
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 

@@ -1309,6 +1309,16 @@ class TestExpressionessionMethods:
         infix_instance = arg1.split(arg2)
         assert infix_instance == instance
 
+    def test_string_repeat(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("3")
+        instance = Expression.string_repeat(arg1, arg2)
+        assert instance.name == "string_repeat"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.string_repeat(3)"
+        infix_instance = arg1.string_repeat(arg2)
+        assert infix_instance == instance
+
     def test_dot_product(self):
         arg1 = self._make_arg("Vector1")
         arg2 = self._make_arg("Vector2")
