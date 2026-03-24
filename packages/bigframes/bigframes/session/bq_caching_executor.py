@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import concurrent.futures
 import math
 import threading
 from typing import Literal, Mapping, Optional, Sequence, Tuple
@@ -514,13 +515,29 @@ class BigQueryCachingExecutor(executor.Executor):
         Replace large local sources with the uploaded version of those datasources.
         """
         # Step 1: Upload all previously un-uploaded data
+        needs_upload = []
         for leaf in original_root.unique_nodes():
             if isinstance(leaf, nodes.ReadLocalNode):
                 if (
                     leaf.local_data_source.metadata.total_bytes
                     > bigframes.constants.MAX_INLINE_BYTES
                 ):
-                    self._upload_local_data(leaf.local_data_source)
+                    needs_upload.append(leaf.local_data_source)
+
+        futures: dict[concurrent.futures.Future, local_data.ManagedArrowTable] = dict()
+        for local_source in needs_upload:
+            future = self.loader.read_data_async(
+                local_source, bigframes.core.guid.generate_guid()
+            )
+            futures[future] = local_source
+        try:
+            for future in concurrent.futures.as_completed(futures.keys()):
+                self.cache.cache_remote_replacement(futures[future], future.result())
+        except Exception as e:
+            # cancel all futures
+            for future in futures:
+                future.cancel()
+            raise e
 
         # Step 2: Replace local scans with remote scans
         def map_local_scans(node: nodes.BigFrameNode):
@@ -549,18 +566,6 @@ class BigQueryCachingExecutor(executor.Executor):
             )
 
         return original_root.bottom_up(map_local_scans)
-
-    def _upload_local_data(self, local_table: local_data.ManagedArrowTable):
-        if self.cache.get_uploaded_local_data(local_table) is not None:
-            return
-        # Lock prevents concurrent repeated work, but slows things down.
-        # Might be better as a queue and a worker thread
-        with self._upload_lock:
-            if self.cache.get_uploaded_local_data(local_table) is None:
-                uploaded = self.loader.load_data_or_write_data(
-                    local_table, bigframes.core.guid.generate_guid()
-                )
-                self.cache.cache_remote_replacement(local_table, uploaded)
 
     def _execute_plan_gbq(
         self,

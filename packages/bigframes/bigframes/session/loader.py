@@ -300,6 +300,17 @@ class GbqDataLoader:
         self._session = session
         self._clock = session_time.BigQuerySyncedClock(bqclient)
         self._clock.sync()
+        self._threadpool = concurrent.futures.ThreadPoolExecutor(
+            max_workers=1, thread_name_prefix="bigframes-loader"
+        )
+
+    def read_data_async(
+        self, local_data: local_data.ManagedArrowTable, offsets_col: str
+    ) -> concurrent.futures.Future[bq_data.BigqueryDataSource]:
+        future = self._threadpool.submit(
+            self._load_data_or_write_data, local_data, offsets_col
+        )
+        return future
 
     def read_pandas(
         self,
@@ -350,7 +361,7 @@ class GbqDataLoader:
             session=self._session,
         )
 
-    def load_data_or_write_data(
+    def _load_data_or_write_data(
         self,
         data: local_data.ManagedArrowTable,
         offsets_col: str,
