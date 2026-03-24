@@ -1270,7 +1270,7 @@ class Expression(ABC):
         updated.
 
         Note:
-            `mapSet` only performs shallow updates to the map. Setting a value to `None`
+            `map_set` only performs shallow updates to the map. Setting a value to `None`
             will retain the key with a `None` value. To remove a key entirely, use
             `map_remove`.
 
