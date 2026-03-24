@@ -644,7 +644,10 @@ class TestMutationsBatcherAsync:
                 for _ in range(num_entries):
                     await instance.append(self._make_mutation(size=1))
                 # let any flush jobs finish
-                await instance._wait_for_batch_results(*instance._flush_jobs)
+                jobs = instance._flush_jobs
+                await instance._wait_for_batch_results(
+                    *[(job, mock.MagicMock()) for job in jobs]
+                )
                 # should have only flushed once, with large mutation and first mutation in loop
                 assert op_mock.call_count == 1
                 sent_batch = op_mock.call_args[0][0]
@@ -744,7 +747,10 @@ class TestMutationsBatcherAsync:
                     )
                     await CrossSync.sleep(0.01)
                 # allow flushes to complete
-                await instance._wait_for_batch_results(*instance._flush_jobs)
+                jobs = instance._flush_jobs
+                await instance._wait_for_batch_results(
+                    *[(job, mock.MagicMock()) for job in jobs]
+                )
                 duration = time.monotonic() - start_time
                 assert len(instance._oldest_exceptions) == 0
                 assert len(instance._newest_exceptions) == 0
