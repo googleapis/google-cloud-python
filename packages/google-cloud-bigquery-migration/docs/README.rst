@@ -3,7 +3,8 @@ Python Client for Google BigQuery Migration
 
 |preview| |pypi| |versions|
 
-`Google BigQuery Migration`_: 
+`Google BigQuery Migration`_: The migration service, exposing apis for migration jobs operations, and
+agent management.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

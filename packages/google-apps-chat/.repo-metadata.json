@@ -1,4 +1,5 @@
 {
+    "api_description": "The Google Chat API lets you build Chat apps to integrate your services\nwith Google Chat and manage Chat resources such as spaces, members, and\nmessages.",
     "api_id": "chat.googleapis.com",
     "api_shortname": "chat",
     "client_documentation": "https://googleapis.dev/python/google-apps-chat/latest",

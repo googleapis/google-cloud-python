@@ -6,5 +6,5 @@
     "name": "google-resumable-media",
     "name_pretty": "Google Resumable Media",
     "release_level": "preview",
-    "repo": "googleapis/google-resumable-media-python"
+    "repo": "googleapis/google-cloud-python"
 }

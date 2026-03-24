@@ -1,4 +1,6 @@
 {
+    "api_description": "An API for setting attribute based access control to requests to GCP\nservices.",
+    "api_id": "accesscontextmanager.googleapis.com",
     "api_shortname": "accesscontextmanager",
     "client_documentation": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager",
     "default_version": "apiVersion",

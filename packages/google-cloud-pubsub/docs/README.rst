@@ -26,7 +26,7 @@ independently written applications.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
    :target: https://pypi.org/project/google-cloud-pubsub/
 .. _Google Cloud Pub/Sub: https://cloud.google.com/pubsub/docs/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/pubsub/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/pubsub/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/pubsub/docs/
 
 Quick Start
