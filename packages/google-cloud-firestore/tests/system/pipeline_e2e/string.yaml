@@ -663,10 +663,10 @@ tests:
         - AliasedExpression:
             - FunctionExpression.regex_find:
                 - Field: title
-                - Constant: "Hitchhiker's"
+                - Constant: '\b[A-Z][a-z]{4}\b'
             - "found"
     assert_results:
-      - found: "Hitchhiker's"
+      - found: "Guide"
     assert_proto:
       pipeline:
         stages:
@@ -687,7 +687,7 @@ tests:
                   functionValue:
                     args:
                     - fieldReferenceValue: title
-                    - stringValue: "Hitchhiker's"
+                    - stringValue: '\b[A-Z][a-z]{4}\b'
                     name: regex_find
           name: select
   - description: testRegexFindAll
