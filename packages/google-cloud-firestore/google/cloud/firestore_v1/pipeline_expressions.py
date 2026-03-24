@@ -1557,7 +1557,9 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the maximum element of the array.
         """
-        return FunctionExpression("maximum", [self])
+        return FunctionExpression(
+            "maximum", [self], infix_name_override="array_maximum"
+        )
 
     @expose_as_static
     def array_minimum(self) -> "Expression":
@@ -1570,7 +1572,9 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the minimum element of the array.
         """
-        return FunctionExpression("minimum", [self])
+        return FunctionExpression(
+            "minimum", [self], infix_name_override="array_minimum"
+        )
 
     @expose_as_static
     def array_maximum_n(self, n: int | "Expression") -> "Expression":
@@ -1589,7 +1593,9 @@ class Expression(ABC):
             A new `Expression` representing the maximum `n` elements of the array.
         """
         return FunctionExpression(
-            "maximum_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+            "maximum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            infix_name_override="array_maximum_n",
         )
 
     @expose_as_static
@@ -1609,7 +1615,9 @@ class Expression(ABC):
             A new `Expression` representing the minimum `n` elements of the array.
         """
         return FunctionExpression(
-            "minimum_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+            "minimum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            infix_name_override="array_minimum_n",
         )
 
     @expose_as_static

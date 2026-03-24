@@ -1667,7 +1667,7 @@ class TestExpressionessionMethods:
         instance = Expression.array_maximum(arg1)
         assert instance.name == "maximum"
         assert instance.params == [arg1]
-        assert repr(instance) == "Value.maximum()"
+        assert repr(instance) == "Value.array_maximum()"
         infix_instance = arg1.array_maximum()
         assert infix_instance == instance
 
@@ -1676,7 +1676,7 @@ class TestExpressionessionMethods:
         instance = Expression.array_minimum(arg1)
         assert instance.name == "minimum"
         assert instance.params == [arg1]
-        assert repr(instance) == "Value.minimum()"
+        assert repr(instance) == "Value.array_minimum()"
         infix_instance = arg1.array_minimum()
         assert infix_instance == instance
 
@@ -1688,7 +1688,7 @@ class TestExpressionessionMethods:
         assert instance.params[0] == arg1
         assert isinstance(instance.params[1], Constant)
         assert instance.params[1].value == n
-        assert repr(instance) == "Value.maximum_n(Constant.of(2))"
+        assert repr(instance) == "Value.array_maximum_n(Constant.of(2))"
         infix_instance = arg1.array_maximum_n(n)
         assert infix_instance == instance
 
@@ -1700,7 +1700,7 @@ class TestExpressionessionMethods:
         assert instance.params[0] == arg1
         assert isinstance(instance.params[1], Constant)
         assert instance.params[1].value == n
-        assert repr(instance) == "Value.minimum_n(Constant.of(2))"
+        assert repr(instance) == "Value.array_minimum_n(Constant.of(2))"
         infix_instance = arg1.array_minimum_n(n)
         assert infix_instance == instance
 
