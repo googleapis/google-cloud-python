@@ -685,3 +685,20 @@ tests:
           - fieldReferenceValue: awards
           - stringValue: full_replace
           name: replace_with
+  - description: testTypeAndIsType
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.type:
+                - Constant: "hello"
+            - "val_type"
+        - AliasedExpression:
+            - FunctionExpression.is_type:
+                - Constant: "hello"
+                - Constant: "string"
+            - "val_is_string"
+    assert_results:
+      - val_type: "string"
+        val_is_string: true

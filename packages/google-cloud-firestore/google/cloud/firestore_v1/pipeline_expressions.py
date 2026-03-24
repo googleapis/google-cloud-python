@@ -1917,6 +1917,189 @@ class Expression(ABC):
         """
         return AliasedExpression(self, alias)
 
+    @expose_as_static
+    def cmp(self, other: "Expression | CONSTANT_TYPE") -> "Expression":
+        """Creates an expression that compares this expression to another expression.
+
+        Returns an integer:
+            * -1 if this expression is less than the other
+            * 0 if they are equal
+            * 1 if this expression is greater than the other
+
+        Example:
+            >>> # Compare the 'price' field to 10
+            >>> Field.of("price").cmp(10)
+
+        Returns:
+            A new `Expression` representing the comparison operation.
+        """
+        return FunctionExpression("cmp", [self, self._cast_to_expr_or_convert_to_constant(other)])
+
+    @expose_as_static
+    def timestamp_trunc(
+        self, granularity: "Expression | str", timezone: "Expression | str | None" = None
+    ) -> "Expression":
+        """Creates an expression that truncates a timestamp to a specified granularity.
+
+        Example:
+            >>> # Truncate the 'createdAt' field to the day
+            >>> Field.of("createdAt").timestamp_trunc("day")
+
+        Returns:
+            A new `Expression` representing the timestamp_trunc operation.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(granularity)]
+        if timezone is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(timezone))
+        return FunctionExpression("timestamp_trunc", args)
+
+    @expose_as_static
+    def timestamp_extract(
+        self, part: "Expression | str", timezone: "Expression | str | None" = None
+    ) -> "Expression":
+        """Creates an expression that extracts a part of a timestamp.
+
+        Example:
+            >>> # Extract the year from the 'createdAt' field
+            >>> Field.of("createdAt").timestamp_extract("year")
+
+        Returns:
+            A new `Expression` representing the timestamp_extract operation.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(part)]
+        if timezone is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(timezone))
+        return FunctionExpression("timestamp_extract", args)
+
+    @expose_as_static
+    def timestamp_diff(
+        self, start: "Expression | CONSTANT_TYPE", unit: "Expression | str"
+    ) -> "Expression":
+        """Creates an expression that computes the difference between two timestamps in the specified unit.
+
+        Example:
+            >>> # Compute the difference in days between the 'end' field and the 'start' field
+            >>> Field.of("end").timestamp_diff(Field.of("start"), "day")
+
+        Returns:
+            A new `Expression` representing the timestamp_diff operation.
+        """
+        return FunctionExpression(
+            "timestamp_diff",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(start),
+                self._cast_to_expr_or_convert_to_constant(unit),
+            ],
+        )
+
+    @expose_as_static
+    def if_null(self, *others: "Expression | CONSTANT_TYPE") -> "Expression":
+        """Creates an expression that returns the first non-null expression from the provided arguments.
+
+        Example:
+            >>> # Return the 'nickname' field if not null, otherwise return 'firstName'
+            >>> Field.of("nickname").if_null(Field.of("firstName"))
+
+        Returns:
+            A new `Expression` representing the if_null operation.
+        """
+        return FunctionExpression(
+            "if_null",
+            [self] + [self._cast_to_expr_or_convert_to_constant(o) for o in others],
+        )
+
+    @expose_as_static
+    def map_set(
+        self,
+        key: "Expression | CONSTANT_TYPE",
+        value: "Expression | CONSTANT_TYPE",
+        *more_key_values: "Expression | CONSTANT_TYPE",
+    ) -> "Expression":
+        """Creates an expression that returns a new Map with the specified entries added or updated.
+
+        Example:
+            >>> # Update the 'city' key in a map to "San Francisco"
+            >>> Map({"city": "Los Angeles"}).map_set("city", "San Francisco")
+
+        Returns:
+            A new `Expression` representing the map_set operation as a Map.
+        """
+        args = [
+            self,
+            self._cast_to_expr_or_convert_to_constant(key),
+            self._cast_to_expr_or_convert_to_constant(value),
+        ]
+        args.extend([self._cast_to_expr_or_convert_to_constant(o) for o in more_key_values])
+        return FunctionExpression("map_set", args)
+
+    @expose_as_static
+    def map_keys(self) -> "Expression":
+        """Creates an expression that returns the keys of a map as an Array.
+
+        Example:
+            >>> # Get the keys of a map
+            >>> Map({"city": "Los Angeles"}).map_keys()
+
+        Returns:
+            A new `Expression` representing the map_keys operation as an Array.
+        """
+        return FunctionExpression("map_keys", [self])
+
+    @expose_as_static
+    def map_values(self) -> "Expression":
+        """Creates an expression that returns the values of a map as an Array.
+
+        Example:
+            >>> # Get the values from a map
+            >>> Map({"city": "Los Angeles"}).map_values()
+
+        Returns:
+            A new `Expression` representing the map_values operation as an Array.
+        """
+        return FunctionExpression("map_values", [self])
+
+    @expose_as_static
+    def map_entries(self) -> "Expression":
+        """Creates an expression that returns the entries of a map as an Array of structured Maps.
+
+        Example:
+            >>> # Get the entries of a map
+            >>> Map({"city": "Los Angeles"}).map_entries()
+
+        Returns:
+            A new `Expression` representing the map_entries operation as an Array of Maps (containing 'key' and 'value' fields).
+        """
+        return FunctionExpression("map_entries", [self])
+
+    @expose_as_static
+    def type(self) -> "Expression":
+        """Creates an expression that returns the data type of this expression's result as a string.
+
+        Example:
+            >>> # Get the type of the 'title' field
+            >>> Field.of("title").type()
+
+        Returns:
+            A new `Expression` representing the type operation.
+        """
+        return FunctionExpression("type", [self])
+
+    @expose_as_static
+    def is_type(self, type_val: "Expression | str") -> "BooleanExpression":
+        """Creates an expression that checks if the result is of the specified type.
+
+        Example:
+            >>> # Check if the 'price' field is a number
+            >>> Field.of("price").is_type("number")
+
+        Returns:
+            A new `BooleanExpression` representing the is_type operation.
+        """
+        return BooleanExpression(
+            "is_type", [self, self._cast_to_expr_or_convert_to_constant(type_val)]
+        )
+
 
 class Constant(Expression, Generic[CONSTANT_TYPE]):
     """Represents a constant literal value in an expression."""

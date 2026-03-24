@@ -688,3 +688,37 @@ tests:
         conditional_field: "Dystopian"
       - title: "Dune"
         conditional_field: "Frank Herbert"
+  - description: testCmp
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - FunctionExpression.cmp:
+                  - Field: rating
+                  - Constant: 4.5
+              - Constant: 1
+      - Select:
+        - title
+      - Sort:
+        - Ordering:
+          - Field: title
+          - ASCENDING
+    assert_results:
+      - title: Dune
+      - title: The Lord of the Rings
+  - description: testIfNull
+    pipeline:
+      - Collection: errors
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.if_null:
+                - Field: value
+                - Constant: "default"
+            - "value_or_default"
+      - Sort:
+        - Ordering:
+          - Field: value_or_default
+          - ASCENDING
+    assert_results:
+      - value_or_default: "NaN"
+      - value_or_default: "default"

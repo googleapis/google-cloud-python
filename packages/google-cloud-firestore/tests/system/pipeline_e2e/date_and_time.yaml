@@ -101,3 +101,27 @@ tests:
         from_seconds: "1993-04-28T12:01:00.000000+00:00"
         plus_day: "1993-04-29T12:01:00.654321+00:00"
         minus_hour: "1993-04-28T11:01:00.654321+00:00"
+  - description: testTimestampTruncExtractDiff
+    pipeline:
+      - Collection: timestamps
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.timestamp_trunc:
+                - Field: time
+                - Constant: "day"
+            - "trunc_day"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_extract:
+                - Field: time
+                - Constant: "year"
+            - "extract_year"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_diff:
+                - FunctionExpression.timestamp_add:
+                    - Field: time
+                    - Constant: "day"
+                    - Constant: 1
+                - Field: time
+                - Constant: "hour"
+            - "diff_hours"
