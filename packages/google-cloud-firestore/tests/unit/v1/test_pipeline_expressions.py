@@ -1351,6 +1351,46 @@ class TestExpressionessionMethods:
         infix_instance = arg1.string_index_of(arg2)
         assert infix_instance == instance
 
+    def test_ltrim(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("chars")
+
+        # Without args
+        instance = Expression.ltrim(arg1)
+        assert instance.name == "ltrim"
+        assert instance.params == [arg1]
+        assert repr(instance) == "String.ltrim()"
+        infix_instance = arg1.ltrim()
+        assert infix_instance == instance
+
+        # With args
+        instance = Expression.ltrim(arg1, arg2)
+        assert instance.name == "ltrim"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.ltrim(chars)"
+        infix_instance = arg1.ltrim(arg2)
+        assert infix_instance == instance
+
+    def test_rtrim(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("chars")
+
+        # Without args
+        instance = Expression.rtrim(arg1)
+        assert instance.name == "rtrim"
+        assert instance.params == [arg1]
+        assert repr(instance) == "String.rtrim()"
+        infix_instance = arg1.rtrim()
+        assert infix_instance == instance
+
+        # With args
+        instance = Expression.rtrim(arg1, arg2)
+        assert instance.name == "rtrim"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.rtrim(chars)"
+        infix_instance = arg1.rtrim(arg2)
+        assert infix_instance == instance
+
     def test_dot_product(self):
         arg1 = self._make_arg("Vector1")
         arg2 = self._make_arg("Vector2")

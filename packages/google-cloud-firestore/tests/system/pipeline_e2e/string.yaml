@@ -1060,3 +1060,191 @@ tests:
                     - bytesValue: YmF6
                     name: string_index_of
           name: select
+
+  - description: testLtrim
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Constant: "  foo"
+            - "trimmed"
+    assert_results:
+      - trimmed: "foo"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "  foo"
+                    name: ltrim
+          name: select
+
+  - description: testLtrimWithChars
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Constant: "foobar"
+                - Constant: "fo"
+            - "trimmed"
+    assert_results:
+      - trimmed: "bar"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "foobar"
+                    - stringValue: "fo"
+                    name: ltrim
+          name: select
+
+  - description: testLtrimWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Constant: !!binary Zm9vYmFy
+                - Constant: !!binary Zm8=
+            - "trimmed"
+    assert_results:
+      - trimmed: !!binary YmFy
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmFy
+                    - bytesValue: Zm8=
+                    name: ltrim
+          name: select
+
+  - description: testRtrim
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Constant: "foo  "
+            - "trimmed"
+    assert_results:
+      - trimmed: "foo"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "foo  "
+                    name: rtrim
+          name: select
+
+  - description: testRtrimWithChars
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Constant: "foobar"
+                - Constant: "ar"
+            - "trimmed"
+    assert_results:
+      - trimmed: "foob"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "foobar"
+                    - stringValue: "ar"
+                    name: rtrim
+          name: select
+
+  - description: testRtrimWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Constant: !!binary Zm9vYmFy
+                - Constant: !!binary YXI=
+            - "trimmed"
+    assert_results:
+      - trimmed: !!binary Zm9vYg==
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmFy
+                    - bytesValue: YXI=
+                    name: rtrim
+          name: select

@@ -1473,6 +1473,58 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def ltrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims leading whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").ltrim()
+            >>> Field.of("text").ltrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("ltrim", args)
+
+    @expose_as_static
+    def rtrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims trailing whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").rtrim()
+            >>> Field.of("text").rtrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("rtrim", args)
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 
