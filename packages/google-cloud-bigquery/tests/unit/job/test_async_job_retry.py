@@ -26,8 +26,6 @@ JOB_ID = "test-job-id"
 
 
 def test_cancel_w_custom_retry(global_time_lock):
-    from google.cloud.bigquery.retry import DEFAULT_RETRY
-
     api_path = "/projects/{}/jobs/{}/cancel".format(PROJECT, JOB_ID)
     resource = {
         "jobReference": {
@@ -49,8 +47,11 @@ def test_cancel_w_custom_retry(global_time_lock):
         google.cloud.bigquery.job._JobReference(JOB_ID, PROJECT, "EU"), client
     )
 
-    retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
-        lambda exc: isinstance(exc, ValueError)
+    retry = google.api_core.retry.Retry(
+        predicate=lambda exc: isinstance(exc, ValueError),
+        initial=0.01,
+        maximum=0.01,
+        deadline=1.0,
     )
 
     with mock.patch(

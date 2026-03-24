@@ -138,7 +138,7 @@ def _reference_getter(table):
 
 
 def _view_use_legacy_sql_getter(
-    table: Union["Table", "TableListItem"]
+    table: Union["Table", "TableListItem"],
 ) -> Optional[bool]:
     """bool: Specifies whether to execute the view with Legacy or Standard SQL.
 
@@ -357,6 +357,98 @@ class TableReference(_TableBase):
 
         dataset_ref = DatasetReference(self.project, self.dataset_id)
         return f"TableReference({dataset_ref!r}, '{self.table_id}')"
+
+
+class PropertyGraphReference:
+    """PropertyGraphReferences are pointers to property graphs.
+
+    Args:
+        dataset_ref: A pointer to the dataset
+        property_graph_id: The ID of the property graph
+    """
+
+    _PROPERTY_TO_API_FIELD = {
+        "dataset_id": "datasetId",
+        "project": "projectId",
+        "property_graph_id": "propertyGraphId",
+    }
+
+    def __init__(self, dataset_ref: "DatasetReference", property_graph_id: str):
+        self._properties: Dict[str, Any] = {}
+
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["project"],
+            dataset_ref.project,
+        )
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["dataset_id"],
+            dataset_ref.dataset_id,
+        )
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["property_graph_id"],
+            property_graph_id,
+        )
+
+    @property
+    def project(self) -> str:
+        """str: Project bound to the property graph."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["project"]
+        )
+
+    @property
+    def dataset_id(self) -> str:
+        """str: ID of dataset containing the property graph."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["dataset_id"]
+        )
+
+    @property
+    def property_graph_id(self) -> str:
+        """str: The property graph ID."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["property_graph_id"]
+        )
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> "PropertyGraphReference":
+        """Factory: construct a property graph reference given its API representation."""
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        project = resource["projectId"]
+        dataset_id = resource["datasetId"]
+        property_graph_id = resource["propertyGraphId"]
+
+        return cls(DatasetReference(project, dataset_id), property_graph_id)
+
+    def to_api_repr(self) -> dict:
+        """Construct the API resource representation of this property graph reference."""
+        return copy.deepcopy(self._properties)
+
+    def __str__(self):
+        return f"{self.project}.{self.dataset_id}.{self.property_graph_id}"
+
+    def __repr__(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        dataset_ref = DatasetReference(self.project, self.dataset_id)
+        return f"PropertyGraphReference({dataset_ref!r}, '{self.property_graph_id}')"
+
+    def __eq__(self, other):
+        if isinstance(other, PropertyGraphReference):
+            return (
+                self.project == other.project
+                and self.dataset_id == other.dataset_id
+                and self.property_graph_id == other.property_graph_id
+            )
+        else:
+            return NotImplemented
+
+    def __hash__(self):
+        return hash((self.project, self.dataset_id, self.property_graph_id))
 
 
 class Table(_TableBase):
