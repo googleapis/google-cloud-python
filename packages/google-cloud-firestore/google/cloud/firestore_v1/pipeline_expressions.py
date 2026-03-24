@@ -1308,7 +1308,7 @@ class Expression(ABC):
         )
 
     @expose_as_static
-    def regex_find(self, pattern: str | Constant[str] | "Expression") -> "Expression":
+    def regex_find(self, pattern: str | Constant[str] | Expression) -> "Expression":
         """Creates an expression that returns the first substring of a string expression that
         matches a specified regular expression.
 
@@ -1329,7 +1329,7 @@ class Expression(ABC):
         )
 
     @expose_as_static
-    def regex_find_all(self, pattern: str | Constant[str] | "Expression") -> "Expression":
+    def regex_find_all(self, pattern: str | Constant[str] | Expression) -> "Expression":
         """Creates an expression that evaluates to an array of all substrings in a string expression
         that match a specified regular expression.
 
@@ -1350,7 +1350,7 @@ class Expression(ABC):
         )
 
     @expose_as_static
-    def split(self, delimiter: str | "Expression") -> "Expression":
+    def split(self, delimiter: str | Constant[str] | Expression) -> "Expression":
         """Creates an expression that splits the value of a field on the provided delimiter.
 
         Example:
@@ -1368,7 +1368,7 @@ class Expression(ABC):
         )
 
     @expose_as_static
-    def string_repeat(self, repetitions: int | "Expression") -> "Expression":
+    def string_repeat(self, repetitions: int | Expression) -> "Expression":
         """Creates an expression that repeats a string or byte array a specified number
         of times.
 
