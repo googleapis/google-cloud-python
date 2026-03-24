@@ -1447,6 +1447,32 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def string_index_of(
+        self,
+        search: str | bytes | Constant | Expression,
+    ) -> "Expression":
+        """Creates an expression that finds the index of the first occurrence of a substring or
+        byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_index_of("foo")
+
+        Args:
+            search: The substring or byte sequence to search for.
+
+        Returns:
+            A new `Expression` representing the index of the first occurrence.
+        """
+        return FunctionExpression(
+            "string_index_of",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+            ],
+        )
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 

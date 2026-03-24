@@ -1341,6 +1341,16 @@ class TestExpressionessionMethods:
         infix_instance = arg1.string_replace_one(arg2, arg3)
         assert infix_instance == instance
 
+    def test_string_index_of(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("search")
+        instance = Expression.string_index_of(arg1, arg2)
+        assert instance.name == "string_index_of"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.string_index_of(search)"
+        infix_instance = arg1.string_index_of(arg2)
+        assert infix_instance == instance
+
     def test_dot_product(self):
         arg1 = self._make_arg("Vector1")
         arg2 = self._make_arg("Vector2")
