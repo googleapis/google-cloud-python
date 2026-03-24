@@ -428,6 +428,4 @@ class AuthorizedSession:
         return self
 
     async def __aexit__(self, *exc):
-        if self._auth_request_session is not None:
-            await self._auth_request_session.close()
-        return await self._session.__aexit__(*exc)
+        await self.close()
