@@ -2015,7 +2015,7 @@ class Expression(ABC):
         key: "Expression | CONSTANT_TYPE",
         value: "Expression | CONSTANT_TYPE",
         *more_key_values: "Expression | CONSTANT_TYPE",
-    ) -> "Expression":
+    ) -> "Map":
         """Creates an expression that returns a new Map with the specified entries added or updated.
 
         Example:
@@ -2023,7 +2023,7 @@ class Expression(ABC):
             >>> Map({"city": "Los Angeles"}).map_set("city", "San Francisco")
 
         Returns:
-            A new `Expression` representing the map_set operation as a Map.
+            A new `Map` expression representing the map_set operation.
         """
         args = [
             self,
@@ -2034,7 +2034,7 @@ class Expression(ABC):
         return FunctionExpression("map_set", args)
 
     @expose_as_static
-    def map_keys(self) -> "Expression":
+    def map_keys(self) -> "Array":
         """Creates an expression that returns the keys of a map as an Array.
 
         Example:
@@ -2042,12 +2042,12 @@ class Expression(ABC):
             >>> Map({"city": "Los Angeles"}).map_keys()
 
         Returns:
-            A new `Expression` representing the map_keys operation as an Array.
+            A new `Array` expression representing the map_keys operation.
         """
         return FunctionExpression("map_keys", [self])
 
     @expose_as_static
-    def map_values(self) -> "Expression":
+    def map_values(self) -> "Array":
         """Creates an expression that returns the values of a map as an Array.
 
         Example:
@@ -2055,12 +2055,12 @@ class Expression(ABC):
             >>> Map({"city": "Los Angeles"}).map_values()
 
         Returns:
-            A new `Expression` representing the map_values operation as an Array.
+            A new `Array` expression representing the map_values operation.
         """
         return FunctionExpression("map_values", [self])
 
     @expose_as_static
-    def map_entries(self) -> "Expression":
+    def map_entries(self) -> "Array":
         """Creates an expression that returns the entries of a map as an Array of structured Maps.
 
         Example:
@@ -2068,7 +2068,7 @@ class Expression(ABC):
             >>> Map({"city": "Los Angeles"}).map_entries()
 
         Returns:
-            A new `Expression` representing the map_entries operation as an Array of Maps (containing 'key' and 'value' fields).
+            A new `Array` expression representing the map_entries operation (containing 'key' and 'value' fields).
         """
         return FunctionExpression("map_entries", [self])
 
