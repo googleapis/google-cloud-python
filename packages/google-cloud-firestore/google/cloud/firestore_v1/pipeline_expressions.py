@@ -1933,11 +1933,15 @@ class Expression(ABC):
         Returns:
             A new `Expression` representing the comparison operation.
         """
-        return FunctionExpression("cmp", [self, self._cast_to_expr_or_convert_to_constant(other)])
+        return FunctionExpression(
+            "cmp", [self, self._cast_to_expr_or_convert_to_constant(other)]
+        )
 
     @expose_as_static
     def timestamp_trunc(
-        self, granularity: "Expression | str", timezone: "Expression | str | None" = None
+        self,
+        granularity: "Expression | str",
+        timezone: "Expression | str | None" = None,
     ) -> "Expression":
         """Creates an expression that truncates a timestamp to a specified granularity.
 
@@ -2030,7 +2034,9 @@ class Expression(ABC):
             self._cast_to_expr_or_convert_to_constant(key),
             self._cast_to_expr_or_convert_to_constant(value),
         ]
-        args.extend([self._cast_to_expr_or_convert_to_constant(o) for o in more_key_values])
+        args.extend(
+            [self._cast_to_expr_or_convert_to_constant(o) for o in more_key_values]
+        )
         return FunctionExpression("map_set", args)
 
     @expose_as_static
