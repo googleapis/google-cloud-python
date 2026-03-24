@@ -288,7 +288,11 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             ),
         )
 
-    def test_aborted_exception_on_commit_with_retries(self):
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_aborted_exception_on_commit_with_retries(self, mock_region):
         # Test case to verify that an Aborted exception is raised when
         # batch.commit() is called and the transaction is aborted internally.
         # The exception has request_id attribute added.
