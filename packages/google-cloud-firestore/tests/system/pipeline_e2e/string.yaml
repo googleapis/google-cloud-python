@@ -873,3 +873,52 @@ tests:
                     name: string_replace_all
           name: select
 
+  - description: testStringReplaceOne
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_one:
+                - FunctionExpression.concat:
+                    - Field: author
+                    - Constant: ": "
+                    - Field: title
+                - Constant: "la"
+                - Constant: "LA"
+            - "replaced"
+    assert_results:
+      - replaced: "DougLAs Adams: The Hitchhiker's Guide to the Galaxy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                replaced:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: author
+                        - stringValue: ": "
+                        - fieldReferenceValue: title
+                        name: concat
+                    - stringValue: "la"
+                    - stringValue: "LA"
+                    name: string_replace_one
+          name: select
+

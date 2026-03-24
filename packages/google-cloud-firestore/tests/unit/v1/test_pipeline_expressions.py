@@ -1330,6 +1330,17 @@ class TestExpressionessionMethods:
         infix_instance = arg1.string_replace_all(arg2, arg3)
         assert infix_instance == instance
 
+    def test_string_replace_one(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("find")
+        arg3 = self._make_arg("replacement")
+        instance = Expression.string_replace_one(arg1, arg2, arg3)
+        assert instance.name == "string_replace_one"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "String.string_replace_one(find, replacement)"
+        infix_instance = arg1.string_replace_one(arg2, arg3)
+        assert infix_instance == instance
+
     def test_dot_product(self):
         arg1 = self._make_arg("Vector1")
         arg2 = self._make_arg("Vector2")
