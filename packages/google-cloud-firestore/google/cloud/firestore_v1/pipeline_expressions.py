@@ -1391,8 +1391,8 @@ class Expression(ABC):
     @expose_as_static
     def string_replace_all(
         self,
-        find: str | bytes | Constant | Expression,
-        replacement: str | bytes | Constant | Expression,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
     ) -> "Expression":
         """Creates an expression that replaces all occurrences of a substring or byte
         sequence with a replacement.
