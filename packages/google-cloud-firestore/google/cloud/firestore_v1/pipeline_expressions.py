@@ -1350,6 +1350,24 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def split(self, delimiter: str | "Expression") -> "Expression":
+        """Creates an expression that splits the value of a field on the provided delimiter.
+
+        Example:
+            >>> Field.of("date").split("date", "-")
+
+        Args:
+            field_name: Split the value in this field.
+            delimiter: The delimiter string to split on.
+
+        Returns:
+            A new `Expression` representing the split function.
+        """
+        return FunctionExpression(
+            "split", [self, self._cast_to_expr_or_convert_to_constant(delimiter)]
+        )
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 

@@ -735,3 +735,48 @@ tests:
                     - stringValue: "(?i)[a-z]+"
                     name: regex_find_all
           name: select
+
+  - description: testSplit
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.split:
+                - Field: title
+                - Constant: " "
+            - "title_words"
+    assert_results:
+      - title_words:
+        - "The"
+        - "Hitchhiker's"
+        - "Guide"
+        - "to"
+        - "the"
+        - "Galaxy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                title_words:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: title
+                    - stringValue: " "
+                    name: split
+          name: select
