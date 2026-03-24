@@ -1345,19 +1345,14 @@ class QueryJob(_AsyncJob):
                 if the query has not yet completed.
         """
         property_graphs = []
-        datasets_by_project_name = {}
 
         for pg in self._job_statistics().get("referencedPropertyGraphs", ()):
-            pg_project = pg["projectId"]
-
-            ds_id = pg["datasetId"]
-            pg_dataset = datasets_by_project_name.get((pg_project, ds_id))
-            if pg_dataset is None:
-                pg_dataset = DatasetReference(pg_project, ds_id)
-                datasets_by_project_name[(pg_project, ds_id)] = pg_dataset
-
-            pg_name = pg["propertyGraphId"]
-            property_graphs.append(PropertyGraphReference(pg_dataset, pg_name))
+            property_graphs.append(
+                PropertyGraphReference(
+                    DatasetReference(pg["projectId"], pg["datasetId"]),
+                    pg["propertyGraphId"],
+                )
+            )
 
         return property_graphs
 

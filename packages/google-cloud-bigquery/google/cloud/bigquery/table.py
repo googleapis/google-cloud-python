@@ -414,39 +414,6 @@ class PropertyGraphReference:
         )
 
     @classmethod
-    def from_string(
-        cls, property_graph_id: str, default_project: Optional[str] = None
-    ) -> "PropertyGraphReference":
-        """Construct a property graph reference from string.
-
-        Args:
-            property_graph_id (str):
-                A property graph ID in standard SQL format.
-            default_project (Optional[str]):
-                The project ID to use when ``property_graph_id`` does not
-                include a project ID.
-
-        Returns:
-            PropertyGraphReference: Property graph reference parsed from ``property_graph_id``.
-        """
-        from google.cloud.bigquery.dataset import DatasetReference
-
-        (
-            output_project_id,
-            output_dataset_id,
-            output_property_graph_id,
-        ) = _helpers._parse_3_part_id(
-            property_graph_id,
-            default_project=default_project,
-            property_name="property_graph_id",
-        )
-
-        return cls(
-            DatasetReference(output_project_id, output_dataset_id),
-            output_property_graph_id,
-        )
-
-    @classmethod
     def from_api_repr(cls, resource: dict) -> "PropertyGraphReference":
         """Factory: construct a property graph reference given its API representation."""
         from google.cloud.bigquery.dataset import DatasetReference
