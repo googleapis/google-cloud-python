@@ -14,17 +14,70 @@
 """Spanner Python Driver."""
 
 import logging
+from typing import Final
 
-from . import version as package_version
+from .connection import Connection, connect
+from .cursor import Cursor
 from .dbapi import apilevel, paramstyle, threadsafety
+from .errors import (
+    DatabaseError,
+    DataError,
+    Error,
+    IntegrityError,
+    InterfaceError,
+    InternalError,
+    NotSupportedError,
+    OperationalError,
+    ProgrammingError,
+    Warning,
+)
+from .types import (
+    BINARY,
+    DATETIME,
+    NUMBER,
+    ROWID,
+    STRING,
+    Binary,
+    Date,
+    DateFromTicks,
+    Time,
+    TimeFromTicks,
+    Timestamp,
+    TimestampFromTicks,
+)
 
-__version__ = package_version.__version__
+__version__: Final[str] = "0.0.1"
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 __all__: list[str] = [
     "apilevel",
-    "paramstyle",
     "threadsafety",
+    "paramstyle",
+    "Connection",
+    "connect",
+    "Cursor",
+    "Date",
+    "Time",
+    "Timestamp",
+    "DateFromTicks",
+    "TimeFromTicks",
+    "TimestampFromTicks",
+    "Binary",
+    "STRING",
+    "BINARY",
+    "NUMBER",
+    "DATETIME",
+    "ROWID",
+    "InterfaceError",
+    "ProgrammingError",
+    "OperationalError",
+    "DatabaseError",
+    "DataError",
+    "NotSupportedError",
+    "IntegrityError",
+    "InternalError",
+    "Warning",
+    "Error",
 ]
