@@ -725,7 +725,7 @@ def mypy(session):
         "mypy",
         "-p",
         "google",
-        #"--check-untyped-defs",
+        # "--check-untyped-defs",
         *session.posargs,
     )
 

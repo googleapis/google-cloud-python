@@ -17,8 +17,9 @@ import datetime
 import unittest
 from unittest import mock
 
-from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.exceptions import NotFound
+
+from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1.types.spanner import BatchCreateSessionsResponse
 from google.cloud.spanner_v1.types.spanner import Session as SessionProto
 

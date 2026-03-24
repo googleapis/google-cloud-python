@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Model a set of read-only queries to a database as a snapshot."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.snapshot"
 import functools
 from typing import List, Optional, Union
@@ -34,13 +35,13 @@ from google.cloud.spanner_v1._helpers import (
     _augment_error_with_request_id,
     _check_rst_stream_error,
     _make_value_pb,
+    _merge_client_context,
     _merge_query_options,
+    _merge_request_options,
     _metadata_with_leader_aware_routing,
     _metadata_with_prefix,
     _SessionWrapper,
     _validate_client_context,
-    _merge_client_context,
-    _merge_request_options,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture

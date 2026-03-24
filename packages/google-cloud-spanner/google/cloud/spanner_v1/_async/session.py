@@ -13,10 +13,11 @@
 # limitations under the License.
 
 """Wrapper for Cloud Spanner Session objects."""
+
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.session"
+import time
 from datetime import datetime, timezone
 from functools import total_ordering
-import time
 from typing import MutableMapping, Optional
 
 from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound

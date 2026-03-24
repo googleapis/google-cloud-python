@@ -18,9 +18,9 @@ import decimal
 import math
 
 from google.api_core import datetime_helpers
+from google.cloud._helpers import UTC
 
 from google.cloud import spanner_v1
-from google.cloud._helpers import UTC
 from google.cloud.spanner_v1.data_types import JsonObject
 
 from .testdata import singer_pb2

@@ -122,9 +122,9 @@ class TestRequestIDHeader(MockServerTestBase):
         # Allow for an extra request due to multiplexed session creation
         expected_min = 2 + n
         expected_max = expected_min + 1
-        assert (
-            expected_min <= len(requests) <= expected_max
-        ), f"Expected {expected_min} or {expected_max} requests, got {len(requests)}: {requests}"
+        assert expected_min <= len(requests) <= expected_max, (
+            f"Expected {expected_min} or {expected_max} requests, got {len(requests)}: {requests}"
+        )
         client_id = db._nth_client_id
         channel_id = db._channel_id
         got_stream_segments, got_unary_segments = self.canonicalize_request_id_headers()

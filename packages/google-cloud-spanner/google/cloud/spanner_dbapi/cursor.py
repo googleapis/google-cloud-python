@@ -13,8 +13,10 @@
 # limitations under the License.
 
 """Database cursor for Google Cloud Spanner DB API."""
+
 from collections import namedtuple
 
+import sqlparse
 from google.api_core.exceptions import (
     Aborted,
     AlreadyExists,
@@ -23,7 +25,6 @@ from google.api_core.exceptions import (
     InvalidArgument,
     OutOfRange,
 )
-import sqlparse
 
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import (

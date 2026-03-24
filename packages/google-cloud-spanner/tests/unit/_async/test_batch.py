@@ -13,11 +13,12 @@
 # limitations under the License.
 
 import datetime
-from datetime import timezone
 import unittest
+from datetime import timezone
 from unittest import mock
 
 from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
+
 from google.cloud.spanner_v1 import (
     BatchWriteResponse,
     CommitResponse,

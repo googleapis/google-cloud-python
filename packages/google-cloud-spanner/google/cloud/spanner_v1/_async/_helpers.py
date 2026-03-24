@@ -94,8 +94,8 @@ def _create_experimental_host_transport(
     Raises:
         ValueError: If TLS/mTLS configuration is invalid.
     """
-    from google.auth.credentials import AnonymousCredentials
     import grpc.aio
+    from google.auth.credentials import AnonymousCredentials
 
     channel = None
     if use_plain_text:

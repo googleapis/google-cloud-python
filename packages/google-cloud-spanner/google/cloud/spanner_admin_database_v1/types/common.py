@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.spanner.admin.database.v1",
@@ -44,6 +44,7 @@ class DatabaseDialect(proto.Enum):
         POSTGRESQL (2):
             PostgreSQL supported SQL.
     """
+
     DATABASE_DIALECT_UNSPECIFIED = 0
     GOOGLE_STANDARD_SQL = 1
     POSTGRESQL = 2
@@ -155,6 +156,7 @@ class EncryptionInfo(proto.Message):
                 ``kms_key_version`` will be populated, and
                 ``encryption_status`` may be populated.
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2

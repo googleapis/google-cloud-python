@@ -14,12 +14,12 @@
 
 from unittest.mock import MagicMock, patch
 
+import pytest
 from google.api_core.exceptions import ServiceUnavailable
 from google.auth import exceptions
 from google.auth.credentials import Credentials
 from grpc._interceptor import _UnaryOutcome
 from opentelemetry import metrics
-import pytest
 
 from google.cloud.spanner_v1.client import Client
 from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
@@ -69,9 +69,7 @@ def patched_client(monkeypatch):
         "google.cloud.spanner_v1.metrics.metrics_exporter.MetricServiceClient"
     ), patch(
         "google.cloud.spanner_v1.metrics.metrics_exporter.CloudMonitoringMetricsExporter"
-    ), patch(
-        "opentelemetry.sdk.metrics.export.PeriodicExportingMetricReader"
-    ):
+    ), patch("opentelemetry.sdk.metrics.export.PeriodicExportingMetricReader"):
         client = Client(
             project="test",
             credentials=TestCredentials(),
@@ -93,13 +91,13 @@ def test_metrics_emission_with_failure_attempt(patched_client):
 
     assert factory.enabled
 
+    import google.auth.credentials
+
+    from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
     from google.cloud.spanner_v1.services.spanner.client import SpannerClient
     from google.cloud.spanner_v1.services.spanner.transports.grpc import (
         SpannerGrpcTransport,
     )
-    from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
-
-    import google.auth.credentials
 
     # Recreate the SpannerClient and transport with MetricsInterceptor properly bound
     credentials = database._instance._client.credentials

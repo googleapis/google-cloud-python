@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 from google.api_core.exceptions import Aborted
 from google.auth.credentials import AnonymousCredentials
 from google.rpc import code_pb2
 from mock import PropertyMock, patch
-import pytest
 
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 from google.cloud.spanner_v1.session import Session
 
-from . import _helpers
 from .._helpers import is_multiplexed_enabled
+from . import _helpers
 
 HAS_OTEL_INSTALLED = False
 

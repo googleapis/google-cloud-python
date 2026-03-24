@@ -13,15 +13,15 @@
 # limitations under the License.
 
 """Implementation of the type objects and constructors according to the
-   PEP-0249 specification.
+PEP-0249 specification.
 
-   See
-   https://www.python.org/dev/peps/pep-0249/#type-objects-and-constructors
+See
+https://www.python.org/dev/peps/pep-0249/#type-objects-and-constructors
 """
 
-from base64 import b64encode
 import datetime
 import time
+from base64 import b64encode
 
 
 def _date_from_ticks(ticks):

@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,17 +43,24 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import (
+    duration_pb2,  # type: ignore
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.spanner_v1.services.spanner import (
@@ -1240,9 +1247,7 @@ def test_spanner_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1684,9 +1689,9 @@ def test_batch_create_sessions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_create_sessions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_create_sessions] = (
+            mock_rpc
+        )
         request = {}
         client.batch_create_sessions(request)
 
@@ -3429,9 +3434,9 @@ def test_execute_streaming_sql_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_streaming_sql
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_streaming_sql] = (
+            mock_rpc
+        )
         request = {}
         client.execute_streaming_sql(request)
 
@@ -3679,9 +3684,9 @@ def test_execute_batch_dml_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_batch_dml
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_batch_dml] = (
+            mock_rpc
+        )
         request = {}
         client.execute_batch_dml(request)
 
@@ -3962,9 +3967,9 @@ async def test_read_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.read
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.read] = (
+            mock_rpc
+        )
 
         request = {}
         await client.read(request)
@@ -4408,9 +4413,9 @@ def test_begin_transaction_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.begin_transaction
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.begin_transaction] = (
+            mock_rpc
+        )
         request = {}
         client.begin_transaction(request)
 
@@ -4811,9 +4816,9 @@ async def test_commit_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.commit
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.commit] = (
+            mock_rpc
+        )
 
         request = {}
         await client.commit(request)
@@ -6446,9 +6451,9 @@ def test_batch_create_sessions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_create_sessions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_create_sessions] = (
+            mock_rpc
+        )
 
         request = {}
         client.batch_create_sessions(request)
@@ -7386,9 +7391,9 @@ def test_execute_streaming_sql_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_streaming_sql
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_streaming_sql] = (
+            mock_rpc
+        )
 
         request = {}
         client.execute_streaming_sql(request)
@@ -7524,9 +7529,9 @@ def test_execute_batch_dml_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.execute_batch_dml
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.execute_batch_dml] = (
+            mock_rpc
+        )
 
         request = {}
         client.execute_batch_dml(request)
@@ -7938,9 +7943,9 @@ def test_begin_transaction_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.begin_transaction
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.begin_transaction] = (
+            mock_rpc
+        )
 
         request = {}
         client.begin_transaction(request)

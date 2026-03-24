@@ -13,8 +13,8 @@
 # limitations under the License.
 
 
-from datetime import timezone
 import unittest
+from datetime import timezone
 
 import mock
 
@@ -263,6 +263,7 @@ class TestBackup(_BaseTest):
 
     def test_create_already_exists(self):
         from google.cloud.exceptions import Conflict
+
         from google.cloud.spanner_admin_database_v1 import Backup, CreateBackupRequest
 
         client = _Client()
@@ -296,6 +297,7 @@ class TestBackup(_BaseTest):
 
     def test_create_instance_not_found(self):
         from google.cloud.exceptions import NotFound
+
         from google.cloud.spanner_admin_database_v1 import Backup, CreateBackupRequest
 
         client = _Client()

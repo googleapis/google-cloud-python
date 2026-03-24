@@ -13,13 +13,13 @@
 # limitations under the License.
 
 
-from datetime import timezone
 import unittest
+from datetime import timezone
 
+import mock
 from google.api_core import gapic_v1
 from google.api_core.retry import Retry
 from google.protobuf.field_mask_pb2 import FieldMask
-import mock
 
 from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
@@ -526,8 +526,9 @@ class TestDatabase(_BaseTest):
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        instance1, instance2 = _Instance(self.INSTANCE_NAME + "1"), _Instance(
-            self.INSTANCE_NAME + "2"
+        instance1, instance2 = (
+            _Instance(self.INSTANCE_NAME + "1"),
+            _Instance(self.INSTANCE_NAME + "2"),
         )
         pool1, pool2 = _Pool(), _Pool()
         database1 = self._make_one("database_id1", instance1, pool=pool1)
@@ -570,6 +571,7 @@ class TestDatabase(_BaseTest):
 
     def test_create_already_exists(self):
         from google.cloud.exceptions import Conflict
+
         from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
 
         DATABASE_ID_HYPHEN = "database-id"
@@ -603,6 +605,7 @@ class TestDatabase(_BaseTest):
 
     def test_create_instance_not_found(self):
         from google.cloud.exceptions import NotFound
+
         from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
 
         client = _Client()
@@ -885,6 +888,7 @@ class TestDatabase(_BaseTest):
 
     def test_reload_success(self):
         from google.cloud._helpers import _datetime_to_pb_timestamp
+
         from google.cloud.spanner_admin_database_v1 import (
             Database,
             EncryptionConfig,
@@ -995,6 +999,7 @@ class TestDatabase(_BaseTest):
 
     def test_update_ddl_not_found(self):
         from google.cloud.exceptions import NotFound
+
         from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
         from tests._fixtures import DDL_STATEMENTS
 
@@ -1249,8 +1254,9 @@ class TestDatabase(_BaseTest):
             ExecuteSqlRequest,
             PartialResultSet,
             ResultSetStats,
+            TransactionOptions,
+            TransactionSelector,
         )
-        from google.cloud.spanner_v1 import TransactionOptions, TransactionSelector
         from google.cloud.spanner_v1 import Transaction as TransactionPB
         from google.cloud.spanner_v1._helpers import (
             _make_value_pb,
@@ -1590,6 +1596,7 @@ class TestDatabase(_BaseTest):
         import datetime
 
         from google.cloud._helpers import UTC
+
         from google.cloud.spanner_v1.database import SnapshotCheckout
         from google.cloud.spanner_v1.snapshot import Snapshot
 
@@ -2168,6 +2175,7 @@ class TestBatchCheckout(_BaseTest):
         import datetime
 
         from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
+
         from google.cloud.spanner_v1 import (
             CommitRequest,
             CommitResponse,
@@ -2221,6 +2229,7 @@ class TestBatchCheckout(_BaseTest):
         import datetime
 
         from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
+
         from google.cloud.spanner_v1 import (
             CommitRequest,
             CommitResponse,
@@ -2379,6 +2388,7 @@ class TestSnapshotCheckout(_BaseTest):
         import datetime
 
         from google.cloud._helpers import UTC
+
         from google.cloud.spanner_v1.snapshot import Snapshot
 
         now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
@@ -2677,9 +2687,7 @@ class TestBatchSnapshot(_BaseTest):
         )
 
     def test_execute_sql(self):
-        sql = (
-            "SELECT first_name, last_name, email FROM citizens " "WHERE age <= @max_age"
-        )
+        sql = "SELECT first_name, last_name, email FROM citizens WHERE age <= @max_age"
         params = {"max_age": 30}
         param_types = {"max_age": "INT64"}
         database = self._make_database()
@@ -2995,9 +3003,7 @@ class TestBatchSnapshot(_BaseTest):
         )
 
     def test_generate_query_batches_w_params_w_partition_size_bytes(self):
-        sql = (
-            "SELECT first_name, last_name, email FROM citizens " "WHERE age <= @max_age"
-        )
+        sql = "SELECT first_name, last_name, email FROM citizens WHERE age <= @max_age"
         params = {"max_age": 30}
         param_types = {"max_age": "INT64"}
         size = 1 << 20
@@ -3038,9 +3044,7 @@ class TestBatchSnapshot(_BaseTest):
         )
 
     def test_generate_query_batches_w_retry_and_timeout_params(self):
-        sql = (
-            "SELECT first_name, last_name, email FROM citizens " "WHERE age <= @max_age"
-        )
+        sql = "SELECT first_name, last_name, email FROM citizens WHERE age <= @max_age"
         params = {"max_age": 30}
         param_types = {"max_age": "INT64"}
         size = 1 << 20
@@ -3154,9 +3158,7 @@ class TestBatchSnapshot(_BaseTest):
         )
 
     def test_process_query_batch(self):
-        sql = (
-            "SELECT first_name, last_name, email FROM citizens " "WHERE age <= @max_age"
-        )
+        sql = "SELECT first_name, last_name, email FROM citizens WHERE age <= @max_age"
         params = {"max_age": 30}
         param_types = {"max_age": "INT64"}
         token = b"TOKEN"
@@ -3184,9 +3186,7 @@ class TestBatchSnapshot(_BaseTest):
         )
 
     def test_process_query_batch_w_retry_timeout(self):
-        sql = (
-            "SELECT first_name, last_name, email FROM citizens " "WHERE age <= @max_age"
-        )
+        sql = "SELECT first_name, last_name, email FROM citizens WHERE age <= @max_age"
         params = {"max_age": 30}
         param_types = {"max_age": "INT64"}
         token = b"TOKEN"
@@ -3319,9 +3319,7 @@ class TestBatchSnapshot(_BaseTest):
         )
 
     def test_process_w_query_batch(self):
-        sql = (
-            "SELECT first_name, last_name, email FROM citizens " "WHERE age <= @max_age"
-        )
+        sql = "SELECT first_name, last_name, email FROM citizens WHERE age <= @max_age"
         params = {"max_age": 30}
         param_types = {"max_age": "INT64"}
         token = b"TOKEN"
@@ -3381,9 +3379,9 @@ class TestMutationGroupsCheckout(_BaseTest):
     def test_context_mgr_success(self):
         import datetime
 
+        from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
         from google.rpc.status_pb2 import Status
 
-        from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
         from google.cloud.spanner_v1 import (
             BatchWriteRequest,
             BatchWriteResponse,

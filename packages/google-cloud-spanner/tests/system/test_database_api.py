@@ -16,10 +16,10 @@ import datetime
 import time
 import uuid
 
+import pytest
 from google.api_core import exceptions
 from google.iam.v1 import policy_pb2
 from google.type import expr_pb2
-import pytest
 
 from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
@@ -229,8 +229,7 @@ def test_create_database_with_default_leader_success(
     temp_db_id = _helpers.unique_id("dflt_ldr_db", separator="_")
     default_leader = "us-east4"
     ddl_statements = [
-        f"ALTER DATABASE {temp_db_id}"
-        f" SET OPTIONS (default_leader = '{default_leader}')"
+        f"ALTER DATABASE {temp_db_id} SET OPTIONS (default_leader = '{default_leader}')"
     ]
     temp_db = multiregion_instance.database(
         temp_db_id, pool=pool, ddl_statements=ddl_statements
@@ -439,8 +438,7 @@ def test_update_ddl_w_default_leader_success(
     assert temp_db.default_leader is None
 
     ddl_statements = _helpers.DDL_STATEMENTS + [
-        f"ALTER DATABASE {temp_db_id}"
-        f" SET OPTIONS (default_leader = '{default_leader}')"
+        f"ALTER DATABASE {temp_db_id} SET OPTIONS (default_leader = '{default_leader}')"
     ]
     operation = temp_db.update_ddl(
         ddl_statements, proto_descriptors=proto_descriptor_file

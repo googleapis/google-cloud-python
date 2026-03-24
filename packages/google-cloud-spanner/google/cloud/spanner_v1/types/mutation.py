@@ -17,9 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+from google.protobuf import (
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 
 from google.cloud.spanner_v1.types import keys
 

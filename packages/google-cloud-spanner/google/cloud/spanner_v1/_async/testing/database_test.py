@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core import grpc_helpers, grpc_helpers_async
 import google.auth.credentials
 import grpc
+from google.api_core import grpc_helpers, grpc_helpers_async
 
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect

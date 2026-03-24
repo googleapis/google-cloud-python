@@ -15,10 +15,10 @@ from datetime import timedelta
 # limitations under the License.
 from typing import Mapping
 
-from google.api_core import gapic_v1
-from google.api_core.retry import Retry
 import mock
 import pytest
+from google.api_core import gapic_v1
+from google.api_core.retry import Retry
 
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1 import (

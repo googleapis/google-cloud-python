@@ -15,6 +15,7 @@
 Contains a set of AstDecorator classes, which define the behavior of CrossSync decorators.
 Each AstDecorator class is used through @CrossSync.<decorator_name>
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterable
