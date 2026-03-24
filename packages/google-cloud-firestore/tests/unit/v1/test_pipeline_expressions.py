@@ -1156,6 +1156,15 @@ class TestExpressionessionMethods:
         infix_instance = arg1.map_keys()
         assert infix_instance == instance
 
+    def test_map_values(self):
+        arg1 = self._make_arg("Map")
+        instance = Expression.map_values(arg1)
+        assert instance.name == "map_values"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Map.map_values()"
+        infix_instance = arg1.map_values()
+        assert infix_instance == instance
+
     def test_mod(self):
         arg1 = self._make_arg("Left")
         arg2 = self._make_arg("Right")

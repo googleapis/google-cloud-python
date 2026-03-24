@@ -348,3 +348,41 @@ tests:
                     args:
                     - fieldReferenceValue: awards
           name: select
+  - description: testMapValues
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.map_values:
+                - Field: awards
+            - "award_values"
+    assert_results:
+      - award_values:
+          - true
+          - true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "Dune"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                award_values:
+                  functionValue:
+                    name: map_values
+                    args:
+                    - fieldReferenceValue: awards
+          name: select
