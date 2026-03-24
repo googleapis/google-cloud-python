@@ -150,6 +150,24 @@ tests:
                     - stringValue: "new_award"
                     - booleanValue: true
           name: select
+  - description: testMapSetNone
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "Dune"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.map_set:
+                - Field: awards
+                - "hugo"
+                - Constant: null
+            - "awards_set"
+    assert_results:
+      - awards_set:
+          hugo: null
+          nebula: true
   - description: testMapRemove
     pipeline:
       - Collection: books
