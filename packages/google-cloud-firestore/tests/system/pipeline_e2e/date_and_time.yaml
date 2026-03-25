@@ -110,11 +110,13 @@ tests:
             - FunctionExpression.timestamp_trunc:
                 - Field: time
                 - Constant: "day"
+                - Constant: "America/Los_Angeles"
             - "trunc_day"
         - AliasedExpression:
             - FunctionExpression.timestamp_extract:
                 - Field: time
                 - Constant: "year"
+                - Constant: "America/Los_Angeles"
             - "extract_year"
         - AliasedExpression:
             - FunctionExpression.timestamp_diff:
@@ -125,3 +127,46 @@ tests:
                 - Field: time
                 - Constant: "hour"
             - "diff_hours"
+    assert_results:
+      - trunc_day: "1993-04-28T07:00:00.000000+00:00"
+        extract_year: 1993
+        diff_hours: 24
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /timestamps
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trunc_day:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: day
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_trunc
+                extract_year:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: time
+                    - stringValue: year
+                    - stringValue: America/Los_Angeles
+                    name: timestamp_extract
+                diff_hours:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: time
+                        - stringValue: day
+                        - integerValue: '1'
+                        name: timestamp_add
+                    - fieldReferenceValue: time
+                    - stringValue: hour
+                    name: timestamp_diff
+          name: select
