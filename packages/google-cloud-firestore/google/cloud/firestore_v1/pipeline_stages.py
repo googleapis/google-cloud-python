@@ -303,7 +303,7 @@ class FindNearest(Stage):
         return options
 
 
-class Let(Stage):
+class Define(Stage):
     """Stage which declares a set of variables which can be accessed from the current
     scope and below."""
 

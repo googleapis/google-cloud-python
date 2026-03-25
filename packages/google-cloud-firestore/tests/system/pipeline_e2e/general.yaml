@@ -692,7 +692,7 @@ tests:
         - FunctionExpression.equal:
           - Field: title
           - Constant: "The Hitchhiker's Guide to the Galaxy"
-      - Let:
+      - Define:
           my_rating:
             Field: rating
           author_name: 

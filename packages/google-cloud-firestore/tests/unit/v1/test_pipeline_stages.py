@@ -421,9 +421,9 @@ class TestFindNearest:
         assert len(result.args) == 3
 
 
-class TestLet:
+class TestDefine:
     def _make_one(self, *args, **kwargs):
-        return stages.Let(*args, **kwargs)
+        return stages.Define(*args, **kwargs)
 
     def test_ctor(self):
         expr1 = Field.of("field1")
@@ -436,7 +436,7 @@ class TestLet:
         expr1 = Field.of("field1")
         instance = self._make_one(var1=expr1)
         repr_str = repr(instance)
-        assert repr_str == "Let(var1=Field.of('field1'))"
+        assert repr_str == "Define(var1=Field.of('field1'))"
 
     def test_to_pb(self):
         expr1 = Field.of("field1")
