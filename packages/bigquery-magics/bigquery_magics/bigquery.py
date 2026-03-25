@@ -635,41 +635,26 @@ MAX_GRAPH_VISUALIZATION_SIZE = 2_000_000
 MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE = 100_000
 
 
-def _get_graph_name(query_text: str):
-    """Returns the name of the graph queried.
-
-    Supports GRAPH only, not GRAPH_TABLE.
-
-    Args:
-        query_text: The SQL query text.
-
-    Returns:
-        A (dataset_id, graph_id) tuple, or None if the graph name cannot be determined.
-    """
-    match = re.match(r"\s*GRAPH\s+(\S+)\.(\S+)", query_text, re.IGNORECASE)
-    if match:
-        (dataset_id, graph_id) = (match.group(1)), match.group(2)
-        if "`" in dataset_id or "`" in graph_id:
-            return None  # Backticks in graph name not support for schema view
-        return (dataset_id, graph_id)
-    return None
-
-
 def _get_graph_schema(
     bq_client: bigquery.client.Client, query_text: str, query_job: bigquery.job.QueryJob
 ):
-    graph_name_result = _get_graph_name(query_text)
-    if graph_name_result is None:
+    property_graphs = query_job.referenced_property_graphs
+    if len(property_graphs) != 1:
         return None
-    dataset_id, graph_id = graph_name_result
+
+    graph_ref = property_graphs[0]
 
     info_schema_query = f"""
         select PROPERTY_GRAPH_METADATA_JSON
-        FROM `{query_job.configuration.destination.project}.{dataset_id}`.INFORMATION_SCHEMA.PROPERTY_GRAPHS
+        FROM `{graph_ref.project}.{graph_ref.dataset_id}`.INFORMATION_SCHEMA.PROPERTY_GRAPHS
         WHERE PROPERTY_GRAPH_NAME = @graph_id
     """
     job_config = bigquery.QueryJobConfig(
-        query_parameters=[bigquery.ScalarQueryParameter("graph_id", "STRING", graph_id)]
+        query_parameters=[
+            bigquery.ScalarQueryParameter(
+                "graph_id", "STRING", graph_ref.property_graph_id
+            )
+        ]
     )
     job_config.use_legacy_sql = False
     try:
