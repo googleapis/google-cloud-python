@@ -830,12 +830,10 @@ class TypeAnnotator(metaclass=_TypeAnnotator):
         return expression
 
     @t.overload
-    def _annotate_map(self, expression: exp.Map) -> exp.Map:
-        ...
+    def _annotate_map(self, expression: exp.Map) -> exp.Map: ...
 
     @t.overload
-    def _annotate_map(self, expression: exp.VarMap) -> exp.VarMap:
-        ...
+    def _annotate_map(self, expression: exp.VarMap) -> exp.VarMap: ...
 
     def _annotate_map(self, expression):
         keys = expression.args.get("keys")

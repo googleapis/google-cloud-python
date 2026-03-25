@@ -15,7 +15,6 @@
 """For composing estimators together. This module is styled after scikit-learn's
 pipeline module: https://scikit-learn.org/stable/modules/pipeline.html."""
 
-
 from __future__ import annotations
 
 from typing import List, Optional, Tuple

@@ -969,12 +969,10 @@ class BigQuery(Dialect):
             return column
 
         @t.overload
-        def _parse_json_object(self, agg: Lit[False]) -> exp.JSONObject:
-            ...
+        def _parse_json_object(self, agg: Lit[False]) -> exp.JSONObject: ...
 
         @t.overload
-        def _parse_json_object(self, agg: Lit[True]) -> exp.JSONObjectAgg:
-            ...
+        def _parse_json_object(self, agg: Lit[True]) -> exp.JSONObjectAgg: ...
 
         def _parse_json_object(self, agg=False):
             json_object = super()._parse_json_object()
@@ -1289,7 +1287,8 @@ class BigQuery(Dialect):
                 e.this,
                 e.args.get("form"),
             ),
-            exp.PartitionedByProperty: lambda self, e: f"PARTITION BY {self.sql(e, 'this')}",
+            exp.PartitionedByProperty: lambda self,
+            e: f"PARTITION BY {self.sql(e, 'this')}",
             exp.RegexpExtract: lambda self, e: self.func(
                 "REGEXP_EXTRACT",
                 e.this,

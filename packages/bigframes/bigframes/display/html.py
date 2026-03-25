@@ -181,7 +181,7 @@ def _obj_ref_rt_to_html(obj_ref_rt: str) -> str:
             url = obj_ref_rt_json["access_urls"]["read_url"]
             return f'<img src="{url}"{size_str}>'
 
-    return f'uri: {obj_ref_rt_json["objectref"]["uri"]}, authorizer: {obj_ref_rt_json["objectref"]["authorizer"]}'
+    return f"uri: {obj_ref_rt_json['objectref']['uri']}, authorizer: {obj_ref_rt_json['objectref']['authorizer']}"
 
 
 def create_html_representation(

@@ -60,8 +60,7 @@ class Aggregation(expression.Expression):
     @abc.abstractmethod
     def inputs(
         self,
-    ) -> typing.Tuple[expression.Expression, ...]:
-        ...
+    ) -> typing.Tuple[expression.Expression, ...]: ...
 
     @property
     def children(self) -> Tuple[expression.Expression, ...]:
@@ -82,8 +81,7 @@ class Aggregation(expression.Expression):
         return False
 
     @abc.abstractmethod
-    def replace_args(self: TExpression, *arg) -> TExpression:
-        ...
+    def replace_args(self: TExpression, *arg) -> TExpression: ...
 
     def transform_children(
         self: TExpression, t: Callable[[expression.Expression], expression.Expression]

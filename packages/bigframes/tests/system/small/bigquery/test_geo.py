@@ -444,9 +444,7 @@ def test_geo_st_isclosed(session: bigframes.session.Session):
             GeometryCollection(),  # Empty GeometryCollection
             bigframes.geopandas.GeoSeries.from_wkt(
                 ["GEOMETRYCOLLECTION EMPTY"], session=session
-            ).iloc[
-                0
-            ],  # Also empty
+            ).iloc[0],  # Also empty
             None,  # Should be filtered out by dropna
         ],
         index=[0, 1, 2, 3, 4, 5, 6],

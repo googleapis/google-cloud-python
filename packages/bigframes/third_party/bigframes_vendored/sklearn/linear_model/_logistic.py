@@ -11,7 +11,6 @@ Logistic Regression
 #         Arthur Mensch <arthur.mensch@m4x.org
 # Original location: https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/linear_model/_logistic.py
 
-
 from bigframes_vendored.sklearn.linear_model._base import (
     BaseEstimator,
     LinearClassifierMixin,

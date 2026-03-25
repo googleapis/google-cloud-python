@@ -1,5 +1,6 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/io/pickle.py
-""" pickle compat """
+"""pickle compat"""
+
 from __future__ import annotations
 
 from pandas._typing import (

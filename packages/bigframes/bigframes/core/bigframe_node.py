@@ -142,8 +142,7 @@ class BigFrameNode:
     # TODO: Store some local data lazily for select, aggregate nodes.
     @property
     @abc.abstractmethod
-    def fields(self) -> Sequence[field.Field]:
-        ...
+    def fields(self) -> Sequence[field.Field]: ...
 
     @property
     def ids(self) -> Iterable[identifiers.ColumnId]:
@@ -300,9 +299,9 @@ class BigFrameNode:
         self: BigFrameNode,
     ) -> Generator[BigFrameNode, None, None]:
         """Returns nodes in reverse topological order, using Kahn's algorithm."""
-        child_to_parents: Dict[
-            BigFrameNode, list[BigFrameNode]
-        ] = collections.defaultdict(list)
+        child_to_parents: Dict[BigFrameNode, list[BigFrameNode]] = (
+            collections.defaultdict(list)
+        )
         out_degree: Dict[BigFrameNode, int] = collections.defaultdict(int)
 
         queue: collections.deque["BigFrameNode"] = collections.deque()

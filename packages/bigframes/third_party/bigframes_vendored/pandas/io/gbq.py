@@ -1,5 +1,5 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/io/gbq.py
-""" Google BigQuery support """
+"""Google BigQuery support"""
 
 from __future__ import annotations
 

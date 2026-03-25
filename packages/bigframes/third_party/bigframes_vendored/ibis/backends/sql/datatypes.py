@@ -414,11 +414,7 @@ class SqlglotType(TypeMapper):
         this = getattr(typecode, dtype.geotype.upper())
         return sge.DataType(this=this, expressions=expressions)
 
-    _from_ibis_Point = (
-        _from_ibis_LineString
-    ) = (
-        _from_ibis_Polygon
-    ) = (
+    _from_ibis_Point = _from_ibis_LineString = _from_ibis_Polygon = (
         _from_ibis_MultiLineString
     ) = _from_ibis_MultiPoint = _from_ibis_MultiPolygon = _from_ibis_SpecificGeometry
 
@@ -465,11 +461,9 @@ class BigQueryType(SqlglotType):
     def _from_sqlglot_TINYINT(cls) -> dt.Int64:
         return dt.Int64(nullable=cls.default_nullable)
 
-    _from_sqlglot_UINT = (
-        _from_sqlglot_USMALLINT
-    ) = (
-        _from_sqlglot_UTINYINT
-    ) = _from_sqlglot_INT = _from_sqlglot_SMALLINT = _from_sqlglot_TINYINT
+    _from_sqlglot_UINT = _from_sqlglot_USMALLINT = _from_sqlglot_UTINYINT = (
+        _from_sqlglot_INT
+    ) = _from_sqlglot_SMALLINT = _from_sqlglot_TINYINT
 
     @classmethod
     def _from_sqlglot_UBIGINT(cls) -> NoReturn:

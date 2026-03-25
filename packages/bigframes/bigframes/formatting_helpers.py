@@ -45,7 +45,7 @@ query_job_prop_pairs = {
 def add_feedback_link(
     exception: Union[
         api_core_exceptions.RetryError, api_core_exceptions.GoogleAPICallError
-    ]
+    ],
 ):
     exception.message = exception.message + f" {constants.FEEDBACK_LINK}"
 
@@ -78,11 +78,13 @@ def repr_query_job(query_job: Optional[bigquery.QueryJob]):
         if job_val is not None:
             res += "\n"
             if key == "Job Id":  # add link to job
-                res += f"""Job url: {get_job_url(
-                    project_id=query_job.project,
-                    location=query_job.location,
-                    job_id=query_job.job_id,
-                )}"""
+                res += f"""Job url: {
+                    get_job_url(
+                        project_id=query_job.project,
+                        location=query_job.location,
+                        job_id=query_job.job_id,
+                    )
+                }"""
             elif key == "Slot Time":
                 res += f"""{key}: {get_formatted_time(job_val)}"""
             elif key == "Bytes Processed":
@@ -533,11 +535,15 @@ def get_base_job_loading_html(job: GenericJob):
     Returns:
         Html string.
     """
-    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. <a target=\"_blank\" href="{get_job_url(
-        project_id=job.job_id,
-        location=job.location,
-        job_id=job.job_id,
-    )}">Open Job</a>"""
+    return f"""{job.job_type.capitalize()} job {job.job_id} is {
+        job.state
+    }. <a target=\"_blank\" href="{
+        get_job_url(
+            project_id=job.job_id,
+            location=job.location,
+            job_id=job.job_id,
+        )
+    }">Open Job</a>"""
 
 
 def get_base_job_loading_string(job: GenericJob):
@@ -548,11 +554,13 @@ def get_base_job_loading_string(job: GenericJob):
     Returns:
         String
     """
-    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. \n{get_job_url(
-        project_id=job.job_id,
-        location=job.location,
-        job_id=job.job_id,
-    )}"""
+    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. \n{
+        get_job_url(
+            project_id=job.job_id,
+            location=job.location,
+            job_id=job.job_id,
+        )
+    }"""
 
 
 def get_formatted_time(val):

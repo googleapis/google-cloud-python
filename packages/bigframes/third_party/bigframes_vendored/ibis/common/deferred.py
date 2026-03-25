@@ -51,8 +51,7 @@ class Resolver(Coercible, Hashable):
         """
 
     @abstractmethod
-    def __eq__(self, other: Resolver) -> bool:
-        ...
+    def __eq__(self, other: Resolver) -> bool: ...
 
     @classmethod
     def __coerce__(cls, value):
@@ -579,13 +578,11 @@ F = TypeVar("F", bound=Callable)
 
 
 @overload
-def deferrable(*, repr: str | None = None) -> Callable[[F], F]:
-    ...
+def deferrable(*, repr: str | None = None) -> Callable[[F], F]: ...
 
 
 @overload
-def deferrable(func: F) -> F:
-    ...
+def deferrable(func: F) -> F: ...
 
 
 def deferrable(func=None, *, repr=None):

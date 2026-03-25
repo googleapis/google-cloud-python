@@ -105,7 +105,7 @@ def test_nested_expression_dtypes_are_cached():
 
 
 def _create_field_bindings(
-    col_dtypes: typing.Dict[str, dtypes.Dtype]
+    col_dtypes: typing.Dict[str, dtypes.Dtype],
 ) -> typing.Dict[ids.ColumnId, field.Field]:
     return {
         ids.ColumnId(col): field.Field(ids.ColumnId(col), dtype)

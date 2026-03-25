@@ -529,7 +529,8 @@ def _(
     window=None,
 ) -> ibis_types.Value:
     return _apply_window_if_present(
-        ibis_ops.FirstNonNullValue(column).to_expr(), window  # type: ignore
+        ibis_ops.FirstNonNullValue(column).to_expr(),
+        window,  # type: ignore
     )
 
 
@@ -549,7 +550,8 @@ def _(
     window=None,
 ) -> ibis_types.Value:
     return _apply_window_if_present(
-        ibis_ops.LastNonNullValue(column).to_expr(), window  # type: ignore
+        ibis_ops.LastNonNullValue(column).to_expr(),
+        window,  # type: ignore
     )
 
 
@@ -802,7 +804,8 @@ def _to_ibis_boundary(
     if boundary is None:
         return None
     return ibis_expr_window.WindowBoundary(
-        abs(boundary), preceding=boundary <= 0  # type:ignore
+        abs(boundary),
+        preceding=boundary <= 0,  # type:ignore
     )
 
 

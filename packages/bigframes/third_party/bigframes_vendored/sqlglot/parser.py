@@ -3821,12 +3821,10 @@ class Parser(metaclass=_Parser):
         return this
 
     @t.overload
-    def _parse_query_modifiers(self, this: E) -> E:
-        ...
+    def _parse_query_modifiers(self, this: E) -> E: ...
 
     @t.overload
-    def _parse_query_modifiers(self, this: None) -> None:
-        ...
+    def _parse_query_modifiers(self, this: None) -> None: ...
 
     def _parse_query_modifiers(self, this):
         if isinstance(this, self.MODIFIABLES):
@@ -4620,8 +4618,7 @@ class Parser(metaclass=_Parser):
         is_derived = self._match_pair(TokenType.L_PAREN, TokenType.VALUES)
         if not is_derived and not (
             # ClickHouse's `FORMAT Values` is equivalent to `VALUES`
-            self._match_text_seq("VALUES")
-            or self._match_text_seq("FORMAT", "VALUES")
+            self._match_text_seq("VALUES") or self._match_text_seq("FORMAT", "VALUES")
         ):
             return None
 
@@ -7452,12 +7449,10 @@ class Parser(metaclass=_Parser):
         return None
 
     @t.overload
-    def _parse_json_object(self, agg: Lit[False]) -> exp.JSONObject:
-        ...
+    def _parse_json_object(self, agg: Lit[False]) -> exp.JSONObject: ...
 
     @t.overload
-    def _parse_json_object(self, agg: Lit[True]) -> exp.JSONObjectAgg:
-        ...
+    def _parse_json_object(self, agg: Lit[True]) -> exp.JSONObjectAgg: ...
 
     def _parse_json_object(self, agg=False):
         star = self._parse_star()

@@ -463,7 +463,7 @@ def worker_initializer(project_id: str | None):
 
 
 def worker_process_item(
-    work_item: tuple[str, Sequence[tuple[str, str, int | None]], int]
+    work_item: tuple[str, Sequence[tuple[str, str, int | None]], int],
 ):
     global worker_client, worker_rng
 

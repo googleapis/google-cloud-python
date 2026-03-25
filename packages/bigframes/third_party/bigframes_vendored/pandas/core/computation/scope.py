@@ -2,6 +2,7 @@
 """
 Module for scope operations
 """
+
 from __future__ import annotations
 
 import datetime

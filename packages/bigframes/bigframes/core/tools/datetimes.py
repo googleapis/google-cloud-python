@@ -60,10 +60,17 @@ def to_datetime(
 
     arg = bigframes.series.Series(arg, session=session)
 
-    if format and unit and arg.dtype in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE):  # type: ignore
+    if (
+        format
+        and unit
+        and arg.dtype in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE)
+    ):  # type: ignore
         raise ValueError("cannot specify both format and unit")
 
-    if unit and arg.dtype not in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE):  # type: ignore
+    if unit and arg.dtype not in (
+        bigframes.dtypes.INT_DTYPE,
+        bigframes.dtypes.FLOAT_DTYPE,
+    ):  # type: ignore
         raise NotImplementedError(
             f"Unit parameter is not supported for non-numerical input types. {constants.FEEDBACK_LINK}"
         )

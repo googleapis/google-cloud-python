@@ -405,8 +405,7 @@ class BigQueryCompiler(SQLGlotCompiler):
     def visit_ArrayCollect(self, op, *, arg, where, order_by, include_null):
         if where is not None and include_null:
             raise ibis_exceptions.UnsupportedOperationError(
-                "Combining `include_null=True` and `where` is not supported "
-                "by bigquery"
+                "Combining `include_null=True` and `where` is not supported by bigquery"
             )
         out = self.agg.array_agg(arg, where=where, order_by=order_by)
         if not include_null:

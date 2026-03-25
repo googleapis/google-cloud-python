@@ -17,6 +17,7 @@
 These modules are provided for testing the BigQuery DataFrames package. The
 interface is not considered stable.
 """
+
 from bigframes.testing.utils import (
     assert_frame_equal,
     assert_index_equal,

@@ -428,9 +428,9 @@ def get_cloud_functions(
 ) -> Iterable[functions.ListFunctionsResponse]:
     """Get the cloud functions in the given project and location."""
 
-    assert (
-        not name or not name_prefix
-    ), "Either 'name' or 'name_prefix' can be passed but not both."
+    assert not name or not name_prefix, (
+        "Either 'name' or 'name_prefix' can be passed but not both."
+    )
 
     _, location = bff_utils.get_remote_function_locations(location)
     parent = f"projects/{project}/locations/{location}"

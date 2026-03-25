@@ -268,8 +268,7 @@ def precision_score(
     *,
     pos_label: int | float | bool | str = ...,
     average: Literal["binary"] = ...,
-) -> float:
-    ...
+) -> float: ...
 
 
 @overload
@@ -279,8 +278,7 @@ def precision_score(
     *,
     pos_label: int | float | bool | str = ...,
     average: None = ...,
-) -> pd.Series:
-    ...
+) -> pd.Series: ...
 
 
 def precision_score(

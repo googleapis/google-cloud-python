@@ -18,7 +18,6 @@
 See bigframes.bigquery.obj for public docs.
 """
 
-
 from __future__ import annotations
 
 import datetime

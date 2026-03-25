@@ -211,16 +211,16 @@ class SQLGlotIR:
         uid_gen: guid.SequentialUIDGenerator,
     ) -> SQLGlotIR:
         """Builds a SQLGlot expression by unioning of multiple select expressions."""
-        assert (
-            len(list(selects)) >= 2
-        ), f"At least two select expressions must be provided, but got {selects}."
+        assert len(list(selects)) >= 2, (
+            f"At least two select expressions must be provided, but got {selects}."
+        )
 
         existing_ctes: list[sge.CTE] = []
         union_selects: list[sge.Select] = []
         for select in selects:
-            assert isinstance(
-                select, sge.Select
-            ), f"All provided expressions must be of type sge.Select, but got {type(select)}"
+            assert isinstance(select, sge.Select), (
+                f"All provided expressions must be of type sge.Select, but got {type(select)}"
+            )
 
             select_expr = select.copy()
             select_expr, select_ctes = _pop_query_ctes(select_expr)

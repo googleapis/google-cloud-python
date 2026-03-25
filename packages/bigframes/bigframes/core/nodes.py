@@ -69,17 +69,14 @@ class AdditiveNode:
 
     @property
     @abc.abstractmethod
-    def added_fields(self) -> Tuple[Field, ...]:
-        ...
+    def added_fields(self) -> Tuple[Field, ...]: ...
 
     @property
     @abc.abstractmethod
-    def additive_base(self) -> BigFrameNode:
-        ...
+    def additive_base(self) -> BigFrameNode: ...
 
     @abc.abstractmethod
-    def replace_additive_base(self, BigFrameNode) -> BigFrameNode:
-        ...
+    def replace_additive_base(self, BigFrameNode) -> BigFrameNode: ...
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
@@ -322,9 +319,9 @@ class JoinNode(BigFrameNode):
     propogate_order: bool
 
     def _validate(self):
-        assert not (
-            set(self.left_child.ids) & set(self.right_child.ids)
-        ), "Join ids collide"
+        assert not (set(self.left_child.ids) & set(self.right_child.ids)), (
+            "Join ids collide"
+        )
 
     @property
     def row_preserving(self) -> bool:

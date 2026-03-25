@@ -273,9 +273,7 @@ class KBinsDiscretizer(
     base.Transformer,
     bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer,
 ):
-    __doc__ = (
-        bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer.__doc__
-    )
+    __doc__ = bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer.__doc__
 
     def __init__(
         self,

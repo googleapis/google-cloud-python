@@ -171,7 +171,13 @@ class ColumnTransformer(
     @property
     def transformers_(
         self,
-    ) -> List[Tuple[str, SingleColTransformer, str,]]:
+    ) -> List[
+        Tuple[
+            str,
+            SingleColTransformer,
+            str,
+        ]
+    ]:
         """The collection of transformers as tuples of (name, transformer, column)."""
         result: List[
             Tuple[

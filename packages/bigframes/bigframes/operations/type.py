@@ -37,8 +37,7 @@ class TypeSignature(abc.ABC):
 
 class UnaryTypeSignature(TypeSignature):
     @abc.abstractmethod
-    def output_type(self, input_type: ExpressionType) -> ExpressionType:
-        ...
+    def output_type(self, input_type: ExpressionType) -> ExpressionType: ...
 
     @property
     def as_method(self):
@@ -53,8 +52,7 @@ class BinaryTypeSignature(TypeSignature):
     @abc.abstractmethod
     def output_type(
         self, left_type: ExpressionType, right_type: ExpressionType
-    ) -> ExpressionType:
-        ...
+    ) -> ExpressionType: ...
 
     @property
     def as_method(self):

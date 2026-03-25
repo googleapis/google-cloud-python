@@ -2,6 +2,7 @@
 """
 :func:`~pandas.eval` source string parsing functions
 """
+
 from __future__ import annotations
 
 import token

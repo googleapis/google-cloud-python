@@ -275,8 +275,7 @@ def start_query_with_client(
     query_with_job: Literal[True],
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]: ...
 
 
 @overload
@@ -292,8 +291,7 @@ def start_query_with_client(
     query_with_job: Literal[False],
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]: ...
 
 
 @overload
@@ -310,8 +308,7 @@ def start_query_with_client(
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]: ...
 
 
 @overload
@@ -328,8 +325,7 @@ def start_query_with_client(
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
     session=None,
-) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
-    ...
+) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]: ...
 
 
 def start_query_with_client(

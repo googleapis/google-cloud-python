@@ -293,13 +293,13 @@ class TableWidget(_WIDGET_BASE):
     def _set_table_html(self) -> None:
         """Sets the current html data based on the current page and page size."""
         new_page = None
-        with self._setting_html_lock, bigframes.option_context(
-            "display.progress_bar", None
+        with (
+            self._setting_html_lock,
+            bigframes.option_context("display.progress_bar", None),
         ):
             if self._error_message:
                 self.table_html = (
-                    f"<div class='bigframes-error-message'>"
-                    f"{self._error_message}</div>"
+                    f"<div class='bigframes-error-message'>{self._error_message}</div>"
                 )
                 return
 

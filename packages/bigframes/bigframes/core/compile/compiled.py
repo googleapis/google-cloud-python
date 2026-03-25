@@ -56,7 +56,8 @@ class UnorderedIR:
             column.resolve(table)  # type:ignore
             # TODO(https://github.com/ibis-project/ibis/issues/7613): use
             # public API to refer to Deferred type.
-            if isinstance(column, ibis_deferred.Deferred) else column
+            if isinstance(column, ibis_deferred.Deferred)
+            else column
             for column in columns
         )
         # To allow for more efficient lookup by column name, create a

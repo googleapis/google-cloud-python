@@ -16,8 +16,7 @@ def normalize_identifiers(
     expression: E,
     dialect: DialectType = None,
     store_original_column_identifiers: bool = False,
-) -> E:
-    ...
+) -> E: ...
 
 
 @t.overload
@@ -25,8 +24,7 @@ def normalize_identifiers(
     expression: str,
     dialect: DialectType = None,
     store_original_column_identifiers: bool = False,
-) -> exp.Identifier:
-    ...
+) -> exp.Identifier: ...
 
 
 def normalize_identifiers(

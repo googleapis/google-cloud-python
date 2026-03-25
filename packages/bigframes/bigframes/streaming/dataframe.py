@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Module for bigquery continuous queries"""
+
 from __future__ import annotations
 
 import functools

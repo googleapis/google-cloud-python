@@ -162,8 +162,7 @@ def prune_aggregate(
 def prune_leaf(
     node: nodes.BigFrameNode,
     used_cols: typing.AbstractSet[identifiers.ColumnId],
-):
-    ...
+): ...
 
 
 @prune_leaf.register

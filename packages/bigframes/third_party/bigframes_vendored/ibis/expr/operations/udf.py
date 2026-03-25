@@ -35,9 +35,9 @@ if TYPE_CHECKING:
 EMPTY = inspect.Parameter.empty
 
 
-_udf_name_cache: MutableMapping[
-    type[core.Node], Iterable[int]
-] = collections.defaultdict(itertools.count)
+_udf_name_cache: MutableMapping[type[core.Node], Iterable[int]] = (
+    collections.defaultdict(itertools.count)
+)
 
 
 def _make_udf_name(name: str) -> str:
@@ -186,8 +186,7 @@ class scalar(_UDF):
 
     @overload
     @classmethod
-    def builtin(cls, fn: Callable) -> Callable[..., ir.Value]:
-        ...
+    def builtin(cls, fn: Callable) -> Callable[..., ir.Value]: ...
 
     @overload
     @classmethod
@@ -199,8 +198,7 @@ class scalar(_UDF):
         catalog: str | None = None,
         signature: tuple[tuple[Any, ...], Any] | None = None,
         **kwargs: Any,
-    ) -> Callable[[Callable], Callable[..., ir.Value]]:
-        ...
+    ) -> Callable[[Callable], Callable[..., ir.Value]]: ...
 
     @util.experimental
     @classmethod
@@ -263,8 +261,7 @@ class scalar(_UDF):
 
     @overload
     @classmethod
-    def python(cls, fn: Callable) -> Callable[..., ir.Value]:
-        ...
+    def python(cls, fn: Callable) -> Callable[..., ir.Value]: ...
 
     @overload
     @classmethod
@@ -276,8 +273,7 @@ class scalar(_UDF):
         catalog: str | None = None,
         signature: tuple[tuple[Any, ...], Any] | None = None,
         **kwargs: Any,
-    ) -> Callable[[Callable], Callable[..., ir.Value]]:
-        ...
+    ) -> Callable[[Callable], Callable[..., ir.Value]]: ...
 
     @util.experimental
     @classmethod
@@ -385,8 +381,7 @@ class scalar(_UDF):
 
     @overload
     @classmethod
-    def pandas(cls, fn: Callable) -> Callable[..., ir.Value]:
-        ...
+    def pandas(cls, fn: Callable) -> Callable[..., ir.Value]: ...
 
     @overload
     @classmethod
@@ -398,8 +393,7 @@ class scalar(_UDF):
         catalog: str | None = None,
         signature: tuple[tuple[Any, ...], Any] | None = None,
         **kwargs: Any,
-    ) -> Callable[[Callable], Callable[..., ir.Value]]:
-        ...
+    ) -> Callable[[Callable], Callable[..., ir.Value]]: ...
 
     @util.experimental
     @classmethod
@@ -484,8 +478,7 @@ class scalar(_UDF):
 
     @overload
     @classmethod
-    def pyarrow(cls, fn: Callable) -> Callable[..., ir.Value]:
-        ...
+    def pyarrow(cls, fn: Callable) -> Callable[..., ir.Value]: ...
 
     @overload
     @classmethod
@@ -497,8 +490,7 @@ class scalar(_UDF):
         catalog: str | None = None,
         signature: tuple[tuple[Any, ...], Any] | None = None,
         **kwargs: Any,
-    ) -> Callable[[Callable], Callable[..., ir.Value]]:
-        ...
+    ) -> Callable[[Callable], Callable[..., ir.Value]]: ...
 
     @util.experimental
     @classmethod
@@ -586,8 +578,7 @@ class agg(_UDF):
 
     @overload
     @classmethod
-    def builtin(cls, fn: Callable) -> Callable[..., ir.Value]:
-        ...
+    def builtin(cls, fn: Callable) -> Callable[..., ir.Value]: ...
 
     @overload
     @classmethod
@@ -599,8 +590,7 @@ class agg(_UDF):
         catalog: str | None = None,
         signature: tuple[tuple[Any, ...], Any] | None = None,
         **kwargs: Any,
-    ) -> Callable[[Callable], Callable[..., ir.Value]]:
-        ...
+    ) -> Callable[[Callable], Callable[..., ir.Value]]: ...
 
     @util.experimental
     @classmethod

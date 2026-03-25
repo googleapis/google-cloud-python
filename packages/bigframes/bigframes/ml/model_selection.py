@@ -16,7 +16,6 @@
 scikit-learn's model_selection module:
 https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection."""
 
-
 import inspect
 import time
 import typing

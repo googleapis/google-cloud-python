@@ -420,7 +420,7 @@ def _get_managed_storage_type(dtype: bigframes.dtypes.Dtype) -> pa.DataType:
 
 
 def _recursive_map_types(
-    f: Callable[[pa.DataType], pa.DataType]
+    f: Callable[[pa.DataType], pa.DataType],
 ) -> Callable[[pa.DataType], pa.DataType]:
     @functools.wraps(f)
     def recursive_f(type: pa.DataType) -> pa.DataType:

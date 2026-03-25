@@ -118,9 +118,9 @@ class ResultsIterator(Iterator[pa.RecordBatch]):
     ) -> Iterator[pd.DataFrame]:
         assert (page_size is None) or (page_size > 0)
         assert (max_results is None) or (max_results > 0)
-        batch_iter: Iterator[
-            Union[pyarrow.Table, pyarrow.RecordBatch]
-        ] = self.arrow_batches
+        batch_iter: Iterator[Union[pyarrow.Table, pyarrow.RecordBatch]] = (
+            self.arrow_batches
+        )
         if max_results is not None:
             batch_iter = pyarrow_utils.truncate_pyarrow_iterable(
                 batch_iter, max_results
@@ -152,17 +152,14 @@ class ResultsIterator(Iterator[pa.RecordBatch]):
 class ExecuteResult(abc.ABC):
     @property
     @abc.abstractmethod
-    def execution_metadata(self) -> ExecutionMetadata:
-        ...
+    def execution_metadata(self) -> ExecutionMetadata: ...
 
     @property
     @abc.abstractmethod
-    def schema(self) -> bigframes.core.schema.ArraySchema:
-        ...
+    def schema(self) -> bigframes.core.schema.ArraySchema: ...
 
     @abc.abstractmethod
-    def batches(self, sample_rate: Optional[float] = None) -> ResultsIterator:
-        ...
+    def batches(self, sample_rate: Optional[float] = None) -> ResultsIterator: ...
 
     @property
     def query_job(self) -> Optional[bigquery.QueryJob]:

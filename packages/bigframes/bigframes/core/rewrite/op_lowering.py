@@ -23,12 +23,10 @@ from bigframes.core import bigframe_node, expression, nodes
 class OpLoweringRule(abc.ABC):
     @property
     @abc.abstractmethod
-    def op(self) -> type[ops.ScalarOp]:
-        ...
+    def op(self) -> type[ops.ScalarOp]: ...
 
     @abc.abstractmethod
-    def lower(self, expr: expression.OpExpression) -> expression.Expression:
-        ...
+    def lower(self, expr: expression.OpExpression) -> expression.Expression: ...
 
 
 def lower_ops(

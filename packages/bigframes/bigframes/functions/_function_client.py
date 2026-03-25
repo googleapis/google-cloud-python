@@ -198,7 +198,7 @@ class FunctionClient:
         )
 
         create_function_ddl = f"""
-            CREATE OR REPLACE FUNCTION `{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name}({','.join(bq_function_args)})
+            CREATE OR REPLACE FUNCTION `{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name}({",".join(bq_function_args)})
             RETURNS {bq_function_return_type}
             REMOTE WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{self._bq_connection_id}`
             OPTIONS ({remote_function_options_str})"""
@@ -302,7 +302,7 @@ class FunctionClient:
         create_function_ddl = (
             textwrap.dedent(
                 f"""
-                CREATE OR REPLACE FUNCTION {persistent_func_id}({','.join(bq_function_args)})
+                CREATE OR REPLACE FUNCTION {persistent_func_id}({",".join(bq_function_args)})
                 RETURNS {bq_function_return_type}
                 LANGUAGE python
                 {with_connection_clause}

@@ -14,7 +14,7 @@
 
 """This module integrates BigQuery built-in functions for use with DataFrame objects,
 such as array functions:
-https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions. """
+https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions."""
 
 import sys
 

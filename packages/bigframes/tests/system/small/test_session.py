@@ -1901,7 +1901,8 @@ def test_read_parquet_gcs(
     df_out = (
         session.read_parquet(read_path, engine=engine)
         # Restore order.
-        .set_index(df_write.index.name).sort_index()
+        .set_index(df_write.index.name)
+        .sort_index()
         # Restore index.
         .set_index(typing.cast(str, df_in.index.name))
     )
@@ -1952,7 +1953,8 @@ def test_read_parquet_gcs_compressed(
     df_out = (
         session.read_parquet(path, engine="bigquery")
         # Restore order.
-        .set_index(df_write.index.name).sort_index()
+        .set_index(df_write.index.name)
+        .sort_index()
         # Restore index.
         .set_index(typing.cast(str, df_in.index.name))
     )

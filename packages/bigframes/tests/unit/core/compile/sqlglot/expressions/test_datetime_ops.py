@@ -62,10 +62,14 @@ def test_datetime_to_integer_label(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[col_names]
     ops_map = {
         "fixed_freq": ops.DatetimeToIntegerLabelOp(
-            freq=pd.tseries.offsets.Day(), origin="start", closed="left"  # type: ignore
+            freq=pd.tseries.offsets.Day(),
+            origin="start",
+            closed="left",  # type: ignore
         ).as_expr("datetime_col", "timestamp_col"),
         "non_fixed_freq_weekly": ops.DatetimeToIntegerLabelOp(
-            freq=pd.tseries.offsets.Week(weekday=6), origin="start", closed="left"  # type: ignore
+            freq=pd.tseries.offsets.Week(weekday=6),
+            origin="start",
+            closed="left",  # type: ignore
         ).as_expr("datetime_col", "timestamp_col"),
     }
 
@@ -301,7 +305,9 @@ def test_integer_label_to_datetime_fixed(scalar_types_df: bpd.DataFrame, snapsho
     bf_df = scalar_types_df[col_names]
     ops_map = {
         "fixed_freq": ops.IntegerLabelToDatetimeOp(
-            freq=pd.tseries.offsets.Day(), origin="start", label="left"  # type: ignore
+            freq=pd.tseries.offsets.Day(),
+            origin="start",
+            label="left",  # type: ignore
         ).as_expr("rowindex", "timestamp_col"),
     }
 
@@ -314,7 +320,9 @@ def test_integer_label_to_datetime_week(scalar_types_df: bpd.DataFrame, snapshot
     bf_df = scalar_types_df[col_names]
     ops_map = {
         "non_fixed_freq_weekly": ops.IntegerLabelToDatetimeOp(
-            freq=pd.tseries.offsets.Week(weekday=6), origin="start", label="left"  # type: ignore
+            freq=pd.tseries.offsets.Week(weekday=6),
+            origin="start",
+            label="left",  # type: ignore
         ).as_expr("rowindex", "timestamp_col"),
     }
 

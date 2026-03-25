@@ -123,9 +123,9 @@ def _bind_schema_to_aggregation_expr(
     aggregation: agg_expressions.Aggregation,
     child: bigframe_node.BigFrameNode,
 ) -> agg_expressions.Aggregation:
-    assert isinstance(
-        aggregation, agg_expressions.Aggregation
-    ), f"Expected Aggregation, got {type(aggregation)}"
+    assert isinstance(aggregation, agg_expressions.Aggregation), (
+        f"Expected Aggregation, got {type(aggregation)}"
+    )
 
     if isinstance(aggregation, agg_expressions.UnaryAggregation):
         return typing.cast(

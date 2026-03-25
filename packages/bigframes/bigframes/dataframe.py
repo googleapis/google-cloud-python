@@ -683,9 +683,12 @@ class DataFrame:
                 f"Only boolean series currently supported for indexing. {constants.FEEDBACK_LINK}"
             )
             # TODO: enforce stricter alignment
-        combined_index, (
-            get_column_left,
-            get_column_right,
+        (
+            combined_index,
+            (
+                get_column_left,
+                get_column_right,
+            ),
         ) = self._block.join(key._block, how="left")
         block = combined_index
         filter_col_id = get_column_right[key._value_column]
@@ -1087,13 +1090,21 @@ class DataFrame:
     def __rfloordiv__(self, other):
         return self.rfloordiv(other)
 
-    def mod(self, other: int | bigframes.series.Series | DataFrame, axis: str | int = "columns") -> DataFrame:  # type: ignore
+    def mod(
+        self,
+        other: int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
+    ) -> DataFrame:  # type: ignore
         return self._apply_binop(other, ops.mod_op, axis=axis)
 
     def __mod__(self, other):
         return self.mod(other)
 
-    def rmod(self, other: int | bigframes.series.Series | DataFrame, axis: str | int = "columns") -> DataFrame:  # type: ignore
+    def rmod(
+        self,
+        other: int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
+    ) -> DataFrame:  # type: ignore
         return self._apply_binop(other, ops.mod_op, axis=axis, reverse=True)
 
     def __rmod__(self, other):
@@ -1573,8 +1584,7 @@ class DataFrame:
         ordered: bool = ...,
         dry_run: Literal[False] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.DataFrame:
-        ...
+    ) -> pandas.DataFrame: ...
 
     @overload
     def to_pandas(
@@ -1586,8 +1596,7 @@ class DataFrame:
         ordered: bool = ...,
         dry_run: Literal[True] = ...,
         allow_large_results: Optional[bool] = ...,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def to_pandas(
         self,
@@ -1899,8 +1908,7 @@ class DataFrame:
         columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
         level: typing.Optional[LevelType] = None,
         inplace: Literal[False] = False,
-    ) -> DataFrame:
-        ...
+    ) -> DataFrame: ...
 
     @overload
     def drop(
@@ -1912,8 +1920,7 @@ class DataFrame:
         columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
         level: typing.Optional[LevelType] = None,
         inplace: Literal[True],
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def drop(
         self,
@@ -2057,20 +2064,17 @@ class DataFrame:
         return self._block.index.resolve_level(level)
 
     @overload
-    def rename(self, *, columns: Mapping[blocks.Label, blocks.Label]) -> DataFrame:
-        ...
+    def rename(self, *, columns: Mapping[blocks.Label, blocks.Label]) -> DataFrame: ...
 
     @overload
     def rename(
         self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: Literal[False]
-    ) -> DataFrame:
-        ...
+    ) -> DataFrame: ...
 
     @overload
     def rename(
         self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: Literal[True]
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def rename(
         self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: bool = False
@@ -2087,8 +2091,7 @@ class DataFrame:
     def rename_axis(
         self,
         mapper: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
-    ) -> DataFrame:
-        ...
+    ) -> DataFrame: ...
 
     @overload
     def rename_axis(
@@ -2097,8 +2100,7 @@ class DataFrame:
         *,
         inplace: Literal[False],
         **kwargs,
-    ) -> DataFrame:
-        ...
+    ) -> DataFrame: ...
 
     @overload
     def rename_axis(
@@ -2107,8 +2109,7 @@ class DataFrame:
         *,
         inplace: Literal[True],
         **kwargs,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def rename_axis(
         self,
@@ -2233,9 +2234,12 @@ class DataFrame:
             result_block = new_column_block.with_index_labels(self._block.index.names)
             result_block = result_block.with_column_labels([k])
         else:
-            result_block, (
-                get_column_left,
-                get_column_right,
+            (
+                result_block,
+                (
+                    get_column_left,
+                    get_column_right,
+                ),
             ) = self_block.join(new_column_block, how="left", block_identity_join=True)
             result_block = result_block.set_index(
                 [get_column_left[col_id] for col_id in original_index_column_ids],
@@ -2301,8 +2305,7 @@ class DataFrame:
         col_fill: Hashable = ...,
         allow_duplicates: Optional[bool] = ...,
         names: Union[None, Hashable, Sequence[Hashable]] = ...,
-    ) -> DataFrame:
-        ...
+    ) -> DataFrame: ...
 
     @overload
     def reset_index(
@@ -2314,8 +2317,7 @@ class DataFrame:
         col_fill: Hashable = ...,
         allow_duplicates: Optional[bool] = ...,
         names: Union[None, Hashable, Sequence[Hashable]] = ...,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     @overload
     def reset_index(
@@ -2327,8 +2329,7 @@ class DataFrame:
         col_fill: Hashable = ...,
         allow_duplicates: Optional[bool] = ...,
         names: Union[None, Hashable, Sequence[Hashable]] = ...,
-    ) -> Optional[DataFrame]:
-        ...
+    ) -> Optional[DataFrame]: ...
 
     def reset_index(
         self,
@@ -2391,8 +2392,7 @@ class DataFrame:
         ascending: bool = ...,
         inplace: Literal[False] = ...,
         na_position: Literal["first", "last"] = ...,
-    ) -> DataFrame:
-        ...
+    ) -> DataFrame: ...
 
     @overload
     def sort_index(
@@ -2401,8 +2401,7 @@ class DataFrame:
         ascending: bool = ...,
         inplace: Literal[True] = ...,
         na_position: Literal["first", "last"] = ...,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def sort_index(
         self,
@@ -2426,7 +2425,9 @@ class DataFrame:
             block = self._block.order_by(ordering)
         else:  # axis=1
             _, indexer = self.columns.sort_values(
-                return_indexer=True, ascending=ascending, na_position=na_position  # type: ignore
+                return_indexer=True,
+                ascending=ascending,
+                na_position=na_position,  # type: ignore
             )
             block = self._block.select_columns(
                 [self._block.value_columns[i] for i in indexer]
@@ -2446,8 +2447,7 @@ class DataFrame:
         ascending: bool | typing.Sequence[bool] = ...,
         kind: str = ...,
         na_position: typing.Literal["first", "last"] = ...,
-    ) -> DataFrame:
-        ...
+    ) -> DataFrame: ...
 
     @overload
     def sort_values(
@@ -2458,8 +2458,7 @@ class DataFrame:
         ascending: bool | typing.Sequence[bool] = ...,
         kind: str = ...,
         na_position: typing.Literal["first", "last"] = ...,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def sort_values(
         self,
@@ -3038,7 +3037,9 @@ class DataFrame:
             frame = self._drop_non_numeric()
         multi_q = utils.is_list_like(q)
         result = block_ops.quantile(
-            frame._block, frame._block.value_columns, qs=tuple(q) if multi_q else (q,)  # type: ignore
+            frame._block,
+            frame._block.value_columns,
+            qs=tuple(q) if multi_q else (q,),  # type: ignore
         )
         if multi_q:
             return DataFrame(result.stack()).droplevel(0)
@@ -3852,9 +3853,12 @@ class DataFrame:
         col_ids: typing.Sequence[str] = []
         for key in by:
             if isinstance(key, bigframes.series.Series):
-                block, (
-                    get_column_left,
-                    get_column_right,
+                (
+                    block,
+                    (
+                        get_column_left,
+                        get_column_right,
+                    ),
                 ) = block.join(key._block, how="inner" if dropna else "left")
                 col_ids = [
                     *[get_column_left[value] for value in col_ids],
@@ -3900,7 +3904,8 @@ class DataFrame:
                             ops.round_op.as_expr(
                                 col_id,
                                 ex.const(
-                                    decimals[label], dtype=bigframes.dtypes.INT_DTYPE  # type: ignore
+                                    decimals[label],
+                                    dtype=bigframes.dtypes.INT_DTYPE,  # type: ignore
                                 ),
                             )
                         )
@@ -4387,7 +4392,9 @@ class DataFrame:
         allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> dict | list[dict]:
-        return self.to_pandas(allow_large_results=allow_large_results).to_dict(orient=orient, into=into, **kwargs)  # type: ignore
+        return self.to_pandas(allow_large_results=allow_large_results).to_dict(
+            orient=orient, into=into, **kwargs
+        )  # type: ignore
 
     def to_excel(
         self,
@@ -4412,7 +4419,11 @@ class DataFrame:
         **kwargs,
     ) -> str | None:
         return self.to_pandas(allow_large_results=allow_large_results).to_latex(
-            buf, columns=columns, header=header, index=index, **kwargs  # type: ignore
+            buf,
+            columns=columns,
+            header=header,
+            index=index,
+            **kwargs,  # type: ignore
         )
 
     def to_records(
@@ -4536,7 +4547,9 @@ class DataFrame:
         allow_large_results: Optional[bool] = None,
         **kwargs,
     ) -> str | None:
-        return self.to_pandas(allow_large_results=allow_large_results).to_markdown(buf, mode=mode, index=index, **kwargs)  # type: ignore
+        return self.to_pandas(allow_large_results=allow_large_results).to_markdown(
+            buf, mode=mode, index=index, **kwargs
+        )  # type: ignore
 
     def to_pickle(self, path, *, allow_large_results=None, **kwargs) -> None:
         return self.to_pandas(allow_large_results=allow_large_results).to_pickle(

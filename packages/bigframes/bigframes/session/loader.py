@@ -615,8 +615,7 @@ class GbqDataLoader:
         n_rows: Optional[int] = None,
         index_col_in_columns: bool = False,
         publish_execution: bool = True,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def read_gbq_table(
@@ -639,8 +638,7 @@ class GbqDataLoader:
         n_rows: Optional[int] = None,
         index_col_in_columns: bool = False,
         publish_execution: bool = True,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def read_gbq_table(
         self,
@@ -1124,8 +1122,7 @@ class GbqDataLoader:
         dry_run: Literal[False] = ...,
         force_total_order: Optional[bool] = ...,
         allow_large_results: bool,
-    ) -> dataframe.DataFrame:
-        ...
+    ) -> dataframe.DataFrame: ...
 
     @overload
     def read_gbq_query(
@@ -1141,8 +1138,7 @@ class GbqDataLoader:
         dry_run: Literal[True] = ...,
         force_total_order: Optional[bool] = ...,
         allow_large_results: bool,
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def read_gbq_query(
         self,

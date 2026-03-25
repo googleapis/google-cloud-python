@@ -1,5 +1,6 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/io/parquet.py
-""" parquet compat """
+"""parquet compat"""
+
 from __future__ import annotations
 
 from bigframes import constants

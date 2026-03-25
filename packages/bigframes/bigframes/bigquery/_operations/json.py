@@ -18,7 +18,6 @@ JSON functions defined from
 https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions
 """
 
-
 from __future__ import annotations
 
 import warnings

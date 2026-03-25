@@ -648,9 +648,9 @@ class Expression(metaclass=_Expression):
             prune=lambda n: n.parent and type(n) is not self.__class__
         ):
             if type(node) is not self.__class__:
-                yield node.unnest() if unnest and not isinstance(
-                    node, Subquery
-                ) else node
+                yield (
+                    node.unnest() if unnest and not isinstance(node, Subquery) else node
+                )
 
     def __str__(self) -> str:
         return self.sql()
@@ -715,12 +715,10 @@ class Expression(metaclass=_Expression):
         return root.assert_is(Expression)
 
     @t.overload
-    def replace(self, expression: E) -> E:
-        ...
+    def replace(self, expression: E) -> E: ...
 
     @t.overload
-    def replace(self, expression: None) -> None:
-        ...
+    def replace(self, expression: None) -> None: ...
 
     def replace(self, expression):
         """
@@ -8541,8 +8539,7 @@ def maybe_parse(
     prefix: t.Optional[str] = None,
     copy: bool = False,
     **opts,
-) -> E:
-    ...
+) -> E: ...
 
 
 @t.overload
@@ -8554,8 +8551,7 @@ def maybe_parse(
     prefix: t.Optional[str] = None,
     copy: bool = False,
     **opts,
-) -> E:
-    ...
+) -> E: ...
 
 
 def maybe_parse(
@@ -8607,13 +8603,11 @@ def maybe_parse(
 
 
 @t.overload
-def maybe_copy(instance: None, copy: bool = True) -> None:
-    ...
+def maybe_copy(instance: None, copy: bool = True) -> None: ...
 
 
 @t.overload
-def maybe_copy(instance: E, copy: bool = True) -> E:
-    ...
+def maybe_copy(instance: E, copy: bool = True) -> E: ...
 
 
 def maybe_copy(instance, copy=True):
@@ -8861,13 +8855,11 @@ def _combine(
 
 
 @t.overload
-def _wrap(expression: None, kind: t.Type[Expression]) -> None:
-    ...
+def _wrap(expression: None, kind: t.Type[Expression]) -> None: ...
 
 
 @t.overload
-def _wrap(expression: E, kind: t.Type[Expression]) -> E | Paren:
-    ...
+def _wrap(expression: E, kind: t.Type[Expression]) -> E | Paren: ...
 
 
 def _wrap(expression: t.Optional[E], kind: t.Type[Expression]) -> t.Optional[E] | Paren:
@@ -8949,9 +8941,9 @@ def intersect(
     Returns:
         The new Intersect instance.
     """
-    assert (
-        len(expressions) >= 2
-    ), "At least two expressions are required by `intersect`."
+    assert len(expressions) >= 2, (
+        "At least two expressions are required by `intersect`."
+    )
     return _apply_set_operation(
         *expressions,
         set_operation=Intersect,
@@ -9433,15 +9425,13 @@ SAFE_IDENTIFIER_RE: t.Pattern[str] = re.compile(r"^[_a-zA-Z][\w]*$")
 @t.overload
 def to_identifier(
     name: None, quoted: t.Optional[bool] = None, copy: bool = True
-) -> None:
-    ...
+) -> None: ...
 
 
 @t.overload
 def to_identifier(
     name: str | Identifier, quoted: t.Optional[bool] = None, copy: bool = True
-) -> Identifier:
-    ...
+) -> Identifier: ...
 
 
 def to_identifier(name, quoted=None, copy=True):

@@ -24,7 +24,7 @@ from bigframes.core import bigframe_node, bq_data, nodes
 
 
 def get_table_stats(
-    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable]
+    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable],
 ) -> pandas.Series:
     values: List[Any] = []
     index: List[Any] = []

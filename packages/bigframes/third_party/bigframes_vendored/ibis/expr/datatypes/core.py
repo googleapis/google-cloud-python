@@ -112,13 +112,11 @@ class DataType(Concrete, Coercible):
 
     @property
     @abstractmethod
-    def scalar(self):
-        ...
+    def scalar(self): ...
 
     @property
     @abstractmethod
-    def column(self):
-        ...
+    def column(self): ...
 
     # TODO(kszucs): remove it, prefer to use Annotable.__repr__ instead
     @property
@@ -774,8 +772,7 @@ class Decimal(Numeric, Parametric):
         if precision is not None:
             if not isinstance(precision, numbers.Integral):
                 raise TypeError(
-                    "Decimal type precision must be an integer; "
-                    f"got {type(precision)}"
+                    f"Decimal type precision must be an integer; got {type(precision)}"
                 )
             if precision < 0:
                 raise ValueError("Decimal type precision cannot be negative")

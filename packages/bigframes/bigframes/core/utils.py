@@ -234,7 +234,7 @@ def preview(*, name: str):
 
 
 def timedelta_to_micros(
-    timedelta: typing.Union[pd.Timedelta, datetime.timedelta, np.timedelta64]
+    timedelta: typing.Union[pd.Timedelta, datetime.timedelta, np.timedelta64],
 ) -> int:
     if isinstance(timedelta, pd.Timedelta):
         # pd.Timedelta.value returns total nanoseconds.

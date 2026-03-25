@@ -4130,7 +4130,10 @@ def test_df_to_json_local_file(scalars_df_index, scalars_pandas_df_index):
     # duration not fully supported at pandas level
     scalars_df_index = scalars_df_index.drop(columns="duration_col")
     scalars_pandas_df_index = scalars_pandas_df_index.drop(columns="duration_col")
-    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+    with (
+        tempfile.TemporaryFile() as bf_result_file,
+        tempfile.TemporaryFile() as pd_result_file,
+    ):
         scalars_df_index.to_json(bf_result_file, orient="table")
         # default_handler for arrow types that have no default conversion
         scalars_pandas_df_index.to_json(
@@ -4152,7 +4155,10 @@ def test_df_to_csv_local_str(scalars_df_index, scalars_pandas_df_index):
 
 
 def test_df_to_csv_local_file(scalars_df_index, scalars_pandas_df_index):
-    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+    with (
+        tempfile.TemporaryFile() as bf_result_file,
+        tempfile.TemporaryFile() as pd_result_file,
+    ):
         scalars_df_index.to_csv(bf_result_file)
         scalars_pandas_df_index.to_csv(pd_result_file)
 
@@ -4176,7 +4182,10 @@ def test_df_to_parquet_local_bytes(scalars_df_index, scalars_pandas_df_index):
 def test_df_to_parquet_local_file(scalars_df_index, scalars_pandas_df_index):
     # GEOGRAPHY not supported in parquet export.
     unsupported = ["geography_col"]
-    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+    with (
+        tempfile.TemporaryFile() as bf_result_file,
+        tempfile.TemporaryFile() as pd_result_file,
+    ):
         scalars_df_index.drop(columns=unsupported).to_parquet(bf_result_file)
         scalars_pandas_df_index.drop(columns=unsupported).to_parquet(pd_result_file)
 
@@ -4223,7 +4232,10 @@ def test_df_to_markdown(scalars_df_index, scalars_pandas_df_index):
 
 
 def test_df_to_pickle(scalars_df_index, scalars_pandas_df_index):
-    with tempfile.TemporaryFile() as bf_result_file, tempfile.TemporaryFile() as pd_result_file:
+    with (
+        tempfile.TemporaryFile() as bf_result_file,
+        tempfile.TemporaryFile() as pd_result_file,
+    ):
         scalars_df_index.to_pickle(bf_result_file)
         scalars_pandas_df_index.to_pickle(pd_result_file)
         bf_result = bf_result_file.read()

@@ -16,6 +16,7 @@
 
 Make sure to import all polars implementations here so that they get registered.
 """
+
 from __future__ import annotations
 
 import warnings

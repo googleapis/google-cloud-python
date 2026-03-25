@@ -1050,9 +1050,9 @@ def test_widget_with_default_index_should_display_index_column_with_empty_header
     # Find the first header cell and check that its content div is empty.
     match = re.search(r"<th[^>]*><div[^>]*>([^<]*)</div></th>", thead)
     assert match is not None, "Could not find table header cell in output."
-    assert (
-        match.group(1) == ""
-    ), f"Expected empty index header, but found: {match.group(1)}"
+    assert match.group(1) == "", (
+        f"Expected empty index header, but found: {match.group(1)}"
+    )
 
 
 def test_widget_with_custom_index_should_display_index_column(

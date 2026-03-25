@@ -32,12 +32,10 @@ if TYPE_CHECKING:
 
 class HasSession(Protocol):
     @property
-    def _session(self) -> Session:
-        ...
+    def _session(self) -> Session: ...
 
     @property
-    def _block(self) -> Block:
-        ...
+    def _block(self) -> Block: ...
 
 
 def requires_index(meth):

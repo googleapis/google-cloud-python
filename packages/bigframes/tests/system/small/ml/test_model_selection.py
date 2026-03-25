@@ -417,8 +417,9 @@ def test_KFold_split(df_fixture, n_splits, request):
     ]
     y = df["body_mass_g"]
 
-    len_test_upper, len_test_lower = math.ceil(len(df) / n_splits), math.floor(
-        len(df) / n_splits
+    len_test_upper, len_test_lower = (
+        math.ceil(len(df) / n_splits),
+        math.floor(len(df) / n_splits),
     )
     len_train_upper, len_train_lower = (
         len(df) - len_test_lower,
@@ -466,8 +467,9 @@ def test_KFold_split_X_only(df_fixture, n_splits, request):
         ]
     ]
 
-    len_test_upper, len_test_lower = math.ceil(len(df) / n_splits), math.floor(
-        len(df) / n_splits
+    len_test_upper, len_test_lower = (
+        math.ceil(len(df) / n_splits),
+        math.floor(len(df) / n_splits),
     )
     len_train_upper, len_train_lower = (
         len(df) - len_test_lower,

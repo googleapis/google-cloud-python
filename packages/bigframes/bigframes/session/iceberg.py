@@ -98,7 +98,9 @@ def _extract_location_from_catalog_extension_data(data):
 
 
 class SchemaVisitor(pyiceberg.schema.SchemaVisitorPerPrimitiveType[bq.SchemaField]):
-    def schema(self, schema: pyiceberg.schema.Schema, struct_result: bq.SchemaField) -> tuple[bq.SchemaField, ...]:  # type: ignore
+    def schema(
+        self, schema: pyiceberg.schema.Schema, struct_result: bq.SchemaField
+    ) -> tuple[bq.SchemaField, ...]:  # type: ignore
         return tuple(f for f in struct_result.fields)
 
     def struct(

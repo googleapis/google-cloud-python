@@ -230,8 +230,9 @@ def test_dataframe_semantics_property_future_warning(
 ):
     dataframe = mocks.create_dataframe(monkeypatch)
 
-    with bigframes.option_context("experiments.semantic_operators", True), pytest.warns(
-        FutureWarning
+    with (
+        bigframes.option_context("experiments.semantic_operators", True),
+        pytest.warns(FutureWarning),
     ):
         dataframe.semantics
 

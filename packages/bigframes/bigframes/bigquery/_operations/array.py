@@ -17,7 +17,6 @@ Array functions defined from
 https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions
 """
 
-
 from __future__ import annotations
 
 import typing

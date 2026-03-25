@@ -143,8 +143,7 @@ def _get_output_type_override(routine: bigquery.Routine) -> Optional[type[list]]
             else:
                 raise bf_formatting.create_exception_with_feedback_link(
                     TypeError,
-                    "Currently only list of "
-                    "a type is supported as python output type.",
+                    "Currently only list of a type is supported as python output type.",
                 )
 
     return None

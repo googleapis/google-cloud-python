@@ -145,6 +145,7 @@ def lint(session):
         *LINT_PATHS,
     )
 
+
 # Use a python runtime which is available in the owlbot post processor here
 # https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -163,6 +164,7 @@ def blacken(session):
         "--line-length=88",
         *LINT_PATHS,
     )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
@@ -971,8 +973,7 @@ def core_deps_from_source(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
-    """Run all tests with prerelease versions of dependencies installed.
-    """
+    """Run all tests with prerelease versions of dependencies installed."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add prerelease deps tests
     session.skip("prerelease deps tests are not yet supported")

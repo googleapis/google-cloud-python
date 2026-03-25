@@ -542,8 +542,7 @@ class Index:
     def rename(
         self,
         name: Union[blocks.Label, Sequence[blocks.Label]],
-    ) -> Index:
-        ...
+    ) -> Index: ...
 
     @overload
     def rename(
@@ -551,8 +550,7 @@ class Index:
         name: Union[blocks.Label, Sequence[blocks.Label]],
         *,
         inplace: Literal[False],
-    ) -> Index:
-        ...
+    ) -> Index: ...
 
     @overload
     def rename(
@@ -560,8 +558,7 @@ class Index:
         name: Union[blocks.Label, Sequence[blocks.Label]],
         *,
         inplace: Literal[True],
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def rename(
         self,
@@ -720,14 +717,12 @@ class Index:
         *,
         allow_large_results: Optional[bool] = ...,
         dry_run: Literal[False] = ...,
-    ) -> pandas.Index:
-        ...
+    ) -> pandas.Index: ...
 
     @overload
     def to_pandas(
         self, *, allow_large_results: Optional[bool] = ..., dry_run: Literal[True] = ...
-    ) -> pandas.Series:
-        ...
+    ) -> pandas.Series: ...
 
     def to_pandas(
         self,

@@ -265,9 +265,9 @@ def get_bigframes_metadata(*, python_output_type: Optional[type] = None) -> str:
             python_output_array_type
             in function_typing.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES
         ):
-            inner_metadata[
-                "python_array_output_type"
-            ] = python_output_array_type.__name__
+            inner_metadata["python_array_output_type"] = (
+                python_output_array_type.__name__
+            )
 
     metadata = {"value": inner_metadata}
     metadata_ser = json.dumps(metadata)

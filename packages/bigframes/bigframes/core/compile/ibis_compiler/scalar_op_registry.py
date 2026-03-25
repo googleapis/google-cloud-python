@@ -1042,8 +1042,7 @@ def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
     @ibis_udf.scalar.builtin(
         name=str(op.function_def.routine_ref), signature=ibis_py_sig
     )
-    def udf(input):
-        ...
+    def udf(input): ...
 
     x_transformed = udf(x)
     if not op.apply_on_null:
@@ -1061,8 +1060,7 @@ def binary_remote_function_op_impl(
     @ibis_udf.scalar.builtin(
         name=str(op.function_def.routine_ref), signature=ibis_py_sig
     )
-    def udf(input1, input2):
-        ...
+    def udf(input1, input2): ...
 
     x_transformed = udf(x, y)
     return x_transformed
@@ -1081,8 +1079,7 @@ def nary_remote_function_op_impl(
         signature=ibis_py_sig,
         param_name_overrides=arg_names,
     )
-    def udf(*inputs):
-        ...
+    def udf(*inputs): ...
 
     result = udf(*operands)
     return result
@@ -2161,7 +2158,9 @@ def obj_make_ref_json(objectref_json: ibis_dtypes.JSON) -> _OBJ_REF_IBIS_DTYPE: 
 
 
 @ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
-def obj_get_access_url(obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String) -> ibis_dtypes.JSON:  # type: ignore
+def obj_get_access_url(
+    obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String
+) -> ibis_dtypes.JSON:  # type: ignore
     """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""
 
 

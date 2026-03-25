@@ -64,9 +64,9 @@ def iter_nodes_topo(
     roots: Sequence[expression.Expression],
 ) -> Generator[expression.Expression, None, None]:
     """Returns nodes in reverse topological order, using Kahn's algorithm."""
-    child_to_parents: Dict[
-        expression.Expression, list[expression.Expression]
-    ] = collections.defaultdict(list)
+    child_to_parents: Dict[expression.Expression, list[expression.Expression]] = (
+        collections.defaultdict(list)
+    )
     out_degree: Dict[expression.Expression, int] = collections.defaultdict(int)
 
     queue: collections.deque[expression.Expression] = collections.deque()
@@ -243,7 +243,8 @@ def factor_aggregation(root: nodes.ColumnDef) -> FactoredAggregation:
     }
 
     root_scalar_expr = nodes.ColumnDef(
-        sub_expressions(root.expression, agg_outputs_dict), root.id  # type: ignore
+        sub_expressions(root.expression, agg_outputs_dict),
+        root.id,  # type: ignore
     )
 
     return FactoredAggregation(
@@ -352,9 +353,7 @@ def push_into_tree(
 
     def graph_extract_scalar_exprs() -> Sequence[nodes.ColumnDef]:
         results: dict[identifiers.ColumnId, expression.Expression] = dict()
-        while (
-            True
-        ):  # Will converge as each loop either reduces graph size, or fails to find any candidate and breaks
+        while True:  # Will converge as each loop either reduces graph size, or fails to find any candidate and breaks
             candidate_ids = list(
                 id
                 for id in graph.sinks
@@ -381,9 +380,9 @@ def push_into_tree(
         # TODO: We can prune expressions that won't be reused here,
         return tuple(nodes.ColumnDef(expr, id) for id, expr in results.items())
 
-    def graph_extract_window_expr() -> (
-        Optional[Tuple[Sequence[nodes.ColumnDef], window_spec.WindowSpec]]
-    ):
+    def graph_extract_window_expr() -> Optional[
+        Tuple[Sequence[nodes.ColumnDef], window_spec.WindowSpec]
+    ]:
         for id in graph.sinks:
             next_def = by_id[id]
             if isinstance(next_def.expression, agg_expressions.WindowExpression):

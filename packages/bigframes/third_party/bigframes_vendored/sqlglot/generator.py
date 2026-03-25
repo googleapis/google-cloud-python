@@ -129,18 +129,23 @@ class Generator(metaclass=_Generator):
     TRANSFORMS: t.Dict[t.Type[exp.Expression], t.Callable[..., str]] = {
         **JSON_PATH_PART_TRANSFORMS,
         exp.Adjacent: lambda self, e: self.binary(e, "-|-"),
-        exp.AllowedValuesProperty: lambda self, e: f"ALLOWED_VALUES {self.expressions(e, flat=True)}",
+        exp.AllowedValuesProperty: lambda self,
+        e: f"ALLOWED_VALUES {self.expressions(e, flat=True)}",
         exp.AnalyzeColumns: lambda self, e: self.sql(e, "this"),
         exp.AnalyzeWith: lambda self, e: self.expressions(e, prefix="WITH ", sep=" "),
         exp.ArrayContainsAll: lambda self, e: self.binary(e, "@>"),
         exp.ArrayOverlaps: lambda self, e: self.binary(e, "&&"),
         exp.AutoRefreshProperty: lambda self, e: f"AUTO REFRESH {self.sql(e, 'this')}",
         exp.BackupProperty: lambda self, e: f"BACKUP {self.sql(e, 'this')}",
-        exp.CaseSpecificColumnConstraint: lambda _, e: f"{'NOT ' if e.args.get('not_') else ''}CASESPECIFIC",
+        exp.CaseSpecificColumnConstraint: lambda _,
+        e: f"{'NOT ' if e.args.get('not_') else ''}CASESPECIFIC",
         exp.Ceil: lambda self, e: self.ceil_floor(e),
-        exp.CharacterSetColumnConstraint: lambda self, e: f"CHARACTER SET {self.sql(e, 'this')}",
-        exp.CharacterSetProperty: lambda self, e: f"{'DEFAULT ' if e.args.get('default') else ''}CHARACTER SET={self.sql(e, 'this')}",
-        exp.ClusteredColumnConstraint: lambda self, e: f"CLUSTERED ({self.expressions(e, 'this', indent=False)})",
+        exp.CharacterSetColumnConstraint: lambda self,
+        e: f"CHARACTER SET {self.sql(e, 'this')}",
+        exp.CharacterSetProperty: lambda self,
+        e: f"{'DEFAULT ' if e.args.get('default') else ''}CHARACTER SET={self.sql(e, 'this')}",
+        exp.ClusteredColumnConstraint: lambda self,
+        e: f"CLUSTERED ({self.expressions(e, 'this', indent=False)})",
         exp.CollateColumnConstraint: lambda self, e: f"COLLATE {self.sql(e, 'this')}",
         exp.CommentColumnConstraint: lambda self, e: f"COMMENT {self.sql(e, 'this')}",
         exp.ConnectByRoot: lambda self, e: f"CONNECT_BY_ROOT {self.sql(e, 'this')}",
@@ -148,7 +153,8 @@ class Generator(metaclass=_Generator):
             "CONVERT", e.this, e.args["dest"], e.args.get("source")
         ),
         exp.CopyGrantsProperty: lambda *_: "COPY GRANTS",
-        exp.CredentialsProperty: lambda self, e: f"CREDENTIALS=({self.expressions(e, 'expressions', sep=' ')})",
+        exp.CredentialsProperty: lambda self,
+        e: f"CREDENTIALS=({self.expressions(e, 'expressions', sep=' ')})",
         exp.CurrentCatalog: lambda *_: "CURRENT_CATALOG",
         exp.SessionUser: lambda *_: "SESSION_USER",
         exp.DateFormatColumnConstraint: lambda self, e: f"FORMAT {self.sql(e, 'this')}",
@@ -156,9 +162,12 @@ class Generator(metaclass=_Generator):
         exp.DynamicProperty: lambda *_: "DYNAMIC",
         exp.EmptyProperty: lambda *_: "EMPTY",
         exp.EncodeColumnConstraint: lambda self, e: f"ENCODE {self.sql(e, 'this')}",
-        exp.EnviromentProperty: lambda self, e: f"ENVIRONMENT ({self.expressions(e, flat=True)})",
-        exp.EphemeralColumnConstraint: lambda self, e: f"EPHEMERAL{(' ' + self.sql(e, 'this')) if e.this else ''}",
-        exp.ExcludeColumnConstraint: lambda self, e: f"EXCLUDE {self.sql(e, 'this').lstrip()}",
+        exp.EnviromentProperty: lambda self,
+        e: f"ENVIRONMENT ({self.expressions(e, flat=True)})",
+        exp.EphemeralColumnConstraint: lambda self,
+        e: f"EPHEMERAL{(' ' + self.sql(e, 'this')) if e.this else ''}",
+        exp.ExcludeColumnConstraint: lambda self,
+        e: f"EXCLUDE {self.sql(e, 'this').lstrip()}",
         exp.ExecuteAsProperty: lambda self, e: self.naked_property(e),
         exp.Except: lambda self, e: self.set_operations(e),
         exp.ExternalProperty: lambda *_: "EXTERNAL",
@@ -167,11 +176,14 @@ class Generator(metaclass=_Generator):
         exp.GlobalProperty: lambda *_: "GLOBAL",
         exp.HeapProperty: lambda *_: "HEAP",
         exp.IcebergProperty: lambda *_: "ICEBERG",
-        exp.InheritsProperty: lambda self, e: f"INHERITS ({self.expressions(e, flat=True)})",
-        exp.InlineLengthColumnConstraint: lambda self, e: f"INLINE LENGTH {self.sql(e, 'this')}",
+        exp.InheritsProperty: lambda self,
+        e: f"INHERITS ({self.expressions(e, flat=True)})",
+        exp.InlineLengthColumnConstraint: lambda self,
+        e: f"INLINE LENGTH {self.sql(e, 'this')}",
         exp.InputModelProperty: lambda self, e: f"INPUT{self.sql(e, 'this')}",
         exp.Intersect: lambda self, e: self.set_operations(e),
-        exp.IntervalSpan: lambda self, e: f"{self.sql(e, 'this')} TO {self.sql(e, 'expression')}",
+        exp.IntervalSpan: lambda self,
+        e: f"{self.sql(e, 'this')} TO {self.sql(e, 'expression')}",
         exp.Int64: lambda self, e: self.sql(exp.cast(e.this, exp.DataType.Type.BIGINT)),
         exp.JSONBContainsAnyTopKeys: lambda self, e: self.binary(e, "?|"),
         exp.JSONBContainsAllTopKeys: lambda self, e: self.binary(e, "?&"),
@@ -180,12 +192,15 @@ class Generator(metaclass=_Generator):
         exp.LocationProperty: lambda self, e: self.naked_property(e),
         exp.LogProperty: lambda _, e: f"{'NO ' if e.args.get('no') else ''}LOG",
         exp.MaterializedProperty: lambda *_: "MATERIALIZED",
-        exp.NonClusteredColumnConstraint: lambda self, e: f"NONCLUSTERED ({self.expressions(e, 'this', indent=False)})",
+        exp.NonClusteredColumnConstraint: lambda self,
+        e: f"NONCLUSTERED ({self.expressions(e, 'this', indent=False)})",
         exp.NoPrimaryIndexProperty: lambda *_: "NO PRIMARY INDEX",
         exp.NotForReplicationColumnConstraint: lambda *_: "NOT FOR REPLICATION",
-        exp.OnCommitProperty: lambda _, e: f"ON COMMIT {'DELETE' if e.args.get('delete') else 'PRESERVE'} ROWS",
+        exp.OnCommitProperty: lambda _,
+        e: f"ON COMMIT {'DELETE' if e.args.get('delete') else 'PRESERVE'} ROWS",
         exp.OnProperty: lambda self, e: f"ON {self.sql(e, 'this')}",
-        exp.OnUpdateColumnConstraint: lambda self, e: f"ON UPDATE {self.sql(e, 'this')}",
+        exp.OnUpdateColumnConstraint: lambda self,
+        e: f"ON UPDATE {self.sql(e, 'this')}",
         exp.Operator: lambda self, e: self.binary(
             e, ""
         ),  # The operator is produced in `binary`
@@ -201,10 +216,12 @@ class Generator(metaclass=_Generator):
         ),
         exp.PivotAny: lambda self, e: f"ANY{self.sql(e, 'this')}",
         exp.PositionalColumn: lambda self, e: f"#{self.sql(e, 'this')}",
-        exp.ProjectionPolicyColumnConstraint: lambda self, e: f"PROJECTION POLICY {self.sql(e, 'this')}",
+        exp.ProjectionPolicyColumnConstraint: lambda self,
+        e: f"PROJECTION POLICY {self.sql(e, 'this')}",
         exp.ZeroFillColumnConstraint: lambda self, e: "ZEROFILL",
         exp.Put: lambda self, e: self.get_put_sql(e),
-        exp.RemoteWithConnectionModelProperty: lambda self, e: f"REMOTE WITH CONNECTION {self.sql(e, 'this')}",
+        exp.RemoteWithConnectionModelProperty: lambda self,
+        e: f"REMOTE WITH CONNECTION {self.sql(e, 'this')}",
         exp.ReturnsProperty: lambda self, e: (
             "RETURNS NULL ON NULL INPUT"
             if e.args.get("null")
@@ -215,7 +232,8 @@ class Generator(metaclass=_Generator):
         exp.SecurityProperty: lambda self, e: f"SECURITY {self.sql(e, 'this')}",
         exp.SetConfigProperty: lambda self, e: self.sql(e, "this"),
         exp.SetProperty: lambda _, e: f"{'MULTI' if e.args.get('multi') else ''}SET",
-        exp.SettingsProperty: lambda self, e: f"SETTINGS{self.seg('')}{(self.expressions(e))}",
+        exp.SettingsProperty: lambda self,
+        e: f"SETTINGS{self.seg('')}{(self.expressions(e))}",
         exp.SharingProperty: lambda self, e: f"SHARING={self.sql(e, 'this')}",
         exp.SqlReadWriteProperty: lambda _, e: e.name,
         exp.SqlSecurityProperty: lambda self, e: f"SQL SECURITY {self.sql(e, 'this')}",
@@ -236,7 +254,8 @@ class Generator(metaclass=_Generator):
         exp.TransientProperty: lambda *_: "TRANSIENT",
         exp.Union: lambda self, e: self.set_operations(e),
         exp.UnloggedProperty: lambda *_: "UNLOGGED",
-        exp.UsingTemplateProperty: lambda self, e: f"USING TEMPLATE {self.sql(e, 'this')}",
+        exp.UsingTemplateProperty: lambda self,
+        e: f"USING TEMPLATE {self.sql(e, 'this')}",
         exp.UsingData: lambda self, e: f"USING DATA {self.sql(e, 'this')}",
         exp.UppercaseColumnConstraint: lambda *_: "UPPERCASE",
         exp.UtcDate: lambda self, e: self.sql(
@@ -251,10 +270,14 @@ class Generator(metaclass=_Generator):
         exp.VarMap: lambda self, e: self.func("MAP", e.args["keys"], e.args["values"]),
         exp.ViewAttributeProperty: lambda self, e: f"WITH {self.sql(e, 'this')}",
         exp.VolatileProperty: lambda *_: "VOLATILE",
-        exp.WithJournalTableProperty: lambda self, e: f"WITH JOURNAL TABLE={self.sql(e, 'this')}",
-        exp.WithProcedureOptions: lambda self, e: f"WITH {self.expressions(e, flat=True)}",
-        exp.WithSchemaBindingProperty: lambda self, e: f"WITH SCHEMA {self.sql(e, 'this')}",
-        exp.WithOperator: lambda self, e: f"{self.sql(e, 'this')} WITH {self.sql(e, 'op')}",
+        exp.WithJournalTableProperty: lambda self,
+        e: f"WITH JOURNAL TABLE={self.sql(e, 'this')}",
+        exp.WithProcedureOptions: lambda self,
+        e: f"WITH {self.expressions(e, flat=True)}",
+        exp.WithSchemaBindingProperty: lambda self,
+        e: f"WITH SCHEMA {self.sql(e, 'this')}",
+        exp.WithOperator: lambda self,
+        e: f"{self.sql(e, 'this')} WITH {self.sql(e, 'op')}",
         exp.ForceProperty: lambda *_: "FORCE",
     }
 
@@ -2727,7 +2750,9 @@ class Generator(metaclass=_Generator):
         this = self.sql(expression, "this")
         this = f"{this} " if this else this
         siblings = "SIBLINGS " if expression.args.get("siblings") else ""
-        return self.op_expressions(f"{this}ORDER {siblings}BY", expression, flat=this or flat)  # type: ignore
+        return self.op_expressions(
+            f"{this}ORDER {siblings}BY", expression, flat=this or flat
+        )  # type: ignore
 
     def withfill_sql(self, expression: exp.WithFill) -> str:
         from_sql = self.sql(expression, "from_")

@@ -340,8 +340,9 @@ def test_max_rows_normal_execution_within_limit(
     expected = scalars_pandas_df_index.head(10)
     pandas.testing.assert_frame_equal(result, expected)
 
-    with bpd.option_context("compute.maximum_result_rows", 10), bpd.option_context(
-        "display.repr_mode", "head"
+    with (
+        bpd.option_context("compute.maximum_result_rows", 10),
+        bpd.option_context("display.repr_mode", "head"),
     ):
         df = scalars_df_index.head(10)
         assert repr(df) is not None
@@ -360,12 +361,14 @@ def test_max_rows_normal_execution_within_limit(
 
 def test_max_rows_exceeds_limit(scalars_df_index):
     """Test to_pandas() raises MaximumRowsDownloadedExceeded when the limit is exceeded."""
-    with bpd.option_context("compute.maximum_result_rows", 5), pytest.raises(
-        bigframes.exceptions.MaximumResultRowsExceeded, match="5"
+    with (
+        bpd.option_context("compute.maximum_result_rows", 5),
+        pytest.raises(bigframes.exceptions.MaximumResultRowsExceeded, match="5"),
     ):
         scalars_df_index.to_pandas()
 
-    with bpd.option_context("compute.maximum_result_rows", 5), pytest.raises(
-        bigframes.exceptions.MaximumResultRowsExceeded, match="5"
+    with (
+        bpd.option_context("compute.maximum_result_rows", 5),
+        pytest.raises(bigframes.exceptions.MaximumResultRowsExceeded, match="5"),
     ):
         next(iter(scalars_df_index.to_pandas_batches()))
