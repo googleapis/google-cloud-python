@@ -76,4 +76,4 @@ For a list of all BigQuery DataFrames releases:
 .. toctree::
     :maxdepth: 2
 
-    changelog
+    CHANGELOG
