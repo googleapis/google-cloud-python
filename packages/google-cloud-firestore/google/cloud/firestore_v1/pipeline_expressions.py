@@ -1285,6 +1285,33 @@ class Expression(ABC):
             "map_get", [self, self._cast_to_expr_or_convert_to_constant(key)]
         )
 
+    def map_set(self, key: str | Constant[str], value: Any) -> "Expression":
+        """Creates an expression that returns a new map with the specified entries added or
+        updated.
+
+        Note:
+            `map_set` only performs shallow updates to the map. Setting a value to `None`
+            will retain the key with a `None` value. To remove a key entirely, use
+            `map_remove`.
+
+        Example:
+            >>> Map({"city": "London"}).map_set("city", "New York")
+            >>> Field.of("address").map_set("city", "Seattle")
+
+        Args:
+            key: The key to set in the map.
+            value: The value to associate with the key.
+
+        Returns:
+            A new `Expression` representing the map_set operation.
+        """
+        args = [
+            self,
+            self._cast_to_expr_or_convert_to_constant(key),
+            self._cast_to_expr_or_convert_to_constant(value),
+        ]
+        return FunctionExpression("map_set", args)
+
     @expose_as_static
     def map_remove(self, key: str | Constant[str]) -> "Expression":
         """Remove a key from a the map produced by evaluating this expression.
@@ -1328,6 +1355,58 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def map_keys(self) -> "Expression":
+        """Creates an expression that returns the keys of a map.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_keys()
+            >>> Field.of("address").map_keys()
+
+        Returns:
+            A new `Expression` representing the keys of the map.
+        """
+        return FunctionExpression("map_keys", [self])
+
+    @expose_as_static
+    def map_values(self) -> "Expression":
+        """Creates an expression that returns the values of a map.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_values()
+            >>> Field.of("address").map_values()
+
+        Returns:
+            A new `Expression` representing the values of the map.
+        """
+        return FunctionExpression("map_values", [self])
+
+    @expose_as_static
+    def map_entries(self) -> "Expression":
+        """Creates an expression that returns the entries of a map as an array of maps,
+        where each map contains a `"k"` property for the key and a `"v"` property for the value.
+        For example: `[{ "k": "key1", "v": "value1" }, ...]`.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_entries()
+            >>> Field.of("address").map_entries()
+
+        Returns:
+            A new `Expression` representing the entries of the map.
+        """
+        return FunctionExpression("map_entries", [self])
+
     def regex_find(self, pattern: str | Constant[str] | Expression) -> "Expression":
         """Creates an expression that returns the first substring of a string expression that
         matches a specified regular expression.

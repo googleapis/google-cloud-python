@@ -1115,6 +1115,17 @@ class TestExpressionessionMethods:
         infix_instance = arg1.map_get(Constant.of(arg2))
         assert infix_instance == instance
 
+    def test_map_set(self):
+        arg1 = self._make_arg("Map")
+        arg2 = "key"
+        arg3 = "value"
+        instance = Expression.map_set(arg1, arg2, arg3)
+        assert instance.name == "map_set"
+        assert instance.params == [arg1, Constant.of(arg2), Constant.of(arg3)]
+        assert repr(instance) == "Map.map_set(Constant.of('key'), Constant.of('value'))"
+        infix_instance = arg1.map_set(Constant.of(arg2), arg3)
+        assert infix_instance == instance
+
     def test_map_remove(self):
         arg1 = self._make_arg("Map")
         arg2 = "key"
@@ -1134,6 +1145,33 @@ class TestExpressionessionMethods:
         assert instance.params == [arg1, arg2, expr.Map(arg3)]
         assert repr(instance) == "Map({'a': 1}).map_merge(Map({'b': 2}), Map({'c': 3}))"
         infix_instance = arg1.map_merge(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_map_keys(self):
+        arg1 = self._make_arg("Map")
+        instance = Expression.map_keys(arg1)
+        assert instance.name == "map_keys"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Map.map_keys()"
+        infix_instance = arg1.map_keys()
+        assert infix_instance == instance
+
+    def test_map_values(self):
+        arg1 = self._make_arg("Map")
+        instance = Expression.map_values(arg1)
+        assert instance.name == "map_values"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Map.map_values()"
+        infix_instance = arg1.map_values()
+        assert infix_instance == instance
+
+    def test_map_entries(self):
+        arg1 = self._make_arg("Map")
+        instance = Expression.map_entries(arg1)
+        assert instance.name == "map_entries"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Map.map_entries()"
+        infix_instance = arg1.map_entries()
         assert infix_instance == instance
 
     def test_mod(self):
