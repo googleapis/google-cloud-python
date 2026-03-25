@@ -77,6 +77,7 @@ from google.cloud.ces_v1.services.agent_service import (
 from google.cloud.ces_v1.types import (
     agent,
     agent_service,
+    agent_tool,
     agent_transfers,
     app,
     app_version,
@@ -3311,6 +3312,7 @@ def test_export_app_non_empty_request_with_auto_populated_field():
     request = agent_service.ExportAppRequest(
         name="name_value",
         gcs_uri="gcs_uri_value",
+        app_version="app_version_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3324,6 +3326,7 @@ def test_export_app_non_empty_request_with_auto_populated_field():
         assert args[0] == agent_service.ExportAppRequest(
             name="name_value",
             gcs_uri="gcs_uri_value",
+            app_version="app_version_value",
         )
 
 
@@ -32330,6 +32333,7 @@ def test_create_app_rest_call_success(request_type):
             "evaluation_audio_recording_config": {},
             "metric_analysis_settings": {"llm_metrics_opted_out": True},
         },
+        "error_handling_settings": {"error_handling_strategy": 1},
         "model_settings": {"model": "model_value", "temperature": 0.1198},
         "tool_execution_mode": 1,
         "evaluation_metrics_thresholds": {
@@ -32655,6 +32659,7 @@ def test_update_app_rest_call_success(request_type):
             "evaluation_audio_recording_config": {},
             "metric_analysis_settings": {"llm_metrics_opted_out": True},
         },
+        "error_handling_settings": {"error_handling_strategy": 1},
         "model_settings": {"model": "model_value", "temperature": 0.1198},
         "tool_execution_mode": 1,
         "evaluation_metrics_thresholds": {
@@ -34531,6 +34536,7 @@ def test_create_example_rest_call_success(request_type):
                     {
                         "text": "text_value",
                         "transcript": "transcript_value",
+                        "blob": {"mime_type": "mime_type_value", "data": b"data_blob"},
                         "payload": {"fields": {}},
                         "image": {"mime_type": "mime_type_value", "data": b"data_blob"},
                         "tool_call": {
@@ -34793,6 +34799,7 @@ def test_update_example_rest_call_success(request_type):
                     {
                         "text": "text_value",
                         "transcript": "transcript_value",
+                        "blob": {"mime_type": "mime_type_value", "data": b"data_blob"},
                         "payload": {"fields": {}},
                         "image": {"mime_type": "mime_type_value", "data": b"data_blob"},
                         "tool_call": {
@@ -36127,6 +36134,7 @@ def test_create_tool_rest_call_success(request_type):
             "api_authentication": {},
             "tls_config": {},
             "service_directory_config": {},
+            "custom_headers": {},
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -36135,11 +36143,24 @@ def test_create_tool_rest_call_success(request_type):
             "file_corpus": "file_corpus_value",
         },
         "system_tool": {"name": "name_value", "description": "description_value"},
+        "agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "root_agent": "root_agent_value",
+        },
         "widget_tool": {
             "parameters": {},
             "name": "name_value",
             "description": "description_value",
             "widget_type": 1,
+            "ui_config": {},
+            "data_mapping": {
+                "source_tool_name": "source_tool_name_value",
+                "field_mappings": {},
+                "python_function": {},
+                "mode": 1,
+                "python_script": "python_script_value",
+            },
         },
         "name": "name_value",
         "display_name": "display_name_value",
@@ -36551,6 +36572,7 @@ def test_update_tool_rest_call_success(request_type):
             "api_authentication": {},
             "tls_config": {},
             "service_directory_config": {},
+            "custom_headers": {},
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -36559,11 +36581,24 @@ def test_update_tool_rest_call_success(request_type):
             "file_corpus": "file_corpus_value",
         },
         "system_tool": {"name": "name_value", "description": "description_value"},
+        "agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "root_agent": "root_agent_value",
+        },
         "widget_tool": {
             "parameters": {},
             "name": "name_value",
             "description": "description_value",
             "widget_type": 1,
+            "ui_config": {},
+            "data_mapping": {
+                "source_tool_name": "source_tool_name_value",
+                "field_mappings": {},
+                "python_function": {},
+                "mode": 1,
+                "python_script": "python_script_value",
+            },
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/tools/sample4",
         "display_name": "display_name_value",
@@ -38980,6 +39015,7 @@ def test_create_toolset_rest_call_success(request_type):
                     {"display_name": "display_name_value", "cert": b"cert_blob"}
                 ]
             },
+            "custom_headers": {},
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -39265,6 +39301,7 @@ def test_update_toolset_rest_call_success(request_type):
                     {"display_name": "display_name_value", "cert": b"cert_blob"}
                 ]
             },
+            "custom_headers": {},
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -39964,6 +40001,7 @@ def test_create_app_version_rest_call_success(request_type):
                     "evaluation_audio_recording_config": {},
                     "metric_analysis_settings": {"llm_metrics_opted_out": True},
                 },
+                "error_handling_settings": {"error_handling_strategy": 1},
                 "model_settings": {"model": "model_value", "temperature": 0.1198},
                 "tool_execution_mode": 1,
                 "evaluation_metrics_thresholds": {
@@ -40293,6 +40331,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "api_authentication": {},
                         "tls_config": {},
                         "service_directory_config": {},
+                        "custom_headers": {},
                     },
                     "file_search_tool": {
                         "corpus_type": 1,
@@ -40304,11 +40343,24 @@ def test_create_app_version_rest_call_success(request_type):
                         "name": "name_value",
                         "description": "description_value",
                     },
+                    "agent_tool": {
+                        "name": "name_value",
+                        "description": "description_value",
+                        "root_agent": "root_agent_value",
+                    },
                     "widget_tool": {
                         "parameters": {},
                         "name": "name_value",
                         "description": "description_value",
                         "widget_type": 1,
+                        "ui_config": {},
+                        "data_mapping": {
+                            "source_tool_name": "source_tool_name_value",
+                            "field_mappings": {},
+                            "python_function": {},
+                            "mode": 1,
+                            "python_script": "python_script_value",
+                        },
                     },
                     "name": "name_value",
                     "display_name": "display_name_value",
@@ -40336,6 +40388,10 @@ def test_create_app_version_rest_call_success(request_type):
                                 {
                                     "text": "text_value",
                                     "transcript": "transcript_value",
+                                    "blob": {
+                                        "mime_type": "mime_type_value",
+                                        "data": b"data_blob",
+                                    },
                                     "payload": {},
                                     "image": {
                                         "mime_type": "mime_type_value",
@@ -40440,6 +40496,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "api_authentication": {},
                         "service_directory_config": {},
                         "tls_config": {},
+                        "custom_headers": {},
                     },
                     "open_api_toolset": {
                         "open_api_schema": "open_api_schema_value",

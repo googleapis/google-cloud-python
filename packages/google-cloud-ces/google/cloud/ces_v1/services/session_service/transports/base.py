@@ -159,6 +159,11 @@ class SessionServiceTransport(abc.ABC):
                 default_timeout=220.0,
                 client_info=client_info,
             ),
+            self.stream_run_session: gapic_v1.method.wrap_method(
+                self.stream_run_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.bidi_run_session: gapic_v1.method.wrap_method(
                 self.bidi_run_session,
                 default_retry=retries.Retry(
@@ -214,6 +219,18 @@ class SessionServiceTransport(abc.ABC):
 
     @property
     def run_session(
+        self,
+    ) -> Callable[
+        [session_service.RunSessionRequest],
+        Union[
+            session_service.RunSessionResponse,
+            Awaitable[session_service.RunSessionResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_run_session(
         self,
     ) -> Callable[
         [session_service.RunSessionRequest],

@@ -22,7 +22,7 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.backupdr_v1.types import backupvault_cloudsql
+from google.cloud.backupdr_v1.types import backupvault_alloydb, backupvault_cloudsql
 
 __protobuf__ = proto.module(
     package="google.cloud.backupdr.v1",
@@ -47,6 +47,10 @@ class BackupPlanAssociation(proto.Message):
     BackupPlanAssociation which contains details like workload,
     backup plan etc
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -93,6 +97,11 @@ class BackupPlanAssociation(proto.Message):
             projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
         cloud_sql_instance_backup_plan_association_properties (google.cloud.backupdr_v1.types.CloudSqlInstanceBackupPlanAssociationProperties):
             Output only. Cloud SQL instance's backup plan
+            association properties.
+
+            This field is a member of `oneof`_ ``resource_properties``.
+        alloydb_cluster_backup_plan_association_properties (google.cloud.backupdr_v1.types.AlloyDBClusterBackupPlanAssociationProperties):
+            Output only. AlloyDB cluster's backup plan
             association properties.
 
             This field is a member of `oneof`_ ``resource_properties``.
@@ -180,6 +189,12 @@ class BackupPlanAssociation(proto.Message):
         number=10,
         oneof="resource_properties",
         message=backupvault_cloudsql.CloudSqlInstanceBackupPlanAssociationProperties,
+    )
+    alloydb_cluster_backup_plan_association_properties: backupvault_alloydb.AlloyDBClusterBackupPlanAssociationProperties = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="resource_properties",
+        message=backupvault_alloydb.AlloyDBClusterBackupPlanAssociationProperties,
     )
     backup_plan_revision_id: str = proto.Field(
         proto.STRING,

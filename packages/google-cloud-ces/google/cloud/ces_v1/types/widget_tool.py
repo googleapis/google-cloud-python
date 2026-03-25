@@ -17,8 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.ces_v1.types import python_function as gcc_python_function
 from google.cloud.ces_v1.types import schema
 
 __protobuf__ = proto.module(
@@ -53,6 +55,13 @@ class WidgetTool(proto.Message):
         widget_type (google.cloud.ces_v1.types.WidgetTool.WidgetType):
             Optional. The type of the widget tool. If not
             specified, the default type will be CUSTOMIZED.
+        ui_config (google.protobuf.struct_pb2.Struct):
+            Optional. Configuration for rendering the
+            widget.
+        data_mapping (google.cloud.ces_v1.types.WidgetTool.DataMapping):
+            Optional. The mapping that defines how data
+            from a source tool is mapped to the widget's
+            input parameters.
     """
 
     class WidgetType(proto.Enum):
@@ -82,6 +91,10 @@ class WidgetTool(proto.Message):
                 Order summary widget.
             APPOINTMENT_DETAILS (10):
                 Appointment details widget.
+            APPOINTMENT_SCHEDULER (11):
+                Appointment scheduler widget.
+            CONTACT_FORM (12):
+                Contact form widget.
         """
 
         WIDGET_TYPE_UNSPECIFIED = 0
@@ -95,6 +108,73 @@ class WidgetTool(proto.Message):
         OVERALL_SATISFACTION = 8
         ORDER_SUMMARY = 9
         APPOINTMENT_DETAILS = 10
+        APPOINTMENT_SCHEDULER = 11
+        CONTACT_FORM = 12
+
+    class DataMapping(proto.Message):
+        r"""Configuration for mapping data from a source tool to the
+        widget's input parameters.
+
+        Attributes:
+            source_tool_name (str):
+                Optional. The resource name of the tool that provides the
+                data for the widget (e.g., a search tool or a custom
+                function). Format:
+                ``projects/{project}/locations/{location}/agents/{agent}/tools/{tool}``
+            field_mappings (MutableMapping[str, str]):
+                Optional. A map of widget input parameter
+                fields to the corresponding output fields of the
+                source tool.
+            python_function (google.cloud.ces_v1.types.PythonFunction):
+                Optional. Configuration for a Python function
+                used to transform the source tool's output into
+                the widget's input format.
+            mode (google.cloud.ces_v1.types.WidgetTool.DataMapping.Mode):
+                Optional. The mode of the data mapping.
+            python_script (str):
+                Deprecated: Use ``python_function`` instead.
+        """
+
+        class Mode(proto.Enum):
+            r"""The strategy used to map data from the source tool to the
+            widget.
+
+            Values:
+                MODE_UNSPECIFIED (0):
+                    Unspecified mode.
+                FIELD_MAPPING (1):
+                    Use the ``field_mappings`` map for data transformation.
+                PYTHON_SCRIPT (2):
+                    Use the ``python_script`` for data transformation.
+            """
+
+            MODE_UNSPECIFIED = 0
+            FIELD_MAPPING = 1
+            PYTHON_SCRIPT = 2
+
+        source_tool_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        field_mappings: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=2,
+        )
+        python_function: gcc_python_function.PythonFunction = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=gcc_python_function.PythonFunction,
+        )
+        mode: "WidgetTool.DataMapping.Mode" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="WidgetTool.DataMapping.Mode",
+        )
+        python_script: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     parameters: schema.Schema = proto.Field(
         proto.MESSAGE,
@@ -114,6 +194,16 @@ class WidgetTool(proto.Message):
         proto.ENUM,
         number=3,
         enum=WidgetType,
+    )
+    ui_config: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Struct,
+    )
+    data_mapping: DataMapping = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=DataMapping,
     )
 
 
