@@ -1801,6 +1801,7 @@ def test_get_intent(request_type, transport: str = "grpc"):
             priority=898,
             is_fallback=True,
             description="description_value",
+            dtmf_pattern="dtmf_pattern_value",
         )
         response = client.get_intent(request)
 
@@ -1817,6 +1818,7 @@ def test_get_intent(request_type, transport: str = "grpc"):
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 def test_get_intent_non_empty_request_with_auto_populated_field():
@@ -1947,6 +1949,7 @@ async def test_get_intent_async(
                 priority=898,
                 is_fallback=True,
                 description="description_value",
+                dtmf_pattern="dtmf_pattern_value",
             )
         )
         response = await client.get_intent(request)
@@ -1964,6 +1967,7 @@ async def test_get_intent_async(
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 @pytest.mark.asyncio
@@ -2136,6 +2140,7 @@ def test_create_intent(request_type, transport: str = "grpc"):
             priority=898,
             is_fallback=True,
             description="description_value",
+            dtmf_pattern="dtmf_pattern_value",
         )
         response = client.create_intent(request)
 
@@ -2152,6 +2157,7 @@ def test_create_intent(request_type, transport: str = "grpc"):
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 def test_create_intent_non_empty_request_with_auto_populated_field():
@@ -2284,6 +2290,7 @@ async def test_create_intent_async(
                 priority=898,
                 is_fallback=True,
                 description="description_value",
+                dtmf_pattern="dtmf_pattern_value",
             )
         )
         response = await client.create_intent(request)
@@ -2301,6 +2308,7 @@ async def test_create_intent_async(
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 @pytest.mark.asyncio
@@ -2483,6 +2491,7 @@ def test_update_intent(request_type, transport: str = "grpc"):
             priority=898,
             is_fallback=True,
             description="description_value",
+            dtmf_pattern="dtmf_pattern_value",
         )
         response = client.update_intent(request)
 
@@ -2499,6 +2508,7 @@ def test_update_intent(request_type, transport: str = "grpc"):
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 def test_update_intent_non_empty_request_with_auto_populated_field():
@@ -2629,6 +2639,7 @@ async def test_update_intent_async(
                 priority=898,
                 is_fallback=True,
                 description="description_value",
+                dtmf_pattern="dtmf_pattern_value",
             )
         )
         response = await client.update_intent(request)
@@ -2646,6 +2657,7 @@ async def test_update_intent_async(
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 @pytest.mark.asyncio
@@ -5167,6 +5179,7 @@ async def test_get_intent_empty_call_grpc_asyncio():
                 priority=898,
                 is_fallback=True,
                 description="description_value",
+                dtmf_pattern="dtmf_pattern_value",
             )
         )
         await client.get_intent(request=None)
@@ -5198,6 +5211,7 @@ async def test_create_intent_empty_call_grpc_asyncio():
                 priority=898,
                 is_fallback=True,
                 description="description_value",
+                dtmf_pattern="dtmf_pattern_value",
             )
         )
         await client.create_intent(request=None)
@@ -5229,6 +5243,7 @@ async def test_update_intent_empty_call_grpc_asyncio():
                 priority=898,
                 is_fallback=True,
                 description="description_value",
+                dtmf_pattern="dtmf_pattern_value",
             )
         )
         await client.update_intent(request=None)
@@ -5496,6 +5511,7 @@ def test_get_intent_rest_call_success(request_type):
             priority=898,
             is_fallback=True,
             description="description_value",
+            dtmf_pattern="dtmf_pattern_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5517,6 +5533,7 @@ def test_get_intent_rest_call_success(request_type):
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5635,6 +5652,7 @@ def test_create_intent_rest_call_success(request_type):
         "is_fallback": True,
         "labels": {},
         "description": "description_value",
+        "dtmf_pattern": "dtmf_pattern_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5714,6 +5732,7 @@ def test_create_intent_rest_call_success(request_type):
             priority=898,
             is_fallback=True,
             description="description_value",
+            dtmf_pattern="dtmf_pattern_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5735,6 +5754,7 @@ def test_create_intent_rest_call_success(request_type):
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5867,6 +5887,7 @@ def test_update_intent_rest_call_success(request_type):
         "is_fallback": True,
         "labels": {},
         "description": "description_value",
+        "dtmf_pattern": "dtmf_pattern_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5946,6 +5967,7 @@ def test_update_intent_rest_call_success(request_type):
             priority=898,
             is_fallback=True,
             description="description_value",
+            dtmf_pattern="dtmf_pattern_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5967,6 +5989,7 @@ def test_update_intent_rest_call_success(request_type):
     assert response.priority == 898
     assert response.is_fallback is True
     assert response.description == "description_value"
+    assert response.dtmf_pattern == "dtmf_pattern_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
