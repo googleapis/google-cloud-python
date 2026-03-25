@@ -1753,6 +1753,9 @@ class Expression(ABC):
             >>> # Compare the 'price' field to 10
             >>> Field.of("price").cmp(10)
 
+        Args:
+            other: The value to compare against.
+
         Returns:
             A new `Expression` representing the comparison operation.
         """
@@ -1771,6 +1774,12 @@ class Expression(ABC):
         Example:
             >>> # Truncate the 'createdAt' field to the day
             >>> Field.of("createdAt").timestamp_trunc("day")
+            >>> # Truncate the 'createdAt' field to the day in the 'America/Los_Angeles' timezone
+            >>> Field.of("createdAt").timestamp_trunc("day", "America/Los_Angeles")
+
+        Args:
+            granularity: The granularity to truncate to.
+            timezone: The optional timezone.
 
         Returns:
             A new `Expression` representing the timestamp_trunc operation.
@@ -1789,6 +1798,12 @@ class Expression(ABC):
         Example:
             >>> # Extract the year from the 'createdAt' field
             >>> Field.of("createdAt").timestamp_extract("year")
+            >>> # Extract the year from the 'createdAt' field in the 'America/Los_Angeles' timezone
+            >>> Field.of("createdAt").timestamp_extract("year", "America/Los_Angeles")
+
+        Args:
+            part: The part to extract.
+            timezone: The optional timezone.
 
         Returns:
             A new `Expression` representing the timestamp_extract operation.
@@ -1800,13 +1815,17 @@ class Expression(ABC):
 
     @expose_as_static
     def timestamp_diff(
-        self, start: Expression | CONSTANT_TYPE, unit: Expression | str
+        self, start: Expression | datetime.datetime, unit: Expression | str
     ) -> "Expression":
         """Creates an expression that computes the difference between two timestamps in the specified unit.
 
         Example:
             >>> # Compute the difference in days between the 'end' field and the 'start' field
             >>> Field.of("end").timestamp_diff(Field.of("start"), "day")
+
+        Args:
+            start: The start timestamp.
+            unit: The unit of time.
 
         Returns:
             A new `Expression` representing the timestamp_diff operation.
@@ -1827,6 +1846,9 @@ class Expression(ABC):
         Example:
             >>> # Return the 'nickname' field if not null, otherwise return 'firstName'
             >>> Field.of("nickname").if_null(Field.of("firstName"))
+
+        Args:
+            *others: Additional expressions or constants to evaluate if the previous ones are null.
 
         Returns:
             A new `Expression` representing the if_null operation.
@@ -1856,6 +1878,9 @@ class Expression(ABC):
         Example:
             >>> # Check if the 'price' field is a number
             >>> Field.of("price").is_type("number")
+
+        Args:
+            type_val: The type string or expression to check against.
 
         Returns:
             A new `BooleanExpression` representing the is_type operation.

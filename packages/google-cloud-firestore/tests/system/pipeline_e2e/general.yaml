@@ -688,17 +688,21 @@ tests:
   - description: testTypeAndIsType
     pipeline:
       - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
       - Limit: 1
       - Select:
         - AliasedExpression:
             - FunctionExpression.type:
-                - Constant: "hello"
+                - Field: awards
             - "val_type"
         - AliasedExpression:
             - FunctionExpression.is_type:
-                - Constant: "hello"
-                - Constant: "string"
-            - "val_is_string"
+                - Field: awards
+                - Constant: "map"
+            - "val_is_map"
     assert_results:
-      - val_type: "string"
-        val_is_string: true
+      - val_type: "map"
+        val_is_map: true
