@@ -88,3 +88,17 @@ class ArrayReduceOp(base_ops.UnaryOp):
         assert dtypes.is_array_like(input_type)
         inner_type = dtypes.get_array_inner_type(input_type)
         return self.aggregation.output_type(inner_type)
+
+
+@dataclasses.dataclass(frozen=True)
+class ArrayMapOp(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "array_map"
+    # TODO(b/495513753): Generalize to chained expressions
+    map_op: base_ops.UnaryOp
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        assert dtypes.is_array_like(input_type)
+        inner_type = dtypes.get_array_inner_type(input_type)
+        out_inner_type = self.map_op.output_type(inner_type)
+        return dtypes.list_type(out_inner_type)

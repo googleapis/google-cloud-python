@@ -2042,7 +2042,6 @@ class Series:
                 result_series = self._apply_unary_op(
                     ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
                 )
-            result_series = func._post_process_series(result_series)
 
             return result_series
 
@@ -2095,7 +2094,6 @@ class Series:
             result_series = self._apply_binary_op(
                 other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
             )
-            result_series = func._post_process_series(result_series)
             return result_series
 
         bf_op = python_ops.python_callable_to_op(func)

@@ -25,6 +25,7 @@ from bigframes.operations.ai_ops import (
 )
 from bigframes.operations.array_ops import (
     ArrayIndexOp,
+    ArrayMapOp,
     ArrayReduceOp,
     ArraySliceOp,
     ArrayToStringOp,
@@ -440,4 +441,5 @@ __all__ = [
     "NUMPY_TO_OP",
     "ToArrayOp",
     "ArrayReduceOp",
+    "ArrayMapOp",
 ]

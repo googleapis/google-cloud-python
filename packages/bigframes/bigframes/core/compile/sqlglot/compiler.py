@@ -369,4 +369,5 @@ def compile_aggregate(
 def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrite.rewrite_slice)
     node = nodes.bottom_up(node, rewrite.rewrite_range_rolling)
+    node = nodes.bottom_up(node, rewrite.lower_udfs)
     return node

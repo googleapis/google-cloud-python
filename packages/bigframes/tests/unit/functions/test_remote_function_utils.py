@@ -41,82 +41,6 @@ def test_get_remote_function_locations(
     assert cf_region == expected_cf_region
 
 
-@pytest.mark.parametrize(
-    "func_hash, session_id, uniq_suffix, expected_name",
-    [
-        (
-            "hash123",
-            None,
-            None,
-            "bigframes-hash123",
-        ),
-        (
-            "hash456",
-            "session789",
-            None,
-            "bigframes-session789-hash456",
-        ),
-        (
-            "hash123",
-            None,
-            "suffixABC",
-            "bigframes-hash123-suffixABC",
-        ),
-        (
-            "hash456",
-            "session789",
-            "suffixDEF",
-            "bigframes-session789-hash456-suffixDEF",
-        ),
-    ],
-)
-def test_get_cloud_function_name(func_hash, session_id, uniq_suffix, expected_name):
-    """Tests the construction of the cloud function name from its parts."""
-    result = _utils.get_cloud_function_name(func_hash, session_id, uniq_suffix)
-
-    assert result == expected_name
-
-
-@pytest.mark.parametrize(
-    "function_hash, session_id, uniq_suffix, expected_name",
-    [
-        (
-            "hash123",
-            "session456",
-            None,
-            "bigframes_session456_hash123",
-        ),
-        (
-            "hash789",
-            "sessionABC",
-            "suffixDEF",
-            "bigframes_sessionABC_hash789_suffixDEF",
-        ),
-    ],
-)
-def test_get_bigframes_function_name(
-    function_hash, session_id, uniq_suffix, expected_name
-):
-    """Tests the construction of the BigQuery function name from its parts."""
-    result = _utils.get_bigframes_function_name(function_hash, session_id, uniq_suffix)
-
-    assert result == expected_name
-
-
-def test_get_updated_package_requirements_no_extra_package():
-    """Tests with no extra package."""
-    result = _utils.get_updated_package_requirements(capture_references=False)
-
-    assert result is None
-
-    initial_packages = ["xgboost"]
-    result = _utils.get_updated_package_requirements(
-        initial_packages, capture_references=False
-    )
-
-    assert result == initial_packages
-
-
 @patch("bigframes.functions._utils.numpy.__version__", "1.24.4")
 @patch("bigframes.functions._utils.pyarrow.__version__", "14.0.1")
 @patch("bigframes.functions._utils.pandas.__version__", "2.0.3")
@@ -162,7 +86,7 @@ def test_get_updated_package_requirements_capture_references_false():
     # Case 1: Only capture_references=False.
     result_1 = _utils.get_updated_package_requirements(capture_references=False)
 
-    assert result_1 is None
+    assert len(result_1) == 0
 
     # Case 2: capture_references=False but is_row_processor=True.
     expected_2 = ["numpy==1.24.4", "pandas==2.0.3", "pyarrow==14.0.1"]

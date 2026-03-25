@@ -4748,7 +4748,9 @@ class DataFrame:
                 #      compatible with the data types of the input params.
                 #   3. The order of the columns in the dataframe must correspond
                 #      to the order of the input params in the function.
-                udf_input_dtypes = func.udf_def.signature.bf_input_types
+                udf_input_dtypes = tuple(
+                    arg.bf_type for arg in func.udf_def.signature.inputs
+                )
                 if not args and len(udf_input_dtypes) != len(self.columns):
                     raise ValueError(
                         f"Parameter count mismatch: BigFrames BigQuery function"
@@ -4793,7 +4795,6 @@ class DataFrame:
                 )
             result_series.name = None
 
-            result_series = func._post_process_series(result_series)
             return result_series
 
         # At this point column-wise or element-wise bigquery function operation will

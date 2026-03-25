@@ -48,6 +48,35 @@ except ImportError:
     to_wkt = dumps
 
 
+def identifier(name: str) -> str:
+    if len(name) > 256:
+        raise ValueError("Identifier must be less than 256 characters")
+    return f"`{escape_chars(name)}`"
+
+
+def escape_chars(value: str):
+    """Escapes all special characters"""
+    # TODO: Reuse literal's escaping logic instead of re-implementing it here.
+    # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#string_and_bytes_literals
+    trans_table = str.maketrans(
+        {
+            "\a": r"\a",
+            "\b": r"\b",
+            "\f": r"\f",
+            "\n": r"\n",
+            "\r": r"\r",
+            "\t": r"\t",
+            "\v": r"\v",
+            "\\": r"\\",
+            "?": r"\?",
+            '"': r"\"",
+            "'": r"\'",
+            "`": r"\`",
+        }
+    )
+    return value.translate(trans_table)
+
+
 def multi_literal(*values: Any):
     literal_strings = [sql.to_sql(sql.literal(i)) for i in values]
     return "(" + ", ".join(literal_strings) + ")"

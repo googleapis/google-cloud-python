@@ -75,12 +75,12 @@ def _package_existed(package_requirements: list[str], package: str) -> bool:
 
 
 def get_updated_package_requirements(
-    package_requirements=None,
-    is_row_processor=False,
-    capture_references=True,
-    ignore_package_version=False,
-):
-    requirements = []
+    package_requirements: Sequence[str] = (),
+    is_row_processor: bool = False,
+    capture_references: bool = True,
+    ignore_package_version: bool = False,
+) -> Sequence[str]:
+    requirements: list[str] = []
     if capture_references:
         requirements.append(f"cloudpickle=={cloudpickle.__version__}")
 
@@ -110,13 +110,12 @@ def get_updated_package_requirements(
     if not requirements:
         return package_requirements
 
-    if not package_requirements:
-        package_requirements = []
+    result = list(package_requirements)
     for package in requirements:
-        if not _package_existed(package_requirements, package):
-            package_requirements.append(package)
+        if not _package_existed(result, package):
+            result.append(package)
 
-    return sorted(package_requirements)
+    return sorted(result)
 
 
 def clean_up_by_session_id(
@@ -183,6 +182,23 @@ def clean_up_by_session_id(
             pass
 
 
+def routine_ref_to_string_for_query(routine_ref: bigquery.RoutineReference) -> str:
+    return f"`{routine_ref.project}.{routine_ref.dataset_id}`.{routine_ref.routine_id}"
+
+
+def get_managed_function_name(
+    function_hash: str,
+    session_id: str | None = None,
+):
+    """Get a name for the bigframes managed function for the given user defined function."""
+    parts = [_BIGFRAMES_FUNCTION_PREFIX]
+    if session_id:
+        parts.append(session_id)
+    parts.append(function_hash)
+    return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
+
+
+# Deprecated: Use CodeDef.stable_hash() instead.
 def get_hash(def_, package_requirements=None):
     "Get hash (32 digits alphanumeric) of a function."
     # There is a known cell-id sensitivity of the cloudpickle serialization in
@@ -208,46 +224,28 @@ def get_hash(def_, package_requirements=None):
     return hashlib.md5(def_repr).hexdigest()
 
 
-def routine_ref_to_string_for_query(routine_ref: bigquery.RoutineReference) -> str:
-    return f"`{routine_ref.project}.{routine_ref.dataset_id}`.{routine_ref.routine_id}"
-
-
-def get_cloud_function_name(function_hash, session_id=None, uniq_suffix=None):
-    "Get a name for the cloud function for the given user defined function."
-    parts = [_BIGFRAMES_FUNCTION_PREFIX]
-    if session_id:
-        parts.append(session_id)
-    parts.append(function_hash)
-    if uniq_suffix:
-        parts.append(uniq_suffix)
-    return _GCF_FUNCTION_NAME_SEPERATOR.join(parts)
-
-
-def get_bigframes_function_name(function_hash, session_id, uniq_suffix=None):
-    "Get a name for the bigframes function for the given user defined function."
-    parts = [_BIGFRAMES_FUNCTION_PREFIX, session_id, function_hash]
-    if uniq_suffix:
-        parts.append(uniq_suffix)
-    return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
+def get_python_output_type_str_from_bigframes_metadata(
+    metadata_text: str,
+) -> Optional[str]:
+    try:
+        metadata_dict = json.loads(metadata_text)
+    except (TypeError, json.decoder.JSONDecodeError):
+        return None
+    try:
+        return metadata_dict["value"]["python_array_output_type"]
+    except KeyError:
+        return None
 
 
 def get_python_output_type_from_bigframes_metadata(
     metadata_text: str,
 ) -> Optional[type]:
-    try:
-        metadata_dict = json.loads(metadata_text)
-    except (TypeError, json.decoder.JSONDecodeError):
-        return None
-
-    try:
-        output_type = metadata_dict["value"]["python_array_output_type"]
-    except KeyError:
-        return None
+    output_type_str = get_python_output_type_str_from_bigframes_metadata(metadata_text)
 
     for (
         python_output_array_type
     ) in function_typing.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
-        if python_output_array_type.__name__ == output_type:
+        if python_output_array_type.__name__ == output_type_str:
             return list[python_output_array_type]  # type: ignore
 
     return None
@@ -291,20 +289,6 @@ def get_python_version(is_compat: bool = False) -> str:
     major = sys.version_info.major
     minor = sys.version_info.minor
     return f"python{major}{minor}" if is_compat else f"python-{major}.{minor}"
-
-
-def build_unnest_post_routine(py_list_type: type[list]):
-    sdk_type = function_typing.sdk_array_output_type_from_python_type(py_list_type)
-    assert sdk_type.array_element_type is not None
-    inner_sdk_type = sdk_type.array_element_type
-    result_dtype = function_typing.sdk_type_to_bf_type(inner_sdk_type)
-
-    def post_process(input):
-        import bigframes.bigquery as bbq
-
-        return bbq.json_extract_string_array(input, value_dtype=result_dtype)
-
-    return post_process
 
 
 def has_conflict_input_type(

@@ -88,6 +88,7 @@ def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrites.rewrite_slice)
     node = nodes.bottom_up(node, rewrites.rewrite_timedelta_expressions)
     node = nodes.bottom_up(node, rewrites.rewrite_range_rolling)
+    node = nodes.bottom_up(node, rewrites.lower_udfs)
     return node
 
 

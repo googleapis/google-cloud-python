@@ -31,7 +31,7 @@ class RemoteFunctionOp(base_ops.UnaryOp):
         return True
 
     def output_type(self, *input_types):
-        return self.function_def.bigframes_output_type
+        return self.function_def.signature.output.bf_type
 
 
 @dataclasses.dataclass(frozen=True)
@@ -44,7 +44,7 @@ class BinaryRemoteFunctionOp(base_ops.BinaryOp):
         return True
 
     def output_type(self, *input_types):
-        return self.function_def.bigframes_output_type
+        return self.function_def.signature.output.bf_type
 
 
 @dataclasses.dataclass(frozen=True)
@@ -57,4 +57,4 @@ class NaryRemoteFunctionOp(base_ops.NaryOp):
         return True
 
     def output_type(self, *input_types):
-        return self.function_def.bigframes_output_type
+        return self.function_def.signature.output.bf_type

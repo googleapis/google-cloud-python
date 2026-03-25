@@ -63,7 +63,7 @@ def test_create_load_gemini_text_generator_model(
         "gemini-2.5-flash-lite",
     ),
 )
-# @pytest.mark.flaky(retries=2)
+@pytest.mark.flaky(retries=2)
 def test_gemini_text_generator_predict_default_params_success(
     llm_text_df, model_name, session, bq_connection
 ):

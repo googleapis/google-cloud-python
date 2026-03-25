@@ -81,7 +81,7 @@ class UnsupportedTypeError(ValueError):
 
 
 def sdk_type_from_python_type(
-    t: type, allow_lists: bool = False
+    t: type, allow_lists: bool = True
 ) -> bigquery.StandardSqlDataType:
     if (get_origin(t) is list) and allow_lists:
         return sdk_array_output_type_from_python_type(t)

@@ -178,17 +178,13 @@ def test_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
             "my_project.my_dataset.my_routine"
         ),
         signature=udf_def.UdfSignature(
-            input_types=(
-                udf_def.UdfField(
+            inputs=(
+                udf_def.UdfArg(
                     "x",
-                    bigquery.StandardSqlDataType(
-                        type_kind=bigquery.StandardSqlTypeNames.INT64
-                    ),
+                    udf_def.DirectScalarType(int),
                 ),
             ),
-            output_bq_type=bigquery.StandardSqlDataType(
-                type_kind=bigquery.StandardSqlTypeNames.FLOAT64
-            ),
+            output=udf_def.DirectScalarType(float),
         ),
     )
     ops_map = {
@@ -211,23 +207,17 @@ def test_binary_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
                 "my_project.my_dataset.my_routine"
             ),
             signature=udf_def.UdfSignature(
-                input_types=(
-                    udf_def.UdfField(
+                inputs=(
+                    udf_def.UdfArg(
                         "x",
-                        bigquery.StandardSqlDataType(
-                            type_kind=bigquery.StandardSqlTypeNames.INT64
-                        ),
+                        udf_def.DirectScalarType(int),
                     ),
-                    udf_def.UdfField(
+                    udf_def.UdfArg(
                         "y",
-                        bigquery.StandardSqlDataType(
-                            type_kind=bigquery.StandardSqlTypeNames.FLOAT64
-                        ),
+                        udf_def.DirectScalarType(float),
                     ),
                 ),
-                output_bq_type=bigquery.StandardSqlDataType(
-                    type_kind=bigquery.StandardSqlTypeNames.FLOAT64
-                ),
+                output=udf_def.DirectScalarType(float),
             ),
         )
     )
@@ -244,29 +234,21 @@ def test_nary_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
                 "my_project.my_dataset.my_routine"
             ),
             signature=udf_def.UdfSignature(
-                input_types=(
-                    udf_def.UdfField(
+                inputs=(
+                    udf_def.UdfArg(
                         "x",
-                        bigquery.StandardSqlDataType(
-                            type_kind=bigquery.StandardSqlTypeNames.INT64
-                        ),
+                        udf_def.DirectScalarType(int),
                     ),
-                    udf_def.UdfField(
+                    udf_def.UdfArg(
                         "y",
-                        bigquery.StandardSqlDataType(
-                            type_kind=bigquery.StandardSqlTypeNames.FLOAT64
-                        ),
+                        udf_def.DirectScalarType(float),
                     ),
-                    udf_def.UdfField(
+                    udf_def.UdfArg(
                         "z",
-                        bigquery.StandardSqlDataType(
-                            type_kind=bigquery.StandardSqlTypeNames.STRING
-                        ),
+                        udf_def.DirectScalarType(str),
                     ),
                 ),
-                output_bq_type=bigquery.StandardSqlDataType(
-                    type_kind=bigquery.StandardSqlTypeNames.FLOAT64
-                ),
+                output=udf_def.DirectScalarType(float),
             ),
         )
     )

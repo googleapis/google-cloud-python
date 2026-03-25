@@ -513,7 +513,7 @@ def get_function_name(func, package_requirements=None, is_row_processor=False):
     # Augment user package requirements with any internal package
     # requirements.
     package_requirements = bff_utils.get_updated_package_requirements(
-        package_requirements, is_row_processor
+        package_requirements or [], is_row_processor
     )
 
     # Compute a unique hash representing the user code.

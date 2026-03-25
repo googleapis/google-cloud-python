@@ -1037,7 +1037,8 @@ def timedelta_floor_op_impl(x: ibis_types.NumericValue):
 @scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
 def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
     udf_sig = op.function_def.signature
-    ibis_py_sig = (udf_sig.py_input_types, udf_sig.py_output_type)
+    assert not udf_sig.is_virtual  # should have been devirtualized in lowering pass
+    ibis_py_sig = (tuple(arg.py_type for arg in udf_sig.inputs), udf_sig.output.py_type)
 
     @ibis_udf.scalar.builtin(
         name=str(op.function_def.routine_ref), signature=ibis_py_sig
@@ -1056,7 +1057,8 @@ def binary_remote_function_op_impl(
     x: ibis_types.Value, y: ibis_types.Value, op: ops.BinaryRemoteFunctionOp
 ):
     udf_sig = op.function_def.signature
-    ibis_py_sig = (udf_sig.py_input_types, udf_sig.py_output_type)
+    assert not udf_sig.is_virtual  # should have been devirtualized in lowering pass
+    ibis_py_sig = (tuple(arg.py_type for arg in udf_sig.inputs), udf_sig.output.py_type)
 
     @ibis_udf.scalar.builtin(
         name=str(op.function_def.routine_ref), signature=ibis_py_sig
@@ -1073,8 +1075,9 @@ def nary_remote_function_op_impl(
     *operands: ibis_types.Value, op: ops.NaryRemoteFunctionOp
 ):
     udf_sig = op.function_def.signature
-    ibis_py_sig = (udf_sig.py_input_types, udf_sig.py_output_type)
-    arg_names = tuple(arg.name for arg in udf_sig.input_types)
+    assert not udf_sig.is_virtual  # should have been devirtualized in lowering pass
+    ibis_py_sig = (tuple(arg.py_type for arg in udf_sig.inputs), udf_sig.output.py_type)
+    arg_names = tuple(arg.name for arg in udf_sig.inputs)
 
     @ibis_udf.scalar.builtin(
         name=str(op.function_def.routine_ref),
@@ -1151,6 +1154,13 @@ def array_reduce_op_impl(x: ibis_types.Value, op: ops.ArrayReduceOp):
                 op.aggregation, typing.cast(ibis_types.Column, arr_vals)
             )
         )
+
+
+@scalar_op_compiler.register_unary_op(ops.ArrayMapOp, pass_op=True)
+def array_map_op_impl(x: ibis_types.Value, op: ops.ArrayMapOp):
+    return typing.cast(ibis_types.ArrayValue, x).map(
+        lambda arr_vals: scalar_op_compiler.compile_row_op(op.map_op, (arr_vals,))
+    )
 
 
 # JSON Ops

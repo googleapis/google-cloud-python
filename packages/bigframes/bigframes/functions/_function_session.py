@@ -24,7 +24,6 @@ from typing import (
     Any,
     cast,
     Dict,
-    get_origin,
     Literal,
     Mapping,
     Optional,
@@ -51,7 +50,6 @@ from bigframes.functions import udf_def
 if TYPE_CHECKING:
     from bigframes.session import Session
 
-import pandas
 
 from bigframes.functions import _function_client, _utils
 
@@ -241,7 +239,7 @@ class FunctionSession:
         cloud_function_service_account: str,
         cloud_function_kms_key_name: Optional[str] = None,
         cloud_function_docker_repository: Optional[str] = None,
-        max_batching_rows: Optional[int] = 1000,
+        max_batching_rows: Optional[int] = None,
         cloud_function_timeout: Optional[int] = 600,
         cloud_function_max_instances: Optional[int] = None,
         cloud_function_vpc_connector: Optional[str] = None,
@@ -580,13 +578,6 @@ class FunctionSession:
                     warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
                 py_sig = py_sig.replace(return_annotation=output_type)
 
-            # The function will actually be receiving a pandas Series, but allow
-            # both BigQuery DataFrames and pandas object types for compatibility.
-            is_row_processor = False
-            if new_sig := _convert_row_processor_sig(py_sig):
-                py_sig = new_sig
-                is_row_processor = True
-
             remote_function_client = _function_client.FunctionClient(
                 dataset_ref.project,
                 bq_location,
@@ -605,25 +596,9 @@ class FunctionSession:
                 session=session,  # type: ignore
             )
 
-            # resolve the output type that can be supported in the bigframes,
-            # ibis, BQ remote functions and cloud functions integration.
-            bqrf_metadata = None
-            post_process_routine = None
-            if get_origin(py_sig.return_annotation) is list:
-                # TODO(b/284515241): remove this special handling to support
-                # array output types once BQ remote functions support ARRAY.
-                # Until then, use json serialized strings at the cloud function
-                # and BQ level, and parse that to the intended output type at
-                # the bigframes level.
-                bqrf_metadata = _utils.get_bigframes_metadata(
-                    python_output_type=py_sig.return_annotation
-                )
-                post_process_routine = _utils.build_unnest_post_routine(
-                    py_sig.return_annotation
-                )
-                py_sig = py_sig.replace(return_annotation=str)
-
-            udf_sig = udf_def.UdfSignature.from_py_signature(py_sig)
+            udf_sig = udf_def.UdfSignature.from_py_signature(
+                py_sig
+            ).to_remote_function_compatible()
 
             (
                 rf_name,
@@ -631,21 +606,18 @@ class FunctionSession:
                 created_new,
             ) = remote_function_client.provision_bq_remote_function(
                 func,
-                input_types=udf_sig.sql_input_types,
-                output_type=udf_sig.sql_output_type,
-                reuse=reuse,
+                func_signature=udf_sig,
+                reuse=reuse or False,
                 name=name,
-                package_requirements=packages,
-                max_batching_rows=max_batching_rows,
+                package_requirements=tuple(packages) if packages else tuple(),
+                max_batching_rows=max_batching_rows or 1000,
                 cloud_function_timeout=cloud_function_timeout,
                 cloud_function_max_instance_count=cloud_function_max_instances,
-                is_row_processor=is_row_processor,
                 cloud_function_vpc_connector=cloud_function_vpc_connector,
                 cloud_function_vpc_connector_egress_settings=cloud_function_vpc_connector_egress_settings,
                 cloud_function_memory_mib=cloud_function_memory_mib,
                 cloud_function_cpus=cloud_function_cpus,
                 cloud_function_ingress_settings=cloud_function_ingress_settings,
-                bq_metadata=bqrf_metadata,
             )
 
             bigframes_cloud_function = (
@@ -676,12 +648,13 @@ class FunctionSession:
                 signature=udf_sig,
             )
             decorator = functools.wraps(func)
-            if is_row_processor:
+            if udf_sig.is_row_processor:
+                msg = bfe.format_message("input_types=Series is in preview.")
+                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
                 return decorator(
                     bq_functions.BigqueryCallableRowRoutine(
                         udf_definition,
                         session,
-                        post_routine=post_process_routine,
                         cloud_function_ref=bigframes_cloud_function,
                         local_func=func,
                         is_managed=False,
@@ -692,7 +665,6 @@ class FunctionSession:
                     bq_functions.BigqueryCallableRoutine(
                         udf_definition,
                         session,
-                        post_routine=post_process_routine,
                         cloud_function_ref=bigframes_cloud_function,
                         local_func=func,
                         is_managed=False,
@@ -892,10 +864,6 @@ class FunctionSession:
 
             # The function will actually be receiving a pandas Series, but allow
             # both BigQuery DataFrames and pandas object types for compatibility.
-            is_row_processor = False
-            if new_sig := _convert_row_processor_sig(py_sig):
-                py_sig = new_sig
-                is_row_processor = True
 
             udf_sig = udf_def.UdfSignature.from_py_signature(py_sig)
 
@@ -911,14 +879,14 @@ class FunctionSession:
 
             bq_function_name = managed_function_client.provision_bq_managed_function(
                 func=func,
-                input_types=udf_sig.sql_input_types,
-                output_type=udf_sig.sql_output_type,
+                input_types=tuple(arg.sql_type for arg in udf_sig.inputs),
+                output_type=udf_sig.output.sql_type,
                 name=name,
                 packages=packages,
                 max_batching_rows=max_batching_rows,
                 container_cpu=container_cpu,
                 container_memory=container_memory,
-                is_row_processor=is_row_processor,
+                is_row_processor=udf_sig.is_row_processor,
                 bq_connection_id=bq_connection_id,
             )
             full_rf_name = (
@@ -936,7 +904,9 @@ class FunctionSession:
                 self._update_temp_artifacts(full_rf_name, "")
 
             decorator = functools.wraps(func)
-            if is_row_processor:
+            if udf_sig.is_row_processor:
+                msg = bfe.format_message("input_types=Series is in preview.")
+                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
                 return decorator(
                     bq_functions.BigqueryCallableRowRoutine(
                         udf_definition, session, local_func=func, is_managed=True
@@ -979,33 +949,3 @@ class FunctionSession:
         # TODO(tswast): If we update udf to defer deployment, update this method
         # to deploy immediately.
         return self.udf(**kwargs)(func)
-
-
-def _convert_row_processor_sig(
-    signature: inspect.Signature,
-) -> Optional[inspect.Signature]:
-    import bigframes.series as bf_series
-
-    if len(signature.parameters) >= 1:
-        first_param = next(iter(signature.parameters.values()))
-        param_type = first_param.annotation
-        # Type hints for Series inputs should use pandas.Series because the
-        # underlying serialization process converts the input to a string
-        # representation of a pandas Series (not bigframes Series). Using
-        # bigframes Series will lead to TypeError when creating the function
-        # remotely. See more from b/445182819.
-        if param_type == bf_series.Series:
-            raise bf_formatting.create_exception_with_feedback_link(
-                TypeError,
-                "Argument type hint must be Pandas Series, not BigFrames Series.",
-            )
-        if param_type == pandas.Series:
-            msg = bfe.format_message("input_types=Series is in preview.")
-            warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
-            return signature.replace(
-                parameters=[
-                    p.replace(annotation=str) if i == 0 else p
-                    for i, p in enumerate(signature.parameters.values())
-                ]
-            )
-    return None

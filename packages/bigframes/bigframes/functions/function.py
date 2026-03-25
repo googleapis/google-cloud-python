@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Callable, cast, get_origin, Optional, TYPE_CHECKING
+from typing import Callable, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from bigframes.session import Session
@@ -26,7 +26,7 @@ from google.cloud import bigquery
 
 import bigframes.formatting_helpers as bf_formatting
 from bigframes.functions import _function_session as bff_session
-from bigframes.functions import _utils, function_typing, udf_def
+from bigframes.functions import function_typing, udf_def
 
 logger = logging.getLogger(__name__)
 
@@ -82,39 +82,30 @@ def _try_import_routine(
     routine: bigquery.Routine, session: bigframes.Session
 ) -> BigqueryCallableRoutine:
     udf_def = _routine_as_udf_def(routine)
-    override_type = _get_output_type_override(routine)
     is_remote = (
         hasattr(routine, "remote_function_options") and routine.remote_function_options
     )
-    if override_type is not None:
-        return BigqueryCallableRoutine(
-            udf_def,
-            session,
-            post_routine=_utils.build_unnest_post_routine(override_type),
-        )
     return BigqueryCallableRoutine(udf_def, session, is_managed=not is_remote)
 
 
 def _try_import_row_routine(
     routine: bigquery.Routine, session: bigframes.Session
 ) -> BigqueryCallableRowRoutine:
-    udf_def = _routine_as_udf_def(routine)
-    override_type = _get_output_type_override(routine)
+    udf_def = _routine_as_udf_def(routine, is_row_processor=True)
+
     is_remote = (
         hasattr(routine, "remote_function_options") and routine.remote_function_options
     )
-    if override_type is not None:
-        return BigqueryCallableRowRoutine(
-            udf_def,
-            session,
-            post_routine=_utils.build_unnest_post_routine(override_type),
-        )
     return BigqueryCallableRowRoutine(udf_def, session, is_managed=not is_remote)
 
 
-def _routine_as_udf_def(routine: bigquery.Routine) -> udf_def.BigqueryUdf:
+def _routine_as_udf_def(
+    routine: bigquery.Routine, is_row_processor: bool = False
+) -> udf_def.BigqueryUdf:
     try:
-        return udf_def.BigqueryUdf.from_routine(routine)
+        return udf_def.BigqueryUdf.from_routine(
+            routine, is_row_processor=is_row_processor
+        )
     except udf_def.ReturnTypeMissingError:
         raise bf_formatting.create_exception_with_feedback_link(
             ValueError, "Function return type must be specified."
@@ -124,30 +115,6 @@ def _routine_as_udf_def(routine: bigquery.Routine) -> udf_def.BigqueryUdf:
             ValueError,
             f"Type {e.type} not supported, supported types are {e.supported_types}.",
         )
-
-
-def _get_output_type_override(routine: bigquery.Routine) -> Optional[type[list]]:
-    if routine.description is not None and isinstance(routine.description, str):
-        if python_output_type := _utils.get_python_output_type_from_bigframes_metadata(
-            routine.description
-        ):
-            bq_return_type = cast(bigquery.StandardSqlDataType, routine.return_type)
-
-            if bq_return_type is None or bq_return_type.type_kind != "STRING":
-                raise bf_formatting.create_exception_with_feedback_link(
-                    TypeError,
-                    "An explicit output_type should be provided only for a BigQuery function with STRING output.",
-                )
-            if get_origin(python_output_type) is list:
-                return python_output_type
-            else:
-                raise bf_formatting.create_exception_with_feedback_link(
-                    TypeError,
-                    "Currently only list of "
-                    "a type is supported as python output type.",
-                )
-
-    return None
 
 
 # TODO(b/399894805): Support managed function.
@@ -178,6 +145,7 @@ def read_gbq_function(
             ValueError, f"Unknown function '{routine_ref}'."
         )
 
+    # TODO(493293086): Deprecate is_row_processor.
     if is_row_processor:
         return _try_import_row_routine(routine, session)
     else:
@@ -198,14 +166,10 @@ class BigqueryCallableRoutine:
         *,
         local_func: Optional[Callable] = None,
         cloud_function_ref: Optional[str] = None,
-        post_routine: Optional[
-            Callable[[bigframes.series.Series], bigframes.series.Series]
-        ] = None,
         is_managed: bool = False,
     ):
         self._udf_def = udf_def
         self._session = session
-        self._post_routine = post_routine
         self._local_fun = local_func
         self._cloud_function = cloud_function_ref
         self._is_managed = is_managed
@@ -250,22 +214,15 @@ class BigqueryCallableRoutine:
 
     @property
     def input_dtypes(self):
-        return self.udf_def.signature.bf_input_types
+        return tuple(arg.bf_type for arg in self.udf_def.signature.inputs)
 
     @property
     def output_dtype(self):
-        return self.udf_def.signature.bf_output_type
+        return self.udf_def.signature.output.bf_type
 
     @property
     def bigframes_bigquery_function_output_dtype(self):
-        return self.output_dtype
-
-    def _post_process_series(
-        self, series: bigframes.series.Series
-    ) -> bigframes.series.Series:
-        if self._post_routine is not None:
-            return self._post_routine(series)
-        return series
+        return self.udf_def.signature.output.emulating_type.bf_type
 
 
 class BigqueryCallableRowRoutine:
@@ -282,14 +239,11 @@ class BigqueryCallableRowRoutine:
         *,
         local_func: Optional[Callable] = None,
         cloud_function_ref: Optional[str] = None,
-        post_routine: Optional[
-            Callable[[bigframes.series.Series], bigframes.series.Series]
-        ] = None,
         is_managed: bool = False,
     ):
+        assert udf_def.signature.is_row_processor
         self._udf_def = udf_def
         self._session = session
-        self._post_routine = post_routine
         self._local_fun = local_func
         self._cloud_function = cloud_function_ref
         self._is_managed = is_managed
@@ -334,19 +288,12 @@ class BigqueryCallableRowRoutine:
 
     @property
     def input_dtypes(self):
-        return self.udf_def.signature.bf_input_types
+        return tuple(arg.bf_type for arg in self.udf_def.signature.inputs)
 
     @property
     def output_dtype(self):
-        return self.udf_def.signature.bf_output_type
+        return self.udf_def.signature.output.bf_type
 
     @property
     def bigframes_bigquery_function_output_dtype(self):
-        return self.output_dtype
-
-    def _post_process_series(
-        self, series: bigframes.series.Series
-    ) -> bigframes.series.Series:
-        if self._post_routine is not None:
-            return self._post_routine(series)
-        return series
+        return self.udf_def.signature.output.emulating_type.bf_type

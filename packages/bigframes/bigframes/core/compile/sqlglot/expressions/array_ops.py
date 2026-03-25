@@ -73,6 +73,28 @@ def _(expr: TypedExpr, op: ops.ArrayReduceOp) -> sge.Expression:
     )
 
 
+@register_unary_op(ops.ArrayMapOp, pass_op=True)
+def _(expr: TypedExpr, op: ops.ArrayMapOp) -> sge.Expression:
+    sub_expr = sg.to_identifier("bf_arr_map_uid")
+    sub_type = dtypes.get_array_inner_type(expr.dtype)
+
+    # TODO: Expression should be provided instead of invoking compiler manually
+    map_expr = expression_compiler.expression_compiler.compile_row_op(
+        op.map_op, (TypedExpr(sub_expr, sub_type),)
+    )
+
+    return sge.array(
+        sge.select(map_expr)
+        .from_(
+            sge.Unnest(
+                expressions=[expr.expr],
+                alias=sge.TableAlias(columns=[sub_expr]),
+            )
+        )
+        .subquery()
+    )
+
+
 @register_unary_op(ops.ArraySliceOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.ArraySliceOp) -> sge.Expression:
     if expr.dtype == dtypes.STRING_DTYPE:

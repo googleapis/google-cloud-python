@@ -27,6 +27,7 @@ from bigframes.core.rewrite.scan_reduction import (
 from bigframes.core.rewrite.select_pullup import defer_selection
 from bigframes.core.rewrite.slices import pull_out_limit, pull_up_limits, rewrite_slice
 from bigframes.core.rewrite.timedeltas import rewrite_timedelta_expressions
+from bigframes.core.rewrite.udfs import lower_udfs
 from bigframes.core.rewrite.windows import (
     pull_out_window_order,
     rewrite_range_rolling,
@@ -53,4 +54,5 @@ __all__ = [
     "pull_out_window_order",
     "defer_selection",
     "simplify_complex_windows",
+    "lower_udfs",
 ]

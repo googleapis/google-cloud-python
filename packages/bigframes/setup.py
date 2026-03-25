@@ -46,6 +46,7 @@ dependencies = [
     "google-cloud-bigquery-connection >=1.12.0",
     "google-cloud-resource-manager >=1.10.3",
     "google-cloud-storage >=2.0.0",
+    "google-crc32c >=1.0.0,<2.0.0",
     "grpc-google-iam-v1 >= 0.14.2",
     "numpy >=1.24.0",
     "pandas >=1.5.3",
