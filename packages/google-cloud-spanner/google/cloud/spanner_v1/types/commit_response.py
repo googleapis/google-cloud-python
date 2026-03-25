@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.spanner_v1.types import transaction
+from google.cloud.spanner_v1.types import location, transaction
 
 __protobuf__ = proto.module(
     package="google.spanner.v1",
@@ -54,6 +54,14 @@ class CommitResponse(proto.Message):
             ``IsolationLevel.REPEATABLE_READ``, then the snapshot
             timestamp is the timestamp at which all reads in the
             transaction ran. This timestamp is never returned.
+        cache_update (google.cloud.spanner_v1.types.CacheUpdate):
+            Optional. A cache update expresses a set of changes the
+            client should incorporate into its location cache. The
+            client should discard the changes if they are older than the
+            data it already has. This data can be obtained in response
+            to requests that included a ``RoutingHint`` field, but may
+            also be obtained by explicit location-fetching RPCs which
+            may be added in the future.
     """
 
     class CommitStats(proto.Message):
@@ -97,6 +105,11 @@ class CommitResponse(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+    cache_update: location.CacheUpdate = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=location.CacheUpdate,
     )
 
 

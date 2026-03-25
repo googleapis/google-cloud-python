@@ -21,6 +21,8 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.spanner_v1.types import location
+
 __protobuf__ = proto.module(
     package="google.spanner.v1",
     manifest={
@@ -157,37 +159,41 @@ class TransactionOptions(proto.Message):
                     Default value.
 
                     - If isolation level is
+                      [SERIALIZABLE][google.spanner.v1.TransactionOptions.IsolationLevel.SERIALIZABLE],
+                      locking semantics default to ``PESSIMISTIC``.
+                    - If isolation level is
                       [REPEATABLE_READ][google.spanner.v1.TransactionOptions.IsolationLevel.REPEATABLE_READ],
-                      then it is an error to specify ``read_lock_mode``. Locking
-                      semantics default to ``OPTIMISTIC``. No validation checks
-                      are done for reads, except to validate that the data that
-                      was served at the snapshot time is unchanged at commit
-                      time in the following cases:
-
-                      1. reads done as part of queries that use
-                         ``SELECT FOR UPDATE``
-                      2. reads done as part of statements with a
-                         ``LOCK_SCANNED_RANGES`` hint
-                      3. reads done as part of DML statements
-
-                    - At all other isolation levels, if ``read_lock_mode`` is
-                      the default value, then pessimistic read locks are used.
+                      locking semantics default to ``OPTIMISTIC``.
+                    - See `Concurrency
+                      control <https://cloud.google.com/spanner/docs/concurrency-control>`__
+                      for more details.
                 PESSIMISTIC (1):
                     Pessimistic lock mode.
 
-                    Read locks are acquired immediately on read. Semantics
-                    described only applies to
+                    Lock acquisition behavior depends on the isolation level in
+                    use. In
                     [SERIALIZABLE][google.spanner.v1.TransactionOptions.IsolationLevel.SERIALIZABLE]
-                    isolation.
+                    isolation, reads and writes acquire necessary locks during
+                    transaction statement execution. In
+                    [REPEATABLE_READ][google.spanner.v1.TransactionOptions.IsolationLevel.REPEATABLE_READ]
+                    isolation, reads that explicitly request to be locked and
+                    writes acquire locks. See `Concurrency
+                    control <https://cloud.google.com/spanner/docs/concurrency-control>`__
+                    for details on the types of locks acquired at each
+                    transaction step.
                 OPTIMISTIC (2):
                     Optimistic lock mode.
 
-                    Locks for reads within the transaction are not acquired on
-                    read. Instead the locks are acquired on a commit to validate
-                    that read/queried data has not changed since the transaction
-                    started. Semantics described only applies to
+                    Lock acquisition behavior depends on the isolation level in
+                    use. In both
                     [SERIALIZABLE][google.spanner.v1.TransactionOptions.IsolationLevel.SERIALIZABLE]
-                    isolation.
+                    and
+                    [REPEATABLE_READ][google.spanner.v1.TransactionOptions.IsolationLevel.REPEATABLE_READ]
+                    isolation, reads and writes do not acquire locks during
+                    transaction statement execution. See `Concurrency
+                    control <https://cloud.google.com/spanner/docs/concurrency-control>`__
+                    for details on how the guarantees of each isolation level
+                    are provided at commit time.
             """
             READ_LOCK_MODE_UNSPECIFIED = 0
             PESSIMISTIC = 1
@@ -383,6 +389,14 @@ class Transaction(proto.Message):
             this transaction attempt should be passed to the
             [Commit][google.spanner.v1.Spanner.Commit] request for this
             transaction.
+        cache_update (google.cloud.spanner_v1.types.CacheUpdate):
+            Optional. A cache update expresses a set of changes the
+            client should incorporate into its location cache. The
+            client should discard the changes if they are older than the
+            data it already has. This data can be obtained in response
+            to requests that included a ``RoutingHint`` field, but may
+            also be obtained by explicit location-fetching RPCs which
+            may be added in the future.
     """
 
     id: bytes = proto.Field(
@@ -398,6 +412,11 @@ class Transaction(proto.Message):
         proto.MESSAGE,
         number=3,
         message="MultiplexedSessionPrecommitToken",
+    )
+    cache_update: location.CacheUpdate = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=location.CacheUpdate,
     )
 
 

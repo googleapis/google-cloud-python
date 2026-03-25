@@ -41,7 +41,6 @@ __protobuf__ = proto.module(
         "ListSessionsResponse",
         "DeleteSessionRequest",
         "RequestOptions",
-        "ClientContext",
         "DirectedReadOptions",
         "ExecuteSqlRequest",
         "ExecuteBatchDmlRequest",
@@ -334,14 +333,20 @@ class RequestOptions(proto.Message):
             A tag used for statistics collection about this transaction.
             Both ``request_tag`` and ``transaction_tag`` can be
             specified for a read or query that belongs to a transaction.
-            The value of transaction_tag should be the same for all
-            requests belonging to the same transaction. If this request
-            doesn't belong to any transaction, ``transaction_tag`` is
-            ignored. Legal characters for ``transaction_tag`` values are
-            all printable characters (ASCII 32 - 126) and the length of
-            a ``transaction_tag`` is limited to 50 characters. Values
-            that exceed this limit are truncated. Any leading underscore
-            (\_) characters are removed from the string.
+            To enable tagging on a transaction, ``transaction_tag`` must
+            be set to the same value for all requests belonging to the
+            same transaction, including
+            [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
+            If this request doesn't belong to any transaction,
+            ``transaction_tag`` is ignored. Legal characters for
+            ``transaction_tag`` values are all printable characters
+            (ASCII 32 - 126) and the length of a ``transaction_tag`` is
+            limited to 50 characters. Values that exceed this limit are
+            truncated. Any leading underscore (\_) characters are
+            removed from the string.
+        client_context (google.cloud.spanner_v1.types.RequestOptions.ClientContext):
+            Optional. Optional context that may be needed
+            for some requests.
     """
 
     class Priority(proto.Enum):
@@ -381,6 +386,25 @@ class RequestOptions(proto.Message):
         PRIORITY_MEDIUM = 2
         PRIORITY_HIGH = 3
 
+    class ClientContext(proto.Message):
+        r"""Container for various pieces of client-owned context attached
+        to a request.
+
+        Attributes:
+            secure_context (MutableMapping[str, google.protobuf.struct_pb2.Value]):
+                Optional. Map of parameter name to value for this request.
+                These values will be returned by any SECURE_CONTEXT() calls
+                invoked by this request (e.g., by queries against
+                Parameterized Secure Views).
+        """
+
+        secure_context: MutableMapping[str, struct_pb2.Value] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message=struct_pb2.Value,
+        )
+
     priority: Priority = proto.Field(
         proto.ENUM,
         number=1,
@@ -397,27 +421,7 @@ class RequestOptions(proto.Message):
     client_context: ClientContext = proto.Field(
         proto.MESSAGE,
         number=4,
-        message="ClientContext",
-    )
-
-
-class ClientContext(proto.Message):
-    r"""Container for various pieces of client-owned context
-    attached to a request.
-
-    Attributes:
-        secure_context (MutableMapping[str, google.protobuf.struct_pb2.Value]):
-            Optional. Map of parameter name to value for this request.
-            These values will be returned by any SECURE_CONTEXT() calls
-            invoked by this request (e.g., by queries against
-            Parameterized Secure Views).
-    """
-
-    secure_context: MutableMapping[str, struct_pb2.Value] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=1,
-        message=struct_pb2.Value,
+        message=ClientContext,
     )
 
 
@@ -686,8 +690,8 @@ class ExecuteSqlRequest(proto.Message):
             successful execution of a DML statement shouldn't be assumed
             until a subsequent ``Commit`` call completes successfully.
         routing_hint (google.cloud.spanner_v1.types.RoutingHint):
-            Optional. If present, it makes the Spanner
-            requests location-aware.
+            Optional. Makes the Spanner requests
+            location-aware if present.
             It gives the server hints that can be used to
             route the request to an appropriate server,
             potentially significantly decreasing latency and
@@ -1143,8 +1147,8 @@ class PartitionQueryRequest(proto.Message):
             with a ``PartitionedDml`` transaction for large,
             partition-friendly DML operations.
         params (google.protobuf.struct_pb2.Struct):
-            Parameter names and values that bind to placeholders in the
-            SQL string.
+            Optional. Parameter names and values that bind to
+            placeholders in the SQL string.
 
             A parameter placeholder consists of the ``@`` character
             followed by the parameter name (for example,
@@ -1160,9 +1164,10 @@ class PartitionQueryRequest(proto.Message):
             It's an error to execute a SQL statement with unbound
             parameters.
         param_types (MutableMapping[str, google.cloud.spanner_v1.types.Type]):
-            It isn't always possible for Cloud Spanner to infer the
-            right SQL type from a JSON value. For example, values of
-            type ``BYTES`` and values of type ``STRING`` both appear in
+            Optional. It isn't always possible for Cloud Spanner to
+            infer the right SQL type from a JSON value. For example,
+            values of type ``BYTES`` and values of type ``STRING`` both
+            appear in
             [params][google.spanner.v1.PartitionQueryRequest.params] as
             JSON strings.
 
@@ -1425,8 +1430,8 @@ class ReadRequest(proto.Message):
             Optional. Lock Hint for the request, it can
             only be used with read-write transactions.
         routing_hint (google.cloud.spanner_v1.types.RoutingHint):
-            Optional. If present, it makes the Spanner
-            requests location-aware.
+            Optional. Makes the Spanner requests
+            location-aware if present.
             It gives the server hints that can be used to
             route the request to an appropriate server,
             potentially significantly decreasing latency and
@@ -1608,6 +1613,15 @@ class BeginTransactionRequest(proto.Message):
             queries. You must randomly select one of the
             mutations from the mutation set and send it as a
             part of this request.
+        routing_hint (google.cloud.spanner_v1.types.RoutingHint):
+            Optional. Makes the Spanner requests
+            location-aware if present.
+            It gives the server hints that can be used to
+            route the request to an appropriate server,
+            potentially significantly decreasing latency and
+            improving throughput. To achieve improved
+            performance, most fields must be filled in with
+            accurate values.
     """
 
     session: str = proto.Field(
@@ -1628,6 +1642,11 @@ class BeginTransactionRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message=mutation.Mutation,
+    )
+    routing_hint: gs_location.RoutingHint = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=gs_location.RoutingHint,
     )
 
 
@@ -1687,6 +1706,15 @@ class CommitRequest(proto.Message):
             token with the highest sequence number received in this
             transaction attempt. Failing to do so results in a
             ``FailedPrecondition`` error.
+        routing_hint (google.cloud.spanner_v1.types.RoutingHint):
+            Optional. Makes the Spanner requests
+            location-aware if present.
+            It gives the server hints that can be used to
+            route the request to an appropriate server,
+            potentially significantly decreasing latency and
+            improving throughput. To achieve improved
+            performance, most fields must be filled in with
+            accurate values.
     """
 
     session: str = proto.Field(
@@ -1727,6 +1755,11 @@ class CommitRequest(proto.Message):
         proto.MESSAGE,
         number=9,
         message=gs_transaction.MultiplexedSessionPrecommitToken,
+    )
+    routing_hint: gs_location.RoutingHint = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=gs_location.RoutingHint,
     )
 
 
@@ -1821,7 +1854,13 @@ class BatchWriteResponse(proto.Message):
             indicates a failure.
         commit_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             The commit timestamp of the transaction that applied this
-            batch. Present if ``status`` is ``OK``, absent otherwise.
+            batch. Present if status is OK and the mutation groups were
+            applied, absent otherwise.
+
+            For mutation groups with conditions, a status=OK and missing
+            commit_timestamp means that the mutation groups were not
+            applied due to the condition not being satisfied after
+            evaluation.
     """
 
     indexes: MutableSequence[int] = proto.RepeatedField(

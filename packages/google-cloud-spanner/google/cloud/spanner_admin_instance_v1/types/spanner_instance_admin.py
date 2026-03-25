@@ -542,11 +542,24 @@ class AutoscalingConfig(proto.Message):
 
         Attributes:
             high_priority_cpu_utilization_percent (int):
-                Required. The target high priority cpu utilization
+                Optional. The target high priority cpu utilization
                 percentage that the autoscaler should be trying to achieve
                 for the instance. This number is on a scale from 0 (no
                 utilization) to 100 (full utilization). The valid range is
-                [10, 90] inclusive.
+                [10, 90] inclusive. If not specified or set to 0, the
+                autoscaler skips scaling based on high priority CPU
+                utilization.
+            total_cpu_utilization_percent (int):
+                Optional. The target total CPU utilization percentage that
+                the autoscaler should be trying to achieve for the instance.
+                This number is on a scale from 0 (no utilization) to 100
+                (full utilization). The valid range is [10, 90] inclusive.
+                If not specified or set to 0, the autoscaler skips scaling
+                based on total CPU utilization. If both
+                ``high_priority_cpu_utilization_percent`` and
+                ``total_cpu_utilization_percent`` are specified, the
+                autoscaler provisions the larger of the two required compute
+                capacities to satisfy both targets.
             storage_utilization_percent (int):
                 Required. The target storage utilization percentage that the
                 autoscaler should be trying to achieve for the instance.
@@ -557,6 +570,10 @@ class AutoscalingConfig(proto.Message):
         high_priority_cpu_utilization_percent: int = proto.Field(
             proto.INT32,
             number=1,
+        )
+        total_cpu_utilization_percent: int = proto.Field(
+            proto.INT32,
+            number=4,
         )
         storage_utilization_percent: int = proto.Field(
             proto.INT32,
@@ -593,6 +610,58 @@ class AutoscalingConfig(proto.Message):
                     Optional. If specified, overrides the autoscaling target
                     high_priority_cpu_utilization_percent in the top-level
                     autoscaling configuration for the selected replicas.
+                autoscaling_target_total_cpu_utilization_percent (int):
+                    Optional. If specified, overrides the autoscaling target
+                    ``total_cpu_utilization_percent`` in the top-level
+                    autoscaling configuration for the selected replicas.
+                disable_high_priority_cpu_autoscaling (bool):
+                    Optional. If true, disables high priority CPU autoscaling
+                    for the selected replicas and ignores
+                    [high_priority_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.high_priority_cpu_utilization_percent]
+                    in the top-level autoscaling configuration.
+
+                    When setting this field to true, setting
+                    [autoscaling_target_high_priority_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_high_priority_cpu_utilization_percent]
+                    field to a non-zero value for the same replica is not
+                    supported.
+
+                    If false, the
+                    [autoscaling_target_high_priority_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_high_priority_cpu_utilization_percent]
+                    field in the replica will be used if set to a non-zero
+                    value. Otherwise, the
+                    [high_priority_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.high_priority_cpu_utilization_percent]
+                    field in the top-level autoscaling configuration will be
+                    used.
+
+                    Setting both
+                    [disable_high_priority_cpu_autoscaling][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_high_priority_cpu_autoscaling]
+                    and
+                    [disable_total_cpu_autoscaling][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_total_cpu_autoscaling]
+                    to true for the same replica is not supported.
+                disable_total_cpu_autoscaling (bool):
+                    Optional. If true, disables total CPU autoscaling for the
+                    selected replicas and ignores
+                    [total_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.total_cpu_utilization_percent]
+                    in the top-level autoscaling configuration.
+
+                    When setting this field to true, setting
+                    [autoscaling_target_total_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_total_cpu_utilization_percent]
+                    field to a non-zero value for the same replica is not
+                    supported.
+
+                    If false, the
+                    [autoscaling_target_total_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.autoscaling_target_total_cpu_utilization_percent]
+                    field in the replica will be used if set to a non-zero
+                    value. Otherwise, the
+                    [total_cpu_utilization_percent][google.spanner.admin.instance.v1.AutoscalingConfig.AutoscalingTargets.total_cpu_utilization_percent]
+                    field in the top-level autoscaling configuration will be
+                    used.
+
+                    Setting both
+                    [disable_high_priority_cpu_autoscaling][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_high_priority_cpu_autoscaling]
+                    and
+                    [disable_total_cpu_autoscaling][google.spanner.admin.instance.v1.AutoscalingConfig.AsymmetricAutoscalingOption.AutoscalingConfigOverrides.disable_total_cpu_autoscaling]
+                    to true for the same replica is not supported.
             """
 
             autoscaling_limits: "AutoscalingConfig.AutoscalingLimits" = proto.Field(
@@ -603,6 +672,18 @@ class AutoscalingConfig(proto.Message):
             autoscaling_target_high_priority_cpu_utilization_percent: int = proto.Field(
                 proto.INT32,
                 number=2,
+            )
+            autoscaling_target_total_cpu_utilization_percent: int = proto.Field(
+                proto.INT32,
+                number=4,
+            )
+            disable_high_priority_cpu_autoscaling: bool = proto.Field(
+                proto.BOOL,
+                number=5,
+            )
+            disable_total_cpu_autoscaling: bool = proto.Field(
+                proto.BOOL,
+                number=6,
             )
 
         replica_selection: common.ReplicaSelection = proto.Field(

@@ -250,4 +250,4 @@ s.replace(
 
 # Use a python runtime which is available in the owlbot post processor here
 # https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
-s.shell.run(["nox", "-s", "blacken-3.14"], hide_output=False)
+s.shell.run(["nox", "-s", "format-3.14"], hide_output=False)

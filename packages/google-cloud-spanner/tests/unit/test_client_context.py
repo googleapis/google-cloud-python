@@ -22,7 +22,6 @@ from google.cloud.spanner_v1._helpers import (
     _merge_request_options,
 )
 from google.cloud.spanner_v1.types import (
-    ClientContext,
     ExecuteSqlRequest,
     RequestOptions,
 )
@@ -33,23 +32,27 @@ class TestClientContext(unittest.TestCase):
         self.assertIsNone(_merge_client_context(None, None))
 
     def test__merge_client_context_base_none(self):
-        merge = ClientContext(secure_context={"a": struct_pb2.Value(string_value="A")})
+        merge = RequestOptions.ClientContext(
+            secure_context={"a": struct_pb2.Value(string_value="A")}
+        )
         result = _merge_client_context(None, merge)
         self.assertEqual(result.secure_context["a"], "A")
 
     def test__merge_client_context_merge_none(self):
-        base = ClientContext(secure_context={"a": struct_pb2.Value(string_value="A")})
+        base = RequestOptions.ClientContext(
+            secure_context={"a": struct_pb2.Value(string_value="A")}
+        )
         result = _merge_client_context(base, None)
         self.assertEqual(result.secure_context["a"], "A")
 
     def test__merge_client_context_both_set(self):
-        base = ClientContext(
+        base = RequestOptions.ClientContext(
             secure_context={
                 "a": struct_pb2.Value(string_value="A"),
                 "b": struct_pb2.Value(string_value="B1"),
             }
         )
-        merge = ClientContext(
+        merge = RequestOptions.ClientContext(
             secure_context={
                 "b": struct_pb2.Value(string_value="B2"),
                 "c": struct_pb2.Value(string_value="C"),
@@ -62,7 +65,7 @@ class TestClientContext(unittest.TestCase):
 
     def test__merge_request_options_with_client_context(self):
         request_options = RequestOptions(priority=RequestOptions.Priority.PRIORITY_LOW)
-        client_context = ClientContext(
+        client_context = RequestOptions.ClientContext(
             secure_context={"a": struct_pb2.Value(string_value="A")}
         )
 
@@ -91,7 +94,7 @@ class TestClientContext(unittest.TestCase):
                 disable_builtin_metrics=True,
             )
 
-        self.assertIsInstance(client._client_context, ClientContext)
+        self.assertIsInstance(client._client_context, RequestOptions.ClientContext)
         self.assertEqual(client._client_context.secure_context["a"], "A")
 
     def test_snapshot_execute_sql_propagates_client_context(self):
@@ -106,11 +109,11 @@ class TestClientContext(unittest.TestCase):
 
         client = database._instance._client = mock.Mock()
         client._query_options = None
-        client._client_context = ClientContext(
+        client._client_context = RequestOptions.ClientContext(
             secure_context={"client": struct_pb2.Value(string_value="from-client")}
         )
 
-        snapshot_context = ClientContext(
+        snapshot_context = RequestOptions.ClientContext(
             secure_context={"snapshot": struct_pb2.Value(string_value="from-snapshot")}
         )
         snapshot = Snapshot(session, client_context=snapshot_context)
@@ -148,11 +151,11 @@ class TestClientContext(unittest.TestCase):
         database._next_nth_request = 1
 
         client = database._instance._client = mock.Mock()
-        client._client_context = ClientContext(
+        client._client_context = RequestOptions.ClientContext(
             secure_context={"client": struct_pb2.Value(string_value="from-client")}
         )
 
-        transaction_context = ClientContext(
+        transaction_context = RequestOptions.ClientContext(
             secure_context={"txn": struct_pb2.Value(string_value="from-txn")}
         )
         transaction = Transaction(session, client_context=transaction_context)
@@ -196,11 +199,11 @@ class TestClientContext(unittest.TestCase):
 
         client = database._instance._client = mock.Mock()
         client._query_options = None
-        client._client_context = ClientContext(
+        client._client_context = RequestOptions.ClientContext(
             secure_context={"a": struct_pb2.Value(string_value="from-client")}
         )
 
-        snapshot_context = ClientContext(
+        snapshot_context = RequestOptions.ClientContext(
             secure_context={
                 "a": struct_pb2.Value(string_value="from-snapshot"),
                 "b": struct_pb2.Value(string_value="B"),
@@ -209,7 +212,7 @@ class TestClientContext(unittest.TestCase):
         snapshot = Snapshot(session, client_context=snapshot_context)
 
         request_options = RequestOptions(
-            client_context=ClientContext(
+            client_context=RequestOptions.ClientContext(
                 secure_context={"a": struct_pb2.Value(string_value="from-request")}
             )
         )
@@ -241,11 +244,11 @@ class TestClientContext(unittest.TestCase):
         database.with_error_augmentation.return_value = (None, mock.MagicMock())
         database._next_nth_request = 1
         client = database._instance._client = mock.Mock()
-        client._client_context = ClientContext(
+        client._client_context = RequestOptions.ClientContext(
             secure_context={"client": struct_pb2.Value(string_value="from-client")}
         )
 
-        batch_context = ClientContext(
+        batch_context = RequestOptions.ClientContext(
             secure_context={"batch": struct_pb2.Value(string_value="from-batch")}
         )
         batch = Batch(session, client_context=batch_context)
@@ -285,11 +288,11 @@ class TestClientContext(unittest.TestCase):
 
         client = database._instance._client = mock.Mock()
         client._query_options = None
-        client._client_context = ClientContext(
+        client._client_context = RequestOptions.ClientContext(
             secure_context={"client": struct_pb2.Value(string_value="from-client")}
         )
 
-        transaction_context = ClientContext(
+        transaction_context = RequestOptions.ClientContext(
             secure_context={"txn": struct_pb2.Value(string_value="from-txn")}
         )
         transaction = Transaction(session, client_context=transaction_context)
@@ -329,11 +332,11 @@ class TestClientContext(unittest.TestCase):
         database._next_nth_request = 1
 
         client = database._instance._client = mock.Mock()
-        client._client_context = ClientContext(
+        client._client_context = RequestOptions.ClientContext(
             secure_context={"client": struct_pb2.Value(string_value="from-client")}
         )
 
-        mg_context = ClientContext(
+        mg_context = RequestOptions.ClientContext(
             secure_context={"mg": struct_pb2.Value(string_value="from-mg")}
         )
         mg = MutationGroups(session, client_context=mg_context)
@@ -363,11 +366,11 @@ class TestClientContext(unittest.TestCase):
         database.name = "database-name"
         client = database._instance._client = mock.Mock()
         client._query_options = None
-        client._client_context = ClientContext(
+        client._client_context = RequestOptions.ClientContext(
             secure_context={"client": struct_pb2.Value(string_value="from-client")}
         )
 
-        batch_context = ClientContext(
+        batch_context = RequestOptions.ClientContext(
             secure_context={"batch": struct_pb2.Value(string_value="from-batch")}
         )
         batch_snapshot = BatchSnapshot(database, client_context=batch_context)

@@ -32,7 +32,6 @@ from google.protobuf.struct_pb2 import ListValue, Value
 from google.rpc.error_details_pb2 import RetryInfo
 
 from google.cloud._helpers import _date_from_iso8601_date
-from google.cloud.spanner_v1.types import ClientContext
 from google.cloud.spanner_v1.types import RequestOptions
 from google.cloud.spanner_v1.data_types import JsonObject, Interval
 from google.cloud.spanner_v1.exceptions import wrap_with_request_id
@@ -196,17 +195,17 @@ def _merge_query_options(base, merge):
 def _merge_client_context(base, merge):
     """Merge higher precedence ClientContext with current ClientContext.
 
-    :type base: :class:`~google.cloud.spanner_v1.types.ClientContext`
+    :type base: :class:`~google.cloud.spanner_v1.types.RequestOptions.ClientContext`
         or :class:`dict` or None
     :param base: The current ClientContext that is intended for use.
 
-    :type merge: :class:`~google.cloud.spanner_v1.types.ClientContext`
+    :type merge: :class:`~google.cloud.spanner_v1.types.RequestOptions.ClientContext`
         or :class:`dict` or None
     :param merge:
         The ClientContext that has a higher priority than base. These options
         should overwrite the fields in base.
 
-    :rtype: :class:`~google.cloud.spanner_v1.types.ClientContext`
+    :rtype: :class:`~google.cloud.spanner_v1.types.RequestOptions.ClientContext`
         or None
     :returns:
         ClientContext object formed by merging the two given ClientContexts.
@@ -215,15 +214,23 @@ def _merge_client_context(base, merge):
         return None
 
     # Avoid in-place modification of base
-    combined_pb = ClientContext()._pb
+    combined_pb = RequestOptions.ClientContext()._pb
     if base:
-        base_pb = ClientContext(base)._pb if isinstance(base, dict) else base._pb
+        base_pb = (
+            RequestOptions.ClientContext(base)._pb
+            if isinstance(base, dict)
+            else base._pb
+        )
         combined_pb.MergeFrom(base_pb)
     if merge:
-        merge_pb = ClientContext(merge)._pb if isinstance(merge, dict) else merge._pb
+        merge_pb = (
+            RequestOptions.ClientContext(merge)._pb
+            if isinstance(merge, dict)
+            else merge._pb
+        )
         combined_pb.MergeFrom(merge_pb)
 
-    combined = ClientContext(combined_pb)
+    combined = RequestOptions.ClientContext(combined_pb)
 
     if not combined.secure_context:
         return None
@@ -233,18 +240,18 @@ def _merge_client_context(base, merge):
 def _validate_client_context(client_context):
     """Validate and convert client_context.
 
-    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+    :type client_context: :class:`~google.cloud.spanner_v1.types.RequestOptions.ClientContext`
         or :class:`dict`
     :param client_context: (Optional) Client context to use.
 
-    :rtype: :class:`~google.cloud.spanner_v1.types.ClientContext`
+    :rtype: :class:`~google.cloud.spanner_v1.types.RequestOptions.ClientContext`
     :returns: Validated ClientContext object or None.
     :raises TypeError: if client_context is not a ClientContext or a dict.
     """
     if client_context is not None:
         if isinstance(client_context, dict):
-            client_context = ClientContext(client_context)
-        elif not isinstance(client_context, ClientContext):
+            client_context = RequestOptions.ClientContext(client_context)
+        elif not isinstance(client_context, RequestOptions.ClientContext):
             raise TypeError("client_context must be a ClientContext or a dict")
     return client_context
 
@@ -256,7 +263,7 @@ def _merge_request_options(request_options, client_context):
         or :class:`dict` or None
     :param request_options: The current RequestOptions that is intended for use.
 
-    :type client_context: :class:`~google.cloud.spanner_v1.types.ClientContext`
+    :type client_context: :class:`~google.cloud.spanner_v1.types.RequestOptions.ClientContext`
         or :class:`dict` or None
     :param client_context:
         The ClientContext to merge into request_options.
