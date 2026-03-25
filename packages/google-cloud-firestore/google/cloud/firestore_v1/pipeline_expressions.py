@@ -1328,6 +1328,224 @@ class Expression(ABC):
         )
 
     @expose_as_static
+    def regex_find(self, pattern: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that returns the first substring of a string expression that
+        matches a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("email").regex_find("@[A-Za-z0-9.-]+")
+            >>> Field.of("email").regex_find(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def regex_find_all(self, pattern: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that evaluates to an array of all substrings in a string expression
+        that match a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("comment").regex_find_all("@[A-Za-z0-9_]+")
+            >>> Field.of("comment").regex_find_all(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find_all", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def split(self, delimiter: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that splits the value of a field on the provided delimiter.
+
+        Example:
+            >>> Field.of("date").split("date", "-")
+
+        Args:
+            field_name: Split the value in this field.
+            delimiter: The delimiter string to split on.
+
+        Returns:
+            A new `Expression` representing the split function.
+        """
+        return FunctionExpression(
+            "split", [self, self._cast_to_expr_or_convert_to_constant(delimiter)]
+        )
+
+    @expose_as_static
+    def string_repeat(self, repetitions: int | Expression) -> "Expression":
+        """Creates an expression that repeats a string or byte array a specified number
+        of times.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("name").string_repeat(3)
+            >>> # Called statically using the field name:
+            >>> Expression.string_repeat("name", 3)
+
+        Args:
+            repetitions: The number of times to repeat the string or byte array.
+
+        Returns:
+            A new `Expression` representing the repeated string or byte array.
+        """
+        return FunctionExpression(
+            "string_repeat",
+            [self, self._cast_to_expr_or_convert_to_constant(repetitions)],
+        )
+
+    @expose_as_static
+    def string_replace_all(
+        self,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that replaces all occurrences of a substring or byte
+        sequence with a replacement.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_replace_all("foo", "bar")
+
+        Args:
+            find: The substring or byte sequence to search for.
+            replacement: The replacement string or byte sequence.
+
+        Returns:
+            A new `Expression` representing the string or byte array with replacements.
+        """
+        return FunctionExpression(
+            "string_replace_all",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(find),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_replace_one(
+        self,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that replaces the first occurrence of a substring or byte
+        sequence with a replacement.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_replace_one("foo", "bar")
+
+        Args:
+            find: The substring or byte sequence to search for.
+            replacement: The replacement string or byte sequence.
+
+        Returns:
+            A new `Expression` representing the string or byte array with the replacement.
+        """
+        return FunctionExpression(
+            "string_replace_one",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(find),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_index_of(
+        self,
+        search: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that finds the index of the first occurrence of a substring or
+        byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_index_of("foo")
+
+        Args:
+            search: The substring or byte sequence to search for.
+
+        Returns:
+            A new `Expression` representing the index of the first occurrence.
+        """
+        return FunctionExpression(
+            "string_index_of",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+            ],
+        )
+
+    @expose_as_static
+    def ltrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims leading whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").ltrim()
+            >>> Field.of("text").ltrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("ltrim", args)
+
+    @expose_as_static
+    def rtrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims trailing whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").rtrim()
+            >>> Field.of("text").rtrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("rtrim", args)
+
+    @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
         """Calculates the cosine distance between two vectors.
 

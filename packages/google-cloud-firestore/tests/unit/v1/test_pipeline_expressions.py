@@ -1279,6 +1279,118 @@ class TestExpressionessionMethods:
         infix_instance = arg1.cosine_distance(arg2)
         assert infix_instance == instance
 
+    def test_regex_find(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("pattern")
+        instance = Expression.regex_find(arg1, arg2)
+        assert instance.name == "regex_find"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.regex_find(pattern)"
+        infix_instance = arg1.regex_find(arg2)
+        assert infix_instance == instance
+
+    def test_regex_find_all(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("pattern")
+        instance = Expression.regex_find_all(arg1, arg2)
+        assert instance.name == "regex_find_all"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.regex_find_all(pattern)"
+        infix_instance = arg1.regex_find_all(arg2)
+        assert infix_instance == instance
+
+    def test_split(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("-")
+        instance = Expression.split(arg1, arg2)
+        assert instance.name == "split"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.split(-)"
+        infix_instance = arg1.split(arg2)
+        assert infix_instance == instance
+
+    def test_string_repeat(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("3")
+        instance = Expression.string_repeat(arg1, arg2)
+        assert instance.name == "string_repeat"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.string_repeat(3)"
+        infix_instance = arg1.string_repeat(arg2)
+        assert infix_instance == instance
+
+    def test_string_replace_all(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("find")
+        arg3 = self._make_arg("replacement")
+        instance = Expression.string_replace_all(arg1, arg2, arg3)
+        assert instance.name == "string_replace_all"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "String.string_replace_all(find, replacement)"
+        infix_instance = arg1.string_replace_all(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_string_replace_one(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("find")
+        arg3 = self._make_arg("replacement")
+        instance = Expression.string_replace_one(arg1, arg2, arg3)
+        assert instance.name == "string_replace_one"
+        assert instance.params == [arg1, arg2, arg3]
+        assert repr(instance) == "String.string_replace_one(find, replacement)"
+        infix_instance = arg1.string_replace_one(arg2, arg3)
+        assert infix_instance == instance
+
+    def test_string_index_of(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("search")
+        instance = Expression.string_index_of(arg1, arg2)
+        assert instance.name == "string_index_of"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.string_index_of(search)"
+        infix_instance = arg1.string_index_of(arg2)
+        assert infix_instance == instance
+
+    def test_ltrim(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("chars")
+
+        # Without args
+        instance = Expression.ltrim(arg1)
+        assert instance.name == "ltrim"
+        assert instance.params == [arg1]
+        assert repr(instance) == "String.ltrim()"
+        infix_instance = arg1.ltrim()
+        assert infix_instance == instance
+
+        # With args
+        instance = Expression.ltrim(arg1, arg2)
+        assert instance.name == "ltrim"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.ltrim(chars)"
+        infix_instance = arg1.ltrim(arg2)
+        assert infix_instance == instance
+
+    def test_rtrim(self):
+        arg1 = self._make_arg("String")
+        arg2 = self._make_arg("chars")
+
+        # Without args
+        instance = Expression.rtrim(arg1)
+        assert instance.name == "rtrim"
+        assert instance.params == [arg1]
+        assert repr(instance) == "String.rtrim()"
+        infix_instance = arg1.rtrim()
+        assert infix_instance == instance
+
+        # With args
+        instance = Expression.rtrim(arg1, arg2)
+        assert instance.name == "rtrim"
+        assert instance.params == [arg1, arg2]
+        assert repr(instance) == "String.rtrim(chars)"
+        infix_instance = arg1.rtrim(arg2)
+        assert infix_instance == instance
+
     def test_dot_product(self):
         arg1 = self._make_arg("Vector1")
         arg2 = self._make_arg("Vector2")
