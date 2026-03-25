@@ -78,4 +78,4 @@ Explore the Documentation
     :maxdepth: 1
     :caption: Community & Updates
 
-    changelog
+    CHANGELOG
