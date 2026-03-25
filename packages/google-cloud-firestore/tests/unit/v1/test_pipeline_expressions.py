@@ -1754,3 +1754,147 @@ class TestExpressionessionMethods:
         assert repr(instance) == "Value.last()"
         infix_instance = arg1.last()
         assert infix_instance == instance
+
+    def test_array_first(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_first(arg1)
+        assert instance.name == "array_first"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_first()"
+        infix_instance = arg1.array_first()
+        assert infix_instance == instance
+
+    def test_array_last(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_last(arg1)
+        assert instance.name == "array_last"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_last()"
+        infix_instance = arg1.array_last()
+        assert infix_instance == instance
+
+    def test_array_first_n(self):
+        arg1 = self._make_arg("Value")
+        n = 2
+        instance = Expression.array_first_n(arg1, n)
+        assert instance.name == "array_first_n"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == n
+        assert repr(instance) == "Value.array_first_n(Constant.of(2))"
+        infix_instance = arg1.array_first_n(n)
+        assert infix_instance == instance
+
+    def test_array_last_n(self):
+        arg1 = self._make_arg("Value")
+        n = 2
+        instance = Expression.array_last_n(arg1, n)
+        assert instance.name == "array_last_n"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == n
+        assert repr(instance) == "Value.array_last_n(Constant.of(2))"
+        infix_instance = arg1.array_last_n(n)
+        assert infix_instance == instance
+
+    def test_array_maximum(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_maximum(arg1)
+        assert instance.name == "maximum"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_maximum()"
+        infix_instance = arg1.array_maximum()
+        assert infix_instance == instance
+
+    def test_array_minimum(self):
+        arg1 = self._make_arg("Value")
+        instance = Expression.array_minimum(arg1)
+        assert instance.name == "minimum"
+        assert instance.params == [arg1]
+        assert repr(instance) == "Value.array_minimum()"
+        infix_instance = arg1.array_minimum()
+        assert infix_instance == instance
+
+    def test_array_maximum_n(self):
+        arg1 = self._make_arg("Value")
+        n = 2
+        instance = Expression.array_maximum_n(arg1, n)
+        assert instance.name == "maximum_n"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == n
+        assert repr(instance) == "Value.array_maximum_n(Constant.of(2))"
+        infix_instance = arg1.array_maximum_n(n)
+        assert infix_instance == instance
+
+    def test_array_minimum_n(self):
+        arg1 = self._make_arg("Value")
+        n = 2
+        instance = Expression.array_minimum_n(arg1, n)
+        assert instance.name == "minimum_n"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == n
+        assert repr(instance) == "Value.array_minimum_n(Constant.of(2))"
+        infix_instance = arg1.array_minimum_n(n)
+        assert infix_instance == instance
+
+    def test_array_slice_1_arg(self):
+        arg1 = self._make_arg("Value")
+        offset = 1
+        instance = Expression.array_slice(arg1, offset)
+        assert instance.name == "array_slice"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == offset
+        assert len(instance.params) == 2
+        assert repr(instance) == "Value.array_slice(Constant.of(1))"
+        infix_instance = arg1.array_slice(offset)
+        assert infix_instance == instance
+
+    def test_array_slice_2_args(self):
+        arg1 = self._make_arg("Value")
+        offset = 1
+        length = 2
+        instance = Expression.array_slice(arg1, offset, length)
+        assert instance.name == "array_slice"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == offset
+        assert isinstance(instance.params[2], Constant)
+        assert instance.params[2].value == length
+        assert len(instance.params) == 3
+        assert repr(instance) == "Value.array_slice(Constant.of(1), Constant.of(2))"
+        infix_instance = arg1.array_slice(offset, length)
+        assert infix_instance == instance
+
+    def test_array_index_of(self):
+        arg1 = self._make_arg("Value")
+        value = "comedy"
+        instance = Expression.array_index_of(arg1, value)
+        assert instance.name == "array_index_of"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == value
+        assert isinstance(instance.params[2], Constant)
+        assert instance.params[2].value == "first"
+        assert len(instance.params) == 3
+        assert (
+            repr(instance)
+            == "Value.array_index_of(Constant.of('comedy'), Constant.of('first'))"
+        )
+        infix_instance = arg1.array_index_of(value)
+        assert infix_instance == instance
+
+    def test_array_index_of_all(self):
+        arg1 = self._make_arg("Value")
+        value = "comedy"
+        instance = Expression.array_index_of_all(arg1, value)
+        assert instance.name == "array_index_of_all"
+        assert instance.params[0] == arg1
+        assert isinstance(instance.params[1], Constant)
+        assert instance.params[1].value == value
+        assert len(instance.params) == 2
+        assert repr(instance) == "Value.array_index_of_all(Constant.of('comedy'))"
+        infix_instance = arg1.array_index_of_all(value)
+        assert infix_instance == instance
