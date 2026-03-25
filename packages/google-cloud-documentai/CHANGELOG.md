@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.11.0...google-cloud-documentai-v3.12.0) (2026-03-23)
+
+
+### Features
+
+* Add a field for upgrading previous processor version when fine tuning ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.10.0...google-cloud-documentai-v3.11.0) (2026-03-05)
 
 

@@ -7,8 +7,8 @@
       }
     ],
     "language": "PYTHON",
-    "name": "google-cloud-networkconnectivity",
-    "version": "2.13.0"
+    "name": "google-cloud-network-connectivity",
+    "version": "2.14.0"
   },
   "snippets": [
     {

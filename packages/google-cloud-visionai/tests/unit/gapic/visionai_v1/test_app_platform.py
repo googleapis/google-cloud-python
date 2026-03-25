@@ -135,6 +135,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert AppPlatformClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -153,6 +154,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert AppPlatformClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        AppPlatformClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -1259,11 +1263,13 @@ def test_app_platform_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -17721,8 +17727,9 @@ def test_list_applications_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17787,17 +17794,20 @@ def test_list_applications_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_applications"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_applications_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_list_applications"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_applications"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_list_applications_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_list_applications"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17850,8 +17860,9 @@ def test_get_application_rest_bad_request(request_type=platform.GetApplicationRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17922,17 +17933,19 @@ def test_get_application_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_application"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_application_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_get_application"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_application"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_application_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_get_application"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17983,8 +17996,9 @@ def test_create_application_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18259,19 +18273,21 @@ def test_create_application_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_create_application"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_create_application_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_create_application"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_create_application"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_create_application_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_create_application"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18328,8 +18344,9 @@ def test_update_application_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18608,19 +18625,21 @@ def test_update_application_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_application"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_application_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_update_application"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_update_application"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_update_application_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_update_application"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18673,8 +18692,9 @@ def test_delete_application_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18731,19 +18751,21 @@ def test_delete_application_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_delete_application"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_delete_application_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_delete_application"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_delete_application"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_delete_application_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_delete_application"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18796,8 +18818,9 @@ def test_deploy_application_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18854,19 +18877,21 @@ def test_deploy_application_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_deploy_application"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_deploy_application_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_deploy_application"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_deploy_application"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_deploy_application_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_deploy_application"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18919,8 +18944,9 @@ def test_undeploy_application_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18977,19 +19003,21 @@ def test_undeploy_application_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_undeploy_application"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_undeploy_application_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_undeploy_application"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_undeploy_application"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_undeploy_application_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_undeploy_application"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19042,8 +19070,9 @@ def test_add_application_stream_input_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19100,20 +19129,21 @@ def test_add_application_stream_input_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_add_application_stream_input"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor,
-        "post_add_application_stream_input_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_add_application_stream_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_add_application_stream_input"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_add_application_stream_input_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_add_application_stream_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19166,8 +19196,9 @@ def test_remove_application_stream_input_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19224,20 +19255,22 @@ def test_remove_application_stream_input_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_remove_application_stream_input"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor,
-        "post_remove_application_stream_input_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_remove_application_stream_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_remove_application_stream_input",
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_remove_application_stream_input_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_remove_application_stream_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19290,8 +19323,9 @@ def test_update_application_stream_input_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19348,20 +19382,22 @@ def test_update_application_stream_input_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_application_stream_input"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor,
-        "post_update_application_stream_input_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_update_application_stream_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_update_application_stream_input",
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_update_application_stream_input_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_update_application_stream_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19412,8 +19448,9 @@ def test_list_instances_rest_bad_request(request_type=platform.ListInstancesRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19478,17 +19515,19 @@ def test_list_instances_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_instances"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_instances_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_list_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_instances_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_list_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19541,8 +19580,9 @@ def test_get_instance_rest_bad_request(request_type=platform.GetInstanceRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19615,17 +19655,19 @@ def test_get_instance_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_instance"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_get_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_get_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19676,8 +19718,9 @@ def test_create_application_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19734,20 +19777,21 @@ def test_create_application_instances_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_create_application_instances"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor,
-        "post_create_application_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_create_application_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_create_application_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_create_application_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_create_application_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19800,8 +19844,9 @@ def test_delete_application_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19858,20 +19903,21 @@ def test_delete_application_instances_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_delete_application_instances"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor,
-        "post_delete_application_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_delete_application_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_delete_application_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_delete_application_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_delete_application_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19924,8 +19970,9 @@ def test_update_application_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19982,20 +20029,21 @@ def test_update_application_instances_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_application_instances"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor,
-        "post_update_application_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_update_application_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_update_application_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_update_application_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_update_application_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20046,8 +20094,9 @@ def test_list_drafts_rest_bad_request(request_type=platform.ListDraftsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20112,17 +20161,19 @@ def test_list_drafts_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_drafts"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_drafts_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_list_drafts"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_drafts"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_drafts_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_list_drafts"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20175,8 +20226,9 @@ def test_get_draft_rest_bad_request(request_type=platform.GetDraftRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20245,17 +20297,19 @@ def test_get_draft_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_draft"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_draft_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_get_draft"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_draft"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_draft_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_get_draft"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20304,8 +20358,9 @@ def test_create_draft_rest_bad_request(request_type=platform.CreateDraftRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20567,19 +20622,20 @@ def test_create_draft_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_create_draft"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_create_draft_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_create_draft"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_create_draft"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_create_draft_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_create_draft"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20632,8 +20688,9 @@ def test_update_draft_rest_bad_request(request_type=platform.UpdateDraftRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20899,19 +20956,20 @@ def test_update_draft_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_draft"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_draft_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_update_draft"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_update_draft"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_update_draft_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_update_draft"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20962,8 +21020,9 @@ def test_delete_draft_rest_bad_request(request_type=platform.DeleteDraftRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21022,19 +21081,20 @@ def test_delete_draft_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_delete_draft"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_delete_draft_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_delete_draft"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_delete_draft"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_delete_draft_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_delete_draft"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21083,8 +21143,9 @@ def test_list_processors_rest_bad_request(request_type=platform.ListProcessorsRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21149,17 +21210,19 @@ def test_list_processors_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_processors"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_processors_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_list_processors"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_processors"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_processors_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_list_processors"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21212,8 +21275,9 @@ def test_list_prebuilt_processors_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21273,18 +21337,20 @@ def test_list_prebuilt_processors_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_list_prebuilt_processors"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor,
-        "post_list_prebuilt_processors_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_list_prebuilt_processors"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_list_prebuilt_processors"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor,
+            "post_list_prebuilt_processors_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_list_prebuilt_processors"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21340,8 +21406,9 @@ def test_get_processor_rest_bad_request(request_type=platform.GetProcessorReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21430,17 +21497,19 @@ def test_get_processor_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_processor"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_get_processor_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_get_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_processor"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_get_processor_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_get_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21491,8 +21560,9 @@ def test_create_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21680,19 +21750,20 @@ def test_create_processor_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_create_processor"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_create_processor_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_create_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_create_processor"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_create_processor_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_create_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21747,8 +21818,9 @@ def test_update_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21938,19 +22010,20 @@ def test_update_processor_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_processor"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_update_processor_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_update_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_update_processor"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_update_processor_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_update_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22003,8 +22076,9 @@ def test_delete_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22061,19 +22135,20 @@ def test_delete_processor_rest_interceptors(null_interceptor):
     )
     client = AppPlatformClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_delete_processor"
-    ) as post, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "post_delete_processor_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AppPlatformRestInterceptor, "pre_delete_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_delete_processor"
+        ) as post,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "post_delete_processor_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AppPlatformRestInterceptor, "pre_delete_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22126,8 +22201,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22186,8 +22262,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22248,8 +22325,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22310,8 +22388,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22372,8 +22451,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -22434,8 +22514,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -23142,11 +23223,14 @@ def test_app_platform_base_transport():
 
 def test_app_platform_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.visionai_v1.services.app_platform.transports.AppPlatformTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.visionai_v1.services.app_platform.transports.AppPlatformTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AppPlatformTransport(
@@ -23163,9 +23247,12 @@ def test_app_platform_base_transport_with_credentials_file():
 
 def test_app_platform_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.visionai_v1.services.app_platform.transports.AppPlatformTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.visionai_v1.services.app_platform.transports.AppPlatformTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AppPlatformTransport()
@@ -23237,11 +23324,12 @@ def test_app_platform_transport_auth_gdch_credentials(transport_class):
 def test_app_platform_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -24017,6 +24105,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = AppPlatformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = AppPlatformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = AppPlatformClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24154,6 +24274,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = AppPlatformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = AppPlatformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -24301,6 +24453,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = AppPlatformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = AppPlatformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = AppPlatformClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24444,6 +24630,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = AppPlatformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = AppPlatformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -24591,6 +24811,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = AppPlatformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = AppPlatformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = AppPlatformClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24730,6 +24984,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = AppPlatformClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = AppPlatformAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

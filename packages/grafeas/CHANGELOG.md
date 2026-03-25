@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.20.0...grafeas-v1.21.0) (2026-03-23)
+
+
+### Features
+
+* Added line_number to FileLocation ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.19.1...grafeas-v1.20.0) (2026-02-19)
 
 

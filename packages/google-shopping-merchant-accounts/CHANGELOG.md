@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-accounts/#history
 
+## [1.4.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v1.3.0...google-shopping-merchant-accounts-v1.4.0) (2026-03-23)
+
+
+### Documentation
+
+* Update Account.account_name documentation for naming restrictions ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+* Clarify CheckoutSettings.eligible_destinations usage ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+* Refine DeveloperRegistration.developer_email behavior description ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+* Add product-ratings to Program documentation ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+* Update Region to support radius_area and clarify area type exclusivity ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+* Improve TermsOfServiceKind.MERCHANT_CENTER comment ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+* Update DeleteUser method description ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+
+
+### Features
+
+* Add CreateTestAccount RPC to Accounts service for creating test-only Merchant Center accounts ([75697a6fae19249c6e45c761494d8a0d82869fb6](https://github.com/googleapis/google-cloud-python/commit/75697a6fae19249c6e45c761494d8a0d82869fb6))
+
 ## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v1.2.0...google-shopping-merchant-accounts-v1.3.0) (2026-01-09)
 
 

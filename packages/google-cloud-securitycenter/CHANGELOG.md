@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.42.0...google-cloud-securitycenter-v1.43.0) (2026-03-23)
+
+
+### Features
+
+* Support Chokepoint and external exposure in findings Proto ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [1.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.41.0...google-cloud-securitycenter-v1.42.0) (2026-01-09)
 
 

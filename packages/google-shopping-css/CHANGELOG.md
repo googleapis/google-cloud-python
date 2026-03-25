@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-shopping-css/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.3.0...google-shopping-css-v0.4.0) (2026-03-23)
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.shopping.css.v1.CssProductInput` is changed ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* A comment for field `name` in message `.google.shopping.css.v1.GetCssProductRequest` is changed ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* A comment for field `size_types` in message `.google.shopping.css.v1.Attributes` is changed ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* A comment for field `name` in message `.google.shopping.css.v1.AccountLabel` is changed ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
+
+### Features
+
+* add product rating fields to CSS API v1. This is in preparation for an upcoming feature and the new fields are not yet used. ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.2.0...google-shopping-css-v0.3.0) (2026-01-09)
 
 
