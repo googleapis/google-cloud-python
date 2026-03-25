@@ -21,7 +21,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import TYPE_CHECKING, Optional, Sequence
+from typing import TYPE_CHECKING, Any, Mapping, Optional, Sequence
 
 from google.cloud.firestore_v1._helpers import encode_value
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
@@ -29,6 +29,7 @@ from google.cloud.firestore_v1.pipeline_expressions import (
     AggregateFunction,
     AliasedExpression,
     BooleanExpression,
+    CONSTANT_TYPE,
     Expression,
     Field,
     Ordering,
@@ -340,6 +341,26 @@ class Limit(Stage):
 
     def _pb_args(self):
         return [Value(integer_value=self.limit)]
+
+
+class Literals(Stage):
+    """Returns documents from a fixed set of predefined document objects."""
+
+    def __init__(self, *documents: dict[str, Expression | CONSTANT_TYPE]):
+        super().__init__("literals")
+        self.documents: tuple[Mapping[str, Any], ...] = documents
+
+    def _pb_args(self):
+        args = []
+        for doc in self.documents:
+            encoded_doc = {}
+            for k, v in doc.items():
+                if hasattr(v, "_to_pb"):
+                    encoded_doc[k] = v._to_pb()
+                else:
+                    encoded_doc[k] = encode_value(v)
+            args.append(Value(map_value={"fields": encoded_doc}))
+        return args
 
 
 class Offset(Stage):
