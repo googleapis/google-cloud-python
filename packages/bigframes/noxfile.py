@@ -27,9 +27,7 @@ from typing import Dict, List
 import nox
 import nox.sessions
 
-BLACK_VERSION = "black==23.7.0"
-FLAKE8_VERSION = "flake8==7.1.2"
-ISORT_VERSION = "isort==5.12.0"
+RUFF_VERSION = "ruff==0.14.14"
 MYPY_VERSION = "mypy==1.15.0"
 
 # Notebook tests should match colab and BQ Studio.
@@ -56,7 +54,7 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     PYTEST_VERSION,
@@ -78,7 +76,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
 # 3.10 is needed for Windows tests as it is the only version installed in the
 # bigframes-windows container image. For more information, search
 # bigframes/windows-docker, internally.
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "jinja2",
     "mock",
@@ -135,45 +133,56 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION, ISORT_VERSION)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
     session.run(
-        "isort",
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
-    session.run(
-        "black",
-        "--check",
-        *LINT_PATHS,
-    )
-    session.run("flake8", *LINT_PATHS)
 
-
+# Use a python runtime which is available in the owlbot post processor here
+# https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
-    session.run(
-        "black",
-        *LINT_PATHS,
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
     )
 
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
     session.run(
-        "isort",
-        *LINT_PATHS,
-    )
-    session.run(
-        "black",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
@@ -242,14 +251,14 @@ def run_unit(session, install_test_extra):
     )
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+@nox.session(python=ALL_PYTHON)
 def unit(session):
     if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
     run_unit(session, install_test_extra=True)
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
+@nox.session(python=ALL_PYTHON[-1])
 def unit_noextras(session):
     run_unit(session, install_test_extra=False)
 
@@ -336,6 +345,9 @@ def run_system(
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
+
+    if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
+        session.skip("Credentials must be set via environment variable")
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
@@ -581,6 +593,9 @@ def docfx(session):
 
 
 def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=()):
+    if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
+        session.skip("Credentials must be set via environment variable")
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -638,7 +653,7 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
     )
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
+@nox.session(python=ALL_PYTHON[-1])
 def unit_prerelease(session: nox.sessions.Session):
     """Run the unit test suite with prerelease dependencies."""
     prerelease(session, os.path.join("tests", "unit"))
@@ -942,3 +957,22 @@ def cleanup(session):
     session.install("-e", ".")
 
     session.run("python", "scripts/manage_cloud_functions.py", *cleanup_options)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def core_deps_from_source(session):
+    """Run all tests with core dependencies installed from source
+    rather than pulling the dependencies from PyPI.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add core deps from source tests
+    session.skip("Core deps from source tests are not yet supported")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def prerelease_deps(session):
+    """Run all tests with prerelease versions of dependencies installed.
+    """
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
+    # Add prerelease deps tests
+    session.skip("prerelease deps tests are not yet supported")
