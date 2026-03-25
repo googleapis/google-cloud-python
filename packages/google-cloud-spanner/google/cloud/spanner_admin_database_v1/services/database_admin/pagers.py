@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.longrunning import operations_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 
 from google.cloud.spanner_admin_database_v1.types import (
     backup,

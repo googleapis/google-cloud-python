@@ -46,9 +46,9 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.spanner_v1.services.spanner import pagers
 from google.cloud.spanner_v1.types import (
@@ -124,7 +124,8 @@ class SpannerAsyncClient:
         Returns:
             SpannerAsyncClient: The constructed client.
         """
-        return SpannerClient.from_service_account_info.__func__(SpannerAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SpannerClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SpannerAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -140,7 +141,8 @@ class SpannerAsyncClient:
         Returns:
             SpannerAsyncClient: The constructed client.
         """
-        return SpannerClient.from_service_account_file.__func__(SpannerAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SpannerClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SpannerAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -190,7 +192,7 @@ class SpannerAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
