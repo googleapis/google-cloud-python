@@ -147,7 +147,7 @@ class StreamedResultSet(object):
 
     def __iter__(self):
         while True:
-            (iter_rows, self._rows[:]) = (self._rows[:], ())
+            iter_rows, self._rows[:] = (self._rows[:], ())
             while iter_rows:
                 yield iter_rows.pop(0)
             if self._done:
@@ -230,7 +230,7 @@ class StreamedResultSet(object):
             rows.append(
                 {
                     column: value
-                    for (column, value) in zip(
+                    for column, value in zip(
                         [column.name for column in self._metadata.row_type.fields], row
                     )
                 }
@@ -291,7 +291,7 @@ def _merge_array(lhs, rhs, type_):
     if element_type.code in _UNMERGEABLE_TYPES:
         lhs.list_value.values.extend(rhs.list_value.values)
         return lhs
-    (lhs, rhs) = (list(lhs.list_value.values), list(rhs.list_value.values))
+    lhs, rhs = (list(lhs.list_value.values), list(rhs.list_value.values))
     if not len(lhs) or not len(rhs):
         return Value(list_value=ListValue(values=lhs + rhs))
     first = rhs.pop(0)
@@ -316,7 +316,7 @@ def _merge_array(lhs, rhs, type_):
 def _merge_struct(lhs, rhs, type_):
     """Helper for '_merge_by_type'."""
     fields = type_.struct_type.fields
-    (lhs, rhs) = (list(lhs.list_value.values), list(rhs.list_value.values))
+    lhs, rhs = (list(lhs.list_value.values), list(rhs.list_value.values))
     if not len(lhs) or not len(rhs):
         return Value(list_value=ListValue(values=lhs + rhs))
     candidate_type = fields[len(lhs) - 1].type_

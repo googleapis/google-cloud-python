@@ -188,7 +188,7 @@ class Session(object):
             observability_options=observability_options,
             metadata=metadata,
         ) as span, MetricsCapture(self._resource_info):
-            (call_metadata, error_augmenter) = database.with_error_augmentation(
+            call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )
             with error_augmenter:
@@ -232,7 +232,7 @@ class Session(object):
             observability_options=observability_options,
             metadata=metadata,
         ) as span, MetricsCapture(self._resource_info):
-            (call_metadata, error_augmenter) = database.with_error_augmentation(
+            call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )
             with error_augmenter:
@@ -283,7 +283,7 @@ class Session(object):
             observability_options=observability_options,
             metadata=metadata,
         ) as span, MetricsCapture(self._resource_info):
-            (call_metadata, error_augmenter) = database.with_error_augmentation(
+            call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )
             with error_augmenter:
@@ -300,7 +300,7 @@ class Session(object):
         metadata = _metadata_with_prefix(database.name)
         nth_request = database._next_nth_request
         with trace_call("CloudSpanner.Session.ping", self) as span:
-            (call_metadata, error_augmenter) = database.with_error_augmentation(
+            call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, 1, metadata, span
             )
             with error_augmenter:

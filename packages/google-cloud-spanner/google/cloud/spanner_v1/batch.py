@@ -243,7 +243,7 @@ class Batch(_BatchBase):
                     max_commit_delay=max_commit_delay,
                     request_options=request_options,
                 )
-                (call_metadata, error_augmenter) = database.with_error_augmentation(
+                call_metadata, error_augmenter = database.with_error_augmentation(
                     getattr(database, "_next_nth_request", 0), 1, metadata, span
                 )
                 commit_method = functools.partial(

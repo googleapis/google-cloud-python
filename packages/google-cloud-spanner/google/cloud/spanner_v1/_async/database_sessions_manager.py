@@ -71,9 +71,9 @@ class DatabaseSessionsManager(object):
         self._pool = pool
         self._multiplexed_session: Optional[Session] = None
         self._multiplexed_session_thread: Optional[CrossSync.Task] = None
-        # Use threading.Lock because this is accessed in a synchronous maintenance thread
-        self._multiplexed_session_lock: threading.Lock = threading.Lock()
-        self._multiplexed_session_terminate_event: CrossSync.Event = CrossSync.Event()
+        self._init_lock = threading.Lock()
+        self._multiplexed_session_lock: Optional[CrossSync.Lock] = None
+        self._multiplexed_session_terminate_event: Optional[CrossSync.Event] = None
 
     @CrossSync.convert
     async def get_session(self, transaction_type: TransactionType) -> Session:
@@ -119,7 +119,13 @@ class DatabaseSessionsManager(object):
 
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: a multiplexed session."""
-        with CrossSync.rm_aio(self._multiplexed_session_lock):
+        with self._init_lock:
+            if self._multiplexed_session_lock is None:
+                self._multiplexed_session_lock = CrossSync.Lock()
+            if self._multiplexed_session_terminate_event is None:
+                self._multiplexed_session_terminate_event = CrossSync.Event()
+
+        async with self._multiplexed_session_lock:
             if self._multiplexed_session is None:
                 self._multiplexed_session = await self._build_multiplexed_session()
                 self._multiplexed_session_thread = self._build_maintenance_thread()
@@ -193,7 +199,7 @@ class DatabaseSessionsManager(object):
             if time() - session_created_time < refresh_interval_seconds:
                 await CrossSync.sleep(polling_interval_seconds)
                 continue
-            with manager._multiplexed_session_lock:
+            async with manager._multiplexed_session_lock:
                 await CrossSync.run_if_async(manager._multiplexed_session.delete)
                 manager._multiplexed_session = (
                     await manager._build_multiplexed_session()
@@ -220,7 +226,8 @@ class DatabaseSessionsManager(object):
     @CrossSync.convert
     async def close(self) -> None:
         """Closes the database session manager and stops all background tasks."""
-        self._multiplexed_session_terminate_event.set()
+        if self._multiplexed_session_terminate_event is not None:
+            self._multiplexed_session_terminate_event.set()
         if self._multiplexed_session_thread is not None:
             if CrossSync.is_async:
                 self._multiplexed_session_thread.cancel()

@@ -69,6 +69,7 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
     async def test_maintain_multiplexed_session_terminate(self):
         # coverage for line 191-193
         manager = DatabaseSessionsManager(self.database, self.pool)
+        manager._multiplexed_session_terminate_event = asyncio.Event()
         manager._multiplexed_session_terminate_event.set()
 
         from weakref import ref
@@ -127,6 +128,8 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
     async def test_maintain_multiplexed_session_refresh(self):
         # coverage for line 196-202
         manager = DatabaseSessionsManager(self.database, self.pool)
+        manager._multiplexed_session_lock = asyncio.Lock()
+        manager._multiplexed_session_terminate_event = asyncio.Event()
         manager._multiplexed_session = mock.AsyncMock()
 
         # We need to simulate time passing and then terminating
@@ -190,6 +193,8 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
     async def test_maintain_multiplexed_session_loop_sleep(self):
         # coverage for line 196
         manager = DatabaseSessionsManager(self.database, self.pool)
+        manager._multiplexed_session_lock = asyncio.Lock()
+        manager._multiplexed_session_terminate_event = asyncio.Event()
         call_count = 0
 
         def mock_time():

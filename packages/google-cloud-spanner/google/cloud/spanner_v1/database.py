@@ -82,7 +82,6 @@ from google.cloud.spanner_v1._opentelemetry_tracing import (
     trace_call,
 )
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
-
 from google.cloud.spanner_v1.table import Table
 
 SPANNER_DATA_SCOPE = "https://www.googleapis.com/auth/spanner.data"
@@ -211,11 +210,9 @@ class Database(object):
     def _resource_info(self):
         """Resource information for metrics labels."""
         return {
-            "project": (
-                self._instance._client.project
-                if self._instance and self._instance._client
-                else None
-            ),
+            "project": self._instance._client.project
+            if self._instance and self._instance._client
+            else None,
             "instance": self._instance.instance_id if self._instance else None,
             "database": self.database_id,
         }
@@ -533,7 +530,7 @@ class Database(object):
             tuple: (metadata_list, context_manager)"""
         if span is None:
             span = get_current_span()
-        (metadata, request_id) = _metadata_with_request_id_and_req_id(
+        metadata, request_id = _metadata_with_request_id_and_req_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
@@ -810,7 +807,7 @@ class Database(object):
                 session = self._sessions_manager.get_session(transaction_type)
                 try:
                     add_span_event(span, "Starting BeginTransaction")
-                    (call_metadata, error_augmenter) = self.with_error_augmentation(
+                    call_metadata, error_augmenter = self.with_error_augmentation(
                         self._next_nth_request, 1, metadata, span
                     )
                     with error_augmenter:

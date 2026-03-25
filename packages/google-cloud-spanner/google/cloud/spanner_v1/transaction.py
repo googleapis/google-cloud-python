@@ -162,7 +162,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
                 def wrapped_method(*args, **kwargs):
                     attempt.increment()
-                    (call_metadata, error_augmenter) = database.with_error_augmentation(
+                    call_metadata, error_augmenter = database.with_error_augmentation(
                         nth_request, attempt.value, metadata, span
                     )
                     rollback_method = functools.partial(
@@ -269,7 +269,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 is_multiplexed = getattr(self._session, "is_multiplexed", False)
                 if is_multiplexed and self._precommit_token is not None:
                     commit_request_args["precommit_token"] = self._precommit_token
-                (call_metadata, error_augmenter) = database.with_error_augmentation(
+                call_metadata, error_augmenter = database.with_error_augmentation(
                     nth_request, attempt.value, metadata, span
                 )
                 commit_method = functools.partial(
@@ -300,7 +300,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             if commit_response_pb._pb.HasField("precommit_token"):
                 add_span_event(span, commit_retry_event_name)
                 nth_request = database._next_nth_request
-                (call_metadata, error_augmenter) = database.with_error_augmentation(
+                call_metadata, error_augmenter = database.with_error_augmentation(
                     nth_request, 1, metadata, span
                 )
                 with error_augmenter:
@@ -338,7 +338,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             If ``params`` is None but ``param_types`` is not None."""
         if params:
             return Struct(
-                fields={key: _make_value_pb(value) for (key, value) in params.items()}
+                fields={key: _make_value_pb(value) for key, value in params.items()}
             )
         return {}
 
@@ -417,7 +417,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        (seqno, self._execute_sql_request_count) = (
+        seqno, self._execute_sql_request_count = (
             self._execute_sql_request_count,
             self._execute_sql_request_count + 1,
         )
@@ -454,7 +454,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         def wrapped_method(*args, **kwargs):
             attempt.increment()
-            (call_metadata, error_augmenter) = database.with_error_augmentation(
+            call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, attempt.value, metadata
             )
             execute_sql_method = functools.partial(
@@ -544,7 +544,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             if isinstance(statement, str):
                 parsed.append(ExecuteBatchDmlRequest.Statement(sql=statement))
             else:
-                (dml, params, param_types) = statement
+                dml, params, param_types = statement
                 params_pb = self._make_params_pb(params, param_types)
                 parsed.append(
                     ExecuteBatchDmlRequest.Statement(
@@ -556,7 +556,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        (seqno, self._execute_sql_request_count) = (
+        seqno, self._execute_sql_request_count = (
             self._execute_sql_request_count,
             self._execute_sql_request_count + 1,
         )
@@ -590,7 +590,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         def wrapped_method(*args, **kwargs):
             attempt.increment()
-            (call_metadata, error_augmenter) = database.with_error_augmentation(
+            call_metadata, error_augmenter = database.with_error_augmentation(
                 nth_request, attempt.value, metadata
             )
             execute_batch_dml_method = functools.partial(

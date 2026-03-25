@@ -322,7 +322,7 @@ class _SnapshotBase(_SessionWrapper):
                 raise ValueError("Transaction has not begun.")
         if params is not None:
             params_pb = Struct(
-                fields={key: _make_value_pb(value) for (key, value) in params.items()}
+                fields={key: _make_value_pb(value) for key, value in params.items()}
             )
         else:
             params_pb = {}
@@ -513,7 +513,7 @@ class _SnapshotBase(_SessionWrapper):
             raise ValueError("Cannot partition a single-use transaction.")
         if params is not None:
             params_pb = Struct(
-                fields={key: _make_value_pb(value) for (key, value) in params.items()}
+                fields={key: _make_value_pb(value) for key, value in params.items()}
             )
         else:
             params_pb = Struct()
@@ -614,7 +614,7 @@ class _SnapshotBase(_SessionWrapper):
                 begin_transaction_request = BeginTransactionRequest(
                     **begin_request_kwargs
                 )
-                (call_metadata, error_augmenter) = database.with_error_augmentation(
+                call_metadata, error_augmenter = database.with_error_augmentation(
                     nth_request, attempt.increment(), metadata, span
                 )
                 begin_transaction_method = functools.partial(

@@ -304,7 +304,7 @@ class FixedSizePool(AbstractSessionPool):
                     f"Creating {request.session_count} sessions",
                     span_event_attributes,
                 )
-                (call_metadata, error_augmenter) = database.with_error_augmentation(
+                call_metadata, error_augmenter = database.with_error_augmentation(
                     database._next_nth_request, 1, metadata, span
                 )
                 with error_augmenter:
@@ -612,7 +612,7 @@ class PingingPool(FixedSizePool):
         ) as span, MetricsCapture(self._resource_info):
             returned_session_count = 0
             while returned_session_count < self.size:
-                (call_metadata, error_augmenter) = database.with_error_augmentation(
+                call_metadata, error_augmenter = database.with_error_augmentation(
                     database._next_nth_request, 1, metadata, span
                 )
                 with error_augmenter:
@@ -654,7 +654,7 @@ class PingingPool(FixedSizePool):
         ping_after = None
         session = None
         try:
-            (ping_after, session) = CrossSync._Sync_Impl.queue_get(
+            ping_after, session = CrossSync._Sync_Impl.queue_get(
                 self._sessions, block=True, timeout=timeout
             )
         except CrossSync._Sync_Impl.QueueEmpty as e:
@@ -698,9 +698,7 @@ class PingingPool(FixedSizePool):
         """Delete all sessions in the pool."""
         while True:
             try:
-                (_, session) = CrossSync._Sync_Impl.queue_get(
-                    self._sessions, block=False
-                )
+                _, session = CrossSync._Sync_Impl.queue_get(self._sessions, block=False)
             except CrossSync._Sync_Impl.QueueEmpty:
                 break
             else:
@@ -713,7 +711,7 @@ class PingingPool(FixedSizePool):
         or during the "idle" phase of an event loop."""
         while True:
             try:
-                (ping_after, session) = CrossSync._Sync_Impl.queue_get(
+                ping_after, session = CrossSync._Sync_Impl.queue_get(
                     self._sessions, block=False
                 )
             except CrossSync._Sync_Impl.QueueEmpty:

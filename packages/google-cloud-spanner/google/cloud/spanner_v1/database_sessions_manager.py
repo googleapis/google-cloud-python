@@ -69,10 +69,11 @@ class DatabaseSessionsManager(object):
         self._pool = pool
         self._multiplexed_session: Optional[Session] = None
         self._multiplexed_session_thread: Optional[CrossSync._Sync_Impl.Task] = None
-        self._multiplexed_session_lock: threading.Lock = threading.Lock()
-        self._multiplexed_session_terminate_event: CrossSync._Sync_Impl.Event = (
-            CrossSync._Sync_Impl.Event()
-        )
+        self._init_lock = threading.Lock()
+        self._multiplexed_session_lock: Optional[CrossSync._Sync_Impl.Lock] = None
+        self._multiplexed_session_terminate_event: Optional[
+            CrossSync._Sync_Impl.Event
+        ] = None
 
     def get_session(self, transaction_type: TransactionType) -> Session:
         """Returns a session for the given transaction type from the database session manager.
@@ -115,6 +116,11 @@ class DatabaseSessionsManager(object):
 
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: a multiplexed session."""
+        with self._init_lock:
+            if self._multiplexed_session_lock is None:
+                self._multiplexed_session_lock = CrossSync._Sync_Impl.Lock()
+            if self._multiplexed_session_terminate_event is None:
+                self._multiplexed_session_terminate_event = CrossSync._Sync_Impl.Event()
         with self._multiplexed_session_lock:
             if self._multiplexed_session is None:
                 self._multiplexed_session = self._build_multiplexed_session()
@@ -205,7 +211,8 @@ class DatabaseSessionsManager(object):
 
     def close(self) -> None:
         """Closes the database session manager and stops all background tasks."""
-        self._multiplexed_session_terminate_event.set()
+        if self._multiplexed_session_terminate_event is not None:
+            self._multiplexed_session_terminate_event.set()
         if self._multiplexed_session_thread is not None:
             self._multiplexed_session_thread.join()
         if self._multiplexed_session is not None:

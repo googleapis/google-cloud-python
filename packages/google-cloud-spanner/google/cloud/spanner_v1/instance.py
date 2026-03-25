@@ -479,7 +479,9 @@ class Instance(object):
                 database_role=database_role,
                 enable_drop_protection=enable_drop_protection,
             )
-        db._pool.bind(db)
+        res = db._pool.bind(db)
+        if res is not None:
+            res
         return db
 
     def list_databases(self, page_size=None):
