@@ -19,6 +19,7 @@ import abc
 from enum import Enum
 import logging
 import os
+import warnings
 from typing import Dict, List, Optional, TYPE_CHECKING
 from urllib.parse import urlparse
 
@@ -699,6 +700,30 @@ class TokenState(Enum):
     INVALID = 3
 
 
-# For backwards compatibility with the previous feature name.
-# Use CredentialsWithRegionalAccessBoundary instead.
-CredentialsWithTrustBoundary = CredentialsWithRegionalAccessBoundary
+class CredentialsWithTrustBoundary(CredentialsWithRegionalAccessBoundary):
+    """Abstract base for credentials supporting legacy trust boundary configuration.
+
+    .. deprecated::
+        Use :class:`~google.auth.credentials.CredentialsWithRegionalAccessBoundary` instead.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        warnings.warn(
+            "CredentialsWithTrustBoundary is deprecated. Use CredentialsWithRegionalAccessBoundary.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
+    @abc.abstractmethod
+    def _build_trust_boundary_lookup_url(self):
+        """Deprecated: Implement _build_regional_access_boundary_lookup_url instead."""
+        raise NotImplementedError()
+
+    def _build_regional_access_boundary_lookup_url(self, request=None):
+        warnings.warn(
+            "CredentialsWithTrustBoundary is deprecated. Use CredentialsWithRegionalAccessBoundary.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._build_trust_boundary_lookup_url()

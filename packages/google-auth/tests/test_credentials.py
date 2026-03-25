@@ -374,3 +374,18 @@ def test_token_state_no_expiry():
     assert c.token_state == credentials.TokenState.FRESH
 
     c.before_request(request, "http://example.com", "GET", {})
+
+
+def test_credentials_with_trust_boundary_bridge():
+    class LegacySubclass(credentials.CredentialsWithTrustBoundary):
+        def _perform_refresh_token(self, request):
+            pass
+
+        def _build_trust_boundary_lookup_url(self):
+            return "http://legacy.url"
+
+    creds = LegacySubclass()
+
+    # Verify that calling the new method delegates to the old method
+    with pytest.warns(DeprecationWarning):
+        assert creds._build_regional_access_boundary_lookup_url() == "http://legacy.url"
