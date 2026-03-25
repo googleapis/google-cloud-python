@@ -33,7 +33,7 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 # Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
 BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
 
-ALL_PYTHON = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 SUPPORTED_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
@@ -123,10 +123,10 @@ def install_core_deps_dependencies(session, constraints_path):
         # Note: If a dependency is added to the `core_dependencies_from_source` list,
         # the `prerel_deps` list in the `install_prerelease_dependencies` method should also be updated.
         core_dependencies_from_source = [
-            "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-            "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
-            "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-            "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+            f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
+            f"{CURRENT_DIRECTORY}/../google-auth",
+            f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
+            f"{CURRENT_DIRECTORY}/../proto-plus",
         ]
 
         for dep in core_dependencies_from_source:
@@ -289,11 +289,6 @@ def unit(
     that major version. Only a few values are supported at any one time; the intent is to test
     deprecated but noyet abandoned versions.
     """
-    if session.python in (
-        "3.7",
-        "3.8",
-    ):
-        session.skip("Python 3.7/3.8 is no longer supported")
 
     if python_versions and session.python not in python_versions:
         session.log(f"Skipping session for Python {session.python}")
