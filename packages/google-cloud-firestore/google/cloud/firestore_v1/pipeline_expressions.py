@@ -781,7 +781,7 @@ class Expression(ABC):
         """
         return FunctionExpression("array_reverse", [self])
 
-      @expose_as_static
+    @expose_as_static
     def array_concat(
         self, *other_arrays: Array | list[Expression | CONSTANT_TYPE] | Expression
     ) -> "Expression":
@@ -944,7 +944,7 @@ class Expression(ABC):
 
         Example:
             >>> # Count the total number of products
-            >>> Field.of("productId").count().as_("totalProducts"ss
+            >>> Field.of("productId").count().as_("totalProducts")
 
         Returns:
             A new `AggregateFunction` representing the 'count' aggregation.

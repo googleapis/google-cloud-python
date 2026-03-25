@@ -1453,7 +1453,7 @@ class TestExpressionessionMethods:
         infix_instance = arg1.array_reverse()
         assert infix_instance == instance
 
-     def test_array_concat(self):
+    def test_array_concat(self):
         arg1 = self._make_arg("ArrayRef1")
         arg2 = self._make_arg("ArrayRef2")
         instance = Expression.array_concat(arg1, arg2)
