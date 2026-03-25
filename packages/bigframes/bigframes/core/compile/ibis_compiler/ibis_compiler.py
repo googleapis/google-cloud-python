@@ -16,23 +16,23 @@ from __future__ import annotations
 import dataclasses
 import functools
 import typing
-from typing import cast, Optional
+from typing import Optional, cast
 
 import bigframes_vendored.ibis.backends.bigquery as ibis_bigquery
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.types as ibis_types
 
-from bigframes import dtypes, operations
-from bigframes.core import bq_data, expression, pyarrow_utils
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.configs as configs
 import bigframes.core.compile.explode
-from bigframes.core.logging import data_types as data_type_logger
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
 import bigframes.core.rewrite as rewrites
+from bigframes import dtypes, operations
+from bigframes.core import bq_data, expression, pyarrow_utils
+from bigframes.core.logging import data_types as data_type_logger
 
 if typing.TYPE_CHECKING:
     import bigframes.core

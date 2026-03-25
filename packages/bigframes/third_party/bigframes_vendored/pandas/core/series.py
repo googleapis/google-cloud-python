@@ -5,22 +5,22 @@ from __future__ import annotations
 
 import datetime
 from typing import (
-    Hashable,
     IO,
+    TYPE_CHECKING,
+    Hashable,
     List,
     Literal,
     Mapping,
     Optional,
     Sequence,
     Tuple,
-    TYPE_CHECKING,
     Union,
 )
 
-from bigframes_vendored.pandas.core.generic import NDFrame
 import numpy
 import numpy as np
 import pandas as pd
+from bigframes_vendored.pandas.core.generic import NDFrame
 from pandas._typing import Axis, FilePath, NaPosition, WriteBuffer
 from pandas.api import extensions as pd_ext
 

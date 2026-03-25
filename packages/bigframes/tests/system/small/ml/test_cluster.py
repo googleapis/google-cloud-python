@@ -14,8 +14,8 @@
 
 import pandas as pd
 
-from bigframes.ml import cluster
 import bigframes.pandas as bpd
+from bigframes.ml import cluster
 from bigframes.testing.utils import assert_frame_equal
 
 _PD_NEW_PENGUINS = pd.DataFrame.from_dict(

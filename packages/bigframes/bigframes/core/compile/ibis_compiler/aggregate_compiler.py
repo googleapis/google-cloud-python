@@ -16,27 +16,27 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import cast, List, Optional
+from typing import List, Optional, cast
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis.expr import builders as ibis_expr_builders
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
-from bigframes_vendored.ibis.expr.operations import window as ibis_expr_window
 import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
 import bigframes_vendored.ibis.expr.types as ibis_types
 import pandas as pd
+from bigframes_vendored.ibis.expr import builders as ibis_expr_builders
+from bigframes_vendored.ibis.expr.operations import window as ibis_expr_window
 
-from bigframes.core import agg_expressions
-from bigframes.core.compile import constants as compiler_constants
 import bigframes.core.compile.ibis_compiler.scalar_op_compiler as scalar_compilers
 import bigframes.core.compile.ibis_types as compile_ibis_types
 import bigframes.core.utils
-from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
 import bigframes.core.window_spec as window_spec
 import bigframes.operations.aggregations as agg_ops
+from bigframes.core import agg_expressions
+from bigframes.core.compile import constants as compiler_constants
+from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, WindowSpec
 
 scalar_compiler = scalar_compilers.scalar_op_compiler
 

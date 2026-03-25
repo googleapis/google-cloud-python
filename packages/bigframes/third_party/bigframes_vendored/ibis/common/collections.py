@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 import collections.abc
+from abc import abstractmethod
 from itertools import tee
-from typing import Any, Generic, TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from bigframes_vendored.ibis.common.bases import Abstract, Hashable
 from bigframes_vendored.ibis.common.exceptions import ConflictingValuesError

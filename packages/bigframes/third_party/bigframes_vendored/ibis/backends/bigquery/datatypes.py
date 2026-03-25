@@ -5,9 +5,9 @@ from __future__ import annotations
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.schema as sch
-from bigframes_vendored.ibis.formats import SchemaMapper, TypeMapper
 import bigframes_vendored.sqlglot as sg
 import google.cloud.bigquery as bq
+from bigframes_vendored.ibis.formats import SchemaMapper, TypeMapper
 
 _from_bigquery_types = {
     "INT64": dt.Int64,

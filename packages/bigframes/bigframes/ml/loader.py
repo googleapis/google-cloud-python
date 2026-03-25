@@ -20,6 +20,7 @@ from typing import Union
 import bigframes_vendored.constants as constants
 from google.cloud import bigquery
 
+import bigframes.session
 from bigframes.ml import (
     cluster,
     compose,
@@ -35,7 +36,6 @@ from bigframes.ml import (
     preprocessing,
     utils,
 )
-import bigframes.session
 
 _BQML_MODEL_TYPE_MAPPING = MappingProxyType(
     {

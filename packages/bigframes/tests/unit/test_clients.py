@@ -14,9 +14,9 @@
 
 from unittest import mock
 
+import pytest
 from google.cloud import bigquery_connection_v1, resourcemanager_v3
 from google.iam.v1 import policy_pb2
-import pytest
 
 from bigframes import clients
 

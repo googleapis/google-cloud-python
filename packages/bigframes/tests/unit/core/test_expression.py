@@ -16,11 +16,11 @@ import typing
 
 import pytest
 
-from bigframes.core import field
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
+from bigframes.core import field
 
 
 def test_simple_expression_dtype():

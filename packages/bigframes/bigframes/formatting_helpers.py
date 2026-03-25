@@ -19,7 +19,7 @@ from __future__ import annotations
 import datetime
 import html
 import random
-from typing import Any, Optional, Type, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Optional, Type, Union
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions as api_core_exceptions

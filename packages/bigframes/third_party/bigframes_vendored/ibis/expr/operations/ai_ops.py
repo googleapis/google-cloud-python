@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from typing import Optional
 
-from bigframes_vendored.ibis.common.annotations import attribute
 import bigframes_vendored.ibis.expr.datatypes as dt
-from bigframes_vendored.ibis.expr.operations.core import Value
 import bigframes_vendored.ibis.expr.rules as rlz
-from public import public
 import pyarrow as pa
+from bigframes_vendored.ibis.common.annotations import attribute
+from bigframes_vendored.ibis.expr.operations.core import Value
+from public import public
 
 from bigframes.operations import output_schemas
 

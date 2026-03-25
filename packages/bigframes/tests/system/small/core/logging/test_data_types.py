@@ -17,9 +17,9 @@ from typing import Sequence
 import pandas as pd
 import pyarrow as pa
 
+import bigframes.pandas as bpd
 from bigframes import dtypes
 from bigframes.core.logging import data_types
-import bigframes.pandas as bpd
 
 
 def encode_types(inputs: Sequence[dtypes.Dtype]) -> str:

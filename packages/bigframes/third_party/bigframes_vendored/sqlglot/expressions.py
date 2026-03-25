@@ -14,18 +14,18 @@ SQL expressions, such as `sqlglot.expressions.select`.
 
 from __future__ import annotations
 
-from collections import deque
-from copy import deepcopy
 import datetime
-from decimal import Decimal
-from enum import auto
-from functools import reduce
 import math
 import numbers
 import re
 import sys
 import textwrap
 import typing as t
+from collections import deque
+from copy import deepcopy
+from decimal import Decimal
+from enum import auto
+from functools import reduce
 
 from bigframes_vendored.sqlglot.errors import ErrorLevel, ParseError
 from bigframes_vendored.sqlglot.helper import (

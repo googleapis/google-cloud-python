@@ -1,10 +1,11 @@
 # Copied from https://github.com/pandas-dev/pandas/blob/main/pandas/_typing.py
 from __future__ import annotations
 
+import sys
 from datetime import datetime, timedelta, tzinfo
 from os import PathLike
-import sys
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     Dict,
@@ -17,9 +18,10 @@ from typing import (
     Protocol,
     Sequence,
     Tuple,
+    TypeVar,
+    Union,
 )
 from typing import Type as type_t
-from typing import TYPE_CHECKING, TypeVar, Union
 
 import numpy as np
 

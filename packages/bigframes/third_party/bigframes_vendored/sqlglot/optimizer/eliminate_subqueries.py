@@ -7,7 +7,7 @@ import typing as t
 
 from bigframes_vendored.sqlglot import expressions as exp
 from bigframes_vendored.sqlglot.helper import find_new_name
-from bigframes_vendored.sqlglot.optimizer.scope import build_scope, Scope
+from bigframes_vendored.sqlglot.optimizer.scope import Scope, build_scope
 
 if t.TYPE_CHECKING:
     ExistingCTEsMapping = t.Dict[exp.Expression, str]

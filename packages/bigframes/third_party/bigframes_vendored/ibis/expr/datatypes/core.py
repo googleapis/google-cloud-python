@@ -2,25 +2,26 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
-from collections.abc import Iterable, Iterator, Mapping, Sequence
 import datetime as pydatetime
 import decimal as pydecimal
 import numbers
+import uuid as pyuuid
+from abc import abstractmethod
+from collections.abc import Iterable, Iterator, Mapping, Sequence
 from numbers import Integral, Real
 from typing import (
     Any,
     Generic,
-    get_args,
-    get_origin,
-    get_type_hints,
     Literal,
     NamedTuple,
     Optional,
     TypeVar,
+    get_args,
+    get_origin,
+    get_type_hints,
 )
-import uuid as pyuuid
 
+import toolz
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.collections import FrozenOrderedDict, MapSet
 from bigframes_vendored.ibis.common.dispatch import lazy_singledispatch
@@ -28,7 +29,6 @@ from bigframes_vendored.ibis.common.grounds import Concrete, Singleton
 from bigframes_vendored.ibis.common.patterns import Coercible, CoercionError
 from bigframes_vendored.ibis.common.temporal import IntervalUnit, TimestampUnit
 from public import public
-import toolz
 from typing_extensions import Self
 
 

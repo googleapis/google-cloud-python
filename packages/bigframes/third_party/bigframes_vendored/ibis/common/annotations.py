@@ -5,8 +5,8 @@ from __future__ import annotations
 import functools
 import inspect
 import types
-from typing import Any as AnyType
 from typing import TYPE_CHECKING
+from typing import Any as AnyType
 
 from bigframes_vendored.ibis.common.bases import Immutable, Slotted
 from bigframes_vendored.ibis.common.patterns import (
@@ -15,9 +15,9 @@ from bigframes_vendored.ibis.common.patterns import (
     NoMatch,
     Option,
     Pattern,
+    TupleOf,
 )
 from bigframes_vendored.ibis.common.patterns import pattern as ensure_pattern
-from bigframes_vendored.ibis.common.patterns import TupleOf
 from bigframes_vendored.ibis.common.typing import format_typehint, get_type_hints
 
 if TYPE_CHECKING:

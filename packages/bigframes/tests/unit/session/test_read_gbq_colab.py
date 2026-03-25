@@ -18,10 +18,10 @@ import itertools
 import textwrap
 from unittest import mock
 
-from google.cloud import bigquery
 import numpy
 import pandas
 import pytest
+from google.cloud import bigquery
 
 from bigframes.testing import mocks
 

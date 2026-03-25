@@ -16,7 +16,7 @@ from bigframes_vendored.sqlglot.helper import (
     seq_get,
 )
 from bigframes_vendored.sqlglot.optimizer.scope import Scope, traverse_scope
-from bigframes_vendored.sqlglot.schema import ensure_schema, MappingSchema, Schema
+from bigframes_vendored.sqlglot.schema import MappingSchema, Schema, ensure_schema
 
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot._typing import B, E

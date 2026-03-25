@@ -11,12 +11,8 @@ import functools
 import inspect
 import itertools
 import typing
-from typing import Any, Optional, overload, TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, Optional, TypeVar, overload
 
-from bigframes_vendored.ibis import util
-from bigframes_vendored.ibis.common.annotations import Argument, attribute
-from bigframes_vendored.ibis.common.collections import FrozenDict
-from bigframes_vendored.ibis.common.deferred import deferrable
 import bigframes_vendored.ibis.common.exceptions as exc
 import bigframes_vendored.ibis.expr.datashape as ds
 import bigframes_vendored.ibis.expr.datatypes as dt
@@ -24,6 +20,10 @@ import bigframes_vendored.ibis.expr.operations.core as core
 import bigframes_vendored.ibis.expr.operations.reductions as reductions
 import bigframes_vendored.ibis.expr.operations.relations as relations
 import bigframes_vendored.ibis.expr.rules as rlz
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.common.annotations import Argument, attribute
+from bigframes_vendored.ibis.common.collections import FrozenDict
+from bigframes_vendored.ibis.common.deferred import deferrable
 from public import public
 
 if TYPE_CHECKING:

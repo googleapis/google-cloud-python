@@ -17,21 +17,21 @@
 from __future__ import annotations
 
 import dataclasses
-from importlib import resources
 import functools
 import math
 import threading
-from typing import Any, Iterator, Optional
 import uuid
 import warnings
+from importlib import resources
+from typing import Any, Iterator, Optional
 
 import pandas as pd
 
 import bigframes
-from bigframes.core import blocks
 import bigframes.dataframe
 import bigframes.display.html
 import bigframes.dtypes as dtypes
+from bigframes.core import blocks
 
 # anywidget and traitlets are optional dependencies. We don't want the import of
 # this module to fail if they aren't installed, though. Instead, we try to

@@ -20,16 +20,16 @@ import html
 import json
 import traceback
 import typing
-from typing import Any, Union
 import warnings
+from typing import Any, Union
 
 import pandas as pd
 import pandas.api.types
 
 import bigframes
+import bigframes.formatting_helpers as formatter
 from bigframes._config import display_options, options
 from bigframes.display import plaintext
-import bigframes.formatting_helpers as formatter
 
 if typing.TYPE_CHECKING:
     import bigframes.dataframe

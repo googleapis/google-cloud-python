@@ -16,9 +16,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Mapping, Optional, Union
 
-from bigframes.core.compile.sqlglot import sql as sg_sql
 import bigframes.core.sql
 import bigframes.core.sql.literals
+from bigframes.core.compile.sqlglot import sql as sg_sql
 
 
 def create_model_ddl(

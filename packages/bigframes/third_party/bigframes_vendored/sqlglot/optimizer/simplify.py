@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from collections import defaultdict, deque
 import datetime
 import functools
-from functools import reduce, wraps
 import itertools
 import logging
 import typing as t
+from collections import defaultdict, deque
+from functools import reduce, wraps
 
 import bigframes_vendored.sqlglot
 from bigframes_vendored.sqlglot import Dialect, exp

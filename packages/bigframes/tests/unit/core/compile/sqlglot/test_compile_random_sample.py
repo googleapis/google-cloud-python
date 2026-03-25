@@ -14,9 +14,9 @@
 
 import pytest
 
-from bigframes.core import nodes
 import bigframes.core as core
 import bigframes.core.compile as compile
+from bigframes.core import nodes
 
 pytest.importorskip("pytest_snapshot")
 

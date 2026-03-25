@@ -13,9 +13,9 @@
 # limitations under the License.
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
 import datetime
 import itertools
+from dataclasses import dataclass, replace
 from typing import Callable, Literal, Mapping, Optional, Sequence, Set, Tuple, Union
 
 import numpy as np

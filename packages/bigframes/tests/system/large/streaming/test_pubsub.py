@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import uuid
 from concurrent import futures
 from datetime import datetime, timedelta
 from typing import Generator
-import uuid
 
 import pytest
 

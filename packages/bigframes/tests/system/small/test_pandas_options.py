@@ -14,8 +14,8 @@
 
 import datetime
 import re
-from unittest import mock
 import warnings
+from unittest import mock
 
 import google.api_core.exceptions
 import pandas.testing

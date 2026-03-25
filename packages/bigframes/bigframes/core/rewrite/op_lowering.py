@@ -16,8 +16,8 @@ from __future__ import annotations
 import abc
 from typing import Sequence
 
-from bigframes.core import bigframe_node, expression, nodes
 import bigframes.operations as ops
+from bigframes.core import bigframe_node, expression, nodes
 
 
 class OpLoweringRule(abc.ABC):

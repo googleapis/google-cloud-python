@@ -19,8 +19,8 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from bigframes.ml import core, llm
 import bigframes.pandas as bpd
+from bigframes.ml import core, llm
 from bigframes.testing import utils
 
 

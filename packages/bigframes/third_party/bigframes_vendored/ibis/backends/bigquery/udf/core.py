@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 import ast
-from collections import ChainMap
 import contextlib
 import functools
 import inspect
 import textwrap
+from collections import ChainMap
 from typing import TYPE_CHECKING
 
 from bigframes_vendored.ibis.backends.bigquery.udf.find import find_names

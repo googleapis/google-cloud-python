@@ -19,8 +19,8 @@ import tempfile
 import textwrap
 import time
 import typing
-from typing import List, Optional, Sequence
 import warnings
+from typing import List, Optional, Sequence
 
 import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
 import db_dtypes  # type:ignore

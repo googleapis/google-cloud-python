@@ -2,50 +2,50 @@
 
 from __future__ import annotations
 
+import math
+import numbers
 from abc import abstractmethod
 from collections.abc import Callable, Mapping, Sequence
 from enum import Enum
 from inspect import Parameter
-import math
-import numbers
-from typing import Annotated
-from typing import Any as AnyType
 from typing import (
+    Annotated,
     ForwardRef,
     Generic,
-    get_args,
-    get_origin,
     Literal,
     Optional,
     TypeVar,
     Union,
+    get_args,
+    get_origin,
 )
+from typing import Any as AnyType
 
+import toolz
 from bigframes_vendored.ibis.common.bases import FrozenSlotted as Slotted
 from bigframes_vendored.ibis.common.bases import Hashable, Singleton
 from bigframes_vendored.ibis.common.collections import (
     FrozenDict,
-    frozendict,
     RewindableIterator,
+    frozendict,
 )
-from bigframes_vendored.ibis.common.deferred import _  # noqa: F401
 from bigframes_vendored.ibis.common.deferred import (
     Deferred,
     Factory,
     Resolver,
-    resolver,
     Variable,
+    _,  # noqa: F401
+    resolver,
 )
 from bigframes_vendored.ibis.common.typing import (
     Coercible,
     CoercionError,
+    Sentinel,
     format_typehint,
     get_bound_typevars,
     get_type_params,
-    Sentinel,
 )
 from bigframes_vendored.ibis.util import import_object, is_iterable, unalias_package
-import toolz
 from typing_extensions import GenericMeta
 
 T_co = TypeVar("T_co", covariant=True)
@@ -1380,7 +1380,7 @@ class CallableWith(Slotted, Pattern):
         super().__init__(args=tuple(args), return_=return_)
 
     def match(self, value, context):
-        from bigframes_vendored.ibis.common.annotations import annotated, EMPTY
+        from bigframes_vendored.ibis.common.annotations import EMPTY, annotated
 
         if not callable(value):
             return NoMatch

@@ -14,9 +14,9 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import functools
 import typing
+from dataclasses import dataclass
 from typing import Dict, Optional, Sequence
 
 import google.cloud.bigquery

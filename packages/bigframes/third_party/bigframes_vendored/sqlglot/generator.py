@@ -2,17 +2,17 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
-from functools import reduce, wraps
 import logging
 import re
 import typing as t
+from collections import defaultdict
+from functools import reduce, wraps
 
 from bigframes_vendored.sqlglot import exp
 from bigframes_vendored.sqlglot.errors import (
-    concat_messages,
     ErrorLevel,
     UnsupportedError,
+    concat_messages,
 )
 from bigframes_vendored.sqlglot.helper import (
     apply_index_offset,

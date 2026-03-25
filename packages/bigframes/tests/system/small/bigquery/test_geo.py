@@ -28,11 +28,11 @@ from shapely.geometry import (  # type: ignore
     Polygon,
 )
 
-from bigframes.bigquery import st_length
 import bigframes.bigquery as bbq
 import bigframes.geopandas
 import bigframes.session
 import bigframes.testing
+from bigframes.bigquery import st_length
 
 
 def test_geo_st_area(session: bigframes.session.Session):

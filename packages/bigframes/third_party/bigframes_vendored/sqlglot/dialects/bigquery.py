@@ -15,13 +15,14 @@ from bigframes_vendored.sqlglot import (
     transforms,
 )
 from bigframes_vendored.sqlglot.dialects.dialect import (
+    Dialect,
+    NormalizationStrategy,
     arg_max_or_min_no_count,
     binary_from_function,
     build_date_delta_with_interval,
     build_formatted_time,
     date_add_interval_sql,
     datestrtodate_sql,
-    Dialect,
     filter_array_using_unnest,
     groupconcat_sql,
     if_sql,
@@ -29,7 +30,6 @@ from bigframes_vendored.sqlglot.dialects.dialect import (
     max_or_greatest,
     min_or_least,
     no_ilike_sql,
-    NormalizationStrategy,
     regexp_replace_sql,
     rename_func,
     sha2_digest_sql,

@@ -14,9 +14,9 @@
 import hashlib
 import logging
 
-from google.cloud import bigquery
 import google.cloud.exceptions
 import pytest
+from google.cloud import bigquery
 
 import bigframes
 from bigframes.ml import core, linear_model

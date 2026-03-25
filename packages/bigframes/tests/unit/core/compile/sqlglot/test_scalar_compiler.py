@@ -18,8 +18,8 @@ import bigframes_vendored.sqlglot.expressions as sge
 import pytest
 
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
-from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.operations as ops
+from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 
 def test_register_unary_op():

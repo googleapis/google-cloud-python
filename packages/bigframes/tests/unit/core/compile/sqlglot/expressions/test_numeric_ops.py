@@ -15,10 +15,10 @@
 import pandas as pd
 import pytest
 
-from bigframes import operations as ops
 import bigframes.core.expression as ex
-from bigframes.operations import numeric_ops
 import bigframes.pandas as bpd
+from bigframes import operations as ops
+from bigframes.operations import numeric_ops
 from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")

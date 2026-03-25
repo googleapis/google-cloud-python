@@ -17,8 +17,8 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import threading
-from typing import Any, Callable, Optional, Set
 import uuid
+from typing import Any, Callable, Optional, Set
 
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.job.query

@@ -15,9 +15,8 @@
 import dataclasses
 import typing
 
-from bigframes.core import agg_expressions, bigframe_node
+from bigframes.core import agg_expressions, bigframe_node, nodes, ordering
 from bigframes.core import expression as ex
-from bigframes.core import nodes, ordering
 
 
 def bind_schema_to_tree(

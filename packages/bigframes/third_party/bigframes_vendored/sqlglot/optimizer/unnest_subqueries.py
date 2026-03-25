@@ -3,8 +3,8 @@
 from bigframes_vendored.sqlglot import exp
 from bigframes_vendored.sqlglot.helper import name_sequence
 from bigframes_vendored.sqlglot.optimizer.scope import (
-    find_in_scope,
     ScopeType,
+    find_in_scope,
     traverse_scope,
 )
 

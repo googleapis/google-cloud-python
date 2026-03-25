@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import dataclasses
-from typing import Union
 import weakref
+from typing import Union
 
 import pandas
 import polars

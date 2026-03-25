@@ -18,19 +18,19 @@ https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_select
 
 
 import inspect
-from itertools import chain
 import time
 import typing
+from itertools import chain
 from typing import Generator, List, Optional, Union
 
 import bigframes_vendored.sklearn.model_selection._split as vendored_model_selection_split
 import bigframes_vendored.sklearn.model_selection._validation as vendored_model_selection_validation
 import pandas as pd
 
+import bigframes.pandas as bpd
 from bigframes._tools import docs
 from bigframes.core.logging import log_adapter
 from bigframes.ml import utils
-import bigframes.pandas as bpd
 
 
 def train_test_split(

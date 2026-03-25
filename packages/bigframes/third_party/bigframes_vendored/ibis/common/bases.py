@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 import collections.abc
-from typing import Any, TYPE_CHECKING
+from abc import abstractmethod
+from typing import TYPE_CHECKING, Any
 from weakref import WeakValueDictionary
 
 if TYPE_CHECKING:

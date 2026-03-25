@@ -20,13 +20,13 @@ from __future__ import annotations
 from typing import List, Literal, Optional, Union
 
 import bigframes_vendored.sklearn.cluster._kmeans
-from google.cloud import bigquery
 import pandas as pd
+from google.cloud import bigquery
 
 import bigframes
+import bigframes.pandas as bpd
 from bigframes.core.logging import log_adapter
 from bigframes.ml import base, core, globals, utils
-import bigframes.pandas as bpd
 
 _BQML_PARAMS_MAPPING = {
     "n_clusters": "numClusters",

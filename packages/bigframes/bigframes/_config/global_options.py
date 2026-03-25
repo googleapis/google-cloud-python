@@ -20,8 +20,8 @@ DataFrames from this package.
 from __future__ import annotations
 
 import copy
-from dataclasses import dataclass, field
 import threading
+from dataclasses import dataclass, field
 from typing import Optional
 
 import bigframes_vendored.pandas._config.config as pandas_config

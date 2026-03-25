@@ -19,10 +19,10 @@ import typing
 import bigframes_vendored.sqlglot.expressions as sge
 
 import bigframes.core.agg_expressions as agg_exprs
-from bigframes.core.compile.sqlglot import sql
-from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.expression as ex
 import bigframes.operations as ops
+from bigframes.core.compile.sqlglot import sql
+from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 
 class ExpressionCompiler:

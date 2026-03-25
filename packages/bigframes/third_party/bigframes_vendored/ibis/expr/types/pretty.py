@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import datetime
-from functools import singledispatch
 import json
+from functools import singledispatch
 from math import isfinite
 from typing import TYPE_CHECKING
 from urllib.parse import urlparse
@@ -12,11 +12,11 @@ from urllib.parse import urlparse
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.expr.datatypes as dt
 import rich
+import rich.table
 from rich import box
 from rich.align import Align
 from rich.panel import Panel
 from rich.pretty import Pretty
-import rich.table
 from rich.text import Text
 
 if TYPE_CHECKING:

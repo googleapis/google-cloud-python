@@ -16,9 +16,9 @@ import typing
 
 import pytest
 
+import bigframes.pandas as bpd
 from bigframes import operations as ops
 from bigframes.core import expression as ex
-import bigframes.pandas as bpd
 from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import typing as t
 
-from bigframes_vendored.sqlglot.errors import ParseError
 import bigframes_vendored.sqlglot.expressions as exp
+from bigframes_vendored.sqlglot.errors import ParseError
 from bigframes_vendored.sqlglot.tokens import Token, Tokenizer, TokenType
 
 if t.TYPE_CHECKING:

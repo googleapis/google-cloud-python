@@ -19,21 +19,21 @@ from typing import Sequence
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions
-from google.cloud import bigquery
 import pandas
 import pandas as pd
 import pyarrow
 import pytest
 import test_utils.prefixer
+from google.cloud import bigquery
 
 import bigframes
 import bigframes.clients
 import bigframes.core.events
 import bigframes.dtypes
 import bigframes.exceptions
+import bigframes.session._io.bigquery
 from bigframes.functions import _utils as bff_utils
 from bigframes.functions import function as bff
-import bigframes.session._io.bigquery
 from bigframes.testing.utils import assert_frame_equal, get_function_name
 
 _prefixer = test_utils.prefixer.Prefixer("bigframes", "")

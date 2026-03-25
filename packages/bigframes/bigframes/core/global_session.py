@@ -18,8 +18,8 @@ from __future__ import annotations
 
 import threading
 import traceback
-from typing import Callable, Optional, TYPE_CHECKING, TypeVar
 import warnings
+from typing import TYPE_CHECKING, Callable, Optional, TypeVar
 
 import google.auth.exceptions
 

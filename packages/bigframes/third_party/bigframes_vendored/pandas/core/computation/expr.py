@@ -5,33 +5,33 @@
 from __future__ import annotations
 
 import ast
+import tokenize
 from functools import partial, reduce
 from keyword import iskeyword
-import tokenize
 from typing import Callable, TypeVar
 
 import bigframes_vendored.pandas.core.common as com
+import numpy as np
 from bigframes_vendored.pandas.core.computation.ops import (
     ARITH_OPS_SYMS,
-    BinOp,
     BOOL_OPS_SYMS,
     CMP_OPS_SYMS,
+    LOCAL_TAG,
+    UNARY_OPS_SYMS,
+    BinOp,
     Constant,
     Div,
     FuncNode,
-    is_term,
-    LOCAL_TAG,
     Op,
     Term,
-    UNARY_OPS_SYMS,
     UnaryOp,
+    is_term,
 )
 from bigframes_vendored.pandas.core.computation.parsing import (
     clean_backtick_quoted_toks,
     tokenize_string,
 )
 from bigframes_vendored.pandas.core.computation.scope import Scope
-import numpy as np
 from pandas.errors import UndefinedVariableError
 from pandas.io.formats import printing
 

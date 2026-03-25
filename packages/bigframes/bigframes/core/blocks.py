@@ -28,6 +28,7 @@ import functools
 import itertools
 import random
 import typing
+import warnings
 from typing import (
     Iterable,
     Iterator,
@@ -39,7 +40,6 @@ from typing import (
     Tuple,
     Union,
 )
-import warnings
 
 import bigframes_vendored.constants as constants
 import google.cloud.bigquery as bigquery
@@ -47,10 +47,7 @@ import numpy
 import pandas as pd
 import pyarrow as pa
 
-from bigframes import session
-from bigframes._config import sampling_options
 import bigframes.constants
-from bigframes.core import agg_expressions, local_data
 import bigframes.core as core
 import bigframes.core.agg_expressions as ex_types
 import bigframes.core.expression as ex
@@ -66,6 +63,9 @@ import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+from bigframes import session
+from bigframes._config import sampling_options
+from bigframes.core import agg_expressions, local_data
 from bigframes.session import dry_runs, execution_spec
 from bigframes.session import executor as executors
 from bigframes.session._io import pandas as io_pandas

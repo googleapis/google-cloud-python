@@ -18,9 +18,9 @@ from typing import cast
 import pandas as pd
 import pytest
 
-from bigframes.ml import model_selection
 import bigframes.pandas as bpd
 import bigframes.session
+from bigframes.ml import model_selection
 
 
 @pytest.mark.parametrize(

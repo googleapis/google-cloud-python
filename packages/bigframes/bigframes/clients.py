@@ -19,7 +19,7 @@ from __future__ import annotations
 import logging
 import textwrap
 import time
-from typing import cast, Optional
+from typing import Optional, cast
 
 import google.api_core.exceptions
 import google.api_core.retry

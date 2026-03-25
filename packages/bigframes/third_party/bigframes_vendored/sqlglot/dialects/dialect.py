@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from enum import auto, Enum
-from functools import reduce
 import importlib
 import logging
 import sys
 import typing as t
+from enum import Enum, auto
+from functools import reduce
 
 from bigframes_vendored.sqlglot import exp
 from bigframes_vendored.sqlglot.dialects import DIALECT_MODULE_NAMES
@@ -24,7 +24,7 @@ from bigframes_vendored.sqlglot.helper import (
 from bigframes_vendored.sqlglot.jsonpath import JSONPathTokenizer
 from bigframes_vendored.sqlglot.jsonpath import parse as parse_json_path
 from bigframes_vendored.sqlglot.parser import Parser
-from bigframes_vendored.sqlglot.time import format_time, subsecond_precision, TIMEZONES
+from bigframes_vendored.sqlglot.time import TIMEZONES, format_time, subsecond_precision
 from bigframes_vendored.sqlglot.tokens import Token, Tokenizer, TokenType
 from bigframes_vendored.sqlglot.trie import new_trie
 from bigframes_vendored.sqlglot.typing import EXPRESSION_METADATA

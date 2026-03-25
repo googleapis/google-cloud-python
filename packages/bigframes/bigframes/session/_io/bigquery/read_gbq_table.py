@@ -20,18 +20,18 @@ from __future__ import annotations
 
 import datetime
 import typing
-from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 
 import bigframes.core
-from bigframes.core import bq_data
 import bigframes.core.events
 import bigframes.exceptions as bfe
 import bigframes.session._io.bigquery
+from bigframes.core import bq_data
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:

@@ -16,8 +16,8 @@ from __future__ import annotations
 
 import re
 import typing
-from typing import Dict, Iterable, List, Optional, Sequence, Union
 import warnings
+from typing import Dict, Iterable, List, Optional, Sequence, Union
 
 from bigframes import dtypes, exceptions, options
 from bigframes.core import guid

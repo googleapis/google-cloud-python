@@ -22,9 +22,9 @@ import itertools
 import typing
 from typing import Callable, Dict, Generator, Iterable, Mapping, Sequence, Tuple
 
-from bigframes.core import expression, field, identifiers
 import bigframes.core.schema as schemata
 import bigframes.dtypes
+from bigframes.core import expression, field, identifiers
 
 COLUMN_SET = frozenset[identifiers.ColumnId]
 

@@ -21,8 +21,8 @@ import functools
 import io
 import itertools
 import json
-from typing import Any, Callable, cast, Generator, Iterable, Literal, Optional, Union
 import uuid
+from typing import Any, Callable, Generator, Iterable, Literal, Optional, Union, cast
 
 import geopandas  # type: ignore
 import numpy
@@ -31,9 +31,9 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet  # type: ignore
 
-from bigframes.core import pyarrow_utils
 import bigframes.core.schema as schemata
 import bigframes.dtypes
+from bigframes.core import pyarrow_utils
 
 
 @dataclasses.dataclass(frozen=True)

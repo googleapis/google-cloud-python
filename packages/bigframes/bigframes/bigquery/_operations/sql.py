@@ -20,10 +20,10 @@ from typing import Sequence
 
 import google.cloud.bigquery
 
-from bigframes.core.compile.sqlglot import sql
 import bigframes.dtypes
 import bigframes.operations
 import bigframes.series
+from bigframes.core.compile.sqlglot import sql
 
 
 def sql_scalar(

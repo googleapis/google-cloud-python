@@ -19,8 +19,8 @@ import pandas as pd
 import pytest
 
 import bigframes
-from bigframes.ml import metrics
 import bigframes.testing
+from bigframes.ml import metrics
 
 
 def test_r2_score_perfect_fit(session):

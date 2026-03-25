@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from bigframes_vendored.ibis.common.deferred import deferrable
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis.common.deferred import deferrable
 from bigframes_vendored.ibis.expr.types.generic import Column, Scalar, Value
 from public import public
 

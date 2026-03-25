@@ -7,15 +7,21 @@ import datetime
 import decimal
 import math
 import re
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from bigframes_vendored.ibis import util
 import bigframes_vendored.ibis.backends.bigquery.datatypes as bq_datatypes
+import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.operations as ops
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
+import numpy as np
+from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.backends.sql.compilers.base import (
-    AggGen,
     NULL,
-    SQLGlotCompiler,
     STAR,
+    AggGen,
+    SQLGlotCompiler,
 )
 from bigframes_vendored.ibis.backends.sql.datatypes import BigQueryType, BigQueryUDFType
 from bigframes_vendored.ibis.backends.sql.rewrites import (
@@ -23,19 +29,13 @@ from bigframes_vendored.ibis.backends.sql.rewrites import (
     exclude_unsupported_window_frame_from_rank,
     exclude_unsupported_window_frame_from_row_number,
 )
-import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
 from bigframes_vendored.ibis.common.temporal import (
     DateUnit,
     IntervalUnit,
     TimestampUnit,
     TimeUnit,
 )
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.operations as ops
-import bigframes_vendored.sqlglot as sg
 from bigframes_vendored.sqlglot.dialects import BigQuery
-import bigframes_vendored.sqlglot.expressions as sge
-import numpy as np
 
 if TYPE_CHECKING:
     from collections.abc import Mapping

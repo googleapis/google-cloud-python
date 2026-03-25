@@ -19,7 +19,6 @@ import functools
 import itertools
 from typing import (
     Callable,
-    cast,
     Dict,
     Generator,
     Hashable,
@@ -30,6 +29,7 @@ from typing import (
     Sequence,
     Tuple,
     TypeVar,
+    cast,
 )
 
 from bigframes.core import (

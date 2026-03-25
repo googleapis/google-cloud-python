@@ -15,22 +15,22 @@
 """Module for bigquery continuous queries"""
 from __future__ import annotations
 
-from abc import abstractmethod
-from datetime import date, datetime
 import functools
 import inspect
 import json
-from typing import Optional, Union
 import warnings
+from abc import abstractmethod
+from datetime import date, datetime
+from typing import Optional, Union
 
-from google.cloud import bigquery
 import pandas as pd
+from google.cloud import bigquery
 
+import bigframes.exceptions as bfe
+import bigframes.session
 from bigframes import dataframe
 from bigframes.core import nodes
 from bigframes.core.logging import log_adapter
-import bigframes.exceptions as bfe
-import bigframes.session
 
 
 def _return_type_wrapper(method, cls):

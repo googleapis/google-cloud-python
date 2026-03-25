@@ -108,13 +108,18 @@ def test_deploy_remote_function_with_name():
     assert "my_custom_name" in deployed.bigframes_bigquery_function
 
 
+import inspect
+from unittest import mock
+
+
+def _my_remote_func(x: int) -> int:
+    return x * 2
+
 def test_deploy_udf():
     session = mocks.create_bigquery_session()
 
-    def my_remote_func(x: int) -> int:
-        return x * 2
-
-    deployed = session.deploy_udf(my_remote_func)
+    with mock.patch.object(inspect, "getsource", return_value="def _my_remote_func(x: int) -> int:\n    return x * 2"):
+        deployed = session.deploy_udf(_my_remote_func)
 
     # Test that the function would have been deployed somewhere.
     assert deployed.bigframes_bigquery_function
@@ -123,10 +128,8 @@ def test_deploy_udf():
 def test_deploy_udf_with_name():
     session = mocks.create_bigquery_session()
 
-    def my_remote_func(x: int) -> int:
-        return x * 2
-
-    deployed = session.deploy_udf(my_remote_func, name="my_custom_name")
+    with mock.patch.object(inspect, "getsource", return_value="def _my_remote_func(x: int) -> int:\n    return x * 2"):
+        deployed = session.deploy_udf(_my_remote_func, name="my_custom_name")
 
     # Test that the function would have been deployed somewhere.
     assert "my_custom_name" in deployed.bigframes_bigquery_function

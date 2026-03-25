@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud import bigquery
 import pytest
+from google.cloud import bigquery
 
+import bigframes.operations.aggregations as agg_ops
 from bigframes.core import (
     agg_expressions,
     array_value,
@@ -24,7 +25,6 @@ from bigframes.core import (
     nodes,
     window_spec,
 )
-import bigframes.operations.aggregations as agg_ops
 from bigframes.session import direct_gbq_execution, polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 

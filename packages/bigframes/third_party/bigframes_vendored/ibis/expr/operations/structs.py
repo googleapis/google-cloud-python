@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from bigframes_vendored.ibis.common.annotations import attribute, ValidationError
-from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
 import bigframes_vendored.ibis.expr.datatypes as dt
-from bigframes_vendored.ibis.expr.operations.core import Value
 import bigframes_vendored.ibis.expr.rules as rlz
+from bigframes_vendored.ibis.common.annotations import ValidationError, attribute
+from bigframes_vendored.ibis.common.typing import VarTuple  # noqa: TCH001
+from bigframes_vendored.ibis.expr.operations.core import Value
 from public import public
 
 

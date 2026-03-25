@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import typing
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile

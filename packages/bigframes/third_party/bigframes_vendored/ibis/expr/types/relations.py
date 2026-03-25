@@ -2,44 +2,44 @@
 
 from __future__ import annotations
 
-from collections import deque
-from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 import itertools
-from keyword import iskeyword
 import operator
 import re
-from typing import Any, Literal, TYPE_CHECKING
+from collections import deque
+from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
+from keyword import iskeyword
+from typing import TYPE_CHECKING, Any, Literal
 
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis import util
-from bigframes_vendored.ibis.common.deferred import Deferred, Resolver
 import bigframes_vendored.ibis.common.exceptions as com
-from bigframes_vendored.ibis.common.selectors import Selector
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
-from bigframes_vendored.ibis.expr.rewrites import DerefMap
 import bigframes_vendored.ibis.expr.schema as sch
-from bigframes_vendored.ibis.expr.types.core import _FixedTextJupyterMixin, Expr
-from bigframes_vendored.ibis.expr.types.generic import literal, Value
+import toolz
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.common.deferred import Deferred, Resolver
+from bigframes_vendored.ibis.common.selectors import Selector
+from bigframes_vendored.ibis.expr.rewrites import DerefMap
+from bigframes_vendored.ibis.expr.types.core import Expr, _FixedTextJupyterMixin
+from bigframes_vendored.ibis.expr.types.generic import Value, literal
 from bigframes_vendored.ibis.expr.types.pretty import to_rich
 from bigframes_vendored.ibis.expr.types.temporal import TimestampColumn
 from bigframes_vendored.ibis.util import deprecated
 from public import public
-import toolz
 
 if TYPE_CHECKING:
-    from bigframes_vendored.ibis.expr.operations.relations import JoinKind, Set
-    from bigframes_vendored.ibis.expr.schema import SchemaLike
-    from bigframes_vendored.ibis.expr.types import Table
     import bigframes_vendored.ibis.expr.types as ir
-    from bigframes_vendored.ibis.expr.types.groupby import GroupedTable
-    from bigframes_vendored.ibis.expr.types.temporal_windows import WindowedTable
-    from bigframes_vendored.ibis.formats.pyarrow import PyArrowData
-    from bigframes_vendored.ibis.selectors import IfAnyAll
     import bigframes_vendored.ibis.selectors as s
     import pandas as pd
     import polars as pl
     import pyarrow as pa
+    from bigframes_vendored.ibis.expr.operations.relations import JoinKind, Set
+    from bigframes_vendored.ibis.expr.schema import SchemaLike
+    from bigframes_vendored.ibis.expr.types import Table
+    from bigframes_vendored.ibis.expr.types.groupby import GroupedTable
+    from bigframes_vendored.ibis.expr.types.temporal_windows import WindowedTable
+    from bigframes_vendored.ibis.formats.pyarrow import PyArrowData
+    from bigframes_vendored.ibis.selectors import IfAnyAll
     from rich.table import Table as RichTable
 
 
@@ -3032,8 +3032,8 @@ class Table(Expr, _FixedTextJupyterMixin):
         │ island  │     1 │ string │   344 │     0 │      3 │ Biscoe │
         └─────────┴───────┴────────┴───────┴───────┴────────┴────────┘
         """
-        from bigframes_vendored.ibis.expr.types.generic import literal as lit
         import bigframes_vendored.ibis.selectors as s
+        from bigframes_vendored.ibis.expr.types.generic import literal as lit
 
         quantile = sorted(quantile)
         aggs = []
@@ -4354,9 +4354,9 @@ class Table(Expr, _FixedTextJupyterMixin):
         │     … │        … │        … │        … │
         └───────┴──────────┴──────────┴──────────┘
         """
-        from bigframes_vendored.ibis.expr.rewrites import _, p, x
         import bigframes_vendored.ibis.selectors as s
         import pandas as pd
+        from bigframes_vendored.ibis.expr.rewrites import _, p, x
 
         orig_names_from = util.promote_list(names_from)
 

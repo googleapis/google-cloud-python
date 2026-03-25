@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 import itertools
 import typing
+from abc import abstractmethod
 from typing import Annotated, Any, Literal, Optional, TypeVar
 
+import bigframes_vendored.ibis.expr.datashape as ds
+import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.collections import FrozenDict, FrozenOrderedDict
 from bigframes_vendored.ibis.common.exceptions import (
@@ -19,8 +21,6 @@ from bigframes_vendored.ibis.common.exceptions import (
 from bigframes_vendored.ibis.common.grounds import Concrete
 from bigframes_vendored.ibis.common.patterns import Between, InstanceOf
 from bigframes_vendored.ibis.common.typing import Coercible, VarTuple
-import bigframes_vendored.ibis.expr.datashape as ds
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.operations.core import (
     Alias,
     Column,

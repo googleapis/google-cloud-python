@@ -16,6 +16,7 @@ from __future__ import annotations
 import dataclasses
 from typing import Optional, Sequence, Union
 
+import bigframes.core.rewrite
 from bigframes.core import (
     agg_expressions,
     expression,
@@ -24,7 +25,6 @@ from bigframes.core import (
     ordering,
     sql_nodes,
 )
-import bigframes.core.rewrite
 
 
 def _limit(select: sql_nodes.SqlSelectNode, limit: int) -> sql_nodes.SqlSelectNode:

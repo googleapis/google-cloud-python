@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from bigframes_vendored.ibis.common.exceptions import IbisTypeError
 import bigframes_vendored.ibis.expr.datatypes.core as dt
+from bigframes_vendored.ibis.common.exceptions import IbisTypeError
 from public import public
 
 if TYPE_CHECKING:

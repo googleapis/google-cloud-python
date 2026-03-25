@@ -2,25 +2,25 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
 import itertools
 import logging
 import re
 import typing as t
+from collections import defaultdict
 
 from bigframes_vendored.sqlglot import exp
 from bigframes_vendored.sqlglot.errors import (
-    concat_messages,
     ErrorLevel,
-    highlight_sql,
-    merge_errors,
     ParseError,
     TokenError,
+    concat_messages,
+    highlight_sql,
+    merge_errors,
 )
 from bigframes_vendored.sqlglot.helper import apply_index_offset, ensure_list, seq_get
 from bigframes_vendored.sqlglot.time import format_time
 from bigframes_vendored.sqlglot.tokens import Token, Tokenizer, TokenType
-from bigframes_vendored.sqlglot.trie import in_trie, new_trie, TrieResult
+from bigframes_vendored.sqlglot.trie import TrieResult, in_trie, new_trie
 
 if t.TYPE_CHECKING:
     from bigframes_vendored.sqlglot._typing import E, Lit

@@ -16,9 +16,9 @@ import dataclasses
 import functools
 import typing
 
+import bigframes.operations.type as op_typing
 from bigframes import dtypes
 from bigframes.operations import base_ops
-import bigframes.operations.type as op_typing
 
 InvertOp = base_ops.create_unary_op(
     name="invert",

@@ -16,7 +16,6 @@
 
 from __future__ import annotations
 
-from collections import abc
 import datetime
 import fnmatch
 import inspect
@@ -25,22 +24,23 @@ import os
 import secrets
 import threading
 import typing
+import warnings
+import weakref
+from collections import abc
 from typing import (
+    IO,
     Any,
     Callable,
     Dict,
-    IO,
     Iterable,
     Literal,
     MutableSequence,
     Optional,
-    overload,
     Sequence,
     Tuple,
     Union,
+    overload,
 )
-import warnings
-import weakref
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.google_cloud_bigquery.retry as third_party_gcb_retry
@@ -52,34 +52,34 @@ import bigframes_vendored.pandas.io.pickle as third_party_pandas_pickle
 import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas
+import pyarrow as pa
 from pandas._typing import (
     CompressionOptions,
     FilePath,
     ReadPickleBuffer,
     StorageOptions,
 )
-import pyarrow as pa
 
-from bigframes import exceptions as bfe
-from bigframes import version
 import bigframes._config
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.constants
 import bigframes.core
-from bigframes.core import blocks, utils
 import bigframes.core.events
 import bigframes.core.indexes
 import bigframes.core.indexes.multi
-from bigframes.core.logging import log_adapter
 import bigframes.core.pyformat
 import bigframes.formatting_helpers
 import bigframes.functions._function_session as bff_session
 import bigframes.functions.function as bff
-from bigframes.session import bigquery_session, bq_caching_executor, executor
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session.clients
 import bigframes.session.validation
+from bigframes import exceptions as bfe
+from bigframes import version
+from bigframes.core import blocks, utils
+from bigframes.core.logging import log_adapter
+from bigframes.session import bigquery_session, bq_caching_executor, executor
 
 # Avoid circular imports.
 if typing.TYPE_CHECKING:

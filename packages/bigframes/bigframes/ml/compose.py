@@ -23,15 +23,15 @@ import types
 import typing
 from typing import Iterable, List, Optional, Set, Tuple, Union
 
-from bigframes_vendored import constants
 import bigframes_vendored.sklearn.compose._column_transformer
+from bigframes_vendored import constants
 from google.cloud import bigquery
 
+import bigframes.core.utils as core_utils
+import bigframes.pandas as bpd
 from bigframes.core.compile.sqlglot import sql as sg_sql
 from bigframes.core.logging import log_adapter
-import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, impute, preprocessing, utils
-import bigframes.pandas as bpd
 
 _BQML_TRANSFROM_TYPE_MAPPING = types.MappingProxyType(
     {

@@ -1,8 +1,8 @@
 # Contains code from https://github.com/pola-rs/tpch/blob/main/queries/pandas/q4.py
 
 
-from datetime import date
 import typing
+from datetime import date
 
 import bigframes
 import bigframes.pandas as bpd

@@ -15,8 +15,8 @@
 import pandas as pd
 import pytest
 
-from bigframes.ml import model_selection
 import bigframes.ml.linear_model
+from bigframes.ml import model_selection
 from bigframes.testing import utils
 
 

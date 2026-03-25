@@ -17,18 +17,17 @@ from __future__ import annotations
 import abc
 import dataclasses
 import typing
-from typing import Callable, ClassVar, Iterable, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, ClassVar, Iterable, Optional
 
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from bigframes.core import agg_expressions
 import bigframes.dtypes as dtypes
 import bigframes.operations.type as signatures
 
 if TYPE_CHECKING:
-    from bigframes.core import expression
+    from bigframes.core import agg_expressions, expression
 
 
 @dataclasses.dataclass(frozen=True)

@@ -5,8 +5,8 @@ from __future__ import annotations
 import inspect
 from typing import TYPE_CHECKING
 
-from bigframes_vendored.ibis.common.deferred import deferrable, Deferred
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis.common.deferred import Deferred, deferrable
 from bigframes_vendored.ibis.expr.types.generic import Column, Scalar, Value
 from public import public
 

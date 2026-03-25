@@ -14,8 +14,8 @@
 
 from unittest import mock
 
-from google.cloud import bigquery
 import pytest
+from google.cloud import bigquery
 
 from bigframes.core.logging import log_adapter
 

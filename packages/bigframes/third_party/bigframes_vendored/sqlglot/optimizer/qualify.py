@@ -22,7 +22,7 @@ from bigframes_vendored.sqlglot.optimizer.qualify_columns import (
     validate_qualify_columns as validate_qualify_columns_func,
 )
 from bigframes_vendored.sqlglot.optimizer.qualify_tables import qualify_tables
-from bigframes_vendored.sqlglot.schema import ensure_schema, Schema
+from bigframes_vendored.sqlglot.schema import Schema, ensure_schema
 
 
 def qualify(

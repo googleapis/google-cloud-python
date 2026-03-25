@@ -15,8 +15,8 @@
 import pandas as pd
 import pytest
 
-from bigframes import operations as ops
 import bigframes.pandas as bpd
+from bigframes import operations as ops
 from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")

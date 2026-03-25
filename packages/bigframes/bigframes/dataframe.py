@@ -23,10 +23,10 @@ import re
 import sys
 import textwrap
 import typing
+import warnings
 from typing import (
     Any,
     Callable,
-    cast,
     Dict,
     Hashable,
     Iterable,
@@ -34,13 +34,13 @@ from typing import (
     Literal,
     Mapping,
     Optional,
-    overload,
     Sequence,
     Tuple,
     TypeVar,
     Union,
+    cast,
+    overload,
 )
-import warnings
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.frame as vendored_pandas_frame
@@ -49,15 +49,13 @@ import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import numpy
 import pandas
-from pandas.api import extensions as pd_ext
 import pandas.io.formats.format
 import pyarrow
 import tabulate
+from pandas.api import extensions as pd_ext
 
-from bigframes._tools import docs
 import bigframes.constants
 import bigframes.core
-from bigframes.core import agg_expressions
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.col
@@ -69,18 +67,15 @@ import bigframes.core.guid
 import bigframes.core.indexers as indexers
 import bigframes.core.indexes as indexes
 import bigframes.core.interchange
-from bigframes.core.logging import log_adapter
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
 import bigframes.core.window
-from bigframes.core.window import rolling
 import bigframes.core.window_spec as windows
 import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as formatter
 import bigframes.functions
-from bigframes.functions import function_typing
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.ai
@@ -90,6 +85,11 @@ import bigframes.operations.structs
 import bigframes.series
 import bigframes.session._io.bigquery
 import bigframes.session.execution_spec as ex_spec
+from bigframes._tools import docs
+from bigframes.core import agg_expressions
+from bigframes.core.logging import log_adapter
+from bigframes.core.window import rolling
+from bigframes.functions import function_typing
 
 if typing.TYPE_CHECKING:
     from _typeshed import SupportsRichComparison

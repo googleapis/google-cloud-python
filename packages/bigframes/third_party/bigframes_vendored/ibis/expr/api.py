@@ -5,17 +5,22 @@
 from __future__ import annotations
 
 import builtins
-from collections import Counter
 import datetime
 import functools
 import itertools
 import numbers
 import operator
-from typing import Any, overload, TYPE_CHECKING
+from collections import Counter
+from typing import TYPE_CHECKING, Any, overload
 
+import bigframes_vendored.ibis.expr.builders as bl
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.operations as ops
+import bigframes_vendored.ibis.expr.schema as sch
+import bigframes_vendored.ibis.expr.types as ir
 from bigframes_vendored.ibis import selectors, util
 from bigframes_vendored.ibis.backends import BaseBackend, connect
-from bigframes_vendored.ibis.common.deferred import _, deferrable, Deferred
+from bigframes_vendored.ibis.common.deferred import Deferred, _, deferrable
 from bigframes_vendored.ibis.common.dispatch import lazy_singledispatch
 from bigframes_vendored.ibis.common.exceptions import IbisInputError
 from bigframes_vendored.ibis.common.grounds import Concrete
@@ -23,39 +28,34 @@ from bigframes_vendored.ibis.common.temporal import (
     normalize_datetime,
     normalize_timezone,
 )
-import bigframes_vendored.ibis.expr.builders as bl
-import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.decompile import decompile
-import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.schema import Schema
-import bigframes_vendored.ibis.expr.schema as sch
 from bigframes_vendored.ibis.expr.sql import parse_sql, to_sql
 from bigframes_vendored.ibis.expr.types import (
-    array,
     Column,
     DateValue,
     Expr,
-    literal,
-    map,
-    null,
     Scalar,
-    struct,
     Table,
     TimestampValue,
     TimeValue,
     Value,
+    array,
+    literal,
+    map,
+    null,
+    struct,
 )
-import bigframes_vendored.ibis.expr.types as ir
 from bigframes_vendored.ibis.util import experimental
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
     from pathlib import Path
 
-    from bigframes_vendored.ibis.expr.schema import SchemaLike
     import pandas as pd
     import polars as pl
     import pyarrow as pa
+    from bigframes_vendored.ibis.expr.schema import SchemaLike
 
 __all__ = (
     "Column",
@@ -474,8 +474,8 @@ def _memtable(
     schema: SchemaLike | None = None,
     name: str | None = None,
 ) -> Table:
-    from bigframes_vendored.ibis.formats.pandas import PandasDataFrameProxy
     import pandas as pd
+    from bigframes_vendored.ibis.formats.pandas import PandasDataFrameProxy
 
     if not isinstance(data, pd.DataFrame):
         df = pd.DataFrame(data, columns=columns)

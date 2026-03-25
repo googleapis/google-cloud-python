@@ -13,13 +13,13 @@
 # limitations under the License.
 from unittest import mock
 
-from google.cloud import bigquery
 import pytest
+from google.cloud import bigquery
 
+import bigframes.pandas as bpd
 from bigframes.ml import compose, preprocessing
 from bigframes.ml.compose import ColumnTransformer, SQLScalarColumnTransformer
 from bigframes.ml.core import BqmlModel
-import bigframes.pandas as bpd
 
 
 def test_columntransformer_init_expectedtransforms():

@@ -19,16 +19,16 @@ from __future__ import annotations
 import dataclasses
 import datetime
 import typing
-from typing import Callable, Iterable, Mapping, Optional, Union
 import uuid
+from typing import Callable, Iterable, Mapping, Optional, Union
 
 from google.cloud import bigquery
 
 import bigframes.constants as constants
 import bigframes.formatting_helpers as formatting_helpers
-from bigframes.ml import sql as ml_sql
 import bigframes.pandas as bpd
 import bigframes.session
+from bigframes.ml import sql as ml_sql
 
 
 class BaseBqml:

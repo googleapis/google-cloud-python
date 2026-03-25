@@ -22,48 +22,44 @@ import itertools
 import numbers
 import textwrap
 import typing
+import warnings
 from typing import (
     Any,
     Callable,
-    cast,
     Iterable,
     List,
     Literal,
     Mapping,
     Optional,
-    overload,
     Sequence,
     Tuple,
     TypeVar,
     Union,
+    cast,
+    overload,
 )
-import warnings
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.series as vendored_pandas_series
 import google.cloud.bigquery as bigquery
 import numpy
 import pandas
-from pandas.api import extensions as pd_ext
 import pyarrow as pa
 import typing_extensions
+from pandas.api import extensions as pd_ext
 
-from bigframes._tools import docs
 import bigframes.core
-from bigframes.core import agg_expressions, groupby
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
 import bigframes.core.indexers
 import bigframes.core.indexes as indexes
-from bigframes.core.logging import log_adapter
 import bigframes.core.ordering as order
 import bigframes.core.scalar as scalars
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations
 import bigframes.core.window
-from bigframes.core.window import rolling
 import bigframes.core.window_spec as windows
 import bigframes.dataframe
 import bigframes.dtypes
@@ -78,6 +74,10 @@ import bigframes.operations.plotting as plotting
 import bigframes.operations.python_op_maps as python_ops
 import bigframes.operations.structs as structs
 import bigframes.session
+from bigframes._tools import docs
+from bigframes.core import agg_expressions, groupby
+from bigframes.core.logging import log_adapter
+from bigframes.core.window import rolling
 
 if typing.TYPE_CHECKING:
     import bigframes.geopandas.geoseries

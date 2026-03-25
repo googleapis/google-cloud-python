@@ -24,6 +24,9 @@ from bigframes_vendored.sqlglot.errors import TokenError as TokenError  # noqa: 
 from bigframes_vendored.sqlglot.errors import (  # noqa: F401
     UnsupportedError as UnsupportedError,
 )
+from bigframes_vendored.sqlglot.expressions import (  # noqa: F401
+    Expression as Expression,
+)
 from bigframes_vendored.sqlglot.expressions import alias_ as alias  # noqa: F401
 from bigframes_vendored.sqlglot.expressions import and_ as and_  # noqa: F401
 from bigframes_vendored.sqlglot.expressions import case as case  # noqa: F401
@@ -32,9 +35,6 @@ from bigframes_vendored.sqlglot.expressions import column as column  # noqa: F40
 from bigframes_vendored.sqlglot.expressions import condition as condition  # noqa: F401
 from bigframes_vendored.sqlglot.expressions import delete as delete  # noqa: F401
 from bigframes_vendored.sqlglot.expressions import except_ as except_  # noqa: F401
-from bigframes_vendored.sqlglot.expressions import (  # noqa: F401
-    Expression as Expression,
-)
 from bigframes_vendored.sqlglot.expressions import (  # noqa: F401
     find_tables as find_tables,
 )

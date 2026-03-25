@@ -17,11 +17,11 @@ from __future__ import annotations
 import bigframes_vendored.constants as bf_constants
 import bigframes_vendored.sqlglot.expressions as sge
 
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+import bigframes.core.compile.sqlglot.expressions.constants as constants
 from bigframes import dtypes
 from bigframes import operations as ops
-import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.common import round_towards_zero
-import bigframes.core.compile.sqlglot.expressions.constants as constants
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 from bigframes.operations import numeric_ops
 

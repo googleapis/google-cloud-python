@@ -17,9 +17,9 @@ import typing
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.plotting._core as vendordt
 
+import bigframes.operations._matplotlib as bfplt
 from bigframes._tools import docs
 from bigframes.core.logging import log_adapter
-import bigframes.operations._matplotlib as bfplt
 
 
 @log_adapter.class_logger

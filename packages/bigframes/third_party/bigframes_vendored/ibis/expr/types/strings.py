@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import functools
 import operator
-from typing import Any, Literal, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Literal
 
-from bigframes_vendored.ibis import util
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis import util
 from bigframes_vendored.ibis.expr.types.core import _binop
 from bigframes_vendored.ibis.expr.types.generic import Column, Scalar, Value
 from public import public

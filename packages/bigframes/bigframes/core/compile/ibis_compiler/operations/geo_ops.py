@@ -16,11 +16,11 @@ from __future__ import annotations
 
 from typing import cast
 
-from bigframes_vendored import ibis
-from bigframes_vendored.ibis.expr import types as ibis_types
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.operations.geospatial as ibis_geo
 import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
+from bigframes_vendored import ibis
+from bigframes_vendored.ibis.expr import types as ibis_types
 
 from bigframes.core.compile.ibis_compiler import scalar_op_compiler
 from bigframes.operations import geo_ops as ops

@@ -13,7 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import cast, Dict, Iterable, Optional, Tuple, Union
+from typing import Dict, Iterable, Optional, Tuple, Union, cast
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis

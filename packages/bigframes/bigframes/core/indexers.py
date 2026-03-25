@@ -15,8 +15,8 @@
 from __future__ import annotations
 
 import typing
-from typing import Tuple, Union
 import warnings
+from typing import Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.common.exceptions as ibis_exceptions

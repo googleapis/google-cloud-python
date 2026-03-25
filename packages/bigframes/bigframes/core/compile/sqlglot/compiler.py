@@ -19,6 +19,9 @@ import typing
 
 import bigframes_vendored.sqlglot.expressions as sge
 
+import bigframes.core.compile.sqlglot.aggregate_compiler as aggregate_compiler
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+import bigframes.core.ordering as bf_ordering
 from bigframes import dtypes
 from bigframes.core import (
     expression,
@@ -31,12 +34,9 @@ from bigframes.core import (
 )
 from bigframes.core.compile import configs
 from bigframes.core.compile.sqlglot import sql, sqlglot_ir
-import bigframes.core.compile.sqlglot.aggregate_compiler as aggregate_compiler
 from bigframes.core.compile.sqlglot.aggregations import windows
-import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions import typed_expr
 from bigframes.core.logging import data_types as data_type_logger
-import bigframes.core.ordering as bf_ordering
 from bigframes.core.rewrite import schema_binding
 
 

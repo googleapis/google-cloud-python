@@ -18,8 +18,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from bigframes import dtypes
 import bigframes.testing
+from bigframes import dtypes
 
 
 @pytest.fixture(scope="module")

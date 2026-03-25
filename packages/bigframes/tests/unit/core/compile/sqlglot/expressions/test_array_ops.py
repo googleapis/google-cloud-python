@@ -14,11 +14,11 @@
 
 import pytest
 
+import bigframes.operations.aggregations as agg_ops
+import bigframes.pandas as bpd
 from bigframes import operations as ops
 from bigframes.core import expression
 from bigframes.operations._op_converters import convert_index, convert_slice
-import bigframes.operations.aggregations as agg_ops
-import bigframes.pandas as bpd
 from bigframes.testing import utils
 
 pytest.importorskip("pytest_snapshot")

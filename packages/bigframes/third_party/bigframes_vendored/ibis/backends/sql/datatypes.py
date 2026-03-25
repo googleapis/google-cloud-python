@@ -7,9 +7,9 @@ from typing import NoReturn
 
 import bigframes_vendored.ibis.common.exceptions as com
 import bigframes_vendored.ibis.expr.datatypes as dt
-from bigframes_vendored.ibis.formats import TypeMapper
 import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
+from bigframes_vendored.ibis.formats import TypeMapper
 
 typecode = sge.DataType.Type
 

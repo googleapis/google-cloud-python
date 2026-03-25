@@ -21,9 +21,9 @@ import pandas.testing
 import pytest
 
 import bigframes
+import bigframes.operations.ai
 from bigframes import dataframe, dtypes
 from bigframes.ml import llm
-import bigframes.operations.ai
 from bigframes.testing import utils
 
 AI_OP_EXP_OPTION = "experiments.ai_operators"

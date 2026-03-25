@@ -18,7 +18,6 @@ import functools
 import typing
 from typing import cast
 
-from bigframes_vendored import ibis
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.operations.ai_ops as ai_ops
@@ -27,14 +26,15 @@ import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
 import bigframes_vendored.ibis.expr.types as ibis_types
 import numpy as np
 import pandas as pd
+from bigframes_vendored import ibis
 
-from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 import bigframes.core.compile.ibis_compiler.default_ordering
+import bigframes.core.compile.ibis_types
+import bigframes.operations as ops
+from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 from bigframes.core.compile.ibis_compiler.scalar_op_compiler import (
     scalar_op_compiler,  # TODO(tswast): avoid import of variables
 )
-import bigframes.core.compile.ibis_types
-import bigframes.operations as ops
 
 _ZERO = typing.cast(ibis_types.NumericValue, ibis_types.literal(0))
 _NAN = typing.cast(ibis_types.NumericValue, ibis_types.literal(np.nan))

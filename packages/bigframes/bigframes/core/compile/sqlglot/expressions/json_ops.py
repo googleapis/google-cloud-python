@@ -16,8 +16,8 @@ from __future__ import annotations
 
 import bigframes_vendored.sqlglot.expressions as sge
 
-from bigframes import operations as ops
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_unary_op = expression_compiler.expression_compiler.register_unary_op

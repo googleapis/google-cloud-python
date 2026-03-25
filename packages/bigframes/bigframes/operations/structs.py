@@ -17,12 +17,12 @@ from __future__ import annotations
 import bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 import pandas as pd
 
-from bigframes._tools import docs
-from bigframes.core import backports
-from bigframes.core.logging import log_adapter
 import bigframes.dataframe
 import bigframes.operations
 import bigframes.series
+from bigframes._tools import docs
+from bigframes.core import backports
+from bigframes.core.logging import log_adapter
 
 
 @log_adapter.class_logger

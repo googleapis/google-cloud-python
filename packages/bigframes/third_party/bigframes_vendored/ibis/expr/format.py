@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
 import functools
 import itertools
 import textwrap
 import types
+from collections.abc import Mapping, Sequence
 from typing import Optional
 
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis import util
-from bigframes_vendored.ibis.common.graph import Node
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis import util
+from bigframes_vendored.ibis.common.graph import Node
 from public import public
 
 _infix_ops = {

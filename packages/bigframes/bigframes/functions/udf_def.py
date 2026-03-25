@@ -15,8 +15,8 @@ from __future__ import annotations
 
 import dataclasses
 import inspect
-from typing import cast, Optional
 import warnings
+from typing import Optional, cast
 
 from google.cloud import bigquery
 

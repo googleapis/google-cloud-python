@@ -17,8 +17,8 @@ import datetime
 import google.cloud.bigquery as bigquery
 import pytest
 
-from bigframes.core import bq_data
 import bigframes.pandas as bpd
+from bigframes.core import bq_data
 
 pytest.importorskip("pytest_snapshot")
 

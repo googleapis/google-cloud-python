@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Optional, Protocol, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Protocol, Union
 
 import bigframes_vendored.constants as constants
 

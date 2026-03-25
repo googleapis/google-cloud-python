@@ -21,8 +21,8 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions
 
 from __future__ import annotations
 
-from typing import Any, cast, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Optional, Sequence, Tuple, Union, cast
 
 import bigframes.core.utils as utils
 import bigframes.dtypes

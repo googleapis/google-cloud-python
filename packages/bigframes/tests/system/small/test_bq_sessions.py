@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from concurrent.futures import ThreadPoolExecutor
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 import google
 import google.api_core.exceptions
-from google.cloud import bigquery
 import pytest
+from google.cloud import bigquery
 
 import bigframes.core.events
 from bigframes.session import bigquery_session

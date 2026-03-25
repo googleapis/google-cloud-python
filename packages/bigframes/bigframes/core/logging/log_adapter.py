@@ -17,8 +17,8 @@ import inspect
 import threading
 from typing import List, Optional
 
-from google.cloud import bigquery
 import pandas
+from google.cloud import bigquery
 
 _lock = threading.Lock()
 

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from datetime import date, datetime
-from typing import Optional, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes

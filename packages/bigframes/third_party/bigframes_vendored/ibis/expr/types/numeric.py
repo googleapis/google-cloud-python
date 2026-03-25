@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import functools
-from typing import Literal, TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import bigframes_vendored.ibis
-from bigframes_vendored.ibis.common.exceptions import IbisTypeError
 import bigframes_vendored.ibis.expr.operations as ops
+from bigframes_vendored.ibis.common.exceptions import IbisTypeError
 from bigframes_vendored.ibis.expr.types.core import _binop
 from bigframes_vendored.ibis.expr.types.generic import Column, Scalar, Value
 from public import public

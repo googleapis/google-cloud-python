@@ -5,14 +5,14 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Generic, Optional
 
+import bigframes_vendored.ibis.expr.datashape as ds
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.rules as rlz
 from bigframes_vendored.ibis.common.annotations import attribute
 from bigframes_vendored.ibis.common.graph import Node as Traversable
 from bigframes_vendored.ibis.common.grounds import Concrete
 from bigframes_vendored.ibis.common.patterns import Coercible, CoercionError
 from bigframes_vendored.ibis.common.typing import DefaultTypeVars
-import bigframes_vendored.ibis.expr.datashape as ds
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.rules as rlz
 from bigframes_vendored.ibis.util import is_iterable
 from public import public
 from typing_extensions import Any, Self, TypeVar
@@ -48,7 +48,7 @@ class Value(Node, Coercible, DefaultTypeVars, Generic[T, S]):
     ) -> Self:
         # note that S=Shape is unused here since the pattern will check the
         # shape of the value expression after executing Value.__coerce__()
-        from bigframes_vendored.ibis.expr.operations.generic import Literal, NULL
+        from bigframes_vendored.ibis.expr.operations.generic import NULL, Literal
         from bigframes_vendored.ibis.expr.types import Expr
 
         if isinstance(value, Expr):

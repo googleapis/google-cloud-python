@@ -15,16 +15,16 @@
 import pathlib
 import typing
 
-from google.cloud import bigquery
 import pandas as pd
 import pyarrow as pa
 import pytest
+from google.cloud import bigquery
 
-from bigframes import dtypes
 import bigframes.core as core
 import bigframes.pandas as bpd
 import bigframes.testing.mocks as mocks
 import bigframes.testing.utils
+from bigframes import dtypes
 
 CURRENT_DIR = pathlib.Path(__file__).parent
 DATA_DIR = CURRENT_DIR.parent.parent.parent.parent / "data"

@@ -17,8 +17,8 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-from bigframes import dtypes
 import bigframes.operations.type as op_typing
+from bigframes import dtypes
 
 if typing.TYPE_CHECKING:
     # Avoids circular dependency

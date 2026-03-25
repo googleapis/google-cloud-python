@@ -5,7 +5,7 @@ from __future__ import annotations
 import inspect
 import typing as t
 
-from bigframes_vendored.sqlglot import exp, Schema
+from bigframes_vendored.sqlglot import Schema, exp
 from bigframes_vendored.sqlglot.dialects.dialect import DialectType
 from bigframes_vendored.sqlglot.optimizer.annotate_types import annotate_types
 from bigframes_vendored.sqlglot.optimizer.canonicalize import canonicalize

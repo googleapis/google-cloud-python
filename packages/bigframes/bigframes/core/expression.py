@@ -23,10 +23,10 @@ from typing import Callable, Generator, Hashable, Mapping, TypeVar, Union
 
 import pandas as pd
 
-from bigframes import dtypes
-from bigframes.core import field
 import bigframes.core.identifiers as ids
 import bigframes.operations
+from bigframes import dtypes
+from bigframes.core import field
 
 
 def const(

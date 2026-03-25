@@ -4,34 +4,34 @@ from __future__ import annotations
 
 import abc
 import calendar
-from functools import partial, reduce
 import itertools
 import math
 import operator
 import string
-from typing import Any, ClassVar, TYPE_CHECKING
+from functools import partial, reduce
+from typing import TYPE_CHECKING, Any, ClassVar
 
+import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
+import bigframes_vendored.ibis.common.patterns as pats
+import bigframes_vendored.ibis.expr.datatypes as dt
+import bigframes_vendored.ibis.expr.operations as ops
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
 from bigframes_vendored.ibis.backends.sql.rewrites import (
+    FirstValue,
+    LastValue,
     add_one_to_nth_value_input,
     add_order_by_to_empty_ranking_window_functions,
     empty_in_values_right_side,
-    FirstValue,
-    LastValue,
     lower_bucket,
     lower_capitalize,
     lower_sample,
     one_to_zero_index,
     sqlize,
 )
-import bigframes_vendored.ibis.common.exceptions as ibis_exceptions
-import bigframes_vendored.ibis.common.patterns as pats
 from bigframes_vendored.ibis.config import options
-import bigframes_vendored.ibis.expr.datatypes as dt
-import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.operations.udf import InputType
 from bigframes_vendored.ibis.expr.rewrites import lower_stringslice
-import bigframes_vendored.sqlglot as sg
-import bigframes_vendored.sqlglot.expressions as sge
 from public import public
 
 try:
@@ -47,9 +47,9 @@ else:
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Mapping
 
-    from bigframes_vendored.ibis.backends.bigquery.datatypes import SqlglotType
     import bigframes_vendored.ibis.expr.schema as sch
     import bigframes_vendored.ibis.expr.types as ir
+    from bigframes_vendored.ibis.backends.bigquery.datatypes import SqlglotType
 
 
 def get_leaf_classes(op):

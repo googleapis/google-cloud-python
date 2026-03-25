@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.schema import Schema
@@ -372,8 +372,8 @@ class PyArrowTableProxy(TableProxy):
         return self.obj
 
     def to_polars(self, schema: Schema) -> pl.DataFrame:
-        from bigframes_vendored.ibis.formats.polars import PolarsData
         import polars as pl
+        from bigframes_vendored.ibis.formats.polars import PolarsData
 
         df = pl.from_arrow(self.obj)
         return PolarsData.convert_table(df, schema)

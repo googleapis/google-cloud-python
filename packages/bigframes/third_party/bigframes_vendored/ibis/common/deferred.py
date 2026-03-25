@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 import collections.abc
-from collections.abc import Callable
 import functools
 import inspect
 import operator
-from typing import Any, overload, TypeVar
+from abc import abstractmethod
+from collections.abc import Callable
+from typing import Any, TypeVar, overload
 
 from bigframes_vendored.ibis.common.bases import (
     Final,

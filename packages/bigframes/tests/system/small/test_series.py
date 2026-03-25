@@ -22,11 +22,11 @@ import db_dtypes  # type: ignore
 import geopandas as gpd  # type: ignore
 import google.api_core.exceptions
 import numpy
-from packaging.version import Version
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
 import shapely.geometry  # type: ignore
+from packaging.version import Version
 
 import bigframes.dtypes as dtypes
 import bigframes.features

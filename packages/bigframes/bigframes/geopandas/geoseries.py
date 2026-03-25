@@ -19,10 +19,10 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.geopandas.geoseries as vendored_geoseries
 import geopandas.array  # type: ignore
 
-from bigframes._tools import docs
 import bigframes.operations as ops
 import bigframes.series
 import bigframes.session
+from bigframes._tools import docs
 
 
 @docs.inherit_docs(vendored_geoseries.GeoSeries)

@@ -16,16 +16,16 @@ from __future__ import annotations
 
 import datetime
 import json
-from typing import List
 import urllib.parse
+from typing import List
 
 import google.auth.transport.requests
 import google.cloud.bigquery as bq
 import pyiceberg
-from pyiceberg.catalog import load_catalog
 import pyiceberg.schema
 import pyiceberg.types
 import requests
+from pyiceberg.catalog import load_catalog
 
 from bigframes.core import bq_data
 

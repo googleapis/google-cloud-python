@@ -16,8 +16,8 @@
 
 from __future__ import annotations
 
-from typing import Literal, Optional, Sequence, Tuple
 import warnings
+from typing import Literal, Optional, Sequence, Tuple
 
 import google.auth.credentials
 import requests.adapters

@@ -21,10 +21,10 @@ import itertools
 import typing
 from typing import Callable, Hashable, Mapping, Tuple, TypeVar
 
-from bigframes import dtypes
-from bigframes.core import expression, window_spec
 import bigframes.core.identifiers as ids
 import bigframes.operations.aggregations as agg_ops
+from bigframes import dtypes
+from bigframes.core import expression, window_spec
 
 TExpression = TypeVar("TExpression", bound="Aggregation")
 

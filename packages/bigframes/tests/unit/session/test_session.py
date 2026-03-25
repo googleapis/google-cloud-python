@@ -16,8 +16,8 @@ import copy
 import datetime
 import os
 import re
-from unittest import mock
 import warnings
+from unittest import mock
 
 import google.api_core.exceptions
 import google.cloud.bigquery
@@ -25,10 +25,10 @@ import pandas as pd
 import pytest
 
 import bigframes
-from bigframes import version
-from bigframes.core import bq_data
 import bigframes.enums
 import bigframes.exceptions
+from bigframes import version
+from bigframes.core import bq_data
 from bigframes.testing import mocks
 
 TABLE_REFERENCE = {

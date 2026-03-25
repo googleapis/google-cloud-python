@@ -17,11 +17,11 @@ import typing
 
 import bigframes_vendored.sqlglot.expressions as sge
 
-from bigframes.core import utils, window_spec
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering_spec
 import bigframes.dtypes as dtypes
+from bigframes.core import utils, window_spec
 
 
 def apply_window_if_present(

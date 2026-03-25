@@ -23,11 +23,11 @@ import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
 import pyarrow as pa
 
+import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 from bigframes import dtypes
 from bigframes.core import guid, local_data, schema
 from bigframes.core.compile.sqlglot import sql
 from bigframes.core.compile.sqlglot.expressions import typed_expr
-import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 
 # shapely.wkt.dumps was moved to shapely.io.to_wkt in 2.0.
 try:

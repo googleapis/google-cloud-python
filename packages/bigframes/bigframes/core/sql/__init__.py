@@ -21,7 +21,7 @@ import datetime
 import decimal
 import json
 import math
-from typing import cast, Collection, Iterable, Mapping, Optional, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Collection, Iterable, Mapping, Optional, Union, cast
 
 import bigframes_vendored.sqlglot.expressions as sge
 import shapely.geometry.base  # type: ignore

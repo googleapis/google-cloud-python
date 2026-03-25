@@ -5,11 +5,11 @@ Top level ``eval`` module.
 from __future__ import annotations
 
 import tokenize
-from typing import TYPE_CHECKING
 import warnings
+from typing import TYPE_CHECKING
 
 from bigframes_vendored.pandas.core.computation.engines import ENGINES
-from bigframes_vendored.pandas.core.computation.expr import Expr, PARSERS
+from bigframes_vendored.pandas.core.computation.expr import PARSERS, Expr
 from bigframes_vendored.pandas.core.computation.parsing import tokenize_string
 from bigframes_vendored.pandas.core.computation.scope import ensure_scope
 from bigframes_vendored.pandas.util._validators import validate_bool_kwarg

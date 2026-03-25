@@ -21,12 +21,12 @@ import bigframes_vendored.pandas.core.arrays.datetimelike as vendored_pandas_dat
 import bigframes_vendored.pandas.core.indexes.accessor as vendordt
 import pandas
 
-from bigframes import dataframe, dtypes, series
-from bigframes._tools import docs
 import bigframes.core.col
 import bigframes.core.indexes.base as indices
-from bigframes.core.logging import log_adapter
 import bigframes.operations as ops
+from bigframes import dataframe, dtypes, series
+from bigframes._tools import docs
+from bigframes.core.logging import log_adapter
 
 _ONE_DAY = pandas.Timedelta("1D")
 _ONE_SECOND = pandas.Timedelta("1s")

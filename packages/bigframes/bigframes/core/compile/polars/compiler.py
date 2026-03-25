@@ -16,13 +16,11 @@ from __future__ import annotations
 import dataclasses
 import functools
 import itertools
-from typing import cast, Literal, Optional, Sequence, Tuple, Type, TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, Optional, Sequence, Tuple, Type, cast
 
 import pandas as pd
 
 import bigframes.core
-from bigframes.core import agg_expressions, identifiers, nodes, ordering, window_spec
-from bigframes.core.compile.polars import lowering
 import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.rewrite
@@ -40,6 +38,8 @@ import bigframes.operations.generic_ops as gen_ops
 import bigframes.operations.json_ops as json_ops
 import bigframes.operations.numeric_ops as num_ops
 import bigframes.operations.string_ops as string_ops
+from bigframes.core import agg_expressions, identifiers, nodes, ordering, window_spec
+from bigframes.core.compile.polars import lowering
 
 polars_installed = True
 if TYPE_CHECKING:

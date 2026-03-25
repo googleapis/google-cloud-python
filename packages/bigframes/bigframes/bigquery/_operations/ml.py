@@ -20,12 +20,12 @@ import bigframes_vendored.constants
 import google.cloud.bigquery
 import pandas as pd
 
-from bigframes.bigquery._operations import utils
 import bigframes.core.logging.log_adapter as log_adapter
 import bigframes.core.sql.ml
 import bigframes.dataframe as dataframe
 import bigframes.ml.base
 import bigframes.session
+from bigframes.bigquery._operations import utils
 
 
 def _get_model_metadata(

@@ -15,12 +15,12 @@
 
 import datetime
 
-from packaging import version
 import pandas as pd
 import pytest
+from packaging import version
 
-from bigframes import dtypes
 import bigframes.testing
+from bigframes import dtypes
 
 
 def test_date_diff_between_series(session):

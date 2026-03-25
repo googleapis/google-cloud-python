@@ -19,49 +19,49 @@ import inspect
 import os
 import threading
 import typing
+import warnings
 from typing import (
+    IO,
     Any,
     Callable,
     Dict,
-    IO,
     Iterable,
     Literal,
     MutableSequence,
     Optional,
-    overload,
     Sequence,
     Tuple,
     Union,
+    overload,
 )
-import warnings
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
-from google.cloud import bigquery
 import numpy
 import pandas
+import pyarrow as pa
+from google.cloud import bigquery
 from pandas._typing import (
     CompressionOptions,
     FilePath,
     ReadPickleBuffer,
     StorageOptions,
 )
-import pyarrow as pa
 
 import bigframes._config as config
 import bigframes._importing
-from bigframes.core import bq_data
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
 import bigframes.dataframe
 import bigframes.enums
 import bigframes.series
 import bigframes.session
-from bigframes.session import dry_runs
 import bigframes.session._io.bigquery
 import bigframes.session.clients
 import bigframes.session.iceberg
 import bigframes.session.metrics
+from bigframes.core import bq_data
+from bigframes.session import dry_runs
 
 # Note: the following methods are duplicated from Session. This duplication
 # enables the following:

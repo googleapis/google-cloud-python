@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import contextlib
-from html import escape
 import sys
 import tempfile
+from collections.abc import Callable
+from html import escape
 from typing import Optional
 
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.common.exceptions as com
-from bigframes_vendored.ibis.common.graph import Graph
 import bigframes_vendored.ibis.expr.operations as ops
 import graphviz as gv
+from bigframes_vendored.ibis.common.graph import Graph
 
 
 def get_type(node):
@@ -187,8 +187,8 @@ def draw(graph, path=None, format="png", verbose: bool = False):
 
 
 if __name__ == "__main__":
-    from argparse import ArgumentParser
     import json
+    from argparse import ArgumentParser
 
     from bigframes_vendored.ibis import _
 

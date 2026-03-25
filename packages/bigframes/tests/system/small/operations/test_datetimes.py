@@ -16,9 +16,9 @@ import datetime
 import typing
 
 import numpy
-from packaging import version
 import pandas as pd
 import pytest
+from packaging import version
 
 import bigframes.pandas as bpd
 import bigframes.series

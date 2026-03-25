@@ -20,8 +20,8 @@ import bigframes_vendored.sqlglot.expressions as sge
 import pandas as pd
 import pyarrow as pa
 
-from bigframes import operations as ops
 import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
+from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
 register_nary_op = expression_compiler.expression_compiler.register_nary_op

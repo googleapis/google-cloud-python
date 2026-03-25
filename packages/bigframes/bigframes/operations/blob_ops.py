@@ -15,9 +15,9 @@
 import dataclasses
 import typing
 
+import bigframes.operations.type as op_typing
 from bigframes import dtypes
 from bigframes.operations import base_ops
-import bigframes.operations.type as op_typing
 
 ObjFetchMetadataOp = base_ops.create_unary_op(
     name="obj_fetch_metadata", type_signature=op_typing.BLOB_TRANSFORM

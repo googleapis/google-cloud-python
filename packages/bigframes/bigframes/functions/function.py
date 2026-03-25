@@ -15,11 +15,11 @@
 from __future__ import annotations
 
 import logging
-from typing import Callable, cast, get_origin, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable, Optional, cast, get_origin
 
 if TYPE_CHECKING:
-    from bigframes.session import Session
     import bigframes.series
+    from bigframes.session import Session
 
 import google.api_core.exceptions
 from google.cloud import bigquery

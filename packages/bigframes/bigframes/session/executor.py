@@ -20,19 +20,19 @@ import functools
 import itertools
 from typing import Iterator, Literal, Optional, Sequence, Union
 
-from google.cloud import bigquery, bigquery_storage_v1
 import google.cloud.bigquery.table as bq_table
 import pandas as pd
 import pyarrow
 import pyarrow as pa
+from google.cloud import bigquery, bigquery_storage_v1
 
 import bigframes
 import bigframes.core
-from bigframes.core import bq_data, local_data, pyarrow_utils
 import bigframes.core.schema
 import bigframes.dtypes
 import bigframes.session._io.pandas as io_pandas
 import bigframes.session.execution_spec as ex_spec
+from bigframes.core import bq_data, local_data, pyarrow_utils
 
 _ROW_LIMIT_EXCEEDED_TEMPLATE = (
     "Execution has downloaded {result_rows} rows so far, which exceeds the "
