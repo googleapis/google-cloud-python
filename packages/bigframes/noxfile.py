@@ -263,7 +263,7 @@ def unit_noextras(session):
     run_unit(session, install_test_extra=False)
 
 
-@nox.session(python="3.10")
+@nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run type checks with mypy."""
     # Editable mode is not compatible with mypy when there are multiple
@@ -514,7 +514,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.13")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
     session.install("-e", ".[scikit-learn]")
