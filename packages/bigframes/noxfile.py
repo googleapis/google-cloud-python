@@ -54,7 +54,7 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     PYTEST_VERSION,
@@ -253,8 +253,8 @@ def run_unit(session, install_test_extra):
 
 @nox.session(python=ALL_PYTHON)
 def unit(session):
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
+    if session.python in ("3.7", "3.8", "3.9"):
+        session.skip("Python 3.9 and below are not supported")
     run_unit(session, install_test_extra=True)
 
 
