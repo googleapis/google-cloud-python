@@ -116,7 +116,8 @@ class Cursor:
                     )
                 )
             return tuple(desc)
-        except Exception:
+        except Exception as e:
+            logger.warning("Could not determine cursor description: %s", e)
             return None
 
     @property
@@ -165,8 +166,9 @@ class Cursor:
             # GoogleSQL Dialect: Named parameters @name are mapped directly.
             iterator = parameters.items()
         else:
-            # If strictly required, raise an error for unsupported types
-            return {}, {}
+            raise errors.ProgrammingError(
+                f"Parameters must be a dict, list, or tuple, not {type(parameters).__name__}"
+            )
 
         for key, value in iterator:
             if value is None:
@@ -429,7 +431,8 @@ class Cursor:
             if next_metadata:
                 return True
             return None
-        except Exception:
+        except Exception as e:
+            logger.warning("Could not determine next set of results: %s", e)
             return None
 
     def __enter__(self) -> "Cursor":

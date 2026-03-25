@@ -89,8 +89,8 @@ class Connection:
         try:
             self._internal_conn.commit()
         except Exception as e:
-            # raise errors.map_spanner_error(e)
             logger.debug(f"Commit failed {e}")
+            raise errors.map_spanner_error(e)
 
     @check_not_closed
     def rollback(self) -> None:
@@ -102,8 +102,8 @@ class Connection:
         try:
             self._internal_conn.rollback()
         except Exception as e:
-            # raise errors.map_spanner_error(e)
             logger.debug(f"Rollback failed {e}")
+            raise errors.map_spanner_error(e)
 
     def close(self) -> None:
         """Close the connection now.
@@ -127,7 +127,7 @@ class Connection:
         self.close()
 
 
-def connect(connection_string: str, **kwargs: Any) -> Connection:
+def connect(connection_string: str) -> Connection:
     logger.debug(f"Connecting to {connection_string}")
     # Create the pool
     pool = Pool.create_pool(connection_string)

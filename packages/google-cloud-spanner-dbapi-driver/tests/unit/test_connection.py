@@ -70,10 +70,8 @@ class TestConnection(unittest.TestCase):
 
     def test_commit_error(self):
         self.mock_internal_conn.commit.side_effect = Exception("Commit Failed")
-        try:
+        with self.assertRaises(errors.DatabaseError):
             self.conn.commit()
-        except Exception:
-            self.fail("commit() raised Exception unexpectedly!")
         self.mock_internal_conn.commit.assert_called_once()
 
     def test_rollback(self):
@@ -81,12 +79,9 @@ class TestConnection(unittest.TestCase):
         self.mock_internal_conn.rollback.assert_called_once()
 
     def test_rollback_error(self):
-        # Similar to commit, rollback errors are caught and logged
         self.mock_internal_conn.rollback.side_effect = Exception("Rollback Failed")
-        try:
+        with self.assertRaises(errors.DatabaseError):
             self.conn.rollback()
-        except Exception:
-            self.fail("rollback() raised Exception unexpectedly!")
         self.mock_internal_conn.rollback.assert_called_once()
 
     def test_close(self):

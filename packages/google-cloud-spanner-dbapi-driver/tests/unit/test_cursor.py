@@ -347,3 +347,7 @@ class TestCursor(unittest.TestCase):
 
         self.assertEqual(converted["P2"], "test")
         self.assertEqual(types["P2"].code, TypeCode.STRING)
+
+    def test_prepare_params_unsupported_type(self):
+        with self.assertRaises(cursor.errors.ProgrammingError):
+            self.cursor._prepare_params(123)  # Int is not supported directly
