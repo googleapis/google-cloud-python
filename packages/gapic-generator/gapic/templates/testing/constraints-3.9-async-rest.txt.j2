@@ -1,3 +1,5 @@
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% if rest_async_io_enabled %}
 # -*- coding: utf-8 -*-
 {% from '_pypi_packages.j2' import pypi_packages %}
 # This constraints file is used to check that lower bounds
@@ -6,8 +8,8 @@
 # pinning their versions to their lower bounds.
 # For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
 # then this file should have google-cloud-foo==1.14.0
-google-api-core==2.17.1
-google-auth==2.14.1
+google-api-core==2.21.0
+google-auth==2.35.0
 grpcio==1.44.0
 proto-plus==1.22.3
 protobuf==4.25.8
@@ -19,3 +21,4 @@ protobuf==4.25.8
 {% endif %}
 {% endif %}
 {% endfor %}
+{% endif %}

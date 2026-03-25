@@ -357,21 +357,21 @@ def showcase_library(
             constraints_path = str(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
-            # Install the library with a constraints file.
-            session.install(
-                "-e",
-                tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""),
-                "-r",
-                constraints_path,
-            )
-            # Exclude `google-auth==2.40.0` which contains a regression
-            # https://github.com/googleapis/gapic-generator-python/issues/2385
-            session.install(
-                "--no-cache-dir",
-                "--force-reinstall",
-                "--upgrade",
-                "google-auth[aiohttp]!=2.40.0",
-            )
+            extras = ""
+            if rest_async_io_enabled:
+                async_rest_constraints_path = str(
+                    f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
+                )
+                if os.path.exists(async_rest_constraints_path):
+                    # use async-rest constraints if available
+                    constraints_path = async_rest_constraints_path
+                else:
+                    session.log(
+                        f"{async_rest_constraints_path} not found. Using base constraints file"
+                    )
+                extras = "[async_rest]"
+
+            session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
