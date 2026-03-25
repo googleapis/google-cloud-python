@@ -141,4 +141,3 @@ class TestCursor:
                 assert row[2] is True
                 assert row[3] == "hello"
                 assert row[4] == b"bytes"
-                assert row[4] == b"bytes"
