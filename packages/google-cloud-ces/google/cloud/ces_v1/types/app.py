@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "SynthesizeSpeechConfig",
         "MetricAnalysisSettings",
         "LoggingSettings",
+        "ErrorHandlingSettings",
         "EvaluationMetricsThresholds",
         "ClientCertificateSettings",
         "ConversationLoggingSettings",
@@ -78,6 +79,8 @@ class App(proto.Message):
             the app.
         logging_settings (google.cloud.ces_v1.types.LoggingSettings):
             Optional. Logging settings of the app.
+        error_handling_settings (google.cloud.ces_v1.types.ErrorHandlingSettings):
+            Optional. Error handling settings of the app.
         model_settings (google.cloud.ces_v1.types.ModelSettings):
             Optional. The default LLM model settings for
             the app. Individual resources (e.g. agents,
@@ -228,6 +231,11 @@ class App(proto.Message):
         number=8,
         message="LoggingSettings",
     )
+    error_handling_settings: "ErrorHandlingSettings" = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        message="ErrorHandlingSettings",
+    )
     model_settings: common.ModelSettings = proto.Field(
         proto.MESSAGE,
         number=13,
@@ -339,8 +347,10 @@ class LanguageSettings(proto.Message):
             instructions to improve handling of multilingual
             input.
         fallback_action (str):
-            Optional. The action to perform when an agent receives input
-            in an unsupported language.
+            Optional. Deprecated: This feature is no longer supported.
+            Use ``enable_multilingual_support`` instead to improve
+            handling of multilingual input. The action to perform when
+            an agent receives input in an unsupported language.
 
             This can be a predefined action or a custom tool call. Valid
             values are:
@@ -679,6 +689,43 @@ class LoggingSettings(proto.Message):
         proto.MESSAGE,
         number=7,
         message="MetricAnalysisSettings",
+    )
+
+
+class ErrorHandlingSettings(proto.Message):
+    r"""Settings to describe how errors should be handled in the app.
+
+    Attributes:
+        error_handling_strategy (google.cloud.ces_v1.types.ErrorHandlingSettings.ErrorHandlingStrategy):
+            Optional. The strategy to use for error
+            handling.
+    """
+
+    class ErrorHandlingStrategy(proto.Enum):
+        r"""Defines the strategy for handling errors.
+
+        Values:
+            ERROR_HANDLING_STRATEGY_UNSPECIFIED (0):
+                Unspecified error handling strategy.
+            NONE (1):
+                No specific handling is enabled.
+            FALLBACK_RESPONSE (2):
+                A fallback message will be returned to the
+                user in case of system errors (e.g. LLM errors).
+            END_SESSION (3):
+                An [EndSession][google.cloud.ces.v1.EndSession] signal will
+                be emitted in case of system errors (e.g. LLM errors).
+        """
+
+        ERROR_HANDLING_STRATEGY_UNSPECIFIED = 0
+        NONE = 1
+        FALLBACK_RESPONSE = 2
+        END_SESSION = 3
+
+    error_handling_strategy: ErrorHandlingStrategy = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ErrorHandlingStrategy,
     )
 
 

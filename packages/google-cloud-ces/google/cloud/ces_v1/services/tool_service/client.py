@@ -230,6 +230,32 @@ class ToolServiceClient(metaclass=ToolServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def agent_path(
+        project: str,
+        location: str,
+        app: str,
+        agent: str,
+    ) -> str:
+        """Returns a fully-qualified agent string."""
+        return (
+            "projects/{project}/locations/{location}/apps/{app}/agents/{agent}".format(
+                project=project,
+                location=location,
+                app=app,
+                agent=agent,
+            )
+        )
+
+    @staticmethod
+    def parse_agent_path(path: str) -> Dict[str, str]:
+        """Parses a agent path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/apps/(?P<app>.+?)/agents/(?P<agent>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def app_path(
         project: str,
         location: str,

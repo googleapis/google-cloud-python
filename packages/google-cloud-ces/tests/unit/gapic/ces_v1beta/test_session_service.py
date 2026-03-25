@@ -1553,6 +1553,255 @@ async def test_run_session_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        session_service.RunSessionRequest,
+        dict,
+    ],
+)
+def test_stream_run_session(request_type, transport: str = "grpc"):
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([session_service.RunSessionResponse()])
+        response = client.stream_run_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = session_service.RunSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, session_service.RunSessionResponse)
+
+
+def test_stream_run_session_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_service.RunSessionRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.stream_run_session(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_service.RunSessionRequest()
+
+
+def test_stream_run_session_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SessionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.stream_run_session in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.stream_run_session] = (
+            mock_rpc
+        )
+        request = {}
+        client.stream_run_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.stream_run_session(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_run_session_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SessionServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.stream_run_session
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.stream_run_session
+        ] = mock_rpc
+
+        request = {}
+        await client.stream_run_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.stream_run_session(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_run_session_async(
+    transport: str = "grpc_asyncio", request_type=session_service.RunSessionRequest
+):
+    client = SessionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[session_service.RunSessionResponse()]
+        )
+        response = await client.stream_run_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = session_service.RunSessionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, session_service.RunSessionResponse)
+
+
+@pytest.mark.asyncio
+async def test_stream_run_session_async_from_dict():
+    await test_stream_run_session_async(request_type=dict)
+
+
+def test_stream_run_session_field_headers():
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = session_service.RunSessionRequest()
+
+    request.config.session = "session_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        call.return_value = iter([session_service.RunSessionResponse()])
+        client.stream_run_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "config.session=session_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_stream_run_session_field_headers_async():
+    client = SessionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = session_service.RunSessionRequest()
+
+    request.config.session = "session_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[session_service.RunSessionResponse()]
+        )
+        await client.stream_run_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "config.session=session_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         session_service.BidiSessionClientMessage,
         dict,
     ],
@@ -1826,6 +2075,137 @@ def test_run_session_rest_unset_required_fields():
     )
 
 
+def test_stream_run_session_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SessionServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.stream_run_session in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.stream_run_session] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.stream_run_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.stream_run_session(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_stream_run_session_rest_required_fields(
+    request_type=session_service.RunSessionRequest,
+):
+    transport_class = transports.SessionServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stream_run_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stream_run_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = session_service.RunSessionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = session_service.RunSessionResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+            json_return_value = "[{}]".format(json_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            with mock.patch.object(response_value, "iter_content") as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.stream_run_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_stream_run_session_rest_unset_required_fields():
+    transport = transports.SessionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.stream_run_session._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "config",
+                "inputs",
+            )
+        )
+    )
+
+
 def test_bidi_run_session_rest_no_http_options():
     client = SessionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1977,6 +2357,29 @@ def test_run_session_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_stream_run_session_empty_call_grpc():
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        call.return_value = iter([session_service.RunSessionResponse()])
+        client.stream_run_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = session_service.RunSessionRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = SessionServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -2007,6 +2410,34 @@ async def test_run_session_empty_call_grpc_asyncio():
             session_service.RunSessionResponse()
         )
         await client.run_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = session_service.RunSessionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_stream_run_session_empty_call_grpc_asyncio():
+    client = SessionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[session_service.RunSessionResponse()]
+        )
+        await client.stream_run_session(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
@@ -2146,6 +2577,148 @@ def test_run_session_rest_interceptors(null_interceptor):
         post_with_metadata.return_value = session_service.RunSessionResponse(), metadata
 
         client.run_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_stream_run_session_rest_bad_request(
+    request_type=session_service.RunSessionRequest,
+):
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "config": {
+            "session": "projects/sample1/locations/sample2/apps/sample3/sessions/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.stream_run_session(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session_service.RunSessionRequest,
+        dict,
+    ],
+)
+def test_stream_run_session_rest_call_success(request_type):
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "config": {
+            "session": "projects/sample1/locations/sample2/apps/sample3/sessions/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session_service.RunSessionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = session_service.RunSessionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        json_return_value = "[{}]".format(json_return_value)
+        response_value.iter_content = mock.Mock(return_value=iter(json_return_value))
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.stream_run_session(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, session_service.RunSessionResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stream_run_session_rest_interceptors(null_interceptor):
+    transport = transports.SessionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SessionServiceRestInterceptor(),
+    )
+    client = SessionServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "post_stream_run_session"
+        ) as post,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor,
+            "post_stream_run_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SessionServiceRestInterceptor, "pre_stream_run_session"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = session_service.RunSessionRequest.pb(
+            session_service.RunSessionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = session_service.RunSessionResponse.to_json(
+            session_service.RunSessionResponse()
+        )
+        req.return_value.iter_content = mock.Mock(return_value=iter(return_value))
+
+        request = session_service.RunSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = session_service.RunSessionResponse()
+        post_with_metadata.return_value = session_service.RunSessionResponse(), metadata
+
+        client.stream_run_session(
             request,
             metadata=[
                 ("key", "val"),
@@ -2571,6 +3144,28 @@ def test_run_session_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_stream_run_session_empty_call_rest():
+    client = SessionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_run_session), "__call__"
+    ) as call:
+        client.stream_run_session(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = session_service.RunSessionRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = SessionServiceClient(
@@ -2605,6 +3200,7 @@ def test_session_service_base_transport():
     # raise NotImplementedError.
     methods = (
         "run_session",
+        "stream_run_session",
         "bidi_run_session",
         "get_location",
         "list_locations",
@@ -2889,6 +3485,9 @@ def test_session_service_client_transport_session_collision(transport_name):
     )
     session1 = client1.transport.run_session._session
     session2 = client2.transport.run_session._session
+    assert session1 != session2
+    session1 = client1.transport.stream_run_session._session
+    session2 = client2.transport.stream_run_session._session
     assert session1 != session2
     session1 = client1.transport.bidi_run_session._session
     session2 = client2.transport.bidi_run_session._session

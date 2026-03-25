@@ -19,10 +19,12 @@ import logging
 import warnings
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, rest_helpers, rest_streaming
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
@@ -31,6 +33,7 @@ from google.iam.v1 import (
     iam_policy_pb2,  # type: ignore
     policy_pb2,  # type: ignore
 )
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -118,6 +121,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_folder(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_release_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -131,6 +142,14 @@ class DataformRestInterceptor:
                 return request, metadata
 
             def post_create_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_team_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_team_folder(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -158,6 +177,18 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_folder_tree(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_folder_tree(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_release_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -165,6 +196,18 @@ class DataformRestInterceptor:
             def pre_delete_repository(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_delete_team_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_team_folder_tree(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_team_folder_tree(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_delete_workflow_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -234,6 +277,22 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_folder(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_iam_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_iam_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_release_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -247,6 +306,14 @@ class DataformRestInterceptor:
                 return request, metadata
 
             def post_get_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_team_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_team_folder(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -354,6 +421,22 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_move_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_move_folder(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_move_repository(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_move_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_pull_git_commits(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -386,11 +469,35 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_query_folder_contents(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_folder_contents(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_query_repository_directory_contents(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_query_repository_directory_contents(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_query_team_folder_contents(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_team_folder_contents(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_query_user_root_contents(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_user_root_contents(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -450,11 +557,43 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_search_team_folders(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search_team_folders(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_set_iam_policy(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_set_iam_policy(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_test_iam_permissions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_test_iam_permissions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_folder(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -471,6 +610,14 @@ class DataformRestInterceptor:
                 return request, metadata
 
             def post_update_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_team_folder(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_team_folder(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -749,6 +896,50 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_folder(
+        self,
+        request: dataform.CreateFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.CreateFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for create_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_create_folder(self, response: dataform.Folder) -> dataform.Folder:
+        """Post-rpc interceptor for create_folder
+
+        DEPRECATED. Please use the `post_create_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_create_folder` interceptor runs
+        before the `post_create_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_folder_with_metadata(
+        self,
+        response: dataform.Folder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Folder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_folder_with_metadata`
+        interceptor in new development instead of the `post_create_folder` interceptor.
+        When both interceptors are used, this `post_create_folder_with_metadata` interceptor runs after the
+        `post_create_folder` interceptor. The (possibly modified) response returned by
+        `post_create_folder` will be passed to
+        `post_create_folder_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_release_config(
         self,
         request: dataform.CreateReleaseConfigRequest,
@@ -842,6 +1033,54 @@ class DataformRestInterceptor:
         `post_create_repository` interceptor. The (possibly modified) response returned by
         `post_create_repository` will be passed to
         `post_create_repository_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_team_folder(
+        self,
+        request: dataform.CreateTeamFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.CreateTeamFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_team_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_create_team_folder(
+        self, response: dataform.TeamFolder
+    ) -> dataform.TeamFolder:
+        """Post-rpc interceptor for create_team_folder
+
+        DEPRECATED. Please use the `post_create_team_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_create_team_folder` interceptor runs
+        before the `post_create_team_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_team_folder_with_metadata(
+        self,
+        response: dataform.TeamFolder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.TeamFolder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_team_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_team_folder_with_metadata`
+        interceptor in new development instead of the `post_create_team_folder` interceptor.
+        When both interceptors are used, this `post_create_team_folder_with_metadata` interceptor runs after the
+        `post_create_team_folder` interceptor. The (possibly modified) response returned by
+        `post_create_team_folder` will be passed to
+        `post_create_team_folder_with_metadata`.
         """
         return response, metadata
 
@@ -988,6 +1227,66 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_folder(
+        self,
+        request: dataform.DeleteFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.DeleteFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for delete_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def pre_delete_folder_tree(
+        self,
+        request: dataform.DeleteFolderTreeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.DeleteFolderTreeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_folder_tree
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_delete_folder_tree(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_folder_tree
+
+        DEPRECATED. Please use the `post_delete_folder_tree_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_delete_folder_tree` interceptor runs
+        before the `post_delete_folder_tree_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_folder_tree_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_folder_tree
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_folder_tree_with_metadata`
+        interceptor in new development instead of the `post_delete_folder_tree` interceptor.
+        When both interceptors are used, this `post_delete_folder_tree_with_metadata` interceptor runs after the
+        `post_delete_folder_tree` interceptor. The (possibly modified) response returned by
+        `post_delete_folder_tree` will be passed to
+        `post_delete_folder_tree_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_release_config(
         self,
         request: dataform.DeleteReleaseConfigRequest,
@@ -1015,6 +1314,68 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def pre_delete_team_folder(
+        self,
+        request: dataform.DeleteTeamFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.DeleteTeamFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_team_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def pre_delete_team_folder_tree(
+        self,
+        request: dataform.DeleteTeamFolderTreeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.DeleteTeamFolderTreeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_team_folder_tree
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_delete_team_folder_tree(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_team_folder_tree
+
+        DEPRECATED. Please use the `post_delete_team_folder_tree_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_delete_team_folder_tree` interceptor runs
+        before the `post_delete_team_folder_tree_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_team_folder_tree_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_team_folder_tree
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_team_folder_tree_with_metadata`
+        interceptor in new development instead of the `post_delete_team_folder_tree` interceptor.
+        When both interceptors are used, this `post_delete_team_folder_tree_with_metadata` interceptor runs after the
+        `post_delete_team_folder_tree` interceptor. The (possibly modified) response returned by
+        `post_delete_team_folder_tree` will be passed to
+        `post_delete_team_folder_tree_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_workflow_config(
         self,
@@ -1397,6 +1758,96 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_folder(
+        self,
+        request: dataform.GetFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.GetFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_get_folder(self, response: dataform.Folder) -> dataform.Folder:
+        """Post-rpc interceptor for get_folder
+
+        DEPRECATED. Please use the `post_get_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_get_folder` interceptor runs
+        before the `post_get_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_folder_with_metadata(
+        self,
+        response: dataform.Folder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Folder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_folder_with_metadata`
+        interceptor in new development instead of the `post_get_folder` interceptor.
+        When both interceptors are used, this `post_get_folder_with_metadata` interceptor runs after the
+        `post_get_folder` interceptor. The (possibly modified) response returned by
+        `post_get_folder` will be passed to
+        `post_get_folder_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for get_iam_policy
+
+        DEPRECATED. Please use the `post_get_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_get_iam_policy` interceptor runs
+        before the `post_get_iam_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_with_metadata` interceptor runs after the
+        `post_get_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy` will be passed to
+        `post_get_iam_policy_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_release_config(
         self,
         request: dataform.GetReleaseConfigRequest,
@@ -1486,6 +1937,52 @@ class DataformRestInterceptor:
         `post_get_repository` interceptor. The (possibly modified) response returned by
         `post_get_repository` will be passed to
         `post_get_repository_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_team_folder(
+        self,
+        request: dataform.GetTeamFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.GetTeamFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_team_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_get_team_folder(
+        self, response: dataform.TeamFolder
+    ) -> dataform.TeamFolder:
+        """Post-rpc interceptor for get_team_folder
+
+        DEPRECATED. Please use the `post_get_team_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_get_team_folder` interceptor runs
+        before the `post_get_team_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_team_folder_with_metadata(
+        self,
+        response: dataform.TeamFolder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.TeamFolder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_team_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_team_folder_with_metadata`
+        interceptor in new development instead of the `post_get_team_folder` interceptor.
+        When both interceptors are used, this `post_get_team_folder_with_metadata` interceptor runs after the
+        `post_get_team_folder` interceptor. The (possibly modified) response returned by
+        `post_get_team_folder` will be passed to
+        `post_get_team_folder_with_metadata`.
         """
         return response, metadata
 
@@ -2116,6 +2613,98 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_move_folder(
+        self,
+        request: dataform.MoveFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.MoveFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for move_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_move_folder(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for move_folder
+
+        DEPRECATED. Please use the `post_move_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_move_folder` interceptor runs
+        before the `post_move_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_move_folder_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_move_folder_with_metadata`
+        interceptor in new development instead of the `post_move_folder` interceptor.
+        When both interceptors are used, this `post_move_folder_with_metadata` interceptor runs after the
+        `post_move_folder` interceptor. The (possibly modified) response returned by
+        `post_move_folder` will be passed to
+        `post_move_folder_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_move_repository(
+        self,
+        request: dataform.MoveRepositoryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.MoveRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for move_repository
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_move_repository(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for move_repository
+
+        DEPRECATED. Please use the `post_move_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_move_repository` interceptor runs
+        before the `post_move_repository_with_metadata` interceptor.
+        """
+        return response
+
+    def post_move_repository_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_move_repository_with_metadata`
+        interceptor in new development instead of the `post_move_repository` interceptor.
+        When both interceptors are used, this `post_move_repository_with_metadata` interceptor runs after the
+        `post_move_repository` interceptor. The (possibly modified) response returned by
+        `post_move_repository` will be passed to
+        `post_move_repository_with_metadata`.
+        """
+        return response, metadata
+
     def pre_pull_git_commits(
         self,
         request: dataform.PullGitCommitsRequest,
@@ -2314,6 +2903,56 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_query_folder_contents(
+        self,
+        request: dataform.QueryFolderContentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryFolderContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for query_folder_contents
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_query_folder_contents(
+        self, response: dataform.QueryFolderContentsResponse
+    ) -> dataform.QueryFolderContentsResponse:
+        """Post-rpc interceptor for query_folder_contents
+
+        DEPRECATED. Please use the `post_query_folder_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_query_folder_contents` interceptor runs
+        before the `post_query_folder_contents_with_metadata` interceptor.
+        """
+        return response
+
+    def post_query_folder_contents_with_metadata(
+        self,
+        response: dataform.QueryFolderContentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryFolderContentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for query_folder_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_query_folder_contents_with_metadata`
+        interceptor in new development instead of the `post_query_folder_contents` interceptor.
+        When both interceptors are used, this `post_query_folder_contents_with_metadata` interceptor runs after the
+        `post_query_folder_contents` interceptor. The (possibly modified) response returned by
+        `post_query_folder_contents` will be passed to
+        `post_query_folder_contents_with_metadata`.
+        """
+        return response, metadata
+
     def pre_query_repository_directory_contents(
         self,
         request: dataform.QueryRepositoryDirectoryContentsRequest,
@@ -2363,6 +3002,107 @@ class DataformRestInterceptor:
         `post_query_repository_directory_contents` interceptor. The (possibly modified) response returned by
         `post_query_repository_directory_contents` will be passed to
         `post_query_repository_directory_contents_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_query_team_folder_contents(
+        self,
+        request: dataform.QueryTeamFolderContentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryTeamFolderContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for query_team_folder_contents
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_query_team_folder_contents(
+        self, response: dataform.QueryTeamFolderContentsResponse
+    ) -> dataform.QueryTeamFolderContentsResponse:
+        """Post-rpc interceptor for query_team_folder_contents
+
+        DEPRECATED. Please use the `post_query_team_folder_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_query_team_folder_contents` interceptor runs
+        before the `post_query_team_folder_contents_with_metadata` interceptor.
+        """
+        return response
+
+    def post_query_team_folder_contents_with_metadata(
+        self,
+        response: dataform.QueryTeamFolderContentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryTeamFolderContentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for query_team_folder_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_query_team_folder_contents_with_metadata`
+        interceptor in new development instead of the `post_query_team_folder_contents` interceptor.
+        When both interceptors are used, this `post_query_team_folder_contents_with_metadata` interceptor runs after the
+        `post_query_team_folder_contents` interceptor. The (possibly modified) response returned by
+        `post_query_team_folder_contents` will be passed to
+        `post_query_team_folder_contents_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_query_user_root_contents(
+        self,
+        request: dataform.QueryUserRootContentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryUserRootContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for query_user_root_contents
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_query_user_root_contents(
+        self, response: dataform.QueryUserRootContentsResponse
+    ) -> dataform.QueryUserRootContentsResponse:
+        """Post-rpc interceptor for query_user_root_contents
+
+        DEPRECATED. Please use the `post_query_user_root_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_query_user_root_contents` interceptor runs
+        before the `post_query_user_root_contents_with_metadata` interceptor.
+        """
+        return response
+
+    def post_query_user_root_contents_with_metadata(
+        self,
+        response: dataform.QueryUserRootContentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryUserRootContentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for query_user_root_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_query_user_root_contents_with_metadata`
+        interceptor in new development instead of the `post_query_user_root_contents` interceptor.
+        When both interceptors are used, this `post_query_user_root_contents_with_metadata` interceptor runs after the
+        `post_query_user_root_contents` interceptor. The (possibly modified) response returned by
+        `post_query_user_root_contents` will be passed to
+        `post_query_user_root_contents_with_metadata`.
         """
         return response, metadata
 
@@ -2706,6 +3446,154 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_search_team_folders(
+        self,
+        request: dataform.SearchTeamFoldersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.SearchTeamFoldersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for search_team_folders
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_search_team_folders(
+        self, response: dataform.SearchTeamFoldersResponse
+    ) -> dataform.SearchTeamFoldersResponse:
+        """Post-rpc interceptor for search_team_folders
+
+        DEPRECATED. Please use the `post_search_team_folders_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_search_team_folders` interceptor runs
+        before the `post_search_team_folders_with_metadata` interceptor.
+        """
+        return response
+
+    def post_search_team_folders_with_metadata(
+        self,
+        response: dataform.SearchTeamFoldersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.SearchTeamFoldersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_team_folders
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_search_team_folders_with_metadata`
+        interceptor in new development instead of the `post_search_team_folders` interceptor.
+        When both interceptors are used, this `post_search_team_folders_with_metadata` interceptor runs after the
+        `post_search_team_folders` interceptor. The (possibly modified) response returned by
+        `post_search_team_folders` will be passed to
+        `post_search_team_folders_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for set_iam_policy
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
+        """Post-rpc interceptor for set_iam_policy
+
+        DEPRECATED. Please use the `post_set_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_set_iam_policy` interceptor runs
+        before the `post_set_iam_policy_with_metadata` interceptor.
+        """
+        return response
+
+    def post_set_iam_policy_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_with_metadata` interceptor runs after the
+        `post_set_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy` will be passed to
+        `post_set_iam_policy_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        """Post-rpc interceptor for test_iam_permissions
+
+        DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_test_iam_permissions` interceptor runs
+        before the `post_test_iam_permissions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_test_iam_permissions_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_with_metadata` interceptor runs after the
+        `post_test_iam_permissions` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions` will be passed to
+        `post_test_iam_permissions_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_config(
         self,
         request: dataform.UpdateConfigRequest,
@@ -2747,6 +3635,50 @@ class DataformRestInterceptor:
         `post_update_config` interceptor. The (possibly modified) response returned by
         `post_update_config` will be passed to
         `post_update_config_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_folder(
+        self,
+        request: dataform.UpdateFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.UpdateFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for update_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_update_folder(self, response: dataform.Folder) -> dataform.Folder:
+        """Post-rpc interceptor for update_folder
+
+        DEPRECATED. Please use the `post_update_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_update_folder` interceptor runs
+        before the `post_update_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_folder_with_metadata(
+        self,
+        response: dataform.Folder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Folder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_update_folder_with_metadata`
+        interceptor in new development instead of the `post_update_folder` interceptor.
+        When both interceptors are used, this `post_update_folder_with_metadata` interceptor runs after the
+        `post_update_folder` interceptor. The (possibly modified) response returned by
+        `post_update_folder` will be passed to
+        `post_update_folder_with_metadata`.
         """
         return response, metadata
 
@@ -2843,6 +3775,54 @@ class DataformRestInterceptor:
         `post_update_repository` interceptor. The (possibly modified) response returned by
         `post_update_repository` will be passed to
         `post_update_repository_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_team_folder(
+        self,
+        request: dataform.UpdateTeamFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.UpdateTeamFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_team_folder
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_update_team_folder(
+        self, response: dataform.TeamFolder
+    ) -> dataform.TeamFolder:
+        """Post-rpc interceptor for update_team_folder
+
+        DEPRECATED. Please use the `post_update_team_folder_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_update_team_folder` interceptor runs
+        before the `post_update_team_folder_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_team_folder_with_metadata(
+        self,
+        response: dataform.TeamFolder,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.TeamFolder, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_team_folder
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_update_team_folder_with_metadata`
+        interceptor in new development instead of the `post_update_team_folder` interceptor.
+        When both interceptors are used, this `post_update_team_folder_with_metadata` interceptor runs after the
+        `post_update_team_folder` interceptor. The (possibly modified) response returned by
+        `post_update_team_folder` will be passed to
+        `post_update_team_folder_with_metadata`.
         """
         return response, metadata
 
@@ -2990,22 +3970,22 @@ class DataformRestInterceptor:
         """
         return response
 
-    def pre_get_iam_policy(
+    def pre_cancel_operation(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
+        request: operations_pb2.CancelOperationRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
-        """Pre-rpc interceptor for get_iam_policy
+        """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the Dataform server.
         """
         return request, metadata
 
-    def post_get_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
-        """Post-rpc interceptor for get_iam_policy
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -3013,22 +3993,22 @@ class DataformRestInterceptor:
         """
         return response
 
-    def pre_set_iam_policy(
+    def pre_delete_operation(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
+        request: operations_pb2.DeleteOperationRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
-        """Pre-rpc interceptor for set_iam_policy
+        """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the Dataform server.
         """
         return request, metadata
 
-    def post_set_iam_policy(self, response: policy_pb2.Policy) -> policy_pb2.Policy:
-        """Post-rpc interceptor for set_iam_policy
+    def post_delete_operation(self, response: None) -> None:
+        """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -3036,25 +4016,49 @@ class DataformRestInterceptor:
         """
         return response
 
-    def pre_test_iam_permissions(
+    def pre_get_operation(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
+        request: operations_pb2.GetOperationRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
-        """Pre-rpc interceptor for test_iam_permissions
+        """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the Dataform server.
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        """Post-rpc interceptor for test_iam_permissions
+    def post_get_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_operations(
+        self,
+        request: operations_pb2.ListOperationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_list_operations(
+        self, response: operations_pb2.ListOperationsResponse
+    ) -> operations_pb2.ListOperationsResponse:
+        """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
         after it is returned by the Dataform server but before
@@ -3152,10 +4156,64 @@ class DataformRestTransport(_BaseDataformRestTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DataformRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.CancelOperation": [
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
+                        "body": "*",
+                    },
+                ],
+                "google.longrunning.Operations.DeleteOperation": [
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*}/operations",
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestTransport(
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v1",
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     class _CancelWorkflowInvocation(
         _BaseDataformRestTransport._BaseCancelWorkflowInvocation, DataformRestStub
@@ -3922,6 +4980,162 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _CreateFolder(_BaseDataformRestTransport._BaseCreateFolder, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.CreateFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.CreateFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.Folder:
+            r"""Call the create folder method over HTTP.
+
+            Args:
+                request (~.dataform.CreateFolderRequest):
+                    The request object. ``CreateFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.Folder:
+                    Represents a Dataform Folder. This is
+                a resource that is used to organize
+                Files and other Folders and provide
+                hierarchical access controls.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_folder(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseCreateFolder._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseDataformRestTransport._BaseCreateFolder._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseCreateFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.CreateFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "CreateFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._CreateFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.Folder()
+            pb_resp = dataform.Folder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.Folder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.create_folder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "CreateFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateReleaseConfig(
         _BaseDataformRestTransport._BaseCreateReleaseConfig, DataformRestStub
     ):
@@ -4226,6 +5440,169 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataform.v1.Dataform",
                         "rpcName": "CreateRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateTeamFolder(
+        _BaseDataformRestTransport._BaseCreateTeamFolder, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.CreateTeamFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.CreateTeamFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.TeamFolder:
+            r"""Call the create team folder method over HTTP.
+
+            Args:
+                request (~.dataform.CreateTeamFolderRequest):
+                    The request object. ``CreateTeamFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.TeamFolder:
+                    Represents a Dataform TeamFolder.
+                This is a resource that sits at the
+                project level and is used to organize
+                Repositories and Folders with
+                hierarchical access controls. They
+                provide a team context and stricter
+                access controls.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseCreateTeamFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_team_folder(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseCreateTeamFolder._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseDataformRestTransport._BaseCreateTeamFolder._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseCreateTeamFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.CreateTeamFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "CreateTeamFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._CreateTeamFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.TeamFolder()
+            pb_resp = dataform.TeamFolder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_team_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_team_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.TeamFolder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.create_team_folder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "CreateTeamFolder",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -4697,6 +6074,271 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _DeleteFolder(_BaseDataformRestTransport._BaseDeleteFolder, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete folder method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteFolderRequest):
+                    The request object. ``DeleteFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_folder(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseDeleteFolder._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.DeleteFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "DeleteFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteFolderTree(
+        _BaseDataformRestTransport._BaseDeleteFolderTree, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteFolderTree")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteFolderTreeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete folder tree method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteFolderTreeRequest):
+                    The request object. ``DeleteFolderTree`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteFolderTree._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_folder_tree(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteFolderTree._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseDataformRestTransport._BaseDeleteFolderTree._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteFolderTree._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.DeleteFolderTree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "DeleteFolderTree",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteFolderTree._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_folder_tree(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_folder_tree_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.delete_folder_tree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "DeleteFolderTree",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteReleaseConfig(
         _BaseDataformRestTransport._BaseDeleteReleaseConfig, DataformRestStub
     ):
@@ -4914,6 +6556,269 @@ class DataformRestTransport(_BaseDataformRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _DeleteTeamFolder(
+        _BaseDataformRestTransport._BaseDeleteTeamFolder, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteTeamFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteTeamFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete team folder method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteTeamFolderRequest):
+                    The request object. ``DeleteTeamFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteTeamFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_team_folder(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteTeamFolder._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteTeamFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.DeleteTeamFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "DeleteTeamFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteTeamFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteTeamFolderTree(
+        _BaseDataformRestTransport._BaseDeleteTeamFolderTree, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteTeamFolderTree")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteTeamFolderTreeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete team folder tree method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteTeamFolderTreeRequest):
+                    The request object. ``DeleteTeamFolderTree`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_team_folder_tree(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseDeleteTeamFolderTree._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.DeleteTeamFolderTree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "DeleteTeamFolderTree",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteTeamFolderTree._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_team_folder_tree(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_team_folder_tree_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.delete_team_folder_tree",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "DeleteTeamFolderTree",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _DeleteWorkflowConfig(
         _BaseDataformRestTransport._BaseDeleteWorkflowConfig, DataformRestStub
@@ -6274,6 +8179,375 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _GetFolder(_BaseDataformRestTransport._BaseGetFolder, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.GetFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.GetFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.Folder:
+            r"""Call the get folder method over HTTP.
+
+            Args:
+                request (~.dataform.GetFolderRequest):
+                    The request object. ``GetFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.Folder:
+                    Represents a Dataform Folder. This is
+                a resource that is used to organize
+                Files and other Folders and provide
+                hierarchical access controls.
+
+            """
+
+            http_options = _BaseDataformRestTransport._BaseGetFolder._get_http_options()
+
+            request, metadata = self._interceptor.pre_get_folder(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetFolder._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseGetFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.GetFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "GetFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._GetFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.Folder()
+            pb_resp = dataform.Folder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.Folder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.get_folder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "GetFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetIamPolicy(_BaseDataformRestTransport._BaseGetIamPolicy, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the get iam policy method over HTTP.
+
+            Args:
+                request (~.iam_policy_pb2.GetIamPolicyRequest):
+                    The request object. Request message for ``GetIamPolicy`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.policy_pb2.Policy:
+                    An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources.
+
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role.
+
+                For some types of Google Cloud resources, a ``binding``
+                can also specify a ``condition``, which is a logical
+                expression that allows access to a resource only if the
+                expression evaluates to ``true``. A condition can add
+                constraints based on attributes of the request, the
+                resource, or both. To learn which resources support
+                conditions in their IAM policies, see the `IAM
+                documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+
+                **JSON example:**
+
+                ::
+
+                       {
+                         "bindings": [
+                           {
+                             "role": "roles/resourcemanager.organizationAdmin",
+                             "members": [
+                               "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                             ]
+                           },
+                           {
+                             "role": "roles/resourcemanager.organizationViewer",
+                             "members": [
+                               "user:eve@example.com"
+                             ],
+                             "condition": {
+                               "title": "expirable access",
+                               "description": "Does not grant access after Sep 2020",
+                               "expression": "request.time <
+                               timestamp('2020-10-01T00:00:00.000Z')",
+                             }
+                           }
+                         ],
+                         "etag": "BwWWja0YfJA=",
+                         "version": 3
+                       }
+
+                **YAML example:**
+
+                ::
+
+                       bindings:
+                       - members:
+                         - user:mike@example.com
+                         - group:admins@example.com
+                         - domain:google.com
+                         - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                         role: roles/resourcemanager.organizationAdmin
+                       - members:
+                         - user:eve@example.com
+                         role: roles/resourcemanager.organizationViewer
+                         condition:
+                           title: expirable access
+                           description: Does not grant access after Sep 2020
+                           expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                       etag: BwWWja0YfJA=
+                       version: 3
+
+                For a description of IAM and its features, see the `IAM
+                documentation <https://cloud.google.com/iam/docs/>`__.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseGetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseGetIamPolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = policy_pb2.Policy()
+            pb_resp = resp
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetReleaseConfig(
         _BaseDataformRestTransport._BaseGetReleaseConfig, DataformRestStub
     ):
@@ -6566,6 +8840,161 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataform.v1.Dataform",
                         "rpcName": "GetRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetTeamFolder(
+        _BaseDataformRestTransport._BaseGetTeamFolder, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.GetTeamFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.GetTeamFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.TeamFolder:
+            r"""Call the get team folder method over HTTP.
+
+            Args:
+                request (~.dataform.GetTeamFolderRequest):
+                    The request object. ``GetTeamFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.TeamFolder:
+                    Represents a Dataform TeamFolder.
+                This is a resource that sits at the
+                project level and is used to organize
+                Repositories and Folders with
+                hierarchical access controls. They
+                provide a team context and stricter
+                access controls.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseGetTeamFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_team_folder(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetTeamFolder._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseGetTeamFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.GetTeamFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "GetTeamFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._GetTeamFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.TeamFolder()
+            pb_resp = dataform.TeamFolder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_team_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_team_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.TeamFolder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.get_team_folder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "GetTeamFolder",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -8510,6 +10939,316 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _MoveFolder(_BaseDataformRestTransport._BaseMoveFolder, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.MoveFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.MoveFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the move folder method over HTTP.
+
+            Args:
+                request (~.dataform.MoveFolderRequest):
+                    The request object. ``MoveFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseMoveFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_move_folder(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseMoveFolder._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseDataformRestTransport._BaseMoveFolder._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseMoveFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.MoveFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "MoveFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._MoveFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_move_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.move_folder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "MoveFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _MoveRepository(
+        _BaseDataformRestTransport._BaseMoveRepository, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.MoveRepository")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.MoveRepositoryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the move repository method over HTTP.
+
+            Args:
+                request (~.dataform.MoveRepositoryRequest):
+                    The request object. ``MoveRepository`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseMoveRepository._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_move_repository(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseMoveRepository._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseDataformRestTransport._BaseMoveRepository._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseMoveRepository._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.MoveRepository",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "MoveRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._MoveRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_move_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_repository_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.move_repository",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "MoveRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _PullGitCommits(
         _BaseDataformRestTransport._BasePullGitCommits, DataformRestStub
     ):
@@ -9123,6 +11862,154 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _QueryFolderContents(
+        _BaseDataformRestTransport._BaseQueryFolderContents, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.QueryFolderContents")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.QueryFolderContentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.QueryFolderContentsResponse:
+            r"""Call the query folder contents method over HTTP.
+
+            Args:
+                request (~.dataform.QueryFolderContentsRequest):
+                    The request object. ``QueryFolderContents`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.QueryFolderContentsResponse:
+                    ``QueryFolderContents`` response message.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseQueryFolderContents._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_query_folder_contents(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseQueryFolderContents._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseQueryFolderContents._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.QueryFolderContents",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "QueryFolderContents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._QueryFolderContents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.QueryFolderContentsResponse()
+            pb_resp = dataform.QueryFolderContentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_query_folder_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_folder_contents_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.QueryFolderContentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.query_folder_contents",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "QueryFolderContents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _QueryRepositoryDirectoryContents(
         _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents,
         DataformRestStub,
@@ -9273,6 +12160,299 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataform.v1.Dataform",
                         "rpcName": "QueryRepositoryDirectoryContents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _QueryTeamFolderContents(
+        _BaseDataformRestTransport._BaseQueryTeamFolderContents, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.QueryTeamFolderContents")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.QueryTeamFolderContentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.QueryTeamFolderContentsResponse:
+            r"""Call the query team folder
+            contents method over HTTP.
+
+                Args:
+                    request (~.dataform.QueryTeamFolderContentsRequest):
+                        The request object. ``QueryTeamFolderContents`` request message.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.dataform.QueryTeamFolderContentsResponse:
+                        ``QueryTeamFolderContents`` response message.
+            """
+
+            http_options = _BaseDataformRestTransport._BaseQueryTeamFolderContents._get_http_options()
+
+            request, metadata = self._interceptor.pre_query_team_folder_contents(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseQueryTeamFolderContents._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseQueryTeamFolderContents._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.QueryTeamFolderContents",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "QueryTeamFolderContents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._QueryTeamFolderContents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.QueryTeamFolderContentsResponse()
+            pb_resp = dataform.QueryTeamFolderContentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_query_team_folder_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_team_folder_contents_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.QueryTeamFolderContentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.query_team_folder_contents",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "QueryTeamFolderContents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _QueryUserRootContents(
+        _BaseDataformRestTransport._BaseQueryUserRootContents, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.QueryUserRootContents")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.QueryUserRootContentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.QueryUserRootContentsResponse:
+            r"""Call the query user root contents method over HTTP.
+
+            Args:
+                request (~.dataform.QueryUserRootContentsRequest):
+                    The request object. ``QueryUserRootContents`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.QueryUserRootContentsResponse:
+                    ``QueryUserRootContents`` response message.
+            """
+
+            http_options = _BaseDataformRestTransport._BaseQueryUserRootContents._get_http_options()
+
+            request, metadata = self._interceptor.pre_query_user_root_contents(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseQueryUserRootContents._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseQueryUserRootContents._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.QueryUserRootContents",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "QueryUserRootContents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._QueryUserRootContents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.QueryUserRootContentsResponse()
+            pb_resp = dataform.QueryUserRootContentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_query_user_root_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_user_root_contents_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.QueryUserRootContentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.query_user_root_contents",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "QueryUserRootContents",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -10337,6 +13517,533 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _SearchTeamFolders(
+        _BaseDataformRestTransport._BaseSearchTeamFolders, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.SearchTeamFolders")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.SearchTeamFoldersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.SearchTeamFoldersResponse:
+            r"""Call the search team folders method over HTTP.
+
+            Args:
+                request (~.dataform.SearchTeamFoldersRequest):
+                    The request object. ``SearchTeamFolders`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.SearchTeamFoldersResponse:
+                    ``SearchTeamFolders`` response message.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseSearchTeamFolders._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_search_team_folders(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseSearchTeamFolders._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseSearchTeamFolders._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.SearchTeamFolders",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "SearchTeamFolders",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._SearchTeamFolders._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.SearchTeamFoldersResponse()
+            pb_resp = dataform.SearchTeamFoldersResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_search_team_folders(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_team_folders_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.SearchTeamFoldersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.search_team_folders",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "SearchTeamFolders",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _SetIamPolicy(_BaseDataformRestTransport._BaseSetIamPolicy, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
+            r"""Call the set iam policy method over HTTP.
+
+            Args:
+                request (~.iam_policy_pb2.SetIamPolicyRequest):
+                    The request object. Request message for ``SetIamPolicy`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.policy_pb2.Policy:
+                    An Identity and Access Management (IAM) policy, which
+                specifies access controls for Google Cloud resources.
+
+                A ``Policy`` is a collection of ``bindings``. A
+                ``binding`` binds one or more ``members``, or
+                principals, to a single ``role``. Principals can be user
+                accounts, service accounts, Google groups, and domains
+                (such as G Suite). A ``role`` is a named list of
+                permissions; each ``role`` can be an IAM predefined role
+                or a user-created custom role.
+
+                For some types of Google Cloud resources, a ``binding``
+                can also specify a ``condition``, which is a logical
+                expression that allows access to a resource only if the
+                expression evaluates to ``true``. A condition can add
+                constraints based on attributes of the request, the
+                resource, or both. To learn which resources support
+                conditions in their IAM policies, see the `IAM
+                documentation <https://cloud.google.com/iam/help/conditions/resource-policies>`__.
+
+                **JSON example:**
+
+                ::
+
+                       {
+                         "bindings": [
+                           {
+                             "role": "roles/resourcemanager.organizationAdmin",
+                             "members": [
+                               "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                             ]
+                           },
+                           {
+                             "role": "roles/resourcemanager.organizationViewer",
+                             "members": [
+                               "user:eve@example.com"
+                             ],
+                             "condition": {
+                               "title": "expirable access",
+                               "description": "Does not grant access after Sep 2020",
+                               "expression": "request.time <
+                               timestamp('2020-10-01T00:00:00.000Z')",
+                             }
+                           }
+                         ],
+                         "etag": "BwWWja0YfJA=",
+                         "version": 3
+                       }
+
+                **YAML example:**
+
+                ::
+
+                       bindings:
+                       - members:
+                         - user:mike@example.com
+                         - group:admins@example.com
+                         - domain:google.com
+                         - serviceAccount:my-project-id@appspot.gserviceaccount.com
+                         role: roles/resourcemanager.organizationAdmin
+                       - members:
+                         - user:eve@example.com
+                         role: roles/resourcemanager.organizationViewer
+                         condition:
+                           title: expirable access
+                           description: Does not grant access after Sep 2020
+                           expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                       etag: BwWWja0YfJA=
+                       version: 3
+
+                For a description of IAM and its features, see the `IAM
+                documentation <https://cloud.google.com/iam/docs/>`__.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseSetIamPolicy._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseDataformRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseSetIamPolicy._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = policy_pb2.Policy()
+            pb_resp = resp
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_set_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _TestIamPermissions(
+        _BaseDataformRestTransport._BaseTestIamPermissions, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (~.iam_policy_pb2.TestIamPermissionsRequest):
+                    The request object. Request message for ``TestIamPermissions`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.iam_policy_pb2.TestIamPermissionsResponse:
+                    Response message for ``TestIamPermissions`` method.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseTestIamPermissions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataformRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            pb_resp = resp
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_test_iam_permissions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateConfig(_BaseDataformRestTransport._BaseUpdateConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.UpdateConfig")
@@ -10485,6 +14192,162 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataform.v1.Dataform",
                         "rpcName": "UpdateConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateFolder(_BaseDataformRestTransport._BaseUpdateFolder, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.UpdateFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.UpdateFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.Folder:
+            r"""Call the update folder method over HTTP.
+
+            Args:
+                request (~.dataform.UpdateFolderRequest):
+                    The request object. ``UpdateFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.Folder:
+                    Represents a Dataform Folder. This is
+                a resource that is used to organize
+                Files and other Folders and provide
+                hierarchical access controls.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseUpdateFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_folder(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseUpdateFolder._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseDataformRestTransport._BaseUpdateFolder._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseUpdateFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.UpdateFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "UpdateFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._UpdateFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.Folder()
+            pb_resp = dataform.Folder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.Folder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.update_folder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "UpdateFolder",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -10795,6 +14658,169 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataform.v1.Dataform",
                         "rpcName": "UpdateRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateTeamFolder(
+        _BaseDataformRestTransport._BaseUpdateTeamFolder, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.UpdateTeamFolder")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.UpdateTeamFolderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.TeamFolder:
+            r"""Call the update team folder method over HTTP.
+
+            Args:
+                request (~.dataform.UpdateTeamFolderRequest):
+                    The request object. ``UpdateTeamFolder`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.TeamFolder:
+                    Represents a Dataform TeamFolder.
+                This is a resource that sits at the
+                project level and is used to organize
+                Repositories and Folders with
+                hierarchical access controls. They
+                provide a team context and stricter
+                access controls.
+
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseUpdateTeamFolder._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_team_folder(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateTeamFolder._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseDataformRestTransport._BaseUpdateTeamFolder._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseUpdateTeamFolder._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.UpdateTeamFolder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "UpdateTeamFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._UpdateTeamFolder._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.TeamFolder()
+            pb_resp = dataform.TeamFolder.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_team_folder(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_team_folder_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.TeamFolder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformClient.update_team_folder",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "UpdateTeamFolder",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -11170,6 +15196,14 @@ class DataformRestTransport(_BaseDataformRestTransport):
         )  # type: ignore
 
     @property
+    def create_folder(
+        self,
+    ) -> Callable[[dataform.CreateFolderRequest], dataform.Folder]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_release_config(
         self,
     ) -> Callable[[dataform.CreateReleaseConfigRequest], dataform.ReleaseConfig]:
@@ -11184,6 +15218,14 @@ class DataformRestTransport(_BaseDataformRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_team_folder(
+        self,
+    ) -> Callable[[dataform.CreateTeamFolderRequest], dataform.TeamFolder]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateTeamFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_workflow_config(
@@ -11214,6 +15256,22 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._CreateWorkspace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_folder(
+        self,
+    ) -> Callable[[dataform.DeleteFolderRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_folder_tree(
+        self,
+    ) -> Callable[[dataform.DeleteFolderTreeRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteFolderTree(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_release_config(
         self,
     ) -> Callable[[dataform.DeleteReleaseConfigRequest], empty_pb2.Empty]:
@@ -11228,6 +15286,22 @@ class DataformRestTransport(_BaseDataformRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_team_folder(
+        self,
+    ) -> Callable[[dataform.DeleteTeamFolderRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteTeamFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_team_folder_tree(
+        self,
+    ) -> Callable[[dataform.DeleteTeamFolderTreeRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteTeamFolderTree(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_workflow_config(
@@ -11321,6 +15395,20 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._GetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_folder(self) -> Callable[[dataform.GetFolderRequest], dataform.Folder]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_release_config(
         self,
     ) -> Callable[[dataform.GetReleaseConfigRequest], dataform.ReleaseConfig]:
@@ -11335,6 +15423,14 @@ class DataformRestTransport(_BaseDataformRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_team_folder(
+        self,
+    ) -> Callable[[dataform.GetTeamFolderRequest], dataform.TeamFolder]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetTeamFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_workflow_config(
@@ -11459,6 +15555,22 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._MoveFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def move_folder(
+        self,
+    ) -> Callable[[dataform.MoveFolderRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MoveFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def move_repository(
+        self,
+    ) -> Callable[[dataform.MoveRepositoryRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MoveRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def pull_git_commits(
         self,
     ) -> Callable[[dataform.PullGitCommitsRequest], dataform.PullGitCommitsResponse]:
@@ -11501,6 +15613,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
         )  # type: ignore
 
     @property
+    def query_folder_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryFolderContentsRequest], dataform.QueryFolderContentsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryFolderContents(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def query_repository_directory_contents(
         self,
     ) -> Callable[
@@ -11512,6 +15634,29 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._QueryRepositoryDirectoryContents(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def query_team_folder_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryTeamFolderContentsRequest],
+        dataform.QueryTeamFolderContentsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryTeamFolderContents(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def query_user_root_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryUserRootContentsRequest], dataform.QueryUserRootContentsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryUserRootContents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def query_workflow_invocation_actions(
@@ -11579,12 +15724,49 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._SearchFiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def search_team_folders(
+        self,
+    ) -> Callable[
+        [dataform.SearchTeamFoldersRequest], dataform.SearchTeamFoldersResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SearchTeamFolders(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_config(
         self,
     ) -> Callable[[dataform.UpdateConfigRequest], dataform.Config]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_folder(
+        self,
+    ) -> Callable[[dataform.UpdateFolderRequest], dataform.Folder]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_release_config(
@@ -11601,6 +15783,14 @@ class DataformRestTransport(_BaseDataformRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRepository(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_team_folder(
+        self,
+    ) -> Callable[[dataform.UpdateTeamFolderRequest], dataform.TeamFolder]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateTeamFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_workflow_config(
@@ -11905,304 +16095,14 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return resp
 
     @property
-    def get_iam_policy(self):
-        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(_BaseDataformRestTransport._BaseGetIamPolicy, DataformRestStub):
-        def __hash__(self):
-            return hash("DataformRestTransport.GetIamPolicy")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: iam_policy_pb2.GetIamPolicyRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> policy_pb2.Policy:
-            r"""Call the get iam policy method over HTTP.
-
-            Args:
-                request (iam_policy_pb2.GetIamPolicyRequest):
-                    The request object for GetIamPolicy method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                policy_pb2.Policy: Response from GetIamPolicy method.
-            """
-
-            http_options = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataform_v1.DataformClient.GetIamPolicy",
-                    extra={
-                        "serviceName": "google.cloud.dataform.v1.Dataform",
-                        "rpcName": "GetIamPolicy",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataformRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            content = response.content.decode("utf-8")
-            resp = policy_pb2.Policy()
-            resp = json_format.Parse(content, resp)
-            resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataform_v1.DataformAsyncClient.GetIamPolicy",
-                    extra={
-                        "serviceName": "google.cloud.dataform.v1.Dataform",
-                        "rpcName": "GetIamPolicy",
-                        "httpResponse": http_response,
-                        "metadata": http_response["headers"],
-                    },
-                )
-            return resp
-
-    @property
-    def set_iam_policy(self):
-        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
-
-    class _SetIamPolicy(_BaseDataformRestTransport._BaseSetIamPolicy, DataformRestStub):
-        def __hash__(self):
-            return hash("DataformRestTransport.SetIamPolicy")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-            return response
-
-        def __call__(
-            self,
-            request: iam_policy_pb2.SetIamPolicyRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> policy_pb2.Policy:
-            r"""Call the set iam policy method over HTTP.
-
-            Args:
-                request (iam_policy_pb2.SetIamPolicyRequest):
-                    The request object for SetIamPolicy method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                policy_pb2.Policy: Response from SetIamPolicy method.
-            """
-
-            http_options = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseDataformRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.dataform_v1.DataformClient.SetIamPolicy",
-                    extra={
-                        "serviceName": "google.cloud.dataform.v1.Dataform",
-                        "rpcName": "SetIamPolicy",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = DataformRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            content = response.content.decode("utf-8")
-            resp = policy_pb2.Policy()
-            resp = json_format.Parse(content, resp)
-            resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.dataform_v1.DataformAsyncClient.SetIamPolicy",
-                    extra={
-                        "serviceName": "google.cloud.dataform.v1.Dataform",
-                        "rpcName": "SetIamPolicy",
-                        "httpResponse": http_response,
-                        "metadata": http_response["headers"],
-                    },
-                )
-            return resp
-
-    @property
-    def test_iam_permissions(self):
-        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
-
-    class _TestIamPermissions(
-        _BaseDataformRestTransport._BaseTestIamPermissions, DataformRestStub
+    class _CancelOperation(
+        _BaseDataformRestTransport._BaseCancelOperation, DataformRestStub
     ):
         def __hash__(self):
-            return hash("DataformRestTransport.TestIamPermissions")
+            return hash("DataformRestTransport.CancelOperation")
 
         @staticmethod
         def _get_response(
@@ -12229,17 +16129,17 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
         def __call__(
             self,
-            request: iam_policy_pb2.TestIamPermissionsRequest,
+            request: operations_pb2.CancelOperationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> iam_policy_pb2.TestIamPermissionsResponse:
-            r"""Call the test iam permissions method over HTTP.
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
 
             Args:
-                request (iam_policy_pb2.TestIamPermissionsRequest):
-                    The request object for TestIamPermissions method.
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -12247,29 +16147,32 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     sent along with the request as metadata. Normally, each value must be of type `str`,
                     but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
-
-            Returns:
-                iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
             http_options = (
-                _BaseDataformRestTransport._BaseTestIamPermissions._get_http_options()
+                _BaseDataformRestTransport._BaseCancelOperation._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
+            request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseDataformRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseCancelOperation._get_transcoded_request(
+                    http_options, request
+                )
             )
 
-            body = _BaseDataformRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
+            body = (
+                _BaseDataformRestTransport._BaseCancelOperation._get_request_body_json(
+                    transcoded_request
+                )
             )
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            query_params = (
+                _BaseDataformRestTransport._BaseCancelOperation._get_query_params_json(
+                    transcoded_request
+                )
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12290,17 +16193,17 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.dataform_v1.DataformClient.TestIamPermissions",
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.CancelOperation",
                     extra={
                         "serviceName": "google.cloud.dataform.v1.Dataform",
-                        "rpcName": "TestIamPermissions",
+                        "rpcName": "CancelOperation",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = DataformRestTransport._TestIamPermissions._get_response(
+            response = DataformRestTransport._CancelOperation._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -12315,10 +16218,245 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            return self._interceptor.post_cancel_operation(None)
+
+    @property
+    def delete_operation(self):
+        return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _DeleteOperation(
+        _BaseDataformRestTransport._BaseDeleteOperation, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.DeleteOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the delete operation method over HTTP.
+
+            Args:
+                request (operations_pb2.DeleteOperationRequest):
+                    The request object for DeleteOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_operation(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseDeleteOperation._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_delete_operation(None)
+
+    @property
+    def get_operation(self):
+        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetOperation(_BaseDataformRestTransport._BaseGetOperation, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.GetOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the get operation method over HTTP.
+
+            Args:
+                request (operations_pb2.GetOperationRequest):
+                    The request object for GetOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                operations_pb2.Operation: Response from GetOperation method.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseGetOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_operation(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseGetOperation._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseGetOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
             content = response.content.decode("utf-8")
-            resp = iam_policy_pb2.TestIamPermissionsResponse()
+            resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
-            resp = self._interceptor.post_test_iam_permissions(resp)
+            resp = self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12332,10 +16470,154 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.dataform_v1.DataformAsyncClient.TestIamPermissions",
+                    "Received response for google.cloud.dataform_v1.DataformAsyncClient.GetOperation",
                     extra={
                         "serviceName": "google.cloud.dataform.v1.Dataform",
-                        "rpcName": "TestIamPermissions",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def list_operations(self):
+        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListOperations(
+        _BaseDataformRestTransport._BaseListOperations, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.ListOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.ListOperationsResponse:
+            r"""Call the list operations method over HTTP.
+
+            Args:
+                request (operations_pb2.ListOperationsRequest):
+                    The request object for ListOperations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                operations_pb2.ListOperationsResponse: Response from ListOperations method.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseListOperations._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_operations(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseListOperations._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseListOperations._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1.DataformClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = operations_pb2.ListOperationsResponse()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1.DataformAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1.Dataform",
+                        "rpcName": "ListOperations",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
                     },

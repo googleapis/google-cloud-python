@@ -82,6 +82,14 @@ class SessionServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_stream_run_session(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stream_run_session(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = SessionServiceRestTransport(interceptor=MyCustomSessionServiceInterceptor())
         client = SessionServiceClient(transport=transport)
 
@@ -135,6 +143,56 @@ class SessionServiceRestInterceptor:
         `post_run_session` interceptor. The (possibly modified) response returned by
         `post_run_session` will be passed to
         `post_run_session_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_stream_run_session(
+        self,
+        request: session_service.RunSessionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        session_service.RunSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for stream_run_session
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SessionService server.
+        """
+        return request, metadata
+
+    def post_stream_run_session(
+        self, response: rest_streaming.ResponseIterator
+    ) -> rest_streaming.ResponseIterator:
+        """Post-rpc interceptor for stream_run_session
+
+        DEPRECATED. Please use the `post_stream_run_session_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SessionService server but before
+        it is returned to user code. This `post_stream_run_session` interceptor runs
+        before the `post_stream_run_session_with_metadata` interceptor.
+        """
+        return response
+
+    def post_stream_run_session_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for stream_run_session
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionService server but before it is returned to user code.
+
+        We recommend only using this `post_stream_run_session_with_metadata`
+        interceptor in new development instead of the `post_stream_run_session` interceptor.
+        When both interceptors are used, this `post_stream_run_session_with_metadata` interceptor runs after the
+        `post_stream_run_session` interceptor. The (possibly modified) response returned by
+        `post_stream_run_session` will be passed to
+        `post_stream_run_session_with_metadata`.
         """
         return response, metadata
 
@@ -556,6 +614,154 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
                 )
             return resp
 
+    class _StreamRunSession(
+        _BaseSessionServiceRestTransport._BaseStreamRunSession, SessionServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("SessionServiceRestTransport.StreamRunSession")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: session_service.RunSessionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            r"""Call the stream run session method over HTTP.
+
+            Args:
+                request (~.session_service.RunSessionRequest):
+                    The request object. Request message for
+                [SessionService.RunSession][google.cloud.ces.v1.SessionService.RunSession].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.session_service.RunSessionResponse:
+                    Response message for
+                [SessionService.RunSession][google.cloud.ces.v1.SessionService.RunSession].
+
+            """
+
+            http_options = _BaseSessionServiceRestTransport._BaseStreamRunSession._get_http_options()
+
+            request, metadata = self._interceptor.pre_stream_run_session(
+                request, metadata
+            )
+            transcoded_request = _BaseSessionServiceRestTransport._BaseStreamRunSession._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSessionServiceRestTransport._BaseStreamRunSession._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSessionServiceRestTransport._BaseStreamRunSession._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.ces_v1.SessionServiceClient.StreamRunSession",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1.SessionService",
+                        "rpcName": "StreamRunSession",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SessionServiceRestTransport._StreamRunSession._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rest_streaming.ResponseIterator(
+                response, session_service.RunSessionResponse
+            )
+
+            resp = self._interceptor.post_stream_run_session(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stream_run_session_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.ces_v1.SessionServiceClient.stream_run_session",
+                    extra={
+                        "serviceName": "google.cloud.ces.v1.SessionService",
+                        "rpcName": "StreamRunSession",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def bidi_run_session(
         self,
@@ -576,6 +782,16 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunSession(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stream_run_session(
+        self,
+    ) -> Callable[
+        [session_service.RunSessionRequest], session_service.RunSessionResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StreamRunSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

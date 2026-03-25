@@ -31439,6 +31439,9 @@ def test_create_backup_plan_association_rest_call_success(request_type):
         "cloud_sql_instance_backup_plan_association_properties": {
             "instance_create_time": {}
         },
+        "alloydb_cluster_backup_plan_association_properties": {
+            "cluster_uid": "cluster_uid_value"
+        },
         "backup_plan_revision_id": "backup_plan_revision_id_value",
         "backup_plan_revision_name": "backup_plan_revision_name_value",
     }
@@ -31673,6 +31676,9 @@ def test_update_backup_plan_association_rest_call_success(request_type):
         "data_source": "data_source_value",
         "cloud_sql_instance_backup_plan_association_properties": {
             "instance_create_time": {}
+        },
+        "alloydb_cluster_backup_plan_association_properties": {
+            "cluster_uid": "cluster_uid_value"
         },
         "backup_plan_revision_id": "backup_plan_revision_id_value",
         "backup_plan_revision_name": "backup_plan_revision_name_value",

@@ -74,6 +74,7 @@ from google.cloud.ces_v1.services.agent_service import pagers
 from google.cloud.ces_v1.types import (
     agent,
     agent_service,
+    agent_tool,
     agent_transfers,
     app,
     app_version,
@@ -5118,7 +5119,6 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
                 # Initialize request argument(s)
                 deployment = ces_v1.Deployment()
                 deployment.display_name = "display_name_value"
-                deployment.app_version = "app_version_value"
 
                 request = ces_v1.CreateDeploymentRequest(
                     parent="parent_value",
@@ -5254,7 +5254,6 @@ class AgentServiceClient(metaclass=AgentServiceClientMeta):
                 # Initialize request argument(s)
                 deployment = ces_v1.Deployment()
                 deployment.display_name = "display_name_value"
-                deployment.app_version = "app_version_value"
 
                 request = ces_v1.UpdateDeploymentRequest(
                     deployment=deployment,

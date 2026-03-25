@@ -36,16 +36,15 @@ class BigQueryExportSettings(proto.Message):
             Optional. Indicates whether the BigQuery
             export is enabled.
         project (str):
-            Optional. The project ID of the BigQuery dataset to export
-            the data to.
+            Optional. The **project ID** of the BigQuery dataset to
+            export the data to.
 
             Note: If the BigQuery dataset is in a different project from
             the app, you should grant ``roles/bigquery.admin`` role to
             the CES service agent
             ``service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com``.
         dataset (str):
-            Optional. The BigQuery dataset to export the
-            data to.
+            Optional. The BigQuery **dataset ID** to export the data to.
     """
 
     enabled: bool = proto.Field(
