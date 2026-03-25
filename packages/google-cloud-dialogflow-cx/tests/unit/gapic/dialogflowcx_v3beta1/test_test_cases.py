@@ -8674,6 +8674,7 @@ def test_create_test_case_rest_call_success(request_type):
                         "is_fallback": True,
                         "labels": {},
                         "description": "description_value",
+                        "dtmf_pattern": "dtmf_pattern_value",
                     },
                     "current_page": {
                         "name": "name_value",
@@ -9157,6 +9158,7 @@ def test_update_test_case_rest_call_success(request_type):
                         "is_fallback": True,
                         "labels": {},
                         "description": "description_value",
+                        "dtmf_pattern": "dtmf_pattern_value",
                     },
                     "current_page": {
                         "name": "name_value",

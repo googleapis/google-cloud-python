@@ -127,6 +127,9 @@ class Intent(proto.Message):
             understanding an intent like its scope, content,
             result etc. Maximum character limit: 140
             characters.
+        dtmf_pattern (str):
+            Optional. Matching DTMF pattern for the
+            intent.
     """
 
     class TrainingPhrase(proto.Message):
@@ -285,6 +288,10 @@ class Intent(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    dtmf_pattern: str = proto.Field(
+        proto.STRING,
+        number=16,
     )
 
 
