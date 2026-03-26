@@ -840,4 +840,4 @@ def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
     # Implement logic to install core packages directly from the mono-repo directories.
-    session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python."
+    session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
