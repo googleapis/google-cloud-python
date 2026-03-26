@@ -146,3 +146,12 @@ def docs(session):
         "Docs build postponed during migration. "
         "Requires resolution of Sphinx 1.5.5 / Jinja2 compatibility."
     )
+
+
+@nox.session(python="3.10")
+def docfx(session):
+    """Build documentation (POSTPONED)."""
+    session.skip(
+        "Docs build postponed during migration. "
+        "Requires resolution of Sphinx 1.5.5 / Jinja2 compatibility."
+    )
