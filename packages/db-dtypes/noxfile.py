@@ -36,7 +36,6 @@ DEFAULT_PYTHON_VERSION = "3.14"
 LINT_PYTHON_VERSION = "3.10"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -44,8 +43,6 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
-ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -111,10 +108,6 @@ def lint(session):
     session.run("flake8", "db_dtypes", "tests")
 
 
-# TODO: the owlbot-python docker image still has python 3.8 installed (
-# and only 3.8).
-# As soon as that gets upgraded, we should be able to revert this session
-# to using the DEFAULT_PYTHON_VERSION.
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """Run black. Format code to uniform standard."""
@@ -285,12 +278,10 @@ def prerelease(session, tests_path):
     )
 
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 @nox.parametrize("test_type", ["unit", "compliance"])
 def unit(session, test_type):
     """Run the unit test suite."""
-    if session.python == "3.7":
-        session.skip("Python 3.7 is no longer supported")
 
     # Compliance tests only run on the latest Python version
     if test_type == "compliance" and session.python != DEFAULT_PYTHON_VERSION:

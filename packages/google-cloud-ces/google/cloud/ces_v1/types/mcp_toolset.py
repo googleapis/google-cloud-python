@@ -58,6 +58,13 @@ class McpToolset(proto.Message):
             Optional. The TLS configuration. Includes the
             custom server certificates that the client
             should trust.
+        custom_headers (MutableMapping[str, str]):
+            Optional. The custom headers to send in the request to the
+            MCP server. The values must be in the format
+            ``$context.variables.<name_of_variable>`` and can be set in
+            the session variables. See
+            https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection
+            for more details.
     """
 
     server_address: str = proto.Field(
@@ -78,6 +85,11 @@ class McpToolset(proto.Message):
         proto.MESSAGE,
         number=4,
         message=common.TlsConfig,
+    )
+    custom_headers: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
     )
 
 

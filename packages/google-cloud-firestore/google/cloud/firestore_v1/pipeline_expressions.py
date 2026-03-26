@@ -1381,6 +1381,33 @@ class Expression(ABC):
             "map_get", [self, self._cast_to_expr_or_convert_to_constant(key)]
         )
 
+    def map_set(self, key: str | Constant[str], value: Any) -> "Expression":
+        """Creates an expression that returns a new map with the specified entries added or
+        updated.
+
+        Note:
+            `map_set` only performs shallow updates to the map. Setting a value to `None`
+            will retain the key with a `None` value. To remove a key entirely, use
+            `map_remove`.
+
+        Example:
+            >>> Map({"city": "London"}).map_set("city", "New York")
+            >>> Field.of("address").map_set("city", "Seattle")
+
+        Args:
+            key: The key to set in the map.
+            value: The value to associate with the key.
+
+        Returns:
+            A new `Expression` representing the map_set operation.
+        """
+        args = [
+            self,
+            self._cast_to_expr_or_convert_to_constant(key),
+            self._cast_to_expr_or_convert_to_constant(value),
+        ]
+        return FunctionExpression("map_set", args)
+
     @expose_as_static
     def map_remove(self, key: str | Constant[str]) -> "Expression":
         """Remove a key from a the map produced by evaluating this expression.
@@ -1422,6 +1449,276 @@ class Expression(ABC):
             "map_merge",
             [self] + [self._cast_to_expr_or_convert_to_constant(m) for m in other_maps],
         )
+
+    @expose_as_static
+    def map_keys(self) -> "Expression":
+        """Creates an expression that returns the keys of a map.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_keys()
+            >>> Field.of("address").map_keys()
+
+        Returns:
+            A new `Expression` representing the keys of the map.
+        """
+        return FunctionExpression("map_keys", [self])
+
+    @expose_as_static
+    def map_values(self) -> "Expression":
+        """Creates an expression that returns the values of a map.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_values()
+            >>> Field.of("address").map_values()
+
+        Returns:
+            A new `Expression` representing the values of the map.
+        """
+        return FunctionExpression("map_values", [self])
+
+    @expose_as_static
+    def map_entries(self) -> "Expression":
+        """Creates an expression that returns the entries of a map as an array of maps,
+        where each map contains a `"k"` property for the key and a `"v"` property for the value.
+        For example: `[{ "k": "key1", "v": "value1" }, ...]`.
+
+        Note:
+            While the backend generally preserves insertion order, relying on the
+            order of the output array is not guaranteed and should be avoided.
+
+        Example:
+            >>> Map({"city": "London", "country": "UK"}).map_entries()
+            >>> Field.of("address").map_entries()
+
+        Returns:
+            A new `Expression` representing the entries of the map.
+        """
+        return FunctionExpression("map_entries", [self])
+
+    def regex_find(self, pattern: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that returns the first substring of a string expression that
+        matches a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("email").regex_find("@[A-Za-z0-9.-]+")
+            >>> Field.of("email").regex_find(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def regex_find_all(self, pattern: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that evaluates to an array of all substrings in a string expression
+        that match a specified regular expression.
+
+        This expression uses the RE2 regular expression syntax. See https://github.com/google/re2/wiki/Syntax.
+
+        Example:
+            >>> Field.of("comment").regex_find_all("@[A-Za-z0-9_]+")
+            >>> Field.of("comment").regex_find_all(Field.of("pattern"))
+
+        Args:
+            pattern: The regular expression to search for.
+
+        Returns:
+            A new `Expression` representing the regular expression find function.
+        """
+        return FunctionExpression(
+            "regex_find_all", [self, self._cast_to_expr_or_convert_to_constant(pattern)]
+        )
+
+    @expose_as_static
+    def split(self, delimiter: str | Constant[str] | Expression) -> "Expression":
+        """Creates an expression that splits the value of a field on the provided delimiter.
+
+        Example:
+            >>> Field.of("date").split("date", "-")
+
+        Args:
+            field_name: Split the value in this field.
+            delimiter: The delimiter string to split on.
+
+        Returns:
+            A new `Expression` representing the split function.
+        """
+        return FunctionExpression(
+            "split", [self, self._cast_to_expr_or_convert_to_constant(delimiter)]
+        )
+
+    @expose_as_static
+    def string_repeat(self, repetitions: int | Expression) -> "Expression":
+        """Creates an expression that repeats a string or byte array a specified number
+        of times.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("name").string_repeat(3)
+            >>> # Called statically using the field name:
+            >>> Expression.string_repeat("name", 3)
+
+        Args:
+            repetitions: The number of times to repeat the string or byte array.
+
+        Returns:
+            A new `Expression` representing the repeated string or byte array.
+        """
+        return FunctionExpression(
+            "string_repeat",
+            [self, self._cast_to_expr_or_convert_to_constant(repetitions)],
+        )
+
+    @expose_as_static
+    def string_replace_all(
+        self,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that replaces all occurrences of a substring or byte
+        sequence with a replacement.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_replace_all("foo", "bar")
+
+        Args:
+            find: The substring or byte sequence to search for.
+            replacement: The replacement string or byte sequence.
+
+        Returns:
+            A new `Expression` representing the string or byte array with replacements.
+        """
+        return FunctionExpression(
+            "string_replace_all",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(find),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_replace_one(
+        self,
+        find: str | bytes | Constant[str] | Constant[bytes] | Expression,
+        replacement: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that replaces the first occurrence of a substring or byte
+        sequence with a replacement.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_replace_one("foo", "bar")
+
+        Args:
+            find: The substring or byte sequence to search for.
+            replacement: The replacement string or byte sequence.
+
+        Returns:
+            A new `Expression` representing the string or byte array with the replacement.
+        """
+        return FunctionExpression(
+            "string_replace_one",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(find),
+                self._cast_to_expr_or_convert_to_constant(replacement),
+            ],
+        )
+
+    @expose_as_static
+    def string_index_of(
+        self,
+        search: str | bytes | Constant[str] | Constant[bytes] | Expression,
+    ) -> "Expression":
+        """Creates an expression that finds the index of the first occurrence of a substring or
+        byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").string_index_of("foo")
+
+        Args:
+            search: The substring or byte sequence to search for.
+
+        Returns:
+            A new `Expression` representing the index of the first occurrence.
+        """
+        return FunctionExpression(
+            "string_index_of",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+            ],
+        )
+
+    @expose_as_static
+    def ltrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims leading whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").ltrim()
+            >>> Field.of("text").ltrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("ltrim", args)
+
+    @expose_as_static
+    def rtrim(
+        self,
+        chars: str | bytes | Constant[str] | Constant[bytes] | Expression | None = None,
+    ) -> "Expression":
+        """Creates an expression that trims trailing whitespace or a specified sequence
+        of characters/bytes from a string or byte sequence.
+
+        Example:
+            >>> # Called on an existing field expression:
+            >>> Field.of("text").rtrim()
+            >>> Field.of("text").rtrim(" ")
+
+        Args:
+            chars: The substring or byte sequence to trim. If not provided,
+                whitespace will be trimmed.
+
+        Returns:
+            A new `Expression` representing the trimmed value.
+        """
+        args = [self]
+        if chars is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(chars))
+
+        return FunctionExpression("rtrim", args)
 
     @expose_as_static
     def cosine_distance(self, other: Expression | list[float] | Vector) -> "Expression":
@@ -1605,6 +1902,202 @@ class Expression(ABC):
             A new `AggregateFunction` representing the last aggregation.
         """
         return AggregateFunction("last", [self])
+
+    @expose_as_static
+    def array_first(self) -> "Expression":
+        """Creates an expression that returns the first element of an array.
+
+        Example:
+            >>> # Select the first element of array 'colors'
+            >>> Field.of("colors").array_first()
+
+        Returns:
+            A new `Expression` representing the first element of the array.
+        """
+        return FunctionExpression("array_first", [self])
+
+    @expose_as_static
+    def array_last(self) -> "Expression":
+        """Creates an expression that returns the last element of an array.
+
+        Example:
+            >>> # Select the last element of array 'colors'
+            >>> Field.of("colors").array_last()
+
+        Returns:
+            A new `Expression` representing the last element of the array.
+        """
+        return FunctionExpression("array_last", [self])
+
+    @expose_as_static
+    def array_first_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the first `n` elements of an array.
+
+        Example:
+            >>> # Select the first 2 elements of array 'colors'
+            >>> Field.of("colors").array_first_n(2)
+
+        Returns:
+            A new `Expression` representing the first `n` elements of the array.
+        """
+        return FunctionExpression(
+            "array_first_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_last_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the last `n` elements of an array.
+
+        Example:
+            >>> # Select the last 2 elements of array 'colors'
+            >>> Field.of("colors").array_last_n(2)
+
+        Returns:
+            A new `Expression` representing the last `n` elements of the array.
+        """
+        return FunctionExpression(
+            "array_last_n", [self, self._cast_to_expr_or_convert_to_constant(n)]
+        )
+
+    @expose_as_static
+    def array_maximum(self) -> "Expression":
+        """Creates an expression that returns the maximum element of an array.
+
+        Example:
+            >>> # Select the maximum element of array 'scores'
+            >>> Field.of("scores").array_maximum()
+
+        Returns:
+            A new `Expression` representing the maximum element of the array.
+        """
+        return FunctionExpression(
+            "maximum", [self], infix_name_override="array_maximum"
+        )
+
+    @expose_as_static
+    def array_minimum(self) -> "Expression":
+        """Creates an expression that returns the minimum element of an array.
+
+        Example:
+            >>> # Select the minimum element of array 'scores'
+            >>> Field.of("scores").array_minimum()
+
+        Returns:
+            A new `Expression` representing the minimum element of the array.
+        """
+        return FunctionExpression(
+            "minimum", [self], infix_name_override="array_minimum"
+        )
+
+    @expose_as_static
+    def array_maximum_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the maximum `n` elements of an array.
+
+        Example:
+            >>> # Select the maximum 2 elements of array 'scores'
+            >>> Field.of("scores").array_maximum_n(2)
+
+        Note:
+            Returns the n largest non-null elements in the array, in descending
+            order. This does not use a stable sort, meaning the order of equivalent
+            elements is undefined.
+
+        Returns:
+            A new `Expression` representing the maximum `n` elements of the array.
+        """
+        return FunctionExpression(
+            "maximum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            infix_name_override="array_maximum_n",
+        )
+
+    @expose_as_static
+    def array_minimum_n(self, n: int | "Expression") -> "Expression":
+        """Creates an expression that returns the minimum `n` elements of an array.
+
+        Example:
+            >>> # Select the minimum 2 elements of array 'scores'
+            >>> Field.of("scores").array_minimum_n(2)
+
+        Note:
+            Returns the n smallest non-null elements in the array, in ascending
+            order. This does not use a stable sort, meaning the order of equivalent
+            elements is undefined.
+
+        Returns:
+            A new `Expression` representing the minimum `n` elements of the array.
+        """
+        return FunctionExpression(
+            "minimum_n",
+            [self, self._cast_to_expr_or_convert_to_constant(n)],
+            infix_name_override="array_minimum_n",
+        )
+
+    @expose_as_static
+    def array_slice(
+        self, offset: int | "Expression", length: int | "Expression" | None = None
+    ) -> "Expression":
+        """Creates an expression that returns a slice of an array starting from the specified
+        offset with a given length.
+
+        Example:
+            >>> # Slice array 'scores' starting at index 1 with length 2
+            >>> Field.of("scores").array_slice(1, 2)
+
+        Args:
+            offset: the 0-based index of the first element to include.
+            length: The number of elements to include in the slice. If omitted, slices to the end.
+
+        Returns:
+            A new `Expression` representing the slice of the array.
+        """
+        args = [self, self._cast_to_expr_or_convert_to_constant(offset)]
+        if length is not None:
+            args.append(self._cast_to_expr_or_convert_to_constant(length))
+        return FunctionExpression("array_slice", args)
+
+    @expose_as_static
+    def array_index_of(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns the first index of the search value in the array,
+        or -1 if not found.
+
+        Example:
+            >>> # Get the index of "comedy" in the 'tags' array
+            >>> Field.of("tags").array_index_of("comedy")
+
+        Args:
+            search: An expression evaluating to the value to search for.
+
+        Returns:
+            A new `Expression` representing the index.
+        """
+        return FunctionExpression(
+            "array_index_of",
+            [
+                self,
+                self._cast_to_expr_or_convert_to_constant(search),
+                self._cast_to_expr_or_convert_to_constant("first"),
+            ],
+        )
+
+    @expose_as_static
+    def array_index_of_all(self, search: "Expression" | CONSTANT_TYPE) -> "Expression":
+        """Creates an expression that returns all indices of a value in an array.
+
+        Example:
+            >>> # Get all indices of "comedy" in the 'tags' array
+            >>> Field.of("tags").array_index_of_all("comedy")
+
+        Args:
+            search: An expression evaluating to the value to search for.
+
+        Returns:
+            A new `Expression` representing the indices.
+        """
+        return FunctionExpression(
+            "array_index_of_all",
+            [self, self._cast_to_expr_or_convert_to_constant(search)],
+        )
 
     @expose_as_static
     def unix_micros_to_timestamp(self) -> "Expression":

@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     manifest={
         "AlloyDBClusterDataSourceProperties",
         "AlloyDbClusterBackupProperties",
+        "AlloyDBClusterBackupPlanAssociationProperties",
     },
 )
 
@@ -87,6 +88,21 @@ class AlloyDbClusterBackupProperties(proto.Message):
     database_version: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class AlloyDBClusterBackupPlanAssociationProperties(proto.Message):
+    r"""Properties for an AlloyDB cluster backup plan association.
+
+    Attributes:
+        cluster_uid (str):
+            Output only. The cluster UID of the AlloyDB
+            cluster.
+    """
+
+    cluster_uid: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

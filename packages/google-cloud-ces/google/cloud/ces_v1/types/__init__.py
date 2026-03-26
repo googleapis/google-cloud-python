@@ -81,6 +81,9 @@ from .agent_service import (
     UpdateToolRequest,
     UpdateToolsetRequest,
 )
+from .agent_tool import (
+    AgentTool,
+)
 from .agent_transfers import (
     ExpressionCondition,
     PythonCodeCondition,
@@ -96,6 +99,7 @@ from .app import (
     CloudLoggingSettings,
     ConversationLoggingSettings,
     DataStoreSettings,
+    ErrorHandlingSettings,
     EvaluationMetricsThresholds,
     LanguageSettings,
     LoggingSettings,
@@ -206,6 +210,10 @@ from .schema import (
 from .search_suggestions import (
     GoogleSearchSuggestions,
     WebSearchQuery,
+)
+from .security_settings import (
+    EndpointControlPolicy,
+    SecuritySettings,
 )
 from .session_service import (
     AudioEncoding,
@@ -320,6 +328,7 @@ __all__ = (
     "UpdateGuardrailRequest",
     "UpdateToolRequest",
     "UpdateToolsetRequest",
+    "AgentTool",
     "ExpressionCondition",
     "PythonCodeCondition",
     "TransferRule",
@@ -332,6 +341,7 @@ __all__ = (
     "CloudLoggingSettings",
     "ConversationLoggingSettings",
     "DataStoreSettings",
+    "ErrorHandlingSettings",
     "EvaluationMetricsThresholds",
     "LanguageSettings",
     "LoggingSettings",
@@ -390,6 +400,8 @@ __all__ = (
     "Schema",
     "GoogleSearchSuggestions",
     "WebSearchQuery",
+    "EndpointControlPolicy",
+    "SecuritySettings",
     "BidiSessionClientMessage",
     "BidiSessionServerMessage",
     "Citations",

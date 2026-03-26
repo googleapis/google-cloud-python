@@ -405,7 +405,8 @@ class WorkerPool(proto.Message):
             Threat Detection monitoring is enabled for the
             parent project of this worker pool.
         custom_audiences (MutableSequence[str]):
-            Not supported, and ignored by Cloud Run.
+            Deprecated: Not supported, and ignored by
+            Cloud Run.
         satisfies_pzs (bool):
             Output only. Reserved for future use.
         reconciling (bool):

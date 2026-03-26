@@ -157,6 +157,7 @@ def test__get_default_mtls_endpoint():
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert EventarcClient._get_default_mtls_endpoint(None) is None
     assert EventarcClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
@@ -173,6 +174,7 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert EventarcClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert EventarcClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
 
 
 def test__read_environment_variables():
@@ -1262,11 +1264,13 @@ def test_eventarc_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -26723,8 +26727,9 @@ def test_get_trigger_rest_bad_request(request_type=eventarc.GetTriggerRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26797,17 +26802,17 @@ def test_get_trigger_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_trigger"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_trigger_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_get_trigger") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26856,8 +26861,9 @@ def test_list_triggers_rest_bad_request(request_type=eventarc.ListTriggersReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26920,17 +26926,19 @@ def test_list_triggers_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_triggers"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_triggers_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_triggers"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_triggers"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_triggers_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_triggers"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26981,8 +26989,9 @@ def test_create_trigger_rest_bad_request(request_type=eventarc.CreateTriggerRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27146,19 +27155,20 @@ def test_create_trigger_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_trigger"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_create_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_trigger_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_create_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27209,8 +27219,9 @@ def test_update_trigger_rest_bad_request(request_type=eventarc.UpdateTriggerRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27376,19 +27387,20 @@ def test_update_trigger_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_trigger"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_update_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_trigger_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_update_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27437,8 +27449,9 @@ def test_delete_trigger_rest_bad_request(request_type=eventarc.DeleteTriggerRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27493,19 +27506,20 @@ def test_delete_trigger_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_trigger"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_trigger_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_delete_trigger"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_trigger"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_trigger_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_delete_trigger"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27554,8 +27568,9 @@ def test_get_channel_rest_bad_request(request_type=eventarc.GetChannelRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27629,17 +27644,17 @@ def test_get_channel_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_channel"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_channel"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_channel_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.EventarcRestInterceptor, "pre_get_channel") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27688,8 +27703,9 @@ def test_list_channels_rest_bad_request(request_type=eventarc.ListChannelsReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27752,17 +27768,19 @@ def test_list_channels_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_channels"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_channels_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_channels"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_channels"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_channels_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_channels"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27813,8 +27831,9 @@ def test_create_channel_rest_bad_request(request_type=eventarc.CreateChannelRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27949,19 +27968,20 @@ def test_create_channel_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_channel"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_create_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_channel"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_channel_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_create_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28012,8 +28032,9 @@ def test_update_channel_rest_bad_request(request_type=eventarc.UpdateChannelRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28150,19 +28171,20 @@ def test_update_channel_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_channel"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_update_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_channel"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_channel_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_update_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28211,8 +28233,9 @@ def test_delete_channel_rest_bad_request(request_type=eventarc.DeleteChannelRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28267,19 +28290,20 @@ def test_delete_channel_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_channel"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_delete_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_channel"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_channel_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_delete_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28328,8 +28352,9 @@ def test_get_provider_rest_bad_request(request_type=eventarc.GetProviderRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28392,17 +28417,19 @@ def test_get_provider_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_provider"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_provider_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_provider"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_provider"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_provider_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_get_provider"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28451,8 +28478,9 @@ def test_list_providers_rest_bad_request(request_type=eventarc.ListProvidersRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28515,17 +28543,19 @@ def test_list_providers_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_providers"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_providers_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_providers"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_providers"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_providers_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_providers"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28580,8 +28610,9 @@ def test_get_channel_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28650,17 +28681,20 @@ def test_get_channel_connection_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_channel_connection"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_channel_connection_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_channel_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_channel_connection"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_get_channel_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_get_channel_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28718,8 +28752,9 @@ def test_list_channel_connections_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28782,18 +28817,20 @@ def test_list_channel_connections_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_channel_connections"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_list_channel_connections_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_channel_connections"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_channel_connections"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_list_channel_connections_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_channel_connections"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28851,8 +28888,9 @@ def test_create_channel_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28985,20 +29023,21 @@ def test_create_channel_connection_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_channel_connection"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_create_channel_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_create_channel_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_channel_connection"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_create_channel_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_create_channel_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29053,8 +29092,9 @@ def test_delete_channel_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29111,20 +29151,21 @@ def test_delete_channel_connection_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_channel_connection"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_delete_channel_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_delete_channel_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_channel_connection"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_delete_channel_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_delete_channel_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29177,8 +29218,9 @@ def test_get_google_channel_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29241,18 +29283,20 @@ def test_get_google_channel_config_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_google_channel_config"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_get_google_channel_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_google_channel_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_google_channel_config"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_get_google_channel_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_get_google_channel_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29314,8 +29358,9 @@ def test_update_google_channel_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29459,18 +29504,20 @@ def test_update_google_channel_config_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_google_channel_config"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_update_google_channel_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_update_google_channel_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_google_channel_config"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_update_google_channel_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_update_google_channel_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29526,8 +29573,9 @@ def test_get_message_bus_rest_bad_request(request_type=eventarc.GetMessageBusReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29596,17 +29644,19 @@ def test_get_message_bus_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_message_bus"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_message_bus_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_message_bus"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_message_bus"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_message_bus_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_get_message_bus"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29657,8 +29707,9 @@ def test_list_message_buses_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29721,17 +29772,19 @@ def test_list_message_buses_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_message_buses"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_message_buses_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_message_buses"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_message_buses"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_message_buses_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_message_buses"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29786,8 +29839,9 @@ def test_list_message_bus_enrollments_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29852,18 +29906,20 @@ def test_list_message_bus_enrollments_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_message_bus_enrollments"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_list_message_bus_enrollments_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_message_bus_enrollments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_message_bus_enrollments"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_list_message_bus_enrollments_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_message_bus_enrollments"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29921,8 +29977,9 @@ def test_create_message_bus_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30056,19 +30113,20 @@ def test_create_message_bus_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_message_bus"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_message_bus_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_create_message_bus"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_message_bus"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_message_bus_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_create_message_bus"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30125,8 +30183,9 @@ def test_update_message_bus_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30264,19 +30323,20 @@ def test_update_message_bus_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_message_bus"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_message_bus_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_update_message_bus"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_message_bus"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_message_bus_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_update_message_bus"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30329,8 +30389,9 @@ def test_delete_message_bus_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30385,19 +30446,20 @@ def test_delete_message_bus_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_message_bus"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_message_bus_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_delete_message_bus"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_message_bus"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_message_bus_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_delete_message_bus"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30448,8 +30510,9 @@ def test_get_enrollment_rest_bad_request(request_type=eventarc.GetEnrollmentRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30522,17 +30585,19 @@ def test_get_enrollment_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_enrollment"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_enrollment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_enrollment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_enrollment"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_enrollment_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_get_enrollment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30583,8 +30648,9 @@ def test_list_enrollments_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30647,17 +30713,19 @@ def test_list_enrollments_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_enrollments"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_enrollments_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_enrollments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_enrollments"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_enrollments_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_enrollments"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30712,8 +30780,9 @@ def test_create_enrollment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30848,19 +30917,20 @@ def test_create_enrollment_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_enrollment"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_enrollment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_create_enrollment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_enrollment"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_enrollment_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_create_enrollment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30915,8 +30985,9 @@ def test_update_enrollment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31053,19 +31124,20 @@ def test_update_enrollment_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_enrollment"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_enrollment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_update_enrollment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_enrollment"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_enrollment_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_update_enrollment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31118,8 +31190,9 @@ def test_delete_enrollment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31174,19 +31247,20 @@ def test_delete_enrollment_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_enrollment"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_enrollment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_delete_enrollment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_enrollment"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_enrollment_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_delete_enrollment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31237,8 +31311,9 @@ def test_get_pipeline_rest_bad_request(request_type=eventarc.GetPipelineRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31309,17 +31384,19 @@ def test_get_pipeline_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_pipeline"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_pipeline_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_pipeline"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_pipeline"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_pipeline_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_get_pipeline"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31368,8 +31445,9 @@ def test_list_pipelines_rest_bad_request(request_type=eventarc.ListPipelinesRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31432,17 +31510,19 @@ def test_list_pipelines_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_pipelines"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_pipelines_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_pipelines"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_pipelines"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_pipelines_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_pipelines"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31493,8 +31573,9 @@ def test_create_pipeline_rest_bad_request(request_type=eventarc.CreatePipelineRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31669,19 +31750,20 @@ def test_create_pipeline_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_pipeline"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_pipeline_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_create_pipeline"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_pipeline"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_pipeline_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_create_pipeline"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31732,8 +31814,9 @@ def test_update_pipeline_rest_bad_request(request_type=eventarc.UpdatePipelineRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31910,19 +31993,20 @@ def test_update_pipeline_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_pipeline"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_pipeline_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_update_pipeline"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_pipeline"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_pipeline_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_update_pipeline"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31971,8 +32055,9 @@ def test_delete_pipeline_rest_bad_request(request_type=eventarc.DeletePipelineRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32027,19 +32112,20 @@ def test_delete_pipeline_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_pipeline"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_pipeline_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_delete_pipeline"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_pipeline"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_pipeline_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_delete_pipeline"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32092,8 +32178,9 @@ def test_get_google_api_source_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32166,17 +32253,20 @@ def test_get_google_api_source_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_google_api_source"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_get_google_api_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_get_google_api_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_get_google_api_source"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_get_google_api_source_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_get_google_api_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32231,8 +32321,9 @@ def test_list_google_api_sources_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32295,17 +32386,20 @@ def test_list_google_api_sources_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_google_api_sources"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor, "post_list_google_api_sources_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_list_google_api_sources"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_list_google_api_sources"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_list_google_api_sources_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_list_google_api_sources"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32363,8 +32457,9 @@ def test_create_google_api_source_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32501,20 +32596,21 @@ def test_create_google_api_source_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_create_google_api_source"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_create_google_api_source_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_create_google_api_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_create_google_api_source"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_create_google_api_source_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_create_google_api_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32571,8 +32667,9 @@ def test_update_google_api_source_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32713,20 +32810,21 @@ def test_update_google_api_source_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_update_google_api_source"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_update_google_api_source_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_update_google_api_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_update_google_api_source"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_update_google_api_source_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_update_google_api_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32781,8 +32879,9 @@ def test_delete_google_api_source_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32839,20 +32938,21 @@ def test_delete_google_api_source_rest_interceptors(null_interceptor):
     )
     client = EventarcClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EventarcRestInterceptor, "post_delete_google_api_source"
-    ) as post, mock.patch.object(
-        transports.EventarcRestInterceptor,
-        "post_delete_google_api_source_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EventarcRestInterceptor, "pre_delete_google_api_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "post_delete_google_api_source"
+        ) as post,
+        mock.patch.object(
+            transports.EventarcRestInterceptor,
+            "post_delete_google_api_source_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EventarcRestInterceptor, "pre_delete_google_api_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32905,8 +33005,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -32965,8 +33066,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -33027,8 +33129,9 @@ def test_get_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -33089,8 +33192,9 @@ def test_set_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -33151,8 +33255,9 @@ def test_test_iam_permissions_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -33213,8 +33318,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -33275,8 +33381,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -33337,8 +33444,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -33399,8 +33507,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34395,11 +34504,14 @@ def test_eventarc_base_transport():
 
 def test_eventarc_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.eventarc_v1.services.eventarc.transports.EventarcTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.eventarc_v1.services.eventarc.transports.EventarcTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EventarcTransport(
@@ -34416,9 +34528,12 @@ def test_eventarc_base_transport_with_credentials_file():
 
 def test_eventarc_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.eventarc_v1.services.eventarc.transports.EventarcTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.eventarc_v1.services.eventarc.transports.EventarcTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EventarcTransport()
@@ -34490,11 +34605,12 @@ def test_eventarc_transport_auth_gdch_credentials(transport_class):
 def test_eventarc_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -35573,6 +35689,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -35710,6 +35858,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -35857,6 +36037,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -36000,6 +36214,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -36147,6 +36395,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -36286,6 +36568,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_set_iam_policy(transport: str = "grpc"):
@@ -36450,6 +36766,41 @@ async def test_set_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_get_iam_policy(transport: str = "grpc"):
@@ -36617,6 +36968,41 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
@@ -36794,6 +37180,47 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():

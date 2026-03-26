@@ -32,7 +32,7 @@ nox.options.sessions = [
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
 
-ALL_PYTHON = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 DEFAULT_PYTHON_VERSION = "3.14"
 BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = ["test_utils", "setup.py"]
@@ -128,7 +128,7 @@ def system(session):
         "--package-name",
         "google-cloud-testutils",
         "--constraints-file",
-        "testing/constraints-3.7.txt",
+        "testing/constraints-3.9.txt",
     )
 
 
@@ -142,7 +142,7 @@ def update_lower_bounds(session):
         "--package-name",
         "google-cloud-testutils",
         "--constraints-file",
-        "testing/constraints-3.7.txt",
+        "testing/constraints-3.9.txt",
     )
 
 
@@ -343,7 +343,7 @@ def core_deps_from_source(session):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
+        f"{CURRENT_DIRECTORY}/../google-auth",
     ]
 
     for dep in core_dependencies_from_source:

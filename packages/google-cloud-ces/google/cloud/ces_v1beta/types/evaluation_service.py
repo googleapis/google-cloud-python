@@ -94,7 +94,7 @@ class RunEvaluationResponse(proto.Message):
 
 class RunEvaluationOperationMetadata(proto.Message):
     r"""Operation metadata for
-    [EvaluationService.RunEvaluation][google.cloud.ces.v1beta.EvaluationService.RunEvaluation]
+    [EvaluationService.RunEvaluation][google.cloud.ces.v1beta.EvaluationService.RunEvaluation].
 
     Attributes:
         evaluations (MutableSequence[str]):

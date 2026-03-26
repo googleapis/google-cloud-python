@@ -177,6 +177,14 @@ class SessionConfig(proto.Message):
             `Dialogflow <https://cloud.google.com/dialogflow/cx/docs/concept/console-conversational-agents>`__
             agent when the session control is transferred to the remote
             agent.
+        enable_text_streaming (bool):
+            Optional. Whether to enable streaming text outputs from the
+            model. By default, text outputs from the model are collected
+            before sending to the client. NOTE: This is only supported
+            for text (non-voice) sessions via
+            [StreamRunSession][google.cloud.ces.v1beta.SessionService.StreamRunSession]
+            or
+            [BidiRunSession][google.cloud.ces.v1beta.SessionService.BidiRunSession].
     """
 
     class RemoteDialogflowQueryParameters(proto.Message):
@@ -252,6 +260,10 @@ class SessionConfig(proto.Message):
         proto.MESSAGE,
         number=15,
         message=RemoteDialogflowQueryParameters,
+    )
+    enable_text_streaming: bool = proto.Field(
+        proto.BOOL,
+        number=18,
     )
 
 

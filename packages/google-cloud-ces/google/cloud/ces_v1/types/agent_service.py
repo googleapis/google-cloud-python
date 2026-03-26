@@ -305,6 +305,10 @@ class ExportAppRequest(proto.Message):
             ``gs://<bucket-name>/<object-name>``. The exported app
             archive will be written directly to the specified GCS
             object.
+        app_version (str):
+            Optional. The resource name of the app version to export.
+            Format:
+            ``projects/{project}/locations/{location}/apps/{app}/versions/{version}``.
     """
 
     class ExportFormat(proto.Enum):
@@ -335,6 +339,10 @@ class ExportAppRequest(proto.Message):
     gcs_uri: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    app_version: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 

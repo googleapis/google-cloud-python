@@ -328,20 +328,23 @@ class CustomInfoType(proto.Message):
 
             This field is a member of `oneof`_ ``type``.
         stored_type (google.cloud.dlp_v2.types.StoredType):
-            Load an existing ``StoredInfoType`` resource for use in
-            ``InspectDataSource``. Not currently supported in
-            ``InspectContent``.
+            Loads an existing ``StoredInfoType`` resource.
+
+            This field is a member of `oneof`_ ``type``.
+        metadata_key_value_expression (google.cloud.dlp_v2.types.CustomInfoType.MetadataKeyValueExpression):
+            Key-value pair to detect in the metadata.
 
             This field is a member of `oneof`_ ``type``.
         detection_rules (MutableSequence[google.cloud.dlp_v2.types.CustomInfoType.DetectionRule]):
             Set of detection rules to apply to all findings of this
-            CustomInfoType. Rules are applied in order that they are
-            specified. Not supported for the ``surrogate_type``
-            CustomInfoType.
+            CustomInfoType. Rules are applied in the order that they are
+            specified. Only supported for the ``dictionary``, ``regex``,
+            and ``stored_type`` CustomInfoTypes.
         exclusion_type (google.cloud.dlp_v2.types.CustomInfoType.ExclusionType):
             If set to EXCLUSION_TYPE_EXCLUDE this infoType will not
             cause a finding to be returned. It still can be used for
-            rules matching.
+            rules matching. Only supported for the ``dictionary``,
+            ``regex``, and ``stored_type`` CustomInfoTypes.
         sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
             Sensitivity for this CustomInfoType. If this
             CustomInfoType extends an existing InfoType, the
@@ -477,6 +480,29 @@ class CustomInfoType(proto.Message):
         support the use of ``detection_rules``.
 
         """
+
+    class MetadataKeyValueExpression(proto.Message):
+        r"""Configuration for a custom infoType that detects key-value
+        pairs in the metadata matching the specified regular
+        expressions.
+
+        Attributes:
+            key_regex (str):
+                The regular expression for the key. Key
+                should be non-empty.
+            value_regex (str):
+                The regular expression for the value. Value
+                should be non-empty.
+        """
+
+        key_regex: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value_regex: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class DetectionRule(proto.Message):
         r"""Deprecated; use ``InspectionRuleSet`` instead. Rule for modifying a
@@ -647,6 +673,12 @@ class CustomInfoType(proto.Message):
         number=5,
         oneof="type",
         message="StoredType",
+    )
+    metadata_key_value_expression: MetadataKeyValueExpression = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="type",
+        message=MetadataKeyValueExpression,
     )
     detection_rules: MutableSequence[DetectionRule] = proto.RepeatedField(
         proto.MESSAGE,

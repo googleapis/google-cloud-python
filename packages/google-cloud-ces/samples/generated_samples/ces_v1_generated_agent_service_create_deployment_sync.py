@@ -41,7 +41,6 @@ def sample_create_deployment():
     # Initialize request argument(s)
     deployment = ces_v1.Deployment()
     deployment.display_name = "display_name_value"
-    deployment.app_version = "app_version_value"
 
     request = ces_v1.CreateDeploymentRequest(
         parent="parent_value",
