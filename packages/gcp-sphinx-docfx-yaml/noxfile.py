@@ -120,6 +120,8 @@ def lint(session):
         ".",
     )
 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16179):
+    # Resolve existing lint errors and remove success_codes=[0, 1] to enforce strict pass/fail.
     session.run("flake8", ".", success_codes=[0, 1])
 
 
@@ -133,6 +135,9 @@ def lint_setup_py(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run unit tests."""
+    # Re-enable 3.8, 3.9, 3.11, 3.12, and 3.13 after environment verification.
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16176):
+    # Track 3.14 compatibility as upstream dependencies stabilize.
     _skip_python_session(session, ["3.7", "3.8", "3.9", "3.11", "3.12", "3.13", "3.14"])
     session.install("-r", "requirements.txt")
     session.install("pytest")
@@ -142,6 +147,8 @@ def unit(session):
 @nox.session(python="3.10")
 def docs(session):
     """Build documentation (POSTPONED)."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16177):
+    # investigate and implement docs session if needed.
     session.skip(
         "Docs build postponed during migration. "
         "Requires resolution of Sphinx 1.5.5 / Jinja2 compatibility."
@@ -151,7 +158,9 @@ def docs(session):
 @nox.session(python="3.10")
 def docfx(session):
     """Build documentation (POSTPONED)."""
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16178):
+    # investigate and implement docs session if needed.
     session.skip(
-        "Docs build postponed during migration. "
+        "DocFX build postponed during migration. "
         "Requires resolution of Sphinx 1.5.5 / Jinja2 compatibility."
     )
