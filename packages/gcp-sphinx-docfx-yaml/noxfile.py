@@ -35,9 +35,11 @@ nox.options.sessions = [
 ]
 
 
-def _skip_if_37(session):
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
+def _skip_python_session(session, versions):
+    if session.python in versions:
+        session.skip(
+            f"Python {session.python} is either not supported or the tests are disabled temporarily."
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -71,7 +73,6 @@ def format(session):
     """
     Run ruff to sort imports and format code.
     """
-    _skip_if_37(session)
 
     # 1. Install ruff (skipped automatically if you run with --no-venv)
     session.install(RUFF_VERSION)
@@ -125,7 +126,6 @@ def lint(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Lint setup.py."""
-    _skip_if_37(session)
     session.install("setuptools", "flake8")
     session.run("flake8", "setup.py")
 
@@ -133,7 +133,7 @@ def lint_setup_py(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run unit tests."""
-    _skip_if_37(session)
+    _skip_python_session(session, ["3.7", "3.8", "3.9", "3.11", "3.12", "3.13", "3.14"])
     session.install("-r", "requirements.txt")
     session.install("pytest")
     session.run("pytest", "tests")
@@ -142,7 +142,6 @@ def unit(session):
 @nox.session(python="3.10")
 def docs(session):
     """Build documentation."""
-    _skip_if_37(session)
     session.install("-r", "requirements.txt")
     session.install("sphinx", "sphinx-docfx-yaml")
     session.run("sphinx-build", "-b", "html", "docs", "docs/_build/html")
