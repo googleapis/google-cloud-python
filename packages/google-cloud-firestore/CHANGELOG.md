@@ -4,24 +4,6 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
-## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.26.0...google-cloud-firestore-v2.27.0) (2026-03-26)
-
-
-### Features
-
-* literals pipeline stage (#16028) ([cf50cea185f2ad4763a14f1f0c14ca50fc2fe418](https://github.com/googleapis/google-cloud-python/commit/cf50cea185f2ad4763a14f1f0c14ca50fc2fe418))
-* support object functions (#16132) ([e649a9024219d281050d159903b87e20a3665d86](https://github.com/googleapis/google-cloud-python/commit/e649a9024219d281050d159903b87e20a3665d86))
-* support array functions (#16128) ([c95e03831290765b6f950055f5f3749132c37426](https://github.com/googleapis/google-cloud-python/commit/c95e03831290765b6f950055f5f3749132c37426))
-* support string expressions (#16152) ([8aa697acc7d86daf228dd52fabb7d1f14bd05c84](https://github.com/googleapis/google-cloud-python/commit/8aa697acc7d86daf228dd52fabb7d1f14bd05c84))
-* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
-
-
-### Bug Fixes
-
-* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
-* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
-* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
-
 ## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.25.0...google-cloud-firestore-v2.26.0) (2026-03-23)
 
 
