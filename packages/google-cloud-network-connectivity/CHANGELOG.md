@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-network-connectivity/#history
 
+## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.14.0...google-cloud-network-connectivity-v2.15.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.13.0...google-cloud-network-connectivity-v2.14.0) (2026-03-23)
 
 
