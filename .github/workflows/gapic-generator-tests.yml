@@ -72,11 +72,12 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ env.LATEST_STABLE_PYTHON }}
+      - name: Install System Deps
+        run: sudo apt-get update && sudo apt-get install -y pandoc
       - name: Run Goldens (Lint/Unit)
         run: |
           pip install nox
           cd packages/gapic-generator
-          # Running the logic from goldens-lint and goldens-unit combined
           for pkg in credentials eventarc logging redis; do
             nox -f tests/integration/goldens/$pkg/noxfile.py -s format lint unit-${{ env.LATEST_STABLE_PYTHON }}
           done
@@ -85,7 +86,7 @@ jobs:
     needs: python_config
     strategy:
       matrix:
-        python: ["3.10", "3.14"] # Reduced matrix for efficiency, or use all_python
+        python: ["3.10", "3.14"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -93,8 +94,21 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
+      # This fixes the Pandoc error
+      - name: Install System Deps & Protoc
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl pandoc unzip
+          sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
+          cd /usr/src/protoc/ && unzip protoc.zip
+          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run Tests
         run: |
           pip install nox
           cd packages/gapic-generator
-          nox -s fragment-${{ matrix.python }} snippetgen
+          # Run fragment for current matrix python
+          nox -s fragment-${{ matrix.python }}
+          # Run snippetgen only on the latest stable to avoid the "Python not found" error
+          if [ "${{ matrix.python }}" == "${{ env.LATEST_STABLE_PYTHON }}" ]; then
+            nox -s snippetgen
+          fi
