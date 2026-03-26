@@ -3741,6 +3741,24 @@ libraries:
     remove_regex:
       - packages/google-maps-fleetengine-delivery
     tag_format: '{id}-v{version}'
+  - id: google-maps-geocode
+    version: 0.0.0
+    last_generated_commit: ffe6fc5c48419866f525b463f20400d65c0e6312
+    apis:
+      - path: google/maps/geocode/v4
+        service_config: geocoding_backend_v4.yaml
+    source_roots:
+      - packages/google-maps-geocode
+    preserve_regex:
+      - packages/google-maps-geocode/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-maps-geocode
+    tag_format: '{id}-v{version}'
   - id: google-maps-mapsplatformdatasets
     version: 0.6.0
     last_generated_commit: 6df3ecf4fd43b64826de6a477d1a535ec18b0d7c
