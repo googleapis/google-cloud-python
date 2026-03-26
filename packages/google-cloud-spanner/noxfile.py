@@ -39,8 +39,7 @@ DEFAULT_PYTHON_VERSION = "3.14"
 DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.8",
+ALL_PYTHON: List[str] = [
     "3.9",
     "3.10",
     "3.11",
@@ -48,9 +47,6 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.13",
     "3.14",
 ]
-
-ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -603,7 +599,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     with open(
         CURRENT_DIRECTORY
         / "testing"
-        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        / f"constraints-{ALL_PYTHON[0]}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()
