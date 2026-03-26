@@ -13,10 +13,12 @@
 # limitations under the License.
 
 import os
+
 import nox
 
 DEFAULT_PYTHON_VERSION = "3.14"
 UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+RUFF_VERSION = "ruff==0.14.14"
 
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 # ALL_PYTHON.extend(["3.7"]) # User said NOT to include 3.7
@@ -32,9 +34,11 @@ nox.options.sessions = [
     "core_deps_from_source",
 ]
 
+
 def _skip_if_37(session):
     if session.python in ("3.7",):
         session.skip("Python 3.7 is no longer supported")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
@@ -42,6 +46,7 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add mypy tests
     session.skip("mypy tests are not yet supported")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def core_deps_from_source(session):
@@ -52,37 +57,70 @@ def core_deps_from_source(session):
     # Add core deps from source tests
     session.skip("Core deps from source tests are not yet supported")
 
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
-    """Run all tests with prerelease versions of dependencies installed.
-    """
+    """Run all tests with prerelease versions of dependencies installed."""
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add prerelease deps tests
     session.skip("prerelease deps tests are not yet supported")
 
-@nox.session
-def format(session: nox.sessions.Session) -> None:
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
     _skip_if_37(session)
-    session.install("black", "isort")
-    python_files = [path for path in os.listdir(".") if path.endswith(".py")]
-    if not python_files:
-        pass
-    
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
-    session.run("isort", "--fss", *python_files)
-    session.run("black", *python_files)
+
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        ".",
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        ".",
+    )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
-    """Run linter."""
-    _skip_if_37(session)
-    session.install("flake8")
-    session.run("flake8", ".")
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install(RUFF_VERSION)
+
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
+        "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        ".",
+    )
+
+    session.run("ruff", "check", ".")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
@@ -91,6 +129,7 @@ def lint_setup_py(session):
     session.install("setuptools", "flake8")
     session.run("flake8", "setup.py")
 
+
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run unit tests."""
@@ -98,6 +137,7 @@ def unit(session):
     session.install("-r", "requirements.txt")
     session.install("pytest")
     session.run("pytest", "tests")
+
 
 @nox.session(python="3.10")
 def docs(session):
